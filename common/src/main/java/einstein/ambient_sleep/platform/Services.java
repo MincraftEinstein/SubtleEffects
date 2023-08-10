@@ -2,12 +2,14 @@ package einstein.ambient_sleep.platform;
 
 import einstein.ambient_sleep.AmbientSleep;
 import einstein.ambient_sleep.platform.services.IPlatformHelper;
+import einstein.ambient_sleep.platform.services.RegistryHelper;
 
 import java.util.ServiceLoader;
 
 public class Services {
 
     public static final IPlatformHelper PLATFORM = load(IPlatformHelper.class);
+    public static final RegistryHelper REGISTRY = load(RegistryHelper.class);
 
     public static <T> T load(Class<T> clazz) {
         final T loadedService = ServiceLoader.load(clazz)

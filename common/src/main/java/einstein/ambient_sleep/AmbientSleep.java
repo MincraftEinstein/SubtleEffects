@@ -1,5 +1,7 @@
 package einstein.ambient_sleep;
 
+import einstein.ambient_sleep.init.ModInit;
+import net.minecraft.resources.ResourceLocation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -10,5 +12,10 @@ public class AmbientSleep {
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_NAME);
 
     public static void init() {
+        ModInit.init();
+    }
+
+    public static ResourceLocation loc(String path) {
+        return new ResourceLocation(MOD_ID, path);
     }
 }
