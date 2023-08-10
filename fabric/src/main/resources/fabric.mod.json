@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "id": "ambient_sleep",
+  "version": "${version}",
+  "name": "Ambient Sleep",
+  "description": "This mod makes a few little client side tweaks to sleeping",
+  "authors": [
+    "MincraftEinstein"
+  ],
+  "contact": {
+    "homepage": "https://curseforge.com/minecraft/mc-mods/ambient_sleep",
+    "sources": "https://github.com/MincraftEinstein/AmbientSleep",
+    "issues": "https://github.com/MincraftEinstein/AmbientSleep/issues"
+  },
+  "license": "All rights reserved",
+  "icon": "pack.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "einstein.ambient_sleep.AmbientSleepFabric"
+    ]
+  },
+  "mixins": [
+    "ambient_sleep.mixins.json"
+  ],
+  "accessWidener": "ambient_sleep.accesswidener",
+  "depends": {
+    "fabricloader": ">=0.14",
+    "fabric": "*",
+    "minecraft": "1.20.x",
+    "java": ">=17"
+  },
+  "suggests": {
+    "another-mod": "*"
+  }
+}

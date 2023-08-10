@@ -1,0 +1,30 @@
+modLoader = "javafml"
+loaderVersion = "[46,)"
+license = "All rights reserved"
+
+[[mods]]
+    modId = "ambient_sleep"
+    version = "${version}"
+    displayName = "Ambient Sleep"
+    displayURL="https://curseforge.com/minecraft/mods/ambient-sleep"
+    #updateJSONURL="https://change.me.example.invalid/updates.json"
+    issueTrackerURL="https://github.com/MincraftEinstein/AmbientSleep/issues"
+    logoFile = "pack.png"
+    credits = ""
+    authors = "MincraftEinstein"
+    description = '''
+This mod makes a few little client side tweaks to sleeping
+'''
+[[dependencies.ambient_sleep]]
+    modId = "forge"
+    mandatory = true
+    versionRange = "[46,)"
+    ordering = "NONE"
+    side = "BOTH"
+
+[[dependencies.ambient_sleep]]
+    modId = "minecraft"
+    mandatory = true
+    versionRange = "[1.20, 1.21)"
+    ordering = "NONE"
+    side = "BOTH"

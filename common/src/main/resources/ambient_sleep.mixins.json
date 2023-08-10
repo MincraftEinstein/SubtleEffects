@@ -1,0 +1,12 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "einstein.ambient_sleep.mixin",
+  "refmap": "ambient_sleep.refmap.json",
+  "compatibilityLevel": "JAVA_17",
+  "client": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
