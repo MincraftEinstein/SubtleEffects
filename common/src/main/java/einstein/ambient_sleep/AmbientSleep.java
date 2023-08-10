@@ -11,6 +11,9 @@ public class AmbientSleep {
     public static final String MOD_NAME = "Ambient Sleep";
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_NAME);
 
+    public static final int BREATH_DELAY = 60;
+    public static final int SNORE_DELAY = 10;
+
     public static void init() {
         ModInit.init();
     }
