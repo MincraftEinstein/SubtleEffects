@@ -2,13 +2,15 @@
   "entity.villager.sleep": {
     "subtitle": "subtitles.entity.villager.sleep",
     "sounds": [
-      "mob/villager/sleep"
+      "ambient_sleep:mob/villager/sleep"
     ]
   },
   "entity.player.sleep": {
     "subtitle": "subtitles.entity.player.sleep",
     "sounds": [
-      "entity/player/sleep"
+      "ambient_sleep:entity/player/sleep1",
+      "ambient_sleep:entity/player/sleep2",
+      "ambient_sleep:entity/player/sleep3"
     ]
   }
 }
