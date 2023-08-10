@@ -2,9 +2,12 @@ package einstein.ambient_sleep.mixin;
 
 import einstein.ambient_sleep.AmbientSleep;
 import einstein.ambient_sleep.init.ModInit;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.npc.Villager;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -28,6 +31,10 @@ public abstract class LivingEntityMixin extends Entity {
     @Unique
     private int ambientSleep$snoreCount = 0;
 
+    @SuppressWarnings("all")
+    @Unique
+    private final LivingEntity ambientSleep$me = (LivingEntity) (Object) this;
+
     public LivingEntityMixin(EntityType<?> type, Level level) {
         super(type, level);
     }
@@ -41,6 +48,15 @@ public abstract class LivingEntityMixin extends Entity {
                 }
                 else {
                     if (ambientSleep$snoreTimer >= AmbientSleep.SNORE_DELAY) {
+                        if (ambientSleep$snoreCount <= 0) {
+                            if (ambientSleep$me instanceof Player) {
+                                AmbientSleep.playClientSound(SoundSource.PLAYERS, ambientSleep$me, ModInit.PLAYER_SLEEP.get());
+                            }
+                            else if (ambientSleep$me instanceof Villager) {
+                                AmbientSleep.playClientSound(SoundSource.NEUTRAL, ambientSleep$me, ModInit.VILLAGER_SLEEP.get());
+                            }
+                        }
+
                         ambientSleep$snoreTimer = 0;
                         ambientSleep$snoreCount++;
                         level().addParticle(ModInit.SNORING_PARTICLE.get(), getX(), getY() + 0.5, getZ(), 0, 0, 0);
