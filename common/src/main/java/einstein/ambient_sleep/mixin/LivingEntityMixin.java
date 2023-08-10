@@ -43,7 +43,7 @@ public abstract class LivingEntityMixin extends Entity {
                     if (ambientSleep$snoreTimer >= AmbientSleep.SNORE_DELAY) {
                         ambientSleep$snoreTimer = 0;
                         ambientSleep$snoreCount++;
-                        level().addParticle(ModInit.SNORING.get(), getX(), getY() + 0.5, getZ(), 0, 0, 0);
+                        level().addParticle(ModInit.SNORING_PARTICLE.get(), getX(), getY() + 0.5, getZ(), 0, 0, 0);
 
                         if (ambientSleep$snoreCount >= 3) {
                             ambientSleep$snoreCount = 0;

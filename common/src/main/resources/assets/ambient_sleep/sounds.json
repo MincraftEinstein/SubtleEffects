@@ -1,0 +1,14 @@
+{
+  "entity.villager.sleep": {
+    "subtitle": "subtitles.entity.villager.sleep",
+    "sounds": [
+      "mob/villager/sleep"
+    ]
+  },
+  "entity.player.sleep": {
+    "subtitle": "subtitles.entity.player.sleep",
+    "sounds": [
+      "entity/player/sleep"
+    ]
+  }
+}

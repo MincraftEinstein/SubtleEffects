@@ -16,8 +16,9 @@ public class AmbientSleepForge {
 
         AmbientSleep.init();
         ForgeRegistryHelper.PARTICLE_TYPES.register(modEventBus);
+        ForgeRegistryHelper.SOUND_EVENTS.register(modEventBus);
         modEventBus.addListener((RegisterParticleProvidersEvent event) -> {
-            event.registerSpriteSet(ModInit.SNORING.get(), SnoringParticle.Provider::new);
+            event.registerSpriteSet(ModInit.SNORING_PARTICLE.get(), SnoringParticle.Provider::new);
         });
     }
 }

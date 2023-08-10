@@ -10,6 +10,6 @@ public class AmbientSleepFabric implements ModInitializer {
     @Override
     public void onInitialize() {
         AmbientSleep.init();
-        ParticleFactoryRegistry.getInstance().register(ModInit.SNORING.get(), SnoringParticle.Provider::new);
+        ParticleFactoryRegistry.getInstance().register(ModInit.SNORING_PARTICLE.get(), SnoringParticle.Provider::new);
     }
 }
