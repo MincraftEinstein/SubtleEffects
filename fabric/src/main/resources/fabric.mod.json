@@ -14,7 +14,7 @@
   },
   "license": "All rights reserved",
   "icon": "pack.png",
-  "environment": "*",
+  "environment": "client",
   "entrypoints": {
     "main": [
       "einstein.ambient_sleep.AmbientSleepFabric"

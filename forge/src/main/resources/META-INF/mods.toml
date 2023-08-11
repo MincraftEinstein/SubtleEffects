@@ -15,16 +15,17 @@ license = "All rights reserved"
     description = '''
 This mod makes a few little client side tweaks to sleeping
 '''
+
 [[dependencies.ambient_sleep]]
     modId = "forge"
     mandatory = true
     versionRange = "[46,)"
     ordering = "NONE"
-    side = "BOTH"
+    side = "CLIENT"
 
 [[dependencies.ambient_sleep]]
     modId = "minecraft"
     mandatory = true
     versionRange = "[1.20, 1.21)"
     ordering = "NONE"
-    side = "BOTH"
+    side = "CLIENT"
