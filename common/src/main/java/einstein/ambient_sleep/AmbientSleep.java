@@ -28,9 +28,9 @@ public class AmbientSleep {
         return new ResourceLocation(MOD_ID, path);
     }
 
-    public static void playClientSound(SoundSource source, Entity entity, SoundEvent sound) {
+    public static void playClientSound(SoundSource source, Entity entity, SoundEvent sound, float pitch) {
         Minecraft minecraft = Minecraft.getInstance();
         Level level = minecraft.level;
-        level.playSeededSound(minecraft.player, entity, BuiltInRegistries.SOUND_EVENT.wrapAsHolder(sound), source, 1, 1, level.random.nextLong());
+        level.playSeededSound(minecraft.player, entity, BuiltInRegistries.SOUND_EVENT.wrapAsHolder(sound), source, 1, pitch, level.random.nextLong());
     }
 }

@@ -22,6 +22,8 @@ public abstract class LivingEntityMixin extends Entity {
     @Shadow
     public abstract boolean isSleeping();
 
+    @Shadow public abstract float getVoicePitch();
+
     @Unique
     private int ambientSleep$breatheTimer = 0;
 
@@ -50,10 +52,10 @@ public abstract class LivingEntityMixin extends Entity {
                     if (ambientSleep$snoreTimer >= AmbientSleep.SNORE_DELAY) {
                         if (ambientSleep$snoreCount <= 0) {
                             if (ambientSleep$me instanceof Player) {
-                                AmbientSleep.playClientSound(SoundSource.PLAYERS, ambientSleep$me, ModInit.PLAYER_SLEEP.get());
+                                AmbientSleep.playClientSound(SoundSource.PLAYERS, ambientSleep$me, ModInit.PLAYER_SLEEP.get(), getVoicePitch());
                             }
                             else if (ambientSleep$me instanceof Villager) {
-                                AmbientSleep.playClientSound(SoundSource.NEUTRAL, ambientSleep$me, ModInit.VILLAGER_SLEEP.get());
+                                AmbientSleep.playClientSound(SoundSource.NEUTRAL, ambientSleep$me, ModInit.VILLAGER_SLEEP.get(), getVoicePitch());
                             }
                         }
 
