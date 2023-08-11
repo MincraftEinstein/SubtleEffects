@@ -22,6 +22,7 @@ public class AmbientSleep {
 
     public static void init() {
         ModInit.init();
+        LOGGER.info("Putting computer to sleep in 3...2...1");
     }
 
     public static ResourceLocation loc(String path) {
