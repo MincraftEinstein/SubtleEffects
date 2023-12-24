@@ -1,6 +1,7 @@
 package einstein.ambient_sleep;
 
-import einstein.ambient_sleep.init.ModInit;
+import einstein.ambient_sleep.init.ModParticles;
+import einstein.ambient_sleep.init.ModSounds;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
@@ -21,8 +22,8 @@ public class AmbientSleep {
     public static final int SNORE_DELAY = 10;
 
     public static void init() {
-        ModInit.init();
-        LOGGER.info("Putting computer to sleep in 3...2...1");
+        ModSounds.init();
+        ModParticles.init();
     }
 
     public static ResourceLocation loc(String path) {

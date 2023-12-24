@@ -1,7 +1,8 @@
 package einstein.ambient_sleep.mixin;
 
 import einstein.ambient_sleep.AmbientSleep;
-import einstein.ambient_sleep.init.ModInit;
+import einstein.ambient_sleep.init.ModSounds;
+import einstein.ambient_sleep.init.ModParticles;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -22,7 +23,8 @@ public abstract class LivingEntityMixin extends Entity {
     @Shadow
     public abstract boolean isSleeping();
 
-    @Shadow public abstract float getVoicePitch();
+    @Shadow
+    public abstract float getVoicePitch();
 
     @Unique
     private int ambientSleep$breatheTimer = 0;
@@ -52,16 +54,16 @@ public abstract class LivingEntityMixin extends Entity {
                     if (ambientSleep$snoreTimer >= AmbientSleep.SNORE_DELAY) {
                         if (ambientSleep$snoreCount <= 0) {
                             if (ambientSleep$me instanceof Player) {
-                                AmbientSleep.playClientSound(SoundSource.PLAYERS, ambientSleep$me, ModInit.PLAYER_SLEEP.get(), getVoicePitch());
+                                AmbientSleep.playClientSound(SoundSource.PLAYERS, ambientSleep$me, ModSounds.PLAYER_SLEEP.get(), getVoicePitch());
                             }
                             else if (ambientSleep$me instanceof Villager) {
-                                AmbientSleep.playClientSound(SoundSource.NEUTRAL, ambientSleep$me, ModInit.VILLAGER_SLEEP.get(), getVoicePitch());
+                                AmbientSleep.playClientSound(SoundSource.NEUTRAL, ambientSleep$me, ModSounds.VILLAGER_SLEEP.get(), getVoicePitch());
                             }
                         }
 
                         ambientSleep$snoreTimer = 0;
                         ambientSleep$snoreCount++;
-                        level().addParticle(ModInit.SNORING_PARTICLE.get(), getX(), getY() + 0.5, getZ(), 0, 0, 0);
+                        level().addParticle(ModParticles.SNORING.get(), getX(), getY() + 0.5, getZ(), 0, 0, 0);
 
                         if (ambientSleep$snoreCount >= 3) {
                             ambientSleep$snoreCount = 0;
