@@ -5,9 +5,13 @@
   "refmap": "ambient_sleep.refmap.json",
   "compatibilityLevel": "JAVA_17",
   "client": [
+    "AbstractCandleBlockMixin",
+    "BaseFireBlockMixin",
     "CampfireBlockMixin",
     "EntityRendererMixin",
-    "LivingEntityMixin"
+    "LivingEntityMixin",
+    "TorchBlockMixin",
+    "WallTorchBlockMixin"
   ],
   "injectors": {
     "defaultRequire": 1
