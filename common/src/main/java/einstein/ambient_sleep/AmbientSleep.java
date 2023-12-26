@@ -19,6 +19,11 @@ import net.minecraft.world.phys.Vec3;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+// TODO
+//  Maybes
+//  - Try to fix players being able to locally slide off beds (probably some kind of client desync)
+//  - Try to fix third person in a bed as it is a little wierd
+
 public class AmbientSleep {
 
     public static final String MOD_ID = "ambient_sleep";
