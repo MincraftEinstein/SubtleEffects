@@ -1,8 +1,8 @@
 package einstein.ambient_sleep.mixin;
 
 import einstein.ambient_sleep.AmbientSleep;
-import einstein.ambient_sleep.init.ModSounds;
 import einstein.ambient_sleep.init.ModParticles;
+import einstein.ambient_sleep.init.ModSounds;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -54,10 +54,10 @@ public abstract class LivingEntityMixin extends Entity {
                     if (ambientSleep$snoreTimer >= AmbientSleep.SNORE_DELAY) {
                         if (ambientSleep$snoreCount <= 0) {
                             if (ambientSleep$me instanceof Player) {
-                                AmbientSleep.playClientSound(SoundSource.PLAYERS, ambientSleep$me, ModSounds.PLAYER_SLEEP.get(), getVoicePitch());
+                                AmbientSleep.playClientSound(SoundSource.PLAYERS, ambientSleep$me, ModSounds.PLAYER_SLEEP.get(), 1, getVoicePitch());
                             }
                             else if (ambientSleep$me instanceof Villager) {
-                                AmbientSleep.playClientSound(SoundSource.NEUTRAL, ambientSleep$me, ModSounds.VILLAGER_SLEEP.get(), getVoicePitch());
+                                AmbientSleep.playClientSound(SoundSource.NEUTRAL, ambientSleep$me, ModSounds.VILLAGER_SLEEP.get(), 1, getVoicePitch());
                             }
                         }
 

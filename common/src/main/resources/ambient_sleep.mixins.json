@@ -14,7 +14,8 @@
     "ThrowableProjectileMixin",
     "ThrownEnderPearlMixin",
     "TorchBlockMixin",
-    "WallTorchBlockMixin"
+    "WallTorchBlockMixin",
+    "AxeItemMixin"
   ],
   "injectors": {
     "defaultRequire": 1
