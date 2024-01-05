@@ -1,6 +1,6 @@
 package einstein.ambient_sleep.mixin;
 
-import einstein.ambient_sleep.util.ParticleTicker;
+import einstein.ambient_sleep.util.EntityParticleTicker;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.entity.projectile.ThrowableProjectile;
@@ -19,8 +19,8 @@ public abstract class ThrowableProjectileMixin extends Projectile {
 
     @Inject(method = "tick", at = @At("TAIL"))
     private void tick(CallbackInfo ci) {
-        if (this instanceof ParticleTicker ticker) {
-            ticker.ambientSleep$particleTick(level(), random, getX(), getY(), getZ());
+        if (this instanceof EntityParticleTicker ticker) {
+            ticker.ambientSleep$particleTick(level(), this, random);
         }
     }
 }
