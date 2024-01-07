@@ -55,6 +55,6 @@ public abstract class BaseFireBlockMixin {
 
     @Unique
     private static void ambientSleep$spawnSparks(Level level, RandomSource random, BlockState state, BlockPos pos, double xOffset, double zOffset) {
-        AmbientSleep.spawnSparks(level, random, pos, new Vec3(xOffset, random.nextDouble(), zOffset), new Vec3i(3, 5, 3), 10, 10, state.is(Blocks.SOUL_FIRE));
+        AmbientSleep.spawnSparks(level, random, pos, new Vec3(xOffset, random.nextDouble(), zOffset), new Vec3i(3, 5, 3), 10, 10, state.is(Blocks.SOUL_FIRE), true);
     }
 }

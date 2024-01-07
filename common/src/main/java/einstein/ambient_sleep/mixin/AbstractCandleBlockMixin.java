@@ -24,7 +24,7 @@ public abstract class AbstractCandleBlockMixin {
     private void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random, CallbackInfo ci) {
         if (state.getValue(AbstractCandleBlock.LIT)) {
             getParticleOffsets(state).forEach(offset ->
-                    AmbientSleep.spawnSparks(level, random, pos, offset, new Vec3i(1, 1, 1), 1, 20, false));
+                    AmbientSleep.spawnSparks(level, random, pos, offset, new Vec3i(1, 1, 1), 1, 20, false, false));
         }
     }
 }

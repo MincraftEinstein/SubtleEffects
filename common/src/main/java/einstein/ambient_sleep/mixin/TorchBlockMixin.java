@@ -19,6 +19,6 @@ public class TorchBlockMixin {
 
     @Inject(method = "animateTick", at = @At("TAIL"))
     private void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random, CallbackInfo ci) {
-        AmbientSleep.spawnSparks(level, random, pos, new Vec3(0.5, 0.5, 0.5), new Vec3i(1, 1, 1), 2, -6, state.is(Blocks.SOUL_TORCH));
+        AmbientSleep.spawnSparks(level, random, pos, new Vec3(0.5, 0.5, 0.5), new Vec3i(1, 1, 1), 2, -6, state.is(Blocks.SOUL_TORCH), false);
     }
 }
