@@ -51,13 +51,17 @@ public class AmbientSleep {
     }
 
     public static void spawnSparks(Level level, RandomSource random, BlockPos pos, Vec3 offset, Vec3i maxSpeeds, int count, int size, boolean isSoulFlame) {
+        spawnSparks(level, random, pos, offset, maxSpeeds, count, size, size, isSoulFlame);
+    }
+
+    public static void spawnSparks(Level level, RandomSource random, BlockPos pos, Vec3 offset, Vec3i maxSpeeds, int count, int xSize, int zSize, boolean isSoulFlame) {
         if (random.nextInt(1) == 0) {
             for (int i = 0; i < count; i++) {
                 SimpleParticleType type = (isSoulFlame ? ModParticles.SOUL_SPARK : ModParticles.SPARK).get();
                 level.addParticle(type,
-                        pos.getX() + offset.x() + random.nextDouble() / size * (random.nextBoolean() ? 1 : -1),
+                        pos.getX() + offset.x() + random.nextDouble() / xSize * (random.nextBoolean() ? 1 : -1),
                         pos.getY() + offset.y(),
-                        pos.getZ() + offset.z() + random.nextDouble() / size * (random.nextBoolean() ? 1 : -1),
+                        pos.getZ() + offset.z() + random.nextDouble() / zSize * (random.nextBoolean() ? 1 : -1),
                         random.nextInt(maxSpeeds.getX()) / 100D, random.nextInt(maxSpeeds.getY()) / 100D, random.nextInt(maxSpeeds.getZ()) / 100D
                 );
             }
