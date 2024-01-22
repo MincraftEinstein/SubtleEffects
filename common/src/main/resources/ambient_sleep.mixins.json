@@ -13,6 +13,7 @@
     "EntityRendererMixin",
     "FurnaceBlockMixin",
     "LivingEntityMixin",
+    "ParrotMixin",
     "PumpkinBlockMixin",
     "SnowballMixin",
     "ThrowableProjectileMixin",

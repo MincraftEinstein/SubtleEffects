@@ -3,7 +3,9 @@ package einstein.ambient_sleep.mixin;
 import einstein.ambient_sleep.AmbientSleep;
 import einstein.ambient_sleep.init.ModParticles;
 import einstein.ambient_sleep.init.ModSounds;
+import einstein.ambient_sleep.util.ParticleEmittingEntity;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -16,6 +18,7 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityMixin extends Entity {
@@ -26,6 +29,8 @@ public abstract class LivingEntityMixin extends Entity {
     @Shadow
     public abstract float getVoicePitch();
 
+    @Shadow
+    public int hurtTime;
     @Unique
     private int ambientSleep$breatheTimer = 0;
 
@@ -80,6 +85,17 @@ public abstract class LivingEntityMixin extends Entity {
                 ambientSleep$breatheTimer = 0;
                 ambientSleep$snoreTimer = 0;
                 ambientSleep$snoreCount = 0;
+            }
+        }
+    }
+
+    @Inject(method = "hurt", at = @At("HEAD"))
+    private void hurt(DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
+        if (ambientSleep$me instanceof ParticleEmittingEntity entity) {
+            if (level().isClientSide && !isInvulnerableTo(source) && amount > 0) {
+                if (source.getEntity() instanceof LivingEntity && isAlive() && hurtTime == 0) {
+                    entity.ambientSleep$spawnParticles(level(), ambientSleep$me, random);
+                }
             }
         }
     }

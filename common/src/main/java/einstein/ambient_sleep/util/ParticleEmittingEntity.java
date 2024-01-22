@@ -4,7 +4,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
 
-public interface EntityParticleTicker {
+public interface ParticleEmittingEntity {
 
-    void ambientSleep$particleTick(Level level, Entity entity, RandomSource random);
+    void ambientSleep$spawnParticles(Level level, Entity entity, RandomSource random);
 }

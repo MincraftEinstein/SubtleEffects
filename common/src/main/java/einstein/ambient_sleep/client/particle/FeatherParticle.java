@@ -5,9 +5,9 @@ import net.minecraft.client.particle.*;
 import net.minecraft.core.particles.SimpleParticleType;
 import org.jetbrains.annotations.Nullable;
 
-public class ChickenFeatherParticle extends TextureSheetParticle {
+public class FeatherParticle extends TextureSheetParticle {
 
-    protected ChickenFeatherParticle(ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, SpriteSet sprites) {
+    protected FeatherParticle(ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, SpriteSet sprites) {
         super(level, x, y, z, xSpeed, ySpeed, zSpeed);
         quadSize = 0.1F;
         gravity = 0.35F;
@@ -35,7 +35,7 @@ public class ChickenFeatherParticle extends TextureSheetParticle {
         @Nullable
         @Override
         public Particle createParticle(SimpleParticleType type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
-            return new ChickenFeatherParticle(level, x, y, z, xSpeed, ySpeed, zSpeed, sprites);
+            return new FeatherParticle(level, x, y, z, xSpeed, ySpeed, zSpeed, sprites);
         }
     }
 }
