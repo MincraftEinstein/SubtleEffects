@@ -9,6 +9,7 @@
     "AxeItemMixin",
     "BaseFireBlockMixin",
     "CampfireBlockMixin",
+    "ChickenMixin",
     "EntityRendererMixin",
     "FurnaceBlockMixin",
     "LivingEntityMixin",
