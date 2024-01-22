@@ -60,7 +60,9 @@ public class AmbientSleep {
                         pos.getX() + offset.x() + random.nextDouble() / xSize * (random.nextBoolean() ? 1 : -1),
                         pos.getY() + offset.y(),
                         pos.getZ() + offset.z() + random.nextDouble() / zSize * (random.nextBoolean() ? 1 : -1),
-                        random.nextInt(maxSpeeds.getX()) / 100D, random.nextInt(maxSpeeds.getY()) / 100D, random.nextInt(maxSpeeds.getZ()) / 100D
+                        random.nextInt(maxSpeeds.getX()) / 100D * (random.nextBoolean() ? 1 : -1),
+                        random.nextInt(maxSpeeds.getY()) / 100D * (random.nextBoolean() ? 1 : -1),
+                        random.nextInt(maxSpeeds.getZ()) / 100D * (random.nextBoolean() ? 1 : -1)
                 );
             }
         }
