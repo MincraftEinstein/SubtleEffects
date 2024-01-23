@@ -1,7 +1,7 @@
 package einstein.ambient_sleep.mixin;
 
-import einstein.ambient_sleep.AmbientSleep;
 import einstein.ambient_sleep.init.ModConfigs;
+import einstein.ambient_sleep.util.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Vec3i;
 import net.minecraft.util.RandomSource;
@@ -28,7 +28,7 @@ public class CampfireBlockMixin {
     @Inject(method = "animateTick", at = @At("TAIL"))
     private void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random, CallbackInfo ci) {
         if (ModConfigs.INSTANCE.enableCampfireSparks.get() && state.getValue(CampfireBlock.LIT)) {
-            AmbientSleep.spawnSparks(level, random, pos, new Vec3(0.5, 0.4, 0.5), new Vec3i(3, 5, 3), 10, 6, state.is(Blocks.SOUL_CAMPFIRE), true);
+            Util.spawnSparks(level, random, pos, new Vec3(0.5, 0.4, 0.5), new Vec3i(3, 5, 3), 10, 6, state.is(Blocks.SOUL_CAMPFIRE), true);
         }
     }
 

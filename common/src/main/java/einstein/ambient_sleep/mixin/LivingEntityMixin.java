@@ -1,9 +1,9 @@
 package einstein.ambient_sleep.mixin;
 
-import einstein.ambient_sleep.AmbientSleep;
 import einstein.ambient_sleep.init.ModParticles;
 import einstein.ambient_sleep.init.ModSounds;
 import einstein.ambient_sleep.util.ParticleEmittingEntity;
+import einstein.ambient_sleep.util.Util;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
@@ -52,17 +52,17 @@ public abstract class LivingEntityMixin extends Entity {
     private void tick(CallbackInfo ci) {
         if (level().isClientSide) {
             if (isSleeping()) {
-                if (ambientSleep$breatheTimer < AmbientSleep.BREATH_DELAY) {
+                if (ambientSleep$breatheTimer < Util.BREATH_DELAY) {
                     ambientSleep$breatheTimer++;
                 }
                 else {
-                    if (ambientSleep$snoreTimer >= AmbientSleep.SNORE_DELAY) {
+                    if (ambientSleep$snoreTimer >= Util.SNORE_DELAY) {
                         if (ambientSleep$snoreCount <= 0) {
                             if (ambientSleep$me instanceof Player) {
-                                AmbientSleep.playClientSound(SoundSource.PLAYERS, ambientSleep$me, ModSounds.PLAYER_SLEEP.get(), 1, getVoicePitch());
+                                Util.playClientSound(SoundSource.PLAYERS, ambientSleep$me, ModSounds.PLAYER_SLEEP.get(), 1, getVoicePitch());
                             }
                             else if (ambientSleep$me instanceof Villager) {
-                                AmbientSleep.playClientSound(SoundSource.NEUTRAL, ambientSleep$me, ModSounds.VILLAGER_SLEEP.get(), 1, getVoicePitch());
+                                Util.playClientSound(SoundSource.NEUTRAL, ambientSleep$me, ModSounds.VILLAGER_SLEEP.get(), 1, getVoicePitch());
                             }
                         }
 
@@ -76,7 +76,7 @@ public abstract class LivingEntityMixin extends Entity {
                         }
                     }
 
-                    if (ambientSleep$snoreTimer < AmbientSleep.SNORE_DELAY) {
+                    if (ambientSleep$snoreTimer < Util.SNORE_DELAY) {
                         ambientSleep$snoreTimer++;
                     }
                 }
