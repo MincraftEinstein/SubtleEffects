@@ -1,4 +1,5 @@
 {
   "subtitles.entity.villager.sleep": "Villager snores",
-  "subtitles.entity.player.sleep": "Player snores"
+  "subtitles.entity.player.sleep": "Player snores",
+  "config.ambient_sleep.disable_default_campfire_sparks": "Disable Default Campfire Sparks"
 }

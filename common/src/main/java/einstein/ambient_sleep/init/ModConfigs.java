@@ -10,8 +10,15 @@ public class ModConfigs {
     public static final ModConfigs INSTANCE = SPEC_PAIR.getLeft();
     public static final ForgeConfigSpec SPEC = SPEC_PAIR.getRight();
 
+    public final ForgeConfigSpec.BooleanValue disableDefaultCampfireSparks;
+
     public ModConfigs(ForgeConfigSpec.Builder builder) {
         builder.push("Blocks");
+
+        disableDefaultCampfireSparks = builder
+                .comment("Disables the default lava spark particle from campfires")
+                .translation(key("disable_default_campfire_sparks"))
+                .define("disableDefaultCampfireSparks", true);
 
         builder.pop().push("Entities");
     }
