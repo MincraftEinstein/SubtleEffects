@@ -27,7 +27,7 @@ public class CampfireBlockMixin {
 
     @Inject(method = "animateTick", at = @At("TAIL"))
     private void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random, CallbackInfo ci) {
-        if (state.getValue(CampfireBlock.LIT)) {
+        if (ModConfigs.INSTANCE.enableCampfireSparks.get() && state.getValue(CampfireBlock.LIT)) {
             AmbientSleep.spawnSparks(level, random, pos, new Vec3(0.5, 0.4, 0.5), new Vec3i(3, 5, 3), 10, 6, state.is(Blocks.SOUL_CAMPFIRE), true);
         }
     }

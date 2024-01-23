@@ -1,5 +1,10 @@
 {
   "subtitles.entity.villager.sleep": "Villager snores",
   "subtitles.entity.player.sleep": "Player snores",
-  "config.ambient_sleep.disable_default_campfire_sparks": "Disable Default Campfire Sparks"
+  "config.ambient_sleep.disable_default_campfire_sparks": "Disable Default Campfire Sparks",
+  "config.ambient_sleep.enable_candle_sparks": "Enable Candle Sparks",
+  "config.ambient_sleep.enable_furnace_sparks": "Enable Furnace Sparks",
+  "config.ambient_sleep.enable_fire_sparks": "Enable Fire Sparks",
+  "config.ambient_sleep.enable_campfire_sparks": "Enable Campfire Sparks",
+  "config.ambient_sleep.enable_torch_sparks": "Enable Torch Sparks"
 }

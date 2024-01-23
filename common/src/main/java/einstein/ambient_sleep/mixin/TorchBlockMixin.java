@@ -1,6 +1,7 @@
 package einstein.ambient_sleep.mixin;
 
 import einstein.ambient_sleep.AmbientSleep;
+import einstein.ambient_sleep.init.ModConfigs;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Vec3i;
 import net.minecraft.util.RandomSource;
@@ -19,6 +20,10 @@ public class TorchBlockMixin {
 
     @Inject(method = "animateTick", at = @At("TAIL"))
     private void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random, CallbackInfo ci) {
+        if (!ModConfigs.INSTANCE.enableTorchSparks.get()) {
+            return;
+        }
+
         AmbientSleep.spawnSparks(level, random, pos, new Vec3(0.5, 0.5, 0.5), new Vec3i(1, 1, 1), 2, -6, state.is(Blocks.SOUL_TORCH), false);
     }
 }

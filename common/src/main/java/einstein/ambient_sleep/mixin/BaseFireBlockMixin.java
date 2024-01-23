@@ -1,6 +1,7 @@
 package einstein.ambient_sleep.mixin;
 
 import einstein.ambient_sleep.AmbientSleep;
+import einstein.ambient_sleep.init.ModConfigs;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
@@ -25,6 +26,10 @@ public abstract class BaseFireBlockMixin {
 
     @Inject(method = "animateTick", at = @At("TAIL"))
     private void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random, CallbackInfo ci) {
+        if (!ModConfigs.INSTANCE.enableFireSparks.get()) {
+            return;
+        }
+
         BlockPos belowPos = pos.below();
         BlockState belowState = level.getBlockState(belowPos);
         if (!canBurn(belowState) && !belowState.isFaceSturdy(level, belowPos, Direction.UP)) {

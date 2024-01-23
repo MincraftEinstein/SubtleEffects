@@ -1,6 +1,7 @@
 package einstein.ambient_sleep.mixin;
 
 import einstein.ambient_sleep.AmbientSleep;
+import einstein.ambient_sleep.init.ModConfigs;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
@@ -20,6 +21,10 @@ public class WallTorchBlockMixin {
 
     @Inject(method = "animateTick", at = @At("TAIL"))
     private void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random, CallbackInfo ci) {
+        if (!ModConfigs.INSTANCE.enableTorchSparks.get()) {
+            return;
+        }
+
         Direction direction = state.getValue(WallTorchBlock.FACING).getOpposite();
         AmbientSleep.spawnSparks(level, random, pos, new Vec3(0.5 + (0.27 * direction.getStepX()), 0.7, 0.5 + (0.27 * direction.getStepZ())), new Vec3i(1, 1, 1), 2, 20, state.is(Blocks.SOUL_WALL_TORCH), false);
     }
