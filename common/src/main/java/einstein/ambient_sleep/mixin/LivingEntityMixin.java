@@ -1,14 +1,17 @@
 package einstein.ambient_sleep.mixin;
 
+import einstein.ambient_sleep.init.ModConfigs;
 import einstein.ambient_sleep.init.ModParticles;
 import einstein.ambient_sleep.init.ModSounds;
 import einstein.ambient_sleep.util.ParticleEmittingEntity;
 import einstein.ambient_sleep.util.Util;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.animal.Fox;
 import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -19,6 +22,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+
+import java.util.UUID;
 
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityMixin extends Entity {
@@ -38,7 +43,7 @@ public abstract class LivingEntityMixin extends Entity {
     private int ambientSleep$snoreTimer = 0;
 
     @Unique
-    private int ambientSleep$snoreCount = 0;
+    private int ambientSleep$ZCount = 0;
 
     @SuppressWarnings("all")
     @Unique
@@ -51,27 +56,40 @@ public abstract class LivingEntityMixin extends Entity {
     @Inject(method = "tick", at = @At("TAIL"))
     private void tick(CallbackInfo ci) {
         if (level().isClientSide) {
+            double chance = 1;
+            SoundEvent snoreSound = null;
+            if (ambientSleep$me instanceof Player) {
+                chance = ModConfigs.INSTANCE.playerSnoreChance.get();
+                snoreSound = ModSounds.PLAYER_SLEEP.get();
+            }
+            else if (ambientSleep$me instanceof Villager) {
+                chance = ModConfigs.INSTANCE.villagerSnoreChance.get();
+                snoreSound = ModSounds.VILLAGER_SLEEP.get();
+            }
+
             if (isSleeping()) {
                 if (ambientSleep$breatheTimer < Util.BREATH_DELAY) {
                     ambientSleep$breatheTimer++;
                 }
                 else {
                     if (ambientSleep$snoreTimer >= Util.SNORE_DELAY) {
-                        if (ambientSleep$snoreCount <= 0) {
-                            if (ambientSleep$me instanceof Player) {
-                                Util.playClientSound(SoundSource.PLAYERS, ambientSleep$me, ModSounds.PLAYER_SLEEP.get(), 1, getVoicePitch());
-                            }
-                            else if (ambientSleep$me instanceof Villager) {
-                                Util.playClientSound(SoundSource.NEUTRAL, ambientSleep$me, ModSounds.VILLAGER_SLEEP.get(), 1, getVoicePitch());
-                            }
+                        boolean doesSnore = ambientSleep$doesEntitySnore(ambientSleep$me, chance);
+                        if (ambientSleep$ZCount <= 0 && snoreSound != null && doesSnore) {
+                            Util.playClientSound(SoundSource.NEUTRAL, ambientSleep$me, snoreSound, 1, getVoicePitch());
                         }
 
                         ambientSleep$snoreTimer = 0;
-                        ambientSleep$snoreCount++;
-                        level().addParticle(ModParticles.SNORING.get(), getX(), getY() + 0.5, getZ(), 0, 0, 0);
+                        ambientSleep$ZCount++;
+                        if (ModConfigs.INSTANCE.enableSleepingZs.get()) {
+                            boolean onlyWhenSnoring = ModConfigs.INSTANCE.displaySleepingZsOnlyWhenSnoring.get();
 
-                        if (ambientSleep$snoreCount >= 3) {
-                            ambientSleep$snoreCount = 0;
+                            if ((ambientSleep$me instanceof Fox && ModConfigs.INSTANCE.foxesHaveSleepingZs.get()) || (!(ambientSleep$me instanceof Fox) && (!onlyWhenSnoring || doesSnore))) {
+                                level().addParticle(ModParticles.SNORING.get(), getX(), getY() + 0.5, getZ(), 0, 0, 0);
+                            }
+                        }
+
+                        if (ambientSleep$ZCount >= 3) {
+                            ambientSleep$ZCount = 0;
                             ambientSleep$breatheTimer = 0;
                         }
                     }
@@ -84,9 +102,15 @@ public abstract class LivingEntityMixin extends Entity {
             else {
                 ambientSleep$breatheTimer = 0;
                 ambientSleep$snoreTimer = 0;
-                ambientSleep$snoreCount = 0;
+                ambientSleep$ZCount = 0;
             }
         }
+    }
+
+    @Unique
+    private static boolean ambientSleep$doesEntitySnore(LivingEntity entity, double chance) {
+        UUID uuid = entity.getUUID();
+        return Double.parseDouble("0." + Math.abs(uuid.hashCode())) < chance;
     }
 
     @Inject(method = "hurt", at = @At("HEAD"))

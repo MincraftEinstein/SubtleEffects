@@ -17,6 +17,12 @@ public class ModConfigs {
     public final ForgeConfigSpec.BooleanValue enableCampfireSparks;
     public final ForgeConfigSpec.BooleanValue enableTorchSparks;
 
+    public final ForgeConfigSpec.DoubleValue playerSnoreChance;
+    public final ForgeConfigSpec.DoubleValue villagerSnoreChance;
+    public final ForgeConfigSpec.BooleanValue enableSleepingZs;
+    public final ForgeConfigSpec.BooleanValue displaySleepingZsOnlyWhenSnoring;
+    public final ForgeConfigSpec.BooleanValue foxesHaveSleepingZs;
+
     public ModConfigs(ForgeConfigSpec.Builder builder) {
         builder.push("Blocks").push("Flaming Blocks");
 
@@ -38,7 +44,34 @@ public class ModConfigs {
 
         builder.pop();
 
-        builder.pop().push("Entities");
+        builder.pop().push("Entities").push("Sleeping");
+
+        playerSnoreChance = builder
+                .comment("A percentage based change for a player to snore.", "0 to disable")
+                .translation(key("player_snore_chance"))
+                .defineInRange("playerSnoreChance", 1.0, 0, 1.0);
+
+        villagerSnoreChance = builder
+                .comment("A percentage based change for a villager to snore.", "0 to disable")
+                .translation(key("villager_snore_chance"))
+                .defineInRange("villagerSnoreChance", 1.0, 0, 1.0);
+
+        enableSleepingZs = builder
+                .comment("When an mob is sleeping display Z particles")
+                .translation("enable_sleeping_zs")
+                .define("enableSleepingZs", true);
+
+        displaySleepingZsOnlyWhenSnoring = builder
+                .comment("Only display Z particles when a mob can snore")
+                .translation("display_sleeping_zs_only_when_snoring")
+                .define("displaySleepingZsOnlyWhenSnoring", false);
+
+        foxesHaveSleepingZs = builder
+                .comment("Display Z particles for sleeping foxes")
+                .translation("foxes_have_sleeping_zs")
+                .define("foxesHaveSleepingZs", true);
+
+        builder.pop();
     }
 
     private static String key(String path) {

@@ -6,5 +6,10 @@
   "config.ambient_sleep.enable_furnace_sparks": "Enable Furnace Sparks",
   "config.ambient_sleep.enable_fire_sparks": "Enable Fire Sparks",
   "config.ambient_sleep.enable_campfire_sparks": "Enable Campfire Sparks",
-  "config.ambient_sleep.enable_torch_sparks": "Enable Torch Sparks"
+  "config.ambient_sleep.enable_torch_sparks": "Enable Torch Sparks",
+  "config.ambient_sleep.player_snore_chance": "Player Snore Chance",
+  "config.ambient_sleep.villager_snore_chance": "Villager Snore Chance",
+  "config.ambient_sleep.enable_sleeping_zs": "Enable Sleeping Zs",
+  "config.ambient_sleep.display_sleeping_zs_only_when_snoring": "Display Sleeping Zs Only When Snoring",
+  "config.ambient_sleep.foxes_have_sleeping_zs": "Foxes Have Sleeping Zs"
 }
