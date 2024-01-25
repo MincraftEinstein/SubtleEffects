@@ -9,15 +9,24 @@ base {
     archivesName = "${mod_name}-fabric-${minecraft_version}"
 }
 
+repositories {
+    maven {
+        url = "https://maven.terraformersmc.com/releases/"
+    }
+}
+
 dependencies {
     minecraft "com.mojang:minecraft:${minecraft_version}"
     mappings loom.officialMojangMappings()
-    modImplementation "net.fabricmc:fabric-loader:${fabric_loader_version}"
-    modImplementation "net.fabricmc.fabric-api:fabric-api:${fabric_version}"
-    implementation group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.1'
-    implementation project(":common")
+    implementation(group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.1')
+    implementation(project(":common"))
 
+    modImplementation("net.fabricmc:fabric-loader:${fabric_loader_version}")
+    modImplementation("net.fabricmc.fabric-api:fabric-api:${fabric_version}")
     modImplementation("fuzs.forgeconfigapiport:forgeconfigapiport-fabric:${config_port_version}")
+
+    modRuntimeOnly("com.terraformersmc:modmenu:${modmenu_version}")
+    modRuntimeOnly("fuzs.forgeconfigscreens:forgeconfigscreens-fabric:${forge_config_menus}")
 }
 
 loom {
