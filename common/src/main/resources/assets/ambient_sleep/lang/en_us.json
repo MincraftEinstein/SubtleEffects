@@ -14,6 +14,7 @@
   "config.ambient_sleep.enable_sleeping_zs": "Enable Sleeping Zs",
   "config.ambient_sleep.display_sleeping_zs_only_when_snoring": "Display Sleeping Zs Only When Snoring",
   "config.ambient_sleep.foxes_have_sleeping_zs": "Foxes Have Sleeping Zs",
+  "config.ambient_sleep.chicken_hit_feathers": "Chicken Hit Feathers",
   "config.category.ambient_sleep.blocks": "Blocks",
   "config.category.ambient_sleep.flaming_blocks": "Flaming Blocks",
   "config.category.ambient_sleep.entities": "Entities",

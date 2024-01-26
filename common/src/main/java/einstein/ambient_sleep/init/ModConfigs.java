@@ -26,6 +26,8 @@ public class ModConfigs {
     public final ForgeConfigSpec.BooleanValue displaySleepingZsOnlyWhenSnoring;
     public final ForgeConfigSpec.BooleanValue foxesHaveSleepingZs;
 
+    public final ForgeConfigSpec.BooleanValue chickenHitFeathers;
+
     public ModConfigs(ForgeConfigSpec.Builder builder) {
         builder.translation(categoryKey("blocks")).push("blocks")
                 .translation(categoryKey("flaming_blocks")).push("flamingBlocks");
@@ -83,6 +85,13 @@ public class ModConfigs {
                 .comment("Display Z particles for sleeping foxes")
                 .translation("foxes_have_sleeping_zs")
                 .define("foxesHaveSleepingZs", true);
+
+        builder.pop();
+
+        chickenHitFeathers = builder
+                .comment("When a chicken takes damage from a mob or player feathers fly off")
+                .translation(key("chicken_hit_feathers"))
+                .define("chickenHitFeathers", true);
 
         builder.pop();
     }
