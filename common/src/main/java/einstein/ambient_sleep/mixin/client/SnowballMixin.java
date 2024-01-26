@@ -1,4 +1,4 @@
-package einstein.ambient_sleep.mixin;
+package einstein.ambient_sleep.mixin.client;
 
 import einstein.ambient_sleep.init.ModParticles;
 import einstein.ambient_sleep.util.ParticleEmittingEntity;

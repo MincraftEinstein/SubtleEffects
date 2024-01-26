@@ -1,4 +1,4 @@
-package einstein.ambient_sleep.mixin;
+package einstein.ambient_sleep.mixin.client;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
