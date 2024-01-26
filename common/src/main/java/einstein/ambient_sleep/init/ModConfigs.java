@@ -18,6 +18,7 @@ public class ModConfigs {
     public final ForgeConfigSpec.BooleanValue enableTorchSparks;
 
     public final ForgeConfigSpec.BooleanValue redstoneBlockDust;
+    public final ForgeConfigSpec.BooleanValue glowstoneBlockDust;
 
     public final ForgeConfigSpec.DoubleValue playerSnoreChance;
     public final ForgeConfigSpec.DoubleValue villagerSnoreChance;
@@ -50,6 +51,10 @@ public class ModConfigs {
         redstoneBlockDust = builder
                 .translation(key("redstone_block_dust"))
                 .define("redstoneBlockDust", true);
+
+        glowstoneBlockDust = builder
+                .translation(key("glowstone_block_dust"))
+                .define("glowstoneBlockDust", true);
 
         builder.pop().translation(categoryKey("entities")).push("entities")
                 .translation(categoryKey("sleeping")).push("sleeping");

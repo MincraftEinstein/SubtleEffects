@@ -5,6 +5,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
+import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -19,6 +20,7 @@ public class Util {
 
     public static final int BREATH_DELAY = 60;
     public static final int SNORE_DELAY = 10;
+    public static final DustParticleOptions GLOWSTONE_DUST_PARTICLES = new DustParticleOptions(Vec3.fromRGB24(0xFFBC5E).toVector3f(), 1);
 
     public static void playClientSound(SoundSource source, Entity entity, SoundEvent sound, float volume, float pitch) {
         Minecraft minecraft = Minecraft.getInstance();

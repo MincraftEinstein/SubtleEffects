@@ -22,5 +22,8 @@ public class BlockMixin {
         if (state.is(Blocks.REDSTONE_BLOCK) && ModConfigs.INSTANCE.redstoneBlockDust.get()) {
             Util.spawnParticlesAroundBlock(DustParticleOptions.REDSTONE, level, pos, random);
         }
+        else if (state.is(Blocks.GLOWSTONE) && ModConfigs.INSTANCE.glowstoneBlockDust.get()) {
+            Util.spawnParticlesAroundBlock(Util.GLOWSTONE_DUST_PARTICLES, level, pos, random);
+        }
     }
 }
