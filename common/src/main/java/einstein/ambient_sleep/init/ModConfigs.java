@@ -24,7 +24,8 @@ public class ModConfigs {
     public final ForgeConfigSpec.BooleanValue foxesHaveSleepingZs;
 
     public ModConfigs(ForgeConfigSpec.Builder builder) {
-        builder.push("Blocks").push("Flaming Blocks");
+        builder.translation(categoryKey("blocks")).push("blocks")
+                .translation(categoryKey("flaming_blocks")).push("flamingBlocks");
 
         disableDefaultCampfireSparks = builder
                 .comment("Disables the default lava spark particle from campfires")
@@ -44,7 +45,8 @@ public class ModConfigs {
 
         builder.pop();
 
-        builder.pop().push("Entities").push("Sleeping");
+        builder.pop().translation(categoryKey("entities")).push("entities")
+                .translation(categoryKey("sleeping")).push("sleeping");
 
         playerSnoreChance = builder
                 .comment("A percentage based change for a player to snore.", "0 to disable")
@@ -76,5 +78,9 @@ public class ModConfigs {
 
     private static String key(String path) {
         return "config." + AmbientSleep.MOD_ID + "." + path;
+    }
+
+    private static String categoryKey(String path) {
+        return "config.category." + AmbientSleep.MOD_ID + "." + path;
     }
 }
