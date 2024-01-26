@@ -60,11 +60,11 @@ public abstract class LivingEntityMixin extends Entity {
             SoundEvent snoreSound = null;
             if (ambientSleep$me instanceof Player) {
                 chance = ModConfigs.INSTANCE.playerSnoreChance.get();
-                snoreSound = ModSounds.PLAYER_SLEEP.get();
+                snoreSound = ModSounds.PLAYER_SNORE.get();
             }
             else if (ambientSleep$me instanceof Villager) {
                 chance = ModConfigs.INSTANCE.villagerSnoreChance.get();
-                snoreSound = ModSounds.VILLAGER_SLEEP.get();
+                snoreSound = ModSounds.VILLAGER_SNORE.get();
             }
 
             if (isSleeping()) {

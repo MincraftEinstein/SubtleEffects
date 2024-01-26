@@ -7,8 +7,8 @@ import java.util.function.Supplier;
 
 public class ModSounds {
 
-    public static final Supplier<SoundEvent> VILLAGER_SLEEP = Services.REGISTRY.registerSound("entity.villager.sleep");
-    public static final Supplier<SoundEvent> PLAYER_SLEEP = Services.REGISTRY.registerSound("entity.player.sleep");
+    public static final Supplier<SoundEvent> VILLAGER_SNORE = Services.REGISTRY.registerSound("entity.villager.snore");
+    public static final Supplier<SoundEvent> PLAYER_SNORE = Services.REGISTRY.registerSound("entity.player.snore");
 
     public static void init() {
     }

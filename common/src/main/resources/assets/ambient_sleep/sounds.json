@@ -1,18 +1,18 @@
 {
-  "entity.villager.sleep": {
-    "subtitle": "subtitles.entity.villager.sleep",
+  "entity.villager.snore": {
+    "subtitle": "subtitles.ambient_sleep.entity.villager.snore",
     "sounds": [
-      "ambient_sleep:mob/villager/sleep1",
-      "ambient_sleep:mob/villager/sleep2",
-      "ambient_sleep:mob/villager/sleep3"
+      "ambient_sleep:mob/villager/snore1",
+      "ambient_sleep:mob/villager/snore2",
+      "ambient_sleep:mob/villager/snore3"
     ]
   },
-  "entity.player.sleep": {
-    "subtitle": "subtitles.entity.player.sleep",
+  "entity.player.snore": {
+    "subtitle": "subtitles.ambient_sleep.entity.player.snore",
     "sounds": [
-      "ambient_sleep:entity/player/sleep1",
-      "ambient_sleep:entity/player/sleep2",
-      "ambient_sleep:entity/player/sleep3"
+      "ambient_sleep:entity/player/snore1",
+      "ambient_sleep:entity/player/snore2",
+      "ambient_sleep:entity/player/snore3"
     ]
   }
 }
