@@ -3,7 +3,9 @@ package einstein.ambient_sleep.util;
 import einstein.ambient_sleep.init.ModParticles;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
+import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.sounds.SoundEvent;
@@ -42,6 +44,20 @@ public class Util {
                         random.nextInt(maxSpeeds.getY()) / 100D * (random.nextBoolean() ? 1 : -1),
                         random.nextInt(maxSpeeds.getZ()) / 100D * (random.nextBoolean() ? 1 : -1)
                 );
+            }
+        }
+    }
+
+    public static void spawnParticlesAroundBlock(ParticleOptions particle, Level level, BlockPos pos, RandomSource random) {
+        double offsetFromCenter = 0.5625; // 5 is the distance to the edge of the block 625 is an extra 1 pixel
+        for (Direction direction : Direction.values()) {
+            BlockPos relativePos = pos.relative(direction);
+            if (!level.getBlockState(relativePos).isSolidRender(level, relativePos)) {
+                Direction.Axis axis = direction.getAxis();
+                double xOffset = axis == Direction.Axis.X ? 0.5 + offsetFromCenter * direction.getStepX() : random.nextFloat();
+                double yOffset = axis == Direction.Axis.Y ? 0.5 + offsetFromCenter * direction.getStepY() : random.nextFloat();
+                double zOffset = axis == Direction.Axis.Z ? 0.5 + offsetFromCenter * direction.getStepZ() : random.nextFloat();
+                level.addParticle(particle, pos.getX() + xOffset, pos.getY() + yOffset, pos.getZ() + zOffset, 0, 0, 0);
             }
         }
     }

@@ -8,6 +8,7 @@
     "AbstractCandleBlockMixin",
     "AxeItemMixin",
     "BaseFireBlockMixin",
+    "BlockMixin",
     "CampfireBlockMixin",
     "ChickenMixin",
     "EntityRendererMixin",

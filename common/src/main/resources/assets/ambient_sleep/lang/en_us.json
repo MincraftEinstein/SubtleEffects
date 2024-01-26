@@ -7,6 +7,7 @@
   "config.ambient_sleep.enable_fire_sparks": "Enable Fire Sparks",
   "config.ambient_sleep.enable_campfire_sparks": "Enable Campfire Sparks",
   "config.ambient_sleep.enable_torch_sparks": "Enable Torch Sparks",
+  "config.ambient_sleep.redstone_block_dust": "Redstone Block Dust",
   "config.ambient_sleep.player_snore_chance": "Player Snore Chance",
   "config.ambient_sleep.villager_snore_chance": "Villager Snore Chance",
   "config.ambient_sleep.enable_sleeping_zs": "Enable Sleeping Zs",
