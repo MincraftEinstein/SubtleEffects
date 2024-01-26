@@ -1,5 +1,6 @@
 package einstein.ambient_sleep.mixin.client;
 
+import einstein.ambient_sleep.init.ModConfigs;
 import einstein.ambient_sleep.init.ModParticles;
 import einstein.ambient_sleep.util.ParticleEmittingEntity;
 import net.minecraft.core.particles.ParticleOptions;
@@ -14,7 +15,7 @@ public class ParrotMixin implements ParticleEmittingEntity {
 
     @Override
     public void ambientSleep$spawnParticles(Level level, Entity entity, RandomSource random) {
-        if (entity instanceof Parrot parrot) {
+        if (entity instanceof Parrot parrot && ModConfigs.INSTANCE.parrotHitFeathers.get()) {
             ParticleOptions particle = switch (parrot.getVariant()) {
                 case BLUE -> ModParticles.BLUE_PARROT_FEATHER.get();
                 case GRAY -> ModParticles.GRAY_PARROT_FEATHER.get();

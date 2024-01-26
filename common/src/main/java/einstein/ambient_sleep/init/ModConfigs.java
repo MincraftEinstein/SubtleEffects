@@ -27,6 +27,7 @@ public class ModConfigs {
     public final ForgeConfigSpec.BooleanValue foxesHaveSleepingZs;
 
     public final ForgeConfigSpec.BooleanValue chickenHitFeathers;
+    public final ForgeConfigSpec.BooleanValue parrotHitFeathers;
 
     public ModConfigs(ForgeConfigSpec.Builder builder) {
         builder.translation(categoryKey("blocks")).push("blocks")
@@ -92,6 +93,11 @@ public class ModConfigs {
                 .comment("When a chicken takes damage from a mob or player feathers fly off")
                 .translation(key("chicken_hit_feathers"))
                 .define("chickenHitFeathers", true);
+
+        parrotHitFeathers = builder
+                .comment("When a parrot takes damage from a mob or player feathers fly off")
+                .translation(key("parrot_hit_feathers"))
+                .define("parrotHitFeathers", true);
 
         builder.pop();
     }
