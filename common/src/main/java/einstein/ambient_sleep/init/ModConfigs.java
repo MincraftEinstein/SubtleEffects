@@ -76,17 +76,17 @@ public class ModConfigs {
 
         enableSleepingZs = builder
                 .comment("When an mob is sleeping display Z particles")
-                .translation("enable_sleeping_zs")
+                .translation(key("enable_sleeping_zs"))
                 .define("enableSleepingZs", true);
 
         displaySleepingZsOnlyWhenSnoring = builder
                 .comment("Only display Z particles when a mob can snore")
-                .translation("display_sleeping_zs_only_when_snoring")
+                .translation(key("display_sleeping_zs_only_when_snoring"))
                 .define("displaySleepingZsOnlyWhenSnoring", false);
 
         foxesHaveSleepingZs = builder
                 .comment("Display Z particles for sleeping foxes")
-                .translation("foxes_have_sleeping_zs")
+                .translation(key("foxes_have_sleeping_zs"))
                 .define("foxesHaveSleepingZs", true);
 
         builder.pop();
