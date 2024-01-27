@@ -29,6 +29,7 @@ public class ModConfigs {
     public final ForgeConfigSpec.BooleanValue chickenHitFeathers;
     public final ForgeConfigSpec.BooleanValue parrotHitFeathers;
     public final ForgeConfigSpec.BooleanValue enderPearlTrail;
+    public final ForgeConfigSpec.BooleanValue snowballTrail;
 
     public ModConfigs(ForgeConfigSpec.Builder builder) {
         builder.translation(categoryKey("blocks")).push("blocks")
@@ -103,6 +104,10 @@ public class ModConfigs {
         enderPearlTrail = builder
                 .translation(key("ender_pearl_trail"))
                 .define("enderPearlTrail", true);
+
+        snowballTrail = builder
+                .translation(key("snowball_trail"))
+                .define("snowballTrail", true);
 
         builder.pop();
     }
