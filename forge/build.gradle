@@ -70,6 +70,7 @@ dependencies {
     compileOnly project(":common")
     annotationProcessor("org.spongepowered:mixin:0.8.5-SNAPSHOT:processor")
     runtimeOnly fg.deobf("fuzs.forgeconfigscreens:forgeconfigscreens-forge:${forge_config_menus}")
+    implementation fg.deobf("mysticdrew:common-networking-forge:${networking_version}-${minecraft_version}")
 }
 
 tasks.withType(JavaCompile).configureEach {

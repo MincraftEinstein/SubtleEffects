@@ -1,5 +1,6 @@
 package einstein.ambient_sleep;
 
+import einstein.ambient_sleep.init.ModPackets;
 import einstein.ambient_sleep.init.ModParticles;
 import einstein.ambient_sleep.init.ModSounds;
 import net.minecraft.resources.ResourceLocation;
@@ -15,6 +16,11 @@ public class AmbientSleep {
     public static void init() {
         ModSounds.init();
         ModParticles.init();
+        ModPackets.init();
+    }
+
+    public static void clientSetup() {
+        ModPackets.init();
     }
 
     public static ResourceLocation loc(String path) {
