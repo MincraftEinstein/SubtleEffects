@@ -1,6 +1,7 @@
 package einstein.ambient_sleep.mixin.client;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import einstein.ambient_sleep.init.ModConfigs;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.core.BlockPos;
@@ -28,6 +29,10 @@ public class EntityRendererMixin<T extends Entity> {
     @Inject(method = "renderNameTag", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/vertex/PoseStack;translate(FFF)V", shift = At.Shift.BEFORE))
     private void renderNameTag(T entity, Component displayName, PoseStack poseStack, MultiBufferSource source, int packedLight, CallbackInfo ci) {
         ambientSleep$cancelTranslate = false;
+        if (!ModConfigs.INSTANCE.adjustNametagRenderingWhenSleeping.get()) {
+            return;
+        }
+
         if (entity instanceof LivingEntity livingEntity && livingEntity.isSleeping()) {
             Level level = entity.level();
             BlockPos belowPos = entity.blockPosition();

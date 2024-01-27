@@ -18,6 +18,7 @@
   "config.ambient_sleep.parrot_hit_feathers": "Parrot Hit Feathers",
   "config.ambient_sleep.ender_pearl_trail": "Ender Pearl Trail",
   "config.ambient_sleep.snowball_trail": "Snowball Trail",
+  "config.ambient_sleep.adjust_nametag_rendering_when_sleeping": "Adjust Nametag Rendering When Sleeping",
   "config.category.ambient_sleep.blocks": "Blocks",
   "config.category.ambient_sleep.flaming_blocks": "Flaming Blocks",
   "config.category.ambient_sleep.entities": "Entities",

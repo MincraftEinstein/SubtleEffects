@@ -30,6 +30,7 @@ public class ModConfigs {
     public final ForgeConfigSpec.BooleanValue parrotHitFeathers;
     public final ForgeConfigSpec.BooleanValue enderPearlTrail;
     public final ForgeConfigSpec.BooleanValue snowballTrail;
+    public final ForgeConfigSpec.BooleanValue adjustNametagRenderingWhenSleeping;
 
     public ModConfigs(ForgeConfigSpec.Builder builder) {
         builder.translation(categoryKey("blocks")).push("blocks")
@@ -108,6 +109,11 @@ public class ModConfigs {
         snowballTrail = builder
                 .translation(key("snowball_trail"))
                 .define("snowballTrail", true);
+
+        adjustNametagRenderingWhenSleeping = builder
+                .comment("Adjust name tag rendering to be at the top of the head rather than above it when a mob is sleeping in a bed")
+                .translation(key("adjust_nametag_rendering_when_sleeping"))
+                .define("adjustNametagRenderingWhenSleeping", true);
 
         builder.pop();
     }
