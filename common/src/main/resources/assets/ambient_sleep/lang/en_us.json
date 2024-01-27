@@ -16,6 +16,7 @@
   "config.ambient_sleep.foxes_have_sleeping_zs": "Foxes Have Sleeping Zs",
   "config.ambient_sleep.chicken_hit_feathers": "Chicken Hit Feathers",
   "config.ambient_sleep.parrot_hit_feathers": "Parrot Hit Feathers",
+  "config.ambient_sleep.ender_pearl_trail": "Ender Pearl Trail",
   "config.category.ambient_sleep.blocks": "Blocks",
   "config.category.ambient_sleep.flaming_blocks": "Flaming Blocks",
   "config.category.ambient_sleep.entities": "Entities",
