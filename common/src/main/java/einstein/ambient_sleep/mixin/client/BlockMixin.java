@@ -1,13 +1,10 @@
 package einstein.ambient_sleep.mixin.client;
 
-import einstein.ambient_sleep.init.ModConfigs;
-import einstein.ambient_sleep.util.Util;
+import einstein.ambient_sleep.ParticleManager;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -19,11 +16,6 @@ public class BlockMixin {
 
     @Inject(method = "animateTick", at = @At("TAIL"))
     private void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random, CallbackInfo ci) {
-        if (state.is(Blocks.REDSTONE_BLOCK) && ModConfigs.INSTANCE.redstoneBlockDust.get()) {
-            Util.spawnParticlesAroundBlock(DustParticleOptions.REDSTONE, level, pos, random);
-        }
-        else if (state.is(Blocks.GLOWSTONE) && ModConfigs.INSTANCE.glowstoneBlockDust.get()) {
-            Util.spawnParticlesAroundBlock(Util.GLOWSTONE_DUST_PARTICLES, level, pos, random);
-        }
+        ParticleManager.blockAnimateTick(state, level, pos, random);
     }
 }

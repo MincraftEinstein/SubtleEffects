@@ -1,9 +1,9 @@
 package einstein.ambient_sleep.mixin.client;
 
+import einstein.ambient_sleep.ParticleManager;
 import einstein.ambient_sleep.init.ModConfigs;
 import einstein.ambient_sleep.init.ModParticles;
 import einstein.ambient_sleep.init.ModSounds;
-import einstein.ambient_sleep.util.ParticleEmittingEntity;
 import einstein.ambient_sleep.util.Util;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
@@ -115,11 +115,9 @@ public abstract class LivingEntityMixin extends Entity {
 
     @Inject(method = "hurt", at = @At("HEAD"))
     private void hurt(DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
-        if (ambientSleep$me instanceof ParticleEmittingEntity entity) {
-            if (level().isClientSide && !isInvulnerableTo(source) && amount > 0) {
-                if (source.getEntity() instanceof LivingEntity && isAlive() && hurtTime == 0) {
-                    entity.ambientSleep$spawnParticles(level(), ambientSleep$me, random);
-                }
+        if (level().isClientSide && !isInvulnerableTo(source) && amount > 0) {
+            if (source.getEntity() instanceof LivingEntity && isAlive() && hurtTime == 0) {
+                ParticleManager.entityHurt(ambientSleep$me, level(), random);
             }
         }
     }
