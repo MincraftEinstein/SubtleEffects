@@ -28,13 +28,13 @@ public class ModConfigs {
     public final ForgeConfigSpec.DoubleValue villagerSnoreChance;
     public final ForgeConfigSpec.BooleanValue displaySleepingZsOnlyWhenSnoring;
     public final ForgeConfigSpec.BooleanValue foxesHaveSleepingZs;
+    public final ForgeConfigSpec.BooleanValue adjustNametagRenderingWhenSleeping;
 
     // Entities
     public final ForgeConfigSpec.BooleanValue chickenHitFeathers;
     public final ForgeConfigSpec.BooleanValue parrotHitFeathers;
     public final ForgeConfigSpec.BooleanValue enderPearlTrail;
     public final ForgeConfigSpec.BooleanValue snowballTrail;
-    public final ForgeConfigSpec.BooleanValue adjustNametagRenderingWhenSleeping;
     public final ForgeConfigSpec.BooleanValue allayMagic;
 
     // General
@@ -98,6 +98,11 @@ public class ModConfigs {
                 .translation(key("foxes_have_sleeping_zs"))
                 .define("foxesHaveSleepingZs", true);
 
+        adjustNametagRenderingWhenSleeping = builder
+                .comment("Adjust name tag rendering to be at the top of the head rather than above it when a mob is sleeping in a bed")
+                .translation(key("adjust_nametag_rendering_when_sleeping"))
+                .define("adjustNametagRenderingWhenSleeping", true);
+
         builder.pop();
 
         chickenHitFeathers = builder
@@ -117,11 +122,6 @@ public class ModConfigs {
         snowballTrail = builder
                 .translation(key("snowball_trail"))
                 .define("snowballTrail", true);
-
-        adjustNametagRenderingWhenSleeping = builder
-                .comment("Adjust name tag rendering to be at the top of the head rather than above it when a mob is sleeping in a bed")
-                .translation(key("adjust_nametag_rendering_when_sleeping"))
-                .define("adjustNametagRenderingWhenSleeping", true);
 
         allayMagic = builder
                 .translation(key("allay_magic"))
