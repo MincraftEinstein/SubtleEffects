@@ -23,7 +23,6 @@ public class ModConfigs {
 
     public final ForgeConfigSpec.DoubleValue playerSnoreChance;
     public final ForgeConfigSpec.DoubleValue villagerSnoreChance;
-    public final ForgeConfigSpec.BooleanValue enableSleepingZs;
     public final ForgeConfigSpec.BooleanValue displaySleepingZsOnlyWhenSnoring;
     public final ForgeConfigSpec.BooleanValue foxesHaveSleepingZs;
 
@@ -32,6 +31,8 @@ public class ModConfigs {
     public final ForgeConfigSpec.BooleanValue enderPearlTrail;
     public final ForgeConfigSpec.BooleanValue snowballTrail;
     public final ForgeConfigSpec.BooleanValue adjustNametagRenderingWhenSleeping;
+
+    public final ForgeConfigSpec.BooleanValue enableSleepingZs;
 
     public ModConfigs(ForgeConfigSpec.Builder builder) {
         builder.translation(categoryKey("blocks")).push("blocks")
@@ -81,11 +82,6 @@ public class ModConfigs {
                 .translation(key("villager_snore_chance"))
                 .defineInRange("villagerSnoreChance", 1.0, 0, 1.0);
 
-        enableSleepingZs = builder
-                .comment("When an mob is sleeping display Z particles")
-                .translation(key("enable_sleeping_zs"))
-                .define("enableSleepingZs", true);
-
         displaySleepingZsOnlyWhenSnoring = builder
                 .comment("Only display Z particles when a mob can snore")
                 .translation(key("display_sleeping_zs_only_when_snoring"))
@@ -122,6 +118,11 @@ public class ModConfigs {
                 .define("adjustNametagRenderingWhenSleeping", true);
 
         builder.pop();
+
+        enableSleepingZs = builder
+                .comment("When an mob is sleeping display Z particles")
+                .translation(key("enable_sleeping_zs"))
+                .define("enableSleepingZs", true);
     }
 
     private static String key(String path) {
