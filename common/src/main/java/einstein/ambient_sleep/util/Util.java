@@ -20,6 +20,7 @@ public class Util {
 
     public static final int BREATH_DELAY = 60;
     public static final int SNORE_DELAY = 10;
+    public static final int MAX_Z_COUNT = 3;
     public static final DustParticleOptions GLOWSTONE_DUST_PARTICLES = new DustParticleOptions(Vec3.fromRGB24(0xFFBC5E).toVector3f(), 1);
 
     public static void playClientSound(SoundSource source, Entity entity, SoundEvent sound, float volume, float pitch) {

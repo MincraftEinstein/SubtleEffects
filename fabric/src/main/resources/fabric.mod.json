@@ -18,6 +18,9 @@
   "entrypoints": {
     "main": [
       "einstein.ambient_sleep.AmbientSleepFabric"
+    ],
+    "client": [
+      "einstein.ambient_sleep.AmbientSleepFabric"
     ]
   },
   "mixins": [

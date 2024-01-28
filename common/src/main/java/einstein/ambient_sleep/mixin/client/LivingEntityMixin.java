@@ -88,7 +88,7 @@ public abstract class LivingEntityMixin extends Entity {
                             }
                         }
 
-                        if (ambientSleep$ZCount >= 3) {
+                        if (ambientSleep$ZCount >= Util.MAX_Z_COUNT) {
                             ambientSleep$ZCount = 0;
                             ambientSleep$breatheTimer = 0;
                         }

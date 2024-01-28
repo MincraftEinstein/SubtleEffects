@@ -18,6 +18,9 @@
     "client.TorchBlockMixin",
     "client.WallTorchBlockMixin"
   ],
+  "mixins": [
+    "common.BeehiveBlockEntityMixin"
+  ],
   "injectors": {
     "defaultRequire": 1
   }
