@@ -10,6 +10,7 @@ public class ModConfigs {
     public static final ModConfigs INSTANCE = SPEC_PAIR.getLeft();
     public static final ForgeConfigSpec SPEC = SPEC_PAIR.getRight();
 
+    // Flaming Blocks
     public final ForgeConfigSpec.BooleanValue disableDefaultCampfireSparks;
     public final ForgeConfigSpec.BooleanValue enableCandleSparks;
     public final ForgeConfigSpec.BooleanValue enableFurnaceSparks;
@@ -17,21 +18,26 @@ public class ModConfigs {
     public final ForgeConfigSpec.BooleanValue enableCampfireSparks;
     public final ForgeConfigSpec.BooleanValue enableTorchSparks;
 
+    // Blocks
     public final ForgeConfigSpec.BooleanValue redstoneBlockDust;
     public final ForgeConfigSpec.BooleanValue glowstoneBlockDust;
     public final ForgeConfigSpec.BooleanValue beehivesHaveSleepingZs;
 
+    // Entity Snoring
     public final ForgeConfigSpec.DoubleValue playerSnoreChance;
     public final ForgeConfigSpec.DoubleValue villagerSnoreChance;
     public final ForgeConfigSpec.BooleanValue displaySleepingZsOnlyWhenSnoring;
     public final ForgeConfigSpec.BooleanValue foxesHaveSleepingZs;
 
+    // Entities
     public final ForgeConfigSpec.BooleanValue chickenHitFeathers;
     public final ForgeConfigSpec.BooleanValue parrotHitFeathers;
     public final ForgeConfigSpec.BooleanValue enderPearlTrail;
     public final ForgeConfigSpec.BooleanValue snowballTrail;
     public final ForgeConfigSpec.BooleanValue adjustNametagRenderingWhenSleeping;
+    public final ForgeConfigSpec.BooleanValue allayMagic;
 
+    // General
     public final ForgeConfigSpec.BooleanValue enableSleepingZs;
 
     public ModConfigs(ForgeConfigSpec.Builder builder) {
@@ -116,6 +122,10 @@ public class ModConfigs {
                 .comment("Adjust name tag rendering to be at the top of the head rather than above it when a mob is sleeping in a bed")
                 .translation(key("adjust_nametag_rendering_when_sleeping"))
                 .define("adjustNametagRenderingWhenSleeping", true);
+
+        allayMagic = builder
+                .translation(key("allay_magic"))
+                .define("allayMagic", true);
 
         builder.pop();
 

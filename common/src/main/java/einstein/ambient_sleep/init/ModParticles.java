@@ -1,9 +1,6 @@
 package einstein.ambient_sleep.init;
 
-import einstein.ambient_sleep.client.particle.FeatherParticle;
-import einstein.ambient_sleep.client.particle.SnoringParticle;
-import einstein.ambient_sleep.client.particle.SnowballTrailParticle;
-import einstein.ambient_sleep.client.particle.SparkParticle;
+import einstein.ambient_sleep.client.particle.*;
 import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.core.particles.SimpleParticleType;
@@ -27,6 +24,7 @@ public class ModParticles {
     public static final Supplier<SimpleParticleType> GREEN_PARROT_FEATHER = register("green_parrot_feather", FeatherParticle.Provider::new);
     public static final Supplier<SimpleParticleType> RED_BLUE_PARROT_FEATHER = register("red_blue_parrot_feather", FeatherParticle.Provider::new);
     public static final Supplier<SimpleParticleType> YELLOW_BLUE_PARROT_FEATHER = register("yellow_blue_parrot_feather", FeatherParticle.Provider::new);
+    public static final Supplier<SimpleParticleType> ALLAY_MAGIC = register("allay_magic", AllayMagicParticle.Provider::new);
 
     public static void init() {
     }

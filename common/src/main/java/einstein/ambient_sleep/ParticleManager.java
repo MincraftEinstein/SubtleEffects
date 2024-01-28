@@ -31,6 +31,11 @@ public class ParticleManager {
         else if (type.equals(EntityType.SNOWBALL) && ModConfigs.INSTANCE.snowballTrail.get()) {
             level.addParticle(ModParticles.SNOWBALL_TRAIL.get(), entity.getRandomX(1), entity.getRandomY(), entity.getRandomZ(1), 0, 0, 0);
         }
+        else if (type.equals(EntityType.ALLAY) && ModConfigs.INSTANCE.allayMagic.get()) {
+            if (random.nextInt(10) == 1) {
+                level.addParticle(ModParticles.ALLAY_MAGIC.get(), entity.getRandomX(1), entity.getRandomY(), entity.getRandomZ(1), random.nextDouble(), random.nextDouble(), random.nextDouble());
+            }
+        }
     }
 
     public static void entityHurt(LivingEntity entity, Level level, RandomSource random) {
