@@ -9,6 +9,7 @@ public class ModConfigs {
     private static final Pair<ModConfigs, ForgeConfigSpec> SPEC_PAIR = new ForgeConfigSpec.Builder().configure(ModConfigs::new);
     public static final ModConfigs INSTANCE = SPEC_PAIR.getLeft();
     public static final ForgeConfigSpec SPEC = SPEC_PAIR.getRight();
+    private static final String TO_DISABLE = "0 to disable";
 
     // Flaming Blocks
     public final ForgeConfigSpec.BooleanValue disableDefaultCampfireSparks;
@@ -51,12 +52,16 @@ public class ModConfigs {
 
         enableCandleSparks = builder.translation(key("enable_candle_sparks"))
                 .define("enableCandleSparks", true);
+
         enableFurnaceSparks = builder.translation(key("enable_furnace_sparks"))
                 .define("enableFurnaceSparks", true);
+
         enableFireSparks = builder.translation(key("enable_fire_sparks"))
                 .define("enableFireSparks", true);
+
         enableCampfireSparks = builder.translation(key("enable_campfire_sparks"))
                 .define("enableCampfireSparks", true);
+
         enableTorchSparks = builder.translation(key("enable_torch_sparks"))
                 .define("enableTorchSparks", true);
 
@@ -79,12 +84,12 @@ public class ModConfigs {
                 .translation(categoryKey("sleeping")).push("sleeping");
 
         playerSnoreChance = builder
-                .comment("A percentage based change for a player to snore.", "0 to disable")
+                .comment("A percentage based chance for a player to snore.", TO_DISABLE)
                 .translation(key("player_snore_chance"))
                 .defineInRange("playerSnoreChance", 1.0, 0, 1.0);
 
         villagerSnoreChance = builder
-                .comment("A percentage based change for a villager to snore.", "0 to disable")
+                .comment("A percentage based chance for a villager to snore.", TO_DISABLE)
                 .translation(key("villager_snore_chance"))
                 .defineInRange("villagerSnoreChance", 1.0, 0, 1.0);
 
@@ -120,12 +125,12 @@ public class ModConfigs {
                 .define("enderPearlTrail", true);
 
         snowballTrailChance = builder
-                .comment("A per tick percentage chance for a snowball to spawn snowflake particles creating a trail", "0 to disable")
+                .comment("A per tick percentage chance for a snowball to spawn snowflake particles creating a trail", TO_DISABLE)
                 .translation(key("snowball_trail_chance"))
                 .defineInRange("snowballTrailChance", 0.2, 0, 1);
 
         allayMagicChance = builder
-                .comment("A percentage chance for particles to spawn around an allay", "0 to disable")
+                .comment("A per tick percentage chance for particles to spawn around an allay", TO_DISABLE)
                 .translation(key("allay_magic_chance"))
                 .defineInRange("allayMagiChance", 0.2, 0, 1.0);
 
