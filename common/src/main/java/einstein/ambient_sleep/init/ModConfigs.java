@@ -34,7 +34,7 @@ public class ModConfigs {
     public final ForgeConfigSpec.BooleanValue chickenHitFeathers;
     public final ForgeConfigSpec.BooleanValue parrotHitFeathers;
     public final ForgeConfigSpec.BooleanValue enderPearlTrail;
-    public final ForgeConfigSpec.BooleanValue snowballTrail;
+    public final ForgeConfigSpec.DoubleValue snowballTrailChance;
     public final ForgeConfigSpec.DoubleValue allayMagicChance;
 
     // General
@@ -119,9 +119,10 @@ public class ModConfigs {
                 .translation(key("ender_pearl_trail"))
                 .define("enderPearlTrail", true);
 
-        snowballTrail = builder
-                .translation(key("snowball_trail"))
-                .define("snowballTrail", true);
+        snowballTrailChance = builder
+                .comment("A per tick percentage chance for a snowball to spawn snowflake particles creating a trail", "0 to disable")
+                .translation(key("snowball_trail_chance"))
+                .defineInRange("snowballTrailChance", 0.2, 0, 1);
 
         allayMagicChance = builder
                 .comment("A percentage chance for particles to spawn around an allay", "0 to disable")

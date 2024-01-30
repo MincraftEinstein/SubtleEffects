@@ -15,6 +15,8 @@ import net.minecraft.world.entity.animal.Parrot;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.common.ForgeConfigSpec;
 
 public class ParticleManager {
 
@@ -25,11 +27,14 @@ public class ParticleManager {
                 level.addParticle(ParticleTypes.PORTAL, entity.getRandomX(2), entity.getRandomY(), entity.getRandomZ(2), 0, 0, 0);
             }
         }
-        else if (type.equals(EntityType.SNOWBALL) && ModConfigs.INSTANCE.snowballTrail.get()) {
-            level.addParticle(ModParticles.SNOWBALL_TRAIL.get(), entity.getRandomX(1), entity.getRandomY(), entity.getRandomZ(1), 0, 0, 0);
+        else if (type.equals(EntityType.SNOWBALL)) {
+            if (shouldSpawn(random, ModConfigs.INSTANCE.snowballTrailChance)) {
+                Vec3 deltaMovement = entity.getDeltaMovement();
+                level.addParticle(ModParticles.SNOWBALL_TRAIL.get(), entity.getRandomX(1), entity.getRandomY(), entity.getRandomZ(1), deltaMovement.x * 0.5, deltaMovement.y, deltaMovement.z * 0.5);
+            }
         }
         else if (type.equals(EntityType.ALLAY)) {
-            if (Math.min(random.nextFloat(), 1) < ModConfigs.INSTANCE.allayMagicChance.get()) {
+            if (shouldSpawn(random, ModConfigs.INSTANCE.allayMagicChance)) {
                 level.addParticle(ModParticles.ALLAY_MAGIC.get(),
                         entity.getRandomX(1),
                         entity.getRandomY(),
@@ -40,6 +45,10 @@ public class ParticleManager {
                 );
             }
         }
+    }
+
+    private static boolean shouldSpawn(RandomSource random, ForgeConfigSpec.DoubleValue chanceConfig) {
+        return Math.min(random.nextFloat(), 1) < chanceConfig.get();
     }
 
     public static void entityHurt(LivingEntity entity, Level level, RandomSource random) {

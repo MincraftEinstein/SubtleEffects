@@ -14,7 +14,7 @@ public class SnowballTrailParticle extends TextureSheetParticle {
     protected SnowballTrailParticle(ClientLevel level, double x, double y, double z, SpriteSet sprites) {
         super(level, x, y, z);
         pos = new BlockPos.MutableBlockPos();
-        lifetime = 250;
+        lifetime = 20;
         quadSize = 0.1F;
         gravity = 0.1F;
         xd = 0;
