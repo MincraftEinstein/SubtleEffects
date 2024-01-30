@@ -4,7 +4,6 @@ import einstein.ambient_sleep.init.ModConfigs;
 import einstein.ambient_sleep.init.ModParticles;
 import einstein.ambient_sleep.util.Util;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Vec3i;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
@@ -16,8 +15,6 @@ import net.minecraft.world.entity.animal.Parrot;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.world.phys.Vec3;
 
 public class ParticleManager {
 
@@ -31,9 +28,16 @@ public class ParticleManager {
         else if (type.equals(EntityType.SNOWBALL) && ModConfigs.INSTANCE.snowballTrail.get()) {
             level.addParticle(ModParticles.SNOWBALL_TRAIL.get(), entity.getRandomX(1), entity.getRandomY(), entity.getRandomZ(1), 0, 0, 0);
         }
-        else if (type.equals(EntityType.ALLAY) && ModConfigs.INSTANCE.allayMagic.get()) {
-            if (random.nextInt(10) == 1) {
-                level.addParticle(ModParticles.ALLAY_MAGIC.get(), entity.getRandomX(1), entity.getRandomY(), entity.getRandomZ(1), random.nextDouble(), random.nextDouble(), random.nextDouble());
+        else if (type.equals(EntityType.ALLAY)) {
+            if (Math.min(random.nextFloat(), 1) < ModConfigs.INSTANCE.allayMagicChance.get()) {
+                level.addParticle(ModParticles.ALLAY_MAGIC.get(),
+                        entity.getRandomX(1),
+                        entity.getRandomY(),
+                        entity.getRandomZ(1),
+                        random.nextInt(4) / 100D * (random.nextBoolean() ? 1 : -1),
+                        0,
+                        random.nextInt(4) / 100D * (random.nextBoolean() ? 1 : -1)
+                );
             }
         }
     }

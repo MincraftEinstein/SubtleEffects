@@ -35,7 +35,7 @@ public class ModConfigs {
     public final ForgeConfigSpec.BooleanValue parrotHitFeathers;
     public final ForgeConfigSpec.BooleanValue enderPearlTrail;
     public final ForgeConfigSpec.BooleanValue snowballTrail;
-    public final ForgeConfigSpec.BooleanValue allayMagic;
+    public final ForgeConfigSpec.DoubleValue allayMagicChance;
 
     // General
     public final ForgeConfigSpec.BooleanValue enableSleepingZs;
@@ -123,9 +123,10 @@ public class ModConfigs {
                 .translation(key("snowball_trail"))
                 .define("snowballTrail", true);
 
-        allayMagic = builder
-                .translation(key("allay_magic"))
-                .define("allayMagic", true);
+        allayMagicChance = builder
+                .comment("A percentage chance for particles to spawn around an allay", "0 to disable")
+                .translation(key("allay_magic_chance"))
+                .defineInRange("allayMagiChance", 0.2, 0, 1.0);
 
         builder.pop();
 
