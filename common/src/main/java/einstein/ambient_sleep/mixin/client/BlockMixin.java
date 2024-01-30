@@ -1,6 +1,6 @@
 package einstein.ambient_sleep.mixin.client;
 
-import einstein.ambient_sleep.ParticleManager;
+import einstein.ambient_sleep.util.ParticleManager;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;

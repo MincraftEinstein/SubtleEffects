@@ -1,6 +1,6 @@
 package einstein.ambient_sleep.mixin.client;
 
-import einstein.ambient_sleep.ParticleManager;
+import einstein.ambient_sleep.util.ParticleManager;
 import einstein.ambient_sleep.init.ModConfigs;
 import einstein.ambient_sleep.init.ModParticles;
 import einstein.ambient_sleep.init.ModSounds;

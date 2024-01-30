@@ -1,4 +1,4 @@
-package einstein.ambient_sleep;
+package einstein.ambient_sleep.util;
 
 import einstein.ambient_sleep.init.ModConfigs;
 import einstein.ambient_sleep.init.ModParticles;
