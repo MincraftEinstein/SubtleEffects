@@ -1,9 +1,9 @@
 package einstein.ambient_sleep.mixin.client;
 
-import einstein.ambient_sleep.util.ParticleManager;
 import einstein.ambient_sleep.init.ModConfigs;
 import einstein.ambient_sleep.init.ModParticles;
 import einstein.ambient_sleep.init.ModSounds;
+import einstein.ambient_sleep.util.ParticleManager;
 import einstein.ambient_sleep.util.Util;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
@@ -26,7 +26,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import java.util.UUID;
 
 @Mixin(LivingEntity.class)
-public abstract class LivingEntityMixin extends Entity {
+public abstract class ClientLivingEntityMixin extends Entity {
 
     @Shadow
     public abstract boolean isSleeping();
@@ -36,6 +36,7 @@ public abstract class LivingEntityMixin extends Entity {
 
     @Shadow
     public int hurtTime;
+
     @Unique
     private int ambientSleep$breatheTimer = 0;
 
@@ -49,7 +50,7 @@ public abstract class LivingEntityMixin extends Entity {
     @Unique
     private final LivingEntity ambientSleep$me = (LivingEntity) (Object) this;
 
-    public LivingEntityMixin(EntityType<?> type, Level level) {
+    public ClientLivingEntityMixin(EntityType<?> type, Level level) {
         super(type, level);
     }
 

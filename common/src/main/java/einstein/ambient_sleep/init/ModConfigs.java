@@ -37,6 +37,7 @@ public class ModConfigs {
     public final ForgeConfigSpec.BooleanValue enderPearlTrail;
     public final ForgeConfigSpec.DoubleValue snowballTrailChance;
     public final ForgeConfigSpec.DoubleValue allayMagicChance;
+    public final ForgeConfigSpec.BooleanValue fallDamageDustClouds;
 
     // General
     public final ForgeConfigSpec.BooleanValue enableSleepingZs;
@@ -133,6 +134,11 @@ public class ModConfigs {
                 .comment("A per tick percentage chance for particles to spawn around an allay", TO_DISABLE)
                 .translation(key("allay_magic_chance"))
                 .defineInRange("allayMagiChance", 0.2, 0, 1.0);
+
+        fallDamageDustClouds = builder
+                .comment("Should a cloud of dust will appear when a mob takes fall damage")
+                .translation(key("fall_damage_dust_clouds"))
+                .define("fallDamageDustClouds", true);
 
         builder.pop();
 

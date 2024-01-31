@@ -10,16 +10,17 @@
     "client.BaseFireBlockMixin",
     "client.BlockMixin",
     "client.CampfireBlockMixin",
+    "client.ClientLivingEntityMixin",
     "client.EntityMixin",
     "client.EntityRendererMixin",
     "client.FurnaceBlockMixin",
-    "client.LivingEntityMixin",
     "client.PumpkinBlockMixin",
     "client.TorchBlockMixin",
     "client.WallTorchBlockMixin"
   ],
   "mixins": [
-    "common.BeehiveBlockEntityMixin"
+    "common.BeehiveBlockEntityMixin",
+    "common.CommonLivingEntityMixin"
   ],
   "injectors": {
     "defaultRequire": 1

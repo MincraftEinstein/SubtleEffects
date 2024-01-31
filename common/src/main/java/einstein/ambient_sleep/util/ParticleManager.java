@@ -2,11 +2,11 @@ package einstein.ambient_sleep.util;
 
 import einstein.ambient_sleep.init.ModConfigs;
 import einstein.ambient_sleep.init.ModParticles;
-import einstein.ambient_sleep.util.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -70,6 +70,33 @@ public class ParticleManager {
             for (int i = 0; i < 5; i++) {
                 level.addParticle(particle, entity.getX(), entity.getY(), entity.getZ(), random.nextDouble() * (random.nextBoolean() ? 1 : -1), random.nextDouble() * (random.nextBoolean() ? 1 : -1), random.nextDouble() * (random.nextBoolean() ? 1 : -1));
             }
+        }
+    }
+
+    public static void entityFell(LivingEntity entity, double y, int fallDamage) {
+        Level level = entity.level();
+        RandomSource random = entity.getRandom();
+        if (entity.getType().is(EntityTypeTags.FALL_DAMAGE_IMMUNE) || fallDamage <= 0) {
+            return;
+        }
+
+        if (!ModConfigs.INSTANCE.fallDamageDustClouds.get()) {
+            return;
+        }
+
+        if (fallDamage < 4) {
+            for (int i = 0; i < 5; i++) {
+                double x = entity.getRandomX(1);
+                double z = entity.getRandomZ(1);
+                level.addParticle(ModParticles.SMALL_DUST_CLOUD.get(), x, y + Math.min(random.nextFloat(), 0.4), z, 0.3 * (random.nextBoolean() ? 1 : -1), random.nextDouble() * 1.5, 0.3 * (random.nextBoolean() ? 1 : -1));
+            }
+            return;
+        }
+
+        for (int i = 0; i < 10; i++) {
+            double x = entity.getRandomX(1);
+            double z = entity.getRandomZ(1);
+            level.addParticle(ModParticles.LARGE_DUST_CLOUD.get(), x, y + Math.min(random.nextFloat(), 0.4), z, 0.5 * (random.nextBoolean() ? 1 : -1), random.nextDouble() * 3, 0.5 * (random.nextBoolean() ? 1 : -1));
         }
     }
 
