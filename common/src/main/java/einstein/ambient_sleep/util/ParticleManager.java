@@ -1,6 +1,5 @@
 package einstein.ambient_sleep.util;
 
-import einstein.ambient_sleep.init.ModConfigs;
 import einstein.ambient_sleep.init.ModParticles;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.DustParticleOptions;
@@ -18,23 +17,25 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.ForgeConfigSpec;
 
+import static einstein.ambient_sleep.init.ModConfigs.INSTANCE;
+
 public class ParticleManager {
 
     public static void entityTick(Entity entity, Level level, RandomSource random) {
         EntityType<?> type = entity.getType();
-        if (type.equals(EntityType.ENDER_PEARL) && ModConfigs.INSTANCE.enderPearlTrail.get()) {
+        if (type.equals(EntityType.ENDER_PEARL) && INSTANCE.enderPearlTrail.get()) {
             for (int i = 0; i < 10; i++) {
                 level.addParticle(ParticleTypes.PORTAL, entity.getRandomX(2), entity.getRandomY(), entity.getRandomZ(2), 0, 0, 0);
             }
         }
         else if (type.equals(EntityType.SNOWBALL)) {
-            if (shouldSpawn(random, ModConfigs.INSTANCE.snowballTrailChance)) {
+            if (shouldSpawn(random, INSTANCE.snowballTrailChance)) {
                 Vec3 deltaMovement = entity.getDeltaMovement();
                 level.addParticle(ModParticles.SNOWBALL_TRAIL.get(), entity.getRandomX(1), entity.getRandomY(), entity.getRandomZ(1), deltaMovement.x * 0.5, deltaMovement.y, deltaMovement.z * 0.5);
             }
         }
         else if (type.equals(EntityType.ALLAY)) {
-            if (shouldSpawn(random, ModConfigs.INSTANCE.allayMagicChance)) {
+            if (shouldSpawn(random, INSTANCE.allayMagicChance)) {
                 level.addParticle(ModParticles.ALLAY_MAGIC.get(),
                         entity.getRandomX(1),
                         entity.getRandomY(),
@@ -53,12 +54,12 @@ public class ParticleManager {
 
     public static void entityHurt(LivingEntity entity, Level level, RandomSource random) {
         EntityType<?> type = entity.getType();
-        if (type.equals(EntityType.CHICKEN) && ModConfigs.INSTANCE.chickenHitFeathers.get()) {
+        if (type.equals(EntityType.CHICKEN) && INSTANCE.chickenHitFeathers.get()) {
             for (int i = 0; i < 10; i++) {
                 level.addParticle(ModParticles.CHICKEN_FEATHER.get(), entity.getX(), entity.getY(), entity.getZ(), random.nextDouble() * (random.nextBoolean() ? 1 : -1), random.nextDouble() * (random.nextBoolean() ? 1 : -1), random.nextDouble() * (random.nextBoolean() ? 1 : -1));
             }
         }
-        else if (type.equals(EntityType.PARROT) && ModConfigs.INSTANCE.parrotHitFeathers.get()) {
+        else if (type.equals(EntityType.PARROT) && INSTANCE.parrotHitFeathers.get()) {
             ParticleOptions particle = switch (((Parrot) entity).getVariant()) {
                 case BLUE -> ModParticles.BLUE_PARROT_FEATHER.get();
                 case GRAY -> ModParticles.GRAY_PARROT_FEATHER.get();
@@ -80,7 +81,7 @@ public class ParticleManager {
             return;
         }
 
-        if (!ModConfigs.INSTANCE.fallDamageDustClouds.get()) {
+        if (!INSTANCE.fallDamageDustClouds.get()) {
             return;
         }
 
@@ -102,10 +103,10 @@ public class ParticleManager {
 
     // Only works for blocks that don't already implement animateTick
     public static void blockAnimateTick(BlockState state, Level level, BlockPos pos, RandomSource random) {
-        if (state.is(Blocks.REDSTONE_BLOCK) && ModConfigs.INSTANCE.redstoneBlockDust.get()) {
+        if (state.is(Blocks.REDSTONE_BLOCK) && INSTANCE.redstoneBlockDust.get()) {
             Util.spawnParticlesAroundBlock(DustParticleOptions.REDSTONE, level, pos, random);
         }
-        else if (state.is(Blocks.GLOWSTONE) && ModConfigs.INSTANCE.glowstoneBlockDust.get()) {
+        else if (state.is(Blocks.GLOWSTONE) && INSTANCE.glowstoneBlockDust.get()) {
             Util.spawnParticlesAroundBlock(Util.GLOWSTONE_DUST_PARTICLES, level, pos, random);
         }
     }
