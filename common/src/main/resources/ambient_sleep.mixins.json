@@ -19,8 +19,10 @@
     "client.WallTorchBlockMixin"
   ],
   "mixins": [
+    "common.AbstractHorseMixin",
     "common.BeehiveBlockEntityMixin",
-    "common.CommonLivingEntityMixin"
+    "common.CommonLivingEntityMixin",
+    "common.LlamaMixin"
   ],
   "injectors": {
     "defaultRequire": 1

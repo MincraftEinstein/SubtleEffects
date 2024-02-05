@@ -10,13 +10,11 @@ public class DustCloud extends TextureSheetParticle {
     private final SpriteSet sprites;
     private final double ySpeed;
 
-    protected DustCloud(ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, SpriteSet sprites) {
+    protected DustCloud(ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, int maxLifeTime, SpriteSet sprites) {
         super(level, x, y, z, xSpeed, 0, zSpeed);
         this.sprites = sprites;
         this.ySpeed = ySpeed;
         gravity = 0.1F;
-        yd = 0;
-        int maxLifeTime = 25;
         lifetime = Math.max(random.nextInt(maxLifeTime), maxLifeTime - 10);
         speedUpWhenYMotionIsBlocked = true;
         setSpriteFromAge(sprites);
@@ -34,17 +32,30 @@ public class DustCloud extends TextureSheetParticle {
         super.tick();
         setSpriteFromAge(sprites);
 
-        if (age == ((lifetime / 3) * 2)) {
-            yd *= ySpeed;
+        if (age >= (lifetime / 3) * 2) {
+            yd *= ySpeed / (random.nextInt(3, 7) * 1000);
+        }
+
+        if (onGround) {
+            remove();
         }
     }
 
-    public record Provider(SpriteSet sprites) implements ParticleProvider<SimpleParticleType> {
+    public record SmallProvider(SpriteSet sprites) implements ParticleProvider<SimpleParticleType> {
 
         @Nullable
         @Override
         public Particle createParticle(SimpleParticleType type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
-            return new DustCloud(level, x, y, z, xSpeed, ySpeed, zSpeed, sprites);
+            return new DustCloud(level, x, y, z, xSpeed, ySpeed, zSpeed, 25, sprites);
+        }
+    }
+
+    public record LargeProvider(SpriteSet sprites) implements ParticleProvider<SimpleParticleType> {
+
+        @Nullable
+        @Override
+        public Particle createParticle(SimpleParticleType type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+            return new DustCloud(level, x, y, z, xSpeed, ySpeed, zSpeed, 35, sprites);
         }
     }
 }

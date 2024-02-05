@@ -1,10 +1,6 @@
 package einstein.ambient_sleep.mixin.common;
 
-import commonnetwork.api.Dispatcher;
-import einstein.ambient_sleep.AmbientSleep;
-import einstein.ambient_sleep.networking.clientbound.ClientBoundEntityFellPacket;
-import einstein.ambient_sleep.util.ParticleManager;
-import net.minecraft.client.Minecraft;
+import einstein.ambient_sleep.util.Util;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -27,12 +23,7 @@ public abstract class CommonLivingEntityMixin extends Entity {
     @Redirect(method = "causeFallDamage", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;calculateFallDamage(FF)I"))
     private int calculateFallDamage(LivingEntity entity, float distance, float damageMultiplier) {
         int fallDamage = calculateFallDamage(distance, damageMultiplier);
-        if (level().isClientSide && entity.equals(Minecraft.getInstance().player)) {
-            ParticleManager.entityFell(entity, entity.getY(), fallDamage);
-        }
-        else if (!level().isClientSide && !entity.equals(Minecraft.getInstance().player)) {
-            Dispatcher.sendToAllClients(new ClientBoundEntityFellPacket(entity.getId(), fallDamage, entity.getY()), level().getServer());
-        }
+        Util.spawnFallDustClouds(entity, distance, fallDamage);
         return fallDamage;
     }
 }

@@ -1,6 +1,8 @@
 package einstein.ambient_sleep.util;
 
+import commonnetwork.api.Dispatcher;
 import einstein.ambient_sleep.init.ModParticles;
+import einstein.ambient_sleep.networking.clientbound.ClientBoundEntityFellPacket;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -13,8 +15,11 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+
+import static einstein.ambient_sleep.init.ModConfigs.INSTANCE;
 
 public class Util {
 
@@ -62,6 +67,29 @@ public class Util {
                 double zOffset = axis == Direction.Axis.Z ? 0.5 + offsetFromCenter * direction.getStepZ() : random.nextFloat();
                 level.addParticle(particle, pos.getX() + xOffset, pos.getY() + yOffset, pos.getZ() + zOffset, 0, 0, 0);
             }
+        }
+    }
+
+    public static void spawnFallDustClouds(LivingEntity entity, float distance, int fallDamage) {
+        Level level = entity.level();
+        if (level.isClientSide && entity.equals(Minecraft.getInstance().player)) {
+            ParticleManager.entityFell(entity, entity.getY(), distance, fallDamage);
+        }
+        else if (!level.isClientSide && !entity.equals(Minecraft.getInstance().player)) {
+            Dispatcher.sendToAllClients(new ClientBoundEntityFellPacket(entity.getId(), entity.getY(), distance, fallDamage), level.getServer());
+        }
+    }
+
+    public static void spawnCreatureMovementDustClouds(LivingEntity entity, Level level, RandomSource random, int YSpeedModifier) {
+        if (INSTANCE.mobSprintingDustClouds.get()) {
+            level.addParticle(ModParticles.LARGE_DUST_CLOUD.get(),
+                    entity.position().x + entity.getBbWidth() * random.nextDouble() - 1,
+                    entity.getY() + Math.max(Math.min(random.nextFloat(), 0.5), 0.2),
+                    entity.position().z + entity.getBbWidth() * random.nextDouble() - 1,
+                    0,
+                    random.nextDouble() * YSpeedModifier,
+                    0
+            );
         }
     }
 }

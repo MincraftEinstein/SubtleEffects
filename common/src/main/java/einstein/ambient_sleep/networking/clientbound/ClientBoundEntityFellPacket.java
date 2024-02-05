@@ -3,7 +3,6 @@ package einstein.ambient_sleep.networking.clientbound;
 import commonnetwork.networking.data.PacketContext;
 import commonnetwork.networking.data.Side;
 import einstein.ambient_sleep.AmbientSleep;
-import einstein.ambient_sleep.init.ModConfigs;
 import einstein.ambient_sleep.util.ParticleManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
@@ -17,34 +16,34 @@ public class ClientBoundEntityFellPacket {
     public static final ResourceLocation CHANNEL = AmbientSleep.loc("entity_fell");
 
     private final int entityId;
-    private final int fallDamage;
+    private final float distance;
     private final double y;
+    private final int fallDamage;
 
-    public ClientBoundEntityFellPacket(int entityId, int fallDamage, double y) {
+    public ClientBoundEntityFellPacket(int entityId, double y, float distance, int fallDamage) {
         this.entityId = entityId;
-        this.fallDamage = fallDamage;
+        this.distance = distance;
         this.y = y;
+        this.fallDamage = fallDamage;
     }
 
     public static ClientBoundEntityFellPacket decode(FriendlyByteBuf buf) {
-        return new ClientBoundEntityFellPacket(buf.readVarInt(), buf.readInt(), buf.readDouble());
+        return new ClientBoundEntityFellPacket(buf.readVarInt(), buf.readDouble(), buf.readFloat(), buf.readInt());
     }
 
     public void encode(FriendlyByteBuf buf) {
         buf.writeVarInt(entityId);
-        buf.writeInt(fallDamage);
         buf.writeDouble(y);
+        buf.writeFloat(distance);
+        buf.writeInt(fallDamage);
     }
 
     public static void handle(PacketContext<ClientBoundEntityFellPacket> context) {
         Level level = Minecraft.getInstance().level;
         if (context.side().equals(Side.CLIENT) && level != null) {
             ClientBoundEntityFellPacket packet = context.message();
-            if (ModConfigs.INSTANCE.enableSleepingZs.get() && ModConfigs.INSTANCE.beehivesHaveSleepingZs.get()) {
-                Entity entity = level.getEntity(packet.entityId);
-                if (entity instanceof LivingEntity livingEntity) {
-                    ParticleManager.entityFell(livingEntity, packet.y, packet.fallDamage);
-                }
+            if (level.getEntity(packet.entityId) instanceof LivingEntity livingEntity) {
+                ParticleManager.entityFell(livingEntity, packet.y, packet.distance, packet.fallDamage);
             }
         }
     }

@@ -6,11 +6,19 @@ import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.tags.EntityTypeTags;
+import net.minecraft.tags.FluidTags;
+import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.animal.Parrot;
+import net.minecraft.world.entity.animal.camel.Camel;
+import net.minecraft.world.entity.animal.horse.AbstractHorse;
+import net.minecraft.world.entity.monster.Ravager;
+import net.minecraft.world.entity.monster.Strider;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
@@ -22,6 +30,10 @@ import static einstein.ambient_sleep.init.ModConfigs.INSTANCE;
 public class ParticleManager {
 
     public static void entityTick(Entity entity, Level level, RandomSource random) {
+        if (!level.isClientSide) {
+            return;
+        }
+
         EntityType<?> type = entity.getType();
         if (type.equals(EntityType.ENDER_PEARL) && INSTANCE.enderPearlTrail.get()) {
             for (int i = 0; i < 10; i++) {
@@ -44,6 +56,34 @@ public class ParticleManager {
                         0,
                         random.nextInt(4) / 100D * (random.nextBoolean() ? 1 : -1)
                 );
+            }
+        }
+        else if (type.equals(EntityType.CAMEL)) {
+            Camel camel = (Camel) entity;
+            if (camel.isDashing() && camel.onGround()) {
+                for (int i = 0; i < 10; i++) {
+                    Util.spawnCreatureMovementDustClouds(camel, level, random, 5);
+                }
+            }
+        }
+        else if (entity instanceof Player player) {
+            if (INSTANCE.sprintingDustClouds.get() && player.canSpawnSprintParticle() && player.onGround()) {
+                if (random.nextBoolean()) {
+                    level.addParticle(ModParticles.SMALL_DUST_CLOUD.get(),
+                            entity.getRandomX(1),
+                            entity.getY() + Math.max(Math.min(random.nextFloat(), 0.3), 0.2),
+                            entity.getRandomZ(1),
+                            0,
+                            random.nextDouble(),
+                            0
+                    );
+                }
+            }
+        }
+        else if (type.equals(EntityType.RAVAGER)) {
+            Ravager ravager = (Ravager) entity;
+            if (ravager.getAttribute(Attributes.MOVEMENT_SPEED).getBaseValue() > 0.34D && ravager.onGround()) {
+                Util.spawnCreatureMovementDustClouds(ravager, level, random, 20);
             }
         }
     }
@@ -74,10 +114,8 @@ public class ParticleManager {
         }
     }
 
-    public static void entityFell(LivingEntity entity, double y, int fallDamage) {
-        Level level = entity.level();
-        RandomSource random = entity.getRandom();
-        if (entity.getType().is(EntityTypeTags.FALL_DAMAGE_IMMUNE) || fallDamage <= 0) {
+    public static void entityFell(LivingEntity entity, double y, float distance, int fallDamage) {
+        if (entity.getType().is(EntityTypeTags.FALL_DAMAGE_IMMUNE)) {
             return;
         }
 
@@ -85,19 +123,46 @@ public class ParticleManager {
             return;
         }
 
+        if (fallDamage <= 0 && !((entity instanceof AbstractHorse) && distance > (entity instanceof Camel ? 0.5 : 1))) {
+            return;
+        }
+
+        if (entity.isInWater() || entity.isInLava() || entity.isInPowderSnow) {
+            return;
+        }
+
+        Level level = entity.level();
+        RandomSource random = entity.getRandom();
+
+        if (entity instanceof Strider strider) {
+            if (level.getFluidState(strider.getOnPos().atY(Mth.floor(y))).is(FluidTags.LAVA)) {
+                return;
+            }
+        }
+
         if (fallDamage < 4) {
             for (int i = 0; i < 5; i++) {
-                double x = entity.getRandomX(1);
-                double z = entity.getRandomZ(1);
-                level.addParticle(ModParticles.SMALL_DUST_CLOUD.get(), x, y + Math.min(random.nextFloat(), 0.4), z, 0.3 * (random.nextBoolean() ? 1 : -1), random.nextDouble() * 1.5, 0.3 * (random.nextBoolean() ? 1 : -1));
+                level.addParticle(ModParticles.SMALL_DUST_CLOUD.get(),
+                        entity.getRandomX(1),
+                        y + Math.max(Math.min(random.nextFloat(), 0.5), 0.2),
+                        entity.getRandomZ(1),
+                        0.3 * (random.nextBoolean() ? 1 : -1),
+                        random.nextDouble(),
+                        0.3 * (random.nextBoolean() ? 1 : -1)
+                );
             }
             return;
         }
 
         for (int i = 0; i < 10; i++) {
-            double x = entity.getRandomX(1);
-            double z = entity.getRandomZ(1);
-            level.addParticle(ModParticles.LARGE_DUST_CLOUD.get(), x, y + Math.min(random.nextFloat(), 0.4), z, 0.5 * (random.nextBoolean() ? 1 : -1), random.nextDouble() * 3, 0.5 * (random.nextBoolean() ? 1 : -1));
+            level.addParticle(ModParticles.LARGE_DUST_CLOUD.get(),
+                    entity.getRandomX(1),
+                    y + Math.max(Math.min(random.nextFloat(), 0.5), 0.2),
+                    entity.getRandomZ(1),
+                    0.5 * (random.nextBoolean() ? 1 : -1),
+                    random.nextDouble() * 3,
+                    0.5 * (random.nextBoolean() ? 1 : -1)
+            );
         }
     }
 

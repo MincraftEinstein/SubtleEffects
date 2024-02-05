@@ -31,13 +31,17 @@ public class ModConfigs {
     public final ForgeConfigSpec.BooleanValue foxesHaveSleepingZs;
     public final ForgeConfigSpec.BooleanValue adjustNametagRenderingWhenSleeping;
 
+    // Entity Dust Clouds
+    public final ForgeConfigSpec.BooleanValue fallDamageDustClouds;
+    public final ForgeConfigSpec.BooleanValue sprintingDustClouds;
+    public final ForgeConfigSpec.BooleanValue mobSprintingDustClouds;
+
     // Entities
     public final ForgeConfigSpec.BooleanValue chickenHitFeathers;
     public final ForgeConfigSpec.BooleanValue parrotHitFeathers;
     public final ForgeConfigSpec.BooleanValue enderPearlTrail;
     public final ForgeConfigSpec.DoubleValue snowballTrailChance;
     public final ForgeConfigSpec.DoubleValue allayMagicChance;
-    public final ForgeConfigSpec.BooleanValue fallDamageDustClouds;
 
     // General
     public final ForgeConfigSpec.BooleanValue enableSleepingZs;
@@ -109,6 +113,23 @@ public class ModConfigs {
                 .translation(key("adjust_nametag_rendering_when_sleeping"))
                 .define("adjustNametagRenderingWhenSleeping", true);
 
+        builder.pop().translation(categoryKey("dust_clouds")).push("dustClouds");
+
+        fallDamageDustClouds = builder
+                .comment("Should a cloud of dust appear when a mob takes fall damage")
+                .translation(key("fall_damage_dust_clouds"))
+                .define("fallDamageDustClouds", true);
+
+        sprintingDustClouds = builder
+                .comment("Should a dust cloud form behind a sprinting player")
+                .translation(key("sprinting_dust_clouds"))
+                .define("sprintingDustClouds", true);
+
+        mobSprintingDustClouds = builder
+                .comment("Should a dust cloud form behind charging ravagers, galloping horses, and dashing camels")
+                .translation(key("mob_sprinting_dust_clouds"))
+                .define("mobSprintingDustClouds", true);
+
         builder.pop();
 
         chickenHitFeathers = builder
@@ -134,11 +155,6 @@ public class ModConfigs {
                 .comment("A per tick percentage chance for particles to spawn around an allay", TO_DISABLE)
                 .translation(key("allay_magic_chance"))
                 .defineInRange("allayMagiChance", 0.2, 0, 1.0);
-
-        fallDamageDustClouds = builder
-                .comment("Should a cloud of dust will appear when a mob takes fall damage")
-                .translation(key("fall_damage_dust_clouds"))
-                .define("fallDamageDustClouds", true);
 
         builder.pop();
 
