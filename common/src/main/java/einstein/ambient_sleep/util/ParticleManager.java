@@ -1,5 +1,6 @@
 package einstein.ambient_sleep.util;
 
+import einstein.ambient_sleep.init.ModConfigs;
 import einstein.ambient_sleep.init.ModParticles;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.DustParticleOptions;
@@ -171,7 +172,13 @@ public class ParticleManager {
         if (state.is(Blocks.REDSTONE_BLOCK) && INSTANCE.redstoneBlockDust.get()) {
             Util.spawnParticlesAroundBlock(DustParticleOptions.REDSTONE, level, pos, random);
         }
-        else if (state.is(Blocks.GLOWSTONE) && INSTANCE.glowstoneBlockDust.get()) {
+        else if (state.is(Blocks.GLOWSTONE)) {
+            if (INSTANCE.glowstoneBlockDust.get().equals(ModConfigs.GlowstoneDustSpawnType.OFF)
+                    || (INSTANCE.glowstoneBlockDust.get().equals(ModConfigs.GlowstoneDustSpawnType.NETHER_ONLY)
+                    && !level.dimension().equals(Level.NETHER))) {
+                return;
+            }
+
             Util.spawnParticlesAroundBlock(Util.GLOWSTONE_DUST_PARTICLES, level, pos, random);
         }
     }

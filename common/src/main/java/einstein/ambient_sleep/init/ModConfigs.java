@@ -21,7 +21,7 @@ public class ModConfigs {
 
     // Blocks
     public final ForgeConfigSpec.BooleanValue redstoneBlockDust;
-    public final ForgeConfigSpec.BooleanValue glowstoneBlockDust;
+    public final ForgeConfigSpec.EnumValue<GlowstoneDustSpawnType> glowstoneBlockDust;
     public final ForgeConfigSpec.BooleanValue beehivesHaveSleepingZs;
 
     // Entity Snoring
@@ -78,7 +78,7 @@ public class ModConfigs {
 
         glowstoneBlockDust = builder
                 .translation(key("glowstone_block_dust"))
-                .define("glowstoneBlockDust", true);
+                .defineEnum("glowstoneBlockDust", GlowstoneDustSpawnType.ON);
 
         beehivesHaveSleepingZs = builder
                 .comment("Display Z particles in front of bee hives/nests at night")
@@ -170,5 +170,11 @@ public class ModConfigs {
 
     private static String categoryKey(String path) {
         return "config.category." + AmbientSleep.MOD_ID + "." + path;
+    }
+
+    public enum GlowstoneDustSpawnType {
+        ON,
+        OFF,
+        NETHER_ONLY
     }
 }
