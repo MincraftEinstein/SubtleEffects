@@ -9,6 +9,7 @@ public class ModSounds {
 
     public static final Supplier<SoundEvent> VILLAGER_SNORE = Services.REGISTRY.registerSound("entity.villager.snore");
     public static final Supplier<SoundEvent> PLAYER_SNORE = Services.REGISTRY.registerSound("entity.player.snore");
+    public static final Supplier<SoundEvent> PLAYER_STOMACH_GROWL = Services.REGISTRY.registerSound("entity.player.stomach_growl");
 
     public static void init() {
     }

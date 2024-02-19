@@ -1,6 +1,7 @@
 {
   "subtitles.ambient_sleep.entity.villager.snore": "Villager Snores",
   "subtitles.ambient_sleep.entity.player.snore": "Player Snores",
+  "subtitles.ambient_sleep.entity.player.stomach_growl": "Stomach Growls",
   "config.ambient_sleep.disable_default_campfire_sparks": "Disable Default Campfire Sparks",
   "config.ambient_sleep.enable_candle_sparks": "Enable Candle Sparks",
   "config.ambient_sleep.enable_furnace_sparks": "Enable Furnace Sparks",

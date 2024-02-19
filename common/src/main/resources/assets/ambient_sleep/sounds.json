@@ -14,5 +14,11 @@
       "ambient_sleep:entity/player/snore2",
       "ambient_sleep:entity/player/snore3"
     ]
+  },
+  "entity.player.stomach_growl": {
+    "subtitle": "subtitles.ambient_sleep.entity.player.stomach_growl",
+    "sounds": [
+      "ambient_sleep:entity/player/stomach_growl"
+    ]
   }
 }
