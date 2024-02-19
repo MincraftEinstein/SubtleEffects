@@ -3,8 +3,8 @@ package einstein.ambient_sleep.platform;
 import einstein.ambient_sleep.platform.services.RegistryHelper;
 import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.client.particle.SpriteSet;
+import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
-import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -21,7 +21,7 @@ public class ForgeRegistryHelper implements RegistryHelper {
 
     public static final DeferredRegister<ParticleType<?>> PARTICLE_TYPES = DeferredRegister.create(ForgeRegistries.PARTICLE_TYPES, MOD_ID);
     public static final DeferredRegister<SoundEvent> SOUND_EVENTS = DeferredRegister.create(ForgeRegistries.SOUND_EVENTS, MOD_ID);
-    public static final Map<Supplier<SimpleParticleType>, Function<SpriteSet, ParticleProvider<SimpleParticleType>>> PARTICLE_PROVIDERS = new HashMap<>();
+    public static final Map<Supplier<? extends ParticleType<?>>, Function<SpriteSet, ? extends ParticleProvider<?>>> PARTICLE_PROVIDERS = new HashMap<>();
 
     @Override
     public <T extends ParticleType<?>> Supplier<T> registerParticle(String name, Supplier<T> particle) {
@@ -29,7 +29,7 @@ public class ForgeRegistryHelper implements RegistryHelper {
     }
 
     @Override
-    public void registerParticleProvider(Supplier<SimpleParticleType> particle, Function<SpriteSet, ParticleProvider<SimpleParticleType>> provider) {
+    public <T extends ParticleType<V>, V extends ParticleOptions> void registerParticleProvider(Supplier<T> particle, Function<SpriteSet, ParticleProvider<V>> provider) {
         PARTICLE_PROVIDERS.put(particle, provider);
     }
 

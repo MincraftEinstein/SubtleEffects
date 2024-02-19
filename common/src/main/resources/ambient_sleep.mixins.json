@@ -15,6 +15,7 @@
     "client.EntityRendererMixin",
     "client.FurnaceBlockMixin",
     "client.PumpkinBlockMixin",
+    "client.SheepMixin",
     "client.TorchBlockMixin",
     "client.WallTorchBlockMixin"
   ],

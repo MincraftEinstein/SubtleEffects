@@ -5,8 +5,8 @@ import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
 import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.core.Registry;
+import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
-import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
@@ -25,7 +25,7 @@ public class FabricRegistryHelper implements RegistryHelper {
     }
 
     @Override
-    public void registerParticleProvider(Supplier<SimpleParticleType> particle, Function<SpriteSet, ParticleProvider<SimpleParticleType>> provider) {
+    public <T extends ParticleType<V>, V extends ParticleOptions> void registerParticleProvider(Supplier<T> particle, Function<SpriteSet, ParticleProvider<V>> provider) {
         ParticleFactoryRegistry.getInstance().register(particle.get(), provider::apply);
     }
 

@@ -1,9 +1,10 @@
 package einstein.ambient_sleep.init;
 
+import com.mojang.serialization.Codec;
 import einstein.ambient_sleep.client.particle.*;
 import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.client.particle.SpriteSet;
-import net.minecraft.core.particles.SimpleParticleType;
+import net.minecraft.core.particles.*;
 
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -27,12 +28,26 @@ public class ModParticles {
     public static final Supplier<SimpleParticleType> ALLAY_MAGIC = register("allay_magic", AllayMagicParticle.Provider::new);
     public static final Supplier<SimpleParticleType> SMALL_DUST_CLOUD = register("small_dust_cloud", DustCloud.SmallProvider::new);
     public static final Supplier<SimpleParticleType> LARGE_DUST_CLOUD = register("large_dust_cloud", DustCloud.LargeProvider::new);
+    public static final Supplier<ParticleType<SheepFluffParticleOptions>> SHEEP_FLUFF = register("sheep_fluff", SheepFluffParticleOptions.DESERIALIZER, type -> SheepFluffParticleOptions.CODEC, SheepFluffParticle.Provider::new);
 
     public static void init() {
     }
     
     private static Supplier<SimpleParticleType> register(String name, Function<SpriteSet, ParticleProvider<SimpleParticleType>> provider) {
         Supplier<SimpleParticleType> particleType = REGISTRY.registerParticle(name, () -> new SimpleParticleType(false));
+        REGISTRY.registerParticleProvider(particleType, provider);
+        return particleType;
+    }
+
+    @SuppressWarnings({"deprecation", "unchecked"})
+    private static <T extends ParticleType<V>, V extends ParticleOptions> Supplier<T> register(String name, ParticleOptions.Deserializer<V> deserializer, Function<ParticleType<V>, Codec<V>> codec, Function<SpriteSet, ParticleProvider<V>> provider) {
+        Supplier<T> particleType = (Supplier<T>) REGISTRY.registerParticle(name, () -> new ParticleType<V>(false, deserializer) {
+
+            @Override
+            public Codec<V> codec() {
+                return codec.apply(this);
+            }
+        });
         REGISTRY.registerParticleProvider(particleType, provider);
         return particleType;
     }
