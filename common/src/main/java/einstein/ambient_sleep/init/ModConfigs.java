@@ -44,6 +44,7 @@ public class ModConfigs {
     public final ForgeConfigSpec.DoubleValue allayMagicChance;
     public final ForgeConfigSpec.BooleanValue stomachGrowling;
     public final ForgeConfigSpec.BooleanValue snowGolemHitSnowflakes;
+    public final ForgeConfigSpec.BooleanValue sheepShearFluff;
 
     // General
     public final ForgeConfigSpec.BooleanValue enableSleepingZs;
@@ -167,6 +168,11 @@ public class ModConfigs {
                 .comment("When a snow golem takes damage from a mob or player snowflakes fly off")
                 .translation(key("snow_golem_hit_snowflakes"))
                 .define("snowGolemHitSnowflakes", true);
+
+        sheepShearFluff = builder
+                .comment("When a sheep is sheared fluff particles will fall off")
+                .translation(key("sheep_shear_fluff"))
+                .define("sheepShearFluff", true);
 
         builder.pop();
 
