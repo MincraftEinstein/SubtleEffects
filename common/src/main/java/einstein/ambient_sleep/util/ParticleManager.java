@@ -35,6 +35,19 @@ public class ParticleManager {
             return;
         }
 
+        float bbWidth = entity.getBbWidth();
+        float bbHeight = entity.getBbHeight();
+
+        if (bbWidth <= 4 && bbHeight <= 4 && entity.isOnFire()) {
+            level.addParticle(ParticleTypes.SMOKE, entity.getRandomX(1), entity.getRandomY(), entity.getRandomZ(1), 0, 0, 0);
+
+            if (bbWidth < 2 && bbHeight < 2 && !random.nextBoolean()) {
+                return;
+            }
+
+            level.addParticle(ParticleTypes.FLAME, entity.getRandomX(1), entity.getRandomY(), entity.getRandomZ(1), 0, 0, 0);
+        }
+
         EntityType<?> type = entity.getType();
         if (type.equals(EntityType.ENDER_PEARL) && INSTANCE.enderPearlTrail.get()) {
             for (int i = 0; i < 10; i++) {
