@@ -97,7 +97,7 @@ public class ParticleManager {
         EntityType<?> type = entity.getType();
         if (type.equals(EntityType.CHICKEN) && INSTANCE.chickenHitFeathers.get()) {
             for (int i = 0; i < 10; i++) {
-                level.addParticle(ModParticles.CHICKEN_FEATHER.get(), entity.getX(), entity.getY(), entity.getZ(), random.nextDouble() * (random.nextBoolean() ? 1 : -1), random.nextDouble() * (random.nextBoolean() ? 1 : -1), random.nextDouble() * (random.nextBoolean() ? 1 : -1));
+                level.addParticle(ModParticles.CHICKEN_FEATHER.get(), entity.getX(), entity.getY(0.5), entity.getZ(), random.nextDouble() * (random.nextBoolean() ? 1 : -1), random.nextDouble() * (random.nextBoolean() ? 1 : -1), random.nextDouble() * (random.nextBoolean() ? 1 : -1));
             }
         }
         else if (type.equals(EntityType.PARROT) && INSTANCE.parrotHitFeathers.get()) {
@@ -110,7 +110,7 @@ public class ParticleManager {
             };
 
             for (int i = 0; i < 5; i++) {
-                level.addParticle(particle, entity.getX(), entity.getY(), entity.getZ(), random.nextDouble() * (random.nextBoolean() ? 1 : -1), random.nextDouble() * (random.nextBoolean() ? 1 : -1), random.nextDouble() * (random.nextBoolean() ? 1 : -1));
+                level.addParticle(particle, entity.getX(), entity.getY(0.5), entity.getZ(), random.nextDouble() * (random.nextBoolean() ? 1 : -1), random.nextDouble() * (random.nextBoolean() ? 1 : -1), random.nextDouble() * (random.nextBoolean() ? 1 : -1));
             }
         }
     }
