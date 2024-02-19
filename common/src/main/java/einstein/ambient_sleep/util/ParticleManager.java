@@ -113,6 +113,11 @@ public class ParticleManager {
                 level.addParticle(particle, entity.getX(), entity.getY(0.5), entity.getZ(), random.nextDouble() * (random.nextBoolean() ? 1 : -1), random.nextDouble() * (random.nextBoolean() ? 1 : -1), random.nextDouble() * (random.nextBoolean() ? 1 : -1));
             }
         }
+        else if (type.equals(EntityType.SNOW_GOLEM) && INSTANCE.snowGolemHitSnowflakes.get()) {
+            for (int i = 0; i < 20; i++) {
+                level.addParticle(ModParticles.SNOWBALL_TRAIL.get(), entity.getRandomX(1), entity.getRandomY(), entity.getRandomZ(1), 0, 0, 0);
+            }
+        }
     }
 
     public static void entityFell(LivingEntity entity, double y, float distance, int fallDamage) {

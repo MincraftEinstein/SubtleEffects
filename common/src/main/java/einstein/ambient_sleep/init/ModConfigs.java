@@ -43,6 +43,7 @@ public class ModConfigs {
     public final ForgeConfigSpec.DoubleValue snowballTrailChance;
     public final ForgeConfigSpec.DoubleValue allayMagicChance;
     public final ForgeConfigSpec.BooleanValue stomachGrowling;
+    public final ForgeConfigSpec.BooleanValue snowGolemHitSnowflakes;
 
     // General
     public final ForgeConfigSpec.BooleanValue enableSleepingZs;
@@ -161,6 +162,11 @@ public class ModConfigs {
                 .comment("Should a stomach growl sound play every 15 sec when the player is below 3 food points (or 6 half points)")
                 .translation(key("stomach_growling"))
                 .define("stomachGrowling", true);
+
+        snowGolemHitSnowflakes = builder
+                .comment("When a snow golem takes damage from a mob or player snowflakes fly off")
+                .translation(key("snow_golem_hit_snowflakes"))
+                .define("snowGolemHitSnowflakes", true);
 
         builder.pop();
 

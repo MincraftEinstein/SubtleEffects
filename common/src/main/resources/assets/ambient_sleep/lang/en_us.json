@@ -25,6 +25,7 @@
   "config.ambient_sleep.ender_pearl_trail": "Ender Pearl Trail",
   "config.ambient_sleep.snowball_trail_chance": "Snowball Trail Chance",
   "config.ambient_sleep.allay_magic_chance": "Allay Magic Chance",
+  "config.ambient_sleep.snow_golem_hit_snowflakes": "Snow Golem Hit Snowflakes",
   "config.category.ambient_sleep.blocks": "Blocks",
   "config.category.ambient_sleep.flaming_blocks": "Flaming Blocks",
   "config.category.ambient_sleep.entities": "Entities",
