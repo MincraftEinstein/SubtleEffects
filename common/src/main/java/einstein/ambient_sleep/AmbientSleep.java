@@ -1,5 +1,6 @@
 package einstein.ambient_sleep;
 
+import einstein.ambient_sleep.init.BiomeParticles;
 import einstein.ambient_sleep.init.ModPackets;
 import einstein.ambient_sleep.init.ModParticles;
 import einstein.ambient_sleep.init.ModSounds;
@@ -17,6 +18,7 @@ public class AmbientSleep {
         ModSounds.init();
         ModParticles.init();
         ModPackets.init();
+        BiomeParticles.init();
     }
 
     public static void clientSetup() {

@@ -1,8 +1,12 @@
 package einstein.ambient_sleep.init;
 
 import einstein.ambient_sleep.AmbientSleep;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.ForgeConfigSpec;
 import org.apache.commons.lang3.tuple.Pair;
+
+import java.util.List;
+import java.util.function.Supplier;
 
 public class ModConfigs {
 
@@ -45,6 +49,10 @@ public class ModConfigs {
     public final ForgeConfigSpec.BooleanValue stomachGrowling;
     public final ForgeConfigSpec.BooleanValue snowGolemHitSnowflakes;
     public final ForgeConfigSpec.BooleanValue sheepShearFluff;
+
+    // Biomes
+    public final ForgeConfigSpec.IntValue biomeParticlesRadius;
+    public final ForgeConfigSpec.ConfigValue<List<? extends String>> mushroomSporeBiomes;
 
     // General
     public final ForgeConfigSpec.BooleanValue enableSleepingZs;
@@ -174,12 +182,31 @@ public class ModConfigs {
                 .translation(key("sheep_shear_fluff"))
                 .define("sheepShearFluff", true);
 
+        builder.pop().translation(categoryKey("biomes")).push("biomes");
+
+        biomeParticlesRadius = builder
+                .comment("The radius around the player that biome particles will spawn in", TO_DISABLE)
+                .translation(key("biome_particles_radius"))
+                .defineInRange("biomeParticleRadius", 32, 0, 48);
+
+        mushroomSporeBiomes = builder
+                .comment("A list of biome IDs that mushroom spore particles will spawn in")
+                .translation(key("mushroom_spore_biomes"))
+                .defineListAllowEmpty(List.of("mushroomSporeBiomes"), () -> List.of("minecraft:mushroom_fields"), ModConfigs::isValidLoc);
+
         builder.pop();
 
         enableSleepingZs = builder
                 .comment("When an mob is sleeping display Z particles")
                 .translation(key("enable_sleeping_zs"))
                 .define("enableSleepingZs", true);
+    }
+
+    private static boolean isValidLoc(Object object) {
+        if (object instanceof String string) {
+            return ResourceLocation.tryParse(string) != null;
+        }
+        return false;
     }
 
     private static String key(String path) {

@@ -1,4 +1,4 @@
 accessWidener	v1 named
 
 accessible method net/minecraft/core/particles/SimpleParticleType <init> (Z)V
-accessible method net/minecraft/client/particle/SuspendedTownParticle <init> (Lnet/minecraft/client/multiplayer/ClientLevel;DDDDDD)V
+accessible method net/minecraft/client/particle/SuspendedParticle <init> (Lnet/minecraft/client/multiplayer/ClientLevel;Lnet/minecraft/client/particle/SpriteSet;DDDDDD)V

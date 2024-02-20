@@ -2,11 +2,14 @@ package einstein.ambient_sleep;
 
 import einstein.ambient_sleep.init.ModConfigs;
 import einstein.ambient_sleep.platform.ForgeRegistryHelper;
+import einstein.ambient_sleep.util.ParticleManager;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
+import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
@@ -30,6 +33,11 @@ public class AmbientSleepForge {
                 ForgeRegistryHelper.PARTICLE_PROVIDERS.forEach((particle, provider) -> registerParticle(event, particle, provider))
         );
         modEventBus.addListener((FMLClientSetupEvent event) -> AmbientSleep.clientSetup());
+        modEventBus.addListener((TickEvent.LevelTickEvent event) -> {
+            if (event.side.isClient() && event.phase.equals(TickEvent.Phase.END)) {
+                ParticleManager.levelTickEnd(Minecraft.getInstance(), event.level);
+            }
+        });
         ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, ModConfigs.SPEC);
     }
 

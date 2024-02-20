@@ -28,9 +28,12 @@
   "config.ambient_sleep.stomach_growling": "Stomach Growling",
   "config.ambient_sleep.snow_golem_hit_snowflakes": "Snow Golem Hit Snowflakes",
   "config.ambient_sleep.sheep_shear_fluff": "Sheep Shear Fluff",
+  "config.ambient_sleep.biome_particles_radius": "Biome Particles Radius",
+  "config.ambient_sleep.mushroom_spore_biomes": "Mushroom Spore Biomes",
   "config.category.ambient_sleep.blocks": "Blocks",
   "config.category.ambient_sleep.flaming_blocks": "Flaming Blocks",
   "config.category.ambient_sleep.entities": "Entities",
   "config.category.ambient_sleep.sleeping": "Sleeping",
-  "config.category.ambient_sleep.dust_clouds": "Dust Clouds"
+  "config.category.ambient_sleep.dust_clouds": "Dust Clouds",
+  "config.category.ambient_sleep.biomes": "Biomes"
 }

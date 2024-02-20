@@ -29,6 +29,7 @@ public class ModParticles {
     public static final Supplier<SimpleParticleType> SMALL_DUST_CLOUD = register("small_dust_cloud", DustCloud.SmallProvider::new);
     public static final Supplier<SimpleParticleType> LARGE_DUST_CLOUD = register("large_dust_cloud", DustCloud.LargeProvider::new);
     public static final Supplier<ParticleType<SheepFluffParticleOptions>> SHEEP_FLUFF = register("sheep_fluff", SheepFluffParticleOptions.DESERIALIZER, type -> SheepFluffParticleOptions.CODEC, SheepFluffParticle.Provider::new);
+    public static final Supplier<SimpleParticleType> MUSHROOM_SPORE = register("mushroom_spore", MushroomSporeProvider::new);
 
     public static void init() {
     }

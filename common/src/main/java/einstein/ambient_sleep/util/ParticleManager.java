@@ -1,8 +1,11 @@
 package einstein.ambient_sleep.util;
 
+import einstein.ambient_sleep.init.BiomeParticles;
 import einstein.ambient_sleep.init.ModConfigs;
 import einstein.ambient_sleep.init.ModParticles;
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
@@ -21,14 +24,21 @@ import net.minecraft.world.entity.monster.Ravager;
 import net.minecraft.world.entity.monster.Strider;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.ForgeConfigSpec;
+
+import java.util.List;
 
 import static einstein.ambient_sleep.init.ModConfigs.INSTANCE;
 
 public class ParticleManager {
+
+    private static final BlockPos.MutableBlockPos BIOME_POS = new BlockPos.MutableBlockPos();
 
     public static void entityTick(Entity entity, Level level, RandomSource random) {
         if (!level.isClientSide) {
@@ -198,6 +208,48 @@ public class ParticleManager {
             }
 
             Util.spawnParticlesAroundBlock(Util.GLOWSTONE_DUST_PARTICLES, level, pos, random);
+        }
+    }
+
+    public static void levelTickEnd(Minecraft minecraft, Level level) {
+        Player player = minecraft.player;
+        if (minecraft.isPaused() || minecraft.level == null || player == null) {
+            return;
+        }
+
+        int radius = INSTANCE.biomeParticlesRadius.get();
+
+        if (radius <= 0) {
+            return;
+        }
+
+        for (int i = 0; i < 100; i++) {
+            RandomSource random = level.getRandom();
+            int x = player.getBlockX() + random.nextInt(radius) - random.nextInt(radius);
+            int y = player.getBlockY() + random.nextInt(radius) - random.nextInt(radius);
+            int z = player.getBlockZ() + random.nextInt(radius) - random.nextInt(radius);
+            BIOME_POS.set(x, y, z);
+
+            if (level.getHeight(Heightmap.Types.MOTION_BLOCKING, x, z) > y) {
+                continue;
+            }
+
+            Holder<Biome> biome = level.getBiome(BIOME_POS);
+            for (BiomeParticles.BiomeParticleSettings settings : BiomeParticles.BIOME_PARTICLE_SETTINGS) {
+                if (settings.spawnChance() > i) {
+                    List<Biome> biomes = settings.getBiomes(level);
+                    if (biomes.isEmpty()) {
+                        continue;
+                    }
+
+                    if (biomes.contains(biome.value())) {
+                        BlockState state = level.getBlockState(BIOME_POS);
+                        if (!state.isCollisionShapeFullBlock(level, BIOME_POS)) {
+                            level.addParticle(ModParticles.MUSHROOM_SPORE.get(), x + random.nextDouble(), y + random.nextDouble(), z + random.nextDouble(), 0, 0, 0);
+                        }
+                    }
+                }
+            }
         }
     }
 }
