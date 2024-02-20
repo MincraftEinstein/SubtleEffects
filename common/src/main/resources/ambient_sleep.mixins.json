@@ -14,6 +14,7 @@
     "client.EntityMixin",
     "client.EntityRendererMixin",
     "client.FurnaceBlockMixin",
+    "client.LevelRendererMixin",
     "client.LocalPlayerMixin",
     "client.PumpkinBlockMixin",
     "client.SheepMixin",
