@@ -39,6 +39,11 @@ public class ModConfigs {
     public final ForgeConfigSpec.BooleanValue sprintingDustClouds;
     public final ForgeConfigSpec.BooleanValue mobSprintingDustClouds;
 
+    // Burning Entities
+    public final ForgeConfigSpec.BooleanValue burningEntitySmoke;
+    public final ForgeConfigSpec.BooleanValue burningEntityFlames;
+    public final ForgeConfigSpec.BooleanValue burningEntitySparks;
+
     // Entities
     public final ForgeConfigSpec.BooleanValue chickenHitFeathers;
     public final ForgeConfigSpec.BooleanValue parrotHitFeathers;
@@ -147,6 +152,23 @@ public class ModConfigs {
                 .comment("Should a dust cloud form behind charging ravagers, galloping horses, and dashing camels")
                 .translation(key("mob_sprinting_dust_clouds"))
                 .define("mobSprintingDustClouds", true);
+
+        builder.pop()
+                .comment("Particles emitted from entities on fire")
+                .translation(categoryKey("burning_entities"))
+                .push("burningEntities");
+
+        burningEntitySmoke = builder
+                .translation(key("burning_entity_smoke"))
+                .define("smoke", true);
+
+        burningEntityFlames = builder
+                .translation(key("burning_entity_flames"))
+                .define("flames", true);
+
+        burningEntitySparks = builder
+                .translation(key("burning_entity_sparks"))
+                .define("sparks", true);
 
         builder.pop();
 

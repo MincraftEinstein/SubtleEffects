@@ -48,13 +48,27 @@ public class ParticleManager {
         float bbHeight = entity.getBbHeight();
 
         if (bbWidth <= 4 && bbHeight <= 4 && entity.isOnFire()) {
-            level.addParticle(ParticleTypes.SMOKE, entity.getRandomX(1), entity.getRandomY(), entity.getRandomZ(1), 0, 0, 0);
+            if (INSTANCE.burningEntitySmoke.get()) {
+                level.addParticle(ParticleTypes.SMOKE, entity.getRandomX(1), entity.getRandomY(), entity.getRandomZ(1), 0, 0, 0);
+            }
+
+            if (INSTANCE.burningEntitySparks.get()) {
+                for (int i = 0; i < 2; i++) {
+                    level.addParticle(ModParticles.SHORT_SPARK.get(), entity.getRandomX(1), entity.getRandomY(), entity.getRandomZ(1),
+                            random.nextInt(3) / 100D * (random.nextBoolean() ? 1 : -1),
+                            random.nextInt(5) / 100D * (random.nextBoolean() ? 1 : -1),
+                            random.nextInt(3) / 100D * (random.nextBoolean() ? 1 : -1)
+                    );
+                }
+            }
 
             if (bbWidth < 2 && bbHeight < 2 && !random.nextBoolean()) {
                 return;
             }
 
-            level.addParticle(ParticleTypes.FLAME, entity.getRandomX(1), entity.getRandomY(), entity.getRandomZ(1), 0, 0, 0);
+            if (INSTANCE.burningEntityFlames.get()) {
+                level.addParticle(ParticleTypes.FLAME, entity.getRandomX(1), entity.getRandomY(), entity.getRandomZ(1), 0, 0, 0);
+            }
         }
 
         EntityType<?> type = entity.getType();

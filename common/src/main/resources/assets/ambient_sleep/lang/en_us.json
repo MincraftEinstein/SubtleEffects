@@ -20,6 +20,9 @@
   "config.ambient_sleep.fall_damage_dust_clouds": "Fall Damage Dust Clouds",
   "config.ambient_sleep.sprinting_dust_clouds": "Sprinting Dust Clouds",
   "config.ambient_sleep.mob_sprinting_dust_clouds": "Mob Sprinting Dust Clouds",
+  "config.ambient_sleep.burning_entity_smoke": "Smoke",
+  "config.ambient_sleep.burning_entity_flames": "Flames",
+  "config.ambient_sleep.burning_entity_sparks": "Sparks",
   "config.ambient_sleep.chicken_hit_feathers": "Chicken Hit Feathers",
   "config.ambient_sleep.parrot_hit_feathers": "Parrot Hit Feathers",
   "config.ambient_sleep.ender_pearl_trail": "Ender Pearl Trail",
@@ -38,5 +41,6 @@
   "config.category.ambient_sleep.entities": "Entities",
   "config.category.ambient_sleep.sleeping": "Sleeping",
   "config.category.ambient_sleep.dust_clouds": "Dust Clouds",
+  "config.category.ambient_sleep.burning_entities": "Burning Entities",
   "config.category.ambient_sleep.biomes": "Biomes"
 }
