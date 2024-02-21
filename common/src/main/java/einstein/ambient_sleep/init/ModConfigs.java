@@ -6,7 +6,6 @@ import net.minecraftforge.common.ForgeConfigSpec;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.List;
-import java.util.function.Supplier;
 
 public class ModConfigs {
 
@@ -53,6 +52,7 @@ public class ModConfigs {
     // Biomes
     public final ForgeConfigSpec.IntValue biomeParticlesRadius;
     public final ForgeConfigSpec.ConfigValue<List<? extends String>> mushroomSporeBiomes;
+    public final ForgeConfigSpec.ConfigValue<List<? extends String>> fireflyBiomes;
 
     // General
     public final ForgeConfigSpec.BooleanValue enableSleepingZs;
@@ -193,6 +193,11 @@ public class ModConfigs {
                 .comment("A list of biome IDs that mushroom spore particles will spawn in")
                 .translation(key("mushroom_spore_biomes"))
                 .defineListAllowEmpty(List.of("mushroomSporeBiomes"), () -> List.of("minecraft:mushroom_fields"), ModConfigs::isValidLoc);
+
+        fireflyBiomes = builder
+                .comment("A list of biome IDs that firefly particles will spawn in")
+                .translation(key("firefly_biomes"))
+                .defineListAllowEmpty(List.of("fireflyBiomes"), () -> List.of("minecraft:swamp", "minecraft:mangrove_swamp"), ModConfigs::isValidLoc);
 
         builder.pop();
 

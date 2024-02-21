@@ -1,5 +1,6 @@
 package einstein.ambient_sleep.util;
 
+import einstein.ambient_sleep.AmbientSleep;
 import einstein.ambient_sleep.init.BiomeParticles;
 import einstein.ambient_sleep.init.ModConfigs;
 import einstein.ambient_sleep.init.ModParticles;
@@ -230,22 +231,27 @@ public class ParticleManager {
             int z = player.getBlockZ() + random.nextInt(radius) - random.nextInt(radius);
             BIOME_POS.set(x, y, z);
 
-            if (level.getHeight(Heightmap.Types.MOTION_BLOCKING, x, z) > y) {
+            int surfaceLevel = level.getHeight(Heightmap.Types.MOTION_BLOCKING, x, z);
+            if (surfaceLevel > y) {
                 continue;
             }
 
             Holder<Biome> biome = level.getBiome(BIOME_POS);
             for (BiomeParticles.BiomeParticleSettings settings : BiomeParticles.BIOME_PARTICLE_SETTINGS) {
-                if (settings.spawnChance() > i) {
+                if (settings.spawnChance() > i && settings.spawnConditions().test(level)) {
                     List<Biome> biomes = settings.getBiomes(level);
                     if (biomes.isEmpty()) {
                         continue;
                     }
 
                     if (biomes.contains(biome.value())) {
+                        if ((surfaceLevel + settings.maxSpawnHeight()) < y) {
+                            continue;
+                        }
+
                         BlockState state = level.getBlockState(BIOME_POS);
                         if (!state.isCollisionShapeFullBlock(level, BIOME_POS)) {
-                            level.addParticle(ModParticles.MUSHROOM_SPORE.get(), x + random.nextDouble(), y + random.nextDouble(), z + random.nextDouble(), 0, 0, 0);
+                            level.addParticle(settings.particle(), x + random.nextDouble(), y + random.nextDouble(), z + random.nextDouble(), 0, 0, 0);
                         }
                     }
                 }

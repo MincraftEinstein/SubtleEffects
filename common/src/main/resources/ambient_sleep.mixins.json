@@ -16,6 +16,7 @@
     "client.FurnaceBlockMixin",
     "client.LevelRendererMixin",
     "client.LocalPlayerMixin",
+    "client.MutableSpriteSetMixin",
     "client.PumpkinBlockMixin",
     "client.SheepMixin",
     "client.TorchBlockMixin",
