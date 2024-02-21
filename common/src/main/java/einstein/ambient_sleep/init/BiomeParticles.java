@@ -14,24 +14,26 @@ import java.util.Objects;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
+import static einstein.ambient_sleep.init.ModConfigs.INSTANCE;
+
 public class BiomeParticles {
 
     public static final List<BiomeParticleSettings> BIOME_PARTICLE_SETTINGS = new ArrayList<>();
 
-    public static final BiomeParticleSettings MUSHROOM_FIELDS = register(ModConfigs.INSTANCE.mushroomSporeBiomes, 8, 40, ModParticles.MUSHROOM_SPORE, level -> true);
-    public static final BiomeParticleSettings FIREFLIES = register(ModConfigs.INSTANCE.fireflyBiomes, 6, 20, ModParticles.FIREFLY, level -> level.getDayTime() > 13000 && level.getDayTime() < 23000);
+    public static final BiomeParticleSettings MUSHROOM_FIELDS = register(INSTANCE.mushroomSporeBiomes, INSTANCE.mushroomSporeDensity, 40, ModParticles.MUSHROOM_SPORE, level -> true);
+    public static final BiomeParticleSettings FIREFLIES = register(INSTANCE.fireflyBiomes, INSTANCE.fireflyDensity, 20, ModParticles.FIREFLY, level -> level.getDayTime() > 13000 && level.getDayTime() < 23000);
 
     public static void init() {
     }
 
-    private static BiomeParticleSettings register(ForgeConfigSpec.ConfigValue<List<? extends String>> biomesConfig, int spawnChance, int maxSpawnHeight, Supplier<? extends ParticleOptions> particle, Predicate<Level> spawnConditions) {
-        BiomeParticleSettings settings = new BiomeParticleSettings(biomesConfig, spawnChance, maxSpawnHeight, particle, spawnConditions);
+    private static BiomeParticleSettings register(ForgeConfigSpec.ConfigValue<List<? extends String>> biomesConfig, ForgeConfigSpec.IntValue density, int maxSpawnHeight, Supplier<? extends ParticleOptions> particle, Predicate<Level> spawnConditions) {
+        BiomeParticleSettings settings = new BiomeParticleSettings(biomesConfig, density, maxSpawnHeight, particle, spawnConditions);
         BIOME_PARTICLE_SETTINGS.add(settings);
         return settings;
     }
 
     public record BiomeParticleSettings(ForgeConfigSpec.ConfigValue<List<? extends String>> biomesConfig,
-                                        int spawnChance, int maxSpawnHeight, Supplier<? extends ParticleOptions> particle,
+                                        ForgeConfigSpec.IntValue density, int maxSpawnHeight, Supplier<? extends ParticleOptions> particle,
                                         Predicate<Level> spawnConditions) {
 
         public List<Biome> getBiomes(Level level) {

@@ -52,7 +52,9 @@ public class ModConfigs {
     // Biomes
     public final ForgeConfigSpec.IntValue biomeParticlesRadius;
     public final ForgeConfigSpec.ConfigValue<List<? extends String>> mushroomSporeBiomes;
+    public final ForgeConfigSpec.IntValue mushroomSporeDensity;
     public final ForgeConfigSpec.ConfigValue<List<? extends String>> fireflyBiomes;
+    public final ForgeConfigSpec.IntValue fireflyDensity;
 
     // General
     public final ForgeConfigSpec.BooleanValue enableSleepingZs;
@@ -194,10 +196,18 @@ public class ModConfigs {
                 .translation(key("mushroom_spore_biomes"))
                 .defineListAllowEmpty(List.of("mushroomSporeBiomes"), () -> List.of("minecraft:mushroom_fields"), ModConfigs::isValidLoc);
 
+        mushroomSporeDensity = builder
+                .translation(key("mushroom_spore_density"))
+                .defineInRange("mushroomSporeDensity", 10, 0, 100);
+
         fireflyBiomes = builder
                 .comment("A list of biome IDs that firefly particles will spawn in")
                 .translation(key("firefly_biomes"))
                 .defineListAllowEmpty(List.of("fireflyBiomes"), () -> List.of("minecraft:swamp", "minecraft:mangrove_swamp"), ModConfigs::isValidLoc);
+
+        fireflyDensity = builder
+                .translation(key("firefly_density"))
+                .defineInRange("fireflyDensity", 6, 0, 100);
 
         builder.pop();
 

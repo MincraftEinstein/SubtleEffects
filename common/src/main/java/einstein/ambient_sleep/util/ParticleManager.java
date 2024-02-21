@@ -238,7 +238,7 @@ public class ParticleManager {
 
             Holder<Biome> biome = level.getBiome(BIOME_POS);
             for (BiomeParticles.BiomeParticleSettings settings : BiomeParticles.BIOME_PARTICLE_SETTINGS) {
-                if (settings.spawnChance() > i && settings.spawnConditions().test(level)) {
+                if (settings.density().get() > i && settings.spawnConditions().test(level)) {
                     List<Biome> biomes = settings.getBiomes(level);
                     if (biomes.isEmpty()) {
                         continue;
