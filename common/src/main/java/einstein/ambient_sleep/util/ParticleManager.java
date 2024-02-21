@@ -251,7 +251,7 @@ public class ParticleManager {
 
                         BlockState state = level.getBlockState(BIOME_POS);
                         if (!state.isCollisionShapeFullBlock(level, BIOME_POS)) {
-                            level.addParticle(settings.particle(), x + random.nextDouble(), y + random.nextDouble(), z + random.nextDouble(), 0, 0, 0);
+                            level.addParticle(settings.particle().get(), x + random.nextDouble(), y + random.nextDouble(), z + random.nextDouble(), 0, 0, 0);
                         }
                     }
                 }

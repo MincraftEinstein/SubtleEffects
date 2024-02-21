@@ -9,6 +9,7 @@ import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.ModLoadingContext;
@@ -33,7 +34,7 @@ public class AmbientSleepForge {
                 ForgeRegistryHelper.PARTICLE_PROVIDERS.forEach((particle, provider) -> registerParticle(event, particle, provider))
         );
         modEventBus.addListener((FMLClientSetupEvent event) -> AmbientSleep.clientSetup());
-        modEventBus.addListener((TickEvent.LevelTickEvent event) -> {
+        MinecraftForge.EVENT_BUS.addListener((TickEvent.LevelTickEvent event) -> {
             if (event.side.isClient() && event.phase.equals(TickEvent.Phase.END)) {
                 ParticleManager.levelTickEnd(Minecraft.getInstance(), event.level);
             }
