@@ -23,7 +23,7 @@ public abstract class AbstractCandleBlockMixin {
 
     @Inject(method = "animateTick", at = @At("TAIL"))
     private void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random, CallbackInfo ci) {
-        if (ModConfigs.INSTANCE.enableCandleSparks.get() && state.getValue(AbstractCandleBlock.LIT)) {
+        if (ModConfigs.INSTANCE.candleSparks.get() && state.getValue(AbstractCandleBlock.LIT)) {
             getParticleOffsets(state).forEach(offset ->
                     Util.spawnSparks(level, random, pos, offset, new Vec3i(1, 1, 1), 1, 20, false, false));
         }

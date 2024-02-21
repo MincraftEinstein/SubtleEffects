@@ -15,12 +15,12 @@ public class ModConfigs {
     private static final String TO_DISABLE = "0 to disable";
 
     // Flaming Blocks
-    public final ForgeConfigSpec.BooleanValue disableDefaultCampfireSparks;
-    public final ForgeConfigSpec.BooleanValue enableCandleSparks;
-    public final ForgeConfigSpec.BooleanValue enableFurnaceSparks;
-    public final ForgeConfigSpec.BooleanValue enableFireSparks;
-    public final ForgeConfigSpec.BooleanValue enableCampfireSparks;
-    public final ForgeConfigSpec.BooleanValue enableTorchSparks;
+    public final ForgeConfigSpec.BooleanValue removeVanillaCampfireSparks;
+    public final ForgeConfigSpec.BooleanValue candleSparks;
+    public final ForgeConfigSpec.BooleanValue furnaceSparks;
+    public final ForgeConfigSpec.BooleanValue fireSparks;
+    public final ForgeConfigSpec.BooleanValue campfireSparks;
+    public final ForgeConfigSpec.BooleanValue torchSparks;
 
     // Blocks
     public final ForgeConfigSpec.BooleanValue redstoneBlockDust;
@@ -43,8 +43,8 @@ public class ModConfigs {
     public final ForgeConfigSpec.BooleanValue chickenHitFeathers;
     public final ForgeConfigSpec.BooleanValue parrotHitFeathers;
     public final ForgeConfigSpec.BooleanValue enderPearlTrail;
-    public final ForgeConfigSpec.DoubleValue snowballTrailChance;
-    public final ForgeConfigSpec.DoubleValue allayMagicChance;
+    public final ForgeConfigSpec.DoubleValue snowballTrailDensity;
+    public final ForgeConfigSpec.DoubleValue allayMagicDensity;
     public final ForgeConfigSpec.BooleanValue stomachGrowling;
     public final ForgeConfigSpec.BooleanValue snowGolemHitSnowflakes;
     public final ForgeConfigSpec.BooleanValue sheepShearFluff;
@@ -61,27 +61,32 @@ public class ModConfigs {
 
     public ModConfigs(ForgeConfigSpec.Builder builder) {
         builder.translation(categoryKey("blocks")).push("blocks")
-                .translation(categoryKey("flaming_blocks")).push("flamingBlocks");
+                .translation(categoryKey("sparks")).push("sparks");
 
-        disableDefaultCampfireSparks = builder
-                .comment("Disables the default lava spark particle from campfires")
-                .translation(key("disable_default_campfire_sparks"))
-                .define("disableDefaultCampfireSparks", true);
+        removeVanillaCampfireSparks = builder
+                .comment("Removes the vanilla lava spark particle from campfires")
+                .translation(key("remove_vanilla_campfire_sparks"))
+                .define("removeVanillaCampfireSparks", true);
 
-        enableCandleSparks = builder.translation(key("enable_candle_sparks"))
-                .define("enableCandleSparks", true);
+        candleSparks = builder
+                .translation(key("candle_sparks"))
+                .define("candleSparks", true);
 
-        enableFurnaceSparks = builder.translation(key("enable_furnace_sparks"))
-                .define("enableFurnaceSparks", true);
+        furnaceSparks = builder
+                .translation(key("furnace_sparks"))
+                .define("furnaceSparks", true);
 
-        enableFireSparks = builder.translation(key("enable_fire_sparks"))
-                .define("enableFireSparks", true);
+        fireSparks = builder
+                .translation(key("fire_sparks"))
+                .define("fireSparks", true);
 
-        enableCampfireSparks = builder.translation(key("enable_campfire_sparks"))
-                .define("enableCampfireSparks", true);
+        campfireSparks = builder
+                .translation(key("campfire_sparks"))
+                .define("campfireSparks", true);
 
-        enableTorchSparks = builder.translation(key("enable_torch_sparks"))
-                .define("enableTorchSparks", true);
+        torchSparks = builder
+                .translation(key("torch_sparks"))
+                .define("torchSparks", true);
 
         builder.pop();
 
@@ -159,15 +164,15 @@ public class ModConfigs {
                 .translation(key("ender_pearl_trail"))
                 .define("enderPearlTrail", true);
 
-        snowballTrailChance = builder
-                .comment("A per tick percentage chance for a snowball to spawn snowflake particles creating a trail", TO_DISABLE)
+        snowballTrailDensity = builder
+                .comment("The density of the snowball particle trail", TO_DISABLE)
                 .translation(key("snowball_trail_chance"))
                 .defineInRange("snowballTrailChance", 0.2, 0, 1);
 
-        allayMagicChance = builder
-                .comment("A per tick percentage chance for particles to spawn around an allay", TO_DISABLE)
-                .translation(key("allay_magic_chance"))
-                .defineInRange("allayMagiChance", 0.2, 0, 1.0);
+        allayMagicDensity = builder
+                .comment("The density of particles spawning around an allay", TO_DISABLE)
+                .translation(key("allay_magic_density"))
+                .defineInRange("allayMagicDensity", 0.2, 0, 1.0);
 
         stomachGrowling = builder
                 .comment("Should a stomach growl sound play every 15 sec when the player is below 3 food points (or 6 half points)")
@@ -197,6 +202,7 @@ public class ModConfigs {
                 .defineListAllowEmpty(List.of("mushroomSporeBiomes"), () -> List.of("minecraft:mushroom_fields"), ModConfigs::isValidLoc);
 
         mushroomSporeDensity = builder
+                .comment("The density of spawned mushroom spores in a biome", TO_DISABLE)
                 .translation(key("mushroom_spore_density"))
                 .defineInRange("mushroomSporeDensity", 10, 0, 100);
 
@@ -206,6 +212,7 @@ public class ModConfigs {
                 .defineListAllowEmpty(List.of("fireflyBiomes"), () -> List.of("minecraft:swamp", "minecraft:mangrove_swamp"), ModConfigs::isValidLoc);
 
         fireflyDensity = builder
+                .comment("The density of spawned fireflies in a biome", TO_DISABLE)
                 .translation(key("firefly_density"))
                 .defineInRange("fireflyDensity", 6, 0, 100);
 

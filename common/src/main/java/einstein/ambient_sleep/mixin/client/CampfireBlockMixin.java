@@ -27,13 +27,13 @@ public class CampfireBlockMixin {
 
     @Inject(method = "animateTick", at = @At("TAIL"))
     private void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random, CallbackInfo ci) {
-        if (ModConfigs.INSTANCE.enableCampfireSparks.get() && state.getValue(CampfireBlock.LIT)) {
+        if (ModConfigs.INSTANCE.campfireSparks.get() && state.getValue(CampfireBlock.LIT)) {
             Util.spawnSparks(level, random, pos, new Vec3(0.5, 0.4, 0.5), new Vec3i(3, 5, 3), 10, 6, state.is(Blocks.SOUL_CAMPFIRE), true);
         }
     }
 
     @Redirect(method = "animateTick", at = @At(value = "FIELD", target = "Lnet/minecraft/world/level/block/CampfireBlock;spawnParticles:Z"))
     private boolean shouldDisableLavaSparks(CampfireBlock block) {
-        return spawnParticles && !ModConfigs.INSTANCE.disableDefaultCampfireSparks.get();
+        return spawnParticles && !ModConfigs.INSTANCE.removeVanillaCampfireSparks.get();
     }
 }

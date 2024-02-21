@@ -21,7 +21,7 @@ public class FurnaceBlockMixin {
 
     @Inject(method = "animateTick", at = @At("TAIL"))
     private void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random, CallbackInfo ci) {
-        if (ModConfigs.INSTANCE.enableFurnaceSparks.get() && state.getValue(FurnaceBlock.LIT)) {
+        if (ModConfigs.INSTANCE.furnaceSparks.get() && state.getValue(FurnaceBlock.LIT)) {
             Direction direction = state.getValue(WallTorchBlock.FACING);
             Direction.Axis axis = direction.getAxis();
             Util.spawnSparks(level, random, pos, new Vec3(0.5 + (0.6 * direction.getStepX()), random.nextDouble() * 6 / 16, 0.5 + (0.6 * direction.getStepZ())), new Vec3i(1, 1, 1), 3, axis == Direction.Axis.X ? 10 : 3, axis == Direction.Axis.Z ? 10 : 3, false, false);

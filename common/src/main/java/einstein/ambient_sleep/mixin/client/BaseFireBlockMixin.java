@@ -26,7 +26,7 @@ public abstract class BaseFireBlockMixin {
 
     @Inject(method = "animateTick", at = @At("TAIL"))
     private void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random, CallbackInfo ci) {
-        if (!ModConfigs.INSTANCE.enableFireSparks.get()) {
+        if (!ModConfigs.INSTANCE.fireSparks.get()) {
             return;
         }
 

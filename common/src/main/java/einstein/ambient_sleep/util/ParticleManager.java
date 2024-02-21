@@ -1,6 +1,5 @@
 package einstein.ambient_sleep.util;
 
-import einstein.ambient_sleep.AmbientSleep;
 import einstein.ambient_sleep.init.BiomeParticles;
 import einstein.ambient_sleep.init.ModConfigs;
 import einstein.ambient_sleep.init.ModParticles;
@@ -26,7 +25,6 @@ import net.minecraft.world.entity.monster.Strider;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
-import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.Heightmap;
@@ -66,13 +64,13 @@ public class ParticleManager {
             }
         }
         else if (type.equals(EntityType.SNOWBALL)) {
-            if (shouldSpawn(random, INSTANCE.snowballTrailChance)) {
+            if (shouldSpawn(random, INSTANCE.snowballTrailDensity)) {
                 Vec3 deltaMovement = entity.getDeltaMovement();
                 level.addParticle(ModParticles.SNOWBALL_TRAIL.get(), entity.getRandomX(1), entity.getRandomY(), entity.getRandomZ(1), deltaMovement.x * 0.5, deltaMovement.y, deltaMovement.z * 0.5);
             }
         }
         else if (type.equals(EntityType.ALLAY)) {
-            if (shouldSpawn(random, INSTANCE.allayMagicChance)) {
+            if (shouldSpawn(random, INSTANCE.allayMagicDensity)) {
                 level.addParticle(ModParticles.ALLAY_MAGIC.get(),
                         entity.getRandomX(1),
                         entity.getRandomY(),
