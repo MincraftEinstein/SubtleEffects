@@ -1,4 +1,4 @@
-package einstein.ambient_sleep.mixin.client;
+package einstein.ambient_sleep.mixin.client.entity;
 
 import einstein.ambient_sleep.client.particle.SheepFluffParticleOptions;
 import einstein.ambient_sleep.init.ModConfigs;

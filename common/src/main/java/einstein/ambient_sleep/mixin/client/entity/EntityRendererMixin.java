@@ -1,4 +1,4 @@
-package einstein.ambient_sleep.mixin.client;
+package einstein.ambient_sleep.mixin.client.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import einstein.ambient_sleep.init.ModConfigs;

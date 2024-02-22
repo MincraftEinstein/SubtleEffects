@@ -1,4 +1,4 @@
-package einstein.ambient_sleep.mixin.client;
+package einstein.ambient_sleep.mixin.client.block;
 
 import einstein.ambient_sleep.util.ParticleManager;
 import net.minecraft.core.BlockPos;

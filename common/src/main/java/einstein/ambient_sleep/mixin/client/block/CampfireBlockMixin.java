@@ -1,4 +1,4 @@
-package einstein.ambient_sleep.mixin.client;
+package einstein.ambient_sleep.mixin.client.block;
 
 import einstein.ambient_sleep.init.ModConfigs;
 import einstein.ambient_sleep.util.Util;
