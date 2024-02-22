@@ -1,18 +1,31 @@
 package einstein.ambient_sleep.init;
 
 import einstein.ambient_sleep.AmbientSleep;
+import net.minecraft.Util;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.DyeColor;
 import net.minecraftforge.common.ForgeConfigSpec;
 import org.apache.commons.lang3.tuple.Pair;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ModConfigs {
 
+    private static final String TO_DISABLE = "0 to disable";
+    private static final List<String> DEFAULT_FALLING_BLOCK_DUST_BLOCKS = Util.make(new ArrayList<>(), list -> {
+        list.add("minecraft:sand");
+        list.add("minecraft:red_sand");
+        list.add("minecraft:gravel");
+
+        for (DyeColor color : DyeColor.values()) {
+            list.add("minecraft:" + color.getName() + "_concrete_powder");
+        }
+    });
+
     private static final Pair<ModConfigs, ForgeConfigSpec> SPEC_PAIR = new ForgeConfigSpec.Builder().configure(ModConfigs::new);
     public static final ModConfigs INSTANCE = SPEC_PAIR.getLeft();
     public static final ForgeConfigSpec SPEC = SPEC_PAIR.getRight();
-    private static final String TO_DISABLE = "0 to disable";
 
     // Flaming Blocks
     public final ForgeConfigSpec.BooleanValue removeVanillaCampfireSparks;
@@ -26,6 +39,8 @@ public class ModConfigs {
     public final ForgeConfigSpec.BooleanValue redstoneBlockDust;
     public final ForgeConfigSpec.EnumValue<GlowstoneDustSpawnType> glowstoneBlockDust;
     public final ForgeConfigSpec.BooleanValue beehivesHaveSleepingZs;
+    public final ForgeConfigSpec.BooleanValue fallingBlockDust;
+    public final ForgeConfigSpec.ConfigValue<List<? extends String>> fallingBlockDustBlocks;
 
     // Entity Snoring
     public final ForgeConfigSpec.DoubleValue playerSnoreChance;
@@ -107,6 +122,16 @@ public class ModConfigs {
                 .comment("Display Z particles in front of bee hives/nests at night")
                 .translation(key("beehives_have_sleeping_zs"))
                 .define("beehivesHaveSleepingZs", true);
+
+        fallingBlockDust = builder
+                .comment("Do falling blocks have a trail of dust")
+                .translation(key("falling_block_dust"))
+                .define("fallingBlockDust", true);
+
+        fallingBlockDustBlocks = builder
+                .comment("A list of blocks that have a dust trail when falling")
+                .translation(key("falling_block_dust_blocks"))
+                .defineList("fallingBlockDustBlocks", DEFAULT_FALLING_BLOCK_DUST_BLOCKS, ModConfigs::isValidLoc);
 
         builder.pop().translation(categoryKey("entities")).push("entities")
                 .translation(categoryKey("sleeping")).push("sleeping");

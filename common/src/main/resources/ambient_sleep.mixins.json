@@ -13,6 +13,7 @@
     "client.ClientLivingEntityMixin",
     "client.EntityMixin",
     "client.EntityRendererMixin",
+    "client.FallingBlockEntityMixin",
     "client.FurnaceBlockMixin",
     "client.LevelRendererMixin",
     "client.LocalPlayerMixin",
