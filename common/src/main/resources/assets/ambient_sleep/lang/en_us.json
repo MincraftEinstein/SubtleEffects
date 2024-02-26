@@ -13,6 +13,8 @@
   "config.ambient_sleep.beehives_have_sleeping_zs": "Beehives Have Sleeping Zs",
   "config.ambient_sleep.falling_block_dust": "Falling Block Dust",
   "config.ambient_sleep.falling_block_dust_blocks": "Falling Block Dust Blocks",
+  "config.ambient_sleep.torchflower_smoke": "Torchflower Smoke",
+  "config.ambient_sleep.torchflower_flames": "Torchflower Flames",
   "config.ambient_sleep.player_snore_chance": "Player Snore Chance",
   "config.ambient_sleep.villager_snore_chance": "Villager Snore Chance",
   "config.ambient_sleep.enable_sleeping_zs": "Enable Sleeping Zs",

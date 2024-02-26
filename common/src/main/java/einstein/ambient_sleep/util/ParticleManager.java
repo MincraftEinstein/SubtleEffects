@@ -233,6 +233,19 @@ public class ParticleManager {
 
             Util.spawnParticlesAroundBlock(Util.GLOWSTONE_DUST_PARTICLES, level, pos, random);
         }
+        else if (state.is(Blocks.TORCHFLOWER)) {
+            double x = pos.getX() + 0.5;
+            double y = pos.getY() + 0.8;
+            double z = pos.getZ() + 0.5;
+
+            if (INSTANCE.torchflowerSmoke.get() && random.nextInt(3) == 0) {
+                level.addParticle(ParticleTypes.SMOKE, x, y, z, 0, 0, 0);
+            }
+
+            if (INSTANCE.torchflowerFlames.get() && random.nextInt(5) == 0) {
+                level.addParticle(ParticleTypes.FLAME, x, y, z, 0, 0, 0);
+            }
+        }
     }
 
     public static void levelTickEnd(Minecraft minecraft, Level level) {

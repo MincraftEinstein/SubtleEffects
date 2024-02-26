@@ -41,6 +41,8 @@ public class ModConfigs {
     public final ForgeConfigSpec.BooleanValue beehivesHaveSleepingZs;
     public final ForgeConfigSpec.BooleanValue fallingBlockDust;
     public final ForgeConfigSpec.ConfigValue<List<? extends String>> fallingBlockDustBlocks;
+    public final ForgeConfigSpec.BooleanValue torchflowerSmoke;
+    public final ForgeConfigSpec.BooleanValue torchflowerFlames;
 
     // Entity Snoring
     public final ForgeConfigSpec.DoubleValue playerSnoreChance;
@@ -132,6 +134,16 @@ public class ModConfigs {
                 .comment("A list of blocks that have a dust trail when falling")
                 .translation(key("falling_block_dust_blocks"))
                 .defineList("fallingBlockDustBlocks", DEFAULT_FALLING_BLOCK_DUST_BLOCKS, ModConfigs::isValidLoc);
+
+        torchflowerSmoke = builder
+                .comment("Should torchflowers have smoke particles")
+                .translation(key("torchflower_smoke"))
+                .define("torchflowerSmoke", true);
+
+        torchflowerFlames = builder
+                .comment("Should torchflowers have flame particles")
+                .translation(key("torchflower_flames"))
+                .define("torchflowerFlames", true);
 
         builder.pop().translation(categoryKey("entities")).push("entities")
                 .translation(categoryKey("sleeping")).push("sleeping");
