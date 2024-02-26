@@ -43,6 +43,8 @@ public class ModConfigs {
     public final ForgeConfigSpec.ConfigValue<List<? extends String>> fallingBlockDustBlocks;
     public final ForgeConfigSpec.BooleanValue torchflowerSmoke;
     public final ForgeConfigSpec.BooleanValue torchflowerFlames;
+    public final ForgeConfigSpec.BooleanValue dragonEggParticles;
+    public final ForgeConfigSpec.BooleanValue replaceEndPortalParticles;
 
     // Entity Snoring
     public final ForgeConfigSpec.DoubleValue playerSnoreChance;
@@ -144,6 +146,16 @@ public class ModConfigs {
                 .comment("Should torchflowers have flame particles")
                 .translation(key("torchflower_flames"))
                 .define("torchflowerFlames", true);
+
+        dragonEggParticles = builder
+                .comment("Should the dragon egg have particles like the ender chest")
+                .translation(key("dragon_egg_particles"))
+                .define("dragonEggParticles", true);
+
+        replaceEndPortalParticles = builder
+                .comment("Replaces the normal lit end portal smoke particles with nether portal particles")
+                .translation(key("replace_end_portal_particles"))
+                .define("replaceEndPortalParticles", true);
 
         builder.pop().translation(categoryKey("entities")).push("entities")
                 .translation(categoryKey("sleeping")).push("sleeping");

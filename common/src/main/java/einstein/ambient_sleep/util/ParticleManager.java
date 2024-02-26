@@ -246,6 +246,18 @@ public class ParticleManager {
                 level.addParticle(ParticleTypes.FLAME, x, y, z, 0, 0, 0);
             }
         }
+        else if (state.is(Blocks.DRAGON_EGG) && INSTANCE.dragonEggParticles.get()) {
+            for (int i = 0; i < 3; ++i) {
+                level.addParticle(ParticleTypes.PORTAL,
+                        pos.getX() + 0.5 + 0.25 * (random.nextBoolean() ? 1 : -1),
+                        pos.getY() + random.nextDouble(),
+                        pos.getZ() + 0.5 + 0.25 * (random.nextBoolean() ? 1 : -1),
+                        random.nextDouble() * (random.nextBoolean() ? 1 : -1),
+                        (random.nextDouble() - 0.5) * 0.125,
+                        random.nextDouble() * (random.nextBoolean() ? 1 : -1)
+                );
+            }
+        }
     }
 
     public static void levelTickEnd(Minecraft minecraft, Level level) {
