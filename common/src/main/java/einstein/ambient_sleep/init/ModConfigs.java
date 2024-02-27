@@ -35,7 +35,7 @@ public class ModConfigs {
     public final ForgeConfigSpec.BooleanValue campfireSparks;
     public final ForgeConfigSpec.BooleanValue torchSparks;
     public final ForgeConfigSpec.BooleanValue lanternSparks;
-    public final ForgeConfigSpec.BooleanValue lavaSparks;
+    public final ForgeConfigSpec.EnumValue<LavaSparksSpawnType> lavaSparks;
 
     // Blocks
     public final ForgeConfigSpec.BooleanValue redstoneBlockDust;
@@ -119,8 +119,9 @@ public class ModConfigs {
                 .define("lanternSparks", true);
 
         lavaSparks = builder
+                .comment("WARNING! Setting the value to ON can cause severe lag in the nether for slower PCs")
                 .translation(key("lava_sparks"))
-                .define("lavaSparks", true);
+                .defineEnum("lavaSparks", LavaSparksSpawnType.ON);
 
         builder.pop();
 
@@ -324,5 +325,11 @@ public class ModConfigs {
         ON,
         OFF,
         NETHER_ONLY
+    }
+
+    public enum LavaSparksSpawnType {
+        ON,
+        OFF,
+        OVERWORLD_ONLY
     }
 }

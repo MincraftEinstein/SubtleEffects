@@ -14,6 +14,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import static einstein.ambient_sleep.init.ModConfigs.INSTANCE;
+
 @Mixin(LavaFluid.class)
 public abstract class LavaFluidMixin {
 
@@ -26,32 +28,36 @@ public abstract class LavaFluidMixin {
             return;
         }
 
-        if (ModConfigs.INSTANCE.lavaSparks.get()) {
-            int count = 5;
-            int poolSize = 0;
+        if (INSTANCE.lavaSparks.get().equals(ModConfigs.LavaSparksSpawnType.OFF)
+                || (INSTANCE.lavaSparks.get().equals(ModConfigs.LavaSparksSpawnType.OVERWORLD_ONLY)
+                && !level.dimension().equals(Level.OVERWORLD))) {
+            return;
+        }
 
-            for (int x = 0; x < 3; ++x) {
-                for (int z = 0; z < 3; ++z) {
-                    if (isSame(level.getFluidState(pos.offset(x, 0, z)).getType())) {
-                        poolSize++;
-                    }
+        int count = 5;
+        int poolSize = 0;
+
+        for (int x = 0; x < 3; ++x) {
+            for (int z = 0; z < 3; ++z) {
+                if (isSame(level.getFluidState(pos.offset(x, 0, z)).getType())) {
+                    poolSize++;
                 }
             }
+        }
 
-            if (poolSize == 9) {
-                count = 1;
-            }
+        if (poolSize == 9) {
+            count = 1;
+        }
 
-            for (int i = 0; i < count; i++) {
-                level.addParticle(ModParticles.FLOATING_SPARK.get(),
-                        pos.getX() + 0.5 + random.nextDouble() / 2 * (random.nextBoolean() ? 1 : -1),
-                        pos.getY() + random.nextDouble() * random.nextInt(3),
-                        pos.getZ() + 0.5 + random.nextDouble() / 2 * (random.nextBoolean() ? 1 : -1),
-                        random.nextInt(10) / 100D * (random.nextBoolean() ? 1 : -1),
-                        random.nextInt(7) / 100D,
-                        random.nextInt(10) / 100D * (random.nextBoolean() ? 1 : -1)
-                );
-            }
+        for (int i = 0; i < count; i++) {
+            level.addParticle(ModParticles.FLOATING_SPARK.get(),
+                    pos.getX() + 0.5 + random.nextDouble() / 2 * (random.nextBoolean() ? 1 : -1),
+                    pos.getY() + random.nextDouble() * random.nextInt(3),
+                    pos.getZ() + 0.5 + random.nextDouble() / 2 * (random.nextBoolean() ? 1 : -1),
+                    random.nextInt(10) / 100D * (random.nextBoolean() ? 1 : -1),
+                    random.nextInt(7) / 100D,
+                    random.nextInt(10) / 100D * (random.nextBoolean() ? 1 : -1)
+            );
         }
     }
 }
