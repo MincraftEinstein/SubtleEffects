@@ -9,6 +9,7 @@
   "config.ambient_sleep.campfire_sparks": "Campfire Sparks",
   "config.ambient_sleep.torch_sparks": "Torch Sparks",
   "config.ambient_sleep.lanterns_sparks": "Lantern Sparks",
+  "config.ambient_sleep.lava_sparks": "Lava Sparks",
   "config.ambient_sleep.redstone_block_dust": "Redstone Block Dust",
   "config.ambient_sleep.glowstone_block_dust": "Glowstone Block Dust",
   "config.ambient_sleep.beehives_have_sleeping_zs": "Beehives Have Sleeping Zs",

@@ -35,6 +35,7 @@ public class ModConfigs {
     public final ForgeConfigSpec.BooleanValue campfireSparks;
     public final ForgeConfigSpec.BooleanValue torchSparks;
     public final ForgeConfigSpec.BooleanValue lanternSparks;
+    public final ForgeConfigSpec.BooleanValue lavaSparks;
 
     // Blocks
     public final ForgeConfigSpec.BooleanValue redstoneBlockDust;
@@ -116,6 +117,10 @@ public class ModConfigs {
         lanternSparks = builder
                 .translation(key("lantern_sparks"))
                 .define("lanternSparks", true);
+
+        lavaSparks = builder
+                .translation(key("lava_sparks"))
+                .define("lavaSparks", true);
 
         builder.pop();
 
