@@ -28,7 +28,9 @@ import net.minecraft.world.entity.monster.Strider;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.LanternBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.phys.Vec3;
@@ -221,7 +223,25 @@ public class ParticleManager {
 
     // Only works for blocks that don't already implement animateTick
     public static void blockAnimateTick(BlockState state, Level level, BlockPos pos, RandomSource random) {
-        if (state.is(Blocks.REDSTONE_BLOCK) && INSTANCE.redstoneBlockDust.get()) {
+        Block block = state.getBlock();
+
+        if (block instanceof LanternBlock) {
+            if (INSTANCE.lanternSparks.get()) {
+                for (int i = 0; i < 5; i++) {
+                    int xSign = (random.nextBoolean() ? 1 : -1);
+                    int zSign = (random.nextBoolean() ? 1 : -1);
+                    level.addParticle(state.is(Blocks.SOUL_LANTERN) ? ModParticles.FLOATING_SOUL_SPARK.get() : ModParticles.FLOATING_SPARK.get(),
+                            pos.getX() + 0.5 + random.nextDouble() / 2 * xSign,
+                            pos.getY() + random.nextInt(5) / 10D,
+                            pos.getZ() + 0.5 + random.nextDouble() / 2 * zSign,
+                            random.nextInt(3) / 100D * xSign,
+                            0,
+                            random.nextInt(3) / 100D * zSign
+                    );
+                }
+            }
+        }
+        else if (state.is(Blocks.REDSTONE_BLOCK) && INSTANCE.redstoneBlockDust.get()) {
             Util.spawnParticlesAroundBlock(DustParticleOptions.REDSTONE, level, pos, random);
         }
         else if (state.is(Blocks.GLOWSTONE)) {

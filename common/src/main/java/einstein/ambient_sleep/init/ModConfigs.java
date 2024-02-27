@@ -27,13 +27,14 @@ public class ModConfigs {
     public static final ModConfigs INSTANCE = SPEC_PAIR.getLeft();
     public static final ForgeConfigSpec SPEC = SPEC_PAIR.getRight();
 
-    // Flaming Blocks
+    // Sparks
     public final ForgeConfigSpec.BooleanValue removeVanillaCampfireSparks;
     public final ForgeConfigSpec.BooleanValue candleSparks;
     public final ForgeConfigSpec.BooleanValue furnaceSparks;
     public final ForgeConfigSpec.BooleanValue fireSparks;
     public final ForgeConfigSpec.BooleanValue campfireSparks;
     public final ForgeConfigSpec.BooleanValue torchSparks;
+    public final ForgeConfigSpec.BooleanValue lanternSparks;
 
     // Blocks
     public final ForgeConfigSpec.BooleanValue redstoneBlockDust;
@@ -111,6 +112,10 @@ public class ModConfigs {
         torchSparks = builder
                 .translation(key("torch_sparks"))
                 .define("torchSparks", true);
+
+        lanternSparks = builder
+                .translation(key("lantern_sparks"))
+                .define("lanternSparks", true);
 
         builder.pop();
 
