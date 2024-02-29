@@ -93,4 +93,8 @@ public class Util {
             );
         }
     }
+
+    public static double randomDouble(RandomSource random) {
+        return random.nextDouble() * (random.nextBoolean() ? 1 : -1);
+    }
 }

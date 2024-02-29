@@ -146,7 +146,14 @@ public class ParticleManager {
         EntityType<?> type = entity.getType();
         if (type.equals(EntityType.CHICKEN) && INSTANCE.chickenHitFeathers.get()) {
             for (int i = 0; i < 10; i++) {
-                level.addParticle(ModParticles.CHICKEN_FEATHER.get(), entity.getX(), entity.getY(0.5), entity.getZ(), random.nextDouble() * (random.nextBoolean() ? 1 : -1), random.nextDouble() * (random.nextBoolean() ? 1 : -1), random.nextDouble() * (random.nextBoolean() ? 1 : -1));
+                level.addParticle(ModParticles.CHICKEN_FEATHER.get(),
+                        entity.getX(),
+                        entity.getY(0.5),
+                        entity.getZ(),
+                        Util.randomDouble(random),
+                        Util.randomDouble(random),
+                        Util.randomDouble(random)
+                );
             }
         }
         else if (type.equals(EntityType.PARROT) && INSTANCE.parrotHitFeathers.get()) {
@@ -159,12 +166,26 @@ public class ParticleManager {
             };
 
             for (int i = 0; i < 5; i++) {
-                level.addParticle(particle, entity.getX(), entity.getY(0.5), entity.getZ(), random.nextDouble() * (random.nextBoolean() ? 1 : -1), random.nextDouble() * (random.nextBoolean() ? 1 : -1), random.nextDouble() * (random.nextBoolean() ? 1 : -1));
+                level.addParticle(particle,
+                        entity.getX(),
+                        entity.getY(0.5),
+                        entity.getZ(),
+                        Util.randomDouble(random),
+                        Util.randomDouble(random),
+                        Util.randomDouble(random)
+                );
             }
         }
         else if (type.equals(EntityType.SNOW_GOLEM) && INSTANCE.snowGolemHitSnowflakes.get()) {
             for (int i = 0; i < 20; i++) {
-                level.addParticle(ModParticles.SNOWBALL_TRAIL.get(), entity.getRandomX(1), entity.getRandomY(), entity.getRandomZ(1), 0, 0, 0);
+                level.addParticle(ModParticles.SNOW.get(),
+                        entity.getX(),
+                        entity.getY(random.nextFloat()),
+                        entity.getZ(),
+                        Util.randomDouble(random),
+                        Util.randomDouble(random),
+                        Util.randomDouble(random)
+                );
             }
         }
     }
@@ -272,9 +293,9 @@ public class ParticleManager {
                         pos.getX() + 0.5 + 0.25 * (random.nextBoolean() ? 1 : -1),
                         pos.getY() + random.nextDouble(),
                         pos.getZ() + 0.5 + 0.25 * (random.nextBoolean() ? 1 : -1),
-                        random.nextDouble() * (random.nextBoolean() ? 1 : -1),
+                        Util.randomDouble(random),
                         (random.nextDouble() - 0.5) * 0.125,
-                        random.nextDouble() * (random.nextBoolean() ? 1 : -1)
+                        Util.randomDouble(random)
                 );
             }
         }
