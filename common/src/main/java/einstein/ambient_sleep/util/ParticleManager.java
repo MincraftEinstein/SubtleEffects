@@ -299,6 +299,9 @@ public class ParticleManager {
                 );
             }
         }
+        else if (state.is(Blocks.LAVA_CAULDRON) && INSTANCE.lavaCauldronSparks.get()) {
+            Util.spawnLavaSparks(level, pos.above(), random, 5);
+        }
     }
 
     public static void levelTickEnd(Minecraft minecraft, Level level) {

@@ -58,17 +58,21 @@ public class Util {
     }
 
     public static void spawnParticlesAroundBlock(ParticleOptions particle, Level level, BlockPos pos, RandomSource random) {
-        double offsetFromCenter = 0.5625; // 5 is the distance to the edge of the block 625 is an extra 1 pixel
         for (Direction direction : Direction.values()) {
             BlockPos relativePos = pos.relative(direction);
             if (!level.getBlockState(relativePos).isSolidRender(level, relativePos)) {
-                Direction.Axis axis = direction.getAxis();
-                double xOffset = axis == Direction.Axis.X ? 0.5 + offsetFromCenter * direction.getStepX() : random.nextFloat();
-                double yOffset = axis == Direction.Axis.Y ? 0.5 + offsetFromCenter * direction.getStepY() : random.nextFloat();
-                double zOffset = axis == Direction.Axis.Z ? 0.5 + offsetFromCenter * direction.getStepZ() : random.nextFloat();
-                level.addParticle(particle, pos.getX() + xOffset, pos.getY() + yOffset, pos.getZ() + zOffset, 0, 0, 0);
+                spawnParticlesOnSide(particle, 0.0625F, direction, level, pos, random, 0, 0, 0);
             }
         }
+    }
+
+    public static void spawnParticlesOnSide(ParticleOptions particle, float offset, Direction direction, Level level, BlockPos pos, RandomSource random, double xSpeed, double ySpeed, double zSpeed) {
+        double offsetFromCenter = 0.5 + offset;
+        Direction.Axis axis = direction.getAxis();
+        double xOffset = axis == Direction.Axis.X ? 0.5 + offsetFromCenter * direction.getStepX() : random.nextFloat();
+        double yOffset = axis == Direction.Axis.Y ? 0.5 + offsetFromCenter * direction.getStepY() : random.nextFloat();
+        double zOffset = axis == Direction.Axis.Z ? 0.5 + offsetFromCenter * direction.getStepZ() : random.nextFloat();
+        level.addParticle(particle, pos.getX() + xOffset, pos.getY() + yOffset, pos.getZ() + zOffset, xSpeed, ySpeed, zSpeed);
     }
 
     public static void spawnFallDustClouds(LivingEntity entity, float distance, int fallDamage) {
@@ -96,5 +100,22 @@ public class Util {
 
     public static double randomDouble(RandomSource random) {
         return random.nextDouble() * (random.nextBoolean() ? 1 : -1);
+    }
+
+    public static void spawnLavaSparks(Level level, BlockPos pos, RandomSource random, int count) {
+        for (int i = 0; i < count; i++) {
+            level.addParticle(ModParticles.FLOATING_SPARK.get(),
+                    pos.getX() + 0.5 + random.nextDouble() / 2 * (random.nextBoolean() ? 1 : -1),
+                    pos.getY() + random.nextDouble() * random.nextInt(3),
+                    pos.getZ() + 0.5 + random.nextDouble() / 2 * (random.nextBoolean() ? 1 : -1),
+                    random.nextInt(10) / 100D * (random.nextBoolean() ? 1 : -1),
+                    random.nextInt(7) / 100D,
+                    random.nextInt(10) / 100D * (random.nextBoolean() ? 1 : -1)
+            );
+        }
+    }
+
+    public static boolean isSolidOrNotEmpty(Level level, BlockPos pos) {
+        return level.getBlockState(pos).isSolidRender(level, pos) || !level.getFluidState(pos).isEmpty();
     }
 }

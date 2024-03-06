@@ -2,7 +2,9 @@ package einstein.ambient_sleep.mixin.client;
 
 import einstein.ambient_sleep.init.ModConfigs;
 import einstein.ambient_sleep.init.ModParticles;
+import einstein.ambient_sleep.util.Util;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.Fluid;
@@ -24,24 +26,49 @@ public abstract class LavaFluidMixin {
 
     @Inject(method = "animateTick", at = @At("TAIL"))
     private void animateTick(Level level, BlockPos pos, FluidState state, RandomSource random, CallbackInfo ci) {
-        if (!state.isSource()) {
+        if (INSTANCE.lavaSparks.get().equals(ModConfigs.LavaSparksSpawnType.OFF)
+                || (INSTANCE.lavaSparks.get().equals(ModConfigs.LavaSparksSpawnType.NOT_NETHER)
+                && level.dimension().equals(Level.NETHER))) {
             return;
         }
 
-        if (INSTANCE.lavaSparks.get().equals(ModConfigs.LavaSparksSpawnType.OFF)
-                || (INSTANCE.lavaSparks.get().equals(ModConfigs.LavaSparksSpawnType.OVERWORLD_ONLY)
-                && !level.dimension().equals(Level.OVERWORLD))) {
+        if (state.getValue(LavaFluid.FALLING)) {
+            for (Direction direction : Direction.values()) {
+                BlockPos relativePos = pos.relative(direction);
+                if (direction.getAxis() != Direction.Axis.Y && !Util.isSolidOrNotEmpty(level, relativePos)) {
+                    Util.spawnParticlesOnSide(ModParticles.FLOATING_SPARK.get(),
+                            -0.0625F,
+                            direction.getOpposite(),
+                            level, relativePos, random,
+                            random.nextInt(10) / 100D * (random.nextBoolean() ? 1 : -1),
+                            random.nextInt(7) / 100D,
+                            random.nextInt(10) / 100D * (random.nextBoolean() ? 1 : -1)
+                    );
+                }
+            }
             return;
         }
 
         int count = 5;
         int poolSize = 0;
 
-        for (int x = 0; x < 3; ++x) {
-            for (int z = 0; z < 3; ++z) {
-                if (isSame(level.getFluidState(pos.offset(x, 0, z)).getType())) {
-                    poolSize++;
+        for (int x = -1; x < 2; x++) {
+            for (int z = -1; z < 2; z++) {
+                BlockPos relativePos = pos.offset(x, 0, z);
+                BlockPos abovePos = relativePos.above();
+
+                if (level.getBlockState(relativePos).isSolidRender(level, relativePos) || !isSame(level.getFluidState(relativePos).getType())) {
+                    continue;
                 }
+
+                if (Util.isSolidOrNotEmpty(level, abovePos)) {
+                    if (abovePos.equals(pos.above())) {
+                        return;
+                    }
+                    continue;
+                }
+
+                poolSize++;
             }
         }
 
@@ -49,15 +76,6 @@ public abstract class LavaFluidMixin {
             count = 1;
         }
 
-        for (int i = 0; i < count; i++) {
-            level.addParticle(ModParticles.FLOATING_SPARK.get(),
-                    pos.getX() + 0.5 + random.nextDouble() / 2 * (random.nextBoolean() ? 1 : -1),
-                    pos.getY() + random.nextDouble() * random.nextInt(3),
-                    pos.getZ() + 0.5 + random.nextDouble() / 2 * (random.nextBoolean() ? 1 : -1),
-                    random.nextInt(10) / 100D * (random.nextBoolean() ? 1 : -1),
-                    random.nextInt(7) / 100D,
-                    random.nextInt(10) / 100D * (random.nextBoolean() ? 1 : -1)
-            );
-        }
+        Util.spawnLavaSparks(level, pos, random, count);
     }
 }
