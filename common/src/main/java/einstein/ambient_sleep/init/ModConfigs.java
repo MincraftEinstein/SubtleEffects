@@ -54,7 +54,7 @@ public class ModConfigs {
     public final ForgeConfigSpec.DoubleValue villagerSnoreChance;
     public final ForgeConfigSpec.BooleanValue displaySleepingZsOnlyWhenSnoring;
     public final ForgeConfigSpec.BooleanValue foxesHaveSleepingZs;
-    public final ForgeConfigSpec.BooleanValue adjustNametagRenderingWhenSleeping;
+    public final ForgeConfigSpec.BooleanValue adjustNametagWhenSleeping;
 
     // Entity Dust Clouds
     public final ForgeConfigSpec.BooleanValue fallDamageDustClouds;
@@ -196,10 +196,10 @@ public class ModConfigs {
                 .translation(key("foxes_have_sleeping_zs"))
                 .define("foxesHaveSleepingZs", true);
 
-        adjustNametagRenderingWhenSleeping = builder
+        adjustNametagWhenSleeping = builder
                 .comment("Adjust name tag rendering to be at the top of the head rather than above it when a mob is sleeping in a bed")
-                .translation(key("adjust_nametag_rendering_when_sleeping"))
-                .define("adjustNametagRenderingWhenSleeping", true);
+                .translation(key("adjust_nametag_when_sleeping"))
+                .define("adjustNametagWhenSleeping", true);
 
         builder.pop().translation(categoryKey("dust_clouds")).push("dustClouds");
 

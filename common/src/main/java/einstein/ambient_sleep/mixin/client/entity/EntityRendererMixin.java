@@ -29,7 +29,7 @@ public class EntityRendererMixin<T extends Entity> {
     @Inject(method = "renderNameTag", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/vertex/PoseStack;translate(FFF)V", shift = At.Shift.BEFORE))
     private void renderNameTag(T entity, Component displayName, PoseStack poseStack, MultiBufferSource source, int packedLight, CallbackInfo ci) {
         ambientSleep$cancelTranslate = false;
-        if (!ModConfigs.INSTANCE.adjustNametagRenderingWhenSleeping.get()) {
+        if (!ModConfigs.INSTANCE.adjustNametagWhenSleeping.get()) {
             return;
         }
 
