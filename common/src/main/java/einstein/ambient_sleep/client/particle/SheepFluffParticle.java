@@ -12,7 +12,7 @@ public class SheepFluffParticle extends FeatherParticle {
     protected SheepFluffParticle(ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, SpriteSet sprites, Vector3f color) {
         super(level, x, y, z, xSpeed, ySpeed, zSpeed, sprites);
         setColor(color.x(), color.y(), color.z());
-        gravity = 1;
+        gravity = 0.5F;
     }
 
     public record Provider(SpriteSet sprites) implements ParticleProvider<SheepFluffParticleOptions> {

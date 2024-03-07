@@ -2,6 +2,7 @@ package einstein.ambient_sleep.mixin.client.entity;
 
 import einstein.ambient_sleep.client.particle.SheepFluffParticleOptions;
 import einstein.ambient_sleep.init.ModConfigs;
+import einstein.ambient_sleep.util.Util;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EntityType;
@@ -35,9 +36,9 @@ public abstract class SheepMixin extends Animal {
     private void mobInteract(Player player, InteractionHand hand, CallbackInfoReturnable<InteractionResult> cir) {
         if (level().isClientSide() && ModConfigs.INSTANCE.sheepShearFluff.get()) {
             if (player.getItemInHand(hand).is(Items.SHEARS) && readyForShearing()) {
-                for (int i = 0; i < 5; i++) {
+                for (int i = 0; i < 7; i++) {
                     SheepFluffParticleOptions particle = new SheepFluffParticleOptions(new Vector3f(Sheep.getColorArray(getColor())));
-                    level().addParticle(particle, getRandomX(0.5), getY(0.5), getRandomZ(0.5), random.nextBoolean() ? 1 : -1, random.nextBoolean() ? 1 : -1, random.nextBoolean() ? 1 : -1);
+                    level().addParticle(particle, getRandomX(0.5), getY(0.5), getRandomZ(0.5), Util.randomDouble(random), random.nextDouble(), Util.randomDouble(random));
                 }
             }
         }

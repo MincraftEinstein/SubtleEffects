@@ -1,5 +1,6 @@
 {
   "textures": [
-    "ambient_sleep:sheep_fluff"
+    "ambient_sleep:sheep_fluff_0",
+    "ambient_sleep:sheep_fluff_1"
   ]
 }
