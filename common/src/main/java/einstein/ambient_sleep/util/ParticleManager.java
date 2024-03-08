@@ -53,8 +53,8 @@ public class ParticleManager {
         float bbHeight = entity.getBbHeight();
 
         if (bbWidth <= 4 && bbHeight <= 4 && entity.isOnFire()) {
-            if (INSTANCE.burningEntitySmoke.get()) {
-                level.addParticle(ParticleTypes.SMOKE, entity.getRandomX(1), entity.getRandomY(), entity.getRandomZ(1), 0, 0, 0);
+            if (INSTANCE.burningEntitySmoke.get() != ModConfigs.SmokeType.OFF) {
+                level.addParticle(INSTANCE.burningEntitySmoke.get().getParticle().get(), entity.getRandomX(1), entity.getRandomY(), entity.getRandomZ(1), 0, 0, 0);
             }
 
             if (INSTANCE.burningEntitySparks.get()) {
@@ -279,8 +279,8 @@ public class ParticleManager {
             double y = pos.getY() + 0.8;
             double z = pos.getZ() + 0.5;
 
-            if (INSTANCE.torchflowerSmoke.get() && random.nextInt(3) == 0) {
-                level.addParticle(ParticleTypes.SMOKE, x, y, z, 0, 0, 0);
+            if (INSTANCE.torchflowerSmoke.get() != ModConfigs.SmokeType.OFF && random.nextInt(3) == 0) {
+                level.addParticle(INSTANCE.torchflowerSmoke.get().getParticle().get(), x, y, z, 0, 0, 0);
             }
 
             if (INSTANCE.torchflowerFlames.get() && random.nextInt(5) == 0) {

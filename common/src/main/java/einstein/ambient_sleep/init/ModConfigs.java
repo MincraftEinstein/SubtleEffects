@@ -2,13 +2,17 @@ package einstein.ambient_sleep.init;
 
 import einstein.ambient_sleep.AmbientSleep;
 import net.minecraft.Util;
+import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.DyeColor;
 import net.minecraftforge.common.ForgeConfigSpec;
 import org.apache.commons.lang3.tuple.Pair;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Supplier;
 
 public class ModConfigs {
 
@@ -38,13 +42,20 @@ public class ModConfigs {
     public final ForgeConfigSpec.EnumValue<LavaSparksSpawnType> lavaSparks;
     public final ForgeConfigSpec.BooleanValue lavaCauldronSparks;
 
+    // Updated Smoke
+    public final ForgeConfigSpec.BooleanValue candleSmoke;
+    public final ForgeConfigSpec.BooleanValue furnaceSmoke;
+    public final ForgeConfigSpec.BooleanValue fireSmoke;
+    public final ForgeConfigSpec.BooleanValue torchSmoke;
+    public final ForgeConfigSpec.BooleanValue lavaSparkSmoke;
+
     // Blocks
     public final ForgeConfigSpec.BooleanValue redstoneBlockDust;
     public final ForgeConfigSpec.EnumValue<GlowstoneDustSpawnType> glowstoneBlockDust;
     public final ForgeConfigSpec.BooleanValue beehivesHaveSleepingZs;
     public final ForgeConfigSpec.BooleanValue fallingBlockDust;
     public final ForgeConfigSpec.ConfigValue<List<? extends String>> fallingBlockDustBlocks;
-    public final ForgeConfigSpec.BooleanValue torchflowerSmoke;
+    public final ForgeConfigSpec.EnumValue<SmokeType> torchflowerSmoke;
     public final ForgeConfigSpec.BooleanValue torchflowerFlames;
     public final ForgeConfigSpec.BooleanValue dragonEggParticles;
     public final ForgeConfigSpec.BooleanValue replaceEndPortalParticles;
@@ -62,7 +73,7 @@ public class ModConfigs {
     public final ForgeConfigSpec.BooleanValue mobSprintingDustClouds;
 
     // Burning Entities
-    public final ForgeConfigSpec.BooleanValue burningEntitySmoke;
+    public final ForgeConfigSpec.EnumValue<SmokeType> burningEntitySmoke;
     public final ForgeConfigSpec.BooleanValue burningEntityFlames;
     public final ForgeConfigSpec.BooleanValue burningEntitySparks;
 
@@ -128,6 +139,31 @@ public class ModConfigs {
                 .translation(key("lava_cauldron_sparks"))
                 .define("lavaCauldronSparks", true);
 
+        builder.pop()
+                .comment("Replace the old black and gray smoke particles with new campfire style particles")
+                .translation(categoryKey("update_smoke"))
+                .push("updateSmoke");
+
+        candleSmoke = builder
+                .translation("candle_smoke")
+                .define("candleSmoke", true);
+
+        furnaceSmoke = builder
+                .translation("furnace_smoke")
+                .define("furnaceSmoke", true);
+
+        fireSmoke = builder
+                .translation("fire_smoke")
+                .define("fireSmoke", true);
+
+        torchSmoke = builder
+                .translation("torch_smoke")
+                .define("torchSmoke", true);
+
+        lavaSparkSmoke = builder
+                .translation("lava_spark_smoke")
+                .define("lavaSparkSmoke", true);
+
         builder.pop();
 
         redstoneBlockDust = builder
@@ -156,7 +192,7 @@ public class ModConfigs {
         torchflowerSmoke = builder
                 .comment("Should torchflowers have smoke particles")
                 .translation(key("torchflower_smoke"))
-                .define("torchflowerSmoke", true);
+                .defineEnum("torchflowerSmoke", SmokeType.DEFAULT);
 
         torchflowerFlames = builder
                 .comment("Should torchflowers have flame particles")
@@ -225,7 +261,7 @@ public class ModConfigs {
 
         burningEntitySmoke = builder
                 .translation(key("burning_entity_smoke"))
-                .define("smoke", true);
+                .defineEnum("smoke", SmokeType.DEFAULT);
 
         burningEntityFlames = builder
                 .translation(key("burning_entity_flames"))
@@ -336,5 +372,23 @@ public class ModConfigs {
         ON,
         OFF,
         NOT_NETHER
+    }
+
+    public enum SmokeType {
+        OFF(null),
+        DEFAULT(() -> ParticleTypes.SMOKE),
+        UPDATED(ModParticles.SMOKE);
+
+        @Nullable
+        private final Supplier<? extends ParticleOptions> particle;
+
+        SmokeType(@Nullable Supplier<? extends ParticleOptions> particle) {
+            this.particle = particle;
+        }
+
+        @Nullable
+        public Supplier<? extends ParticleOptions> getParticle() {
+            return particle;
+        }
     }
 }

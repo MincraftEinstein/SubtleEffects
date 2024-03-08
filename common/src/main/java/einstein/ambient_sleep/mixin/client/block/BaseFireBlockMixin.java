@@ -1,10 +1,13 @@
 package einstein.ambient_sleep.mixin.client.block;
 
 import einstein.ambient_sleep.init.ModConfigs;
+import einstein.ambient_sleep.init.ModParticles;
 import einstein.ambient_sleep.util.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseFireBlock;
@@ -16,6 +19,7 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(BaseFireBlock.class)
@@ -23,6 +27,14 @@ public abstract class BaseFireBlockMixin {
 
     @Shadow
     protected abstract boolean canBurn(BlockState blockState);
+
+    @Redirect(method = "animateTick", at = @At(value = "FIELD", target = "Lnet/minecraft/core/particles/ParticleTypes;LARGE_SMOKE:Lnet/minecraft/core/particles/SimpleParticleType;"))
+    private SimpleParticleType replaceSmoke() {
+        if (ModConfigs.INSTANCE.fireSmoke.get()) {
+            return ModParticles.SMOKE.get();
+        }
+        return ParticleTypes.SMOKE;
+    }
 
     @Inject(method = "animateTick", at = @At("TAIL"))
     private void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random, CallbackInfo ci) {
