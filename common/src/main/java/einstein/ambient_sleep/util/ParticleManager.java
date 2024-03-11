@@ -39,6 +39,7 @@ import net.minecraftforge.common.ForgeConfigSpec;
 import java.util.List;
 
 import static einstein.ambient_sleep.init.ModConfigs.INSTANCE;
+import static einstein.ambient_sleep.util.MathUtil.*;
 
 public class ParticleManager {
 
@@ -60,9 +61,9 @@ public class ParticleManager {
             if (INSTANCE.burningEntitySparks.get()) {
                 for (int i = 0; i < 2; i++) {
                     level.addParticle(ModParticles.SHORT_SPARK.get(), entity.getRandomX(1), entity.getRandomY(), entity.getRandomZ(1),
-                            random.nextInt(3) / 100D * (random.nextBoolean() ? 1 : -1),
-                            random.nextInt(5) / 100D * (random.nextBoolean() ? 1 : -1),
-                            random.nextInt(3) / 100D * (random.nextBoolean() ? 1 : -1)
+                            nextFloat(3) * nextSign(),
+                            nextFloat(5) * nextSign(),
+                            nextFloat(3) * nextSign()
                     );
                 }
             }
@@ -94,9 +95,9 @@ public class ParticleManager {
                         entity.getRandomX(1),
                         entity.getRandomY(),
                         entity.getRandomZ(1),
-                        random.nextInt(4) / 100D * (random.nextBoolean() ? 1 : -1),
+                        nextFloat(4) * nextSign(),
                         0,
-                        random.nextInt(4) / 100D * (random.nextBoolean() ? 1 : -1)
+                        nextFloat(4) * nextSign()
                 );
             }
         }
@@ -150,9 +151,9 @@ public class ParticleManager {
                         entity.getX(),
                         entity.getY(0.5),
                         entity.getZ(),
-                        Util.randomDouble(random),
-                        Util.randomDouble(random),
-                        Util.randomDouble(random)
+                        nextNonAbsDouble(),
+                        nextNonAbsDouble(),
+                        nextNonAbsDouble()
                 );
             }
         }
@@ -170,9 +171,9 @@ public class ParticleManager {
                         entity.getX(),
                         entity.getY(0.5),
                         entity.getZ(),
-                        Util.randomDouble(random),
-                        Util.randomDouble(random),
-                        Util.randomDouble(random)
+                        nextNonAbsDouble(),
+                        nextNonAbsDouble(),
+                        nextNonAbsDouble()
                 );
             }
         }
@@ -182,9 +183,9 @@ public class ParticleManager {
                         entity.getX(),
                         entity.getY(random.nextFloat()),
                         entity.getZ(),
-                        Util.randomDouble(random),
-                        Util.randomDouble(random),
-                        Util.randomDouble(random)
+                        nextNonAbsDouble(),
+                        nextNonAbsDouble(),
+                        nextNonAbsDouble()
                 );
             }
         }
@@ -222,9 +223,9 @@ public class ParticleManager {
                         entity.getRandomX(1),
                         y + Math.max(Math.min(random.nextFloat(), 0.5), 0.2),
                         entity.getRandomZ(1),
-                        0.3 * (random.nextBoolean() ? 1 : -1),
+                        0.3 * nextSign(),
                         random.nextDouble(),
-                        0.3 * (random.nextBoolean() ? 1 : -1)
+                        0.3 * nextSign()
                 );
             }
             return;
@@ -235,9 +236,9 @@ public class ParticleManager {
                     entity.getRandomX(1),
                     y + Math.max(Math.min(random.nextFloat(), 0.5), 0.2),
                     entity.getRandomZ(1),
-                    0.5 * (random.nextBoolean() ? 1 : -1),
+                    0.5 * nextSign(),
                     random.nextDouble() * 3,
-                    0.5 * (random.nextBoolean() ? 1 : -1)
+                    0.5 * nextSign()
             );
         }
     }
@@ -249,8 +250,8 @@ public class ParticleManager {
         if (block instanceof LanternBlock) {
             if (INSTANCE.lanternSparks.get()) {
                 for (int i = 0; i < 5; i++) {
-                    int xSign = (random.nextBoolean() ? 1 : -1);
-                    int zSign = (random.nextBoolean() ? 1 : -1);
+                    int xSign = nextSign();
+                    int zSign = nextSign();
                     level.addParticle(state.is(Blocks.SOUL_LANTERN) ? ModParticles.FLOATING_SOUL_SPARK.get() : ModParticles.FLOATING_SPARK.get(),
                             pos.getX() + 0.5 + random.nextDouble() / 2 * xSign,
                             pos.getY() + random.nextInt(5) / 10D,
@@ -290,12 +291,12 @@ public class ParticleManager {
         else if (state.is(Blocks.DRAGON_EGG) && INSTANCE.dragonEggParticles.get()) {
             for (int i = 0; i < 3; ++i) {
                 level.addParticle(ParticleTypes.PORTAL,
-                        pos.getX() + 0.5 + 0.25 * (random.nextBoolean() ? 1 : -1),
+                        pos.getX() + 0.5 + 0.25 * nextSign(),
                         pos.getY() + random.nextDouble(),
-                        pos.getZ() + 0.5 + 0.25 * (random.nextBoolean() ? 1 : -1),
-                        Util.randomDouble(random),
+                        pos.getZ() + 0.5 + 0.25 * nextSign(),
+                        nextNonAbsDouble(),
                         (random.nextDouble() - 0.5) * 0.125,
-                        Util.randomDouble(random)
+                        nextNonAbsDouble()
                 );
             }
         }

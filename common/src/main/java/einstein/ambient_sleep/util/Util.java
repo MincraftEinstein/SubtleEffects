@@ -20,6 +20,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
 import static einstein.ambient_sleep.init.ModConfigs.INSTANCE;
+import static einstein.ambient_sleep.util.MathUtil.nextFloat;
+import static einstein.ambient_sleep.util.MathUtil.nextSign;
 
 public class Util {
 
@@ -46,12 +48,12 @@ public class Util {
             for (int i = 0; i < count; i++) {
                 SimpleParticleType type = (isSoulFlame ? (longLife ? ModParticles.LONG_SOUL_SPARK : ModParticles.SHORT_SOUL_SPARK) : (longLife ? ModParticles.LONG_SPARK : ModParticles.SHORT_SPARK)).get();
                 level.addParticle(type,
-                        pos.getX() + offset.x() + random.nextDouble() / xSize * (random.nextBoolean() ? 1 : -1),
+                        pos.getX() + offset.x() + random.nextDouble() / xSize * nextSign(),
                         pos.getY() + offset.y(),
-                        pos.getZ() + offset.z() + random.nextDouble() / zSize * (random.nextBoolean() ? 1 : -1),
-                        random.nextInt(maxSpeeds.getX()) / 100D * (random.nextBoolean() ? 1 : -1),
-                        random.nextInt(maxSpeeds.getY()) / 100D * (random.nextBoolean() ? 1 : -1),
-                        random.nextInt(maxSpeeds.getZ()) / 100D * (random.nextBoolean() ? 1 : -1)
+                        pos.getZ() + offset.z() + random.nextDouble() / zSize * nextSign(),
+                        nextFloat(maxSpeeds.getX()) * nextSign(),
+                        nextFloat(maxSpeeds.getY()) * nextSign(),
+                        nextFloat(maxSpeeds.getZ()) * nextSign()
                 );
             }
         }
@@ -98,19 +100,15 @@ public class Util {
         }
     }
 
-    public static double randomDouble(RandomSource random) {
-        return random.nextDouble() * (random.nextBoolean() ? 1 : -1);
-    }
-
     public static void spawnLavaSparks(Level level, BlockPos pos, RandomSource random, int count) {
         for (int i = 0; i < count; i++) {
             level.addParticle(ModParticles.FLOATING_SPARK.get(),
-                    pos.getX() + 0.5 + random.nextDouble() / 2 * (random.nextBoolean() ? 1 : -1),
+                    pos.getX() + 0.5 + random.nextDouble() / 2 * nextSign(),
                     pos.getY() + random.nextDouble() * random.nextInt(3),
-                    pos.getZ() + 0.5 + random.nextDouble() / 2 * (random.nextBoolean() ? 1 : -1),
-                    random.nextInt(10) / 100D * (random.nextBoolean() ? 1 : -1),
-                    random.nextInt(7) / 100D,
-                    random.nextInt(10) / 100D * (random.nextBoolean() ? 1 : -1)
+                    pos.getZ() + 0.5 + random.nextDouble() / 2 * nextSign(),
+                    nextFloat(10) * nextSign(),
+                    nextFloat(7) ,
+                    nextFloat(10) * nextSign()
             );
         }
     }

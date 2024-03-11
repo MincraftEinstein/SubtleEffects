@@ -2,6 +2,7 @@ package einstein.ambient_sleep.mixin.client;
 
 import einstein.ambient_sleep.init.ModConfigs;
 import einstein.ambient_sleep.init.ModParticles;
+import einstein.ambient_sleep.util.MathUtil;
 import einstein.ambient_sleep.util.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -40,9 +41,9 @@ public abstract class LavaFluidMixin {
                             -0.0625F,
                             direction.getOpposite(),
                             level, relativePos, random,
-                            random.nextInt(10) / 100D * (random.nextBoolean() ? 1 : -1),
-                            random.nextInt(7) / 100D,
-                            random.nextInt(10) / 100D * (random.nextBoolean() ? 1 : -1)
+                            MathUtil.nextFloat(10) * MathUtil.nextSign(),
+                            MathUtil.nextFloat(7) ,
+                            MathUtil.nextFloat(10) * MathUtil.nextSign()
                     );
                 }
             }

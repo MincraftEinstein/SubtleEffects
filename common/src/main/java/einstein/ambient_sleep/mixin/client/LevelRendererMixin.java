@@ -20,6 +20,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import javax.annotation.Nullable;
 
 import static einstein.ambient_sleep.init.ModConfigs.INSTANCE;
+import static einstein.ambient_sleep.util.MathUtil.nextFloat;
+import static einstein.ambient_sleep.util.MathUtil.nextSign;
 
 @Mixin(LevelRenderer.class)
 public class LevelRendererMixin {
@@ -47,15 +49,15 @@ public class LevelRendererMixin {
                 float pointZ = random.nextFloat();
 
                 for (int i = 0; i < 20; i++) {
-                    int xSign = random.nextBoolean() ? 1 : -1;
-                    int zSign = random.nextBoolean() ? 1 : -1;
+                    int xSign = nextSign();
+                    int zSign = nextSign();
                     level.addParticle(ModParticles.METAL_SPARK.get(),
                             pos.getX() + pointX,
                             pos.getY() + 1,
                             pos.getZ() + pointZ,
-                            random.nextInt(10, 20) / 100D * xSign,
-                            random.nextInt(10, 20) / 100D,
-                            random.nextInt(10, 20) / 100D * zSign
+                            nextFloat(10, 20) * xSign,
+                            nextFloat(10, 20),
+                            nextFloat(10, 20) * zSign
                     );
                 }
             }
@@ -68,9 +70,9 @@ public class LevelRendererMixin {
 
                 for (int i = 0; i < 20; i++) {
                     Util.spawnParticlesOnSide(ModParticles.METAL_SPARK.get(), 0, side, level, pos, random,
-                            random.nextInt(10, 20) / 100D * (direction.getStepX() * 1.5),
-                            face == AttachFace.CEILING ? 0 : random.nextInt(10, 20) / 100D,
-                            random.nextInt(10, 20) / 100D * (direction.getStepZ() * 1.5)
+                            nextFloat(10, 20) * (direction.getStepX() * 1.5),
+                            face == AttachFace.CEILING ? 0 : nextFloat(10, 20),
+                            nextFloat(10, 20) * (direction.getStepZ() * 1.5)
                     );
                 }
             }
