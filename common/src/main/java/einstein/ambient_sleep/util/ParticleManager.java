@@ -109,7 +109,7 @@ public class ParticleManager {
             }
         }
         else if (entity instanceof Player player) {
-            if (INSTANCE.sprintingDustClouds.get() && player.canSpawnSprintParticle() && player.onGround()) {
+            if (INSTANCE.sprintingDustClouds.get() && player.canSpawnSprintParticle() && player.onGround() && !player.isUsingItem()) {
                 if (random.nextBoolean()) {
                     level.addParticle(ModParticles.SMALL_DUST_CLOUD.get(),
                             entity.getRandomX(1),
