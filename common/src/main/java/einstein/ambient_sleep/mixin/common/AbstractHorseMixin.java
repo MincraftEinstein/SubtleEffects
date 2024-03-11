@@ -1,7 +1,7 @@
 package einstein.ambient_sleep.mixin.common;
 
 import einstein.ambient_sleep.init.ModConfigs;
-import einstein.ambient_sleep.util.Util;
+import einstein.ambient_sleep.util.ParticleSpawnUtil;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.camel.Camel;
@@ -29,7 +29,7 @@ public abstract class AbstractHorseMixin extends Animal {
     @Redirect(method = "causeFallDamage", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/animal/horse/AbstractHorse;calculateFallDamage(FF)I"))
     private int calculateFallDamage(AbstractHorse horse, float distance, float damageMultiplier) {
         int fallDamage = calculateFallDamage(distance, damageMultiplier);
-        Util.spawnFallDustClouds(horse, distance, fallDamage);
+        ParticleSpawnUtil.spawnFallDustClouds(horse, distance, fallDamage);
         return fallDamage;
     }
 
@@ -37,7 +37,7 @@ public abstract class AbstractHorseMixin extends Animal {
     private void tickRidden(Player player, Vec3 travelVector, CallbackInfo ci) {
         if (level().isClientSide && ModConfigs.INSTANCE.mobSprintingDustClouds.get()) {
             if (travelVector.z > 0 && onGround() && !(ambientSleep$me instanceof Camel)) {
-                Util.spawnCreatureMovementDustClouds(ambientSleep$me, level(), random, 20);
+                ParticleSpawnUtil.spawnCreatureMovementDustClouds(ambientSleep$me, level(), random, 20);
             }
         }
     }

@@ -1,6 +1,6 @@
 package einstein.ambient_sleep.mixin.common;
 
-import einstein.ambient_sleep.util.Util;
+import einstein.ambient_sleep.util.ParticleSpawnUtil;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -23,7 +23,7 @@ public abstract class CommonLivingEntityMixin extends Entity {
     @Redirect(method = "causeFallDamage", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;calculateFallDamage(FF)I"))
     private int calculateFallDamage(LivingEntity entity, float distance, float damageMultiplier) {
         int fallDamage = calculateFallDamage(distance, damageMultiplier);
-        Util.spawnFallDustClouds(entity, distance, fallDamage);
+        ParticleSpawnUtil.spawnFallDustClouds(entity, distance, fallDamage);
         return fallDamage;
     }
 }

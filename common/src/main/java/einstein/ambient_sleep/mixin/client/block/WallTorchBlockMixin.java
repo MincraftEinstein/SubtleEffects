@@ -2,7 +2,7 @@ package einstein.ambient_sleep.mixin.client.block;
 
 import einstein.ambient_sleep.init.ModConfigs;
 import einstein.ambient_sleep.init.ModParticles;
-import einstein.ambient_sleep.util.Util;
+import einstein.ambient_sleep.util.ParticleSpawnUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
@@ -38,6 +38,6 @@ public class WallTorchBlockMixin {
         }
 
         Direction direction = state.getValue(WallTorchBlock.FACING).getOpposite();
-        Util.spawnSparks(level, random, pos, new Vec3(0.5 + (0.27 * direction.getStepX()), 0.7, 0.5 + (0.27 * direction.getStepZ())), new Vec3i(1, 1, 1), 2, 20, state.is(Blocks.SOUL_WALL_TORCH), false);
+        ParticleSpawnUtil.spawnSparks(level, random, pos, new Vec3(0.5 + (0.27 * direction.getStepX()), 0.7, 0.5 + (0.27 * direction.getStepZ())), new Vec3i(1, 1, 1), 2, 20, state.is(Blocks.SOUL_WALL_TORCH), false);
     }
 }

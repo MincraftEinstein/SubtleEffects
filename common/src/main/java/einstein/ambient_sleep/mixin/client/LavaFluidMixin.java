@@ -3,6 +3,7 @@ package einstein.ambient_sleep.mixin.client;
 import einstein.ambient_sleep.init.ModConfigs;
 import einstein.ambient_sleep.init.ModParticles;
 import einstein.ambient_sleep.util.MathUtil;
+import einstein.ambient_sleep.util.ParticleSpawnUtil;
 import einstein.ambient_sleep.util.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -37,7 +38,7 @@ public abstract class LavaFluidMixin {
             for (Direction direction : Direction.values()) {
                 BlockPos relativePos = pos.relative(direction);
                 if (direction.getAxis() != Direction.Axis.Y && !Util.isSolidOrNotEmpty(level, relativePos)) {
-                    Util.spawnParticlesOnSide(ModParticles.FLOATING_SPARK.get(),
+                    ParticleSpawnUtil.spawnParticlesOnSide(ModParticles.FLOATING_SPARK.get(),
                             -0.0625F,
                             direction.getOpposite(),
                             level, relativePos, random,
@@ -77,6 +78,6 @@ public abstract class LavaFluidMixin {
             count = 1;
         }
 
-        Util.spawnLavaSparks(level, pos, random, count);
+        ParticleSpawnUtil.spawnLavaSparks(level, pos, random, count);
     }
 }

@@ -1,6 +1,6 @@
 package einstein.ambient_sleep.mixin.common;
 
-import einstein.ambient_sleep.util.Util;
+import einstein.ambient_sleep.util.ParticleSpawnUtil;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.animal.horse.AbstractChestedHorse;
 import net.minecraft.world.entity.animal.horse.Llama;
@@ -19,7 +19,7 @@ public abstract class LlamaMixin extends AbstractChestedHorse {
     @Redirect(method = "causeFallDamage", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/animal/horse/Llama;calculateFallDamage(FF)I"))
     private int calculateFallDamage(Llama llama, float distance, float damageMultiplier) {
         int fallDamage = calculateFallDamage(distance, damageMultiplier);
-        Util.spawnFallDustClouds(llama, distance, fallDamage);
+        ParticleSpawnUtil.spawnFallDustClouds(llama, distance, fallDamage);
         return fallDamage;
     }
 }

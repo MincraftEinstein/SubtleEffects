@@ -2,7 +2,7 @@ package einstein.ambient_sleep.mixin.client.block;
 
 import einstein.ambient_sleep.init.ModConfigs;
 import einstein.ambient_sleep.init.ModParticles;
-import einstein.ambient_sleep.util.Util;
+import einstein.ambient_sleep.util.ParticleSpawnUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
@@ -72,6 +72,6 @@ public abstract class BaseFireBlockMixin {
 
     @Unique
     private static void ambientSleep$spawnSparks(Level level, RandomSource random, BlockState state, BlockPos pos, double xOffset, double zOffset) {
-        Util.spawnSparks(level, random, pos, new Vec3(xOffset, random.nextDouble(), zOffset), new Vec3i(3, 5, 3), 10, 10, state.is(Blocks.SOUL_FIRE), true);
+        ParticleSpawnUtil.spawnSparks(level, random, pos, new Vec3(xOffset, random.nextDouble(), zOffset), new Vec3i(3, 5, 3), 10, 10, state.is(Blocks.SOUL_FIRE), true);
     }
 }

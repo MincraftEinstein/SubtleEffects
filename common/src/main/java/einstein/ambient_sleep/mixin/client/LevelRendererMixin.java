@@ -1,7 +1,7 @@
 package einstein.ambient_sleep.mixin.client;
 
 import einstein.ambient_sleep.init.ModParticles;
-import einstein.ambient_sleep.util.Util;
+import einstein.ambient_sleep.util.ParticleSpawnUtil;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.core.BlockPos;
@@ -69,7 +69,7 @@ public class LevelRendererMixin {
                 Direction side = face == AttachFace.CEILING ? Direction.DOWN : Direction.UP;
 
                 for (int i = 0; i < 20; i++) {
-                    Util.spawnParticlesOnSide(ModParticles.METAL_SPARK.get(), 0, side, level, pos, random,
+                    ParticleSpawnUtil.spawnParticlesOnSide(ModParticles.METAL_SPARK.get(), 0, side, level, pos, random,
                             nextFloat(10, 20) * (direction.getStepX() * 1.5),
                             face == AttachFace.CEILING ? 0 : nextFloat(10, 20),
                             nextFloat(10, 20) * (direction.getStepZ() * 1.5)

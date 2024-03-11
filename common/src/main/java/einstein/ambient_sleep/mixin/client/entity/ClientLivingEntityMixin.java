@@ -4,6 +4,7 @@ import einstein.ambient_sleep.init.ModConfigs;
 import einstein.ambient_sleep.init.ModParticles;
 import einstein.ambient_sleep.init.ModSounds;
 import einstein.ambient_sleep.util.ParticleManager;
+import einstein.ambient_sleep.util.ParticleSpawnUtil;
 import einstein.ambient_sleep.util.Util;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
@@ -137,7 +138,7 @@ public abstract class ClientLivingEntityMixin extends Entity {
             return false;
         }
 
-        Util.spawnFallDustClouds(entity, 10, 10);
+        ParticleSpawnUtil.spawnFallDustClouds(entity, 10, 10);
         return false;
     }
 

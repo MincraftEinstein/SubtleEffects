@@ -2,7 +2,7 @@ package einstein.ambient_sleep.mixin.client.block;
 
 import einstein.ambient_sleep.init.ModConfigs;
 import einstein.ambient_sleep.init.ModParticles;
-import einstein.ambient_sleep.util.Util;
+import einstein.ambient_sleep.util.ParticleSpawnUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Vec3i;
 import net.minecraft.core.particles.ParticleTypes;
@@ -36,6 +36,6 @@ public class TorchBlockMixin {
             return;
         }
 
-        Util.spawnSparks(level, random, pos, new Vec3(0.5, 0.5, 0.5), new Vec3i(1, 1, 1), 2, -6, state.is(Blocks.SOUL_TORCH), false);
+        ParticleSpawnUtil.spawnSparks(level, random, pos, new Vec3(0.5, 0.5, 0.5), new Vec3i(1, 1, 1), 2, -6, state.is(Blocks.SOUL_TORCH), false);
     }
 }

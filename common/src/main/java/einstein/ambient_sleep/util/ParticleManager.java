@@ -105,7 +105,7 @@ public class ParticleManager {
             Camel camel = (Camel) entity;
             if (camel.isDashing() && camel.onGround()) {
                 for (int i = 0; i < 10; i++) {
-                    Util.spawnCreatureMovementDustClouds(camel, level, random, 5);
+                    ParticleSpawnUtil.spawnCreatureMovementDustClouds(camel, level, random, 5);
                 }
             }
         }
@@ -126,7 +126,7 @@ public class ParticleManager {
         else if (type.equals(EntityType.RAVAGER)) {
             Ravager ravager = (Ravager) entity;
             if (ravager.getAttribute(Attributes.MOVEMENT_SPEED).getBaseValue() > 0.34D && ravager.onGround()) {
-                Util.spawnCreatureMovementDustClouds(ravager, level, random, 20);
+                ParticleSpawnUtil.spawnCreatureMovementDustClouds(ravager, level, random, 20);
             }
         }
         else if (entity instanceof FallingBlockEntity fallingBlock && INSTANCE.fallingBlockDust.get()) {
@@ -264,7 +264,7 @@ public class ParticleManager {
             }
         }
         else if (state.is(Blocks.REDSTONE_BLOCK) && INSTANCE.redstoneBlockDust.get()) {
-            Util.spawnParticlesAroundBlock(DustParticleOptions.REDSTONE, level, pos, random);
+            ParticleSpawnUtil.spawnParticlesAroundBlock(DustParticleOptions.REDSTONE, level, pos, random);
         }
         else if (state.is(Blocks.GLOWSTONE)) {
             if (INSTANCE.glowstoneBlockDust.get().equals(ModConfigs.GlowstoneDustSpawnType.OFF)
@@ -273,7 +273,7 @@ public class ParticleManager {
                 return;
             }
 
-            Util.spawnParticlesAroundBlock(Util.GLOWSTONE_DUST_PARTICLES, level, pos, random);
+            ParticleSpawnUtil.spawnParticlesAroundBlock(Util.GLOWSTONE_DUST_PARTICLES, level, pos, random);
         }
         else if (state.is(Blocks.TORCHFLOWER)) {
             double x = pos.getX() + 0.5;
@@ -301,7 +301,7 @@ public class ParticleManager {
             }
         }
         else if (state.is(Blocks.LAVA_CAULDRON) && INSTANCE.lavaCauldronSparks.get()) {
-            Util.spawnLavaSparks(level, pos.above(), random, 5);
+            ParticleSpawnUtil.spawnLavaSparks(level, pos.above(), random, 5);
         }
     }
 
