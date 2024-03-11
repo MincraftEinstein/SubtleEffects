@@ -14,7 +14,7 @@
     "client.block.BaseFireBlockMixin",
     "client.block.BlockMixin",
     "client.block.CampfireBlockMixin",
-    "client.block.ClientLivingEntityMixin",
+    "client.entity.ClientLivingEntityMixin",
     "client.block.EndPortalBlockMixin",
     "client.block.FallingBlockMixin",
     "client.block.FurnaceBlockMixin",
