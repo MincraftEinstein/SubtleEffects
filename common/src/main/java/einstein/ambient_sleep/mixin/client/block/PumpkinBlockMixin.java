@@ -1,5 +1,6 @@
 package einstein.ambient_sleep.mixin.client.block;
 
+import einstein.ambient_sleep.init.ModConfigs;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -18,8 +19,10 @@ public class PumpkinBlockMixin {
 
     @Inject(method = "use", at = @At("RETURN"))
     private void use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult, CallbackInfoReturnable<InteractionResult> cir) {
-        if (cir.getReturnValue().consumesAction()) {
-            level.addDestroyBlockEffect(pos, state);
+        if (ModConfigs.INSTANCE.pumpkinCarvedParticles.get()) {
+            if (level.isClientSide && cir.getReturnValue().consumesAction()) {
+                level.addDestroyBlockEffect(pos, state);
+            }
         }
     }
 }

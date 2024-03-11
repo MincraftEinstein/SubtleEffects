@@ -59,6 +59,8 @@ public class ModConfigs {
     public final ForgeConfigSpec.BooleanValue torchflowerFlames;
     public final ForgeConfigSpec.BooleanValue dragonEggParticles;
     public final ForgeConfigSpec.BooleanValue replaceEndPortalParticles;
+    public final ForgeConfigSpec.BooleanValue axeStripParticles;
+    public final ForgeConfigSpec.BooleanValue pumpkinCarvedParticles;
 
     // Entity Snoring
     public final ForgeConfigSpec.DoubleValue playerSnoreChance;
@@ -208,6 +210,16 @@ public class ModConfigs {
                 .comment("Replaces the normal lit end portal smoke particles with nether portal particles")
                 .translation(key("replace_end_portal_particles"))
                 .define("replaceEndPortalParticles", true);
+
+        axeStripParticles = builder
+                .comment("Display the destroy particle effect when stripping a block with an axe", "This doesn't affect removing oxidization/wax from copper")
+                .translation(key("axe_strip_particles"))
+                .define("axeStripParticles", true);
+
+        pumpkinCarvedParticles = builder
+                .comment("Display the destroy particle effect when carving a pumpkin")
+                .translation(key("pumpkin_carved_particles"))
+                .define("pumpkinCarvedParticles", true);
 
         builder.pop().translation(categoryKey("entities")).push("entities")
                 .translation(categoryKey("sleeping")).push("sleeping");

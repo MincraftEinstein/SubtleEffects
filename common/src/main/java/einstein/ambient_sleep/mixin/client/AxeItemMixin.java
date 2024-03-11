@@ -1,5 +1,6 @@
 package einstein.ambient_sleep.mixin.client;
 
+import einstein.ambient_sleep.init.ModConfigs;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.AxeItem;
@@ -16,9 +17,13 @@ public class AxeItemMixin {
 
     @Inject(method = "useOn", at = @At(value = "FIELD", target = "Lnet/minecraft/sounds/SoundEvents;AXE_STRIP:Lnet/minecraft/sounds/SoundEvent;"))
     private void useOn(UseOnContext context, CallbackInfoReturnable<InteractionResult> cir) {
-        Level level = context.getLevel();
-        BlockPos pos = context.getClickedPos();
-        BlockState state = level.getBlockState(pos);
-        level.addDestroyBlockEffect(context.getClickedPos(), state);
+        if (ModConfigs.INSTANCE.axeStripParticles.get()) {
+            Level level = context.getLevel();
+            if (level.isClientSide) {
+                BlockPos pos = context.getClickedPos();
+                BlockState state = level.getBlockState(pos);
+                level.addDestroyBlockEffect(context.getClickedPos(), state);
+            }
+        }
     }
 }
