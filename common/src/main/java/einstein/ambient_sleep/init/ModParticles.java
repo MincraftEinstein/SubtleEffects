@@ -20,6 +20,7 @@ public class ModParticles {
     public static final Supplier<SimpleParticleType> SHORT_SOUL_SPARK = register("short_soul_spark", SparkParticle.ShortLifeProvider::new);
     public static final Supplier<SimpleParticleType> FLOATING_SPARK = register("floating_spark", SparkParticle.FloatingProvider::new);
     public static final Supplier<SimpleParticleType> FLOATING_SOUL_SPARK = register("floating_soul_spark", SparkParticle.FloatingProvider::new);
+    public static final Supplier<SimpleParticleType> METAL_SPARK = register("metal_spark", SparkParticle.MetalProvider::new);
     public static final Supplier<SimpleParticleType> SNOW = register("snow", SnowParticle.Provider::new);
     public static final Supplier<SimpleParticleType> SNOWBALL_TRAIL = register("snowball_trail", SnowParticle.SnowballTrailProvider::new);
     public static final Supplier<SimpleParticleType> CHICKEN_FEATHER = register("chicken_feather", FeatherParticle.Provider::new);

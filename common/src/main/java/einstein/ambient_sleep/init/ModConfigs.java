@@ -61,6 +61,9 @@ public class ModConfigs {
     public final ForgeConfigSpec.BooleanValue replaceEndPortalParticles;
     public final ForgeConfigSpec.BooleanValue axeStripParticles;
     public final ForgeConfigSpec.BooleanValue pumpkinCarvedParticles;
+    public final ForgeConfigSpec.BooleanValue anvilBreakParticles;
+    public final ForgeConfigSpec.BooleanValue anvilUseParticles;
+    public final ForgeConfigSpec.BooleanValue grindstoneUseParticles;
 
     // Entity Snoring
     public final ForgeConfigSpec.DoubleValue playerSnoreChance;
@@ -220,6 +223,21 @@ public class ModConfigs {
                 .comment("Display the destroy particle effect when carving a pumpkin")
                 .translation(key("pumpkin_carved_particles"))
                 .define("pumpkinCarvedParticles", true);
+
+        anvilBreakParticles = builder
+                .comment("Display the destroy particle effect when an anvil breaks")
+                .translation(key("anvil_break_particles"))
+                .define("anvilBreakParticles", true);
+
+        anvilUseParticles = builder
+                .comment("Should spark particles fly off anvils when used")
+                .translation(key("anvil_use_particles"))
+                .define("anvilUseParticles", true);
+
+        grindstoneUseParticles = builder
+                .comment("Should spark particles fly off grindstones when used")
+                .translation(key("grindstone_use_particles"))
+                .define("grindstoneUseParticles", true);
 
         builder.pop().translation(categoryKey("entities")).push("entities")
                 .translation(categoryKey("sleeping")).push("sleeping");
