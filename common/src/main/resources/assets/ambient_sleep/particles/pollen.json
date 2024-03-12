@@ -1,5 +1,7 @@
 {
   "textures": [
-    "ambient_sleep:pollen"
+    "ambient_sleep:pollen_0",
+    "ambient_sleep:pollen_1",
+    "ambient_sleep:pollen_2"
   ]
 }
