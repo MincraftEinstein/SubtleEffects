@@ -1,7 +1,7 @@
 package einstein.ambient_sleep;
 
+import einstein.ambient_sleep.init.BiomeParticles;
 import einstein.ambient_sleep.init.ModConfigs;
-import einstein.ambient_sleep.util.ParticleManager;
 import fuzs.forgeconfigapiport.api.config.v2.ForgeConfigRegistry;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.ModInitializer;
@@ -19,6 +19,6 @@ public class AmbientSleepFabric implements ModInitializer, ClientModInitializer 
     @Override
     public void onInitializeClient() {
         AmbientSleep.clientSetup();
-        ClientTickEvents.END_CLIENT_TICK.register(minecraft -> ParticleManager.levelTickEnd(minecraft, minecraft.level));
+        ClientTickEvents.END_CLIENT_TICK.register(minecraft -> BiomeParticles.tickBiomeParticles(minecraft, minecraft.level));
     }
 }

@@ -1,8 +1,8 @@
 package einstein.ambient_sleep;
 
+import einstein.ambient_sleep.init.BiomeParticles;
 import einstein.ambient_sleep.init.ModConfigs;
 import einstein.ambient_sleep.platform.ForgeRegistryHelper;
-import einstein.ambient_sleep.util.ParticleManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.client.particle.SpriteSet;
@@ -36,7 +36,7 @@ public class AmbientSleepForge {
         modEventBus.addListener((FMLClientSetupEvent event) -> AmbientSleep.clientSetup());
         MinecraftForge.EVENT_BUS.addListener((TickEvent.LevelTickEvent event) -> {
             if (event.side.isClient() && event.phase.equals(TickEvent.Phase.END)) {
-                ParticleManager.levelTickEnd(Minecraft.getInstance(), event.level);
+                BiomeParticles.tickBiomeParticles(Minecraft.getInstance(), event.level);
             }
         });
         ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, ModConfigs.SPEC);
