@@ -42,6 +42,8 @@
   "config.ambient_sleep.mushroom_spore_density": "Mushroom Spore Density",
   "config.ambient_sleep.firefly_biomes": "Firefly Biomes",
   "config.ambient_sleep.firefly_density": "Firefly Density",
+  "config.ambient_sleep.pollen_biomes": "Pollen Biomes",
+  "config.ambient_sleep.pollen_density": "Pollen Density",
   "config.category.ambient_sleep.blocks": "Blocks",
   "config.category.ambient_sleep.sparks": "Sparks",
   "config.category.ambient_sleep.entities": "Entities",

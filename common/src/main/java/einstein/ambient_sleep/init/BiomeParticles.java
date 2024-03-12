@@ -32,6 +32,7 @@ public class BiomeParticles {
     public static void init() {
         register(INSTANCE.mushroomSporeBiomes, INSTANCE.mushroomSporeDensity, 40, ModParticles.MUSHROOM_SPORE, Predicates.alwaysTrue());
         register(INSTANCE.fireflyBiomes, INSTANCE.fireflyDensity, 20, ModParticles.FIREFLY, level -> level.getDayTime() > 13000 && level.getDayTime() < 23000);
+        register(INSTANCE.pollenBiomes, INSTANCE.pollenDensity, 10, ModParticles.POLLEN, Predicates.alwaysTrue());
     }
 
     private static void register(ForgeConfigSpec.ConfigValue<List<? extends String>> biomesConfig, ForgeConfigSpec.IntValue density, int maxSpawnHeight, Supplier<? extends ParticleOptions> particle, Predicate<Level> spawnConditions) {

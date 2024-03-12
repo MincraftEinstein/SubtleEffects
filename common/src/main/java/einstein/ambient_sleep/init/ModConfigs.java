@@ -12,6 +12,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.function.Supplier;
 
 public class ModConfigs {
@@ -98,6 +99,8 @@ public class ModConfigs {
     public final ForgeConfigSpec.IntValue mushroomSporeDensity;
     public final ForgeConfigSpec.ConfigValue<List<? extends String>> fireflyBiomes;
     public final ForgeConfigSpec.IntValue fireflyDensity;
+    public final ForgeConfigSpec.ConfigValue<List<? extends String>> pollenBiomes;
+    public final ForgeConfigSpec.IntValue pollenDensity;
 
     // General
     public final ForgeConfigSpec.BooleanValue enableSleepingZs;
@@ -349,25 +352,41 @@ public class ModConfigs {
                 .translation(key("biome_particles_radius"))
                 .defineInRange("biomeParticleRadius", 32, 0, 48);
 
-        mushroomSporeBiomes = builder
-                .comment("A list of biome IDs that mushroom spore particles will spawn in")
-                .translation(key("mushroom_spore_biomes"))
-                .defineListAllowEmpty(List.of("mushroomSporeBiomes"), () -> List.of("minecraft:mushroom_fields"), ModConfigs::isValidLoc);
+        mushroomSporeBiomes = defineLocationList(
+                builder.comment("A list of biome IDs that mushroom spore particles will spawn in")
+                        .translation(key("mushroom_spore_biomes")),
+                "mushroomSporeBiomes",
+                "minecraft:mushroom_fields"
+        );
 
         mushroomSporeDensity = builder
                 .comment("The density of spawned mushroom spores in a biome", TO_DISABLE)
                 .translation(key("mushroom_spore_density"))
                 .defineInRange("mushroomSporeDensity", 10, 0, 100);
 
-        fireflyBiomes = builder
-                .comment("A list of biome IDs that firefly particles will spawn in")
-                .translation(key("firefly_biomes"))
-                .defineListAllowEmpty(List.of("fireflyBiomes"), () -> List.of("minecraft:swamp", "minecraft:mangrove_swamp"), ModConfigs::isValidLoc);
+        fireflyBiomes = defineLocationList(
+                builder.comment("A list of biome IDs that firefly particles will spawn in")
+                        .translation(key("firefly_biomes")),
+                "fireflyBiomes",
+                "minecraft:swamp", "minecraft:mangrove_swamp"
+        );
 
         fireflyDensity = builder
                 .comment("The density of spawned fireflies in a biome", TO_DISABLE)
                 .translation(key("firefly_density"))
                 .defineInRange("fireflyDensity", 6, 0, 100);
+
+        pollenBiomes = defineLocationList(
+                builder.comment("A list of biome IDs that pollen particles will spawn in")
+                        .translation(key("pollen_biomes")),
+                "pollenBiomes",
+                "minecraft:flower_forest", "minecraft:sunflower_plains"
+        );
+
+        pollenDensity = builder
+                .comment("The density of spawn pollen in a biome", TO_DISABLE)
+                .translation(key("pollen_density"))
+                .defineInRange("pollenDensity", 50, 0, 100);
 
         builder.pop();
 
@@ -377,8 +396,13 @@ public class ModConfigs {
                 .define("enableSleepingZs", true);
     }
 
+    private ForgeConfigSpec.ConfigValue<List<? extends String>> defineLocationList(ForgeConfigSpec.Builder builder, String path, String... defaultValues) {
+        return builder.defineListAllowEmpty(List.of(path), () -> List.of(defaultValues), ModConfigs::isValidLoc);
+    }
+
     private static boolean isValidLoc(Object object) {
         if (object instanceof String string) {
+            string = string.toLowerCase(Locale.ROOT);
             return ResourceLocation.tryParse(string) != null;
         }
         return false;

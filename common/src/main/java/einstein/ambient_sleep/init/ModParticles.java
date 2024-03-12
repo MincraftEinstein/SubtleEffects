@@ -36,6 +36,7 @@ public class ModParticles {
     public static final Supplier<SimpleParticleType> MUSHROOM_SPORE = register("mushroom_spore", MushroomSporeProvider::new);
     public static final Supplier<SimpleParticleType> FIREFLY = register("firefly", FireflyParticle.Provider::new);
     public static final Supplier<SimpleParticleType> SMOKE = register("smoke", SmokeParticle.Provider::new);
+    public static final Supplier<SimpleParticleType> POLLEN = register("pollen", PollenProvider::new);
 
     public static void init() {
     }
