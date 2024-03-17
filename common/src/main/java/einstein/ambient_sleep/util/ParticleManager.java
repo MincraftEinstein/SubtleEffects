@@ -128,6 +128,11 @@ public class ParticleManager {
                 }
             }
         }
+        else if (type.equals(EntityType.DRAGON_FIREBALL) && INSTANCE.improvedDragonFireballTrail.get()) {
+            for (int i = 0; i < 10; i++) {
+                level.addParticle(ParticleTypes.DRAGON_BREATH, entity.getRandomX(2), entity.getRandomY(), entity.getRandomZ(2), 0, 0, 0);
+            }
+        }
     }
 
     private static boolean shouldSpawn(RandomSource random, ForgeConfigSpec.DoubleValue chanceConfig) {

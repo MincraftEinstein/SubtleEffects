@@ -92,6 +92,7 @@ public class ModConfigs {
     public final ForgeConfigSpec.BooleanValue stomachGrowling;
     public final ForgeConfigSpec.BooleanValue snowGolemHitSnowflakes;
     public final ForgeConfigSpec.BooleanValue sheepShearFluff;
+    public final ForgeConfigSpec.BooleanValue improvedDragonFireballTrail;
 
     // Biomes
     public final ForgeConfigSpec.IntValue biomeParticlesRadius;
@@ -344,6 +345,11 @@ public class ModConfigs {
                 .comment("When a sheep is sheared fluff particles will fall off")
                 .translation(key("sheep_shear_fluff"))
                 .define("sheepShearFluff", true);
+
+        improvedDragonFireballTrail = builder
+                .comment("Adds more particles to the trail of the Ender Dragon's fireballs")
+                .translation(key("improved_dragon_fireball_trail"))
+                .define("improvedDragonFireballTrail", true);
 
         builder.pop().translation(categoryKey("biomes")).push("biomes");
 
