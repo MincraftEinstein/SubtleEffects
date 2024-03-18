@@ -1,6 +1,5 @@
 package einstein.ambient_sleep.init;
 
-import com.google.common.base.Predicates;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
@@ -28,11 +27,12 @@ public class BiomeParticles {
 
     private static final List<BiomeParticleSettings> REGISTERED = new ArrayList<>();
     private static final BlockPos.MutableBlockPos BIOME_POS = new BlockPos.MutableBlockPos();
+    private static final Predicate<Level> NOT_RAINING = level -> !level.isRaining();
 
     public static void init() {
-        register(INSTANCE.mushroomSporeBiomes, INSTANCE.mushroomSporeDensity, 40, ModParticles.MUSHROOM_SPORE, Predicates.alwaysTrue());
-        register(INSTANCE.fireflyBiomes, INSTANCE.fireflyDensity, 20, ModParticles.FIREFLY, level -> level.getDayTime() > 13000 && level.getDayTime() < 23000);
-        register(INSTANCE.pollenBiomes, INSTANCE.pollenDensity, 10, ModParticles.POLLEN, Predicates.alwaysTrue());
+        register(INSTANCE.mushroomSporeBiomes, INSTANCE.mushroomSporeDensity, 40, ModParticles.MUSHROOM_SPORE, NOT_RAINING);
+        register(INSTANCE.fireflyBiomes, INSTANCE.fireflyDensity, 20, ModParticles.FIREFLY, level -> NOT_RAINING.test(level) && level.getDayTime() > 13000 && level.getDayTime() < 23000);
+        register(INSTANCE.pollenBiomes, INSTANCE.pollenDensity, 10, ModParticles.POLLEN, NOT_RAINING);
     }
 
     private static void register(ForgeConfigSpec.ConfigValue<List<? extends String>> biomesConfig, ForgeConfigSpec.IntValue density, int maxSpawnHeight, Supplier<? extends ParticleOptions> particle, Predicate<Level> spawnConditions) {
