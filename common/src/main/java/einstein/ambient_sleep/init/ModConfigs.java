@@ -65,6 +65,7 @@ public class ModConfigs {
     public final ForgeConfigSpec.BooleanValue anvilBreakParticles;
     public final ForgeConfigSpec.BooleanValue anvilUseParticles;
     public final ForgeConfigSpec.BooleanValue grindstoneUseParticles;
+    public final ForgeConfigSpec.BooleanValue commandBlockParticles;
 
     // Entity Snoring
     public final ForgeConfigSpec.DoubleValue playerSnoreChance;
@@ -242,6 +243,11 @@ public class ModConfigs {
                 .comment("Should spark particles fly off grindstones when used")
                 .translation(key("grindstone_use_particles"))
                 .define("grindstoneUseParticles", true);
+
+        commandBlockParticles = builder
+                .comment("Should command blocks have particles like in MC Story Mode")
+                .translation(key("command_block_particles"))
+                .define("commandBlockParticles", true);
 
         builder.pop().translation(categoryKey("entities")).push("entities")
                 .translation(categoryKey("sleeping")).push("sleeping");

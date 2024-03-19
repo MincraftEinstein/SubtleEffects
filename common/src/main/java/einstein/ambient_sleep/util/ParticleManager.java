@@ -3,6 +3,7 @@ package einstein.ambient_sleep.util;
 import einstein.ambient_sleep.init.ModConfigs;
 import einstein.ambient_sleep.init.ModParticles;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.core.particles.ParticleOptions;
@@ -298,6 +299,16 @@ public class ParticleManager {
         }
         else if (state.is(Blocks.LAVA_CAULDRON) && INSTANCE.lavaCauldronSparks.get()) {
             ParticleSpawnUtil.spawnLavaSparks(level, pos.above(), random, 5);
+        }
+        else if ((state.is(Blocks.COMMAND_BLOCK) || state.is(Blocks.REPEATING_COMMAND_BLOCK) || state.is(Blocks.CHAIN_COMMAND_BLOCK)) && INSTANCE.commandBlockParticles.get()) {
+            Vec3 endPos = pos.getCenter();
+            for (Direction direction : Direction.values()) {
+                BlockPos relativePos = pos.relative(direction);
+                if (!Util.isSolidOrNotEmpty(level, relativePos)) {
+                    Vec3 startPos = endPos.vectorTo(relativePos.getCenter()).offsetRandom(random, 1);
+                    level.addParticle(ModParticles.COMMAND_BLOCK.get(), endPos.x(), endPos.y(), endPos.z(), startPos.x(), startPos.y(), startPos.z());
+                }
+            }
         }
     }
 }
