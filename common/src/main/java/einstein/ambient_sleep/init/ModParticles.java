@@ -1,6 +1,7 @@
 package einstein.ambient_sleep.init;
 
 import com.mojang.serialization.Codec;
+import einstein.ambient_sleep.client.particle.CommandBlockParticleOptions;
 import einstein.ambient_sleep.client.particle.*;
 import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.client.particle.SpriteSet;
@@ -37,7 +38,7 @@ public class ModParticles {
     public static final Supplier<SimpleParticleType> FIREFLY = register("firefly", FireflyParticle.Provider::new);
     public static final Supplier<SimpleParticleType> SMOKE = register("smoke", SmokeParticle.Provider::new);
     public static final Supplier<SimpleParticleType> POLLEN = register("pollen", PollenProvider::new);
-    public static final Supplier<SimpleParticleType> COMMAND_BLOCK = register("command_block", CommandBlockParticle.Provider::new);
+    public static final Supplier<ParticleType<CommandBlockParticleOptions>> COMMAND_BLOCK = register("command_block", CommandBlockParticleOptions.DESERIALIZER, type -> CommandBlockParticleOptions.CODEC, CommandBlockParticle.Provider::new);
 
     public static void init() {
     }

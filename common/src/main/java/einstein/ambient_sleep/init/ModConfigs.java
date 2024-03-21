@@ -94,6 +94,7 @@ public class ModConfigs {
     public final ForgeConfigSpec.BooleanValue snowGolemHitSnowflakes;
     public final ForgeConfigSpec.BooleanValue sheepShearFluff;
     public final ForgeConfigSpec.BooleanValue improvedDragonFireballTrail;
+    public final ForgeConfigSpec.BooleanValue commandBlockMinecartParticles;
 
     // Biomes
     public final ForgeConfigSpec.IntValue biomeParticlesRadius;
@@ -356,6 +357,11 @@ public class ModConfigs {
                 .comment("Adds more particles to the trail of the Ender Dragon's fireballs")
                 .translation(key("improved_dragon_fireball_trail"))
                 .define("improvedDragonFireballTrail", true);
+
+        commandBlockMinecartParticles = builder
+                .comment("Adds command block particles to the command block minecart. Yes I actually did this")
+                .translation(key("command_block_minecart_particles"))
+                .define("commandBlockMinecartParticles", true);
 
         builder.pop().translation(categoryKey("biomes")).push("biomes");
 
