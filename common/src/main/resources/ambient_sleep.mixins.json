@@ -18,6 +18,7 @@
     "client.block.FallingBlockMixin",
     "client.block.FurnaceBlockMixin",
     "client.block.PumpkinBlockMixin",
+    "client.block.SlimeBlockMixin",
     "client.block.TorchBlockMixin",
     "client.block.WallTorchBlockMixin",
     "client.entity.AbstractMinecartEntityMixin",
