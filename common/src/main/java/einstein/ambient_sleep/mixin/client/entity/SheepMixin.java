@@ -1,6 +1,6 @@
 package einstein.ambient_sleep.mixin.client.entity;
 
-import einstein.ambient_sleep.client.particle.SheepFluffParticleOptions;
+import einstein.ambient_sleep.client.particle.option.SheepFluffParticleOptions;
 import einstein.ambient_sleep.init.ModConfigs;
 import einstein.ambient_sleep.util.MathUtil;
 import net.minecraft.world.InteractionHand;

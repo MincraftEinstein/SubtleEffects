@@ -1,10 +1,8 @@
 package einstein.ambient_sleep.util;
 
-import einstein.ambient_sleep.client.particle.CommandBlockParticleOptions;
 import einstein.ambient_sleep.init.ModConfigs;
 import einstein.ambient_sleep.init.ModParticles;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.core.particles.ParticleOptions;
@@ -33,8 +31,6 @@ import net.minecraft.world.level.block.LanternBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.ForgeConfigSpec;
-
-import java.util.function.BiPredicate;
 
 import static einstein.ambient_sleep.init.ModConfigs.INSTANCE;
 import static einstein.ambient_sleep.util.MathUtil.*;
@@ -140,7 +136,7 @@ public class ParticleManager {
         }
         else if (entity instanceof MinecartCommandBlock minecart && INSTANCE.commandBlockMinecartParticles.get()) {
             if (random.nextInt(10) == 0) {
-                spawnCmdBlockParticles(level, entity.position()
+                ParticleSpawnUtil.spawnCmdBlockParticles(level, entity.position()
                                 // The vanilla calculation the command block's rendered location + 1 block (16) / 75 the (scale of the rendered command block) / .5 to get the center of the command block
                                 .add(0, (double) -(minecart.getDisplayOffset() - 8) / 16 + (((double) 16 / 75) / 0.5), 0),
                         random, (direction, relativePos) -> true
@@ -317,21 +313,9 @@ public class ParticleManager {
                 || state.is(Blocks.REPEATING_COMMAND_BLOCK)
                 || state.is(Blocks.CHAIN_COMMAND_BLOCK))
                 && INSTANCE.commandBlockParticles.get()) {
-            spawnCmdBlockParticles(level, Vec3.atCenterOf(pos), random, (direction, relativePos) ->
+            ParticleSpawnUtil.spawnCmdBlockParticles(level, Vec3.atCenterOf(pos), random, (direction, relativePos) ->
                     !Util.isSolidOrNotEmpty(level, BlockPos.containing(relativePos))
             );
-        }
-    }
-
-    private static void spawnCmdBlockParticles(Level level, Vec3 pos, RandomSource random, BiPredicate<Direction, Vec3> directionValidator) {
-        for (Direction direction : Direction.values()) {
-            Vec3 endPos = pos.relative(direction, 1);
-            Vec3 relativePos = endPos.relative(direction, -0.5);
-
-            if (directionValidator.test(direction, endPos)) {
-                Vec3 speed = pos.vectorTo(relativePos).offsetRandom(random, 1);
-                level.addParticle(new CommandBlockParticleOptions(direction), endPos.x(), endPos.y(), endPos.z(), speed.x(), speed.y(), speed.z());
-            }
         }
     }
 }

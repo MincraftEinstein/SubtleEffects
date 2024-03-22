@@ -1,4 +1,4 @@
-package einstein.ambient_sleep.client.particle;
+package einstein.ambient_sleep.client.particle.option;
 
 import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;

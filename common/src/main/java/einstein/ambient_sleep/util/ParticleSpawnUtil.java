@@ -1,6 +1,7 @@
 package einstein.ambient_sleep.util;
 
 import commonnetwork.api.Dispatcher;
+import einstein.ambient_sleep.client.particle.option.CommandBlockParticleOptions;
 import einstein.ambient_sleep.init.ModParticles;
 import einstein.ambient_sleep.networking.clientbound.ClientBoundEntityFellPacket;
 import net.minecraft.client.Minecraft;
@@ -13,6 +14,8 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+
+import java.util.function.BiPredicate;
 
 import static einstein.ambient_sleep.init.ModConfigs.INSTANCE;
 import static einstein.ambient_sleep.util.MathUtil.nextFloat;
@@ -91,6 +94,18 @@ public class ParticleSpawnUtil {
                     nextFloat(7) ,
                     nextFloat(10) * nextSign()
             );
+        }
+    }
+
+    public static void spawnCmdBlockParticles(Level level, Vec3 pos, RandomSource random, BiPredicate<Direction, Vec3> directionValidator) {
+        for (Direction direction : Direction.values()) {
+            Vec3 endPos = pos.relative(direction, 1);
+            Vec3 relativePos = endPos.relative(direction, -0.5);
+
+            if (directionValidator.test(direction, endPos)) {
+                Vec3 speed = pos.vectorTo(relativePos).offsetRandom(random, 1);
+                level.addParticle(new CommandBlockParticleOptions(direction), endPos.x(), endPos.y(), endPos.z(), speed.x(), speed.y(), speed.z());
+            }
         }
     }
 }

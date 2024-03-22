@@ -1,5 +1,6 @@
 package einstein.ambient_sleep.client.particle;
 
+import einstein.ambient_sleep.client.particle.option.SheepFluffParticleOptions;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleProvider;

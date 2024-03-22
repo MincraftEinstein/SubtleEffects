@@ -5,12 +5,12 @@ import net.minecraft.client.particle.*;
 import net.minecraft.core.particles.SimpleParticleType;
 import org.jetbrains.annotations.Nullable;
 
-public class DustCloud extends TextureSheetParticle {
+public class DustCloudParticle extends TextureSheetParticle {
 
     private final SpriteSet sprites;
     private final double ySpeed;
 
-    protected DustCloud(ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, int maxLifeTime, SpriteSet sprites) {
+    protected DustCloudParticle(ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, int maxLifeTime, SpriteSet sprites) {
         super(level, x, y, z, xSpeed, 0, zSpeed);
         this.sprites = sprites;
         this.ySpeed = ySpeed;
@@ -46,7 +46,7 @@ public class DustCloud extends TextureSheetParticle {
         @Nullable
         @Override
         public Particle createParticle(SimpleParticleType type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
-            return new DustCloud(level, x, y, z, xSpeed, ySpeed, zSpeed, 25, sprites);
+            return new DustCloudParticle(level, x, y, z, xSpeed, ySpeed, zSpeed, 25, sprites);
         }
     }
 
@@ -55,7 +55,7 @@ public class DustCloud extends TextureSheetParticle {
         @Nullable
         @Override
         public Particle createParticle(SimpleParticleType type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
-            return new DustCloud(level, x, y, z, xSpeed, ySpeed, zSpeed, 35, sprites);
+            return new DustCloudParticle(level, x, y, z, xSpeed, ySpeed, zSpeed, 35, sprites);
         }
     }
 }
