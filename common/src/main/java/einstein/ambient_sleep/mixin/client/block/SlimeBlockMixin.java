@@ -1,9 +1,9 @@
 package einstein.ambient_sleep.mixin.client.block;
 
+import einstein.ambient_sleep.init.ModConfigs;
 import einstein.ambient_sleep.util.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.SlimeBlock;
@@ -18,7 +18,7 @@ public class SlimeBlockMixin {
 
     @Inject(method = "fallOn", at = @At("HEAD"))
     private void bounceUp(Level level, BlockState state, BlockPos pos, Entity entity, float distance, CallbackInfo ci) {
-        if (entity.level().isClientSide) {
+        if (entity.level().isClientSide && ModConfigs.INSTANCE.slimeBlockBounceSounds.get()) {
             if (distance > 1) {
                 if (distance < 4) {
                     Util.playClientSound(entity.getSoundSource(), entity, SoundEvents.SLIME_SQUISH_SMALL, 0.5F, 1);

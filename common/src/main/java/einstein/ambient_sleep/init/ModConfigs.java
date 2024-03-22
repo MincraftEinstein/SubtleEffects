@@ -66,6 +66,7 @@ public class ModConfigs {
     public final ForgeConfigSpec.BooleanValue anvilUseParticles;
     public final ForgeConfigSpec.BooleanValue grindstoneUseParticles;
     public final ForgeConfigSpec.BooleanValue commandBlockParticles;
+    public final ForgeConfigSpec.BooleanValue slimeBlockBounceSounds;
 
     // Entity Snoring
     public final ForgeConfigSpec.DoubleValue playerSnoreChance;
@@ -249,6 +250,11 @@ public class ModConfigs {
                 .comment("Should command blocks have particles like in MC Story Mode")
                 .translation(key("command_block_particles"))
                 .define("commandBlockParticles", true);
+
+        slimeBlockBounceSounds = builder
+                .comment("Slime bounce sounds when bouncing on a slime block")
+                .translation(key("slime_block_bounce_sounds"))
+                .define("slimeBlockBounceSounds", true);
 
         builder.pop().translation(categoryKey("entities")).push("entities")
                 .translation(categoryKey("sleeping")).push("sleeping");
