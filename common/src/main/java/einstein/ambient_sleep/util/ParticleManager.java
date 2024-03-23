@@ -2,6 +2,7 @@ package einstein.ambient_sleep.util;
 
 import einstein.ambient_sleep.init.ModConfigs;
 import einstein.ambient_sleep.init.ModParticles;
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.DustParticleOptions;
@@ -134,7 +135,10 @@ public class ParticleManager {
                 level.addParticle(ParticleTypes.DRAGON_BREATH, entity.getRandomX(2), entity.getRandomY(), entity.getRandomZ(2), 0, 0, 0);
             }
         }
-        else if (entity instanceof MinecartCommandBlock minecart && INSTANCE.commandBlockMinecartParticles.get()) {
+        else if (entity instanceof MinecartCommandBlock minecart
+                && (INSTANCE.commandBlockMinecartParticles.get() == ModConfigs.CommandBlockSpawnType.ON
+                || (INSTANCE.commandBlockMinecartParticles.get() == ModConfigs.CommandBlockSpawnType.NOT_CREATIVE
+                && !Minecraft.getInstance().player.isCreative()))) {
             if (random.nextInt(10) == 0) {
                 ParticleSpawnUtil.spawnCmdBlockParticles(level, entity.position()
                                 // The vanilla calculation the command block's rendered location + 1 block (16) / 75 the (scale of the rendered command block) / .5 to get the center of the command block
@@ -312,7 +316,9 @@ public class ParticleManager {
         else if ((state.is(Blocks.COMMAND_BLOCK)
                 || state.is(Blocks.REPEATING_COMMAND_BLOCK)
                 || state.is(Blocks.CHAIN_COMMAND_BLOCK))
-                && INSTANCE.commandBlockParticles.get()) {
+                && (INSTANCE.commandBlockParticles.get() == ModConfigs.CommandBlockSpawnType.ON
+                || (INSTANCE.commandBlockParticles.get() == ModConfigs.CommandBlockSpawnType.NOT_CREATIVE
+                && !Minecraft.getInstance().player.isCreative()))) {
             ParticleSpawnUtil.spawnCmdBlockParticles(level, Vec3.atCenterOf(pos), random, (direction, relativePos) ->
                     !Util.isSolidOrNotEmpty(level, BlockPos.containing(relativePos))
             );

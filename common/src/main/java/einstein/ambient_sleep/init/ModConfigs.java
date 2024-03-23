@@ -65,7 +65,7 @@ public class ModConfigs {
     public final ForgeConfigSpec.BooleanValue anvilBreakParticles;
     public final ForgeConfigSpec.BooleanValue anvilUseParticles;
     public final ForgeConfigSpec.BooleanValue grindstoneUseParticles;
-    public final ForgeConfigSpec.BooleanValue commandBlockParticles;
+    public final ForgeConfigSpec.ConfigValue<CommandBlockSpawnType> commandBlockParticles;
     public final ForgeConfigSpec.BooleanValue slimeBlockBounceSounds;
 
     // Entity Snoring
@@ -95,7 +95,7 @@ public class ModConfigs {
     public final ForgeConfigSpec.BooleanValue snowGolemHitSnowflakes;
     public final ForgeConfigSpec.BooleanValue sheepShearFluff;
     public final ForgeConfigSpec.BooleanValue improvedDragonFireballTrail;
-    public final ForgeConfigSpec.BooleanValue commandBlockMinecartParticles;
+    public final ForgeConfigSpec.ConfigValue<CommandBlockSpawnType> commandBlockMinecartParticles;
 
     // Biomes
     public final ForgeConfigSpec.IntValue biomeParticlesRadius;
@@ -249,7 +249,7 @@ public class ModConfigs {
         commandBlockParticles = builder
                 .comment("Should command blocks have particles like in MC Story Mode")
                 .translation(key("command_block_particles"))
-                .define("commandBlockParticles", true);
+                .defineEnum("commandBlockParticles", CommandBlockSpawnType.ON);
 
         slimeBlockBounceSounds = builder
                 .comment("Slime bounce sounds when bouncing on a slime block")
@@ -367,7 +367,7 @@ public class ModConfigs {
         commandBlockMinecartParticles = builder
                 .comment("Adds command block particles to the command block minecart. Yes I actually did this")
                 .translation(key("command_block_minecart_particles"))
-                .define("commandBlockMinecartParticles", true);
+                .defineEnum("commandBlockMinecartParticles", CommandBlockSpawnType.ON);
 
         builder.pop().translation(categoryKey("biomes")).push("biomes");
 
@@ -468,5 +468,11 @@ public class ModConfigs {
         public Supplier<? extends ParticleOptions> getParticle() {
             return particle;
         }
+    }
+
+    public enum CommandBlockSpawnType {
+        ON,
+        OFF,
+        NOT_CREATIVE
     }
 }
