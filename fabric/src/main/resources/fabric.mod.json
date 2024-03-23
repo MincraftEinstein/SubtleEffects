@@ -24,8 +24,7 @@
     ]
   },
   "mixins": [
-    "ambient_sleep.mixins.json",
-    "ambient_sleep.fabric.mixins.json"
+    "ambient_sleep.mixins.json"
   ],
   "accessWidener": "ambient_sleep.accesswidener",
   "depends": {
