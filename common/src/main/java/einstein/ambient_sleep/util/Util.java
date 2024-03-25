@@ -29,4 +29,8 @@ public class Util {
     public static boolean isSolidOrNotEmpty(Level level, BlockPos pos) {
         return level.getBlockState(pos).isSolidRender(level, pos) || !level.getFluidState(pos).isEmpty();
     }
+
+    public static int getLightColor(int superLight) {
+        return 240 | superLight >> 16 & 0xFF << 16;
+    }
 }

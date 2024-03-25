@@ -1,5 +1,6 @@
 package einstein.ambient_sleep.client.particle;
 
+import einstein.ambient_sleep.util.Util;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleProvider;
@@ -24,14 +25,14 @@ public class FireflyParticle extends SuspendedParticle {
         super(level, sprites, x, y, z, xSpeed, ySpeed, zSpeed);
         this.sprites = sprites;
         hasPhysics = true;
-        lifetime = 105; // will allow the animation to play 3
+        lifetime = 105; // will allow the animation to play 3 times
         setColor(1, 1, 1);
         setSpriteFrame();
     }
 
     @Override
     public int getLightColor(float partialTick) {
-        return 240 | super.getLightColor(partialTick) >> 16 & 0xFF << 16;
+        return Util.getLightColor(super.getLightColor(partialTick));
     }
 
     @Override

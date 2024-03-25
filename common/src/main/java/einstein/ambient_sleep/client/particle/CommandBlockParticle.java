@@ -1,6 +1,7 @@
 package einstein.ambient_sleep.client.particle;
 
 import einstein.ambient_sleep.client.particle.option.CommandBlockParticleOptions;
+import einstein.ambient_sleep.util.Util;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
 import net.minecraft.core.Direction;
@@ -68,7 +69,7 @@ public class CommandBlockParticle extends TextureSheetParticle {
 
     @Override
     public int getLightColor(float partialTick) {
-        return 240 | super.getLightColor(partialTick) >> 16 & 0xFF << 16;
+        return Util.getLightColor(super.getLightColor(partialTick));
     }
 
     public record Provider(SpriteSet sprites) implements ParticleProvider<CommandBlockParticleOptions> {
