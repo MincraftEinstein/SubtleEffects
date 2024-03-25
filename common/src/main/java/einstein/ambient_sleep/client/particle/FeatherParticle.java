@@ -1,9 +1,12 @@
 package einstein.ambient_sleep.client.particle;
 
+import einstein.ambient_sleep.client.particle.option.SheepFluffParticleOptions;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
 import net.minecraft.core.particles.SimpleParticleType;
+import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
+import org.joml.Vector3f;
 
 public class FeatherParticle extends TextureSheetParticle {
 
@@ -36,6 +39,19 @@ public class FeatherParticle extends TextureSheetParticle {
         @Override
         public Particle createParticle(SimpleParticleType type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
             return new FeatherParticle(level, x, y, z, xSpeed, ySpeed, zSpeed, sprites);
+        }
+    }
+
+    public record SheepFluffProvider(SpriteSet sprites) implements ParticleProvider<SheepFluffParticleOptions> {
+
+        @Nullable
+        @Override
+        public Particle createParticle(SheepFluffParticleOptions type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+            FeatherParticle particle = new FeatherParticle(level, x, y, z, xSpeed, ySpeed, zSpeed, sprites);
+            Vector3f color = type.getColor();
+            particle.setColor(color.x(), color.y(), color.z());
+            particle.gravity = 0.5F;
+            return particle;
         }
     }
 }
