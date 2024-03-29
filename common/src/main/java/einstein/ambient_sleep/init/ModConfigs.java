@@ -96,6 +96,7 @@ public class ModConfigs {
     public final ForgeConfigSpec.BooleanValue sheepShearFluff;
     public final ForgeConfigSpec.BooleanValue improvedDragonFireballTrail;
     public final ForgeConfigSpec.ConfigValue<CommandBlockSpawnType> commandBlockMinecartParticles;
+    public final ForgeConfigSpec.ConfigValue<ItemRaritySpawnType> itemRarityParticles;
 
     // Biomes
     public final ForgeConfigSpec.IntValue biomeParticlesRadius;
@@ -369,6 +370,11 @@ public class ModConfigs {
                 .translation(key("command_block_minecart_particles"))
                 .defineEnum("commandBlockMinecartParticles", CommandBlockSpawnType.ON);
 
+        itemRarityParticles = builder
+                .comment("Adds colored particles that float up from items on the ground")
+                .translation(key("item_rarity_particles"))
+                .defineEnum("itemRarityParticles", ItemRaritySpawnType.ON);
+
         builder.pop().translation(categoryKey("biomes")).push("biomes");
 
         biomeParticlesRadius = builder
@@ -474,5 +480,11 @@ public class ModConfigs {
         ON,
         OFF,
         NOT_CREATIVE
+    }
+
+    public enum ItemRaritySpawnType {
+        ON,
+        OFF,
+        NOT_COMMON
     }
 }

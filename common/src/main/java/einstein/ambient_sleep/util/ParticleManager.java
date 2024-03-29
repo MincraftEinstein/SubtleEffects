@@ -4,10 +4,7 @@ import einstein.ambient_sleep.init.ModConfigs;
 import einstein.ambient_sleep.init.ModParticles;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.particles.BlockParticleOption;
-import net.minecraft.core.particles.DustParticleOptions;
-import net.minecraft.core.particles.ParticleOptions;
-import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.particles.*;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.tags.FluidTags;
@@ -21,6 +18,7 @@ import net.minecraft.world.entity.animal.Parrot;
 import net.minecraft.world.entity.animal.camel.Camel;
 import net.minecraft.world.entity.animal.horse.AbstractHorse;
 import net.minecraft.world.entity.item.FallingBlockEntity;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Ravager;
 import net.minecraft.world.entity.monster.Strider;
 import net.minecraft.world.entity.player.Player;
@@ -71,7 +69,17 @@ public class ParticleManager {
         }
 
         EntityType<?> type = entity.getType();
-        if (type.equals(EntityType.ENDER_PEARL) && INSTANCE.enderPearlTrail.get()) {
+        if (entity instanceof ItemEntity itemEntity) {
+            level.addParticle(new ItemParticleOption(ModParticles.ITEM_RARITY.get(), itemEntity.getItem()),
+                    entity.getRandomX(1),
+                    entity.getY(),
+                    entity.getRandomZ(1),
+                    0,
+                    MathUtil.nextFloat(2),
+                    0
+            );
+        }
+        else if (type.equals(EntityType.ENDER_PEARL) && INSTANCE.enderPearlTrail.get()) {
             for (int i = 0; i < 10; i++) {
                 level.addParticle(ParticleTypes.PORTAL, entity.getRandomX(2), entity.getRandomY(), entity.getRandomZ(2), 0, 0, 0);
             }
