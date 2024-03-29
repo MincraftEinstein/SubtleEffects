@@ -1,5 +1,6 @@
 {
   "textures": [
-    "ambient_sleep:item_rarity"
+    "ambient_sleep:item_rarity_0",
+    "ambient_sleep:item_rarity_1"
   ]
 }
