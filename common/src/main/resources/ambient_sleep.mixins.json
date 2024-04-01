@@ -9,6 +9,7 @@
     "client.LavaFluidMixin",
     "client.LavaParticleMixin",
     "client.LevelRendererMixin",
+    "client.SpriteSetAccessor",
     "client.block.AbstractCandleBlockMixin",
     "client.block.BaseFireBlockMixin",
     "client.block.BlockMixin",

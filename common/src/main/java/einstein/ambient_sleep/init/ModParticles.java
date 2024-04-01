@@ -39,7 +39,7 @@ public class ModParticles {
     public static final Supplier<SimpleParticleType> LARGE_DUST_CLOUD = register("large_dust_cloud", DustCloudParticle.LargeProvider::new);
     public static final Supplier<ParticleType<SheepFluffParticleOptions>> SHEEP_FLUFF = register("sheep_fluff", SheepFluffParticleOptions.DESERIALIZER, type -> SheepFluffParticleOptions.CODEC, FeatherParticle.SheepFluffProvider::new);
     public static final Supplier<SimpleParticleType> MUSHROOM_SPORE = register("mushroom_spore", MushroomSporeProvider::new);
-    public static final Supplier<SimpleParticleType> FIREFLY = register("firefly", FireflyParticle.Provider::new);
+    public static final Supplier<SimpleParticleType> FIREFLY = register("firefly", sprites -> new InsectParticle.Provider(() -> new ParticleAnimation(sprites, 16, 3), true));
     public static final Supplier<SimpleParticleType> SMOKE = register("smoke", SmokeParticleProvider::new);
     public static final Supplier<SimpleParticleType> POLLEN = register("pollen", PollenProvider::new);
     public static final Supplier<ParticleType<CommandBlockParticleOptions>> COMMAND_BLOCK = register("command_block", CommandBlockParticleOptions.DESERIALIZER, type -> CommandBlockParticleOptions.CODEC, CommandBlockParticle.Provider::new);
