@@ -54,6 +54,8 @@
   "config.ambient_sleep.sheep_shear_fluff": "Sheep Shear Fluff",
   "config.ambient_sleep.improved_dragon_fireball_trail": "Improved Dragon Fireball Trail",
   "config.ambient_sleep.command_block_minecart_particles": "Command Block Minecart Particles",
+  "config.ambient_sleep.item_rarity_particles": "Item Rarity Particles",
+  "config.ambient_sleep.item_rarity_particle_color": "Item Rarity Particle Color",
   "config.ambient_sleep.biome_particles_radius": "Biome Particles Radius",
   "config.ambient_sleep.mushroom_spore_biomes": "Mushroom Spore Biomes",
   "config.ambient_sleep.mushroom_spore_density": "Mushroom Spore Density",

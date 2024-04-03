@@ -97,6 +97,7 @@ public class ModConfigs {
     public final ForgeConfigSpec.BooleanValue improvedDragonFireballTrail;
     public final ForgeConfigSpec.ConfigValue<CommandBlockSpawnType> commandBlockMinecartParticles;
     public final ForgeConfigSpec.ConfigValue<ItemRaritySpawnType> itemRarityParticles;
+    public final ForgeConfigSpec.ConfigValue<ItemRarityColorType> itemRarityParticleColor;
 
     // Biomes
     public final ForgeConfigSpec.IntValue biomeParticlesRadius;
@@ -375,6 +376,11 @@ public class ModConfigs {
                 .translation(key("item_rarity_particles"))
                 .defineEnum("itemRarityParticles", ItemRaritySpawnType.ON);
 
+        itemRarityParticleColor = builder
+                .comment("How the item rarity particles are colored")
+                .translation(key("item_rarity_particle_color"))
+                .defineEnum("itemRarityParticleColor", ItemRarityColorType.NAME_COLOR);
+
         builder.pop().translation(categoryKey("biomes")).push("biomes");
 
         biomeParticlesRadius = builder
@@ -486,5 +492,10 @@ public class ModConfigs {
         ON,
         OFF,
         NOT_COMMON
+    }
+
+    public enum ItemRarityColorType {
+        RARITY_COLOR,
+        NAME_COLOR
     }
 }

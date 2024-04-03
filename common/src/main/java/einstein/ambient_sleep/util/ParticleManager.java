@@ -23,6 +23,7 @@ import net.minecraft.world.entity.monster.Ravager;
 import net.minecraft.world.entity.monster.Strider;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.MinecartCommandBlock;
+import net.minecraft.world.item.Rarity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -69,7 +70,11 @@ public class ParticleManager {
         }
 
         EntityType<?> type = entity.getType();
-        if (entity instanceof ItemEntity itemEntity) {
+        if (entity instanceof ItemEntity itemEntity && INSTANCE.itemRarityParticles.get() != ModConfigs.ItemRaritySpawnType.OFF) {
+            if (INSTANCE.itemRarityParticles.get() == ModConfigs.ItemRaritySpawnType.NOT_COMMON
+                    && itemEntity.getItem().getRarity() == Rarity.COMMON) {
+                return;
+            }
             level.addParticle(new ItemParticleOption(ModParticles.ITEM_RARITY.get(), itemEntity.getItem()),
                     entity.getRandomX(1),
                     entity.getY(),
