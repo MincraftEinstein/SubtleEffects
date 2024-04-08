@@ -20,7 +20,8 @@ public class ItemRarityParticle extends TextureSheetParticle {
         int color = 0xFF000000 | getItemColor(stack).getValue();
         setColor((color >> 16) / 255F, (color >> 8) / 255F, color / 255F);
         pickSprite(sprites);
-        lifetime = Math.max(5, random.nextInt(7));
+        int min = Math.min(5, ModConfigs.INSTANCE.itemRarityParticleHeight.get());
+        lifetime = Math.max(min, random.nextInt(ModConfigs.INSTANCE.itemRarityParticleHeight.get()));
         xd = 0;
         zd = 0;
     }
@@ -38,7 +39,7 @@ public class ItemRarityParticle extends TextureSheetParticle {
             return rarityColor;
         }
 
-        AmbientSleep.LOGGER.error("Failed to get text color for item: " + stack.getDisplayName());
+        AmbientSleep.LOGGER.error("Failed to get text color for item: {}", stack.getDisplayName());
         return WHITE_TEXT;
     }
 

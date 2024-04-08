@@ -85,6 +85,11 @@ public class ModConfigs {
     public final ForgeConfigSpec.BooleanValue burningEntityFlames;
     public final ForgeConfigSpec.BooleanValue burningEntitySparks;
 
+    // Item Rarity
+    public final ForgeConfigSpec.ConfigValue<ItemRaritySpawnType> itemRarityParticles;
+    public final ForgeConfigSpec.ConfigValue<ItemRarityColorType> itemRarityParticleColor;
+    public final ForgeConfigSpec.IntValue itemRarityParticleHeight;
+
     // Entities
     public final ForgeConfigSpec.BooleanValue chickenHitFeathers;
     public final ForgeConfigSpec.BooleanValue parrotHitFeathers;
@@ -96,8 +101,6 @@ public class ModConfigs {
     public final ForgeConfigSpec.BooleanValue sheepShearFluff;
     public final ForgeConfigSpec.BooleanValue improvedDragonFireballTrail;
     public final ForgeConfigSpec.ConfigValue<CommandBlockSpawnType> commandBlockMinecartParticles;
-    public final ForgeConfigSpec.ConfigValue<ItemRaritySpawnType> itemRarityParticles;
-    public final ForgeConfigSpec.ConfigValue<ItemRarityColorType> itemRarityParticleColor;
 
     // Biomes
     public final ForgeConfigSpec.IntValue biomeParticlesRadius;
@@ -320,6 +323,23 @@ public class ModConfigs {
                 .translation(key("burning_entity_sparks"))
                 .define("sparks", true);
 
+        builder.pop().translation(categoryKey("item_rarity")).push("ItemRarity");
+
+        itemRarityParticles = builder
+                .comment("Adds colored particles that float up from items on the ground")
+                .translation(key("item_rarity_particles"))
+                .defineEnum("itemRarityParticles", ItemRaritySpawnType.ON);
+
+        itemRarityParticleColor = builder
+                .comment("How the item rarity particles are colored")
+                .translation(key("item_rarity_particle_color"))
+                .defineEnum("itemRarityParticleColor", ItemRarityColorType.NAME_COLOR);
+
+        itemRarityParticleHeight = builder
+                .comment("How high item rarity particles float")
+                .translation(key("item_rarity_particle_height"))
+                .defineInRange("itemRarityParticleHeight", 7, 3, 15);
+
         builder.pop();
 
         chickenHitFeathers = builder
@@ -370,16 +390,6 @@ public class ModConfigs {
                 .comment("Adds command block particles to the command block minecart. Yes I actually did this")
                 .translation(key("command_block_minecart_particles"))
                 .defineEnum("commandBlockMinecartParticles", CommandBlockSpawnType.ON);
-
-        itemRarityParticles = builder
-                .comment("Adds colored particles that float up from items on the ground")
-                .translation(key("item_rarity_particles"))
-                .defineEnum("itemRarityParticles", ItemRaritySpawnType.ON);
-
-        itemRarityParticleColor = builder
-                .comment("How the item rarity particles are colored")
-                .translation(key("item_rarity_particle_color"))
-                .defineEnum("itemRarityParticleColor", ItemRarityColorType.NAME_COLOR);
 
         builder.pop().translation(categoryKey("biomes")).push("biomes");
 
