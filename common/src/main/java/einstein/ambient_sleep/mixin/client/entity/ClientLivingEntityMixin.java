@@ -40,6 +40,30 @@ public abstract class ClientLivingEntityMixin extends Entity {
     public int hurtTime;
 
     @Unique
+    private SoundEvent ambientSleep$snoreSound = null;
+
+    @Unique
+    private boolean ambientSleep$shouldDelay = true;
+
+    @Unique
+    private boolean ambientSleep$doesSnore = true;
+
+    @Unique
+    private boolean ambientSleep$firstSleepTick = true;
+
+    @Unique
+    private boolean ambientSleep$isFirstBreath = true;
+
+    @Unique
+    private int ambientSleep$breathDelay = Util.BREATH_DELAY;
+
+    @Unique
+    private int ambientSleep$snoreStartDelay = 0;
+
+    @Unique
+    private int ambientSleep$delayTimer = 0;
+
+    @Unique
     private int ambientSleep$breatheTimer = 0;
 
     @Unique
@@ -56,57 +80,84 @@ public abstract class ClientLivingEntityMixin extends Entity {
         super(type, level);
     }
 
+    @Inject(method = "<init>", at = @At("TAIL"))
+    private void init(EntityType<?> type, Level level, CallbackInfo ci) {
+        if (!level.isClientSide()) {
+            return;
+        }
+
+        if (ambientSleep$me instanceof Player player) {
+            ambientSleep$doesSnore = ambientSleep$doesEntitySnore(player, ModConfigs.INSTANCE.playerSnoreChance.get());
+            ambientSleep$snoreSound = ModSounds.PLAYER_SNORE.get();
+            if (player.isLocalPlayer()) {
+                ambientSleep$shouldDelay = false;
+                ambientSleep$breathDelay = 40;
+            }
+        }
+        else if (ambientSleep$me instanceof Villager) {
+            ambientSleep$doesSnore = ambientSleep$doesEntitySnore(ambientSleep$me, ModConfigs.INSTANCE.villagerSnoreChance.get());
+            ambientSleep$snoreSound = ModSounds.VILLAGER_SNORE.get();
+            ambientSleep$breathDelay = 80;
+        }
+    }
+
     @Inject(method = "tick", at = @At("TAIL"))
     private void tick(CallbackInfo ci) {
-        if (level().isClientSide) {
-            double chance = 1;
-            SoundEvent snoreSound = null;
-            if (ambientSleep$me instanceof Player) {
-                chance = ModConfigs.INSTANCE.playerSnoreChance.get();
-                snoreSound = ModSounds.PLAYER_SNORE.get();
-            }
-            else if (ambientSleep$me instanceof Villager) {
-                chance = ModConfigs.INSTANCE.villagerSnoreChance.get();
-                snoreSound = ModSounds.VILLAGER_SNORE.get();
+        if (!level().isClientSide) {
+            return;
+        }
+
+        if (isSleeping()) {
+            if (ambientSleep$firstSleepTick) {
+                ambientSleep$snoreStartDelay = (ambientSleep$shouldDelay ? Util.BREATH_DELAY + random.nextInt(40) : 0);
+                ambientSleep$firstSleepTick = false;
+                return;
             }
 
-            if (isSleeping()) {
-                if (ambientSleep$breatheTimer < Util.BREATH_DELAY) {
-                    ambientSleep$breatheTimer++;
+            if (ambientSleep$delayTimer < ambientSleep$snoreStartDelay) {
+                ambientSleep$delayTimer++;
+                return;
+            }
+
+            if (!ambientSleep$isFirstBreath && ambientSleep$breatheTimer < ambientSleep$breathDelay) {
+                ambientSleep$breatheTimer++;
+                return;
+            }
+
+            if (ambientSleep$snoreTimer >= Util.SNORE_DELAY) {
+                if (ambientSleep$doesSnore && !isSilent() && ambientSleep$ZCount <= 0 && ambientSleep$snoreSound != null) {
+                    Util.playClientSound(SoundSource.NEUTRAL, ambientSleep$me, ambientSleep$snoreSound, 1, getVoicePitch());
                 }
-                else {
-                    if (ambientSleep$snoreTimer >= Util.SNORE_DELAY) {
-                        boolean doesSnore = ambientSleep$doesEntitySnore(ambientSleep$me, chance);
-                        if (ambientSleep$ZCount <= 0 && snoreSound != null && doesSnore) {
-                            Util.playClientSound(SoundSource.NEUTRAL, ambientSleep$me, snoreSound, 1, getVoicePitch());
-                        }
 
-                        ambientSleep$snoreTimer = 0;
-                        ambientSleep$ZCount++;
-                        if (ModConfigs.INSTANCE.enableSleepingZs.get()) {
-                            boolean onlyWhenSnoring = ModConfigs.INSTANCE.displaySleepingZsOnlyWhenSnoring.get();
-
-                            if ((ambientSleep$me instanceof Fox && ModConfigs.INSTANCE.foxesHaveSleepingZs.get()) || (!(ambientSleep$me instanceof Fox) && (!onlyWhenSnoring || doesSnore))) {
-                                level().addParticle(ModParticles.SNORING.get(), getX(), getY() + 0.5, getZ(), 0, 0, 0);
-                            }
-                        }
-
-                        if (ambientSleep$ZCount >= Util.MAX_Z_COUNT) {
-                            ambientSleep$ZCount = 0;
-                            ambientSleep$breatheTimer = 0;
-                        }
-                    }
-
-                    if (ambientSleep$snoreTimer < Util.SNORE_DELAY) {
-                        ambientSleep$snoreTimer++;
-                    }
-                }
-            }
-            else {
-                ambientSleep$breatheTimer = 0;
                 ambientSleep$snoreTimer = 0;
-                ambientSleep$ZCount = 0;
+                ambientSleep$ZCount++;
+                if (ModConfigs.INSTANCE.enableSleepingZs.get()) {
+                    if ((ambientSleep$me instanceof Fox && ModConfigs.INSTANCE.foxesHaveSleepingZs.get())
+                            || (!(ambientSleep$me instanceof Fox)
+                            && (!ModConfigs.INSTANCE.displaySleepingZsOnlyWhenSnoring.get() || ambientSleep$doesSnore))) {
+                        level().addParticle(ModParticles.SNORING.get(), getX(), getY() + 0.5, getZ(), 0, 0, 0);
+                    }
+                }
+
+                if (ambientSleep$ZCount >= Util.MAX_Z_COUNT) {
+                    ambientSleep$ZCount = 0;
+                    ambientSleep$breatheTimer = 0;
+                    ambientSleep$isFirstBreath = false;
+                }
             }
+
+            if (ambientSleep$snoreTimer < Util.SNORE_DELAY) {
+                ambientSleep$snoreTimer++;
+            }
+        }
+        else {
+            ambientSleep$firstSleepTick = true;
+            ambientSleep$isFirstBreath = true;
+            ambientSleep$snoreStartDelay = 0;
+            ambientSleep$delayTimer = 0;
+            ambientSleep$breatheTimer = 0;
+            ambientSleep$snoreTimer = 0;
+            ambientSleep$ZCount = 0;
         }
     }
 
