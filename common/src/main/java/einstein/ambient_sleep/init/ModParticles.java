@@ -3,6 +3,7 @@ package einstein.ambient_sleep.init;
 import com.mojang.serialization.Codec;
 import einstein.ambient_sleep.client.particle.option.CommandBlockParticleOptions;
 import einstein.ambient_sleep.client.particle.*;
+import einstein.ambient_sleep.client.particle.option.PositionParticleOptions;
 import einstein.ambient_sleep.client.particle.option.SheepFluffParticleOptions;
 import einstein.ambient_sleep.client.particle.provider.MushroomSporeProvider;
 import einstein.ambient_sleep.client.particle.provider.PollenProvider;
@@ -44,6 +45,7 @@ public class ModParticles {
     public static final Supplier<SimpleParticleType> POLLEN = register("pollen", PollenProvider::new);
     public static final Supplier<ParticleType<CommandBlockParticleOptions>> COMMAND_BLOCK = register("command_block", CommandBlockParticleOptions.DESERIALIZER, type -> CommandBlockParticleOptions.CODEC, CommandBlockParticle.Provider::new);
     public static final Supplier<ParticleType<ItemParticleOption>> ITEM_RARITY = register("item_rarity", ItemParticleOption.DESERIALIZER, ItemParticleOption::codec, ItemRarityParticle.Provider::new);
+    public static final Supplier<ParticleType<PositionParticleOptions>> BEACON = register("beacon", PositionParticleOptions.DESERIALIZER, PositionParticleOptions::codec, BeaconParticle.Provider::new);
 
     public static void init() {
     }

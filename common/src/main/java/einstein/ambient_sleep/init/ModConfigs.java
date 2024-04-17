@@ -67,6 +67,7 @@ public class ModConfigs {
     public final ForgeConfigSpec.BooleanValue grindstoneUseParticles;
     public final ForgeConfigSpec.ConfigValue<CommandBlockSpawnType> commandBlockParticles;
     public final ForgeConfigSpec.BooleanValue slimeBlockBounceSounds;
+    public final ForgeConfigSpec.BooleanValue beaconParticles;
 
     // Entity Snoring
     public final ForgeConfigSpec.DoubleValue playerSnoreChance;
@@ -260,6 +261,12 @@ public class ModConfigs {
                 .comment("Slime bounce sounds when bouncing on a slime block")
                 .translation(key("slime_block_bounce_sounds"))
                 .define("slimeBlockBounceSounds", true);
+
+        beaconParticles = builder
+                .comment("Should beacons emit particles that float up",
+                        "WARNING! This can cause severe lag on slower computers when around a beacon, potentially adding up to a couple thousand of particles at one time")
+                .translation(key("beacon_particles"))
+                .define("beaconParticles", true);
 
         builder.pop().translation(categoryKey("entities")).push("entities")
                 .translation(categoryKey("sleeping")).push("sleeping");

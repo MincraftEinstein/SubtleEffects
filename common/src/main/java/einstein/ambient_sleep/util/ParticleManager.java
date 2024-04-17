@@ -1,5 +1,6 @@
 package einstein.ambient_sleep.util;
 
+import einstein.ambient_sleep.client.particle.option.PositionParticleOptions;
 import einstein.ambient_sleep.init.ModConfigs;
 import einstein.ambient_sleep.init.ModParticles;
 import net.minecraft.client.Minecraft;
@@ -28,6 +29,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LanternBlock;
+import net.minecraft.world.level.block.entity.BeaconBlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.ForgeConfigSpec;
@@ -335,6 +338,21 @@ public class ParticleManager {
             ParticleSpawnUtil.spawnCmdBlockParticles(level, Vec3.atCenterOf(pos), random, (direction, relativePos) ->
                     !Util.isSolidOrNotEmpty(level, BlockPos.containing(relativePos))
             );
+        }
+        else if (state.is(Blocks.BEACON) && INSTANCE.beaconParticles.get()) {
+            BlockEntity blockEntity = level.getBlockEntity(pos);
+            if (blockEntity instanceof BeaconBlockEntity beaconBlockEntity) {
+                if (!beaconBlockEntity.getBeamSections().isEmpty()) {
+                    PositionParticleOptions options = new PositionParticleOptions(ModParticles.BEACON.get(), beaconBlockEntity.getBlockPos());
+                    for (int i = 0; i < 10; i++) {
+                        level.addParticle(options,
+                                pos.getX() + 0.5 + nextFloat(30) * nextSign(),
+                                pos.getY() + 1,
+                                pos.getZ() + 0.5 + nextFloat(30) * nextSign(),
+                                0, 0, 0);
+                    }
+                }
+            }
         }
     }
 }
