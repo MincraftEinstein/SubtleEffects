@@ -149,7 +149,7 @@ public class ModConfigs {
                 .define("lanternSparks", true);
 
         lavaSparks = builder
-                .comment("WARNING! Setting the value to ON can cause severe lag in the nether for slower PCs")
+                .comment("WARNING! This can cause severe lag for slower computers when around large pools of lava (like in the nether)")
                 .translation(key("lava_sparks"))
                 .defineEnum("lavaSparks", LavaSparksSpawnType.ON);
 
@@ -264,7 +264,7 @@ public class ModConfigs {
 
         beaconParticles = builder
                 .comment("Should beacons emit particles that float up",
-                        "WARNING! This can cause severe lag on slower computers when around a beacon, potentially adding up to a couple thousand of particles at one time")
+                        "WARNING! This can cause severe lag for slower computers when around a beacon, potentially adding up to a couple thousand of particles at one time")
                 .translation(key("beacon_particles"))
                 .define("beaconParticles", true);
 
