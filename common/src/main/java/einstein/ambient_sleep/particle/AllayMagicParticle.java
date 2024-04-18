@@ -26,6 +26,7 @@ public class AllayMagicParticle extends TextureSheetParticle {
         float multiplier = random.nextFloat() * 0.4F + 0.6F;
         setColor(randomizeColor(0.133F, multiplier), randomizeColor(0.812F, multiplier), randomizeColor(1, multiplier));
         setSpriteFromAge(sprites);
+        setAlpha(Mth.clamp(level.random.nextFloat(), 0.5F, 1));
     }
 
     protected float randomizeColor(float color, float multiplier) {
@@ -34,7 +35,7 @@ public class AllayMagicParticle extends TextureSheetParticle {
 
     @Override
     public ParticleRenderType getRenderType() {
-        return ParticleRenderType.PARTICLE_SHEET_OPAQUE;
+        return ParticleRenderType.PARTICLE_SHEET_TRANSLUCENT;
     }
 
     @Override
