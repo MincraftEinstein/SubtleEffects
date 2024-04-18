@@ -1,7 +1,7 @@
 package einstein.ambient_sleep.util;
 
 import commonnetwork.api.Dispatcher;
-import einstein.ambient_sleep.client.particle.option.CommandBlockParticleOptions;
+import einstein.ambient_sleep.particle.option.CommandBlockParticleOptions;
 import einstein.ambient_sleep.init.ModParticles;
 import einstein.ambient_sleep.networking.clientbound.ClientBoundEntityFellPacket;
 import net.minecraft.client.Minecraft;

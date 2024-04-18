@@ -1,16 +1,14 @@
-package einstein.ambient_sleep.client.particle;
+package einstein.ambient_sleep.particle;
 
-import einstein.ambient_sleep.client.particle.option.PositionParticleOptions;
+import einstein.ambient_sleep.particle.option.PositionParticleOptions;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BeaconBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 
 public class BeaconParticle extends SparkParticle {

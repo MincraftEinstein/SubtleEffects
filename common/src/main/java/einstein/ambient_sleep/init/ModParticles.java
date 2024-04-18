@@ -1,13 +1,14 @@
 package einstein.ambient_sleep.init;
 
 import com.mojang.serialization.Codec;
-import einstein.ambient_sleep.client.particle.option.CommandBlockParticleOptions;
+import einstein.ambient_sleep.particle.*;
+import einstein.ambient_sleep.particle.option.CommandBlockParticleOptions;
 import einstein.ambient_sleep.client.particle.*;
-import einstein.ambient_sleep.client.particle.option.PositionParticleOptions;
-import einstein.ambient_sleep.client.particle.option.SheepFluffParticleOptions;
-import einstein.ambient_sleep.client.particle.provider.MushroomSporeProvider;
-import einstein.ambient_sleep.client.particle.provider.PollenProvider;
-import einstein.ambient_sleep.client.particle.provider.SmokeParticleProvider;
+import einstein.ambient_sleep.particle.option.PositionParticleOptions;
+import einstein.ambient_sleep.particle.option.SheepFluffParticleOptions;
+import einstein.ambient_sleep.particle.provider.MushroomSporeProvider;
+import einstein.ambient_sleep.particle.provider.PollenProvider;
+import einstein.ambient_sleep.particle.provider.SmokeParticleProvider;
 import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.core.particles.*;

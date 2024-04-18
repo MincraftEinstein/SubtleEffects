@@ -1,6 +1,6 @@
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-package einstein.ambient_sleep.client.particle.option;
+package einstein.ambient_sleep.particle.provider;
 
 import net.minecraft.MethodsReturnNonnullByDefault;
 

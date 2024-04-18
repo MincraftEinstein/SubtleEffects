@@ -1,10 +1,9 @@
-package einstein.ambient_sleep.client.particle;
+package einstein.ambient_sleep.particle;
 
-import einstein.ambient_sleep.client.particle.option.SheepFluffParticleOptions;
+import einstein.ambient_sleep.particle.option.SheepFluffParticleOptions;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
 import net.minecraft.core.particles.SimpleParticleType;
-import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
 

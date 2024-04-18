@@ -1,4 +1,4 @@
-package einstein.ambient_sleep.client.particle;
+package einstein.ambient_sleep.particle;
 
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;

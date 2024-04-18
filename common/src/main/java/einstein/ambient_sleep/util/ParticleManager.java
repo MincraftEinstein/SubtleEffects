@@ -1,6 +1,6 @@
 package einstein.ambient_sleep.util;
 
-import einstein.ambient_sleep.client.particle.option.PositionParticleOptions;
+import einstein.ambient_sleep.particle.option.PositionParticleOptions;
 import einstein.ambient_sleep.init.ModConfigs;
 import einstein.ambient_sleep.init.ModParticles;
 import net.minecraft.client.Minecraft;
