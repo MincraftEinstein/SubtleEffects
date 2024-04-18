@@ -2,6 +2,7 @@ package einstein.ambient_sleep.util;
 
 import einstein.ambient_sleep.init.ModConfigs;
 import einstein.ambient_sleep.init.ModParticles;
+import einstein.ambient_sleep.particle.option.BooleanParticleOptions;
 import einstein.ambient_sleep.particle.option.PositionParticleOptions;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
@@ -63,6 +64,18 @@ public class ParticleManager {
         registerEntityTickProvider(EntityType.ALLAY, (entity, level, random) -> {
             if (shouldSpawn(random, INSTANCE.allayMagicDensity)) {
                 level.addParticle(ModParticles.ALLAY_MAGIC.get(),
+                        entity.getRandomX(1),
+                        entity.getRandomY(),
+                        entity.getRandomZ(1),
+                        nextFloat(4) * nextSign(),
+                        0,
+                        nextFloat(4) * nextSign()
+                );
+            }
+        });
+        registerEntityTickProvider(EntityType.VEX, (entity, level, random) -> {
+            if (shouldSpawn(random, INSTANCE.vexMagicDensity)) {
+                level.addParticle(new BooleanParticleOptions(ModParticles.VEX_MAGIC.get(), entity.isCharging()),
                         entity.getRandomX(1),
                         entity.getRandomY(),
                         entity.getRandomZ(1),

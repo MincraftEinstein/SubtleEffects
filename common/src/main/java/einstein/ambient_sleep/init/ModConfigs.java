@@ -98,6 +98,7 @@ public class ModConfigs {
     public final ForgeConfigSpec.BooleanValue enderPearlTrail;
     public final ForgeConfigSpec.DoubleValue snowballTrailDensity;
     public final ForgeConfigSpec.DoubleValue allayMagicDensity;
+    public final ForgeConfigSpec.DoubleValue vexMagicDensity;
     public final ForgeConfigSpec.BooleanValue stomachGrowling;
     public final ForgeConfigSpec.BooleanValue snowGolemHitSnowflakes;
     public final ForgeConfigSpec.BooleanValue sheepShearFluff;
@@ -377,6 +378,11 @@ public class ModConfigs {
                 .comment("The density of particles spawning around an allay", TO_DISABLE)
                 .translation(key("allay_magic_density"))
                 .defineInRange("allayMagicDensity", 0.2, 0, 1.0);
+
+        vexMagicDensity = builder
+                .comment("The density of particles spawning around a vex", TO_DISABLE)
+                .translation(key("vex_magic_density"))
+                .defineInRange("vexMagicDensity", 0.2, 0, 1.0);
 
         stomachGrowling = builder
                 .comment("Should a stomach growl sound play every 15 sec when the player is below 3 food points (or 6 half points)")

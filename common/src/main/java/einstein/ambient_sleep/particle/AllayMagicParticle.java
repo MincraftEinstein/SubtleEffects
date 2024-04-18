@@ -1,5 +1,6 @@
 package einstein.ambient_sleep.particle;
 
+import einstein.ambient_sleep.particle.option.BooleanParticleOptions;
 import einstein.ambient_sleep.util.Util;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
@@ -23,10 +24,14 @@ public class AllayMagicParticle extends TextureSheetParticle {
         lifetime = random.nextIntBetweenInclusive(20, 35);
         hasPhysics = false;
         speedUpWhenYMotionIsBlocked = true;
-        float multiplier = random.nextFloat() * 0.4F + 0.6F;
-        setColor(randomizeColor(0.133F, multiplier), randomizeColor(0.812F, multiplier), randomizeColor(1, multiplier));
+        setRandomizedColor(0.133F, 0.812F, 1);
         setSpriteFromAge(sprites);
         setAlpha(Mth.clamp(level.random.nextFloat(), 0.5F, 1));
+    }
+
+    protected void setRandomizedColor(float r, float g, float b) {
+        float multiplier = random.nextFloat() * 0.4F + 0.6F;
+        setColor(randomizeColor(r, multiplier), randomizeColor(g, multiplier), randomizeColor(b, multiplier));
     }
 
     protected float randomizeColor(float color, float multiplier) {
@@ -60,6 +65,21 @@ public class AllayMagicParticle extends TextureSheetParticle {
         @Override
         public Particle createParticle(SimpleParticleType type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
             return new AllayMagicParticle(level, x, y, z, xSpeed, ySpeed, zSpeed, sprites);
+        }
+    }
+
+    public record VexProvider(SpriteSet sprites) implements ParticleProvider<BooleanParticleOptions> {
+
+        @Nullable
+        @Override
+        public Particle createParticle(BooleanParticleOptions type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+            AllayMagicParticle particle = new AllayMagicParticle(level, x, y, z, xSpeed, ySpeed, zSpeed, sprites);
+            if (type.bool()) {
+                particle.setRandomizedColor(0.859F, 0.478F, 0.588F);
+                return particle;
+            }
+            particle.setRandomizedColor(0.635F, 0.737F, 0.835F);
+            return particle;
         }
     }
 }

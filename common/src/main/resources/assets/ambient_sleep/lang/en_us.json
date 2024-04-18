@@ -52,6 +52,7 @@
   "config.ambient_sleep.ender_pearl_trail": "Ender Pearl Trail",
   "config.ambient_sleep.snowball_trail_density": "Snowball Trail Density",
   "config.ambient_sleep.allay_magic_density": "Allay Magic Density",
+  "config.ambient_sleep.vex_magic_density": "Vex Magic Density",
   "config.ambient_sleep.stomach_growling": "Stomach Growling",
   "config.ambient_sleep.snow_golem_hit_snowflakes": "Snow Golem Hit Snowflakes",
   "config.ambient_sleep.sheep_shear_fluff": "Sheep Shear Fluff",

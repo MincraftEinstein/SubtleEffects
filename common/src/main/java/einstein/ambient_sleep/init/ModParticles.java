@@ -2,6 +2,7 @@ package einstein.ambient_sleep.init;
 
 import com.mojang.serialization.Codec;
 import einstein.ambient_sleep.particle.*;
+import einstein.ambient_sleep.particle.option.BooleanParticleOptions;
 import einstein.ambient_sleep.particle.option.CommandBlockParticleOptions;
 import einstein.ambient_sleep.particle.option.PositionParticleOptions;
 import einstein.ambient_sleep.particle.option.SheepFluffParticleOptions;
@@ -39,6 +40,7 @@ public class ModParticles {
     public static final Supplier<SimpleParticleType> RED_BLUE_PARROT_FEATHER = register("red_blue_parrot_feather", FeatherParticle.Provider::new);
     public static final Supplier<SimpleParticleType> YELLOW_BLUE_PARROT_FEATHER = register("yellow_blue_parrot_feather", FeatherParticle.Provider::new);
     public static final Supplier<SimpleParticleType> ALLAY_MAGIC = register("allay_magic", AllayMagicParticle.Provider::new);
+    public static final Supplier<ParticleType<BooleanParticleOptions>> VEX_MAGIC = register("vex_magic", BooleanParticleOptions.DESERIALIZER, BooleanParticleOptions::codec, AllayMagicParticle.VexProvider::new);
     public static final Supplier<SimpleParticleType> SMALL_DUST_CLOUD = register("small_dust_cloud", DustCloudParticle.SmallProvider::new);
     public static final Supplier<SimpleParticleType> LARGE_DUST_CLOUD = register("large_dust_cloud", DustCloudParticle.LargeProvider::new);
     public static final Supplier<ParticleType<SheepFluffParticleOptions>> SHEEP_FLUFF = register("sheep_fluff", SheepFluffParticleOptions.DESERIALIZER, type -> SheepFluffParticleOptions.CODEC, FeatherParticle.SheepFluffProvider::new);
