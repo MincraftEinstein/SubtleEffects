@@ -75,6 +75,7 @@ public class ModConfigs {
     public final ForgeConfigSpec.BooleanValue displaySleepingZsOnlyWhenSnoring;
     public final ForgeConfigSpec.BooleanValue foxesHaveSleepingZs;
     public final ForgeConfigSpec.BooleanValue adjustNametagWhenSleeping;
+    public final ForgeConfigSpec.BooleanValue sleepingZs;
 
     // Entity Dust Clouds
     public final ForgeConfigSpec.BooleanValue fallDamageDustClouds;
@@ -113,7 +114,6 @@ public class ModConfigs {
     public final ForgeConfigSpec.IntValue pollenDensity;
 
     // General
-    public final ForgeConfigSpec.BooleanValue enableSleepingZs;
 
     public ModConfigs(ForgeConfigSpec.Builder builder) {
         builder.translation(categoryKey("blocks")).push("blocks")
@@ -296,6 +296,11 @@ public class ModConfigs {
                 .translation(key("adjust_nametag_when_sleeping"))
                 .define("adjustNametagWhenSleeping", true);
 
+        sleepingZs = builder
+                .comment("When a mob is sleeping display Z particles")
+                .translation(key("sleeping_zs"))
+                .define("sleepingZs", true);
+
         builder.pop().translation(categoryKey("dust_clouds")).push("dustClouds");
 
         fallDamageDustClouds = builder
@@ -442,11 +447,6 @@ public class ModConfigs {
                 .defineInRange("pollenDensity", 50, 0, 100);
 
         builder.pop();
-
-        enableSleepingZs = builder
-                .comment("When an mob is sleeping display Z particles")
-                .translation(key("enable_sleeping_zs"))
-                .define("enableSleepingZs", true);
     }
 
     private ForgeConfigSpec.ConfigValue<List<? extends String>> defineLocationList(ForgeConfigSpec.Builder builder, String path, String... defaultValues) {

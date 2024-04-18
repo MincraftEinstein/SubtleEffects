@@ -38,7 +38,7 @@ public class ClientBoundSpawnSnoreParticlePacket {
         Level level = Minecraft.getInstance().level;
         if (context.side().equals(Side.CLIENT) && level != null) {
             ClientBoundSpawnSnoreParticlePacket packet = context.message();
-            if (ModConfigs.INSTANCE.enableSleepingZs.get() && ModConfigs.INSTANCE.beehivesHaveSleepingZs.get()) {
+            if (ModConfigs.INSTANCE.beehivesHaveSleepingZs.get()) {
                 level.addParticle(ModParticles.SNORING.get(), packet.x, packet.y, packet.z, 0, 0, 0);
             }
         }

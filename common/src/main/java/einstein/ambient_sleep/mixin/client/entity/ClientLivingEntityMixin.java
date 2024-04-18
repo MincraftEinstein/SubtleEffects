@@ -131,7 +131,7 @@ public abstract class ClientLivingEntityMixin extends Entity {
 
                 ambientSleep$snoreTimer = 0;
                 ambientSleep$ZCount++;
-                if (ModConfigs.INSTANCE.enableSleepingZs.get()) {
+                if (ModConfigs.INSTANCE.sleepingZs.get()) {
                     if ((ambientSleep$me instanceof Fox && ModConfigs.INSTANCE.foxesHaveSleepingZs.get())
                             || (!(ambientSleep$me instanceof Fox)
                             && (!ModConfigs.INSTANCE.displaySleepingZsOnlyWhenSnoring.get() || ambientSleep$doesSnore))) {
