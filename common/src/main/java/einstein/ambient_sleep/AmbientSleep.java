@@ -4,6 +4,7 @@ import einstein.ambient_sleep.init.BiomeParticles;
 import einstein.ambient_sleep.init.ModPackets;
 import einstein.ambient_sleep.init.ModParticles;
 import einstein.ambient_sleep.init.ModSounds;
+import einstein.ambient_sleep.util.ParticleManager;
 import net.minecraft.resources.ResourceLocation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,6 +20,7 @@ public class AmbientSleep {
         ModParticles.init();
         ModPackets.init();
         BiomeParticles.init();
+        ParticleManager.init();
     }
 
     public static void clientSetup() {
