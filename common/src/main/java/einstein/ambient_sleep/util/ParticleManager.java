@@ -1,5 +1,6 @@
 package einstein.ambient_sleep.util;
 
+import einstein.ambient_sleep.AmbientSleep;
 import einstein.ambient_sleep.init.ModConfigs;
 import einstein.ambient_sleep.init.ModParticles;
 import einstein.ambient_sleep.particle.option.BooleanParticleOptions;
@@ -8,6 +9,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.*;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
@@ -258,27 +260,33 @@ public class ParticleManager {
         float bbWidth = entity.getBbWidth();
         float bbHeight = entity.getBbHeight();
 
-        if (bbWidth <= 4 && bbHeight <= 4 && entity.isOnFire()) {
-            if (INSTANCE.burningEntitySmoke.get() != ModConfigs.SmokeType.OFF) {
-                level.addParticle(INSTANCE.burningEntitySmoke.get().getParticle().get(), entity.getRandomX(1), entity.getRandomY(), entity.getRandomZ(1), 0, 0, 0);
+        if (entity.isOnFire()) {
+            if (random.nextInt(90) == 0 && INSTANCE.burningEntitySounds.get()) {
+                Util.playClientSound(entity.getSoundSource(), entity, SoundEvents.FIRE_EXTINGUISH, 0.3F, 1);
             }
 
-            if (INSTANCE.burningEntitySparks.get()) {
-                for (int i = 0; i < 2; i++) {
-                    level.addParticle(ModParticles.SHORT_SPARK.get(), entity.getRandomX(1), entity.getRandomY(), entity.getRandomZ(1),
-                            nextFloat(3) * nextSign(),
-                            nextFloat(5) * nextSign(),
-                            nextFloat(3) * nextSign()
-                    );
+            if (bbWidth <= 4 && bbHeight <= 4) {
+                if (INSTANCE.burningEntitySmoke.get() != ModConfigs.SmokeType.OFF) {
+                    level.addParticle(INSTANCE.burningEntitySmoke.get().getParticle().get(), entity.getRandomX(1), entity.getRandomY(), entity.getRandomZ(1), 0, 0, 0);
                 }
-            }
 
-            if (bbWidth < 2 && bbHeight < 2 && !random.nextBoolean()) {
-                return;
-            }
+                if (INSTANCE.burningEntitySparks.get()) {
+                    for (int i = 0; i < 2; i++) {
+                        level.addParticle(ModParticles.SHORT_SPARK.get(), entity.getRandomX(1), entity.getRandomY(), entity.getRandomZ(1),
+                                nextFloat(3) * nextSign(),
+                                nextFloat(5) * nextSign(),
+                                nextFloat(3) * nextSign()
+                        );
+                    }
+                }
 
-            if (INSTANCE.burningEntityFlames.get()) {
-                level.addParticle(ParticleTypes.FLAME, entity.getRandomX(1), entity.getRandomY(), entity.getRandomZ(1), 0, 0, 0);
+                if (bbWidth < 2 && bbHeight < 2 && !random.nextBoolean()) {
+                    return;
+                }
+
+                if (INSTANCE.burningEntityFlames.get()) {
+                    level.addParticle(ParticleTypes.FLAME, entity.getRandomX(1), entity.getRandomY(), entity.getRandomZ(1), 0, 0, 0);
+                }
             }
         }
 

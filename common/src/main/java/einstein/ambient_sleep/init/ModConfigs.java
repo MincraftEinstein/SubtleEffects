@@ -86,6 +86,7 @@ public class ModConfigs {
     public final ForgeConfigSpec.EnumValue<SmokeType> burningEntitySmoke;
     public final ForgeConfigSpec.BooleanValue burningEntityFlames;
     public final ForgeConfigSpec.BooleanValue burningEntitySparks;
+    public final ForgeConfigSpec.BooleanValue burningEntitySounds;
 
     // Item Rarity
     public final ForgeConfigSpec.ConfigValue<ItemRaritySpawnType> itemRarityParticles;
@@ -335,6 +336,11 @@ public class ModConfigs {
         burningEntitySparks = builder
                 .translation(key("burning_entity_sparks"))
                 .define("sparks", true);
+
+        burningEntitySounds = builder
+                .comment("Should burning randomly play the fire extinguish sound")
+                .translation(key("burning_entity_sounds"))
+                .define("sounds", true);
 
         builder.pop().translation(categoryKey("item_rarity")).push("ItemRarity");
 

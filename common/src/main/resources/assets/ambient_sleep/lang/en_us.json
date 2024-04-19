@@ -44,6 +44,7 @@
   "config.ambient_sleep.burning_entity_smoke": "Smoke",
   "config.ambient_sleep.burning_entity_flames": "Flames",
   "config.ambient_sleep.burning_entity_sparks": "Sparks",
+  "config.ambient_sleep.burning_entity_sounds": "Sounds",
   "config.ambient_sleep.item_rarity_particles": "Item Rarity Particles",
   "config.ambient_sleep.item_rarity_particle_color": "Item Rarity Particle Color",
   "config.ambient_sleep.item_rarity_particle_height": "Item Rarity Particle Height",
