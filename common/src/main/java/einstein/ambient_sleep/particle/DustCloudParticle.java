@@ -24,7 +24,7 @@ public class DustCloudParticle extends TextureSheetParticle {
 
     @Override
     public ParticleRenderType getRenderType() {
-        return ParticleRenderType.PARTICLE_SHEET_OPAQUE;
+        return ParticleRenderType.PARTICLE_SHEET_TRANSLUCENT;
     }
 
     @Override
@@ -34,6 +34,7 @@ public class DustCloudParticle extends TextureSheetParticle {
 
         if (age >= (lifetime / 3) * 2) {
             yd *= ySpeed / (random.nextInt(3, 7) * 1000);
+            alpha -= 0.1F;
         }
 
         if (onGround) {
