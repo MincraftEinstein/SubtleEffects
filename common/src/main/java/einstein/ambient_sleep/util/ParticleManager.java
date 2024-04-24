@@ -1,6 +1,5 @@
 package einstein.ambient_sleep.util;
 
-import einstein.ambient_sleep.AmbientSleep;
 import einstein.ambient_sleep.init.ModConfigs;
 import einstein.ambient_sleep.init.ModParticles;
 import einstein.ambient_sleep.particle.option.BooleanParticleOptions;
@@ -17,7 +16,6 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.animal.camel.Camel;
 import net.minecraft.world.entity.animal.horse.AbstractHorse;
 import net.minecraft.world.entity.item.FallingBlockEntity;
@@ -95,9 +93,7 @@ public class ParticleManager {
             }
         });
         registerEntityTickProvider(EntityType.RAVAGER, (entity, level, random) -> {
-            if (entity.getAttribute(Attributes.MOVEMENT_SPEED).getBaseValue() > 0.34D && entity.onGround()) {
-                ParticleSpawnUtil.spawnCreatureMovementDustClouds(entity, level, random, 20);
-            }
+
         });
         registerEntityTickProvider(EntityType.DRAGON_FIREBALL, (entity, level, random) -> {
             if (INSTANCE.improvedDragonFireballTrail.get()) {
