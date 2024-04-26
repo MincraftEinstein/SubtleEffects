@@ -51,10 +51,11 @@ public class ModParticles {
     public static final Supplier<ParticleType<CommandBlockParticleOptions>> COMMAND_BLOCK = register("command_block", CommandBlockParticleOptions.DESERIALIZER, type -> CommandBlockParticleOptions.CODEC, CommandBlockParticle.Provider::new);
     public static final Supplier<ParticleType<ItemParticleOption>> ITEM_RARITY = register("item_rarity", ItemParticleOption.DESERIALIZER, ItemParticleOption::codec, ItemRarityParticle.Provider::new);
     public static final Supplier<ParticleType<PositionParticleOptions>> BEACON = register("beacon", PositionParticleOptions.DESERIALIZER, PositionParticleOptions::codec, BeaconParticle.Provider::new);
+    public static final Supplier<SimpleParticleType> COMPOST = register("compost", CompostParticle.Provider::new);
 
     public static void init() {
     }
-    
+
     private static Supplier<SimpleParticleType> register(String name, Function<SpriteSet, ParticleProvider<SimpleParticleType>> provider) {
         Supplier<SimpleParticleType> particleType = REGISTRY.registerParticle(name, () -> new SimpleParticleType(false));
         REGISTRY.registerParticleProvider(particleType, provider);
