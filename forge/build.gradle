@@ -73,6 +73,10 @@ dependencies {
     annotationProcessor("org.spongepowered:mixin:0.8.5-SNAPSHOT:processor")
     runtimeOnly fg.deobf("fuzs.forgeconfigscreens:forgeconfigscreens-forge:${forge_config_menus}")
     implementation fg.deobf("mysticdrew:common-networking-forge:${networking_version}-${minecraft_version}")
+    implementation(jarJar("io.github.llamalad7:mixinextras-forge:0.3.5")) {
+        jarJar.ranged(it, "[0.3.5,)")
+    }
+    compileOnly(annotationProcessor("io.github.llamalad7:mixinextras-common:0.3.5"))
 }
 
 tasks.withType(JavaCompile).configureEach {

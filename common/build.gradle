@@ -23,6 +23,7 @@ dependencies {
 
     implementation group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.1'
     implementation "mysticdrew:common-networking-common:${networking_version}-${minecraft_version}"
+    compileOnly "io.github.llamalad7:mixinextras-common:0.3.5"
 }
 
 publishing {
