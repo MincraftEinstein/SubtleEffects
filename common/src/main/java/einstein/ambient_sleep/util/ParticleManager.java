@@ -6,6 +6,7 @@ import einstein.ambient_sleep.particle.option.BooleanParticleOptions;
 import einstein.ambient_sleep.particle.option.PositionParticleOptions;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.particles.*;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.sounds.SoundEvents;
@@ -226,6 +227,20 @@ public class ParticleManager {
                                     0, 0, 0
                             );
                         }
+                    }
+                }
+            }
+        });
+        registerBlockAnimateTickProvider(Blocks.RESPAWN_ANCHOR, (state, level, pos, random) -> {
+            if (random.nextInt(5) == 0) {
+                Direction direction = Direction.getRandom(random);
+
+                if (direction != Direction.UP) {
+                    BlockPos relativePos = pos.relative(direction);
+                    BlockState relativeState = level.getBlockState(relativePos);
+
+                    if (!state.canOcclude() || !relativeState.isFaceSturdy(level, relativePos, direction.getOpposite())) {
+                        ParticleSpawnUtil.spawnParticlesOnSide(ParticleTypes.DRIPPING_OBSIDIAN_TEAR, 0.1F, direction, level, pos, random, 0, 0, 0);
                     }
                 }
             }

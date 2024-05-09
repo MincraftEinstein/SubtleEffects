@@ -18,7 +18,6 @@
     "client.block.EndPortalBlockMixin",
     "client.block.FurnaceBlockMixin",
     "client.block.PumpkinBlockMixin",
-    "client.block.RespawnAnchorBlockMixin",
     "client.block.SlimeBlockMixin",
     "client.block.TorchBlockMixin",
     "client.block.WallTorchBlockMixin",
