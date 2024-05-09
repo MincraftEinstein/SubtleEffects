@@ -92,9 +92,6 @@ public class ParticleManager {
                 }
             }
         });
-        registerEntityTickProvider(EntityType.RAVAGER, (entity, level, random) -> {
-
-        });
         registerEntityTickProvider(EntityType.DRAGON_FIREBALL, (entity, level, random) -> {
             if (INSTANCE.improvedDragonFireballTrail.get()) {
                 for (int i = 0; i < 10; i++) {
@@ -394,7 +391,6 @@ public class ParticleManager {
         }
     }
 
-    // Only works for blocks that don't already implement animateTick
     public static void blockAnimateTick(BlockState state, Level level, BlockPos pos, RandomSource random) {
         Block block = state.getBlock();
 

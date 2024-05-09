@@ -1,9 +1,9 @@
 package einstein.ambient_sleep.util;
 
 import commonnetwork.api.Dispatcher;
-import einstein.ambient_sleep.particle.option.CommandBlockParticleOptions;
 import einstein.ambient_sleep.init.ModParticles;
 import einstein.ambient_sleep.networking.clientbound.ClientBoundEntityFellPacket;
+import einstein.ambient_sleep.particle.option.CommandBlockParticleOptions;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -91,7 +91,7 @@ public class ParticleSpawnUtil {
                     pos.getY() + random.nextDouble() * random.nextInt(3),
                     pos.getZ() + 0.5 + random.nextDouble() / 2 * nextSign(),
                     nextFloat(10) * nextSign(),
-                    nextFloat(7) ,
+                    nextFloat(7),
                     nextFloat(10) * nextSign()
             );
         }
