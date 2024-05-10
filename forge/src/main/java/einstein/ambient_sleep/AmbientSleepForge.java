@@ -15,6 +15,7 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
+import net.minecraftforge.fml.event.config.ModConfigEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
@@ -34,6 +35,7 @@ public class AmbientSleepForge {
                 ForgeRegistryHelper.PARTICLE_PROVIDERS.forEach((particle, provider) -> registerParticle(event, particle, provider))
         );
         modEventBus.addListener((FMLClientSetupEvent event) -> AmbientSleep.clientSetup());
+        modEventBus.addListener((ModConfigEvent.Reloading event) -> AmbientSleep.configReloaded(event.getConfig()));
         MinecraftForge.EVENT_BUS.addListener((TickEvent.LevelTickEvent event) -> {
             if (event.side.isClient() && event.phase.equals(TickEvent.Phase.END)) {
                 BiomeParticles.tickBiomeParticles(Minecraft.getInstance(), event.level);

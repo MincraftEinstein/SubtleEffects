@@ -1,11 +1,13 @@
 package einstein.ambient_sleep;
 
-import einstein.ambient_sleep.init.BiomeParticles;
-import einstein.ambient_sleep.init.ModPackets;
-import einstein.ambient_sleep.init.ModParticles;
-import einstein.ambient_sleep.init.ModSounds;
+import einstein.ambient_sleep.init.*;
 import einstein.ambient_sleep.util.ParticleManager;
+import einstein.ambient_sleep.util.ShaderManager;
+import einstein.ambient_sleep.util.Util;
+import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.player.Player;
+import net.minecraftforge.fml.config.ModConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,6 +27,23 @@ public class AmbientSleep {
 
     public static void clientSetup() {
         ModPackets.init();
+    }
+
+    public static void configReloaded(ModConfig config) {
+        if (config.getModId().equals(MOD_ID)) {
+            Minecraft minecraft = Minecraft.getInstance();
+            if (minecraft.level != null) {
+                if (!ModConfigs.INSTANCE.mobSkullShaders.get()) {
+                    ((ShaderManager) minecraft.gameRenderer).ambientSleep$clearShader();
+                    return;
+                }
+
+                Player player = minecraft.player;
+                if (player != null) {
+                    Util.applyHelmetShader(player.getInventory().getArmor(3));
+                }
+            }
+        }
     }
 
     public static ResourceLocation loc(String path) {

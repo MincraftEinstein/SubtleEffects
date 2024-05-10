@@ -116,6 +116,7 @@ public class ModConfigs {
     public final ForgeConfigSpec.IntValue pollenDensity;
 
     // General
+    public final ForgeConfigSpec.BooleanValue mobSkullShaders;
 
     public ModConfigs(ForgeConfigSpec.Builder builder) {
         builder.translation(categoryKey("blocks")).push("blocks")
@@ -459,6 +460,11 @@ public class ModConfigs {
                 .defineInRange("pollenDensity", 50, 0, 100);
 
         builder.pop();
+
+        mobSkullShaders = builder
+                .comment("Apply a mob's spectate shader when wearing its skull/head e.g Creeper head makes everything look green", "No new shaders are added")
+                .translation(key("mob_skull_shaders"))
+                .define("mobSkullShaders", true);
     }
 
     private ForgeConfigSpec.ConfigValue<List<? extends String>> defineLocationList(ForgeConfigSpec.Builder builder, String path, String... defaultValues) {

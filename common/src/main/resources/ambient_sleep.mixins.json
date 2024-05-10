@@ -7,6 +7,7 @@
   "client": [
     "client.AxeItemMixin",
     "client.ClientLevelMixin",
+    "client.GameRendererMixin",
     "client.LavaFluidMixin",
     "client.LavaParticleMixin",
     "client.LevelRendererMixin",
