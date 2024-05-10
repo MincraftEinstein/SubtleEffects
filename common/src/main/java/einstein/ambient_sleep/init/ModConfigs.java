@@ -68,6 +68,8 @@ public class ModConfigs {
     public final ForgeConfigSpec.ConfigValue<CommandBlockSpawnType> commandBlockParticles;
     public final ForgeConfigSpec.BooleanValue slimeBlockBounceSounds;
     public final ForgeConfigSpec.BooleanValue beaconParticles;
+    public final ForgeConfigSpec.BooleanValue compostingParticles;
+    public final ForgeConfigSpec.BooleanValue respawnAnchorParticles;
 
     // Entity Snoring
     public final ForgeConfigSpec.DoubleValue playerSnoreChance;
@@ -267,9 +269,19 @@ public class ModConfigs {
 
         beaconParticles = builder
                 .comment("Should beacons emit particles that float up",
-                        "WARNING! This can cause severe lag for slower computers when around a beacon, potentially adding up to a couple thousand of particles at one time")
+                        "WARNING! This can cause severe lag for slower computers when around a beacon, potentially adding up to a couple of thousand particles at one time per beacon")
                 .translation(key("beacon_particles"))
                 .define("beaconParticles", true);
+
+        compostingParticles = builder
+                .comment("Compost particles when putting items in a composter")
+                .translation(key("composting_particles"))
+                .define("compostingParticles", true);
+
+        respawnAnchorParticles = builder
+                .comment("Crying obsidian particles for respawn anchors")
+                .translation(key("respawn_anchor_particles"))
+                .define("respawnAnchorParticles", true);
 
         builder.pop().translation(categoryKey("entities")).push("entities")
                 .translation(categoryKey("sleeping")).push("sleeping");

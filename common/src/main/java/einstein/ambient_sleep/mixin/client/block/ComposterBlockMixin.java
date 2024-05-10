@@ -1,5 +1,6 @@
 package einstein.ambient_sleep.mixin.client.block;
 
+import einstein.ambient_sleep.init.ModConfigs;
 import einstein.ambient_sleep.init.ModParticles;
 import einstein.ambient_sleep.util.MathUtil;
 import net.minecraft.core.BlockPos;
@@ -16,15 +17,17 @@ public class ComposterBlockMixin {
 
     @Inject(method = "handleFill", at = @At("TAIL"))
     private static void handleFill(Level level, BlockPos pos, boolean success, CallbackInfo ci) {
-        BlockState state = level.getBlockState(pos);
+        if (ModConfigs.INSTANCE.compostingParticles.get()) {
+            BlockState state = level.getBlockState(pos);
 
-        for (int i = 0; i < 10; i++) {
-            level.addParticle(ModParticles.COMPOST.get(),
-                    pos.getX() + 0.5 + MathUtil.nextFloat(30) * MathUtil.nextSign(),
-                    pos.getY() + 0.1875 + (0.125 * state.getValue(ComposterBlock.LEVEL)),
-                    pos.getZ() + 0.5 + MathUtil.nextFloat(30) * MathUtil.nextSign(),
-                    0, 0, 0
-            );
+            for (int i = 0; i < 10; i++) {
+                level.addParticle(ModParticles.COMPOST.get(),
+                        pos.getX() + 0.5 + MathUtil.nextFloat(30) * MathUtil.nextSign(),
+                        pos.getY() + 0.1875 + (0.125 * state.getValue(ComposterBlock.LEVEL)),
+                        pos.getZ() + 0.5 + MathUtil.nextFloat(30) * MathUtil.nextSign(),
+                        0, 0, 0
+                );
+            }
         }
     }
 }
