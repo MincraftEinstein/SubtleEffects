@@ -32,7 +32,7 @@ public class AmbientSleep {
     public static void configReloaded(ModConfig config) {
         if (config.getModId().equals(MOD_ID)) {
             Minecraft minecraft = Minecraft.getInstance();
-            if (minecraft.level != null) {
+            if (minecraft.level != null && minecraft.options.getCameraType().isFirstPerson()) {
                 if (!ModConfigs.INSTANCE.mobSkullShaders.get()) {
                     ((ShaderManager) minecraft.gameRenderer).ambientSleep$clearShader();
                     return;

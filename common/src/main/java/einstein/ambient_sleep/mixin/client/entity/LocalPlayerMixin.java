@@ -4,6 +4,8 @@ import com.mojang.authlib.GameProfile;
 import einstein.ambient_sleep.init.ModConfigs;
 import einstein.ambient_sleep.init.ModSounds;
 import einstein.ambient_sleep.util.Util;
+import net.minecraft.client.CameraType;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.player.LocalPlayer;
@@ -23,6 +25,9 @@ public abstract class LocalPlayerMixin extends AbstractClientPlayer {
 
     @Unique
     private ItemStack ambientSleep$oldHelmetStack = ItemStack.EMPTY;
+
+    @Unique
+    private CameraType ambientSleep$oldCameraType;
 
     public LocalPlayerMixin(ClientLevel level, GameProfile profile) {
         super(level, profile);
@@ -63,6 +68,15 @@ public abstract class LocalPlayerMixin extends AbstractClientPlayer {
                 || !ItemStack.isSameItem(ambientSleep$oldHelmetStack, helmetStack)) {
             ambientSleep$oldHelmetStack = helmetStack.copy();
             Util.applyHelmetShader(helmetStack);
+        }
+
+        CameraType cameraType = Minecraft.getInstance().options.getCameraType();
+        if (ambientSleep$oldCameraType != cameraType) {
+            ambientSleep$oldCameraType = cameraType;
+
+            if (cameraType.isFirstPerson()) {
+                Util.applyHelmetShader(helmetStack);
+            }
         }
     }
 }
