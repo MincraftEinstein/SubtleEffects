@@ -39,12 +39,7 @@ public class BiomeParticles {
         REGISTERED.add(new BiomeParticleSettings(biomesConfig, density, maxSpawnHeight, particle, spawnConditions));
     }
 
-    public static void tickBiomeParticles(Minecraft minecraft, Level level) {
-        Player player = minecraft.player;
-        if (minecraft.isPaused() || minecraft.level == null || player == null) {
-            return;
-        }
-
+    public static void tickBiomeParticles(Minecraft minecraft, Level level, Player player) {
         int radius = INSTANCE.biomeParticlesRadius.get();
 
         if (radius <= 0) {

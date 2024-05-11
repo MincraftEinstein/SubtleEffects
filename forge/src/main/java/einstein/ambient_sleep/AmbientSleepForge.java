@@ -1,6 +1,5 @@
 package einstein.ambient_sleep;
 
-import einstein.ambient_sleep.init.BiomeParticles;
 import einstein.ambient_sleep.init.ModConfigs;
 import einstein.ambient_sleep.platform.ForgeRegistryHelper;
 import net.minecraft.client.Minecraft;
@@ -38,7 +37,7 @@ public class AmbientSleepForge {
         modEventBus.addListener((ModConfigEvent.Reloading event) -> AmbientSleep.configReloaded(event.getConfig()));
         MinecraftForge.EVENT_BUS.addListener((TickEvent.LevelTickEvent event) -> {
             if (event.side.isClient() && event.phase.equals(TickEvent.Phase.END)) {
-                BiomeParticles.tickBiomeParticles(Minecraft.getInstance(), event.level);
+                AmbientSleep.levelTick(Minecraft.getInstance(), event.level);
             }
         });
         ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, ModConfigs.SPEC);

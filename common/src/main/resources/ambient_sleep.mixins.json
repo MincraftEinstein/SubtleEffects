@@ -24,6 +24,7 @@
     "client.block.WallTorchBlockMixin",
     "client.entity.AbstractMinecartEntityMixin",
     "client.entity.ClientLivingEntityMixin",
+    "client.entity.EntityAccessor",
     "client.entity.EntityMixin",
     "client.entity.EntityRendererMixin",
     "client.entity.FallingBlockEntityMixin",

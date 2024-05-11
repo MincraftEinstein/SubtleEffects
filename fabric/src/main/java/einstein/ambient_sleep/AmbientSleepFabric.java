@@ -1,6 +1,5 @@
 package einstein.ambient_sleep;
 
-import einstein.ambient_sleep.init.BiomeParticles;
 import einstein.ambient_sleep.init.ModConfigs;
 import fuzs.forgeconfigapiport.api.config.v2.ForgeConfigRegistry;
 import fuzs.forgeconfigapiport.api.config.v2.ModConfigEvents;
@@ -21,6 +20,6 @@ public class AmbientSleepFabric implements ModInitializer, ClientModInitializer 
     @Override
     public void onInitializeClient() {
         AmbientSleep.clientSetup();
-        ClientTickEvents.END_CLIENT_TICK.register(minecraft -> BiomeParticles.tickBiomeParticles(minecraft, minecraft.level));
+        ClientTickEvents.END_CLIENT_TICK.register(minecraft -> AmbientSleep.levelTick(minecraft, minecraft.level));
     }
 }
