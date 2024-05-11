@@ -21,9 +21,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class LocalPlayerMixin extends AbstractClientPlayer {
 
     @Unique
-    private int ambientSleep$growlTimer = 0;
-
-    @Unique
     private ItemStack ambientSleep$oldHelmetStack = ItemStack.EMPTY;
 
     @Unique
@@ -37,27 +34,6 @@ public abstract class LocalPlayerMixin extends AbstractClientPlayer {
     private void tick(CallbackInfo ci) {
         if (ModConfigs.INSTANCE.mobSkullShaders.get()) {
             ambientSleep$tryApplyHelmetShader();
-        }
-
-        if (!ModConfigs.INSTANCE.stomachGrowling.get()) {
-            return;
-        }
-
-        if (isCreative() || isSpectator()) {
-            return;
-        }
-
-        int foodLevel = getFoodData().getFoodLevel();
-        if (foodLevel <= 6) {
-            if (ambientSleep$growlTimer == 0) {
-                Util.playClientSound(SoundSource.PLAYERS, this, ModSounds.PLAYER_STOMACH_GROWL.get(), 1, (random.nextBoolean() ? 1 : 1.5F));
-            }
-
-            ambientSleep$growlTimer++;
-
-            if (ambientSleep$growlTimer >= Util.STOMACH_GROWL_DELAY) {
-                ambientSleep$growlTimer = 0;
-            }
         }
     }
 

@@ -25,11 +25,11 @@ public class AmbientSleep {
         ModPackets.init();
         BiomeParticles.init();
         ParticleManager.init();
-        TickerManager.init();
     }
 
     public static void clientSetup() {
         ModPackets.init();
+        TickerManager.init();
     }
 
     public static void levelTick(Minecraft minecraft, Level level) {

@@ -2,6 +2,7 @@ package einstein.ambient_sleep.tickers;
 
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +17,7 @@ public class TickerManager {
 
     public static void init() {
         registerTicker(entity -> entity instanceof LivingEntity, SleepingTicker::new);
+        registerTicker(entity -> entity instanceof Player, StomachGrowlingTicker::new);
     }
 
     public static void tickTickers() {
