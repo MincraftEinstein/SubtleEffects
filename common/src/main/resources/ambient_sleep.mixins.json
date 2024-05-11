@@ -28,7 +28,6 @@
     "client.entity.EntityMixin",
     "client.entity.EntityRendererMixin",
     "client.entity.FallingBlockEntityMixin",
-    "client.entity.LocalPlayerMixin",
     "client.entity.MinecartFurnaceMixin",
     "client.entity.SheepMixin"
   ],
