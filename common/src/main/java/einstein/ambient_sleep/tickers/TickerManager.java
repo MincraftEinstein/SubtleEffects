@@ -1,6 +1,7 @@
 package einstein.ambient_sleep.tickers;
 
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,6 +15,7 @@ public class TickerManager {
     private static final List<Ticker<?>> REMOVE_QUEUE = new ArrayList<>();
 
     public static void init() {
+        registerTicker(entity -> entity instanceof LivingEntity, SleepingTicker::new);
     }
 
     public static void tickTickers() {
