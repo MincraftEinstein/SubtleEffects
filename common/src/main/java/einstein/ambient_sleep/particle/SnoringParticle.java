@@ -24,4 +24,15 @@ public class SnoringParticle extends SmokeParticle {
             return new SnoringParticle(level, x, y, z, xSpeed, ySpeed, zSpeed, sprites);
         }
     }
+
+    public record FallingProvider(SpriteSet sprites) implements ParticleProvider<SimpleParticleType> {
+
+        @Nullable
+        @Override
+        public Particle createParticle(SimpleParticleType type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+            SnoringParticle particle = new SnoringParticle(level, x, y, z, xSpeed, ySpeed, zSpeed, sprites);
+            particle.gravity = 0.1F;
+            return particle;
+        }
+    }
 }

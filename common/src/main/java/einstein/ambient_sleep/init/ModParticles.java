@@ -24,6 +24,7 @@ import static einstein.ambient_sleep.platform.Services.REGISTRY;
 public class ModParticles {
 
     public static final Supplier<SimpleParticleType> SNORING = register("snoring", SnoringParticle.Provider::new);
+    public static final Supplier<SimpleParticleType> FALLING_SNORING = register("falling_snoring", SnoringParticle.FallingProvider::new);
     public static final Supplier<SimpleParticleType> LONG_SPARK = register("long_spark", SparkParticle.LongLifeProvider::new);
     public static final Supplier<SimpleParticleType> LONG_SOUL_SPARK = register("long_soul_spark", SparkParticle.LongLifeProvider::new);
     public static final Supplier<SimpleParticleType> SHORT_SPARK = register("short_spark", SparkParticle.ShortLifeProvider::new);

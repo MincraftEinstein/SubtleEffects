@@ -7,6 +7,8 @@ import einstein.ambient_sleep.util.Util;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ambient.Bat;
+import net.minecraft.world.entity.animal.Cat;
 import net.minecraft.world.entity.animal.Fox;
 import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.player.Player;
@@ -20,6 +22,7 @@ public class SleepingTicker extends Ticker<LivingEntity> {
     private boolean doesSnore = true;
     private boolean firstSleepTick = true;
     private boolean isFirstBreath = true;
+    private boolean isBat = false;
     private int breathDelay = Util.BREATH_DELAY;
     private int snoreStartDelay = 0;
     private int delayTimer = 0;
@@ -42,6 +45,9 @@ public class SleepingTicker extends Ticker<LivingEntity> {
             snoreSound = ModSounds.VILLAGER_SNORE.get();
             breathDelay = 80;
         }
+        else if (entity instanceof Bat) {
+            isBat = true;
+        }
     }
 
     @Override
@@ -51,7 +57,7 @@ public class SleepingTicker extends Ticker<LivingEntity> {
             return;
         }
 
-        if (entity.isSleeping()) {
+        if (entity.isSleeping() || (entity instanceof Cat cat && cat.isLying()) || (isBat && ((Bat) entity).isResting())) {
             if (firstSleepTick) {
                 snoreStartDelay = (shouldDelay ? Util.BREATH_DELAY + random.nextInt(40) : 0);
                 firstSleepTick = false;
@@ -79,7 +85,7 @@ public class SleepingTicker extends Ticker<LivingEntity> {
                     if ((entity instanceof Fox && ModConfigs.INSTANCE.foxesHaveSleepingZs.get())
                             || (!(entity instanceof Fox)
                             && (!ModConfigs.INSTANCE.displaySleepingZsOnlyWhenSnoring.get() || doesSnore))) {
-                        level.addParticle(ModParticles.SNORING.get(), entity.getX(), entity.getY() + 0.5, entity.getZ(), 0, 0, 0);
+                        level.addParticle(isBat ? ModParticles.FALLING_SNORING.get() : ModParticles.SNORING.get(), entity.getX(), entity.getY() + 0.5, entity.getZ(), 0, 0, 0);
                     }
                 }
 
