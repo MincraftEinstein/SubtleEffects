@@ -7,6 +7,7 @@ import einstein.ambient_sleep.particle.option.PositionParticleOptions;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Vec3i;
 import net.minecraft.core.particles.*;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.sounds.SoundEvents;
@@ -25,10 +26,7 @@ import net.minecraft.world.entity.monster.Strider;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.CommandBlock;
-import net.minecraft.world.level.block.LanternBlock;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BeaconBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -245,6 +243,13 @@ public class ParticleManager {
                         }
                     }
                 }
+            }
+        });
+        registerBlockAnimateTickProvider(Blocks.FURNACE, (state, level, pos, random) -> {
+            if (ModConfigs.INSTANCE.furnaceSparks.get() && state.getValue(FurnaceBlock.LIT)) {
+                Direction direction = state.getValue(FurnaceBlock.FACING);
+                Direction.Axis axis = direction.getAxis();
+                ParticleSpawnUtil.spawnSparks(level, random, pos, new Vec3(0.5 + (0.6 * direction.getStepX()), random.nextDouble() * 6 / 16, 0.5 + (0.6 * direction.getStepZ())), new Vec3i(1, 1, 1), 3, axis == Direction.Axis.X ? 10 : 3, axis == Direction.Axis.Z ? 10 : 3, false, false);
             }
         });
     }
