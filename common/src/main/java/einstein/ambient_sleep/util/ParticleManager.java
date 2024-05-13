@@ -252,6 +252,9 @@ public class ParticleManager {
                 ParticleSpawnUtil.spawnSparks(level, random, pos, new Vec3(0.5 + (0.6 * direction.getStepX()), random.nextDouble() * 6 / 16, 0.5 + (0.6 * direction.getStepZ())), new Vec3i(1, 1, 1), 3, axis == Direction.Axis.X ? 10 : 3, axis == Direction.Axis.Z ? 10 : 3, false, false);
             }
         });
+        registerBlockAnimateTickProvider(Blocks.WATER_CAULDRON, (state, level, pos, random) -> {
+            ParticleSpawnUtil.spawnHeatedWaterParticles(level, pos, random, false, 0.5625 + (state.getValue(LayeredCauldronBlock.LEVEL) * 0.1875));
+        });
     }
 
     private static <T extends Entity> void registerEntityTickProvider(EntityType<T> type, EntityProvider<T> provider) {

@@ -9,10 +9,14 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
 import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.particles.SimpleParticleType;
+import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LightLayer;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.Vec3;
 
 import java.util.function.BiPredicate;
@@ -105,6 +109,29 @@ public class ParticleSpawnUtil {
             if (directionValidator.test(direction, endPos)) {
                 Vec3 speed = pos.vectorTo(relativePos).offsetRandom(random, 1);
                 level.addParticle(new CommandBlockParticleOptions(direction), endPos.x(), endPos.y(), endPos.z(), speed.x(), speed.y(), speed.z());
+            }
+        }
+    }
+
+    public static void spawnHeatedWaterParticles(Level level, BlockPos pos, RandomSource random, boolean isFalling, double height) {
+        int brightness = level.getBrightness(LightLayer.BLOCK, pos);
+        if (brightness > 11 || level.getBlockState(pos.below()).is(Blocks.MAGMA_BLOCK)) {
+            if (!isFalling && !Util.isSolidOrNotEmpty(level, pos.above())) {
+                level.addParticle(ModParticles.STEAM.get(),
+                        pos.getX() + random.nextDouble(),
+                        pos.getY() + 0.875 + nextFloat(50),
+                        pos.getZ() + random.nextDouble(),
+                        0, 0, 0
+                );
+            }
+
+            if (brightness >= 13) {
+                level.addParticle(ParticleTypes.BUBBLE,
+                        pos.getX() + random.nextDouble(),
+                        Mth.clamp(random.nextDouble(), pos.getY(), pos.getY() + height),
+                        pos.getZ() + random.nextDouble(),
+                        0, 0, 0
+                );
             }
         }
     }
