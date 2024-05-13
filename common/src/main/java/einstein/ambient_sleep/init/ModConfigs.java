@@ -53,6 +53,8 @@ public class ModConfigs {
     // Steam
     public final ForgeConfigSpec.BooleanValue lavaFizzSteam;
     public final ForgeConfigSpec.BooleanValue waterEvaporateFromBucketSteam;
+    public final ForgeConfigSpec.BooleanValue steamingWater;
+    public final ForgeConfigSpec.BooleanValue boilingWater;
 
     // Blocks
     public final ForgeConfigSpec.BooleanValue redstoneBlockDust;
@@ -202,6 +204,16 @@ public class ModConfigs {
          waterEvaporateFromBucketSteam = builder
                  .translation(key("water_evaporate_from_bucket_steam"))
                  .define("waterEvaporateFromBucketSteam", true);
+
+        steamingWater = builder
+                .comment("Should water steam when near blocks with a light level greater than 11")
+                .translation(key("steaming_water"))
+                .define("steamingWater", true);
+
+        boilingWater = builder
+                .comment("should water bubble/boil when near blocks with a light level of 13 or more")
+                .translation(key("boiling_water"))
+                .define("boilingWater", true);
 
         builder.pop();
 
