@@ -18,6 +18,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.common.ForgeConfigSpec;
 
 import java.util.function.BiPredicate;
 
@@ -113,19 +114,22 @@ public class ParticleSpawnUtil {
         }
     }
 
-    public static void spawnHeatedWaterParticles(Level level, BlockPos pos, RandomSource random, boolean isFalling, double height) {
+    public static void spawnHeatedWaterParticles(Level level, BlockPos pos, RandomSource random, boolean isFalling, double height,
+                                                 ForgeConfigSpec.BooleanValue steamConfig, ForgeConfigSpec.BooleanValue boilingConfig) {
         int brightness = level.getBrightness(LightLayer.BLOCK, pos);
         if (brightness > 11 || level.getBlockState(pos.below()).is(Blocks.MAGMA_BLOCK)) {
-            if (!isFalling && !Util.isSolidOrNotEmpty(level, pos.above())) {
-                level.addParticle(ModParticles.STEAM.get(),
-                        pos.getX() + random.nextDouble(),
-                        pos.getY() + 0.875 + nextFloat(50),
-                        pos.getZ() + random.nextDouble(),
-                        0, 0, 0
-                );
+            if (steamConfig.get()) {
+                if (!isFalling && !Util.isSolidOrNotEmpty(level, pos.above())) {
+                    level.addParticle(ModParticles.STEAM.get(),
+                            pos.getX() + random.nextDouble(),
+                            pos.getY() + 0.875 + nextFloat(50),
+                            pos.getZ() + random.nextDouble(),
+                            0, 0, 0
+                    );
+                }
             }
 
-            if (brightness >= 13) {
+            if (boilingConfig.get() && brightness >= 13) {
                 level.addParticle(ParticleTypes.BUBBLE,
                         pos.getX() + random.nextDouble(),
                         Mth.clamp(random.nextDouble(), pos.getY(), pos.getY() + height),

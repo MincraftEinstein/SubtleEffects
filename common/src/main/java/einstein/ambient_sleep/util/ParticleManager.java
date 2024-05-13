@@ -253,7 +253,10 @@ public class ParticleManager {
             }
         });
         registerBlockAnimateTickProvider(Blocks.WATER_CAULDRON, (state, level, pos, random) -> {
-            ParticleSpawnUtil.spawnHeatedWaterParticles(level, pos, random, false, 0.5625 + (state.getValue(LayeredCauldronBlock.LEVEL) * 0.1875));
+            ParticleSpawnUtil.spawnHeatedWaterParticles(level, pos, random, false,
+                    0.5625 + (state.getValue(LayeredCauldronBlock.LEVEL) * 0.1875),
+                    INSTANCE.steamingWaterCauldron, INSTANCE.boilingWaterCauldron
+            );
         });
     }
 

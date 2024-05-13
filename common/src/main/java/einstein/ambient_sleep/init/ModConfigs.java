@@ -55,6 +55,8 @@ public class ModConfigs {
     public final ForgeConfigSpec.BooleanValue waterEvaporateFromBucketSteam;
     public final ForgeConfigSpec.BooleanValue steamingWater;
     public final ForgeConfigSpec.BooleanValue boilingWater;
+    public final ForgeConfigSpec.BooleanValue steamingWaterCauldron;
+    public final ForgeConfigSpec.BooleanValue boilingWaterCauldron;
 
     // Blocks
     public final ForgeConfigSpec.BooleanValue redstoneBlockDust;
@@ -214,9 +216,19 @@ public class ModConfigs {
                 .define("steamingWater", true);
 
         boilingWater = builder
-                .comment("should water bubble/boil when near blocks with a light level of 13 or more")
+                .comment("Should water bubble/boil when near blocks with a light level of 13 or more")
                 .translation(key("boiling_water"))
                 .define("boilingWater", true);
+
+        steamingWaterCauldron = builder
+                .comment("Should water cauldrons steam when near blocks with a light level greater than 11")
+                .translation(key("steaming_water_cauldron"))
+                .define("steamingWaterCauldron", true);
+
+        boilingWaterCauldron = builder
+                .comment("Should water bubble/boil when near blocks with a light level of 13 or more")
+                .translation(key("boiling_water_cauldron"))
+                .define("boilingWaterCauldron", true);
 
         builder.pop();
 
@@ -386,7 +398,7 @@ public class ModConfigs {
                 .translation(key("burning_entity_sounds"))
                 .define("sounds", true);
 
-        builder.pop().translation(categoryKey("item_rarity")).push("ItemRarity");
+        builder.pop().translation(categoryKey("item_rarity")).push("itemRarity");
 
         itemRarityParticles = builder
                 .comment("Adds colored particles that float up from items on the ground")

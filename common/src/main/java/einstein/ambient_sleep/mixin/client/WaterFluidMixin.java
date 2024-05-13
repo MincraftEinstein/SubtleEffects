@@ -1,5 +1,6 @@
 package einstein.ambient_sleep.mixin.client;
 
+import einstein.ambient_sleep.init.ModConfigs;
 import einstein.ambient_sleep.util.ParticleSpawnUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
@@ -18,6 +19,7 @@ public class WaterFluidMixin {
 
     @Inject(method = "animateTick", at = @At("TAIL"))
     private void animateTick(Level level, BlockPos pos, FluidState state, RandomSource random, CallbackInfo ci) {
-        ParticleSpawnUtil.spawnHeatedWaterParticles(level, pos, random, state.getValue(FALLING), state.getHeight(level, pos));
+        ParticleSpawnUtil.spawnHeatedWaterParticles(level, pos, random, state.getValue(FALLING),
+                state.getHeight(level, pos), ModConfigs.INSTANCE.steamingWater, ModConfigs.INSTANCE.boilingWater);
     }
 }
