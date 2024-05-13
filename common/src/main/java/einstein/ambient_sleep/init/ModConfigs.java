@@ -198,12 +198,14 @@ public class ModConfigs {
                 .push("steam");
 
         lavaFizzSteam = builder
+                .comment("Replaces the smoke particles with steam when lava and water create a block (obsidian/cobblestone/stone)")
                 .translation(key("lava_fizz_steam"))
                 .define("lavaFizzSteam", true);
 
-         waterEvaporateFromBucketSteam = builder
-                 .translation(key("water_evaporate_from_bucket_steam"))
-                 .define("waterEvaporateFromBucketSteam", true);
+        waterEvaporateFromBucketSteam = builder
+                .comment("Replaces the smoke particles with steam when water evaporates from a bucket in the nether")
+                .translation(key("water_evaporate_from_bucket_steam"))
+                .define("waterEvaporateFromBucketSteam", true);
 
         steamingWater = builder
                 .comment("Should water steam when near blocks with a light level greater than 11")
