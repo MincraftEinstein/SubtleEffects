@@ -16,6 +16,7 @@
     "client.WaterFluidMixin",
     "client.block.AbstractCandleBlockMixin",
     "client.block.BaseFireBlockMixin",
+    "client.block.BeehiveBlockMixin",
     "client.block.CampfireBlockMixin",
     "client.block.ComposterBlockMixin",
     "client.block.EndPortalBlockMixin",

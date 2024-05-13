@@ -41,6 +41,7 @@
   "config.ambient_sleep.beacon_particles": "Beacon Particles",
   "config.ambient_sleep.composting_particles": "Composting Particles",
   "config.ambient_sleep.respawn_anchor_particles": "Respawn Anchor Particles",
+  "config.ambient_sleep.beehive_shear_particles": "Beehive Shear Particles",
   "config.ambient_sleep.player_snore_chance": "Player Snore Chance",
   "config.ambient_sleep.villager_snore_chance": "Villager Snore Chance",
   "config.ambient_sleep.display_sleeping_zs_only_when_snoring": "Display Sleeping Zs Only When Snoring",

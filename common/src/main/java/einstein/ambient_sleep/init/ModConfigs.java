@@ -78,6 +78,7 @@ public class ModConfigs {
     public final ForgeConfigSpec.BooleanValue beaconParticles;
     public final ForgeConfigSpec.BooleanValue compostingParticles;
     public final ForgeConfigSpec.BooleanValue respawnAnchorParticles;
+    public final ForgeConfigSpec.BooleanValue beehiveShearParticles;
 
     // Entity Snoring
     public final ForgeConfigSpec.DoubleValue playerSnoreChance;
@@ -325,6 +326,11 @@ public class ModConfigs {
                 .comment("Crying obsidian particles for respawn anchors")
                 .translation(key("respawn_anchor_particles"))
                 .define("respawnAnchorParticles", true);
+
+        beehiveShearParticles = builder
+                .comment("Display the destroy particle effect when shearing a beehive/nest")
+                .translation(key("beehive_shear_particles"))
+                .define("beehiveShearParticles", true);
 
         builder.pop().translation(categoryKey("entities")).push("entities")
                 .translation(categoryKey("sleeping")).push("sleeping");
