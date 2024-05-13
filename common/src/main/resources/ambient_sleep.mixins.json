@@ -6,6 +6,7 @@
   "compatibilityLevel": "JAVA_17",
   "client": [
     "client.AxeItemMixin",
+    "client.BucketItemMixin",
     "client.ClientLevelMixin",
     "client.GameRendererMixin",
     "client.LavaFluidMixin",

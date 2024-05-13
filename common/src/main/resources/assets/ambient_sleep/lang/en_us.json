@@ -16,6 +16,8 @@
   "config.ambient_sleep.fire_smoke": "Fire Smoke",
   "config.ambient_sleep.torch_smoke": "Torch Smoke",
   "config.ambient_sleep.lava_spark_smoke": "Lava Spark Smoke",
+  "config.ambient_sleep.lava_fizz_steam": "Lava Fizz Steam",
+  "config.ambient_sleep.water_evaporate_from_bucket_steam": "Water Evaporate From Bucket Steam",
   "config.ambient_sleep.redstone_block_dust": "Redstone Block Dust",
   "config.ambient_sleep.glowstone_block_dust": "Glowstone Block Dust",
   "config.ambient_sleep.beehives_have_sleeping_zs": "Beehives Have Sleeping Zs",

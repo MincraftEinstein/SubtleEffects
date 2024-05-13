@@ -53,6 +53,7 @@ public class ModParticles {
     public static final Supplier<ParticleType<ItemParticleOption>> ITEM_RARITY = register("item_rarity", ItemParticleOption.DESERIALIZER, ItemParticleOption::codec, ItemRarityParticle.Provider::new);
     public static final Supplier<ParticleType<PositionParticleOptions>> BEACON = register("beacon", PositionParticleOptions.DESERIALIZER, PositionParticleOptions::codec, BeaconParticle.Provider::new);
     public static final Supplier<SimpleParticleType> COMPOST = register("compost", CompostParticle.Provider::new);
+    public static final Supplier<SimpleParticleType> STEAM = register("steam", SteamParticle.Provider::new);
 
     public static void init() {
     }

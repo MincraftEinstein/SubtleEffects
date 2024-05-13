@@ -50,6 +50,10 @@ public class ModConfigs {
     public final ForgeConfigSpec.BooleanValue torchSmoke;
     public final ForgeConfigSpec.BooleanValue lavaSparkSmoke;
 
+    // Steam
+    public final ForgeConfigSpec.BooleanValue lavaFizzSteam;
+    public final ForgeConfigSpec.BooleanValue waterEvaporateFromBucketSteam;
+
     // Blocks
     public final ForgeConfigSpec.BooleanValue redstoneBlockDust;
     public final ForgeConfigSpec.EnumValue<GlowstoneDustSpawnType> glowstoneBlockDust;
@@ -186,6 +190,18 @@ public class ModConfigs {
         lavaSparkSmoke = builder
                 .translation("lava_spark_smoke")
                 .define("lavaSparkSmoke", true);
+
+        builder.pop()
+                .translation(categoryKey("steam"))
+                .push("steam");
+
+        lavaFizzSteam = builder
+                .translation(key("lava_fizz_steam"))
+                .define("lavaFizzSteam", true);
+
+         waterEvaporateFromBucketSteam = builder
+                 .translation(key("water_evaporate_from_bucket_steam"))
+                 .define("waterEvaporateFromBucketSteam", true);
 
         builder.pop();
 
