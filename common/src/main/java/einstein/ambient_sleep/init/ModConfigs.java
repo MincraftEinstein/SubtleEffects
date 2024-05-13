@@ -178,6 +178,7 @@ public class ModConfigs {
                 .define("candleSmoke", true);
 
         furnaceSmoke = builder
+                .comment("Includes vanilla furnace variants")
                 .translation("furnace_smoke")
                 .define("furnaceSmoke", true);
 
