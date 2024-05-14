@@ -1,11 +1,16 @@
 package einstein.ambient_sleep.mixin.client;
 
 import einstein.ambient_sleep.init.ModParticles;
+import einstein.ambient_sleep.util.FrustumGetter;
+import einstein.ambient_sleep.util.ParticleAccessor;
 import einstein.ambient_sleep.util.ParticleSpawnUtil;
 import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.client.particle.Particle;
 import net.minecraft.client.renderer.LevelRenderer;
+import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.util.RandomSource;
@@ -13,25 +18,28 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.GrindstoneBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.AttachFace;
+import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-
-import javax.annotation.Nullable;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import static einstein.ambient_sleep.init.ModConfigs.INSTANCE;
 import static einstein.ambient_sleep.util.MathUtil.nextFloat;
 import static einstein.ambient_sleep.util.MathUtil.nextSign;
 
 @Mixin(LevelRenderer.class)
-public class LevelRendererMixin {
+public class LevelRendererMixin implements FrustumGetter {
 
     @Shadow
     @Nullable
     private ClientLevel level;
+
+    @Shadow
+    private Frustum cullingFrustum;
 
     @Inject(method = "levelEvent", at = @At("TAIL"))
     private void levelEvent(int type, BlockPos pos, int data, CallbackInfo ci) {
@@ -88,5 +96,15 @@ public class LevelRendererMixin {
             return ModParticles.STEAM.get();
         }
         return ParticleTypes.LARGE_SMOKE;
+    }
+
+    @Inject(method = "addParticleInternal(Lnet/minecraft/core/particles/ParticleOptions;ZZDDDDDD)Lnet/minecraft/client/particle/Particle;", at = @At(value = "RETURN", ordinal = 0))
+    private void spawnForcedParticle(ParticleOptions options, boolean force, boolean decreased, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, CallbackInfoReturnable<Particle> cir) {
+        ((ParticleAccessor) cir.getReturnValue()).ambientSleep$force();
+    }
+
+    @Override
+    public Frustum ambientSleep$getCullingFrustum() {
+        return cullingFrustum;
     }
 }

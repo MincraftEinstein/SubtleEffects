@@ -77,6 +77,7 @@
   "config.ambient_sleep.pollen_biomes": "Pollen Biomes",
   "config.ambient_sleep.pollen_density": "Pollen Density",
   "config.ambient_sleep.mob_skull_shaders": "Mob Skull Shaders",
+  "config.ambient_sleep.particle_render_distance": "Particle Render Distance",
   "config.category.ambient_sleep.blocks": "Blocks",
   "config.category.ambient_sleep.sparks": "Sparks",
   "config.category.ambient_sleep.update_smoke": "Update Smoke",

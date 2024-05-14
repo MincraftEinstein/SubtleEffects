@@ -128,6 +128,7 @@ public class ModConfigs {
 
     // General
     public final ForgeConfigSpec.BooleanValue mobSkullShaders;
+    public final ForgeConfigSpec.IntValue particleRenderDistance;
 
     public ModConfigs(ForgeConfigSpec.Builder builder) {
         builder.translation(categoryKey("blocks")).push("blocks")
@@ -526,6 +527,13 @@ public class ModConfigs {
                 .comment("Apply a mob's spectate shader when wearing its skull/head e.g Creeper head makes everything look green", "No new shaders are added")
                 .translation(key("mob_skull_shaders"))
                 .define("mobSkullShaders", true);
+
+        particleRenderDistance = builder
+                .comment("The maximum number of chunks away from the player a particle will render.",
+                        "This does not affect particles spawning/existing in the world only rendering.",
+                        "This affects most particles in the game including particles from other mods, some particles however ignore this value e.g. campfire smoke.")
+                .translation("particle_render_distance")
+                .defineInRange("particleRenderDistance", 5, 1, 32);
     }
 
     private ForgeConfigSpec.ConfigValue<List<? extends String>> defineLocationList(ForgeConfigSpec.Builder builder, String path, String... defaultValues) {
