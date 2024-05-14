@@ -1,8 +1,8 @@
 package einstein.ambient_sleep.tickers;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,12 +14,13 @@ public class TickerManager {
     private static final List<TickerProvider<?>> REGISTERED_TICKERS = new ArrayList<>();
     public static final List<Ticker<?>> TICKERS = new ArrayList<>();
     private static final List<Ticker<?>> REMOVE_QUEUE = new ArrayList<>();
+    private static final Predicate<Entity> LOCAL_PLAYER = entity -> entity.equals(Minecraft.getInstance().player);
 
     public static void init() {
         registerTicker(entity -> entity instanceof LivingEntity, SleepingTicker::new);
-        registerTicker(entity -> entity instanceof Player, StomachGrowlingTicker::new);
-        registerTicker(entity -> entity instanceof Player, MobSkullShaderTicker::new);
-        registerTicker(entity -> entity instanceof Player, HeartbeatTicker::new);
+        registerTicker(LOCAL_PLAYER, StomachGrowlingTicker::new);
+        registerTicker(LOCAL_PLAYER, MobSkullShaderTicker::new);
+        registerTicker(LOCAL_PLAYER, HeartbeatTicker::new);
     }
 
     public static void tickTickers() {
