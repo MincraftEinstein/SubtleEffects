@@ -20,5 +20,11 @@
     "sounds": [
       "ambient_sleep:entity/player/stomach_growl"
     ]
+  },
+  "entity.player.heartbeat": {
+    "subtitle": "subtitles.ambient_sleep.entity.player.heartbeat",
+    "sounds": [
+      "ambient_sleep:entity/player/heartbeat"
+    ]
   }
 }

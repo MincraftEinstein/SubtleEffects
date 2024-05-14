@@ -19,6 +19,7 @@ public class TickerManager {
         registerTicker(entity -> entity instanceof LivingEntity, SleepingTicker::new);
         registerTicker(entity -> entity instanceof Player, StomachGrowlingTicker::new);
         registerTicker(entity -> entity instanceof Player, MobSkullShaderTicker::new);
+        registerTicker(entity -> entity instanceof Player, HeartbeatTicker::new);
     }
 
     public static void tickTickers() {

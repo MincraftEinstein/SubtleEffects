@@ -116,6 +116,7 @@ public class ModConfigs {
     public final ForgeConfigSpec.BooleanValue sheepShearFluff;
     public final ForgeConfigSpec.BooleanValue improvedDragonFireballTrail;
     public final ForgeConfigSpec.ConfigValue<CommandBlockSpawnType> commandBlockMinecartParticles;
+    public final ForgeConfigSpec.BooleanValue heartBeating;
 
     // Biomes
     public final ForgeConfigSpec.IntValue biomeParticlesRadius;
@@ -454,7 +455,7 @@ public class ModConfigs {
                 .defineInRange("vexMagicDensity", 0.2, 0, 1.0);
 
         stomachGrowling = builder
-                .comment("Should a stomach growl sound play every 15 sec when the player is below 3 food points (or 6 half points)")
+                .comment("Should a stomach growl sound play every 15 sec when the player's is below 3 food points (or 6 half points)")
                 .translation(key("stomach_growling"))
                 .define("stomachGrowling", true);
 
@@ -477,6 +478,11 @@ public class ModConfigs {
                 .comment("Adds command block particles to the command block minecart. Yes I actually did this")
                 .translation(key("command_block_minecart_particles"))
                 .defineEnum("commandBlockMinecartParticles", CommandBlockSpawnType.ON);
+
+        heartBeating = builder
+                .comment("Should a heartbeat sound play every 3 sec when the player's health is below 3 health points (or 6 half points) and speed up below 2 health points")
+                .translation(key("heart_beating"))
+                .define("heartBeating", true);
 
         builder.pop().translation(categoryKey("biomes")).push("biomes");
 
