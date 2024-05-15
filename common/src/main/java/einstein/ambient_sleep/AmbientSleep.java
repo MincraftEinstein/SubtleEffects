@@ -1,7 +1,6 @@
 package einstein.ambient_sleep;
 
 import einstein.ambient_sleep.init.*;
-import einstein.ambient_sleep.util.ParticleManager;
 import einstein.ambient_sleep.util.ShaderManager;
 import einstein.ambient_sleep.tickers.TickerManager;
 import einstein.ambient_sleep.util.Util;
@@ -24,7 +23,7 @@ public class AmbientSleep {
         ModParticles.init();
         ModPackets.init();
         BiomeParticles.init();
-        ParticleManager.init();
+        ModDamageListeners.init();
     }
 
     public static void clientSetup() {

@@ -1,5 +1,6 @@
 package einstein.ambient_sleep.mixin.client.entity;
 
+import einstein.ambient_sleep.init.ModDamageListeners;
 import einstein.ambient_sleep.util.ParticleManager;
 import einstein.ambient_sleep.util.ParticleSpawnUtil;
 import net.minecraft.sounds.SoundEvent;
@@ -18,7 +19,7 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(LivingEntity.class)
-public abstract class ClientLivingEntityMixin extends Entity {
+public abstract class ClientLivingEntityMixin<T extends Entity> extends Entity {
 
     @Shadow
     public int hurtTime;
@@ -27,7 +28,7 @@ public abstract class ClientLivingEntityMixin extends Entity {
     @Unique
     private final LivingEntity ambientSleep$me = (LivingEntity) (Object) this;
 
-    public ClientLivingEntityMixin(EntityType<?> type, Level level) {
+    public ClientLivingEntityMixin(EntityType<T> type, Level level) {
         super(type, level);
     }
 
@@ -57,11 +58,15 @@ public abstract class ClientLivingEntityMixin extends Entity {
         return false;
     }
 
+    @SuppressWarnings("unchecked")
     @Inject(method = "hurt", at = @At("HEAD"))
     private void hurt(DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
         if (level().isClientSide && !isInvulnerableTo(source) && amount > 0) {
             if (source.getEntity() instanceof LivingEntity && isAlive() && hurtTime == 0) {
-                ParticleManager.entityHurt(ambientSleep$me, level(), random);
+                EntityType<T> type = (EntityType<T>) getType();
+                if (ModDamageListeners.REGISTERED.containsKey(type)) {
+                    ((ParticleManager.EntityProvider<T>) ModDamageListeners.REGISTERED.get(type)).apply((T) this, level(), random);
+                }
             }
         }
     }
