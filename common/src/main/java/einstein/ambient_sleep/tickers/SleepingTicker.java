@@ -52,11 +52,6 @@ public class SleepingTicker extends Ticker<LivingEntity> {
 
     @Override
     public void tick() {
-        if (!entity.isAlive()) {
-            remove();
-            return;
-        }
-
         if (entity.isSleeping() || (entity instanceof Cat cat && cat.isLying()) || (isBat && ((Bat) entity).isResting())) {
             if (firstSleepTick) {
                 snoreStartDelay = (shouldDelay ? Util.BREATH_DELAY + random.nextInt(40) : 0);

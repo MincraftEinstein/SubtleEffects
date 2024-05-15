@@ -23,11 +23,6 @@ public class MobSkullShaderTicker extends Ticker<Player> {
             return;
         }
 
-        if (!entity.isAlive()) {
-            remove();
-            return;
-        }
-
         ItemStack helmetStack = entity.getInventory().getArmor(3);
         if ((oldHelmetStack.isEmpty() != helmetStack.isEmpty())
                 || !ItemStack.isSameItem(oldHelmetStack, helmetStack)) {

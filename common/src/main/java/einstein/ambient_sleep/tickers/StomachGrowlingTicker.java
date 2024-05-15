@@ -20,11 +20,6 @@ public class StomachGrowlingTicker extends Ticker<Player> {
             return;
         }
 
-        if (!entity.isAlive()) {
-            remove();
-            return;
-        }
-
         if (entity.isCreative() || entity.isSpectator()) {
             return;
         }

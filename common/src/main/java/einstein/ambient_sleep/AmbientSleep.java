@@ -35,7 +35,7 @@ public class AmbientSleep {
     public static void levelTick(Minecraft minecraft, Level level) {
         Player player = minecraft.player;
         if (level == null || player == null) {
-            TickerManager.TICKERS.clear();
+            TickerManager.clear();
             return;
         }
 
@@ -44,7 +44,7 @@ public class AmbientSleep {
         }
 
         BiomeParticles.tickBiomeParticles(minecraft, level, player);
-        TickerManager.tickTickers();
+        TickerManager.tickTickers(level);
     }
 
     public static void configReloaded(ModConfig config) {
