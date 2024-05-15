@@ -29,7 +29,7 @@ public class AmbientSleep {
 
     public static void clientSetup() {
         ModPackets.init();
-        TickerManager.init();
+        ModTickers.init();
     }
 
     public static void levelTick(Minecraft minecraft, Level level) {

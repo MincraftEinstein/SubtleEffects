@@ -1,11 +1,11 @@
 package einstein.ambient_sleep.tickers;
 
-import einstein.ambient_sleep.init.ModConfigs;
+import einstein.ambient_sleep.util.ParticleManager;
 import it.unimi.dsi.fastutil.ints.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 
@@ -19,20 +19,20 @@ public class TickerManager {
     private static final List<TickerProvider<?>> REGISTERED_TICKERS = new ArrayList<>();
     private static final Int2ObjectMap<Int2ObjectMap<Ticker<?>>> TICKERS = new Int2ObjectOpenHashMap<>();
     private static final Int2ObjectMap<IntList> REMOVE_QUEUE = new Int2ObjectOpenHashMap<>();
-    private static final Predicate<Entity> LOCAL_PLAYER = entity -> entity.equals(getPlayer());
     public static final int INNER_RANGE = 128; // If an entity is outside this range it will stop ticking
     public static final int OUTER_RANGE = 144; // If an entity is outside this range its tickers will be removed
     private static int REGISTERED_TICKER_ID = 0;
 
-    public static void init() {
-        registerTicker(entity -> entity instanceof LivingEntity, SleepingTicker::new);
-        registerTicker(LOCAL_PLAYER.and(entity -> ModConfigs.INSTANCE.stomachGrowling.get()), StomachGrowlingTicker::new);
-        registerTicker(LOCAL_PLAYER.and(entity -> ModConfigs.INSTANCE.mobSkullShaders.get()), MobSkullShaderTicker::new);
-        registerTicker(LOCAL_PLAYER.and(entity -> ModConfigs.INSTANCE.heartBeating.get()), HeartbeatTicker::new);
+    public static <T extends Entity> void registerTicker(Predicate<Entity> predicate, Function<T, Ticker<T>> function) {
+        REGISTERED_TICKERS.add(new TickerProvider<>(REGISTERED_TICKER_ID++, predicate, function));
     }
 
-    private static <T extends Entity> void registerTicker(Predicate<Entity> predicate, Function<T, Ticker<T>> function) {
-        REGISTERED_TICKERS.add(new TickerProvider<>(REGISTERED_TICKER_ID++, predicate, function));
+    public static <T extends Entity> void registerSimpleTicker(EntityType<T> type, ParticleManager.EntityProvider<T> provider) {
+        registerSimpleTicker(entity -> entity.getType().equals(type), provider);
+    }
+
+    public static <T extends Entity> void registerSimpleTicker(Predicate<Entity> predicate, ParticleManager.EntityProvider<T> provider) {
+        REGISTERED_TICKERS.add(new TickerProvider<T>(REGISTERED_TICKER_ID++, predicate, entity -> new SimpleTicker<>(entity, provider)));
     }
 
     public static void tickTickers(Level level) {

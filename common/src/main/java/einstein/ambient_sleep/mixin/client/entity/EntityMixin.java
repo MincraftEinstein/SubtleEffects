@@ -2,7 +2,6 @@ package einstein.ambient_sleep.mixin.client.entity;
 
 import commonnetwork.api.Dispatcher;
 import einstein.ambient_sleep.networking.clientbound.ClientBoundEntitySpawnSprintingDustCloudsPacket;
-import einstein.ambient_sleep.util.ParticleManager;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.animal.goat.Goat;
@@ -41,8 +40,6 @@ public abstract class EntityMixin {
 
     @Inject(method = "tick", at = @At("TAIL"))
     private void tick(CallbackInfo ci) {
-        ParticleManager.entityTick(ambientSleep$me, level(), random);
-
         if (!level().isClientSide) {
             if (ambientSleep$canStart || position().distanceToSqr(ambientSleep$lastCheckedPos) > 0.5) {
                 if (ambientSleep$me instanceof Ravager ravager) {
