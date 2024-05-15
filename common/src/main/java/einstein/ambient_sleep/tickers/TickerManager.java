@@ -1,5 +1,6 @@
 package einstein.ambient_sleep.tickers;
 
+import einstein.ambient_sleep.init.ModConfigs;
 import it.unimi.dsi.fastutil.ints.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
@@ -25,9 +26,9 @@ public class TickerManager {
 
     public static void init() {
         registerTicker(entity -> entity instanceof LivingEntity, SleepingTicker::new);
-        registerTicker(LOCAL_PLAYER, StomachGrowlingTicker::new);
-        registerTicker(LOCAL_PLAYER, MobSkullShaderTicker::new);
-        registerTicker(LOCAL_PLAYER, HeartbeatTicker::new);
+        registerTicker(LOCAL_PLAYER.and(entity -> ModConfigs.INSTANCE.stomachGrowling.get()), StomachGrowlingTicker::new);
+        registerTicker(LOCAL_PLAYER.and(entity -> ModConfigs.INSTANCE.mobSkullShaders.get()), MobSkullShaderTicker::new);
+        registerTicker(LOCAL_PLAYER.and(entity -> ModConfigs.INSTANCE.heartBeating.get()), HeartbeatTicker::new);
     }
 
     private static <T extends Entity> void registerTicker(Predicate<Entity> predicate, Function<T, Ticker<T>> function) {

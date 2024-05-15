@@ -1,6 +1,5 @@
 package einstein.ambient_sleep.tickers;
 
-import einstein.ambient_sleep.init.ModConfigs;
 import einstein.ambient_sleep.util.Util;
 import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
@@ -19,10 +18,6 @@ public class MobSkullShaderTicker extends Ticker<Player> {
 
     @Override
     public void tick() {
-        if (!ModConfigs.INSTANCE.mobSkullShaders.get()) {
-            return;
-        }
-
         ItemStack helmetStack = entity.getInventory().getArmor(3);
         if ((oldHelmetStack.isEmpty() != helmetStack.isEmpty())
                 || !ItemStack.isSameItem(oldHelmetStack, helmetStack)) {

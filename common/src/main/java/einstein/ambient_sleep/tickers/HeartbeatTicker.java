@@ -1,6 +1,5 @@
 package einstein.ambient_sleep.tickers;
 
-import einstein.ambient_sleep.init.ModConfigs;
 import einstein.ambient_sleep.init.ModSounds;
 import einstein.ambient_sleep.util.Util;
 import net.minecraft.world.entity.player.Player;
@@ -15,10 +14,6 @@ public class HeartbeatTicker extends Ticker<Player> {
 
     @Override
     public void tick() {
-        if (!ModConfigs.INSTANCE.heartBeating.get()) {
-            return;
-        }
-
         if (entity.isCreative() || entity.isSpectator()) {
             return;
         }

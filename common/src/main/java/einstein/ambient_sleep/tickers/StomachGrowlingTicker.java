@@ -1,6 +1,5 @@
 package einstein.ambient_sleep.tickers;
 
-import einstein.ambient_sleep.init.ModConfigs;
 import einstein.ambient_sleep.init.ModSounds;
 import einstein.ambient_sleep.util.Util;
 import net.minecraft.sounds.SoundSource;
@@ -16,10 +15,6 @@ public class StomachGrowlingTicker extends Ticker<Player> {
 
     @Override
     public void tick() {
-        if (!ModConfigs.INSTANCE.stomachGrowling.get()) {
-            return;
-        }
-
         if (entity.isCreative() || entity.isSpectator()) {
             return;
         }

@@ -61,6 +61,7 @@ public class AmbientSleep {
                     Util.applyHelmetShader(player.getInventory().getArmor(3));
                 }
             }
+            TickerManager.clear();
         }
     }
 
