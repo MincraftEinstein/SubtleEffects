@@ -2,8 +2,8 @@ package einstein.ambient_sleep.mixin.client;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import einstein.ambient_sleep.init.ModBlockTickers;
 import einstein.ambient_sleep.tickers.TickerManager;
-import einstein.ambient_sleep.util.ParticleManager;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
@@ -33,7 +33,11 @@ public class ClientLevelMixin {
     private void animateTick(Block block, BlockState state, Level level, BlockPos pos, RandomSource random, Operation<Void> original) {
         original.call(block, state, level, pos, random);
         if (!state.isAir()) {
-            ParticleManager.blockAnimateTick(state, level, pos, random);
+            ModBlockTickers.REGISTERED.forEach((predicate, provider) -> {
+                if (predicate.test(state)) {
+                    provider.apply(state, level, pos, random);
+                }
+            });
         }
     }
 }
