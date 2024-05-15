@@ -1,7 +1,7 @@
 package einstein.ambient_sleep.init;
 
 import einstein.ambient_sleep.particle.option.PositionParticleOptions;
-import einstein.ambient_sleep.util.ParticleManager;
+import einstein.ambient_sleep.util.BlockProvider;
 import einstein.ambient_sleep.util.ParticleSpawnUtil;
 import einstein.ambient_sleep.util.Util;
 import net.minecraft.client.Minecraft;
@@ -26,7 +26,7 @@ import static einstein.ambient_sleep.util.MathUtil.*;
 
 public class ModBlockTickers {
 
-    public static final Map<Predicate<BlockState>, ParticleManager.BlockProvider> REGISTERED = new HashMap<>();
+    public static final Map<Predicate<BlockState>, BlockProvider> REGISTERED = new HashMap<>();
 
     public static void init() {
         register(Blocks.REDSTONE_BLOCK, (state, level, pos, random) -> {
@@ -146,11 +146,11 @@ public class ModBlockTickers {
                 ));
     }
 
-    private static void register(Block block, ParticleManager.BlockProvider provider) {
+    private static void register(Block block, BlockProvider provider) {
         register(state -> state.is(block), provider);
     }
 
-    private static void register(Predicate<BlockState> predicate, ParticleManager.BlockProvider provider) {
+    private static void register(Predicate<BlockState> predicate, BlockProvider provider) {
         REGISTERED.put(predicate, provider);
     }
 }

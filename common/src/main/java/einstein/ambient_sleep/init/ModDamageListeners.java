@@ -1,6 +1,6 @@
 package einstein.ambient_sleep.init;
 
-import einstein.ambient_sleep.util.ParticleManager;
+import einstein.ambient_sleep.util.EntityProvider;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -13,7 +13,7 @@ import static einstein.ambient_sleep.util.MathUtil.nextNonAbsDouble;
 
 public class ModDamageListeners {
 
-    public static final Map<EntityType<?>, ParticleManager.EntityProvider<?>> REGISTERED = new HashMap<>();
+    public static final Map<EntityType<?>, EntityProvider<?>> REGISTERED = new HashMap<>();
 
     public static void init() {
         register(EntityType.CHICKEN, (entity, level, random) -> {
@@ -68,7 +68,7 @@ public class ModDamageListeners {
         });
     }
 
-    private static <T extends Entity> void register(EntityType<T> type, ParticleManager.EntityProvider<T> provider) {
+    private static <T extends Entity> void register(EntityType<T> type, EntityProvider<T> provider) {
         REGISTERED.put(type, provider);
     }
 }

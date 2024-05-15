@@ -1,6 +1,6 @@
 package einstein.ambient_sleep.tickers;
 
-import einstein.ambient_sleep.util.ParticleManager;
+import einstein.ambient_sleep.util.EntityProvider;
 import it.unimi.dsi.fastutil.ints.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
@@ -27,11 +27,11 @@ public class TickerManager {
         REGISTERED_TICKERS.add(new TickerProvider<>(REGISTERED_TICKER_ID++, predicate, function));
     }
 
-    public static <T extends Entity> void registerSimpleTicker(EntityType<T> type, ParticleManager.EntityProvider<T> provider) {
+    public static <T extends Entity> void registerSimpleTicker(EntityType<T> type, EntityProvider<T> provider) {
         registerSimpleTicker(entity -> entity.getType().equals(type), provider);
     }
 
-    public static <T extends Entity> void registerSimpleTicker(Predicate<Entity> predicate, ParticleManager.EntityProvider<T> provider) {
+    public static <T extends Entity> void registerSimpleTicker(Predicate<Entity> predicate, EntityProvider<T> provider) {
         REGISTERED_TICKERS.add(new TickerProvider<T>(REGISTERED_TICKER_ID++, predicate, entity -> new SimpleTicker<>(entity, provider)));
     }
 

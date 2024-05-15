@@ -1,7 +1,7 @@
 package einstein.ambient_sleep.mixin.client.entity;
 
 import einstein.ambient_sleep.init.ModDamageListeners;
-import einstein.ambient_sleep.util.ParticleManager;
+import einstein.ambient_sleep.util.EntityProvider;
 import einstein.ambient_sleep.util.ParticleSpawnUtil;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.damagesource.DamageSource;
@@ -65,7 +65,7 @@ public abstract class ClientLivingEntityMixin<T extends Entity> extends Entity {
             if (source.getEntity() instanceof LivingEntity && isAlive() && hurtTime == 0) {
                 EntityType<T> type = (EntityType<T>) getType();
                 if (ModDamageListeners.REGISTERED.containsKey(type)) {
-                    ((ParticleManager.EntityProvider<T>) ModDamageListeners.REGISTERED.get(type)).apply((T) this, level(), random);
+                    ((EntityProvider<T>) ModDamageListeners.REGISTERED.get(type)).apply((T) this, level(), random);
                 }
             }
         }

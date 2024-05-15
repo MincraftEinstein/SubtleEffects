@@ -11,9 +11,14 @@ import net.minecraft.core.Vec3i;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.particles.SimpleParticleType;
+import net.minecraft.tags.EntityTypeTags;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.animal.camel.Camel;
+import net.minecraft.world.entity.animal.horse.AbstractHorse;
+import net.minecraft.world.entity.monster.Strider;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.block.Blocks;
@@ -69,7 +74,7 @@ public class ParticleSpawnUtil {
     public static void spawnFallDustClouds(LivingEntity entity, float distance, int fallDamage) {
         Level level = entity.level();
         if (level.isClientSide && entity.equals(Minecraft.getInstance().player)) {
-            ParticleManager.entityFell(entity, entity.getY(), distance, fallDamage);
+            spawnEntityFellParticles(entity, entity.getY(), distance, fallDamage);
         }
         else if (!level.isClientSide && !entity.equals(Minecraft.getInstance().player)) {
             Dispatcher.sendToAllClients(new ClientBoundEntityFellPacket(entity.getId(), entity.getY(), distance, fallDamage), level.getServer());
@@ -137,6 +142,58 @@ public class ParticleSpawnUtil {
                         0, 0, 0
                 );
             }
+        }
+    }
+
+    public static void spawnEntityFellParticles(LivingEntity entity, double y, float distance, int fallDamage) {
+        if (entity.getType().is(EntityTypeTags.FALL_DAMAGE_IMMUNE)) {
+            return;
+        }
+
+        if (!INSTANCE.fallDamageDustClouds.get()) {
+            return;
+        }
+
+        if (fallDamage <= 0 && !((entity instanceof AbstractHorse) && distance > (entity instanceof Camel ? 0.5 : 1))) {
+            return;
+        }
+
+        if (entity.isInWater() || entity.isInLava() || entity.isInPowderSnow) {
+            return;
+        }
+
+        Level level = entity.level();
+        RandomSource random = entity.getRandom();
+
+        if (entity instanceof Strider strider) {
+            if (level.getFluidState(strider.getOnPos().atY(Mth.floor(y))).is(FluidTags.LAVA)) {
+                return;
+            }
+        }
+
+        if (fallDamage < 4) {
+            for (int i = 0; i < 5; i++) {
+                level.addParticle(ModParticles.SMALL_DUST_CLOUD.get(),
+                        entity.getRandomX(1),
+                        y + Math.max(Math.min(random.nextFloat(), 0.5), 0.2),
+                        entity.getRandomZ(1),
+                        0.3 * nextSign(),
+                        random.nextDouble(),
+                        0.3 * nextSign()
+                );
+            }
+            return;
+        }
+
+        for (int i = 0; i < 10; i++) {
+            level.addParticle(ModParticles.LARGE_DUST_CLOUD.get(),
+                    entity.getRandomX(1),
+                    y + Math.max(Math.min(random.nextFloat(), 0.5), 0.2),
+                    entity.getRandomZ(1),
+                    0.5 * nextSign(),
+                    random.nextDouble() * 3,
+                    0.5 * nextSign()
+            );
         }
     }
 }

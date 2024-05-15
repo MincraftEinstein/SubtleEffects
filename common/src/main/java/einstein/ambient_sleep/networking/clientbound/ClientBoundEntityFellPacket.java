@@ -3,11 +3,10 @@ package einstein.ambient_sleep.networking.clientbound;
 import commonnetwork.networking.data.PacketContext;
 import commonnetwork.networking.data.Side;
 import einstein.ambient_sleep.AmbientSleep;
-import einstein.ambient_sleep.util.ParticleManager;
+import einstein.ambient_sleep.util.ParticleSpawnUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 
@@ -43,7 +42,7 @@ public class ClientBoundEntityFellPacket {
         if (context.side().equals(Side.CLIENT) && level != null) {
             ClientBoundEntityFellPacket packet = context.message();
             if (level.getEntity(packet.entityId) instanceof LivingEntity livingEntity) {
-                ParticleManager.entityFell(livingEntity, packet.y, packet.distance, packet.fallDamage);
+                ParticleSpawnUtil.spawnEntityFellParticles(livingEntity, packet.y, packet.distance, packet.fallDamage);
             }
         }
     }
