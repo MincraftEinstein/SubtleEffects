@@ -165,10 +165,8 @@ public class ParticleSpawnUtil {
         Level level = entity.level();
         RandomSource random = entity.getRandom();
 
-        if (entity instanceof Strider strider) {
-            if (level.getFluidState(strider.getOnPos().atY(Mth.floor(y))).is(FluidTags.LAVA)) {
-                return;
-            }
+        if (!level.getFluidState(entity.getOnPos().atY(Mth.floor(y))).isEmpty()) {
+            return;
         }
 
         if (fallDamage < 4) {
