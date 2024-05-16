@@ -10,6 +10,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BeaconBlockEntity;
@@ -123,6 +124,54 @@ public class ModBlockTickers {
             );
         });
 
+        register(state -> state.getBlock() instanceof CampfireBlock && INSTANCE.campfireSparks.get() && state.getValue(CampfireBlock.LIT), (state, level, pos, random) -> {
+            ParticleSpawnUtil.spawnSparks(level, random, pos, new Vec3(0.5, 0.4, 0.5),
+                    new Vec3i(3, 5, 3), 10, 6, state.is(Blocks.SOUL_CAMPFIRE), true
+            );
+        });
+        register(state -> state.getBlock() instanceof TorchBlock && INSTANCE.torchSparks.get(), (state, level, pos, random) -> {
+            ParticleSpawnUtil.spawnSparks(level, random, pos, new Vec3(0.5, 0.5, 0.5),
+                    new Vec3i(1, 1, 1), 2, -6, state.is(Blocks.SOUL_TORCH), false
+            );
+        });
+        register(state -> state.getBlock() instanceof WallTorchBlock && INSTANCE.torchSparks.get(), (state, level, pos, random) -> {
+            Direction direction = state.getValue(WallTorchBlock.FACING).getOpposite();
+            ParticleSpawnUtil.spawnSparks(level, random, pos,
+                    new Vec3(0.5 + (0.27 * direction.getStepX()), 0.7, 0.5 + (0.27 * direction.getStepZ())),
+                    new Vec3i(1, 1, 1), 2, 20, state.is(Blocks.SOUL_WALL_TORCH), false
+            );
+        });
+        register(state -> state.getBlock() instanceof AbstractCandleBlock && ModConfigs.INSTANCE.candleSparks.get() && state.getValue(AbstractCandleBlock.LIT), (state, level, pos, random) -> {
+            AbstractCandleBlock block = (AbstractCandleBlock) state.getBlock();
+            block.getParticleOffsets(state).forEach(offset -> ParticleSpawnUtil.spawnSparks(level, random, pos,
+                    offset, new Vec3i(1, 1, 1), 1, 20, false, false)
+            );
+        });
+        register(state -> state.getBlock() instanceof BaseFireBlock && ModConfigs.INSTANCE.fireSparks.get(), (state, level, pos, random) -> {
+            BaseFireBlock block = (BaseFireBlock) state.getBlock();
+            BlockPos belowPos = pos.below();
+            BlockState belowState = level.getBlockState(belowPos);
+
+            if (!block.canBurn(belowState) && !belowState.isFaceSturdy(level, belowPos, Direction.UP)) {
+                if (canBurn(block, level, pos.west())) {
+                    spawnFireSparks(level, random, state, pos, 0, random.nextDouble());
+                }
+
+                if (canBurn(block, level, pos.east())) {
+                    spawnFireSparks(level, random, state, pos, 1, random.nextDouble());
+                }
+
+                if (canBurn(block, level, pos.north())) {
+                    spawnFireSparks(level, random, state, pos, random.nextDouble(), 0);
+                }
+
+                if (canBurn(block, level, pos.south())) {
+                    spawnFireSparks(level, random, state, pos, random.nextDouble(), 1);
+                }
+                return;
+            }
+            spawnFireSparks(level, random, state, pos, random.nextDouble(), random.nextDouble());
+        });
         register(state -> state.getBlock() instanceof LanternBlock && INSTANCE.lanternSparks.get(), (state, level, pos, random) -> {
             for (int i = 0; i < 5; i++) {
                 int xSign = nextSign();
@@ -152,5 +201,13 @@ public class ModBlockTickers {
 
     private static void register(Predicate<BlockState> predicate, BlockProvider provider) {
         REGISTERED.put(predicate, provider);
+    }
+
+    private static boolean canBurn(BaseFireBlock block, Level level, BlockPos pos) {
+        return block.canBurn(level.getBlockState(pos));
+    }
+
+    private static void spawnFireSparks(Level level, RandomSource random, BlockState state, BlockPos pos, double xOffset, double zOffset) {
+        ParticleSpawnUtil.spawnSparks(level, random, pos, new Vec3(xOffset, random.nextDouble(), zOffset), new Vec3i(3, 5, 3), 10, 10, state.is(Blocks.SOUL_FIRE), true);
     }
 }

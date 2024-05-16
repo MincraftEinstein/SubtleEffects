@@ -1,5 +1,6 @@
 package einstein.ambient_sleep.mixin.client;
 
+import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import einstein.ambient_sleep.init.ModParticles;
 import einstein.ambient_sleep.util.FrustumGetter;
 import einstein.ambient_sleep.util.ParticleAccessor;
@@ -10,7 +11,6 @@ import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.util.RandomSource;
@@ -25,7 +25,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import static einstein.ambient_sleep.init.ModConfigs.INSTANCE;
 import static einstein.ambient_sleep.util.MathUtil.nextFloat;
@@ -98,9 +97,10 @@ public class LevelRendererMixin implements FrustumGetter {
         return ParticleTypes.LARGE_SMOKE;
     }
 
-    @Inject(method = "addParticleInternal(Lnet/minecraft/core/particles/ParticleOptions;ZZDDDDDD)Lnet/minecraft/client/particle/Particle;", at = @At(value = "RETURN", ordinal = 0))
-    private void spawnForcedParticle(ParticleOptions options, boolean force, boolean decreased, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, CallbackInfoReturnable<Particle> cir) {
-        ((ParticleAccessor) cir.getReturnValue()).ambientSleep$force();
+    @ModifyReturnValue(method = "addParticleInternal(Lnet/minecraft/core/particles/ParticleOptions;ZZDDDDDD)Lnet/minecraft/client/particle/Particle;", at = @At(value = "RETURN", ordinal = 0))
+    private Particle spawnForcedParticle(Particle particle) {
+        ((ParticleAccessor) particle).ambientSleep$force();
+        return particle;
     }
 
     @Override

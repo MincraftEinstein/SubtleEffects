@@ -26,9 +26,7 @@
     "client.block.PumpkinBlockMixin",
     "client.block.SlimeBlockMixin",
     "client.block.TorchBlockMixin",
-    "client.block.WallTorchBlockMixin",
     "client.entity.ClientLivingEntityMixin",
-    "client.entity.EntityMixin",
     "client.entity.EntityRendererMixin",
     "client.entity.MinecartFurnaceMixin",
     "client.entity.SheepMixin"

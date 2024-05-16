@@ -1,5 +1,6 @@
 package einstein.ambient_sleep.mixin.common;
 
+import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import einstein.ambient_sleep.init.ModConfigs;
 import einstein.ambient_sleep.util.ParticleSpawnUtil;
 import net.minecraft.world.entity.EntityType;
@@ -13,7 +14,6 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(AbstractHorse.class)
@@ -26,11 +26,10 @@ public abstract class AbstractHorseMixin extends Animal {
         super(type, level);
     }
 
-    @Redirect(method = "causeFallDamage", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/animal/horse/AbstractHorse;calculateFallDamage(FF)I"))
-    private int calculateFallDamage(AbstractHorse horse, float distance, float damageMultiplier) {
-        int fallDamage = calculateFallDamage(distance, damageMultiplier);
-        ParticleSpawnUtil.spawnFallDustClouds(horse, distance, fallDamage);
-        return fallDamage;
+    @ModifyExpressionValue(method = "causeFallDamage", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/animal/horse/AbstractHorse;calculateFallDamage(FF)I"))
+    private int calculateFallDamage(int damage, float distance, float damageMultiplier) {
+        ParticleSpawnUtil.spawnFallDustClouds(ambientSleep$me, damageMultiplier, damage);
+        return damage;
     }
 
     @Inject(method = "tickRidden", at = @At("TAIL"))
