@@ -117,6 +117,9 @@ public class ModConfigs {
     public final ForgeConfigSpec.BooleanValue improvedDragonFireballTrail;
     public final ForgeConfigSpec.ConfigValue<CommandBlockSpawnType> commandBlockMinecartParticles;
     public final ForgeConfigSpec.BooleanValue heartBeating;
+    public final ForgeConfigSpec.BooleanValue updateLitTntSmoke;
+    public final ForgeConfigSpec.BooleanValue litTntFlames;
+    public final ForgeConfigSpec.BooleanValue litTntSparks;
 
     // Biomes
     public final ForgeConfigSpec.IntValue biomeParticlesRadius;
@@ -483,6 +486,18 @@ public class ModConfigs {
                 .comment("Should a heartbeat sound play every 3 sec when the player's health is below 3 health points (or 6 half points) and speed up below 2 health points")
                 .translation(key("heart_beating"))
                 .define("heartBeating", true);
+
+        updateLitTntSmoke = builder
+                .translation(key("update_lit_tnt_smoke"))
+                .define("updateLitTntSmoke", true);
+
+        litTntFlames = builder
+                .translation(key("lit_tnt_flames"))
+                .define("litTntFlames", true);
+
+        litTntSparks = builder
+                .translation(key("lit_tnt_sparks"))
+                .define("litTntSparks", true);
 
         builder.pop().translation(categoryKey("biomes")).push("biomes");
 

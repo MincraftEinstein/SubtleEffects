@@ -29,6 +29,7 @@
     "client.entity.ClientLivingEntityMixin",
     "client.entity.EntityRendererMixin",
     "client.entity.MinecartFurnaceMixin",
+    "client.entity.PrimedTNTMixin",
     "client.entity.SheepMixin"
   ],
   "mixins": [

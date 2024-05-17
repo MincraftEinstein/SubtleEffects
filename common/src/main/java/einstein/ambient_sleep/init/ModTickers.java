@@ -142,6 +142,27 @@ public class ModTickers {
                 }
             }
         });
+        registerSimpleTicker(EntityType.TNT, (entity, level, random) -> {
+            if (INSTANCE.litTntSparks.get()) {
+                level.addParticle(ModParticles.SHORT_SPARK.get(),
+                        entity.getRandomX(0.5),
+                        entity.getY(1),
+                        entity.getRandomZ(0.5),
+                        nextFloat(1) * nextSign(),
+                        nextFloat(1) * nextSign(),
+                        nextFloat(1) * nextSign()
+                );
+            }
+
+            if (INSTANCE.litTntFlames.get() && random.nextInt(10) == 0) {
+                level.addParticle(ParticleTypes.FLAME,
+                        entity.getX(),
+                        entity.getY(1.1),
+                        entity.getZ(),
+                        0, 0, 0
+                );
+            }
+        });
     }
 
     private static boolean shouldSpawn(RandomSource random, ForgeConfigSpec.DoubleValue chanceConfig) {
