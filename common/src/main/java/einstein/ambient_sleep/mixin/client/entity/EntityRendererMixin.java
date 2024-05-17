@@ -22,7 +22,7 @@ public class EntityRendererMixin<T extends Entity> {
 
     @WrapOperation(method = "renderNameTag", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/vertex/PoseStack;translate(FFF)V"))
     private void translate(PoseStack poseStack, float x, float y, float z, Operation<Void> original, T entity) {
-        if (!ModConfigs.INSTANCE.adjustNametagWhenSleeping.get()) {
+        if (!ModConfigs.INSTANCE.adjustNameTagWhenSleeping.get()) {
             original.call(poseStack, x, y, z);
             return;
         }
