@@ -14,10 +14,10 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 
 @Mixin(ParticleEngine.class)
-public abstract class ParticleEngineMixin {
+public class ParticleEngineMixin {
 
-    @WrapWithCondition(method = "render(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource$BufferSource;Lnet/minecraft/client/renderer/LightTexture;Lnet/minecraft/client/Camera;F)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/particle/Particle;render(Lcom/mojang/blaze3d/vertex/VertexConsumer;Lnet/minecraft/client/Camera;F)V"))
-    private boolean renderParticle(Particle particle, VertexConsumer consumer, Camera camera, float partialTick) {
+    @WrapWithCondition(method = "render*", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/particle/Particle;render(Lcom/mojang/blaze3d/vertex/VertexConsumer;Lnet/minecraft/client/Camera;F)V"))
+    private boolean shouldRenderParticle(Particle particle, VertexConsumer consumer, Camera camera, float partialTick) {
         Frustum frustum = ((FrustumGetter) Minecraft.getInstance().levelRenderer).ambientSleep$getCullingFrustum();
         if (frustum != null && frustum.isVisible(particle.getBoundingBox())) {
             ParticleAccessor accessor = ((ParticleAccessor) particle);
