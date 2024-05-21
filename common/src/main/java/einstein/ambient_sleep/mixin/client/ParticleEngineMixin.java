@@ -21,8 +21,10 @@ public class ParticleEngineMixin {
         Frustum frustum = ((FrustumGetter) Minecraft.getInstance().levelRenderer).ambientSleep$getCullingFrustum();
         if (frustum != null && frustum.isVisible(particle.getBoundingBox())) {
             ParticleAccessor accessor = ((ParticleAccessor) particle);
-            int distance = ModConfigs.INSTANCE.particleRenderDistance.get() * 16;
-            return accessor.ambientSleep$wasForced() || camera.getPosition().distanceToSqr(accessor.getX(), accessor.getY(), accessor.getZ()) < distance * distance;
+            if (accessor.getAlpha() != 0) {
+                int distance = ModConfigs.INSTANCE.particleRenderDistance.get() * 16;
+                return accessor.ambientSleep$wasForced() || camera.getPosition().distanceToSqr(accessor.getX(), accessor.getY(), accessor.getZ()) < distance * distance;
+            }
         }
         return false;
     }

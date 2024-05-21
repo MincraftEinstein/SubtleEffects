@@ -8,6 +8,8 @@ public interface ParticleAccessor {
 
     double getZ();
 
+    float getAlpha();
+
     boolean ambientSleep$wasForced();
 
     void ambientSleep$force();
