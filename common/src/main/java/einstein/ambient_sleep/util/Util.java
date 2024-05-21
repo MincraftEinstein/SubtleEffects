@@ -2,6 +2,7 @@ package einstein.ambient_sleep.util;
 
 import einstein.ambient_sleep.platform.Services;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.particle.Particle;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -64,5 +65,9 @@ public class Util {
             return stack.is(BuiltInRegistries.ITEM.get(ENDERMAN_HEAD_LOC));
         }
         return false;
+    }
+
+    public static void setColorFromHex(Particle particle, int hexColor) {
+        particle.setColor((hexColor >> 16) / 255F, (hexColor >> 8) / 255F, hexColor / 255F);
     }
 }

@@ -17,6 +17,7 @@ import net.minecraft.world.entity.item.FallingBlockEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Rarity;
+import net.minecraft.world.level.block.BaseFireBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.ForgeConfigSpec;
@@ -26,8 +27,7 @@ import java.util.function.Predicate;
 import static einstein.ambient_sleep.init.ModConfigs.INSTANCE;
 import static einstein.ambient_sleep.tickers.TickerManager.registerSimpleTicker;
 import static einstein.ambient_sleep.tickers.TickerManager.registerTicker;
-import static einstein.ambient_sleep.util.MathUtil.nextFloat;
-import static einstein.ambient_sleep.util.MathUtil.nextSign;
+import static einstein.ambient_sleep.util.MathUtil.*;
 
 public class ModTickers {
 
@@ -161,6 +161,18 @@ public class ModTickers {
                         entity.getZ(),
                         0, 0, 0
                 );
+            }
+        });
+        registerSimpleTicker(EntityType.END_CRYSTAL, (entity, level, random) -> {
+            if (INSTANCE.endCrystalParticles.get()) {
+                if (level.getBlockState(entity.blockPosition()).getBlock() instanceof BaseFireBlock || random.nextInt(3) == 0) {
+                    level.addParticle(ModParticles.END_CRYSTAL.get(),
+                            entity.getRandomX(1),
+                            entity.getRandomY() + nextNonAbsDouble(),
+                            entity.getRandomZ(1),
+                            0, 0, 0
+                    );
+                }
             }
         });
     }

@@ -123,6 +123,18 @@ public class ModBlockTickers {
                     INSTANCE.steamingWaterCauldron, INSTANCE.boilingWaterCauldron
             );
         });
+        register(Blocks.END_GATEWAY, (state, level, pos, random) -> {
+            if (INSTANCE.endPortalParticles.get()) {
+                for (int i = 0; i < 5; i++) {
+                    level.addParticle(ModParticles.END_PORTAL.get(),
+                            pos.getX() + (random.nextInt(3) - 1) + random.nextDouble(),
+                            pos.getY() + (random.nextInt(3) - 1) + random.nextDouble(),
+                            pos.getZ() + (random.nextInt(3) - 1) + random.nextDouble(),
+                            0, 0, 0
+                    );
+                }
+            }
+        });
 
         register(state -> state.getBlock() instanceof CampfireBlock && INSTANCE.campfireSparks.get() && state.getValue(CampfireBlock.LIT), (state, level, pos, random) -> {
             ParticleSpawnUtil.spawnSparks(level, random, pos, new Vec3(0.5, 0.4, 0.5),

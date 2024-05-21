@@ -17,8 +17,7 @@ public class ItemRarityParticle extends TextureSheetParticle {
 
     protected ItemRarityParticle(ClientLevel level, SpriteSet sprites, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, ItemStack stack) {
         super(level, x, y, z, xSpeed, ySpeed, zSpeed);
-        int color = 0xFF000000 | getItemColor(stack).getValue();
-        setColor((color >> 16) / 255F, (color >> 8) / 255F, color / 255F);
+        Util.setColorFromHex(this, 0xFF000000 | getItemColor(stack).getValue());
         pickSprite(sprites);
         int min = Math.min(5, ModConfigs.INSTANCE.itemRarityParticleHeight.get());
         lifetime = Math.max(min, random.nextInt(ModConfigs.INSTANCE.itemRarityParticleHeight.get()));

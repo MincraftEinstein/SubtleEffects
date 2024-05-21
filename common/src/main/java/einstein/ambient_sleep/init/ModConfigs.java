@@ -67,7 +67,7 @@ public class ModConfigs {
     public final ForgeConfigSpec.EnumValue<SmokeType> torchflowerSmoke;
     public final ForgeConfigSpec.BooleanValue torchflowerFlames;
     public final ForgeConfigSpec.BooleanValue dragonEggParticles;
-    public final ForgeConfigSpec.BooleanValue replaceEndPortalParticles;
+    public final ForgeConfigSpec.BooleanValue replaceEndPortalSmoke;
     public final ForgeConfigSpec.BooleanValue axeStripParticles;
     public final ForgeConfigSpec.BooleanValue pumpkinCarvedParticles;
     public final ForgeConfigSpec.BooleanValue anvilBreakParticles;
@@ -79,6 +79,7 @@ public class ModConfigs {
     public final ForgeConfigSpec.BooleanValue compostingParticles;
     public final ForgeConfigSpec.BooleanValue respawnAnchorParticles;
     public final ForgeConfigSpec.BooleanValue beehiveShearParticles;
+    public final ForgeConfigSpec.BooleanValue endPortalParticles;
 
     // Entity Snoring
     public final ForgeConfigSpec.DoubleValue playerSnoreChance;
@@ -120,6 +121,7 @@ public class ModConfigs {
     public final ForgeConfigSpec.BooleanValue updateLitTntSmoke;
     public final ForgeConfigSpec.BooleanValue litTntFlames;
     public final ForgeConfigSpec.BooleanValue litTntSparks;
+    public final ForgeConfigSpec.BooleanValue endCrystalParticles;
 
     // Biomes
     public final ForgeConfigSpec.IntValue biomeParticlesRadius;
@@ -276,10 +278,10 @@ public class ModConfigs {
                 .translation(key("dragon_egg_particles"))
                 .define("dragonEggParticles", true);
 
-        replaceEndPortalParticles = builder
-                .comment("Replaces the normal lit end portal smoke particles with nether portal particles")
-                .translation(key("replace_end_portal_particles"))
-                .define("replaceEndPortalParticles", true);
+        replaceEndPortalSmoke = builder
+                .comment("Replaces the normal end portal smoke particles with nether portal particles so that it is consistent with end gateways")
+                .translation(key("replace_end_portal_smoke"))
+                .define("replaceEndPortalSmoke", true);
 
         axeStripParticles = builder
                 .comment("Display the destroy particle effect when stripping a block with an axe", "This doesn't affect removing oxidization/wax from copper")
@@ -336,6 +338,11 @@ public class ModConfigs {
                 .comment("Display the destroy particle effect when shearing a beehive/nest")
                 .translation(key("beehive_shear_particles"))
                 .define("beehiveShearParticles", true);
+
+        endPortalParticles = builder
+                .comment("Should end portals and end gateways have little colored particles floating around them")
+                .translation(key("end_portal_particles"))
+                .define("endPortalParticles", true);
 
         builder.pop().translation(categoryKey("entities")).push("entities")
                 .translation(categoryKey("sleeping")).push("sleeping");
@@ -498,6 +505,11 @@ public class ModConfigs {
         litTntSparks = builder
                 .translation(key("lit_tnt_sparks"))
                 .define("litTntSparks", true);
+
+        endCrystalParticles = builder
+                .comment("Should end crystals have little pink particles floating around them")
+                .translation("end_crystal_particles")
+                .define("endCrystalParticles", true);
 
         builder.pop().translation(categoryKey("biomes")).push("biomes");
 
