@@ -1,0 +1,30 @@
+{
+  "entity.villager.snore": {
+    "subtitle": "subtitles.subtle_effects.entity.villager.snore",
+    "sounds": [
+      "subtle_effects:mob/villager/snore1",
+      "subtle_effects:mob/villager/snore2",
+      "subtle_effects:mob/villager/snore3"
+    ]
+  },
+  "entity.player.snore": {
+    "subtitle": "subtitles.subtle_effects.entity.player.snore",
+    "sounds": [
+      "subtle_effects:entity/player/snore1",
+      "subtle_effects:entity/player/snore2",
+      "subtle_effects:entity/player/snore3"
+    ]
+  },
+  "entity.player.stomach_growl": {
+    "subtitle": "subtitles.subtle_effects.entity.player.stomach_growl",
+    "sounds": [
+      "subtle_effects:entity/player/stomach_growl"
+    ]
+  },
+  "entity.player.heartbeat": {
+    "subtitle": "subtitles.subtle_effects.entity.player.heartbeat",
+    "sounds": [
+      "subtle_effects:entity/player/heartbeat"
+    ]
+  }
+}

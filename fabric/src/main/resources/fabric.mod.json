@@ -1,32 +1,32 @@
 {
   "schemaVersion": 1,
-  "id": "ambient_sleep",
+  "id": "subtle_effects",
   "version": "${version}",
-  "name": "Ambient Sleep",
+  "name": "Subtle Effects",
   "description": "This mod makes a few little client side tweaks to sleeping",
   "authors": [
     "MincraftEinstein"
   ],
   "contact": {
-    "homepage": "https://curseforge.com/minecraft/mc-mods/ambient_sleep",
-    "sources": "https://github.com/MincraftEinstein/AmbientSleep",
-    "issues": "https://github.com/MincraftEinstein/AmbientSleep/issues"
+    "homepage": "https://curseforge.com/minecraft/mc-mods/subtle-effects",
+    "sources": "https://github.com/MincraftEinstein/SubtleEffects",
+    "issues": "https://github.com/MincraftEinstein/SubtleEffects/issues"
   },
   "license": "All rights reserved",
   "icon": "pack.png",
   "environment": "client",
   "entrypoints": {
     "main": [
-      "einstein.ambient_sleep.AmbientSleepFabric"
+      "einstein.subtle_effects.SubtleEffectsFabric"
     ],
     "client": [
-      "einstein.ambient_sleep.AmbientSleepFabric"
+      "einstein.subtle_effects.SubtleEffectsFabric"
     ]
   },
   "mixins": [
-    "ambient_sleep.mixins.json"
+    "subtle_effects.mixins.json"
   ],
-  "accessWidener": "ambient_sleep.accesswidener",
+  "accessWidener": "subtle_effects.accesswidener",
   "depends": {
     "fabricloader": ">=0.14",
     "fabric": "*",

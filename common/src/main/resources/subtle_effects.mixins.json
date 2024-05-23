@@ -1,0 +1,44 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "einstein.subtle_effects.mixin",
+  "refmap": "subtle_effects.refmap.json",
+  "compatibilityLevel": "JAVA_17",
+  "client": [
+    "client.AxeItemMixin",
+    "client.BucketItemMixin",
+    "client.ClientLevelMixin",
+    "client.GameRendererMixin",
+    "client.LavaFluidMixin",
+    "client.LavaParticleMixin",
+    "client.LevelRendererMixin",
+    "client.ParticleEngineMixin",
+    "client.ParticleMixin",
+    "client.SpriteSetAccessor",
+    "client.WaterFluidMixin",
+    "client.block.AbstractCandleBlockMixin",
+    "client.block.BaseFireBlockMixin",
+    "client.block.BeehiveBlockMixin",
+    "client.block.CampfireBlockMixin",
+    "client.block.ComposterBlockMixin",
+    "client.block.EndPortalBlockMixin",
+    "client.block.FurnaceBlockMixin",
+    "client.block.PumpkinBlockMixin",
+    "client.block.SlimeBlockMixin",
+    "client.block.TorchBlockMixin",
+    "client.entity.ClientLivingEntityMixin",
+    "client.entity.EntityRendererMixin",
+    "client.entity.MinecartFurnaceMixin",
+    "client.entity.PrimedTNTMixin",
+    "client.entity.SheepMixin"
+  ],
+  "mixins": [
+    "common.AbstractHorseMixin",
+    "common.BeehiveBlockEntityMixin",
+    "common.CommonLivingEntityMixin",
+    "common.LlamaMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

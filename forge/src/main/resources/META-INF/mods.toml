@@ -3,12 +3,12 @@ loaderVersion = "[46,)"
 license = "All rights reserved"
 
 [[mods]]
-    modId = "ambient_sleep"
+    modId = "subtle_effects"
     version = "${version}"
-    displayName = "Ambient Sleep"
-    displayURL="https://curseforge.com/minecraft/mods/ambient-sleep"
+    displayName = "Subtle Effects"
+    displayURL="https://curseforge.com/minecraft/mods/subtle-effects"
     #updateJSONURL="https://change.me.example.invalid/updates.json"
-    issueTrackerURL="https://github.com/MincraftEinstein/AmbientSleep/issues"
+    issueTrackerURL="https://github.com/MincraftEinstein/SubtleEffects/issues"
     logoFile = "pack.png"
     credits = ""
     authors = "MincraftEinstein"
@@ -16,14 +16,14 @@ license = "All rights reserved"
 This mod makes a few little client side tweaks to sleeping
 '''
 
-[[dependencies.ambient_sleep]]
+[[dependencies.subtle_effects]]
     modId = "forge"
     mandatory = true
     versionRange = "[46,)"
     ordering = "NONE"
     side = "CLIENT"
 
-[[dependencies.ambient_sleep]]
+[[dependencies.subtle_effects]]
     modId = "minecraft"
     mandatory = true
     versionRange = "[1.20, 1.21)"

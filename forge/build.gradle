@@ -87,7 +87,7 @@ tasks.withType(JavaCompile).configureEach {
 processResources {
     from project(":common").sourceSets.main.resources
 
-    exclude("ambient_sleep.accesswidener")
+    exclude("subtle_effects.accesswidener")
 
     inputs.property("version", version)
 
