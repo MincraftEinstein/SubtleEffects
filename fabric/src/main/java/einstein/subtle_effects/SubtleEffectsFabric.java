@@ -20,6 +20,6 @@ public class SubtleEffectsFabric implements ModInitializer, ClientModInitializer
     @Override
     public void onInitializeClient() {
         SubtleEffects.clientSetup();
-        ClientTickEvents.END_CLIENT_TICK.register(minecraft -> SubtleEffects.levelTick(minecraft, minecraft.level));
+        ClientTickEvents.END_CLIENT_TICK.register(minecraft -> SubtleEffects.clientTick(minecraft, minecraft.level));
     }
 }

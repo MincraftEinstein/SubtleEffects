@@ -18,6 +18,7 @@ public class SubtleEffects {
     public static final String MOD_ID = "subtle_effects";
     public static final String MOD_NAME = "Subtle Effects";
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_NAME);
+    private static boolean HAS_CLEARED = false;
 
     public static void init() {
         ModSounds.init();
@@ -33,11 +34,14 @@ public class SubtleEffects {
         ModBlockTickers.init();
     }
 
-    public static void levelTick(Minecraft minecraft, Level level) {
+    public static void clientTick(Minecraft minecraft, Level level) {
         Player player = minecraft.player;
         if (level == null || player == null) {
-            TickerManager.clear();
-            BiomeParticleManager.clear();
+            if (!HAS_CLEARED) {
+                TickerManager.clear();
+                BiomeParticleManager.clear();
+                HAS_CLEARED = true;
+            }
             return;
         }
 
@@ -47,6 +51,7 @@ public class SubtleEffects {
 
         BiomeParticleManager.tickBiomeParticles(level, player);
         TickerManager.tickTickers(level);
+        HAS_CLEARED = false;
     }
 
     public static void configReloaded(ModConfig config) {

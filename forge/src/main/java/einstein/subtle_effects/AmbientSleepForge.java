@@ -35,9 +35,10 @@ public class AmbientSleepForge {
         );
         modEventBus.addListener((FMLClientSetupEvent event) -> SubtleEffects.clientSetup());
         modEventBus.addListener((ModConfigEvent.Reloading event) -> SubtleEffects.configReloaded(event.getConfig()));
-        MinecraftForge.EVENT_BUS.addListener((TickEvent.LevelTickEvent event) -> {
-            if (event.side.isClient() && event.phase.equals(TickEvent.Phase.END)) {
-                SubtleEffects.levelTick(Minecraft.getInstance(), event.level);
+        MinecraftForge.EVENT_BUS.addListener((TickEvent.ClientTickEvent event) -> {
+            if (event.phase.equals(TickEvent.Phase.END)) {
+                Minecraft minecraft = Minecraft.getInstance();
+                SubtleEffects.clientTick(minecraft, minecraft.level);
             }
         });
         ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, ModConfigs.SPEC);
