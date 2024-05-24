@@ -1,12 +1,9 @@
-package einstein.subtle_effects.init;
+package einstein.subtle_effects.biome_particles;
 
-import net.minecraft.client.Minecraft;
+import einstein.subtle_effects.init.ModParticles;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
-import net.minecraft.core.Registry;
 import net.minecraft.core.particles.ParticleOptions;
-import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -17,13 +14,12 @@ import net.minecraftforge.common.ForgeConfigSpec;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 import static einstein.subtle_effects.init.ModConfigs.INSTANCE;
 
-public class BiomeParticles {
+public class BiomeParticleManager {
 
     private static final List<BiomeParticleSettings> REGISTERED = new ArrayList<>();
     private static final BlockPos.MutableBlockPos BIOME_POS = new BlockPos.MutableBlockPos();
@@ -36,10 +32,14 @@ public class BiomeParticles {
     }
 
     private static void register(ForgeConfigSpec.ConfigValue<List<? extends String>> biomesConfig, ForgeConfigSpec.IntValue density, int maxSpawnHeight, Supplier<? extends ParticleOptions> particle, Predicate<Level> spawnConditions) {
-        REGISTERED.add(new BiomeParticleSettings(biomesConfig, density, maxSpawnHeight, particle, spawnConditions));
+        REGISTERED.add(new BiomeParticleSettings(biomesConfig, density, maxSpawnHeight, particle, spawnConditions, false));
     }
 
-    public static void tickBiomeParticles(Minecraft minecraft, Level level, Player player) {
+    private static void register(ForgeConfigSpec.ConfigValue<List<? extends String>> biomesConfig, ForgeConfigSpec.IntValue density, Supplier<? extends ParticleOptions> particle, Predicate<Level> spawnConditions) {
+        REGISTERED.add(new BiomeParticleSettings(biomesConfig, density, 0, particle, spawnConditions, true));
+    }
+
+    public static void tickBiomeParticles(Level level, Player player) {
         int radius = INSTANCE.biomeParticlesRadius.get();
 
         if (radius <= 0) {
@@ -53,27 +53,29 @@ public class BiomeParticles {
             int z = player.getBlockZ() + random.nextInt(radius) - random.nextInt(radius);
             BIOME_POS.set(x, y, z);
 
-            int surfaceLevel = level.getHeight(Heightmap.Types.MOTION_BLOCKING, x, z);
-            if (surfaceLevel > y) {
+            if (level.isOutsideBuildHeight(y)) {
                 continue;
             }
 
             Holder<Biome> biome = level.getBiome(BIOME_POS);
             for (BiomeParticleSettings settings : REGISTERED) {
-                if (settings.density().get() > i && settings.spawnConditions().test(level)) {
+                if (settings.getDensity() > i && settings.checkSpawnConditions(level)) {
                     List<Biome> biomes = settings.getBiomes(level);
                     if (biomes.isEmpty()) {
                         continue;
                     }
 
-                    if (biomes.contains(biome.value())) {
-                        if ((surfaceLevel + settings.maxSpawnHeight()) < y) {
+                    if (!settings.ignoreHeight()) {
+                        int surfaceLevel = level.getHeight(Heightmap.Types.MOTION_BLOCKING, x, z);
+                        if (surfaceLevel > y || (surfaceLevel + settings.getMaxSpawnHeight()) < y) {
                             continue;
                         }
+                    }
 
+                    if (biomes.contains(biome.value())) {
                         BlockState state = level.getBlockState(BIOME_POS);
                         if (!state.isCollisionShapeFullBlock(level, BIOME_POS)) {
-                            level.addParticle(settings.particle().get(), x + random.nextDouble(), y + random.nextDouble(), z + random.nextDouble(), 0, 0, 0);
+                            level.addParticle(settings.getParticle().get(), x + random.nextDouble(), y + random.nextDouble(), z + random.nextDouble(), 0, 0, 0);
                         }
                     }
                 }
@@ -81,20 +83,7 @@ public class BiomeParticles {
         }
     }
 
-    public record BiomeParticleSettings(ForgeConfigSpec.ConfigValue<List<? extends String>> biomesConfig,
-                                        ForgeConfigSpec.IntValue density, int maxSpawnHeight,
-                                        Supplier<? extends ParticleOptions> particle,
-                                        Predicate<Level> spawnConditions) {
-
-        public List<Biome> getBiomes(Level level) {
-            return biomesConfig.get().stream().map(s -> {
-                ResourceLocation location = ResourceLocation.tryParse(s);
-                if (location != null) {
-                    Registry<Biome> registry = level.registryAccess().registryOrThrow(Registries.BIOME);
-                    return registry.get(location);
-                }
-                return null;
-            }).filter(Objects::nonNull).toList();
-        }
+    public static void clear() {
+        REGISTERED.forEach(BiomeParticleSettings::clear);
     }
 }

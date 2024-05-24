@@ -1,8 +1,9 @@
 package einstein.subtle_effects;
 
+import einstein.subtle_effects.biome_particles.BiomeParticleManager;
 import einstein.subtle_effects.init.*;
-import einstein.subtle_effects.util.ShaderManager;
 import einstein.subtle_effects.tickers.TickerManager;
+import einstein.subtle_effects.util.ShaderManager;
 import einstein.subtle_effects.util.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
@@ -22,7 +23,7 @@ public class SubtleEffects {
         ModSounds.init();
         ModParticles.init();
         ModPackets.init();
-        BiomeParticles.init();
+        BiomeParticleManager.init();
         ModDamageListeners.init();
     }
 
@@ -36,6 +37,7 @@ public class SubtleEffects {
         Player player = minecraft.player;
         if (level == null || player == null) {
             TickerManager.clear();
+            BiomeParticleManager.clear();
             return;
         }
 
@@ -43,7 +45,7 @@ public class SubtleEffects {
             return;
         }
 
-        BiomeParticles.tickBiomeParticles(minecraft, level, player);
+        BiomeParticleManager.tickBiomeParticles(level, player);
         TickerManager.tickTickers(level);
     }
 
@@ -62,6 +64,7 @@ public class SubtleEffects {
                 }
             }
             TickerManager.clear();
+            BiomeParticleManager.clear();
         }
     }
 
