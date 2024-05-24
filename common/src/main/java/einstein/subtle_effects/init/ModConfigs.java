@@ -122,6 +122,7 @@ public class ModConfigs {
     public final ForgeConfigSpec.BooleanValue litTntFlames;
     public final ForgeConfigSpec.BooleanValue litTntSparks;
     public final ForgeConfigSpec.BooleanValue endCrystalParticles;
+    public final ForgeConfigSpec.BooleanValue minecartLandingSparks;
 
     // Biomes
     public final ForgeConfigSpec.IntValue biomeParticlesRadius;
@@ -510,6 +511,11 @@ public class ModConfigs {
                 .comment("Should end crystals have little pink particles floating around them")
                 .translation("end_crystal_particles")
                 .define("endCrystalParticles", true);
+
+        minecartLandingSparks = builder
+                .comment("Should sparks particles spawn when a falling minecart lands on rails")
+                .translation(key("minecart_landing_sparks"))
+                .define("minecartLandingSparks", true);
 
         builder.pop().translation(categoryKey("biomes")).push("biomes");
 

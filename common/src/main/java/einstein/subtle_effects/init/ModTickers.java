@@ -16,6 +16,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.FallingBlockEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.level.block.BaseFireBlock;
 import net.minecraft.world.level.block.state.BlockState;
@@ -36,6 +37,7 @@ public class ModTickers {
     public static void init() {
         registerTicker(entity -> entity instanceof LivingEntity, SleepingTicker::new);
         registerTicker(entity -> entity instanceof LivingEntity, EntityFireTicker::new);
+        registerTicker(entity -> entity instanceof AbstractMinecart && INSTANCE.minecartLandingSparks.get(), MinecartSparksTicker::new);
         registerTicker(LOCAL_PLAYER.and(entity -> INSTANCE.stomachGrowling.get()), StomachGrowlingTicker::new);
         registerTicker(LOCAL_PLAYER.and(entity -> INSTANCE.mobSkullShaders.get()), MobSkullShaderTicker::new);
         registerTicker(LOCAL_PLAYER.and(entity -> INSTANCE.heartBeating.get()), HeartbeatTicker::new);
