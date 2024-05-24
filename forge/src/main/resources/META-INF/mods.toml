@@ -13,7 +13,7 @@ license = "All rights reserved"
     credits = ""
     authors = "MincraftEinstein"
     description = '''
-This mod makes a few little client side tweaks to sleeping
+Adding many new subtle details through particles and a few sounds
 '''
 
 [[dependencies.subtle_effects]]

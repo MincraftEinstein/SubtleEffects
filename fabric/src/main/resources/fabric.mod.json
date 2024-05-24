@@ -3,7 +3,7 @@
   "id": "subtle_effects",
   "version": "${version}",
   "name": "Subtle Effects",
-  "description": "This mod makes a few little client side tweaks to sleeping",
+  "description": "Adding many new subtle details through particles and a few sounds",
   "authors": [
     "MincraftEinstein"
   ],
