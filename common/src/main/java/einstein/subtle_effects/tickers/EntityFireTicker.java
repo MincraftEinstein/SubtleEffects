@@ -25,6 +25,10 @@ public class EntityFireTicker extends Ticker<Entity> {
     @Override
     public void tick() {
         if (entity.isOnFire()) {
+            if (entity.isSpectator()) {
+                return;
+            }
+
             if (random.nextInt(90) == 0 && INSTANCE.burningEntitySounds.get()) {
                 Util.playClientSound(entity.getSoundSource(), entity, SoundEvents.FIRE_EXTINGUISH, 0.3F, 1);
             }
