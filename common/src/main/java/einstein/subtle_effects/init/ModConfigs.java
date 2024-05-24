@@ -132,6 +132,8 @@ public class ModConfigs {
     public final ForgeConfigSpec.IntValue fireflyDensity;
     public final ForgeConfigSpec.ConfigValue<List<? extends String>> pollenBiomes;
     public final ForgeConfigSpec.IntValue pollenDensity;
+    public final ForgeConfigSpec.ConfigValue<List<? extends String>> sculkDustBiomes;
+    public final ForgeConfigSpec.IntValue sculkDustDensity;
 
     // General
     public final ForgeConfigSpec.BooleanValue mobSkullShaders;
@@ -556,9 +558,21 @@ public class ModConfigs {
         );
 
         pollenDensity = builder
-                .comment("The density of spawn pollen in a biome", TO_DISABLE)
+                .comment("The density of spawned pollen in a biome", TO_DISABLE)
                 .translation(key("pollen_density"))
                 .defineInRange("pollenDensity", 50, 0, 100);
+
+        sculkDustBiomes = defineLocationList(
+                builder.comment("A list of biomes IDs that sculk dust particles will spawn in")
+                        .translation(key("sculk_dust_biomes")),
+                "sculkDustBiomes",
+                "minecraft:deep_dark"
+        );
+
+        sculkDustDensity = builder
+                .comment("The density of spawned sculk dust in a biome", TO_DISABLE)
+                .translation(key("sculk_dust_density"))
+                .defineInRange("sculkDustDensity", 5, 0, 100);
 
         builder.pop();
 

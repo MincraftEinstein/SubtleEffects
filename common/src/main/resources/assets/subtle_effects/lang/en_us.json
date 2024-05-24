@@ -84,6 +84,8 @@
   "config.subtle_effects.firefly_density": "Firefly Density",
   "config.subtle_effects.pollen_biomes": "Pollen Biomes",
   "config.subtle_effects.pollen_density": "Pollen Density",
+  "config.subtle_effects.sculk_dust_biomes": "Sculk Dust Biomes",
+  "config.subtle_effects.sculk_dust_density": "Sculk Dust Density",
   "config.subtle_effects.mob_skull_shaders": "Mob Skull Shaders",
   "config.subtle_effects.particle_render_distance": "Particle Render Distance",
   "config.category.subtle_effects.blocks": "Blocks",

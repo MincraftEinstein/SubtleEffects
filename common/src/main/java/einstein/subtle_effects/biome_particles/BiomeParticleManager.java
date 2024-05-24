@@ -29,6 +29,7 @@ public class BiomeParticleManager {
         register(INSTANCE.mushroomSporeBiomes, INSTANCE.mushroomSporeDensity, 40, ModParticles.MUSHROOM_SPORE, NOT_RAINING);
         register(INSTANCE.fireflyBiomes, INSTANCE.fireflyDensity, 20, ModParticles.FIREFLY, level -> NOT_RAINING.test(level) && level.getDayTime() > 13000 && level.getDayTime() < 23000);
         register(INSTANCE.pollenBiomes, INSTANCE.pollenDensity, 10, ModParticles.POLLEN, NOT_RAINING);
+        register(INSTANCE.sculkDustBiomes, INSTANCE.sculkDustDensity, ModParticles.SCULK_DUST, level -> true);
     }
 
     private static void register(ForgeConfigSpec.ConfigValue<List<? extends String>> biomesConfig, ForgeConfigSpec.IntValue density, int maxSpawnHeight, Supplier<? extends ParticleOptions> particle, Predicate<Level> spawnConditions) {
