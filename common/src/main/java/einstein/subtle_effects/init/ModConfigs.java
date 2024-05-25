@@ -125,6 +125,7 @@ public class ModConfigs {
     public final ForgeConfigSpec.BooleanValue minecartLandingSparks;
     public final ForgeConfigSpec.BooleanValue slimeTrails;
     public final ForgeConfigSpec.BooleanValue magmaCubeTrails;
+    public final ForgeConfigSpec.BooleanValue replaceSlimeSquishParticles;
 
     // Biomes
     public final ForgeConfigSpec.IntValue biomeParticlesRadius;
@@ -530,6 +531,11 @@ public class ModConfigs {
                 .comment("Do Magma Cubes leave a trail of maga slime behind them when they move")
                 .translation(key("magma_cube_trails"))
                 .define("magmaCubeTrails", true);
+
+        replaceSlimeSquishParticles = builder
+                .comment("Replaces the slime ball item particles with slime block particles when a slime squishes")
+                .translation(key("replace_slime_squish_particles"))
+                .define("replaceSlimeSquishParticles", true);
 
         builder.pop().translation(categoryKey("biomes")).push("biomes");
 
