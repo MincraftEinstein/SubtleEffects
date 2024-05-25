@@ -123,6 +123,7 @@ public class ModConfigs {
     public final ForgeConfigSpec.BooleanValue litTntSparks;
     public final ForgeConfigSpec.BooleanValue endCrystalParticles;
     public final ForgeConfigSpec.BooleanValue minecartLandingSparks;
+    public final ForgeConfigSpec.BooleanValue slimeTrails;
 
     // Biomes
     public final ForgeConfigSpec.IntValue biomeParticlesRadius;
@@ -518,6 +519,11 @@ public class ModConfigs {
                 .comment("Should sparks particles spawn when a falling minecart lands on rails")
                 .translation(key("minecart_landing_sparks"))
                 .define("minecartLandingSparks", true);
+
+        slimeTrails = builder
+                .comment("Do slimes leave a trail of slime behind them when they move")
+                .translation(key("slime_trails"))
+                .define("slimeTrails", true);
 
         builder.pop().translation(categoryKey("biomes")).push("biomes");
 

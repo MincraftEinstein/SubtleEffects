@@ -77,6 +77,7 @@
   "config.subtle_effects.lit_tnt_sparks": "Lit TNT Sparks",
   "config.subtle_effects.end_crystal_particles": "End Crystal Particles",
   "config.subtle_effects.minecart_landing_sparks": "Minecart Landing Sparks",
+  "config.subtle_effects.slime_trails": "Slime Trails",
   "config.subtle_effects.biome_particles_radius": "Biome Particles Radius",
   "config.subtle_effects.mushroom_spore_biomes": "Mushroom Spore Biomes",
   "config.subtle_effects.mushroom_spore_density": "Mushroom Spore Density",

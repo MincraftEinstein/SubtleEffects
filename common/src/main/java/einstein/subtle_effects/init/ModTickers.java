@@ -41,6 +41,7 @@ public class ModTickers {
         registerTicker(LOCAL_PLAYER.and(entity -> INSTANCE.stomachGrowling.get()), StomachGrowlingTicker::new);
         registerTicker(LOCAL_PLAYER.and(entity -> INSTANCE.mobSkullShaders.get()), MobSkullShaderTicker::new);
         registerTicker(LOCAL_PLAYER.and(entity -> INSTANCE.heartBeating.get()), HeartbeatTicker::new);
+        registerTicker(entity -> entity.getType().equals(EntityType.SLIME) && INSTANCE.slimeTrails.get(), SlimeTrailTicker::new);
 
         registerSimpleTicker(entity -> entity instanceof ItemEntity itemEntity
                         && INSTANCE.itemRarityParticles.get() != ModConfigs.ItemRaritySpawnType.OFF

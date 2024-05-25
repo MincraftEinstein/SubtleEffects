@@ -2,10 +2,7 @@ package einstein.subtle_effects.init;
 
 import com.mojang.serialization.Codec;
 import einstein.subtle_effects.particle.*;
-import einstein.subtle_effects.particle.option.BooleanParticleOptions;
-import einstein.subtle_effects.particle.option.CommandBlockParticleOptions;
-import einstein.subtle_effects.particle.option.PositionParticleOptions;
-import einstein.subtle_effects.particle.option.SheepFluffParticleOptions;
+import einstein.subtle_effects.particle.option.*;
 import einstein.subtle_effects.particle.provider.MushroomSporeProvider;
 import einstein.subtle_effects.particle.provider.PollenProvider;
 import einstein.subtle_effects.particle.provider.SmokeParticleProvider;
@@ -57,6 +54,7 @@ public class ModParticles {
     public static final Supplier<SimpleParticleType> END_PORTAL = register("end_portal", EndPortalParticle.Provider::new);
     public static final Supplier<SimpleParticleType> END_CRYSTAL = register("end_crystal", EndCrystalParticle.Provider::new);
     public static final Supplier<SimpleParticleType> SCULK_DUST = register("sculk_dust", SculkDustParticle.Provider::new);
+    public static final Supplier<ParticleType<FloatParticleOptions>> SLIME_TRAIL = register("slime_trail", FloatParticleOptions.DESERIALIZER, FloatParticleOptions::codec, SlimeTrailParticle.Provider::new);
 
     public static void init() {
     }
