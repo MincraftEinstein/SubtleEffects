@@ -2,11 +2,14 @@ package einstein.subtle_effects.particle;
 
 import einstein.subtle_effects.util.Util;
 import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.client.particle.*;
+import net.minecraft.client.particle.Particle;
+import net.minecraft.client.particle.ParticleProvider;
+import net.minecraft.client.particle.ParticleRenderType;
+import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.core.particles.SimpleParticleType;
 import org.jetbrains.annotations.Nullable;
 
-public class EndPortalParticle extends SuspendedParticle {
+public class EndPortalParticle extends GlowingSuspendedParticle {
 
     private static final int[] COLORS = {
             0xFF49FFAA,
@@ -28,11 +31,6 @@ public class EndPortalParticle extends SuspendedParticle {
     @Override
     public ParticleRenderType getRenderType() {
         return ParticleRenderType.PARTICLE_SHEET_TRANSLUCENT;
-    }
-
-    @Override
-    protected int getLightColor(float partialTick) {
-        return Util.getLightColor(super.getLightColor(partialTick));
     }
 
     public record Provider(SpriteSet sprites) implements ParticleProvider<SimpleParticleType> {

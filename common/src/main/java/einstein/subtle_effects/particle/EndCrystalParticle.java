@@ -1,12 +1,14 @@
 package einstein.subtle_effects.particle;
 
-import einstein.subtle_effects.util.Util;
 import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.client.particle.*;
+import net.minecraft.client.particle.Particle;
+import net.minecraft.client.particle.ParticleProvider;
+import net.minecraft.client.particle.ParticleRenderType;
+import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.core.particles.SimpleParticleType;
 import org.jetbrains.annotations.Nullable;
 
-public class EndCrystalParticle extends SuspendedParticle {
+public class EndCrystalParticle extends GlowingSuspendedParticle {
 
     public EndCrystalParticle(ClientLevel level, SpriteSet sprites, double x, double y, double z) {
         super(level, sprites, x, y, z, 0, 0, 0);
@@ -19,11 +21,6 @@ public class EndCrystalParticle extends SuspendedParticle {
     @Override
     public ParticleRenderType getRenderType() {
         return ParticleRenderType.PARTICLE_SHEET_TRANSLUCENT;
-    }
-
-    @Override
-    protected int getLightColor(float partialTick) {
-        return Util.getLightColor(super.getLightColor(partialTick));
     }
 
     public record Provider(SpriteSet sprites) implements ParticleProvider<SimpleParticleType> {
