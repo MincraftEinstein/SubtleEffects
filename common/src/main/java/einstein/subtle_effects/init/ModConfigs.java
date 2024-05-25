@@ -124,6 +124,7 @@ public class ModConfigs {
     public final ForgeConfigSpec.BooleanValue endCrystalParticles;
     public final ForgeConfigSpec.BooleanValue minecartLandingSparks;
     public final ForgeConfigSpec.BooleanValue slimeTrails;
+    public final ForgeConfigSpec.BooleanValue magmaCubeTrails;
 
     // Biomes
     public final ForgeConfigSpec.IntValue biomeParticlesRadius;
@@ -521,9 +522,14 @@ public class ModConfigs {
                 .define("minecartLandingSparks", true);
 
         slimeTrails = builder
-                .comment("Do slimes leave a trail of slime behind them when they move")
+                .comment("Do Slimes leave a trail of slime behind them when they move")
                 .translation(key("slime_trails"))
                 .define("slimeTrails", true);
+
+        magmaCubeTrails = builder
+                .comment("Do Magma Cubes leave a trail of maga slime behind them when they move")
+                .translation(key("magma_cube_trails"))
+                .define("magmaCubeTrails", true);
 
         builder.pop().translation(categoryKey("biomes")).push("biomes");
 

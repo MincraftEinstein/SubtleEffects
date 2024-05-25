@@ -1,21 +1,25 @@
 package einstein.subtle_effects.tickers;
 
-import einstein.subtle_effects.init.ModParticles;
 import einstein.subtle_effects.particle.option.FloatParticleOptions;
+import net.minecraft.core.particles.ParticleType;
 import net.minecraft.world.entity.monster.Slime;
 
-public class SlimeTrailTicker extends Ticker<Slime> {
+import java.util.function.Supplier;
 
+public class SlimeTrailTicker<T extends Slime> extends Ticker<T> {
+
+    private final Supplier<ParticleType<FloatParticleOptions>> type;
     private boolean wasInAir;
 
-    public SlimeTrailTicker(Slime entity) {
+    public SlimeTrailTicker(T entity, Supplier<ParticleType<FloatParticleOptions>> type) {
         super(entity);
+        this.type = type;
     }
 
     @Override
     public void tick() {
         if (wasInAir && entity.onGround()) {
-            level.addParticle(new FloatParticleOptions(ModParticles.SLIME_TRAIL.get(), entity.getSize() * 0.5F),
+            level.addParticle(new FloatParticleOptions(type.get(), entity.getSize() * 0.5F),
                     entity.getX(),
                     entity.getBlockY() + (random.nextDouble() / 10),
                     entity.getZ(),

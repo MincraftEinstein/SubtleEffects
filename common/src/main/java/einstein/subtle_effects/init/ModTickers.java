@@ -15,6 +15,8 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.FallingBlockEntity;
 import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.monster.MagmaCube;
+import net.minecraft.world.entity.monster.Slime;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.item.Rarity;
@@ -41,7 +43,8 @@ public class ModTickers {
         registerTicker(LOCAL_PLAYER.and(entity -> INSTANCE.stomachGrowling.get()), StomachGrowlingTicker::new);
         registerTicker(LOCAL_PLAYER.and(entity -> INSTANCE.mobSkullShaders.get()), MobSkullShaderTicker::new);
         registerTicker(LOCAL_PLAYER.and(entity -> INSTANCE.heartBeating.get()), HeartbeatTicker::new);
-        registerTicker(entity -> entity.getType().equals(EntityType.SLIME) && INSTANCE.slimeTrails.get(), SlimeTrailTicker::new);
+        registerTicker(entity -> entity.getType().equals(EntityType.SLIME) && INSTANCE.slimeTrails.get(), (Slime entity) -> new SlimeTrailTicker<>(entity, ModParticles.SLIME_TRAIL));
+        registerTicker(entity -> entity.getType().equals(EntityType.MAGMA_CUBE) && INSTANCE.magmaCubeTrails.get(), (MagmaCube entity) -> new SlimeTrailTicker<>(entity, ModParticles.MAGMA_CUBE_TRAIL));
 
         registerSimpleTicker(entity -> entity instanceof ItemEntity itemEntity
                         && INSTANCE.itemRarityParticles.get() != ModConfigs.ItemRaritySpawnType.OFF
