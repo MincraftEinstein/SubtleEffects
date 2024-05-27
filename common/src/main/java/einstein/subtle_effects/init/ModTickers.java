@@ -4,6 +4,7 @@ import einstein.subtle_effects.particle.option.BooleanParticleOptions;
 import einstein.subtle_effects.tickers.*;
 import einstein.subtle_effects.util.MathUtil;
 import einstein.subtle_effects.util.ParticleSpawnUtil;
+import einstein.subtle_effects.util.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ItemParticleOption;
@@ -179,6 +180,16 @@ public class ModTickers {
                             0, 0, 0
                     );
                 }
+            }
+        });
+        registerSimpleTicker(EntityType.SPECTRAL_ARROW, (entity, level, random) -> {
+            if (random.nextInt(3) == 0) {
+                level.addParticle(Util.GLOWSTONE_DUST_PARTICLES,
+                        entity.getRandomX(1),
+                        entity.getRandomY(),
+                        entity.getRandomZ(1),
+                        0, 0, 0
+                );
             }
         });
     }
