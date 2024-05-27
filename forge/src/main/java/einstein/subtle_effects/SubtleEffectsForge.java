@@ -22,9 +22,9 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 @Mod(SubtleEffects.MOD_ID)
-public class AmbientSleepForge {
+public class SubtleEffectsForge {
 
-    public AmbientSleepForge() {
+    public SubtleEffectsForge() {
         final IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
         SubtleEffects.init();
