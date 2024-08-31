@@ -1,0 +1,39 @@
+modLoader = "javafml"
+loaderVersion = "${neoforge_loader_version_range}"
+license = "All rights reserved"
+issueTrackerURL="https://github.com/MincraftEinstein/SubtleEffects/issues"
+
+[[mods]]
+    modId = "subtle_effects"
+    version = "${version}"
+    displayName = "Subtle Effects"
+    displayURL="https://curseforge.com/minecraft/mods/subtle-effects"
+    #updateJSONURL="https://change.me.example.invalid/updates.json"
+    logoFile = "pack.png"
+    credits = ""
+    authors = "${mod_author}"
+    description = "${description}"
+
+[[accessTransformers]]
+    file = "META-INF/accesstransformer.cfg"
+
+[[mixins]]
+    config = "${mod_id}.mixins.json"
+
+[[mixins]]
+    config = "${mod_id}.neoforge.mixins.json"
+
+[[dependencies.subtle_effects]]
+    modId = "neoforge"
+    type = "required"
+    versionRange = "[${neoforge_version},)"
+    ordering = "NONE"
+    side = "BOTH"
+
+[[dependencies.subtle_effects]]
+    modId = "minecraft"
+    type = "required"
+    mandatory = true
+    versionRange = "[${minecraft_version}, ${max_minecraft_version})"
+    ordering = "NONE"
+    side = "BOTH"

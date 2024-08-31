@@ -3,9 +3,9 @@
   "id": "subtle_effects",
   "version": "${version}",
   "name": "Subtle Effects",
-  "description": "Adding many new subtle details through particles and a few sounds",
+  "description": "${description}",
   "authors": [
-    "MincraftEinstein"
+    "${mod_author}"
   ],
   "contact": {
     "homepage": "https://curseforge.com/minecraft/mc-mods/subtle-effects",
@@ -24,14 +24,15 @@
     ]
   },
   "mixins": [
-    "subtle_effects.mixins.json"
+    "subtle_effects.mixins.json",
+    "subtle_effects.fabric.mixins.json"
   ],
   "accessWidener": "subtle_effects.accesswidener",
   "depends": {
-    "fabricloader": ">=0.14",
-    "fabric": "*",
-    "minecraft": "1.20.x",
-    "java": ">=17"
+    "fabricloader": ">=${fabric_version}",
+    "fabric-api": ">=${fabric_api_version}",
+    "minecraft": ">=${minecraft_version} <${max_minecraft_version}",
+    "java": ">=${java_version}"
   },
   "custom": {
     "modmenu": {

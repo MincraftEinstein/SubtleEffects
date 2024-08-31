@@ -1,6 +1,6 @@
 package einstein.subtle_effects.particle;
 
-import einstein.subtle_effects.particle.option.CommandBlockParticleOptions;
+import einstein.subtle_effects.particle.option.DirectionParticleOptions;
 import einstein.subtle_effects.util.Util;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
@@ -72,10 +72,10 @@ public class CommandBlockParticle extends TextureSheetParticle {
         return Util.getLightColor(super.getLightColor(partialTick));
     }
 
-    public record Provider(SpriteSet sprites) implements ParticleProvider<CommandBlockParticleOptions> {
+    public record Provider(SpriteSet sprites) implements ParticleProvider<DirectionParticleOptions> {
 
         @Override
-        public Particle createParticle(CommandBlockParticleOptions type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+        public Particle createParticle(DirectionParticleOptions type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
             return new CommandBlockParticle(level, sprites, x, y, z, xSpeed, ySpeed, zSpeed, type.direction());
         }
     }

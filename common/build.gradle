@@ -1,41 +1,40 @@
 plugins {
-    id 'idea'
-    id 'java'
-    id 'maven-publish'
-    id 'org.spongepowered.gradle.vanilla'
+    id 'multiloader-common'
+    id 'net.neoforged.moddev'
 }
 
-base {
-    archivesName = "${mod_name}-common-${minecraft_version}"
-}
+neoForge {
+    neoFormVersion = neo_form_version
 
-minecraft {
-    version(minecraft_version)
+    accessTransformers.from('src/main/resources/META-INF/accesstransformer.cfg')
 
-    accessWideners(file("src/main/resources/${mod_id}.accesswidener"))
+    parchment {
+        minecraftVersion = parchment_minecraft_version
+        mappingsVersion = parchment_version
+    }
 }
 
 dependencies {
     compileOnly group: 'org.spongepowered', name: 'mixin', version: '0.8.5'
-    compileOnly group: 'com.electronwill.night-config', name: 'core', version: '3.6.3'
-    compileOnly group: 'com.electronwill.night-config', name: 'toml', version: '3.6.3'
-    compileOnly group: 'fuzs.forgeconfigapiport', name: 'forgeconfigapiport-common', version: "${config_port_version}"
+    compileOnly group: 'io.github.llamalad7', name: 'mixinextras-common', version: '0.3.5'
+    annotationProcessor group: 'io.github.llamalad7', name: 'mixinextras-common', version: '0.3.5'
 
-    implementation group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.1'
-    implementation "mysticdrew:common-networking-common:${networking_version}-${minecraft_version}"
-    compileOnly "io.github.llamalad7:mixinextras-common:0.3.5"
+    compileOnly group: 'fuzs.forgeconfigapiport', name: 'forgeconfigapiport-common-neoforgeapi', version: "${config_port_version}"
+    compileOnly "mysticdrew:common-networking-common:${networking_version}"
 }
 
-publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            artifactId base.archivesName.get()
-            from components.java
-        }
+configurations {
+    commonJava {
+        canBeResolved = false
+        canBeConsumed = true
     }
-    repositories {
-        maven {
-            url "file://" + System.getenv("local_maven")
-        }
+    commonResources {
+        canBeResolved = false
+        canBeConsumed = true
     }
+}
+
+artifacts {
+    commonJava sourceSets.main.java.sourceDirectories.singleFile
+    commonResources sourceSets.main.resources.sourceDirectories.singleFile
 }

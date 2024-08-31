@@ -70,10 +70,25 @@ public class SlimeTrailParticle extends TextureSheetParticle {
         float maxV = getV1();
         int lightColor = getLightColor(partialTick);
 
-        consumer.vertex(vec3s[0].x(), vec3s[0].y(), vec3s[0].z()).uv(maxU, maxV).color(rCol, gCol, bCol, alpha).uv2(lightColor).endVertex();
-        consumer.vertex(vec3s[1].x(), vec3s[1].y(), vec3s[1].z()).uv(maxU, minV).color(rCol, gCol, bCol, alpha).uv2(lightColor).endVertex();
-        consumer.vertex(vec3s[2].x(), vec3s[2].y(), vec3s[2].z()).uv(minU, minV).color(rCol, gCol, bCol, alpha).uv2(lightColor).endVertex();
-        consumer.vertex(vec3s[3].x(), vec3s[3].y(), vec3s[3].z()).uv(minU, maxV).color(rCol, gCol, bCol, alpha).uv2(lightColor).endVertex();
+        consumer.addVertex((float) vec3s[0].x(), (float) vec3s[0].y(), (float) vec3s[0].z())
+                .setUv(maxU, maxV)
+                .setColor(rCol, gCol, bCol, alpha)
+                .setLight(lightColor);
+
+        consumer.addVertex((float) vec3s[1].x(), (float) vec3s[1].y(), (float) vec3s[1].z())
+                .setUv(maxU, minV)
+                .setColor(rCol, gCol, bCol, alpha)
+                .setLight(lightColor);
+
+        consumer.addVertex((float) vec3s[2].x(), (float) vec3s[2].y(), (float) vec3s[2].z())
+                .setUv(minU, minV)
+                .setColor(rCol, gCol, bCol, alpha)
+                .setLight(lightColor);
+
+        consumer.addVertex((float) vec3s[3].x(), (float) vec3s[3].y(), (float) vec3s[3].z())
+                .setUv(minU, maxV)
+                .setColor(rCol, gCol, bCol, alpha)
+                .setLight(lightColor);
     }
 
     private static float toRot(float degrees) {

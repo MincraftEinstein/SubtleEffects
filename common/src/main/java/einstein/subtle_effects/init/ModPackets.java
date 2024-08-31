@@ -1,6 +1,6 @@
 package einstein.subtle_effects.init;
 
-import commonnetwork.api.Network;
+import commonnetwork.CommonNetworkMod;
 import einstein.subtle_effects.networking.clientbound.ClientBoundEntityFellPacket;
 import einstein.subtle_effects.networking.clientbound.ClientBoundEntitySpawnSprintingDustCloudsPacket;
 import einstein.subtle_effects.networking.clientbound.ClientBoundSpawnSnoreParticlePacket;
@@ -8,8 +8,8 @@ import einstein.subtle_effects.networking.clientbound.ClientBoundSpawnSnoreParti
 public class ModPackets {
 
     public static void init() {
-        Network.registerPacket(ClientBoundSpawnSnoreParticlePacket.CHANNEL, ClientBoundSpawnSnoreParticlePacket.class, ClientBoundSpawnSnoreParticlePacket::encode, ClientBoundSpawnSnoreParticlePacket::decode, ClientBoundSpawnSnoreParticlePacket::handle);
-        Network.registerPacket(ClientBoundEntityFellPacket.CHANNEL, ClientBoundEntityFellPacket.class, ClientBoundEntityFellPacket::encode, ClientBoundEntityFellPacket::decode, ClientBoundEntityFellPacket::handle);
-        Network.registerPacket(ClientBoundEntitySpawnSprintingDustCloudsPacket.CHANNEL, ClientBoundEntitySpawnSprintingDustCloudsPacket.class, ClientBoundEntitySpawnSprintingDustCloudsPacket::encode, ClientBoundEntitySpawnSprintingDustCloudsPacket::decode, ClientBoundEntitySpawnSprintingDustCloudsPacket::handle);
+        CommonNetworkMod.registerPacket(ClientBoundSpawnSnoreParticlePacket.TYPE, ClientBoundSpawnSnoreParticlePacket.class, ClientBoundSpawnSnoreParticlePacket.STREAM_CODEC, ClientBoundSpawnSnoreParticlePacket::handle);
+        CommonNetworkMod.registerPacket(ClientBoundEntityFellPacket.TYPE, ClientBoundEntityFellPacket.class, ClientBoundEntityFellPacket.STREAM_CODEC, ClientBoundEntityFellPacket::handle);
+        CommonNetworkMod.registerPacket(ClientBoundEntitySpawnSprintingDustCloudsPacket.TYPE, ClientBoundEntitySpawnSprintingDustCloudsPacket.class, ClientBoundEntitySpawnSprintingDustCloudsPacket.STREAM_CODEC, ClientBoundEntitySpawnSprintingDustCloudsPacket::handle);
     }
 }

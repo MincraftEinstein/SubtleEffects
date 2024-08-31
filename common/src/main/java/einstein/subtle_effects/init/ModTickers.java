@@ -24,7 +24,7 @@ import net.minecraft.world.item.Rarity;
 import net.minecraft.world.level.block.BaseFireBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.common.ForgeConfigSpec;
+import net.neoforged.neoforge.common.ModConfigSpec;
 
 import java.util.function.Predicate;
 
@@ -194,7 +194,7 @@ public class ModTickers {
         });
     }
 
-    private static boolean shouldSpawn(RandomSource random, ForgeConfigSpec.DoubleValue chanceConfig) {
+    private static boolean shouldSpawn(RandomSource random, ModConfigSpec.DoubleValue chanceConfig) {
         return Math.min(random.nextFloat(), 1) < chanceConfig.get();
     }
 }

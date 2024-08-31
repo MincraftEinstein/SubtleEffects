@@ -6,7 +6,7 @@ import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.DyeColor;
-import net.minecraftforge.common.ForgeConfigSpec;
+import net.neoforged.neoforge.common.ModConfigSpec;
 import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.Nullable;
 
@@ -28,121 +28,121 @@ public class ModConfigs {
         }
     });
 
-    private static final Pair<ModConfigs, ForgeConfigSpec> SPEC_PAIR = new ForgeConfigSpec.Builder().configure(ModConfigs::new);
+    private static final Pair<ModConfigs, ModConfigSpec> SPEC_PAIR = new ModConfigSpec.Builder().configure(ModConfigs::new);
     public static final ModConfigs INSTANCE = SPEC_PAIR.getLeft();
-    public static final ForgeConfigSpec SPEC = SPEC_PAIR.getRight();
+    public static final ModConfigSpec SPEC = SPEC_PAIR.getRight();
 
     // Sparks
-    public final ForgeConfigSpec.BooleanValue removeVanillaCampfireSparks;
-    public final ForgeConfigSpec.BooleanValue candleSparks;
-    public final ForgeConfigSpec.BooleanValue furnaceSparks;
-    public final ForgeConfigSpec.BooleanValue fireSparks;
-    public final ForgeConfigSpec.BooleanValue campfireSparks;
-    public final ForgeConfigSpec.BooleanValue torchSparks;
-    public final ForgeConfigSpec.BooleanValue lanternSparks;
-    public final ForgeConfigSpec.EnumValue<LavaSparksSpawnType> lavaSparks;
-    public final ForgeConfigSpec.BooleanValue lavaCauldronSparks;
+    public final ModConfigSpec.BooleanValue removeVanillaCampfireSparks;
+    public final ModConfigSpec.BooleanValue candleSparks;
+    public final ModConfigSpec.BooleanValue furnaceSparks;
+    public final ModConfigSpec.BooleanValue fireSparks;
+    public final ModConfigSpec.BooleanValue campfireSparks;
+    public final ModConfigSpec.BooleanValue torchSparks;
+    public final ModConfigSpec.BooleanValue lanternSparks;
+    public final ModConfigSpec.EnumValue<LavaSparksSpawnType> lavaSparks;
+    public final ModConfigSpec.BooleanValue lavaCauldronSparks;
 
     // Updated Smoke
-    public final ForgeConfigSpec.BooleanValue candleSmoke;
-    public final ForgeConfigSpec.BooleanValue furnaceSmoke;
-    public final ForgeConfigSpec.BooleanValue fireSmoke;
-    public final ForgeConfigSpec.BooleanValue torchSmoke;
-    public final ForgeConfigSpec.BooleanValue lavaSparkSmoke;
+    public final ModConfigSpec.BooleanValue candleSmoke;
+    public final ModConfigSpec.BooleanValue furnaceSmoke;
+    public final ModConfigSpec.BooleanValue fireSmoke;
+    public final ModConfigSpec.BooleanValue torchSmoke;
+    public final ModConfigSpec.BooleanValue lavaSparkSmoke;
 
     // Steam
-    public final ForgeConfigSpec.BooleanValue lavaFizzSteam;
-    public final ForgeConfigSpec.BooleanValue waterEvaporateFromBucketSteam;
-    public final ForgeConfigSpec.BooleanValue steamingWater;
-    public final ForgeConfigSpec.BooleanValue boilingWater;
-    public final ForgeConfigSpec.BooleanValue steamingWaterCauldron;
-    public final ForgeConfigSpec.BooleanValue boilingWaterCauldron;
+    public final ModConfigSpec.BooleanValue lavaFizzSteam;
+    public final ModConfigSpec.BooleanValue waterEvaporateFromBucketSteam;
+    public final ModConfigSpec.BooleanValue steamingWater;
+    public final ModConfigSpec.BooleanValue boilingWater;
+    public final ModConfigSpec.BooleanValue steamingWaterCauldron;
+    public final ModConfigSpec.BooleanValue boilingWaterCauldron;
 
     // Blocks
-    public final ForgeConfigSpec.BooleanValue redstoneBlockDust;
-    public final ForgeConfigSpec.EnumValue<GlowstoneDustSpawnType> glowstoneBlockDust;
-    public final ForgeConfigSpec.BooleanValue beehivesHaveSleepingZs;
-    public final ForgeConfigSpec.BooleanValue fallingBlockDust;
-    public final ForgeConfigSpec.ConfigValue<List<? extends String>> fallingBlockDustBlocks;
-    public final ForgeConfigSpec.EnumValue<SmokeType> torchflowerSmoke;
-    public final ForgeConfigSpec.BooleanValue torchflowerFlames;
-    public final ForgeConfigSpec.BooleanValue dragonEggParticles;
-    public final ForgeConfigSpec.BooleanValue replaceEndPortalSmoke;
-    public final ForgeConfigSpec.BooleanValue axeStripParticles;
-    public final ForgeConfigSpec.BooleanValue pumpkinCarvedParticles;
-    public final ForgeConfigSpec.BooleanValue anvilBreakParticles;
-    public final ForgeConfigSpec.BooleanValue anvilUseParticles;
-    public final ForgeConfigSpec.BooleanValue grindstoneUseParticles;
-    public final ForgeConfigSpec.ConfigValue<CommandBlockSpawnType> commandBlockParticles;
-    public final ForgeConfigSpec.BooleanValue slimeBlockBounceSounds;
-    public final ForgeConfigSpec.BooleanValue beaconParticles;
-    public final ForgeConfigSpec.BooleanValue compostingParticles;
-    public final ForgeConfigSpec.BooleanValue respawnAnchorParticles;
-    public final ForgeConfigSpec.BooleanValue beehiveShearParticles;
-    public final ForgeConfigSpec.BooleanValue endPortalParticles;
+    public final ModConfigSpec.BooleanValue redstoneBlockDust;
+    public final ModConfigSpec.EnumValue<GlowstoneDustSpawnType> glowstoneBlockDust;
+    public final ModConfigSpec.BooleanValue beehivesHaveSleepingZs;
+    public final ModConfigSpec.BooleanValue fallingBlockDust;
+    public final ModConfigSpec.ConfigValue<List<? extends String>> fallingBlockDustBlocks;
+    public final ModConfigSpec.EnumValue<SmokeType> torchflowerSmoke;
+    public final ModConfigSpec.BooleanValue torchflowerFlames;
+    public final ModConfigSpec.BooleanValue dragonEggParticles;
+    public final ModConfigSpec.BooleanValue replaceEndPortalSmoke;
+    public final ModConfigSpec.BooleanValue axeStripParticles;
+    public final ModConfigSpec.BooleanValue pumpkinCarvedParticles;
+    public final ModConfigSpec.BooleanValue anvilBreakParticles;
+    public final ModConfigSpec.BooleanValue anvilUseParticles;
+    public final ModConfigSpec.BooleanValue grindstoneUseParticles;
+    public final ModConfigSpec.ConfigValue<CommandBlockSpawnType> commandBlockParticles;
+    public final ModConfigSpec.BooleanValue slimeBlockBounceSounds;
+    public final ModConfigSpec.BooleanValue beaconParticles;
+    public final ModConfigSpec.BooleanValue compostingParticles;
+    public final ModConfigSpec.BooleanValue respawnAnchorParticles;
+    public final ModConfigSpec.BooleanValue beehiveShearParticles;
+    public final ModConfigSpec.BooleanValue endPortalParticles;
 
     // Entity Snoring
-    public final ForgeConfigSpec.DoubleValue playerSnoreChance;
-    public final ForgeConfigSpec.DoubleValue villagerSnoreChance;
-    public final ForgeConfigSpec.BooleanValue displaySleepingZsOnlyWhenSnoring;
-    public final ForgeConfigSpec.BooleanValue foxesHaveSleepingZs;
-    public final ForgeConfigSpec.BooleanValue adjustNameTagWhenSleeping;
-    public final ForgeConfigSpec.BooleanValue sleepingZs;
+    public final ModConfigSpec.DoubleValue playerSnoreChance;
+    public final ModConfigSpec.DoubleValue villagerSnoreChance;
+    public final ModConfigSpec.BooleanValue displaySleepingZsOnlyWhenSnoring;
+    public final ModConfigSpec.BooleanValue foxesHaveSleepingZs;
+    public final ModConfigSpec.BooleanValue adjustNameTagWhenSleeping;
+    public final ModConfigSpec.BooleanValue sleepingZs;
 
     // Entity Dust Clouds
-    public final ForgeConfigSpec.BooleanValue fallDamageDustClouds;
-    public final ForgeConfigSpec.BooleanValue sprintingDustClouds;
-    public final ForgeConfigSpec.BooleanValue mobSprintingDustClouds;
+    public final ModConfigSpec.BooleanValue fallDamageDustClouds;
+    public final ModConfigSpec.BooleanValue sprintingDustClouds;
+    public final ModConfigSpec.BooleanValue mobSprintingDustClouds;
 
     // Burning Entities
-    public final ForgeConfigSpec.EnumValue<SmokeType> burningEntitySmoke;
-    public final ForgeConfigSpec.BooleanValue burningEntityFlames;
-    public final ForgeConfigSpec.BooleanValue burningEntitySparks;
-    public final ForgeConfigSpec.BooleanValue burningEntitySounds;
+    public final ModConfigSpec.EnumValue<SmokeType> burningEntitySmoke;
+    public final ModConfigSpec.BooleanValue burningEntityFlames;
+    public final ModConfigSpec.BooleanValue burningEntitySparks;
+    public final ModConfigSpec.BooleanValue burningEntitySounds;
 
     // Item Rarity
-    public final ForgeConfigSpec.ConfigValue<ItemRaritySpawnType> itemRarityParticles;
-    public final ForgeConfigSpec.ConfigValue<ItemRarityColorType> itemRarityParticleColor;
-    public final ForgeConfigSpec.IntValue itemRarityParticleHeight;
+    public final ModConfigSpec.ConfigValue<ItemRaritySpawnType> itemRarityParticles;
+    public final ModConfigSpec.ConfigValue<ItemRarityColorType> itemRarityParticleColor;
+    public final ModConfigSpec.IntValue itemRarityParticleHeight;
 
     // Entities
-    public final ForgeConfigSpec.BooleanValue chickenHitFeathers;
-    public final ForgeConfigSpec.BooleanValue parrotHitFeathers;
-    public final ForgeConfigSpec.BooleanValue enderPearlTrail;
-    public final ForgeConfigSpec.DoubleValue snowballTrailDensity;
-    public final ForgeConfigSpec.DoubleValue allayMagicDensity;
-    public final ForgeConfigSpec.DoubleValue vexMagicDensity;
-    public final ForgeConfigSpec.BooleanValue stomachGrowling;
-    public final ForgeConfigSpec.BooleanValue snowGolemHitSnowflakes;
-    public final ForgeConfigSpec.BooleanValue sheepShearFluff;
-    public final ForgeConfigSpec.BooleanValue improvedDragonFireballTrail;
-    public final ForgeConfigSpec.ConfigValue<CommandBlockSpawnType> commandBlockMinecartParticles;
-    public final ForgeConfigSpec.BooleanValue heartBeating;
-    public final ForgeConfigSpec.BooleanValue updateLitTntSmoke;
-    public final ForgeConfigSpec.BooleanValue litTntFlames;
-    public final ForgeConfigSpec.BooleanValue litTntSparks;
-    public final ForgeConfigSpec.BooleanValue endCrystalParticles;
-    public final ForgeConfigSpec.BooleanValue minecartLandingSparks;
-    public final ForgeConfigSpec.BooleanValue slimeTrails;
-    public final ForgeConfigSpec.BooleanValue magmaCubeTrails;
-    public final ForgeConfigSpec.BooleanValue replaceSlimeSquishParticles;
+    public final ModConfigSpec.BooleanValue chickenHitFeathers;
+    public final ModConfigSpec.BooleanValue parrotHitFeathers;
+    public final ModConfigSpec.BooleanValue enderPearlTrail;
+    public final ModConfigSpec.DoubleValue snowballTrailDensity;
+    public final ModConfigSpec.DoubleValue allayMagicDensity;
+    public final ModConfigSpec.DoubleValue vexMagicDensity;
+    public final ModConfigSpec.BooleanValue stomachGrowling;
+    public final ModConfigSpec.BooleanValue snowGolemHitSnowflakes;
+    public final ModConfigSpec.BooleanValue sheepShearFluff;
+    public final ModConfigSpec.BooleanValue improvedDragonFireballTrail;
+    public final ModConfigSpec.ConfigValue<CommandBlockSpawnType> commandBlockMinecartParticles;
+    public final ModConfigSpec.BooleanValue heartBeating;
+    public final ModConfigSpec.BooleanValue updateLitTntSmoke;
+    public final ModConfigSpec.BooleanValue litTntFlames;
+    public final ModConfigSpec.BooleanValue litTntSparks;
+    public final ModConfigSpec.BooleanValue endCrystalParticles;
+    public final ModConfigSpec.BooleanValue minecartLandingSparks;
+    public final ModConfigSpec.BooleanValue slimeTrails;
+    public final ModConfigSpec.BooleanValue magmaCubeTrails;
+    public final ModConfigSpec.BooleanValue replaceSlimeSquishParticles;
 
     // Biomes
-    public final ForgeConfigSpec.IntValue biomeParticlesRadius;
-    public final ForgeConfigSpec.ConfigValue<List<? extends String>> mushroomSporeBiomes;
-    public final ForgeConfigSpec.IntValue mushroomSporeDensity;
-    public final ForgeConfigSpec.ConfigValue<List<? extends String>> fireflyBiomes;
-    public final ForgeConfigSpec.IntValue fireflyDensity;
-    public final ForgeConfigSpec.ConfigValue<List<? extends String>> pollenBiomes;
-    public final ForgeConfigSpec.IntValue pollenDensity;
-    public final ForgeConfigSpec.ConfigValue<List<? extends String>> sculkDustBiomes;
-    public final ForgeConfigSpec.IntValue sculkDustDensity;
+    public final ModConfigSpec.IntValue biomeParticlesRadius;
+    public final ModConfigSpec.ConfigValue<List<? extends String>> mushroomSporeBiomes;
+    public final ModConfigSpec.IntValue mushroomSporeDensity;
+    public final ModConfigSpec.ConfigValue<List<? extends String>> fireflyBiomes;
+    public final ModConfigSpec.IntValue fireflyDensity;
+    public final ModConfigSpec.ConfigValue<List<? extends String>> pollenBiomes;
+    public final ModConfigSpec.IntValue pollenDensity;
+    public final ModConfigSpec.ConfigValue<List<? extends String>> sculkDustBiomes;
+    public final ModConfigSpec.IntValue sculkDustDensity;
 
     // General
-    public final ForgeConfigSpec.BooleanValue mobSkullShaders;
-    public final ForgeConfigSpec.IntValue particleRenderDistance;
+    public final ModConfigSpec.BooleanValue mobSkullShaders;
+    public final ModConfigSpec.IntValue particleRenderDistance;
 
-    public ModConfigs(ForgeConfigSpec.Builder builder) {
+    public ModConfigs(ModConfigSpec.Builder builder) {
         builder.translation(categoryKey("blocks")).push("blocks")
                 .translation(categoryKey("sparks")).push("sparks");
 
@@ -267,7 +267,7 @@ public class ModConfigs {
         fallingBlockDustBlocks = builder
                 .comment("A list of blocks that have a dust trail when falling")
                 .translation(key("falling_block_dust_blocks"))
-                .defineList("fallingBlockDustBlocks", DEFAULT_FALLING_BLOCK_DUST_BLOCKS, ModConfigs::isValidLoc);
+                .defineList("fallingBlockDustBlocks", DEFAULT_FALLING_BLOCK_DUST_BLOCKS, () -> "", ModConfigs::isValidLoc);
 
         torchflowerSmoke = builder
                 .comment("Should torchflowers have smoke particles")
@@ -607,8 +607,8 @@ public class ModConfigs {
                 .defineInRange("particleRenderDistance", 5, 1, 32);
     }
 
-    private ForgeConfigSpec.ConfigValue<List<? extends String>> defineLocationList(ForgeConfigSpec.Builder builder, String path, String... defaultValues) {
-        return builder.defineListAllowEmpty(List.of(path), () -> List.of(defaultValues), ModConfigs::isValidLoc);
+    private ModConfigSpec.ConfigValue<List<? extends String>> defineLocationList(ModConfigSpec.Builder builder, String path, String... defaultValues) {
+        return builder.defineListAllowEmpty(List.of(path), () -> List.of(defaultValues), () -> "", ModConfigs::isValidLoc);
     }
 
     private static boolean isValidLoc(Object object) {

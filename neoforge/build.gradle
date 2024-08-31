@@ -1,0 +1,48 @@
+plugins {
+    id 'multiloader-loader'
+    id 'net.neoforged.moddev'
+}
+
+neoForge {
+    version = neoforge_version
+
+    accessTransformers.from(project(":common").file('src/main/resources/META-INF/accesstransformer.cfg'))
+
+    parchment {
+        minecraftVersion = parchment_minecraft_version
+        mappingsVersion = parchment_version
+    }
+
+    runs {
+        configureEach {
+            systemProperty('neoforge.enabledGameTestNamespaces', mod_id)
+            ideName = "NeoForge ${it.name.capitalize()} (${project.path})" // Unify the run config names with fabric
+
+            def dir = project.getLayout().getProjectDirectory().dir('runs/' + it.name)
+            if (!dir.asFile.exists()) {
+                dir.asFile.mkdir()
+            }
+            getGameDirectory().convention(dir)
+        }
+
+        client {
+            client()
+        }
+
+        server {
+            server()
+        }
+    }
+
+    mods {
+        "${mod_id}" {
+            sourceSet sourceSets.main
+        }
+    }
+}
+
+sourceSets.main.resources { srcDir 'src/generated/resources' }
+
+dependencies {
+    implementation("mysticdrew:common-networking-neoforge:${networking_version}")
+}

@@ -6,36 +6,23 @@ import einstein.subtle_effects.SubtleEffects;
 import einstein.subtle_effects.util.ParticleSpawnUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 
-public class ClientBoundEntityFellPacket {
+public record ClientBoundEntityFellPacket(int entityId, double y, float distance,
+                                          int fallDamage) implements CustomPacketPayload {
 
-    public static final ResourceLocation CHANNEL = SubtleEffects.loc("entity_fell");
-
-    private final int entityId;
-    private final float distance;
-    private final double y;
-    private final int fallDamage;
-
-    public ClientBoundEntityFellPacket(int entityId, double y, float distance, int fallDamage) {
-        this.entityId = entityId;
-        this.distance = distance;
-        this.y = y;
-        this.fallDamage = fallDamage;
-    }
-
-    public static ClientBoundEntityFellPacket decode(FriendlyByteBuf buf) {
-        return new ClientBoundEntityFellPacket(buf.readVarInt(), buf.readDouble(), buf.readFloat(), buf.readInt());
-    }
-
-    public void encode(FriendlyByteBuf buf) {
-        buf.writeVarInt(entityId);
-        buf.writeDouble(y);
-        buf.writeFloat(distance);
-        buf.writeInt(fallDamage);
-    }
+    public static final Type<ClientBoundEntityFellPacket> TYPE = new Type<>(SubtleEffects.loc("entity_fell"));
+    public static final StreamCodec<FriendlyByteBuf, ClientBoundEntityFellPacket> STREAM_CODEC = StreamCodec.composite(
+            ByteBufCodecs.INT, ClientBoundEntityFellPacket::entityId,
+            ByteBufCodecs.DOUBLE, ClientBoundEntityFellPacket::y,
+            ByteBufCodecs.FLOAT, ClientBoundEntityFellPacket::distance,
+            ByteBufCodecs.INT, ClientBoundEntityFellPacket::fallDamage,
+            ClientBoundEntityFellPacket::new
+    );
 
     public static void handle(PacketContext<ClientBoundEntityFellPacket> context) {
         Level level = Minecraft.getInstance().level;
@@ -45,5 +32,10 @@ public class ClientBoundEntityFellPacket {
                 ParticleSpawnUtil.spawnEntityFellParticles(livingEntity, packet.y, packet.distance, packet.fallDamage);
             }
         }
+    }
+
+    @Override
+    public Type<? extends CustomPacketPayload> type() {
+        return TYPE;
     }
 }

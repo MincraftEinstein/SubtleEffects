@@ -1,17 +1,18 @@
 pluginManagement {
     repositories {
         gradlePluginPortal()
-        maven {
-            name = 'Forge'
-            url = 'https://maven.minecraftforge.net/'
-        }
-        maven {
-            name = 'Fabric'
-            url = 'https://maven.fabricmc.net/'
-        }
-        maven {
-            name = 'Sponge Snapshots'
-            url = 'https://repo.spongepowered.org/repository/maven-public/'
+        mavenCentral()
+        exclusiveContent {
+            forRepository {
+                maven {
+                    name = 'Fabric'
+                    url = uri('https://maven.fabricmc.net')
+                }
+            }
+            filter {
+                includeGroup('net.fabricmc')
+                includeGroup('fabric-loom')
+            }
         }
     }
 }
@@ -20,7 +21,5 @@ plugins {
     id 'org.gradle.toolchains.foojay-resolver-convention' version '0.8.0'
 }
 
-rootProject.name = 'SubtleEffects'
-include("common")
-include("fabric")
-include("forge")
+rootProject.name = "${mod_name}"
+include('common', 'fabric', 'neoforge')

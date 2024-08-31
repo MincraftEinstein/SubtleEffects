@@ -6,7 +6,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
-import net.minecraftforge.common.ForgeConfigSpec;
+import net.neoforged.neoforge.common.ModConfigSpec;
 
 import java.util.List;
 import java.util.Objects;
@@ -15,16 +15,16 @@ import java.util.function.Supplier;
 
 public class BiomeParticleSettings {
 
-    private final ForgeConfigSpec.ConfigValue<List<? extends String>> biomesConfig;
-    private final ForgeConfigSpec.IntValue density;
+    private final ModConfigSpec.ConfigValue<List<? extends String>> biomesConfig;
+    private final ModConfigSpec.IntValue density;
     private final int maxSpawnHeight;
     private final Supplier<? extends ParticleOptions> particle;
     private final Predicate<Level> spawnConditions;
     private final boolean ignoreHeight;
     private List<Biome> biomes;
 
-    public BiomeParticleSettings(ForgeConfigSpec.ConfigValue<List<? extends String>> biomesConfig,
-                                 ForgeConfigSpec.IntValue density, int maxSpawnHeight,
+    public BiomeParticleSettings(ModConfigSpec.ConfigValue<List<? extends String>> biomesConfig,
+                                 ModConfigSpec.IntValue density, int maxSpawnHeight,
                                  Supplier<? extends ParticleOptions> particle,
                                  Predicate<Level> spawnConditions, boolean ignoreHeight) {
         this.biomesConfig = biomesConfig;

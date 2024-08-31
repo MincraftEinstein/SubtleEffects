@@ -3,7 +3,7 @@ package einstein.subtle_effects.util;
 import commonnetwork.api.Dispatcher;
 import einstein.subtle_effects.init.ModParticles;
 import einstein.subtle_effects.networking.clientbound.ClientBoundEntityFellPacket;
-import einstein.subtle_effects.particle.option.CommandBlockParticleOptions;
+import einstein.subtle_effects.particle.option.DirectionParticleOptions;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -21,7 +21,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.common.ForgeConfigSpec;
+import net.neoforged.neoforge.common.ModConfigSpec;
 
 import java.util.function.BiPredicate;
 
@@ -112,13 +112,13 @@ public class ParticleSpawnUtil {
 
             if (directionValidator.test(direction, endPos)) {
                 Vec3 speed = pos.vectorTo(relativePos).offsetRandom(random, 1);
-                level.addParticle(new CommandBlockParticleOptions(direction), endPos.x(), endPos.y(), endPos.z(), speed.x(), speed.y(), speed.z());
+                level.addParticle(new DirectionParticleOptions(direction), endPos.x(), endPos.y(), endPos.z(), speed.x(), speed.y(), speed.z());
             }
         }
     }
 
     public static void spawnHeatedWaterParticles(Level level, BlockPos pos, RandomSource random, boolean isFalling, double height,
-                                                 ForgeConfigSpec.BooleanValue steamConfig, ForgeConfigSpec.BooleanValue boilingConfig) {
+                                                 ModConfigSpec.BooleanValue steamConfig, ModConfigSpec.BooleanValue boilingConfig) {
         int brightness = level.getBrightness(LightLayer.BLOCK, pos);
         if (brightness > 11 || level.getBlockState(pos.below()).is(Blocks.MAGMA_BLOCK)) {
             if (steamConfig.get()) {

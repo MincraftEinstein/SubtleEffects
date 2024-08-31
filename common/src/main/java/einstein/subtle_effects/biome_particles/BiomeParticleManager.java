@@ -10,7 +10,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.Heightmap;
-import net.minecraftforge.common.ForgeConfigSpec;
+import net.neoforged.neoforge.common.ModConfigSpec;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,11 +32,11 @@ public class BiomeParticleManager {
         register(INSTANCE.sculkDustBiomes, INSTANCE.sculkDustDensity, ModParticles.SCULK_DUST, level -> true);
     }
 
-    private static void register(ForgeConfigSpec.ConfigValue<List<? extends String>> biomesConfig, ForgeConfigSpec.IntValue density, int maxSpawnHeight, Supplier<? extends ParticleOptions> particle, Predicate<Level> spawnConditions) {
+    private static void register(ModConfigSpec.ConfigValue<List<? extends String>> biomesConfig, ModConfigSpec.IntValue density, int maxSpawnHeight, Supplier<? extends ParticleOptions> particle, Predicate<Level> spawnConditions) {
         REGISTERED.add(new BiomeParticleSettings(biomesConfig, density, maxSpawnHeight, particle, spawnConditions, false));
     }
 
-    private static void register(ForgeConfigSpec.ConfigValue<List<? extends String>> biomesConfig, ForgeConfigSpec.IntValue density, Supplier<? extends ParticleOptions> particle, Predicate<Level> spawnConditions) {
+    private static void register(ModConfigSpec.ConfigValue<List<? extends String>> biomesConfig, ModConfigSpec.IntValue density, Supplier<? extends ParticleOptions> particle, Predicate<Level> spawnConditions) {
         REGISTERED.add(new BiomeParticleSettings(biomesConfig, density, 0, particle, spawnConditions, true));
     }
 

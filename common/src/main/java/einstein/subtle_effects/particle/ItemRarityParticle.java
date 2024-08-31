@@ -33,7 +33,7 @@ public class ItemRarityParticle extends TextureSheetParticle {
             }
         }
 
-        TextColor rarityColor = TextColor.fromLegacyFormat(stack.getRarity().color);
+        TextColor rarityColor = TextColor.fromLegacyFormat(stack.getRarity().color());
         if (rarityColor != null) {
             return rarityColor;
         }

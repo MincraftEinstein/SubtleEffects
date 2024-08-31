@@ -1,60 +1,6 @@
 plugins {
-    id 'fabric-loom' version '1.6-SNAPSHOT' apply(false)
-    id 'net.minecraftforge.gradle' version '[6.0,6.2)' apply(false)
-    id 'org.spongepowered.gradle.vanilla' version '0.2.1-SNAPSHOT' apply(false)
-    id("org.spongepowered.mixin") version "0.7-SNAPSHOT" apply(false)
-}
-
-subprojects {
-    apply plugin: 'java'
-
-    java.toolchain.languageVersion = JavaLanguageVersion.of(17)
-
-    jar {
-        manifest {
-            attributes([
-                    'Specification-Title'     : mod_name,
-                    'Specification-Vendor'    : mod_author,
-                    'Specification-Version'   : project.jar.archiveVersion,
-                    'Implementation-Title'    : project.name,
-                    'Implementation-Version'  : project.jar.archiveVersion,
-                    'Implementation-Vendor'   : mod_author,
-                    'Implementation-Timestamp': new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
-                    'Timestamp'               : System.currentTimeMillis(),
-                    'Built-On-Java'           : "${System.getProperty('java.vm.version')} (${System.getProperty('java.vm.vendor')})",
-                    'Built-On-Minecraft'      : minecraft_version
-            ])
-        }
-    }
-
-    repositories {
-        mavenCentral()
-        maven {
-            name = 'Sponge / Mixin'
-            url = 'https://repo.spongepowered.org/repository/maven-public/'
-        }
-
-        maven {
-            name = 'BlameJared Maven (JEI / CraftTweaker / Bookshelf)'
-            url = 'https://maven.blamejared.com'
-        }
-
-        maven {
-            name = "Fuzs Mod Resources"
-            url = "https://raw.githubusercontent.com/Fuzss/modresources/main/maven/"
-        }
-
-        maven {
-            url = "https://jm.gserv.me/repository/maven-public/"
-        }
-    }
-
-    tasks.withType(JavaCompile).configureEach {
-        it.options.encoding = 'UTF-8'
-        it.options.getRelease().set(17)
-    }
-
-    tasks.withType(GenerateModuleMetadata).configureEach {
-        enabled = false
-    }
+    // see https://fabricmc.net/develop/ for new versions
+    id 'fabric-loom' version '1.7-SNAPSHOT' apply false
+    // see https://projects.neoforged.net/neoforged/moddevgradle for new versions
+    id 'net.neoforged.moddev' version '1.0.15' apply false
 }

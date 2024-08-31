@@ -7,32 +7,20 @@ import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.init.ModParticles;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.world.level.Level;
 
-public class ClientBoundSpawnSnoreParticlePacket {
+public record ClientBoundSpawnSnoreParticlePacket(double x, double y, double z) implements CustomPacketPayload {
 
-    public static final ResourceLocation CHANNEL = SubtleEffects.loc("spawn_snore_particle");
-
-    private final double x;
-    private final double y;
-    private final double z;
-
-    public ClientBoundSpawnSnoreParticlePacket(double x, double y, double z) {
-        this.x = x;
-        this.y = y;
-        this.z = z;
-    }
-
-    public static ClientBoundSpawnSnoreParticlePacket decode(FriendlyByteBuf buf) {
-        return new ClientBoundSpawnSnoreParticlePacket(buf.readDouble(), buf.readDouble(), buf.readDouble());
-    }
-
-    public void encode(FriendlyByteBuf buf) {
-        buf.writeDouble(x);
-        buf.writeDouble(y);
-        buf.writeDouble(z);
-    }
+    public static final Type<ClientBoundSpawnSnoreParticlePacket> TYPE = new Type<>(SubtleEffects.loc("spawn_snore_particle"));
+    public static final StreamCodec<FriendlyByteBuf, ClientBoundSpawnSnoreParticlePacket> STREAM_CODEC = StreamCodec.composite(
+            ByteBufCodecs.DOUBLE, ClientBoundSpawnSnoreParticlePacket::x,
+            ByteBufCodecs.DOUBLE, ClientBoundSpawnSnoreParticlePacket::y,
+            ByteBufCodecs.DOUBLE, ClientBoundSpawnSnoreParticlePacket::z,
+            ClientBoundSpawnSnoreParticlePacket::new
+    );
 
     public static void handle(PacketContext<ClientBoundSpawnSnoreParticlePacket> context) {
         Level level = Minecraft.getInstance().level;
@@ -42,5 +30,10 @@ public class ClientBoundSpawnSnoreParticlePacket {
                 level.addParticle(ModParticles.SNORING.get(), packet.x, packet.y, packet.z, 0, 0, 0);
             }
         }
+    }
+
+    @Override
+    public Type<? extends CustomPacketPayload> type() {
+        return TYPE;
     }
 }

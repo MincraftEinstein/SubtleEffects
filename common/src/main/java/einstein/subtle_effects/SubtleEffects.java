@@ -9,7 +9,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.fml.config.ModConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -54,26 +53,24 @@ public class SubtleEffects {
         HAS_CLEARED = false;
     }
 
-    public static void configReloaded(ModConfig config) {
-        if (config.getModId().equals(MOD_ID)) {
-            Minecraft minecraft = Minecraft.getInstance();
-            if (minecraft.level != null && minecraft.options.getCameraType().isFirstPerson()) {
-                if (!ModConfigs.INSTANCE.mobSkullShaders.get()) {
-                    ((ShaderManager) minecraft.gameRenderer).subtleEffects$clearShader();
-                    return;
-                }
-
-                Player player = minecraft.player;
-                if (player != null) {
-                    Util.applyHelmetShader(player.getInventory().getArmor(3));
-                }
+    public static void configReloaded() {
+        Minecraft minecraft = Minecraft.getInstance();
+        if (minecraft.level != null && minecraft.options.getCameraType().isFirstPerson()) {
+            if (!ModConfigs.INSTANCE.mobSkullShaders.get()) {
+                ((ShaderManager) minecraft.gameRenderer).subtleEffects$clearShader();
+                return;
             }
-            TickerManager.clear();
-            BiomeParticleManager.clear();
+
+            Player player = minecraft.player;
+            if (player != null) {
+                Util.applyHelmetShader(player.getInventory().getArmor(3));
+            }
         }
+        TickerManager.clear();
+        BiomeParticleManager.clear();
     }
 
     public static ResourceLocation loc(String path) {
-        return new ResourceLocation(MOD_ID, path);
+        return ResourceLocation.fromNamespaceAndPath(MOD_ID, path);
     }
 }
