@@ -21,16 +21,16 @@ public class SubtleEffects {
 
     public static void init() {
         ModSounds.init();
-        ModParticles.init();
         ModPackets.init();
-        BiomeParticleManager.init();
-        ModDamageListeners.init();
     }
 
     public static void clientSetup() {
         ModPackets.init();
         ModTickers.init();
         ModBlockTickers.init();
+        BiomeParticleManager.init();
+        ModDamageListeners.init();
+        ModParticles.init();
     }
 
     public static void clientTick(Minecraft minecraft, Level level) {
