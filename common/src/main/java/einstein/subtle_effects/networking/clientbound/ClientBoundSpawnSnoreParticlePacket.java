@@ -23,11 +23,13 @@ public record ClientBoundSpawnSnoreParticlePacket(double x, double y, double z) 
     );
 
     public static void handle(PacketContext<ClientBoundSpawnSnoreParticlePacket> context) {
-        Level level = Minecraft.getInstance().level;
-        if (context.side().equals(Side.CLIENT) && level != null) {
-            ClientBoundSpawnSnoreParticlePacket packet = context.message();
-            if (ModConfigs.INSTANCE.beehivesHaveSleepingZs.get()) {
-                level.addParticle(ModParticles.SNORING.get(), packet.x, packet.y, packet.z, 0, 0, 0);
+        if (context.side().equals(Side.CLIENT)) {
+            Level level = Minecraft.getInstance().level;
+            if (level != null) {
+                ClientBoundSpawnSnoreParticlePacket packet = context.message();
+                if (ModConfigs.INSTANCE.beehivesHaveSleepingZs.get()) {
+                    level.addParticle(ModParticles.SNORING.get(), packet.x, packet.y, packet.z, 0, 0, 0);
+                }
             }
         }
     }

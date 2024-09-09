@@ -22,16 +22,18 @@ public record ClientBoundEntitySpawnSprintingDustCloudsPacket(int entityId) impl
     );
 
     public static void handle(PacketContext<ClientBoundEntitySpawnSprintingDustCloudsPacket> context) {
-        Level level = Minecraft.getInstance().level;
-        if (context.side().equals(Side.CLIENT) && level != null) {
-            ClientBoundEntitySpawnSprintingDustCloudsPacket packet = context.message();
-            if (level.getEntity(packet.entityId) instanceof LivingEntity livingEntity) {
-                int ySpeedModifier = 5;
-                if (livingEntity instanceof Ravager) {
-                    ySpeedModifier = 20;
-                }
+        if (context.side().equals(Side.CLIENT)) {
+            Level level = Minecraft.getInstance().level;
+            if (level != null) {
+                ClientBoundEntitySpawnSprintingDustCloudsPacket packet = context.message();
+                if (level.getEntity(packet.entityId) instanceof LivingEntity livingEntity) {
+                    int ySpeedModifier = 5;
+                    if (livingEntity instanceof Ravager) {
+                        ySpeedModifier = 20;
+                    }
 
-                ParticleSpawnUtil.spawnCreatureMovementDustClouds(livingEntity, level, livingEntity.getRandom(), ySpeedModifier);
+                    ParticleSpawnUtil.spawnCreatureMovementDustClouds(livingEntity, level, livingEntity.getRandom(), ySpeedModifier);
+                }
             }
         }
     }

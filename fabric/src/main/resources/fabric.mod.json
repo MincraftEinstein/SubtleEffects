@@ -20,7 +20,7 @@
       "einstein.subtle_effects.SubtleEffectsFabric"
     ],
     "client": [
-      "einstein.subtle_effects.SubtleEffectsFabric"
+      "einstein.subtle_effects.SubtleEffectsFabricClient"
     ]
   },
   "mixins": [

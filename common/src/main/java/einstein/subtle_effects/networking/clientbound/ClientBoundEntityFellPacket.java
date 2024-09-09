@@ -25,11 +25,13 @@ public record ClientBoundEntityFellPacket(int entityId, double y, float distance
     );
 
     public static void handle(PacketContext<ClientBoundEntityFellPacket> context) {
-        Level level = Minecraft.getInstance().level;
-        if (context.side().equals(Side.CLIENT) && level != null) {
-            ClientBoundEntityFellPacket packet = context.message();
-            if (level.getEntity(packet.entityId) instanceof LivingEntity livingEntity) {
-                ParticleSpawnUtil.spawnEntityFellParticles(livingEntity, packet.y, packet.distance, packet.fallDamage);
+        if (context.side().equals(Side.CLIENT)) {
+            Level level = Minecraft.getInstance().level;
+            if (level != null) {
+                ClientBoundEntityFellPacket packet = context.message();
+                if (level.getEntity(packet.entityId) instanceof LivingEntity livingEntity) {
+                    ParticleSpawnUtil.spawnEntityFellParticles(livingEntity, packet.y, packet.distance, packet.fallDamage);
+                }
             }
         }
     }

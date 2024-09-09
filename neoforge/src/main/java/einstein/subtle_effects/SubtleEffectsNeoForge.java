@@ -32,15 +32,15 @@ public class SubtleEffectsNeoForge {
         modEventBus.addListener((RegisterParticleProvidersEvent event) ->
                 NeoForgeRegistryHelper.PARTICLE_PROVIDERS.forEach((particle, provider) -> registerParticle(event, particle, provider))
         );
-        modEventBus.addListener((FMLClientSetupEvent event) -> SubtleEffects.clientSetup());
+        modEventBus.addListener((FMLClientSetupEvent event) -> SubtleEffectsClient.clientSetup());
         modEventBus.addListener((ModConfigEvent.Reloading event) -> {
             if (event.getConfig().getModId().equals(MOD_ID)) {
-                SubtleEffects.configReloaded();
+                SubtleEffectsClient.configReloaded();
             }
         });
         NeoForge.EVENT_BUS.addListener((ClientTickEvent.Post event) -> {
             Minecraft minecraft = Minecraft.getInstance();
-            SubtleEffects.clientTick(minecraft, minecraft.level);
+            SubtleEffectsClient.clientTick(minecraft, minecraft.level);
         });
         container.registerConfig(ModConfig.Type.CLIENT, ModConfigs.SPEC);
     }
