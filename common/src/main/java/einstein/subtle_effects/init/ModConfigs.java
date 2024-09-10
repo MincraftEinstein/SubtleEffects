@@ -227,22 +227,22 @@ public class ModConfigs {
         steamingWater = builder
                 .comment("Should water steam when near blocks with a light level greater than 11")
                 .translation(key("steaming_water"))
-                .define("steamingWater", true);
+                .define("steamingWater", false);
 
         boilingWater = builder
                 .comment("Should water bubble/boil when near blocks with a light level of 13 or more")
                 .translation(key("boiling_water"))
-                .define("boilingWater", true);
+                .define("boilingWater", false);
 
         steamingWaterCauldron = builder
                 .comment("Should water cauldrons steam when near blocks with a light level greater than 11")
                 .translation(key("steaming_water_cauldron"))
-                .define("steamingWaterCauldron", true);
+                .define("steamingWaterCauldron", false);
 
         boilingWaterCauldron = builder
                 .comment("Should water bubble/boil when near blocks with a light level of 13 or more")
                 .translation(key("boiling_water_cauldron"))
-                .define("boilingWaterCauldron", true);
+                .define("boilingWaterCauldron", false);
 
         builder.pop();
 
