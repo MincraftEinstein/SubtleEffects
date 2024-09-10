@@ -14,7 +14,7 @@ public class SubtleEffectsClient {
     private static boolean HAS_CLEARED = false;
 
     public static void clientSetup() {
-        ModPackets.init();
+        ModPackets.initClientHandlers();
         ModTickers.init();
         ModBlockTickers.init();
         BiomeParticleManager.init();

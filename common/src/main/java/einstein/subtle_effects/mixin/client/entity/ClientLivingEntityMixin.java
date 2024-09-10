@@ -2,11 +2,12 @@ package einstein.subtle_effects.mixin.client.entity;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
-import commonnetwork.api.Dispatcher;
 import einstein.subtle_effects.init.ModDamageListeners;
 import einstein.subtle_effects.networking.clientbound.ClientBoundEntitySpawnSprintingDustCloudsPacket;
+import einstein.subtle_effects.platform.Services;
 import einstein.subtle_effects.util.EntityProvider;
 import einstein.subtle_effects.util.ParticleSpawnUtil;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
@@ -70,7 +71,7 @@ public abstract class ClientLivingEntityMixin<T extends Entity> extends Entity {
             if (subtleEffects$canStart || position().distanceToSqr(subtleEffects$lastCheckedPos) > 0.5) {
                 if (subtleEffects$validEntity) {
                     if (subtleEffects$me.getSpeed() > subtleEffects$minSpeed && onGround()) {
-                        Dispatcher.sendToAllClients(new ClientBoundEntitySpawnSprintingDustCloudsPacket(getId()), level().getServer());
+                        Services.NETWORK.sendToClientsTracking((ServerLevel) level(), subtleEffects$me.blockPosition(), new ClientBoundEntitySpawnSprintingDustCloudsPacket(getId()));
                         subtleEffects$lastCheckedPos = position();
                         subtleEffects$canStart = false;
                         return;

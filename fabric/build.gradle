@@ -20,7 +20,6 @@ dependencies {
     modImplementation "net.fabricmc.fabric-api:fabric-api:${fabric_api_version}"
     modImplementation("com.terraformersmc:modmenu:${modmenu_version}")
     modImplementation("fuzs.forgeconfigapiport:forgeconfigapiport-fabric:${config_port_version}")
-    modImplementation("mysticdrew:common-networking-fabric:${networking_version}")
 }
 
 loom {

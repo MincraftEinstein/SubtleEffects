@@ -1,9 +1,9 @@
 package einstein.subtle_effects.util;
 
-import commonnetwork.api.Dispatcher;
 import einstein.subtle_effects.init.ModParticles;
 import einstein.subtle_effects.networking.clientbound.ClientBoundEntityFellPacket;
 import einstein.subtle_effects.particle.option.DirectionParticleOptions;
+import einstein.subtle_effects.platform.Services;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -11,6 +11,7 @@ import net.minecraft.core.Vec3i;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.particles.SimpleParticleType;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
@@ -74,8 +75,8 @@ public class ParticleSpawnUtil {
         if (level.isClientSide && entity.equals(Minecraft.getInstance().player)) {
             spawnEntityFellParticles(entity, entity.getY(), distance, fallDamage);
         }
-        else if (!level.isClientSide && !entity.equals(Minecraft.getInstance().player)) {
-            Dispatcher.sendToAllClients(new ClientBoundEntityFellPacket(entity.getId(), entity.getY(), distance, fallDamage), level.getServer());
+        else if (level instanceof ServerLevel serverLevel && serverLevel.getServer().isDedicatedServer()) {
+            Services.NETWORK.sendToClientsTracking(serverLevel, entity.blockPosition(), new ClientBoundEntityFellPacket(entity.getId(), entity.getY(), distance, fallDamage));
         }
     }
 
