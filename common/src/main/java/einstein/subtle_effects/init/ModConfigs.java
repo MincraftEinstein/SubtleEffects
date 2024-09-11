@@ -126,6 +126,7 @@ public class ModConfigs {
     public final ModConfigSpec.BooleanValue slimeTrails;
     public final ModConfigSpec.BooleanValue magmaCubeTrails;
     public final ModConfigSpec.BooleanValue replaceSlimeSquishParticles;
+    public final ModConfigSpec.BooleanValue replaceSpellCasterParticles;
 
     // Biomes
     public final ModConfigSpec.IntValue biomeParticlesRadius;
@@ -536,6 +537,11 @@ public class ModConfigs {
                 .comment("Replaces the slime ball item particles with slime block particles when a slime squishes")
                 .translation(key("replace_slime_squish_particles"))
                 .define("replaceSlimeSquishParticles", true);
+
+        replaceSpellCasterParticles = builder
+                .comment("Replaces the potion effect particles when a spell caster illager is casting a spell e.g Evoker summoning vexes")
+                .translation(key("replace_spell_caster_particles"))
+                .define("replaceSpellCasterParticles", true);
 
         builder.pop().translation(categoryKey("biomes")).push("biomes");
 
