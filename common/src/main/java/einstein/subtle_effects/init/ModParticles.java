@@ -3,15 +3,13 @@ package einstein.subtle_effects.init;
 import com.mojang.serialization.MapCodec;
 import einstein.subtle_effects.particle.*;
 import einstein.subtle_effects.particle.option.*;
+import einstein.subtle_effects.particle.provider.SpellCasterMagicProvider;
 import einstein.subtle_effects.particle.provider.MushroomSporeProvider;
 import einstein.subtle_effects.particle.provider.PollenProvider;
 import einstein.subtle_effects.particle.provider.SmokeParticleProvider;
 import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.client.particle.SpriteSet;
-import net.minecraft.core.particles.ItemParticleOption;
-import net.minecraft.core.particles.ParticleOptions;
-import net.minecraft.core.particles.ParticleType;
-import net.minecraft.core.particles.SimpleParticleType;
+import net.minecraft.core.particles.*;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 
@@ -58,6 +56,7 @@ public class ModParticles {
     public static final Supplier<SimpleParticleType> SCULK_DUST = register("sculk_dust", SculkDustParticle.Provider::new);
     public static final Supplier<ParticleType<FloatParticleOptions>> SLIME_TRAIL = register("slime_trail", FloatParticleOptions::codec, FloatParticleOptions::streamCodec, SlimeTrailParticle.Provider::new);
     public static final Supplier<ParticleType<FloatParticleOptions>> MAGMA_CUBE_TRAIL = register("magma_cube_trail", FloatParticleOptions::codec, FloatParticleOptions::streamCodec, SlimeTrailParticle.Provider::new);
+    public static final Supplier<ParticleType<ColorParticleOption>> SPELL_CASTER_MAGIC = register("spell_caster_magic", ColorParticleOption::codec, ColorParticleOption::streamCodec, SpellCasterMagicProvider::new);
 
     public static void init() {
     }

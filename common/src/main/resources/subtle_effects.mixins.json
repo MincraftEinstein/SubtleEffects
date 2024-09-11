@@ -31,7 +31,8 @@
     "client.entity.MinecartFurnaceMixin",
     "client.entity.PrimedTNTMixin",
     "client.entity.SheepMixin",
-    "client.entity.SlimeMixin"
+    "client.entity.SlimeMixin",
+    "client.entity.SpellCasterIllagerMixin"
   ],
   "mixins": [
     "common.AbstractHorseMixin",
