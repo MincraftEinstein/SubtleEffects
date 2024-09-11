@@ -141,7 +141,7 @@ public class ModBlockTickers {
                     new Vec3i(3, 5, 3), 10, 6, state.is(Blocks.SOUL_CAMPFIRE), true
             );
         });
-        register(state -> state.getBlock() instanceof TorchBlock && INSTANCE.torchSparks.get(), (state, level, pos, random) -> {
+        register(state -> state.getBlock() instanceof TorchBlock && !(state.getBlock() instanceof WallTorchBlock) && INSTANCE.torchSparks.get(), (state, level, pos, random) -> {
             ParticleSpawnUtil.spawnSparks(level, random, pos, new Vec3(0.5, 0.5, 0.5),
                     new Vec3i(1, 1, 1), 2, -6, state.is(Blocks.SOUL_TORCH), false
             );
