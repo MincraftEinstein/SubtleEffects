@@ -52,7 +52,6 @@ public class ModConfigs {
 
     // Steam
     public final ModConfigSpec.BooleanValue lavaFizzSteam;
-    public final ModConfigSpec.BooleanValue waterEvaporateFromBucketSteam;
     public final ModConfigSpec.BooleanValue steamingWater;
     public final ModConfigSpec.BooleanValue boilingWater;
     public final ModConfigSpec.BooleanValue steamingWaterCauldron;
@@ -68,7 +67,6 @@ public class ModConfigs {
     public final ModConfigSpec.BooleanValue torchflowerFlames;
     public final ModConfigSpec.BooleanValue dragonEggParticles;
     public final ModConfigSpec.BooleanValue replaceEndPortalSmoke;
-    public final ModConfigSpec.BooleanValue axeStripParticles;
     public final ModConfigSpec.BooleanValue pumpkinCarvedParticles;
     public final ModConfigSpec.BooleanValue anvilBreakParticles;
     public final ModConfigSpec.BooleanValue anvilUseParticles;
@@ -140,10 +138,14 @@ public class ModConfigs {
     public final ModConfigSpec.ConfigValue<List<? extends String>> sculkDustBiomes;
     public final ModConfigSpec.IntValue sculkDustDensity;
 
+    // Items
+    public final ModConfigSpec.BooleanValue axeStripParticles;
+    public final ModConfigSpec.BooleanValue waterEvaporateFromBucketSteam;
+    public final ModConfigSpec.BooleanValue boneMealUsingParticles;
+
     // General
     public final ModConfigSpec.BooleanValue mobSkullShaders;
     public final ModConfigSpec.IntValue particleRenderDistance;
-    public final ModConfigSpec.BooleanValue boneMealUsingParticles;
 
     public ModConfigs(ModConfigSpec.Builder builder) {
         builder.translation(categoryKey("blocks")).push("blocks")
@@ -222,11 +224,6 @@ public class ModConfigs {
                 .translation(key("lava_fizz_steam"))
                 .define("lavaFizzSteam", true);
 
-        waterEvaporateFromBucketSteam = builder
-                .comment("Replaces the smoke particles with steam when water evaporates from a bucket in the nether")
-                .translation(key("water_evaporate_from_bucket_steam"))
-                .define("waterEvaporateFromBucketSteam", true);
-
         steamingWater = builder
                 .comment("Should water steam when near blocks with a light level greater than 11")
                 .translation(key("steaming_water"))
@@ -291,11 +288,6 @@ public class ModConfigs {
                 .comment("Replaces the normal end portal smoke particles with nether portal particles so that it is consistent with end gateways")
                 .translation(key("replace_end_portal_smoke"))
                 .define("replaceEndPortalSmoke", true);
-
-        axeStripParticles = builder
-                .comment("Display the destroy particle effect when stripping a block with an axe", "This doesn't affect removing oxidization/wax from copper")
-                .translation(key("axe_strip_particles"))
-                .define("axeStripParticles", true);
 
         pumpkinCarvedParticles = builder
                 .comment("Display the destroy particle effect when carving a pumpkin")
@@ -605,6 +597,23 @@ public class ModConfigs {
                 .translation(key("sculk_dust_density"))
                 .defineInRange("sculkDustDensity", 5, 0, 100);
 
+        builder.pop().translation(categoryKey("items")).push("items");
+
+        axeStripParticles = builder
+                .comment("Display the destroy particle effect when stripping a block with an axe", "This doesn't affect removing oxidization/wax from copper")
+                .translation(key("axe_strip_particles"))
+                .define("axeStripParticles", true);
+
+        waterEvaporateFromBucketSteam = builder
+                .comment("Replaces the smoke particles with steam when water evaporates from a bucket in the nether")
+                .translation(key("water_evaporate_from_bucket_steam"))
+                .define("waterEvaporateFromBucketSteam", true);
+
+        boneMealUsingParticles = builder
+                .comment("Should bone meal item particles spawn when using bone meal")
+                .translation(key("bone_meal_using_particles"))
+                .define("boneMealUsingParticles", true);
+
         builder.pop();
 
         mobSkullShaders = builder
@@ -618,11 +627,6 @@ public class ModConfigs {
                         "This affects most particles in the game including particles from other mods, some particles however ignore this value e.g. campfire smoke.")
                 .translation("particle_render_distance")
                 .defineInRange("particleRenderDistance", 5, 1, 32);
-
-        boneMealUsingParticles = builder
-                .comment("Should bone meal item particles spawn when using bone meal")
-                .translation(key("bone_meal_using_particles"))
-                .define("boneMealUsingParticles", true);
     }
 
     private ModConfigSpec.ConfigValue<List<? extends String>> defineLocationList(ModConfigSpec.Builder builder, String path, String... defaultValues) {
