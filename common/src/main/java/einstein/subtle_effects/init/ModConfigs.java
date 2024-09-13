@@ -143,6 +143,7 @@ public class ModConfigs {
     // General
     public final ModConfigSpec.BooleanValue mobSkullShaders;
     public final ModConfigSpec.IntValue particleRenderDistance;
+    public final ModConfigSpec.BooleanValue boneMealUsingParticles;
 
     public ModConfigs(ModConfigSpec.Builder builder) {
         builder.translation(categoryKey("blocks")).push("blocks")
@@ -617,6 +618,11 @@ public class ModConfigs {
                         "This affects most particles in the game including particles from other mods, some particles however ignore this value e.g. campfire smoke.")
                 .translation("particle_render_distance")
                 .defineInRange("particleRenderDistance", 5, 1, 32);
+
+        boneMealUsingParticles = builder
+                .comment("Should bone meal item particles spawn when using bone meal")
+                .translation(key("bone_meal_using_particles"))
+                .define("boneMealUsingParticles", true);
     }
 
     private ModConfigSpec.ConfigValue<List<? extends String>> defineLocationList(ModConfigSpec.Builder builder, String path, String... defaultValues) {

@@ -93,6 +93,7 @@
   "config.subtle_effects.sculk_dust_density": "Sculk Dust Density",
   "config.subtle_effects.mob_skull_shaders": "Mob Skull Shaders",
   "config.subtle_effects.particle_render_distance": "Particle Render Distance",
+  "config.subtle_effects.boneMealUsingParticles": "Bone Meal Using Particles",
   "config.category.subtle_effects.blocks": "Blocks",
   "config.category.subtle_effects.sparks": "Sparks",
   "config.category.subtle_effects.update_smoke": "Update Smoke",
