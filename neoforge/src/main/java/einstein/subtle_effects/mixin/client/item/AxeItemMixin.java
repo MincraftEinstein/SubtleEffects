@@ -1,9 +1,10 @@
-package einstein.subtle_effects.mixin.client;
+package einstein.subtle_effects.mixin.client.item;
 
 import einstein.subtle_effects.init.ModConfigs;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.AxeItem;
+import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import org.spongepowered.asm.mixin.Mixin;
@@ -17,7 +18,7 @@ import java.util.Optional;
 public class AxeItemMixin {
 
     @Inject(method = "evaluateNewBlockState", at = @At(value = "FIELD", target = "Lnet/minecraft/sounds/SoundEvents;AXE_STRIP:Lnet/minecraft/sounds/SoundEvent;"))
-    private void evaluateNewBlockState(Level level, BlockPos pos, Player player, BlockState state, CallbackInfoReturnable<Optional<BlockState>> cir) {
+    private void evaluateNewBlockState(Level level, BlockPos pos, Player player, BlockState state, UseOnContext context, CallbackInfoReturnable<Optional<BlockState>> cir) {
         if (ModConfigs.INSTANCE.axeStripParticles.get()) {
             if (level.isClientSide) {
                 level.addDestroyBlockEffect(pos, state);

@@ -5,8 +5,6 @@
   "refmap": "subtle_effects.refmap.json",
   "compatibilityLevel": "JAVA_17",
   "client": [
-    "client.BoneMealItemMixin",
-    "client.BucketItemMixin",
     "client.ClientLevelMixin",
     "client.GameRendererMixin",
     "client.LavaFluidMixin",
@@ -33,7 +31,9 @@
     "client.entity.PrimedTNTMixin",
     "client.entity.SheepMixin",
     "client.entity.SlimeMixin",
-    "client.entity.SpellCasterIllagerMixin"
+    "client.entity.SpellCasterIllagerMixin",
+    "client.item.BoneMealItemMixin",
+    "client.item.BucketItemMixin"
   ],
   "mixins": [
     "common.AbstractHorseMixin",
