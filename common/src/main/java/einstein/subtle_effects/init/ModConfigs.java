@@ -127,6 +127,7 @@ public class ModConfigs {
     public final ModConfigSpec.BooleanValue magmaCubeTrails;
     public final ModConfigSpec.BooleanValue replaceSlimeSquishParticles;
     public final ModConfigSpec.BooleanValue replaceSpellCasterParticles;
+    public final ModConfigSpec.BooleanValue ironGolemCrackParticles;
 
     // Biomes
     public final ModConfigSpec.IntValue biomeParticlesRadius;
@@ -542,6 +543,11 @@ public class ModConfigs {
                 .comment("Replaces the potion effect particles when a spell caster illager is casting a spell e.g Evoker summoning vexes")
                 .translation(key("replace_spell_caster_particles"))
                 .define("replaceSpellCasterParticles", true);
+
+        ironGolemCrackParticles = builder
+                .comment("Should iron particles spawn around iron golems when they crack")
+                .translation(key("iron_golem_crack_particles"))
+                .define("ironGolemCrackParticles", true);
 
         builder.pop().translation(categoryKey("biomes")).push("biomes");
 

@@ -80,6 +80,8 @@
   "config.subtle_effects.slime_trails": "Slime Trails",
   "config.subtle_effects.magma_cube_trails": "Magma Cube Trails",
   "config.subtle_effects.replace_slime_squish_particles": "Replace Slime Squish Particles",
+  "config.subtle_effects.replace_spell_caster_particles": "Replace Spell Caster Particles",
+  "config.subtle_effects.iron_golem_crack_particles": "Iron Golem Crack Particles",
   "config.subtle_effects.biome_particles_radius": "Biome Particles Radius",
   "config.subtle_effects.mushroom_spore_biomes": "Mushroom Spore Biomes",
   "config.subtle_effects.mushroom_spore_density": "Mushroom Spore Density",

@@ -14,6 +14,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.animal.IronGolem;
 import net.minecraft.world.entity.item.FallingBlockEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.MagmaCube;
@@ -46,6 +47,7 @@ public class ModTickers {
         registerTicker(LOCAL_PLAYER.and(entity -> INSTANCE.heartBeating.get()), HeartbeatTicker::new);
         registerTicker(entity -> entity.getType().equals(EntityType.SLIME) && INSTANCE.slimeTrails.get(), (Slime entity) -> new SlimeTrailTicker<>(entity, ModParticles.SLIME_TRAIL));
         registerTicker(entity -> entity.getType().equals(EntityType.MAGMA_CUBE) && INSTANCE.magmaCubeTrails.get(), (MagmaCube entity) -> new SlimeTrailTicker<>(entity, ModParticles.MAGMA_CUBE_TRAIL));
+        registerTicker(entity -> entity.getType().equals(EntityType.IRON_GOLEM) && INSTANCE.ironGolemCrackParticles.get(), IronGolemTicker::new);
 
         registerSimpleTicker(entity -> entity instanceof ItemEntity itemEntity
                         && INSTANCE.itemRarityParticles.get() != ModConfigs.ItemRaritySpawnType.OFF
