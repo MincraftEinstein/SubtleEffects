@@ -10,6 +10,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.*;
@@ -156,7 +157,7 @@ public class ModBlockTickers {
         register(state -> state.getBlock() instanceof AbstractCandleBlock && ModConfigs.INSTANCE.candleSparks.get() && state.getValue(AbstractCandleBlock.LIT), (state, level, pos, random) -> {
             AbstractCandleBlock block = (AbstractCandleBlock) state.getBlock();
             block.getParticleOffsets(state).forEach(offset -> ParticleSpawnUtil.spawnSparks(level, random, pos,
-                    offset, new Vec3i(1, 1, 1), 1, 20, false, false)
+                    offset, new Vec3i(1, 1, 1), 1, 20, BuiltInRegistries.BLOCK.getKey(state.getBlock()).getPath().contains("soul"), false)
             );
         });
         register(state -> state.getBlock() instanceof BaseFireBlock && ModConfigs.INSTANCE.fireSparks.get(), (state, level, pos, random) -> {
