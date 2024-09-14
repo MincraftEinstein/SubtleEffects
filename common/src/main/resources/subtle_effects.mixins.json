@@ -39,6 +39,7 @@
     "common.AbstractHorseMixin",
     "common.BeehiveBlockEntityMixin",
     "common.CommonLivingEntityMixin",
+    "common.LeavesBlockMixin",
     "common.LlamaMixin"
   ],
   "injectors": {

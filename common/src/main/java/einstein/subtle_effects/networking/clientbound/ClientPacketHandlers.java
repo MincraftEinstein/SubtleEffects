@@ -4,9 +4,14 @@ import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.init.ModParticles;
 import einstein.subtle_effects.util.ParticleSpawnUtil;
 import net.minecraft.client.Minecraft;
+import net.minecraft.core.BlockPos;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.monster.Ravager;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.state.BlockState;
 
 public class ClientPacketHandlers {
 
@@ -38,6 +43,20 @@ public class ClientPacketHandlers {
         if (level != null) {
             if (ModConfigs.INSTANCE.beehivesHaveSleepingZs.get()) {
                 level.addParticle(ModParticles.SNORING.get(), packet.x(), packet.y(), packet.z(), 0, 0, 0);
+            }
+        }
+    }
+
+    public static void handle(ClientBoundLeavesDecayPacket packet) {
+        Level level = Minecraft.getInstance().level;
+        if (level != null) {
+            if (ModConfigs.INSTANCE.leavesDecayEffects.get()) {
+                BlockPos pos = packet.pos();
+                BlockState state = Block.stateById(packet.stateId());
+                SoundType soundtype = state.getSoundType();
+
+                level.addDestroyBlockEffect(pos, state);
+                level.playLocalSound(pos, soundtype.getBreakSound(), SoundSource.BLOCKS, (soundtype.getVolume() + 1F) / 2F, soundtype.getPitch() * 0.8F, false);
             }
         }
     }
