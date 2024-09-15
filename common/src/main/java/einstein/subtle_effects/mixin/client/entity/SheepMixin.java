@@ -39,7 +39,14 @@ public abstract class SheepMixin extends Animal {
                 IntegerParticleOptions particle = new IntegerParticleOptions(ModParticles.SHEEP_FLUFF.get(), Sheep.getColor(getColor()));
 
                 for (int i = 0; i < 7; i++) {
-                    level().addParticle(particle, getRandomX(0.5), getY(0.5), getRandomZ(0.5), MathUtil.nextNonAbsDouble(), random.nextDouble(), MathUtil.nextNonAbsDouble());
+                    level().addParticle(particle,
+                            getRandomX(0.5),
+                            getY(0.5),
+                            getRandomZ(0.5),
+                            MathUtil.nextNonAbsDouble(random),
+                            random.nextDouble(),
+                            MathUtil.nextNonAbsDouble(random)
+                    );
                 }
             }
         }

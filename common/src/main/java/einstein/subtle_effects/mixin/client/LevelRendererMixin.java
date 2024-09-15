@@ -27,8 +27,8 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import static einstein.subtle_effects.init.ModConfigs.INSTANCE;
-import static einstein.subtle_effects.util.MathUtil.nextFloat;
 import static einstein.subtle_effects.util.MathUtil.nextSign;
+import static net.minecraft.util.Mth.nextFloat;
 
 @Mixin(LevelRenderer.class)
 public class LevelRendererMixin implements FrustumGetter {
@@ -59,15 +59,15 @@ public class LevelRendererMixin implements FrustumGetter {
                 float pointZ = random.nextFloat();
 
                 for (int i = 0; i < 20; i++) {
-                    int xSign = nextSign();
-                    int zSign = nextSign();
+                    int xSign = nextSign(random);
+                    int zSign = nextSign(random);
                     level.addParticle(ModParticles.METAL_SPARK.get(),
                             pos.getX() + pointX,
                             pos.getY() + 1,
                             pos.getZ() + pointZ,
-                            nextFloat(10, 20) * xSign,
-                            nextFloat(10, 20),
-                            nextFloat(10, 20) * zSign
+                            nextFloat(random, 0.1F, 0.2F) * xSign,
+                            nextFloat(random, 0.1F, 0.2F),
+                            nextFloat(random, 0.1F, 0.2F) * zSign
                     );
                 }
             }
@@ -80,9 +80,9 @@ public class LevelRendererMixin implements FrustumGetter {
 
                 for (int i = 0; i < 20; i++) {
                     ParticleSpawnUtil.spawnParticlesOnSide(ModParticles.METAL_SPARK.get(), 0, side, level, pos, random,
-                            nextFloat(10, 20) * (direction.getStepX() * 1.5),
-                            face == AttachFace.CEILING ? 0 : nextFloat(10, 20),
-                            nextFloat(10, 20) * (direction.getStepZ() * 1.5)
+                            nextFloat(random, 0.1F, 0.2F) * (direction.getStepX() * 1.5),
+                            face == AttachFace.CEILING ? 0 : nextFloat(random, 0.1F, 0.2F),
+                            nextFloat(random, 0.1F, 0.2F) * (direction.getStepZ() * 1.5)
                     );
                 }
             }

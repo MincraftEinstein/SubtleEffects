@@ -31,9 +31,9 @@ public class IronGolemTicker extends Ticker<IronGolem> {
                                 entity.getRandomX(0.5),
                                 entity.getRandomY(),
                                 entity.getRandomZ(0.5),
-                                MathUtil.nextNonAbsDouble() / 10,
-                                MathUtil.nextNonAbsDouble() / 10,
-                                MathUtil.nextNonAbsDouble() / 10
+                                MathUtil.nextNonAbsDouble(random) / 10,
+                                MathUtil.nextNonAbsDouble(random) / 10,
+                                MathUtil.nextNonAbsDouble(random) / 10
                         );
                     }
                 }

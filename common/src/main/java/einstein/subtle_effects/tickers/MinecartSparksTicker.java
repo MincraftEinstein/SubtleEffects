@@ -3,11 +3,12 @@ package einstein.subtle_effects.tickers;
 import einstein.subtle_effects.init.ModParticles;
 import net.minecraft.core.BlockPos;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.level.block.BaseRailBlock;
 import net.minecraft.world.phys.Vec3;
 
-import static einstein.subtle_effects.util.MathUtil.nextFloat;
+import static net.minecraft.util.Mth.nextFloat;
 
 public class MinecartSparksTicker extends Ticker<AbstractMinecart> {
 
@@ -67,11 +68,11 @@ public class MinecartSparksTicker extends Ticker<AbstractMinecart> {
             for (int i = 0; i < sparksCount; i++) {
                 level.addParticle(ModParticles.METAL_SPARK.get(),
                         entity.position().x() + entity.getBbWidth() * random.nextDouble() - 1,
-                        entity.getY() + Math.max(Math.min(random.nextFloat(), 0.5), 0.2),
+                        entity.getY() + Mth.clamp(random.nextFloat(), 0.2, 0.5),
                         entity.position().z() + entity.getBbWidth() * random.nextDouble() - 1,
-                        nextFloat(10, 20) * (deltaMovement.x() * 1.5),
-                        nextFloat(10, 20),
-                        nextFloat(10, 20) * (deltaMovement.z() * 1.5)
+                        nextFloat(random, 0.1F, 0.2F) * (deltaMovement.x() * 1.5),
+                        nextFloat(random, 0.1F, 0.2F),
+                        nextFloat(random, 0.1F, 0.2F) * (deltaMovement.z() * 1.5)
                 );
             }
             return;

@@ -2,7 +2,6 @@ package einstein.subtle_effects.init;
 
 import einstein.subtle_effects.particle.option.BooleanParticleOptions;
 import einstein.subtle_effects.tickers.*;
-import einstein.subtle_effects.util.MathUtil;
 import einstein.subtle_effects.util.ParticleSpawnUtil;
 import einstein.subtle_effects.util.Util;
 import net.minecraft.client.Minecraft;
@@ -14,7 +13,6 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.animal.IronGolem;
 import net.minecraft.world.entity.item.FallingBlockEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.MagmaCube;
@@ -32,7 +30,8 @@ import java.util.function.Predicate;
 import static einstein.subtle_effects.init.ModConfigs.INSTANCE;
 import static einstein.subtle_effects.tickers.TickerManager.registerSimpleTicker;
 import static einstein.subtle_effects.tickers.TickerManager.registerTicker;
-import static einstein.subtle_effects.util.MathUtil.*;
+import static einstein.subtle_effects.util.MathUtil.nextDouble;
+import static einstein.subtle_effects.util.MathUtil.nextNonAbsDouble;
 
 public class ModTickers {
 
@@ -59,7 +58,7 @@ public class ModTickers {
                             entity.getY(),
                             entity.getRandomZ(1),
                             0,
-                            MathUtil.nextFloat(2),
+                            nextDouble(random, 0.02),
                             0
                     );
                 });
@@ -106,9 +105,9 @@ public class ModTickers {
                         entity.getRandomX(1),
                         entity.getRandomY(),
                         entity.getRandomZ(1),
-                        nextFloat(4) * nextSign(),
+                        nextNonAbsDouble(random, 0.04),
                         0,
-                        nextFloat(4) * nextSign()
+                        nextNonAbsDouble(random, 0.04)
                 );
             }
         });
@@ -118,9 +117,9 @@ public class ModTickers {
                         entity.getRandomX(1),
                         entity.getRandomY(),
                         entity.getRandomZ(1),
-                        nextFloat(4) * nextSign(),
+                        nextNonAbsDouble(random, 0.04),
                         0,
-                        nextFloat(4) * nextSign()
+                        nextNonAbsDouble(random, 0.04)
                 );
             }
         });
@@ -157,9 +156,9 @@ public class ModTickers {
                         entity.getRandomX(0.5),
                         entity.getY(1),
                         entity.getRandomZ(0.5),
-                        nextFloat(1) * nextSign(),
-                        nextFloat(1) * nextSign(),
-                        nextFloat(1) * nextSign()
+                        nextNonAbsDouble(random, 0.01),
+                        nextNonAbsDouble(random, 0.01),
+                        nextNonAbsDouble(random, 0.01)
                 );
             }
 
@@ -177,7 +176,7 @@ public class ModTickers {
                 if (level.getBlockState(entity.blockPosition()).getBlock() instanceof BaseFireBlock || random.nextInt(3) == 0) {
                     level.addParticle(ModParticles.END_CRYSTAL.get(),
                             entity.getRandomX(1),
-                            entity.getRandomY() + nextNonAbsDouble(),
+                            entity.getRandomY() + nextNonAbsDouble(random),
                             entity.getRandomZ(1),
                             0, 0, 0
                     );

@@ -8,8 +8,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.Entity;
 
 import static einstein.subtle_effects.init.ModConfigs.INSTANCE;
-import static einstein.subtle_effects.util.MathUtil.nextFloat;
-import static einstein.subtle_effects.util.MathUtil.nextSign;
+import static einstein.subtle_effects.util.MathUtil.nextNonAbsDouble;
 
 public class EntityFireTicker extends Ticker<Entity> {
 
@@ -41,9 +40,9 @@ public class EntityFireTicker extends Ticker<Entity> {
                 if (INSTANCE.burningEntitySparks.get()) {
                     for (int i = 0; i < 2; i++) {
                         level.addParticle(ModParticles.SHORT_SPARK.get(), entity.getRandomX(1), entity.getRandomY(), entity.getRandomZ(1),
-                                nextFloat(3) * nextSign(),
-                                nextFloat(5) * nextSign(),
-                                nextFloat(3) * nextSign()
+                                nextNonAbsDouble(random, 0.03),
+                                nextNonAbsDouble(random, 0.05),
+                                nextNonAbsDouble(random, 0.03)
                         );
                     }
                 }

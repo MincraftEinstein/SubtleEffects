@@ -42,9 +42,9 @@ public abstract class LavaFluidMixin {
                             -0.0625F,
                             direction.getOpposite(),
                             level, relativePos, random,
-                            MathUtil.nextFloat(10) * MathUtil.nextSign(),
-                            MathUtil.nextFloat(7) ,
-                            MathUtil.nextFloat(10) * MathUtil.nextSign()
+                            MathUtil.nextNonAbsDouble(random, 0.1),
+                            MathUtil.nextNonAbsDouble(random, 0.07),
+                            MathUtil.nextNonAbsDouble(random, 0.1)
                     );
                 }
             }

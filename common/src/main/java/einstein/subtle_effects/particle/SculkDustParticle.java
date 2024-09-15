@@ -6,16 +6,15 @@ import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.core.particles.SimpleParticleType;
-import net.minecraft.util.Mth;
 import org.jetbrains.annotations.Nullable;
 
 public class SculkDustParticle extends GlowingSuspendedParticle {
 
     public SculkDustParticle(ClientLevel level, SpriteSet sprites, double x, double y, double z) {
         super(level, sprites, x, y, z, 0, 0, 0);
-        xd = Mth.nextDouble(random, 0, 0.01) * MathUtil.nextSign();
-        yd = Mth.nextDouble(random, 0, 0.01) * MathUtil.nextSign();
-        zd = Mth.nextDouble(random, 0, 0.01) * MathUtil.nextSign();
+        xd = MathUtil.nextNonAbsDouble(random, 0.01);
+        yd = MathUtil.nextNonAbsDouble(random, 0.01);
+        zd = MathUtil.nextNonAbsDouble(random, 0.01);
         lifetime *= 2;
     }
 

@@ -23,9 +23,9 @@ public class ModDamageListeners {
                             entity.getX(),
                             entity.getY(0.5),
                             entity.getZ(),
-                            nextNonAbsDouble(),
-                            nextNonAbsDouble(),
-                            nextNonAbsDouble()
+                            nextNonAbsDouble(random),
+                            nextNonAbsDouble(random),
+                            nextNonAbsDouble(random)
                     );
                 }
             }
@@ -45,9 +45,9 @@ public class ModDamageListeners {
                             entity.getX(),
                             entity.getY(0.5),
                             entity.getZ(),
-                            nextNonAbsDouble(),
-                            nextNonAbsDouble(),
-                            nextNonAbsDouble()
+                            nextNonAbsDouble(random),
+                            nextNonAbsDouble(random),
+                            nextNonAbsDouble(random)
                     );
                 }
             }
@@ -59,9 +59,9 @@ public class ModDamageListeners {
                             entity.getX(),
                             entity.getY(random.nextFloat()),
                             entity.getZ(),
-                            nextNonAbsDouble(),
-                            nextNonAbsDouble(),
-                            nextNonAbsDouble()
+                            nextNonAbsDouble(random),
+                            nextNonAbsDouble(random),
+                            nextNonAbsDouble(random)
                     );
                 }
             }

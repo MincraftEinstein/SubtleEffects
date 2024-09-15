@@ -7,7 +7,6 @@ import einstein.subtle_effects.platform.Services;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.Vec3i;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.particles.SimpleParticleType;
@@ -27,26 +26,25 @@ import net.neoforged.neoforge.common.ModConfigSpec;
 import java.util.function.BiPredicate;
 
 import static einstein.subtle_effects.init.ModConfigs.INSTANCE;
-import static einstein.subtle_effects.util.MathUtil.nextFloat;
-import static einstein.subtle_effects.util.MathUtil.nextSign;
+import static einstein.subtle_effects.util.MathUtil.*;
 
 public class ParticleSpawnUtil {
 
-    public static void spawnSparks(Level level, RandomSource random, BlockPos pos, Vec3 offset, Vec3i maxSpeeds, int count, int size, boolean isSoulFlame, boolean longLife) {
+    public static void spawnSparks(Level level, RandomSource random, BlockPos pos, Vec3 offset, Vec3 maxSpeeds, int count, int size, boolean isSoulFlame, boolean longLife) {
         spawnSparks(level, random, pos, offset, maxSpeeds, count, size, size, isSoulFlame, longLife);
     }
 
-    public static void spawnSparks(Level level, RandomSource random, BlockPos pos, Vec3 offset, Vec3i maxSpeeds, int count, int xSize, int zSize, boolean isSoulFlame, boolean longLife) {
+    public static void spawnSparks(Level level, RandomSource random, BlockPos pos, Vec3 offset, Vec3 maxSpeeds, int count, int xSize, int zSize, boolean isSoulFlame, boolean longLife) {
         if (random.nextInt(1) == 0) {
             for (int i = 0; i < count; i++) {
                 SimpleParticleType type = (isSoulFlame ? (longLife ? ModParticles.LONG_SOUL_SPARK : ModParticles.SHORT_SOUL_SPARK) : (longLife ? ModParticles.LONG_SPARK : ModParticles.SHORT_SPARK)).get();
                 level.addParticle(type,
-                        pos.getX() + offset.x() + random.nextDouble() / xSize * nextSign(),
+                        pos.getX() + offset.x() + random.nextDouble() / xSize * nextSign(random),
                         pos.getY() + offset.y(),
-                        pos.getZ() + offset.z() + random.nextDouble() / zSize * nextSign(),
-                        nextFloat(maxSpeeds.getX()) * nextSign(),
-                        nextFloat(maxSpeeds.getY()) * nextSign(),
-                        nextFloat(maxSpeeds.getZ()) * nextSign()
+                        pos.getZ() + offset.z() + random.nextDouble() / zSize * nextSign(random),
+                        nextNonAbsDouble(random, maxSpeeds.x()),
+                        nextNonAbsDouble(random, maxSpeeds.y()),
+                        nextNonAbsDouble(random, maxSpeeds.z())
                 );
             }
         }
@@ -96,12 +94,12 @@ public class ParticleSpawnUtil {
     public static void spawnLavaSparks(Level level, BlockPos pos, RandomSource random, int count) {
         for (int i = 0; i < count; i++) {
             level.addParticle(ModParticles.FLOATING_SPARK.get(),
-                    pos.getX() + 0.5 + random.nextDouble() / 2 * nextSign(),
+                    pos.getX() + 0.5 + random.nextDouble() / 2 * nextSign(random),
                     pos.getY() + random.nextDouble() * random.nextInt(3),
-                    pos.getZ() + 0.5 + random.nextDouble() / 2 * nextSign(),
-                    nextFloat(10) * nextSign(),
-                    nextFloat(7),
-                    nextFloat(10) * nextSign()
+                    pos.getZ() + 0.5 + random.nextDouble() / 2 * nextSign(random),
+                    nextNonAbsDouble(random, 0.1),
+                    nextNonAbsDouble(random, 0.07),
+                    nextNonAbsDouble(random, 0.1)
             );
         }
     }
@@ -126,7 +124,7 @@ public class ParticleSpawnUtil {
                 if (!isFalling && !Util.isSolidOrNotEmpty(level, pos.above())) {
                     level.addParticle(ModParticles.STEAM.get(),
                             pos.getX() + random.nextDouble(),
-                            pos.getY() + 0.875 + nextFloat(50),
+                            pos.getY() + 0.875 + nextDouble(random, 0.5),
                             pos.getZ() + random.nextDouble(),
                             0, 0, 0
                     );
@@ -174,9 +172,9 @@ public class ParticleSpawnUtil {
                         entity.getRandomX(1),
                         y + Math.max(Math.min(random.nextFloat(), 0.5), 0.2),
                         entity.getRandomZ(1),
-                        0.3 * nextSign(),
+                        0.3 * nextSign(random),
                         random.nextDouble(),
-                        0.3 * nextSign()
+                        0.3 * nextSign(random)
                 );
             }
             return;
@@ -187,9 +185,9 @@ public class ParticleSpawnUtil {
                     entity.getRandomX(1),
                     y + Math.max(Math.min(random.nextFloat(), 0.5), 0.2),
                     entity.getRandomZ(1),
-                    0.5 * nextSign(),
+                    0.5 * nextSign(random),
                     random.nextDouble() * 3,
-                    0.5 * nextSign()
+                    0.5 * nextSign(random)
             );
         }
     }

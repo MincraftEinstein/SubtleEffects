@@ -4,6 +4,7 @@ import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.init.ModParticles;
 import einstein.subtle_effects.util.MathUtil;
 import net.minecraft.core.BlockPos;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.ComposterBlock;
 import net.minecraft.world.level.block.state.BlockState;
@@ -18,13 +19,14 @@ public class ComposterBlockMixin {
     @Inject(method = "handleFill", at = @At("TAIL"))
     private static void handleFill(Level level, BlockPos pos, boolean success, CallbackInfo ci) {
         if (ModConfigs.INSTANCE.compostingParticles.get()) {
+            RandomSource random = level.getRandom();
             BlockState state = level.getBlockState(pos);
 
             for (int i = 0; i < 10; i++) {
                 level.addParticle(ModParticles.COMPOST.get(),
-                        pos.getX() + 0.5 + MathUtil.nextFloat(30) * MathUtil.nextSign(),
+                        pos.getX() + 0.5 + MathUtil.nextNonAbsDouble(random, 0.3),
                         pos.getY() + 0.1875 + (0.125 * state.getValue(ComposterBlock.LEVEL)),
-                        pos.getZ() + 0.5 + MathUtil.nextFloat(30) * MathUtil.nextSign(),
+                        pos.getZ() + 0.5 + MathUtil.nextNonAbsDouble(random, 0.3),
                         0, 0, 0
                 );
             }
