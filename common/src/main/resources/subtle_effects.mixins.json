@@ -8,12 +8,8 @@
     "client.ClientLevelMixin",
     "client.GameRendererMixin",
     "client.LavaFluidMixin",
-    "client.particle.LavaParticleMixin",
     "client.LevelRendererMixin",
     "client.MinecraftMixin",
-    "client.particle.ParticleEngineMixin",
-    "client.particle.ParticleMixin",
-    "client.particle.SpriteSetAccessor",
     "client.WaterFluidMixin",
     "client.block.AbstractCandleBlockMixin",
     "client.block.BaseFireBlockMixin",
@@ -33,12 +29,17 @@
     "client.entity.SlimeMixin",
     "client.entity.SpellCasterIllagerMixin",
     "client.item.BoneMealItemMixin",
-    "client.item.BucketItemMixin"
+    "client.item.BucketItemMixin",
+    "client.particle.LavaParticleMixin",
+    "client.particle.ParticleEngineMixin",
+    "client.particle.ParticleMixin",
+    "client.particle.SpriteSetAccessor"
   ],
   "mixins": [
     "common.AbstractHorseMixin",
     "common.BeehiveBlockEntityMixin",
     "common.CommonLivingEntityMixin",
+    "common.FarmBlockMixin",
     "common.LeavesBlockMixin",
     "common.LlamaMixin"
   ],

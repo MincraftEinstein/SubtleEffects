@@ -1,6 +1,6 @@
 package einstein.subtle_effects.mixin.common;
 
-import einstein.subtle_effects.networking.clientbound.ClientBoundLeavesDecayPacket;
+import einstein.subtle_effects.networking.clientbound.ClientBoundBlockDestroyEffectsPacket;
 import einstein.subtle_effects.platform.Services;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
@@ -18,6 +18,6 @@ public class LeavesBlockMixin {
 
     @Inject(method = "randomTick", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/level/ServerLevel;removeBlock(Lnet/minecraft/core/BlockPos;Z)Z"))
     private void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random, CallbackInfo ci) {
-        Services.NETWORK.sendToClientsTracking(level, pos, new ClientBoundLeavesDecayPacket(Block.getId(state), pos));
+        Services.NETWORK.sendToClientsTracking(level, pos, new ClientBoundBlockDestroyEffectsPacket(state, pos, ClientBoundBlockDestroyEffectsPacket.TypeConfig.LEAVES_DECAY));
     }
 }

@@ -10,13 +10,13 @@ public class ModPackets {
         NETWORK.registerToClient(ClientBoundSpawnSnoreParticlePacket.TYPE, ClientBoundSpawnSnoreParticlePacket.STREAM_CODEC);
         NETWORK.registerToClient(ClientBoundEntityFellPacket.TYPE, ClientBoundEntityFellPacket.STREAM_CODEC);
         NETWORK.registerToClient(ClientBoundEntitySpawnSprintingDustCloudsPacket.TYPE, ClientBoundEntitySpawnSprintingDustCloudsPacket.STREAM_CODEC);
-        NETWORK.registerToClient(ClientBoundLeavesDecayPacket.TYPE, ClientBoundLeavesDecayPacket.STREAM_CODEC);
+        NETWORK.registerToClient(ClientBoundBlockDestroyEffectsPacket.TYPE, ClientBoundBlockDestroyEffectsPacket.STREAM_CODEC);
     }
 
     public static void initClientHandlers() {
         NETWORK.registerClientHandler(ClientBoundSpawnSnoreParticlePacket.TYPE, ClientPacketHandlers::handle);
         NETWORK.registerClientHandler(ClientBoundEntityFellPacket.TYPE, ClientPacketHandlers::handle);
         NETWORK.registerClientHandler(ClientBoundEntitySpawnSprintingDustCloudsPacket.TYPE, ClientPacketHandlers::handle);
-        NETWORK.registerClientHandler(ClientBoundLeavesDecayPacket.TYPE, ClientPacketHandlers::handle);
+        NETWORK.registerClientHandler(ClientBoundBlockDestroyEffectsPacket.TYPE, ClientPacketHandlers::handle);
     }
 }

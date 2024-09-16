@@ -79,6 +79,7 @@ public class ModConfigs {
     public final ModConfigSpec.BooleanValue beehiveShearParticles;
     public final ModConfigSpec.BooleanValue endPortalParticles;
     public final ModConfigSpec.BooleanValue leavesDecayEffects;
+    public final ModConfigSpec.BooleanValue farmlandDestroyEffects;
 
     // Entity Snoring
     public final ModConfigSpec.DoubleValue playerSnoreChance;
@@ -350,6 +351,11 @@ public class ModConfigs {
                 .comment("Play the destroy block sound and particle effects when leaves decay/despawn")
                 .translation(key("leaves_decay_effects"))
                 .define("leavesDecayEffects", true);
+
+        farmlandDestroyEffects = builder
+                .comment("Play the destroy block sound and particle effects when a mob/player destroys farmland")
+                .translation(key("farmland_destroy_effects"))
+                .define("farmlandDestroyEffects", true);
 
         builder.pop().translation(categoryKey("entities")).push("entities")
                 .translation(categoryKey("sleeping")).push("sleeping");
