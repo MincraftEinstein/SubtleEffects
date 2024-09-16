@@ -5,6 +5,8 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Consumer;
 
@@ -15,4 +17,6 @@ public interface NetworkHelper {
     <T extends CustomPacketPayload> void registerClientHandler(CustomPacketPayload.Type<T> type, Consumer<T> handler);
 
     <T extends CustomPacketPayload> void sendToClientsTracking(ServerLevel level, BlockPos pos, T packet);
+
+    <T extends CustomPacketPayload> void sendToClientsTracking(@Nullable ServerPlayer exceptPlayer, ServerLevel level, BlockPos pos, T packet);
 }

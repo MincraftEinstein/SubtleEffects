@@ -11,12 +11,14 @@ import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.animal.camel.Camel;
 import net.minecraft.world.entity.animal.horse.AbstractHorse;
+import net.minecraft.world.entity.decoration.ArmorStand;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.block.Blocks;
@@ -73,8 +75,12 @@ public class ParticleSpawnUtil {
         if (level.isClientSide && entity.equals(Minecraft.getInstance().player)) {
             spawnEntityFellParticles(entity, entity.getY(), distance, fallDamage);
         }
-        else if (level instanceof ServerLevel serverLevel && serverLevel.getServer().isDedicatedServer()) {
-            Services.NETWORK.sendToClientsTracking(serverLevel, entity.blockPosition(), new ClientBoundEntityFellPacket(entity.getId(), entity.getY(), distance, fallDamage));
+        else if (level instanceof ServerLevel serverLevel) {
+            Services.NETWORK.sendToClientsTracking(
+                    entity instanceof ServerPlayer player ? player : null,
+                    serverLevel, entity.blockPosition(),
+                    new ClientBoundEntityFellPacket(entity.getId(), entity.getY(), distance, fallDamage)
+            );
         }
     }
 

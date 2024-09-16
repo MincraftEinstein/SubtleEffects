@@ -10,6 +10,8 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Consumer;
 
@@ -27,8 +29,13 @@ public class FabricNetworkHelper implements NetworkHelper {
 
     @Override
     public <T extends CustomPacketPayload> void sendToClientsTracking(ServerLevel level, BlockPos pos, T packet) {
+        sendToClientsTracking(null, level, pos, packet);
+    }
+
+    @Override
+    public <T extends CustomPacketPayload> void sendToClientsTracking(@Nullable ServerPlayer exceptPlayer, ServerLevel level, BlockPos pos, T packet) {
         PlayerLookup.tracking(level, pos).forEach(player -> {
-            if (ServerPlayNetworking.canSend(player, packet.type())) {
+            if (!player.equals(exceptPlayer) && ServerPlayNetworking.canSend(player, packet.type())) {
                 ServerPlayNetworking.send(player, packet);
             }
         });
