@@ -1,6 +1,6 @@
 package einstein.subtle_effects.platform.services;
 
-import einstein.subtle_effects.mixin.client.SpriteSetAccessor;
+import einstein.subtle_effects.mixin.client.particle.SpriteSetAccessor;
 import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import org.jetbrains.annotations.Nullable;

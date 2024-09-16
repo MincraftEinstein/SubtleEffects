@@ -1,4 +1,4 @@
-package einstein.subtle_effects.mixin.client;
+package einstein.subtle_effects.mixin.client.particle;
 
 import einstein.subtle_effects.util.ParticleAccessor;
 import net.minecraft.client.particle.Particle;
