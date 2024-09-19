@@ -30,7 +30,7 @@ public class Util {
     public static final ResourceLocation CREEPER_SHADER = ResourceLocation.withDefaultNamespace("shaders/post/creeper.json");
     public static final ResourceLocation INVERT_SHADER = ResourceLocation.withDefaultNamespace("shaders/post/invert.json");
     public static final Supplier<Item> ENDERMAN_HEAD = Suppliers.memoize(() -> BuiltInRegistries.ITEM.get(ResourceLocation.fromNamespaceAndPath("supplementaries", "enderman_head")));
-    public static final Supplier<Boolean> IS_SUPPLEMENTARIES_LOADED = () -> Services.PLATFORM.isModLoaded("supplementaries");
+    public static final Supplier<Boolean> IS_SUPPLEMENTARIES_LOADED = Suppliers.memoize(() -> Services.PLATFORM.isModLoaded("supplementaries"));
 
     public static void playClientSound(SoundSource source, Entity entity, SoundEvent sound, float volume, float pitch) {
         Minecraft minecraft = Minecraft.getInstance();
