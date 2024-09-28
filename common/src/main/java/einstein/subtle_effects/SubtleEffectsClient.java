@@ -1,11 +1,15 @@
 package einstein.subtle_effects;
 
+import com.mojang.brigadier.CommandDispatcher;
+import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import einstein.subtle_effects.biome_particles.BiomeParticleManager;
 import einstein.subtle_effects.init.*;
 import einstein.subtle_effects.tickers.TickerManager;
 import einstein.subtle_effects.util.ShaderManager;
 import einstein.subtle_effects.util.Util;
 import net.minecraft.client.Minecraft;
+import net.minecraft.commands.CommandBuildContext;
+import net.minecraft.commands.SharedSuggestionProvider;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 
@@ -57,5 +61,18 @@ public class SubtleEffectsClient {
         }
         TickerManager.clear();
         BiomeParticleManager.clear();
+    }
+
+    public static <T extends SharedSuggestionProvider> void registerClientCommands(CommandDispatcher<T> dispatcher, CommandBuildContext buildContext) {
+        dispatcher.register(LiteralArgumentBuilder.<T>literal("subtle_effects")
+                .then(LiteralArgumentBuilder.<T>literal("particles")
+                        .then(LiteralArgumentBuilder.<T>literal("clear")
+                                .executes(context -> {
+                                    Minecraft.getInstance().particleEngine.clearParticles();
+                                    return 1;
+                                })
+                        )
+                )
+        );
     }
 }

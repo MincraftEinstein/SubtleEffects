@@ -15,6 +15,7 @@ import net.neoforged.fml.config.ModConfig;
 import net.neoforged.fml.event.config.ModConfigEvent;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.ClientTickEvent;
+import net.neoforged.neoforge.client.event.RegisterClientCommandsEvent;
 import net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent;
 import net.neoforged.neoforge.common.NeoForge;
 
@@ -41,6 +42,7 @@ public class SubtleEffectsNeoForgeClient {
             SubtleEffectsClient.clientTick(minecraft, minecraft.level);
         });
         container.registerConfig(ModConfig.Type.CLIENT, ModConfigs.SPEC);
+        NeoForge.EVENT_BUS.addListener((RegisterClientCommandsEvent event) -> SubtleEffectsClient.registerClientCommands(event.getDispatcher(), event.getBuildContext()));
     }
 
     @SuppressWarnings("unchecked")
