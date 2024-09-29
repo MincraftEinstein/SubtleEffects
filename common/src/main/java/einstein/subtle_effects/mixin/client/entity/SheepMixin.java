@@ -34,7 +34,7 @@ public abstract class SheepMixin extends Animal {
 
     @Inject(method = "mobInteract", at = @At("HEAD"))
     private void mobInteract(Player player, InteractionHand hand, CallbackInfoReturnable<InteractionResult> cir) {
-        if (level().isClientSide() && ModConfigs.INSTANCE.sheepShearFluff.get()) {
+        if (level().isClientSide() && ModConfigs.ENTITIES.sheepShearFluff) {
             if (player.getItemInHand(hand).is(Items.SHEARS) && readyForShearing()) {
                 IntegerParticleOptions particle = new IntegerParticleOptions(ModParticles.SHEEP_FLUFF.get(), Sheep.getColor(getColor()));
 

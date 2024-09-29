@@ -17,7 +17,7 @@ public class SlimeMixin {
 
     @WrapOperation(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/monster/Slime;getParticleType()Lnet/minecraft/core/particles/ParticleOptions;"))
     private ParticleOptions getParticleType(Slime entity, Operation<ParticleOptions> original) {
-        if (ModConfigs.INSTANCE.replaceSlimeSquishParticles.get() && entity.getType().equals(EntityType.SLIME)) {
+        if (ModConfigs.ENTITIES.replaceSlimeSquishParticles && entity.getType().equals(EntityType.SLIME)) {
             return new BlockParticleOption(ParticleTypes.BLOCK, Blocks.SLIME_BLOCK.defaultBlockState());
         }
         return original.call(entity);

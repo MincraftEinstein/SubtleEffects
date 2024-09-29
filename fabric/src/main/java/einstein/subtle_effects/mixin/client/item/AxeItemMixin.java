@@ -18,7 +18,7 @@ public class AxeItemMixin {
 
     @Inject(method = "evaluateNewBlockState", at = @At(value = "FIELD", target = "Lnet/minecraft/sounds/SoundEvents;AXE_STRIP:Lnet/minecraft/sounds/SoundEvent;"))
     private void evaluateNewBlockState(Level level, BlockPos pos, Player player, BlockState state, CallbackInfoReturnable<Optional<BlockState>> cir) {
-        if (ModConfigs.INSTANCE.axeStripParticles.get()) {
+        if (ModConfigs.ITEMS.axeStripParticles) {
             if (level.isClientSide) {
                 level.addDestroyBlockEffect(pos, state);
             }

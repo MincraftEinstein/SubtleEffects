@@ -15,7 +15,7 @@ public class SpellCasterIllagerMixin {
 
     @Redirect(method = "tick", at = @At(value = "FIELD", target = "Lnet/minecraft/core/particles/ParticleTypes;ENTITY_EFFECT:Lnet/minecraft/core/particles/ParticleType;"))
     private ParticleType<ColorParticleOption> replaceEntityEffect() {
-        if (ModConfigs.INSTANCE.replaceSpellCasterParticles.get()) {
+        if (ModConfigs.ENTITIES.replaceSpellCasterParticles) {
             return ModParticles.SPELL_CASTER_MAGIC.get();
         }
         return ParticleTypes.ENTITY_EFFECT;

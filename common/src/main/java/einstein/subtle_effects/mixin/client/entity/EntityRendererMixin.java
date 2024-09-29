@@ -24,7 +24,7 @@ public class EntityRendererMixin<T extends Entity> {
 
     @WrapOperation(method = "renderNameTag", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/vertex/PoseStack;translate(DDD)V"))
     private void translate(PoseStack poseStack, double x, double y, double z, Operation<Void> original, T entity, @Local Vec3 nameTagPos) {
-        if (!ModConfigs.INSTANCE.adjustNameTagWhenSleeping.get()) {
+        if (!ModConfigs.ENTITIES.sleeping.adjustNameTagWhenSleeping) {
             original.call(poseStack, x, y, z);
             return;
         }

@@ -34,7 +34,7 @@ public abstract class AbstractHorseMixin extends Animal {
 
     @Inject(method = "tickRidden", at = @At("TAIL"))
     private void tickRidden(Player player, Vec3 travelVector, CallbackInfo ci) {
-        if (level().isClientSide && ModConfigs.INSTANCE.mobSprintingDustClouds.get()) {
+        if (level().isClientSide && ModConfigs.ENTITIES.dustClouds.mobSprinting) {
             if (travelVector.z > 0 && onGround() && !(subtleEffects$me instanceof Camel)) {
                 ParticleSpawnUtil.spawnCreatureMovementDustClouds(subtleEffects$me, level(), random, 20);
             }

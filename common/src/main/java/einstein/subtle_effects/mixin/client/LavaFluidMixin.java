@@ -1,6 +1,7 @@
 package einstein.subtle_effects.mixin.client;
 
 import einstein.subtle_effects.init.ModConfigs;
+import einstein.subtle_effects.configs.blocks.SparksConfigs;
 import einstein.subtle_effects.init.ModParticles;
 import einstein.subtle_effects.util.MathUtil;
 import einstein.subtle_effects.util.ParticleSpawnUtil;
@@ -18,8 +19,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import static einstein.subtle_effects.init.ModConfigs.INSTANCE;
-
 @Mixin(LavaFluid.class)
 public abstract class LavaFluidMixin {
 
@@ -28,8 +27,9 @@ public abstract class LavaFluidMixin {
 
     @Inject(method = "animateTick", at = @At("TAIL"))
     private void animateTick(Level level, BlockPos pos, FluidState state, RandomSource random, CallbackInfo ci) {
-        if (INSTANCE.lavaSparks.get().equals(ModConfigs.LavaSparksSpawnType.OFF)
-                || (INSTANCE.lavaSparks.get().equals(ModConfigs.LavaSparksSpawnType.NOT_NETHER)
+        SparksConfigs.LavaSparksSpawnType type = ModConfigs.BLOCKS.sparks.lavaSparks;
+        if (type.equals(SparksConfigs.LavaSparksSpawnType.OFF)
+                || (type.equals(SparksConfigs.LavaSparksSpawnType.NOT_NETHER)
                 && level.dimension().equals(Level.NETHER))) {
             return;
         }

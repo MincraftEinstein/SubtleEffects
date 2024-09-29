@@ -14,7 +14,7 @@ public class LavaParticleMixin {
 
     @Redirect(method = "tick", at = @At(value = "FIELD", target = "Lnet/minecraft/core/particles/ParticleTypes;SMOKE:Lnet/minecraft/core/particles/SimpleParticleType;"))
     private SimpleParticleType replaceSmoke() {
-        if (ModConfigs.INSTANCE.lavaSparkSmoke.get()) {
+        if (ModConfigs.BLOCKS.updatedSmoke.lavaSparkSmoke) {
             return ModParticles.SMOKE.get();
         }
         return ParticleTypes.SMOKE;

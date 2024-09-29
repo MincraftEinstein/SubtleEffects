@@ -1,5 +1,8 @@
 package einstein.subtle_effects.init;
 
+import einstein.subtle_effects.configs.CommandBlockSpawnType;
+import einstein.subtle_effects.configs.SmokeType;
+import einstein.subtle_effects.configs.ModBlockConfigs;
 import einstein.subtle_effects.particle.option.PositionParticleOptions;
 import einstein.subtle_effects.util.BlockProvider;
 import einstein.subtle_effects.util.ParticleSpawnUtil;
@@ -22,7 +25,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Predicate;
 
-import static einstein.subtle_effects.init.ModConfigs.INSTANCE;
+import static einstein.subtle_effects.init.ModConfigs.BLOCKS;
 import static einstein.subtle_effects.util.MathUtil.nextNonAbsDouble;
 import static einstein.subtle_effects.util.MathUtil.nextSign;
 
@@ -32,13 +35,13 @@ public class ModBlockTickers {
 
     public static void init() {
         register(Blocks.REDSTONE_BLOCK, (state, level, pos, random) -> {
-            if (INSTANCE.redstoneBlockDust.get()) {
+            if (BLOCKS.redstoneBlockDust) {
                 ParticleSpawnUtil.spawnParticlesAroundBlock(DustParticleOptions.REDSTONE, level, pos, random);
             }
         });
         register(Blocks.GLOWSTONE, (state, level, pos, random) -> {
-            if (INSTANCE.glowstoneBlockDust.get().equals(ModConfigs.GlowstoneDustSpawnType.OFF)
-                    || (INSTANCE.glowstoneBlockDust.get().equals(ModConfigs.GlowstoneDustSpawnType.NETHER_ONLY)
+            if (BLOCKS.glowstoneBlockDust.equals(ModBlockConfigs.GlowstoneDustSpawnType.OFF)
+                    || (BLOCKS.glowstoneBlockDust.equals(ModBlockConfigs.GlowstoneDustSpawnType.NETHER_ONLY)
                     && !level.dimension().equals(Level.NETHER))) {
                 return;
             }
@@ -50,16 +53,16 @@ public class ModBlockTickers {
             double y = pos.getY() + 0.8;
             double z = pos.getZ() + 0.5;
 
-            if (INSTANCE.torchflowerSmoke.get() != ModConfigs.SmokeType.OFF && random.nextInt(3) == 0) {
-                level.addParticle(INSTANCE.torchflowerSmoke.get().getParticle().get(), x, y, z, 0, 0, 0);
+            if (BLOCKS.torchflowerSmoke != SmokeType.OFF && random.nextInt(3) == 0) {
+                level.addParticle(BLOCKS.torchflowerSmoke.getParticle().get(), x, y, z, 0, 0, 0);
             }
 
-            if (INSTANCE.torchflowerFlames.get() && random.nextInt(5) == 0) {
+            if (BLOCKS.torchflowerFlames && random.nextInt(5) == 0) {
                 level.addParticle(ParticleTypes.FLAME, x, y, z, 0, 0, 0);
             }
         });
         register(Blocks.DRAGON_EGG, (state, level, pos, random) -> {
-            if (INSTANCE.dragonEggParticles.get()) {
+            if (BLOCKS.dragonEggParticles) {
                 for (int i = 0; i < 3; ++i) {
                     level.addParticle(ParticleTypes.PORTAL,
                             pos.getX() + 0.5 + 0.25 * nextSign(random),
@@ -73,12 +76,12 @@ public class ModBlockTickers {
             }
         });
         register(Blocks.LAVA_CAULDRON, (state, level, pos, random) -> {
-            if (INSTANCE.lavaCauldronSparks.get()) {
+            if (BLOCKS.sparks.lavaCauldronSparks) {
                 ParticleSpawnUtil.spawnLavaSparks(level, pos.above(), random, 5);
             }
         });
         register(Blocks.BEACON, (state, level, pos, random) -> {
-            if (INSTANCE.beaconParticles.get()) {
+            if (BLOCKS.beaconParticles) {
                 BlockEntity blockEntity = level.getBlockEntity(pos);
                 if (blockEntity instanceof BeaconBlockEntity beaconBlockEntity) {
                     if (!beaconBlockEntity.getBeamSections().isEmpty()) {
@@ -96,7 +99,7 @@ public class ModBlockTickers {
             }
         });
         register(Blocks.RESPAWN_ANCHOR, (state, level, pos, random) -> {
-            if (INSTANCE.respawnAnchorParticles.get()) {
+            if (BLOCKS.respawnAnchorParticles) {
                 if (random.nextInt(5) == 0) {
                     Direction direction = Direction.getRandom(random);
 
@@ -112,7 +115,7 @@ public class ModBlockTickers {
             }
         });
         register(Blocks.FURNACE, (state, level, pos, random) -> {
-            if (ModConfigs.INSTANCE.furnaceSparks.get() && state.getValue(FurnaceBlock.LIT)) {
+            if (BLOCKS.sparks.furnaceSparks && state.getValue(FurnaceBlock.LIT)) {
                 Direction direction = state.getValue(FurnaceBlock.FACING);
                 Direction.Axis axis = direction.getAxis();
                 ParticleSpawnUtil.spawnSparks(level, random, pos,
@@ -132,11 +135,11 @@ public class ModBlockTickers {
         register(Blocks.WATER_CAULDRON, (state, level, pos, random) -> {
             ParticleSpawnUtil.spawnHeatedWaterParticles(level, pos, random, false,
                     0.5625 + (state.getValue(LayeredCauldronBlock.LEVEL) * 0.1875),
-                    INSTANCE.steamingWaterCauldron, INSTANCE.boilingWaterCauldron
+                    BLOCKS.steam.steamingWaterCauldron, BLOCKS.steam.boilingWaterCauldron
             );
         });
         register(Blocks.END_GATEWAY, (state, level, pos, random) -> {
-            if (INSTANCE.endPortalParticles.get()) {
+            if (BLOCKS.endPortalParticles) {
                 for (int i = 0; i < 5; i++) {
                     level.addParticle(ModParticles.END_PORTAL.get(),
                             pos.getX() + (random.nextInt(3) - 1) + random.nextDouble(),
@@ -148,71 +151,77 @@ public class ModBlockTickers {
             }
         });
 
-        register(state -> state.getBlock() instanceof CampfireBlock && INSTANCE.campfireSparks.get() && state.getValue(CampfireBlock.LIT), (state, level, pos, random) -> {
+        register(state -> state.getBlock() instanceof CampfireBlock && BLOCKS.sparks.campfireSparks
+                && state.getValue(CampfireBlock.LIT), (state, level, pos, random) -> {
             ParticleSpawnUtil.spawnSparks(level, random, pos, new Vec3(0.5, 0.4, 0.5),
                     new Vec3(0.03, 0.05, 0.03), 10, 6, state.is(Blocks.SOUL_CAMPFIRE), true
             );
         });
-        register(state -> state.getBlock() instanceof TorchBlock && !(state.getBlock() instanceof WallTorchBlock) && INSTANCE.torchSparks.get(), (state, level, pos, random) -> {
+        register(state -> state.getBlock() instanceof TorchBlock && !(state.getBlock() instanceof WallTorchBlock)
+                && BLOCKS.sparks.torchSparks, (state, level, pos, random) -> {
             ParticleSpawnUtil.spawnSparks(level, random, pos, new Vec3(0.5, 0.5, 0.5),
                     new Vec3(0.01, 0.01, 0.01), 2, -6, state.is(Blocks.SOUL_TORCH), false
             );
         });
-        register(state -> state.getBlock() instanceof WallTorchBlock && INSTANCE.torchSparks.get(), (state, level, pos, random) -> {
-            Direction direction = state.getValue(WallTorchBlock.FACING).getOpposite();
-            ParticleSpawnUtil.spawnSparks(level, random, pos,
-                    new Vec3(0.5 + (0.27 * direction.getStepX()), 0.7, 0.5 + (0.27 * direction.getStepZ())),
-                    new Vec3(0.01, 0.01, 0.01), 2, 20, state.is(Blocks.SOUL_WALL_TORCH), false
-            );
-        });
-        register(state -> state.getBlock() instanceof AbstractCandleBlock && ModConfigs.INSTANCE.candleSparks.get() && state.getValue(AbstractCandleBlock.LIT), (state, level, pos, random) -> {
+        register(state -> state.getBlock() instanceof WallTorchBlock && BLOCKS.sparks.torchSparks,
+                (state, level, pos, random) -> {
+                    Direction direction = state.getValue(WallTorchBlock.FACING).getOpposite();
+                    ParticleSpawnUtil.spawnSparks(level, random, pos,
+                            new Vec3(0.5 + (0.27 * direction.getStepX()), 0.7, 0.5 + (0.27 * direction.getStepZ())),
+                            new Vec3(0.01, 0.01, 0.01), 2, 20, state.is(Blocks.SOUL_WALL_TORCH), false
+                    );
+                });
+        register(state -> state.getBlock() instanceof AbstractCandleBlock && BLOCKS.sparks.candleSparks
+                && state.getValue(AbstractCandleBlock.LIT), (state, level, pos, random) -> {
             AbstractCandleBlock block = (AbstractCandleBlock) state.getBlock();
             block.getParticleOffsets(state).forEach(offset -> ParticleSpawnUtil.spawnSparks(level, random, pos,
                     offset, new Vec3(0.01, 0.01, 0.01), 1, 20, BuiltInRegistries.BLOCK.getKey(state.getBlock()).getPath().contains("soul"), false)
             );
         });
-        register(state -> state.getBlock() instanceof BaseFireBlock && ModConfigs.INSTANCE.fireSparks.get(), (state, level, pos, random) -> {
-            BaseFireBlock block = (BaseFireBlock) state.getBlock();
-            BlockPos belowPos = pos.below();
-            BlockState belowState = level.getBlockState(belowPos);
+        register(state -> state.getBlock() instanceof BaseFireBlock && BLOCKS.sparks.fireSparks,
+                (state, level, pos, random) -> {
+                    BaseFireBlock block = (BaseFireBlock) state.getBlock();
+                    BlockPos belowPos = pos.below();
+                    BlockState belowState = level.getBlockState(belowPos);
 
-            if (!block.canBurn(belowState) && !belowState.isFaceSturdy(level, belowPos, Direction.UP)) {
-                if (canBurn(block, level, pos.west())) {
-                    spawnFireSparks(level, random, state, pos, 0, random.nextDouble());
-                }
+                    if (!block.canBurn(belowState) && !belowState.isFaceSturdy(level, belowPos, Direction.UP)) {
+                        if (canBurn(block, level, pos.west())) {
+                            spawnFireSparks(level, random, state, pos, 0, random.nextDouble());
+                        }
 
-                if (canBurn(block, level, pos.east())) {
-                    spawnFireSparks(level, random, state, pos, 1, random.nextDouble());
-                }
+                        if (canBurn(block, level, pos.east())) {
+                            spawnFireSparks(level, random, state, pos, 1, random.nextDouble());
+                        }
 
-                if (canBurn(block, level, pos.north())) {
-                    spawnFireSparks(level, random, state, pos, random.nextDouble(), 0);
-                }
+                        if (canBurn(block, level, pos.north())) {
+                            spawnFireSparks(level, random, state, pos, random.nextDouble(), 0);
+                        }
 
-                if (canBurn(block, level, pos.south())) {
-                    spawnFireSparks(level, random, state, pos, random.nextDouble(), 1);
-                }
-                return;
-            }
-            spawnFireSparks(level, random, state, pos, random.nextDouble(), random.nextDouble());
-        });
-        register(state -> state.getBlock() instanceof LanternBlock && INSTANCE.lanternSparks.get(), (state, level, pos, random) -> {
-            for (int i = 0; i < 5; i++) {
-                int xSign = nextSign(random);
-                int zSign = nextSign(random);
-                level.addParticle(state.is(Blocks.SOUL_LANTERN) ? ModParticles.FLOATING_SOUL_SPARK.get() : ModParticles.FLOATING_SPARK.get(),
-                        pos.getX() + 0.5 + random.nextDouble() / 2 * xSign,
-                        pos.getY() + random.nextInt(5) / 10D,
-                        pos.getZ() + 0.5 + random.nextDouble() / 2 * zSign,
-                        random.nextInt(3) / 100D * xSign,
-                        0,
-                        random.nextInt(3) / 100D * zSign
-                );
-            }
-        });
+                        if (canBurn(block, level, pos.south())) {
+                            spawnFireSparks(level, random, state, pos, random.nextDouble(), 1);
+                        }
+                        return;
+                    }
+                    spawnFireSparks(level, random, state, pos, random.nextDouble(), random.nextDouble());
+                });
+        register(state -> state.getBlock() instanceof LanternBlock && BLOCKS.sparks.lanternSparks,
+                (state, level, pos, random) -> {
+                    for (int i = 0; i < 5; i++) {
+                        int xSign = nextSign(random);
+                        int zSign = nextSign(random);
+                        level.addParticle(state.is(Blocks.SOUL_LANTERN) ? ModParticles.FLOATING_SOUL_SPARK.get() : ModParticles.FLOATING_SPARK.get(),
+                                pos.getX() + 0.5 + random.nextDouble() / 2 * xSign,
+                                pos.getY() + random.nextInt(5) / 10D,
+                                pos.getZ() + 0.5 + random.nextDouble() / 2 * zSign,
+                                random.nextInt(3) / 100D * xSign,
+                                0,
+                                random.nextInt(3) / 100D * zSign
+                        );
+                    }
+                });
         register(state -> state.getBlock() instanceof CommandBlock
-                && (INSTANCE.commandBlockParticles.get() == ModConfigs.CommandBlockSpawnType.ON
-                || (INSTANCE.commandBlockParticles.get() == ModConfigs.CommandBlockSpawnType.NOT_CREATIVE
+                && (BLOCKS.commandBlockParticles == CommandBlockSpawnType.ON
+                || (BLOCKS.commandBlockParticles == CommandBlockSpawnType.NOT_CREATIVE
                 && !Minecraft.getInstance().player.isCreative())), (state, level, pos, random) ->
                 ParticleSpawnUtil.spawnCmdBlockParticles(level, Vec3.atCenterOf(pos), random, (direction, relativePos) ->
                         !Util.isSolidOrNotEmpty(level, BlockPos.containing(relativePos))

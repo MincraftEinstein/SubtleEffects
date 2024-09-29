@@ -22,7 +22,7 @@ public class ParticleEngineMixin {
         if (frustum != null && frustum.isVisible(particle.getBoundingBox())) {
             ParticleAccessor accessor = ((ParticleAccessor) particle);
             if (accessor.getAlpha() != 0) {
-                int distance = ModConfigs.INSTANCE.particleRenderDistance.get() * 16;
+                int distance = ModConfigs.GENERAL.particleRenderDistance * 16;
                 return accessor.subtleEffects$wasForced() || camera.getPosition().distanceToSqr(accessor.getX(), accessor.getY(), accessor.getZ()) < distance * distance;
             }
         }

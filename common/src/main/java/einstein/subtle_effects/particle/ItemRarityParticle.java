@@ -2,6 +2,7 @@ package einstein.subtle_effects.particle;
 
 import einstein.subtle_effects.SubtleEffects;
 import einstein.subtle_effects.init.ModConfigs;
+import einstein.subtle_effects.configs.entities.ItemRarityConfigs;
 import einstein.subtle_effects.util.Util;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -19,14 +20,15 @@ public class ItemRarityParticle extends TextureSheetParticle {
         super(level, x, y, z, xSpeed, ySpeed, zSpeed);
         Util.setColorFromHex(this, 0xFF000000 | getItemColor(stack).getValue());
         pickSprite(sprites);
-        int min = Math.min(5, ModConfigs.INSTANCE.itemRarityParticleHeight.get());
-        lifetime = Math.max(min, random.nextInt(ModConfigs.INSTANCE.itemRarityParticleHeight.get()));
+        int max = ModConfigs.ENTITIES.itemRarity.particleMaxHeight;
+        int min = Math.min(5, max);
+        lifetime = Math.max(min, random.nextInt(max));
         xd = 0;
         zd = 0;
     }
 
     private static TextColor getItemColor(ItemStack stack) {
-        if (ModConfigs.INSTANCE.itemRarityParticleColor.get() == ModConfigs.ItemRarityColorType.NAME_COLOR) {
+        if (ModConfigs.ENTITIES.itemRarity.particleColor == ItemRarityConfigs.ColorType.NAME_COLOR) {
             TextColor nameColor = stack.getHoverName().getStyle().getColor();
             if (nameColor != null && !nameColor.equals(WHITE_TEXT)) {
                 return nameColor;

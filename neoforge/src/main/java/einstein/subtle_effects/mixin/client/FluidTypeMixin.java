@@ -14,7 +14,7 @@ public class FluidTypeMixin {
 
     @Redirect(method = "onVaporize", at = @At(value = "FIELD", target = "Lnet/minecraft/core/particles/ParticleTypes;LARGE_SMOKE:Lnet/minecraft/core/particles/SimpleParticleType;"), remap = false)
     private SimpleParticleType replaceSmoke() {
-        if (ModConfigs.INSTANCE.waterEvaporateFromBucketSteam.get()) {
+        if (ModConfigs.ITEMS.waterEvaporateFromBucketSteam) {
             return ModParticles.STEAM.get();
         }
         return ParticleTypes.LARGE_SMOKE;

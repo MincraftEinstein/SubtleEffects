@@ -14,7 +14,7 @@ public abstract class BaseFireBlockMixin {
 
     @Redirect(method = "animateTick", at = @At(value = "FIELD", target = "Lnet/minecraft/core/particles/ParticleTypes;LARGE_SMOKE:Lnet/minecraft/core/particles/SimpleParticleType;"))
     private SimpleParticleType replaceSmoke() {
-        if (ModConfigs.INSTANCE.fireSmoke.get()) {
+        if (ModConfigs.BLOCKS.updatedSmoke.fireSmoke) {
             return ModParticles.SMOKE.get();
         }
         return ParticleTypes.SMOKE;

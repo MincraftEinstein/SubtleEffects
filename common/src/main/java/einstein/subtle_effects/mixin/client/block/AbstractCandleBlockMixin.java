@@ -14,7 +14,7 @@ public abstract class AbstractCandleBlockMixin {
 
     @Redirect(method = {"addParticlesAndSound", "extinguish"}, at = @At(value = "FIELD", target = "Lnet/minecraft/core/particles/ParticleTypes;SMOKE:Lnet/minecraft/core/particles/SimpleParticleType;"))
     private static SimpleParticleType replaceSmoke() {
-        if (ModConfigs.INSTANCE.candleSmoke.get()) {
+        if (ModConfigs.BLOCKS.updatedSmoke.candleSmoke) {
             return ModParticles.SMOKE.get();
         }
         return ParticleTypes.SMOKE;

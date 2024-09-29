@@ -1,9 +1,12 @@
 package einstein.subtle_effects.init;
 
+import einstein.subtle_effects.configs.CommandBlockSpawnType;
+import einstein.subtle_effects.configs.entities.ItemRarityConfigs;
 import einstein.subtle_effects.particle.option.BooleanParticleOptions;
 import einstein.subtle_effects.tickers.*;
 import einstein.subtle_effects.util.ParticleSpawnUtil;
 import einstein.subtle_effects.util.Util;
+import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedDouble;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ItemParticleOption;
@@ -23,11 +26,10 @@ import net.minecraft.world.item.Rarity;
 import net.minecraft.world.level.block.BaseFireBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.common.ModConfigSpec;
 
 import java.util.function.Predicate;
 
-import static einstein.subtle_effects.init.ModConfigs.INSTANCE;
+import static einstein.subtle_effects.init.ModConfigs.ENTITIES;
 import static einstein.subtle_effects.tickers.TickerManager.registerSimpleTicker;
 import static einstein.subtle_effects.tickers.TickerManager.registerTicker;
 import static einstein.subtle_effects.util.MathUtil.nextDouble;
@@ -40,18 +42,18 @@ public class ModTickers {
     public static void init() {
         registerTicker(entity -> entity instanceof LivingEntity, SleepingTicker::new);
         registerTicker(entity -> entity instanceof LivingEntity, EntityFireTicker::new);
-        registerTicker(entity -> entity instanceof AbstractMinecart && INSTANCE.minecartLandingSparks.get(), MinecartSparksTicker::new);
-        registerTicker(LOCAL_PLAYER.and(entity -> INSTANCE.stomachGrowling.get()), StomachGrowlingTicker::new);
-        registerTicker(LOCAL_PLAYER.and(entity -> INSTANCE.mobSkullShaders.get()), MobSkullShaderTicker::new);
-        registerTicker(LOCAL_PLAYER.and(entity -> INSTANCE.heartBeating.get()), HeartbeatTicker::new);
-        registerTicker(entity -> entity.getType().equals(EntityType.SLIME) && INSTANCE.slimeTrails.get(), (Slime entity) -> new SlimeTrailTicker<>(entity, ModParticles.SLIME_TRAIL));
-        registerTicker(entity -> entity.getType().equals(EntityType.MAGMA_CUBE) && INSTANCE.magmaCubeTrails.get(), (MagmaCube entity) -> new SlimeTrailTicker<>(entity, ModParticles.MAGMA_CUBE_TRAIL));
-        registerTicker(entity -> entity.getType().equals(EntityType.IRON_GOLEM) && INSTANCE.ironGolemCrackParticles.get(), IronGolemTicker::new);
+        registerTicker(entity -> entity instanceof AbstractMinecart && ENTITIES.minecartLandingSparks, MinecartSparksTicker::new);
+        registerTicker(LOCAL_PLAYER.and(entity -> ENTITIES.stomachGrowling), StomachGrowlingTicker::new);
+        registerTicker(LOCAL_PLAYER.and(entity -> ModConfigs.GENERAL.mobSkullShaders), MobSkullShaderTicker::new);
+        registerTicker(LOCAL_PLAYER.and(entity -> ENTITIES.heartBeating), HeartbeatTicker::new);
+        registerTicker(entity -> entity.getType().equals(EntityType.SLIME) && ENTITIES.slimeTrails, (Slime entity) -> new SlimeTrailTicker<>(entity, ModParticles.SLIME_TRAIL));
+        registerTicker(entity -> entity.getType().equals(EntityType.MAGMA_CUBE) && ENTITIES.magmaCubeTrails, (MagmaCube entity) -> new SlimeTrailTicker<>(entity, ModParticles.MAGMA_CUBE_TRAIL));
+        registerTicker(entity -> entity.getType().equals(EntityType.IRON_GOLEM) && ENTITIES.ironGolemCrackParticles, IronGolemTicker::new);
 
         registerSimpleTicker(entity -> entity instanceof ItemEntity itemEntity
-                        && INSTANCE.itemRarityParticles.get() != ModConfigs.ItemRaritySpawnType.OFF
+                        && ENTITIES.itemRarity.particlesDisplayType != ItemRarityConfigs.DisplayType.OFF
                         && !(itemEntity.getItem().getRarity() == Rarity.COMMON
-                        && INSTANCE.itemRarityParticles.get() == ModConfigs.ItemRaritySpawnType.NOT_COMMON),
+                        && ENTITIES.itemRarity.particlesDisplayType == ItemRarityConfigs.DisplayType.NOT_COMMON),
                 (entity, level, random) -> {
                     level.addParticle(new ItemParticleOption(ModParticles.ITEM_RARITY.get(), ((ItemEntity) entity).getItem()),
                             entity.getRandomX(1),
@@ -62,45 +64,63 @@ public class ModTickers {
                             0
                     );
                 });
-        registerSimpleTicker(entity -> entity instanceof Player && INSTANCE.sprintingDustClouds.get(), (entity, level, random) -> {
-            Player player = (Player) entity;
-            if (player.canSpawnSprintParticle() && player.onGround() && !player.isUsingItem()) {
-                if (random.nextBoolean()) {
-                    level.addParticle(ModParticles.SMALL_DUST_CLOUD.get(),
+        registerSimpleTicker(entity -> entity instanceof Player && ENTITIES.dustClouds.sprinting,
+                (entity, level, random) -> {
+                    Player player = (Player) entity;
+                    if (player.canSpawnSprintParticle() && player.onGround() && !player.isUsingItem()) {
+                        if (random.nextBoolean()) {
+                            level.addParticle(ModParticles.SMALL_DUST_CLOUD.get(),
+                                    entity.getRandomX(1),
+                                    entity.getY() + Math.max(Math.min(random.nextFloat(), 0.3), 0.2),
+                                    entity.getRandomZ(1),
+                                    0,
+                                    random.nextDouble(),
+                                    0
+                            );
+                        }
+                    }
+                });
+        registerSimpleTicker(entity -> entity instanceof FallingBlockEntity && ModConfigs.BLOCKS.fallingBlockDust, (entity, level, random) -> {
+            FallingBlockEntity fallingBlock = (FallingBlockEntity) entity;
+            if (!fallingBlock.onGround() && !fallingBlock.isNoGravity()) {
+                BlockState state = fallingBlock.getBlockState();
+                if (ModConfigs.BLOCKS.fallingBlockDustBlocks.get().contains(BuiltInRegistries.BLOCK.getKey(state.getBlock()))) {
+                    level.addParticle(new BlockParticleOption(ParticleTypes.FALLING_DUST, state),
                             entity.getRandomX(1),
-                            entity.getY() + Math.max(Math.min(random.nextFloat(), 0.3), 0.2),
+                            entity.getY() + 0.05,
                             entity.getRandomZ(1),
-                            0,
-                            random.nextDouble(),
-                            0
+                            0, 0, 0
                     );
                 }
             }
         });
-        registerSimpleTicker(entity -> entity instanceof FallingBlockEntity && INSTANCE.fallingBlockDust.get(), (entity, level, random) -> {
-            FallingBlockEntity fallingBlock = (FallingBlockEntity) entity;
-            if (!fallingBlock.onGround() && !fallingBlock.isNoGravity()) {
-                BlockState state = fallingBlock.getBlockState();
-                if (INSTANCE.fallingBlockDustBlocks.get().contains(BuiltInRegistries.BLOCK.getKey(state.getBlock()).toString())) {
-                    level.addParticle(new BlockParticleOption(ParticleTypes.FALLING_DUST, state), entity.getRandomX(1), entity.getY() + 0.05, entity.getRandomZ(1), 0, 0, 0);
-                }
-            }
-        });
         registerSimpleTicker(EntityType.SNOWBALL, (entity, level, random) -> {
-            if (shouldSpawn(random, INSTANCE.snowballTrailDensity)) {
+            if (shouldSpawn(random, ENTITIES.snowballTrailDensity)) {
                 Vec3 deltaMovement = entity.getDeltaMovement();
-                level.addParticle(ModParticles.SNOWBALL_TRAIL.get(), entity.getRandomX(1), entity.getRandomY(), entity.getRandomZ(1), deltaMovement.x * 0.5, deltaMovement.y, deltaMovement.z * 0.5);
+                level.addParticle(ModParticles.SNOWBALL_TRAIL.get(),
+                        entity.getRandomX(1),
+                        entity.getRandomY(),
+                        entity.getRandomZ(1),
+                        deltaMovement.x * 0.5,
+                        deltaMovement.y,
+                        deltaMovement.z * 0.5
+                );
             }
         });
         registerSimpleTicker(EntityType.ENDER_PEARL, (entity, level, random) -> {
-            if (INSTANCE.enderPearlTrail.get()) {
+            if (ENTITIES.enderPearlTrail) {
                 for (int i = 0; i < 10; i++) {
-                    level.addParticle(ParticleTypes.PORTAL, entity.getRandomX(2), entity.getRandomY(), entity.getRandomZ(2), 0, 0, 0);
+                    level.addParticle(ParticleTypes.PORTAL,
+                            entity.getRandomX(2),
+                            entity.getRandomY(),
+                            entity.getRandomZ(2),
+                            0, 0, 0
+                    );
                 }
             }
         });
         registerSimpleTicker(EntityType.ALLAY, (entity, level, random) -> {
-            if (shouldSpawn(random, INSTANCE.allayMagicDensity)) {
+            if (shouldSpawn(random, ENTITIES.allayMagicDensity)) {
                 level.addParticle(ModParticles.ALLAY_MAGIC.get(),
                         entity.getRandomX(1),
                         entity.getRandomY(),
@@ -112,7 +132,7 @@ public class ModTickers {
             }
         });
         registerSimpleTicker(EntityType.VEX, (entity, level, random) -> {
-            if (shouldSpawn(random, INSTANCE.vexMagicDensity)) {
+            if (shouldSpawn(random, ENTITIES.vexMagicDensity)) {
                 level.addParticle(new BooleanParticleOptions(ModParticles.VEX_MAGIC.get(), entity.isCharging()),
                         entity.getRandomX(1),
                         entity.getRandomY(),
@@ -131,19 +151,24 @@ public class ModTickers {
             }
         });
         registerSimpleTicker(EntityType.DRAGON_FIREBALL, (entity, level, random) -> {
-            if (INSTANCE.improvedDragonFireballTrail.get()) {
+            if (ENTITIES.improvedDragonFireballTrail) {
                 for (int i = 0; i < 10; i++) {
-                    level.addParticle(ParticleTypes.DRAGON_BREATH, entity.getRandomX(2), entity.getRandomY(), entity.getRandomZ(2), 0, 0, 0);
+                    level.addParticle(ParticleTypes.DRAGON_BREATH,
+                            entity.getRandomX(2),
+                            entity.getRandomY(),
+                            entity.getRandomZ(2),
+                            0, 0, 0
+                    );
                 }
             }
         });
         registerSimpleTicker(EntityType.COMMAND_BLOCK_MINECART, (entity, level, random) -> {
-            if (INSTANCE.commandBlockMinecartParticles.get() == ModConfigs.CommandBlockSpawnType.ON
-                    || (INSTANCE.commandBlockMinecartParticles.get() == ModConfigs.CommandBlockSpawnType.NOT_CREATIVE
+            if (ENTITIES.commandBlockMinecartParticles == CommandBlockSpawnType.ON
+                    || (ENTITIES.commandBlockMinecartParticles == CommandBlockSpawnType.NOT_CREATIVE
                     && !Minecraft.getInstance().player.isCreative())) {
                 if (random.nextInt(10) == 0) {
                     ParticleSpawnUtil.spawnCmdBlockParticles(level, entity.position()
-                                    // The vanilla calculation the command block's rendered location + 1 block (16) / 75 the (scale of the rendered command block) / .5 to get the center of the command block
+                                    // The vanilla calculation of the command block's rendered location + 1 block (16) / 75 (the scale of the rendered command block) / .5 (to get the center of the command block)
                                     .add(0, (double) -(entity.getDisplayOffset() - 8) / 16 + (((double) 16 / 75) / 0.5), 0),
                             random, (direction, relativePos) -> true
                     );
@@ -151,7 +176,7 @@ public class ModTickers {
             }
         });
         registerSimpleTicker(EntityType.TNT, (entity, level, random) -> {
-            if (INSTANCE.litTntSparks.get()) {
+            if (ENTITIES.primedTNT.sparks) {
                 level.addParticle(ModParticles.SHORT_SPARK.get(),
                         entity.getRandomX(0.5),
                         entity.getY(1),
@@ -162,7 +187,7 @@ public class ModTickers {
                 );
             }
 
-            if (INSTANCE.litTntFlames.get() && random.nextInt(10) == 0) {
+            if (ENTITIES.primedTNT.flames && random.nextInt(10) == 0) {
                 level.addParticle(ParticleTypes.FLAME,
                         entity.getX(),
                         entity.getY(1.1),
@@ -172,7 +197,7 @@ public class ModTickers {
             }
         });
         registerSimpleTicker(EntityType.END_CRYSTAL, (entity, level, random) -> {
-            if (INSTANCE.endCrystalParticles.get()) {
+            if (ENTITIES.endCrystalParticles) {
                 if (level.getBlockState(entity.blockPosition()).getBlock() instanceof BaseFireBlock || random.nextInt(3) == 0) {
                     level.addParticle(ModParticles.END_CRYSTAL.get(),
                             entity.getRandomX(1),
@@ -184,18 +209,20 @@ public class ModTickers {
             }
         });
         registerSimpleTicker(EntityType.SPECTRAL_ARROW, (entity, level, random) -> {
-            if (random.nextInt(3) == 0) {
-                level.addParticle(Util.GLOWSTONE_DUST_PARTICLES,
-                        entity.getRandomX(1),
-                        entity.getRandomY(),
-                        entity.getRandomZ(1),
-                        0, 0, 0
-                );
+            if (ENTITIES.spectralArrowParticles) {
+                if (random.nextInt(3) == 0) {
+                    level.addParticle(Util.GLOWSTONE_DUST_PARTICLES,
+                            entity.getRandomX(1),
+                            entity.getRandomY(),
+                            entity.getRandomZ(1),
+                            0, 0, 0
+                    );
+                }
             }
         });
     }
 
-    private static boolean shouldSpawn(RandomSource random, ModConfigSpec.DoubleValue chanceConfig) {
+    private static boolean shouldSpawn(RandomSource random, ValidatedDouble chanceConfig) {
         return Math.min(random.nextFloat(), 1) < chanceConfig.get();
     }
 }

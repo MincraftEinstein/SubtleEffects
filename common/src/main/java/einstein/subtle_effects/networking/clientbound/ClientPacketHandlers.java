@@ -12,7 +12,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.common.ModConfigSpec;
 
 public class ClientPacketHandlers {
 
@@ -42,7 +41,7 @@ public class ClientPacketHandlers {
     public static void handle(ClientBoundSpawnSnoreParticlePacket packet) {
         Level level = Minecraft.getInstance().level;
         if (level != null) {
-            if (ModConfigs.INSTANCE.beehivesHaveSleepingZs.get()) {
+            if (ModConfigs.BLOCKS.beehivesHaveSleepingZs) {
                 level.addParticle(ModParticles.SNORING.get(), packet.x(), packet.y(), packet.z(), 0, 0, 0);
             }
         }
@@ -51,7 +50,7 @@ public class ClientPacketHandlers {
     public static void handle(ClientBoundBlockDestroyEffectsPacket packet) {
         Level level = Minecraft.getInstance().level;
         if (level != null) {
-            if (getConfig(packet).get()) {
+            if (getConfig(packet)) {
                 BlockPos pos = packet.pos();
                 BlockState state = Block.stateById(packet.stateId());
                 SoundType soundtype = state.getSoundType();
@@ -63,10 +62,10 @@ public class ClientPacketHandlers {
     }
 
     // Don't convert to enum parameters, because the server will crash trying to access the client configs
-    private static ModConfigSpec.BooleanValue getConfig(ClientBoundBlockDestroyEffectsPacket packet) {
+    private static boolean getConfig(ClientBoundBlockDestroyEffectsPacket packet) {
         return switch (packet.config()) {
-            case LEAVES_DECAY -> ModConfigs.INSTANCE.leavesDecayEffects;
-            case FARMLAND_DESTROY -> ModConfigs.INSTANCE.farmlandDestroyEffects;
+            case LEAVES_DECAY -> ModConfigs.BLOCKS.leavesDecayEffects;
+            case FARMLAND_DESTROY -> ModConfigs.BLOCKS.farmlandDestroyEffects;
         };
     }
 }

@@ -6,7 +6,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
 import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -25,7 +24,7 @@ public class BeehiveBlockMixin {
 
     @Inject(method = "useItemOn", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/BeehiveBlock;dropHoneycomb(Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;)V"))
     private void use(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult, CallbackInfoReturnable<ItemInteractionResult> cir) {
-        if (ModConfigs.INSTANCE.beehiveShearParticles.get()) {
+        if (ModConfigs.BLOCKS.beehiveShearParticles) {
             BlockParticleOption particle = new BlockParticleOption(ParticleTypes.BLOCK, Blocks.HONEYCOMB_BLOCK.defaultBlockState());
             for (int i = 0; i < 10; i++) {
                 ParticleSpawnUtil.spawnParticlesOnSide(particle, 0.1F, state.getValue(BeehiveBlock.FACING), level, pos, player.getRandom(), 0, 0, 0);

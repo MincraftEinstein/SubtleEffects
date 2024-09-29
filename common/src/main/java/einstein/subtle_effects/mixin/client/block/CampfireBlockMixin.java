@@ -11,6 +11,6 @@ public class CampfireBlockMixin {
 
     @ModifyExpressionValue(method = "animateTick", at = @At(value = "FIELD", target = "Lnet/minecraft/world/level/block/CampfireBlock;spawnParticles:Z"))
     private boolean shouldDisableLavaSparks(boolean original) {
-        return original && !ModConfigs.INSTANCE.removeVanillaCampfireSparks.get();
+        return original && !ModConfigs.BLOCKS.sparks.removeVanillaCampfireSparks;
     }
 }

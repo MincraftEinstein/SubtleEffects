@@ -1,13 +1,13 @@
 package einstein.subtle_effects.tickers;
 
-import einstein.subtle_effects.init.ModConfigs;
+import einstein.subtle_effects.configs.SmokeType;
 import einstein.subtle_effects.init.ModParticles;
 import einstein.subtle_effects.util.Util;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.Entity;
 
-import static einstein.subtle_effects.init.ModConfigs.INSTANCE;
+import static einstein.subtle_effects.init.ModConfigs.ENTITIES;
 import static einstein.subtle_effects.util.MathUtil.nextNonAbsDouble;
 
 public class EntityFireTicker extends Ticker<Entity> {
@@ -28,18 +28,26 @@ public class EntityFireTicker extends Ticker<Entity> {
                 return;
             }
 
-            if (random.nextInt(90) == 0 && INSTANCE.burningEntitySounds.get()) {
+            if (random.nextInt(90) == 0 && ENTITIES.burning.sounds) {
                 Util.playClientSound(entity.getSoundSource(), entity, SoundEvents.FIRE_EXTINGUISH, 0.3F, 1);
             }
 
             if (bbWidth <= 4 && bbHeight <= 4) {
-                if (INSTANCE.burningEntitySmoke.get() != ModConfigs.SmokeType.OFF) {
-                    level.addParticle(INSTANCE.burningEntitySmoke.get().getParticle().get(), entity.getRandomX(1), entity.getRandomY(), entity.getRandomZ(1), 0, 0, 0);
+                if (ENTITIES.burning.smoke != SmokeType.OFF) {
+                    level.addParticle(ENTITIES.burning.smoke.getParticle().get(),
+                            entity.getRandomX(1),
+                            entity.getRandomY(),
+                            entity.getRandomZ(1),
+                            0, 0, 0
+                    );
                 }
 
-                if (INSTANCE.burningEntitySparks.get()) {
+                if (ENTITIES.burning.sparks) {
                     for (int i = 0; i < 2; i++) {
-                        level.addParticle(ModParticles.SHORT_SPARK.get(), entity.getRandomX(1), entity.getRandomY(), entity.getRandomZ(1),
+                        level.addParticle(ModParticles.SHORT_SPARK.get(),
+                                entity.getRandomX(1),
+                                entity.getRandomY(),
+                                entity.getRandomZ(1),
                                 nextNonAbsDouble(random, 0.03),
                                 nextNonAbsDouble(random, 0.05),
                                 nextNonAbsDouble(random, 0.03)
@@ -51,8 +59,13 @@ public class EntityFireTicker extends Ticker<Entity> {
                     return;
                 }
 
-                if (INSTANCE.burningEntityFlames.get()) {
-                    level.addParticle(ParticleTypes.FLAME, entity.getRandomX(1), entity.getRandomY(), entity.getRandomZ(1), 0, 0, 0);
+                if (ENTITIES.burning.flames) {
+                    level.addParticle(ParticleTypes.FLAME,
+                            entity.getRandomX(1),
+                            entity.getRandomY(),
+                            entity.getRandomZ(1),
+                            0, 0, 0
+                    );
                 }
             }
         }

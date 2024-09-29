@@ -33,7 +33,13 @@ issueTrackerURL="https://github.com/MincraftEinstein/SubtleEffects/issues"
 [[dependencies.subtle_effects]]
     modId = "minecraft"
     type = "required"
-    mandatory = true
     versionRange = "[${minecraft_version}, ${max_minecraft_version})"
     ordering = "NONE"
     side = "BOTH"
+
+[[dependencies.subtle_effects]]
+    modId = "fzzy_config"
+    type = "required"
+    versionRange = "[fzzy_config_version,)"
+    ordering = "NONE"
+    side = "CLIENT"

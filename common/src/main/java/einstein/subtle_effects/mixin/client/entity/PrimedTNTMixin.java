@@ -14,7 +14,7 @@ public class PrimedTNTMixin {
 
     @Redirect(method = "tick", at = @At(value = "FIELD", target = "Lnet/minecraft/core/particles/ParticleTypes;SMOKE:Lnet/minecraft/core/particles/SimpleParticleType;"))
     private SimpleParticleType replaceSmoke() {
-        if (ModConfigs.INSTANCE.updateLitTntSmoke.get()) {
+        if (ModConfigs.ENTITIES.primedTNT.updateSmoke) {
             return ModParticles.SMOKE.get();
         }
         return ParticleTypes.SMOKE;

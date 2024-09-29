@@ -18,7 +18,7 @@ public class ComposterBlockMixin {
 
     @Inject(method = "handleFill", at = @At("TAIL"))
     private static void handleFill(Level level, BlockPos pos, boolean success, CallbackInfo ci) {
-        if (ModConfigs.INSTANCE.compostingParticles.get()) {
+        if (ModConfigs.BLOCKS.compostingParticles) {
             RandomSource random = level.getRandom();
             BlockState state = level.getBlockState(pos);
 

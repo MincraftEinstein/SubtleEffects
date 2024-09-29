@@ -26,7 +26,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import static einstein.subtle_effects.init.ModConfigs.INSTANCE;
+import static einstein.subtle_effects.init.ModConfigs.BLOCKS;
 import static einstein.subtle_effects.util.MathUtil.nextSign;
 import static net.minecraft.util.Mth.nextFloat;
 
@@ -49,12 +49,12 @@ public class LevelRendererMixin implements FrustumGetter {
         BlockState state = level.getBlockState(pos);
 
         if (type == 1029) {
-            if (INSTANCE.anvilBreakParticles.get()) {
+            if (BLOCKS.anvilBreakParticles) {
                 level.addDestroyBlockEffect(pos, Blocks.ANVIL.defaultBlockState());
             }
         }
         else if (type == 1030) {
-            if (INSTANCE.anvilUseParticles.get()) {
+            if (BLOCKS.anvilUseParticles) {
                 float pointX = random.nextFloat();
                 float pointZ = random.nextFloat();
 
@@ -73,7 +73,7 @@ public class LevelRendererMixin implements FrustumGetter {
             }
         }
         else if (type == 1042) {
-            if (INSTANCE.grindstoneUseParticles.get()) {
+            if (BLOCKS.grindstoneUseParticles) {
                 Direction direction = state.getValue(GrindstoneBlock.FACING);
                 AttachFace face = state.getValue(GrindstoneBlock.FACE);
                 Direction side = face == AttachFace.CEILING ? Direction.DOWN : Direction.UP;
@@ -91,7 +91,7 @@ public class LevelRendererMixin implements FrustumGetter {
 
     @Redirect(method = "levelEvent", at = @At(value = "FIELD", target = "Lnet/minecraft/core/particles/ParticleTypes;LARGE_SMOKE:Lnet/minecraft/core/particles/SimpleParticleType;"))
     private SimpleParticleType replaceSmoke() {
-        if (INSTANCE.lavaFizzSteam.get()) {
+        if (BLOCKS.steam.lavaFizzSteam) {
             return ModParticles.STEAM.get();
         }
         return ParticleTypes.LARGE_SMOKE;

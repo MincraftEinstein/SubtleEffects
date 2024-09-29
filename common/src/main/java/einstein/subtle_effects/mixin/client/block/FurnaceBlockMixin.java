@@ -16,7 +16,7 @@ public class FurnaceBlockMixin {
 
     @Redirect(method = "animateTick", at = @At(value = "FIELD", target = "Lnet/minecraft/core/particles/ParticleTypes;SMOKE:Lnet/minecraft/core/particles/SimpleParticleType;"))
     private SimpleParticleType replaceSmoke() {
-        if (ModConfigs.INSTANCE.furnaceSmoke.get()) {
+        if (ModConfigs.BLOCKS.updatedSmoke.furnaceSmoke) {
             return ModParticles.SMOKE.get();
         }
         return ParticleTypes.SMOKE;

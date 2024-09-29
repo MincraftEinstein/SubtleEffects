@@ -18,7 +18,7 @@ public class EndPortalBlockMixin {
 
     @Inject(method = "animateTick", at = @At("HEAD"), cancellable = true)
     private void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random, CallbackInfo ci) {
-        if (random.nextBoolean() && ModConfigs.INSTANCE.endPortalParticles.get()) {
+        if (random.nextBoolean() && ModConfigs.BLOCKS.endPortalParticles) {
             level.addParticle(ModParticles.END_PORTAL.get(),
                     pos.getX() + random.nextDouble(),
                     pos.getY() + random.nextInt(3) + random.nextDouble(),
@@ -27,7 +27,7 @@ public class EndPortalBlockMixin {
             );
         }
 
-        if (ModConfigs.INSTANCE.replaceEndPortalSmoke.get()) {
+        if (ModConfigs.BLOCKS.replaceEndPortalSmoke) {
             level.addParticle(ParticleTypes.PORTAL,
                     pos.getX() + random.nextDouble(),
                     pos.getY(),

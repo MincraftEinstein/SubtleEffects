@@ -1,5 +1,6 @@
 package einstein.subtle_effects.util;
 
+import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.init.ModParticles;
 import einstein.subtle_effects.networking.clientbound.ClientBoundEntityFellPacket;
 import einstein.subtle_effects.particle.option.DirectionParticleOptions;
@@ -18,16 +19,13 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.animal.camel.Camel;
 import net.minecraft.world.entity.animal.horse.AbstractHorse;
-import net.minecraft.world.entity.decoration.ArmorStand;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.common.ModConfigSpec;
 
 import java.util.function.BiPredicate;
 
-import static einstein.subtle_effects.init.ModConfigs.INSTANCE;
 import static einstein.subtle_effects.util.MathUtil.*;
 
 public class ParticleSpawnUtil {
@@ -85,7 +83,7 @@ public class ParticleSpawnUtil {
     }
 
     public static void spawnCreatureMovementDustClouds(LivingEntity entity, Level level, RandomSource random, int YSpeedModifier) {
-        if (INSTANCE.mobSprintingDustClouds.get()) {
+        if (ModConfigs.ENTITIES.dustClouds.mobSprinting) {
             level.addParticle(ModParticles.LARGE_DUST_CLOUD.get(),
                     entity.position().x + entity.getBbWidth() * random.nextDouble() - 1,
                     entity.getY() + Math.max(Math.min(random.nextFloat(), 0.5), 0.2),
@@ -123,10 +121,10 @@ public class ParticleSpawnUtil {
     }
 
     public static void spawnHeatedWaterParticles(Level level, BlockPos pos, RandomSource random, boolean isFalling, double height,
-                                                 ModConfigSpec.BooleanValue steamConfig, ModConfigSpec.BooleanValue boilingConfig) {
+                                                 boolean steamConfig, boolean boilingConfig) {
         int brightness = level.getBrightness(LightLayer.BLOCK, pos);
         if (brightness > 11 || level.getBlockState(pos.below()).is(Blocks.MAGMA_BLOCK)) {
-            if (steamConfig.get()) {
+            if (steamConfig) {
                 if (!isFalling && !Util.isSolidOrNotEmpty(level, pos.above())) {
                     level.addParticle(ModParticles.STEAM.get(),
                             pos.getX() + random.nextDouble(),
@@ -137,7 +135,7 @@ public class ParticleSpawnUtil {
                 }
             }
 
-            if (boilingConfig.get() && brightness >= 13) {
+            if (boilingConfig && brightness >= 13) {
                 level.addParticle(ParticleTypes.BUBBLE,
                         pos.getX() + random.nextDouble(),
                         Mth.clamp(random.nextDouble(), pos.getY(), pos.getY() + height),
@@ -153,7 +151,7 @@ public class ParticleSpawnUtil {
             return;
         }
 
-        if (!INSTANCE.fallDamageDustClouds.get()) {
+        if (!ModConfigs.ENTITIES.dustClouds.fallDamage) {
             return;
         }
 

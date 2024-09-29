@@ -44,8 +44,8 @@ repositories {
     }
 
     maven {
-        name = "Fuzs Mod Resources"
-        url = "https://raw.githubusercontent.com/Fuzss/modresources/main/maven/"
+        name = "FzzyMaven"
+        url = "https://maven.fzzyhmstrs.me/"
     }
 }
 
@@ -91,7 +91,7 @@ processResources {
             'description'                  : project.description,
             'neoforge_version'             : neoforge_version,
             'neoforge_loader_version_range': neoforge_loader_version_range,
-            'config_port_version'          : config_port_version
+            'fzzy_config_version'          : fzzy_config_version
     ]
 
     filesMatching(['pack.mcmeta', 'fabric.mod.json', 'META-INF/mods.toml', 'META-INF/neoforge.mods.toml', '*.mixins.json']) {

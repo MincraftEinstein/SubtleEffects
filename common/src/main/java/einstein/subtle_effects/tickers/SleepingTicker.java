@@ -1,6 +1,5 @@
 package einstein.subtle_effects.tickers;
 
-import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.init.ModParticles;
 import einstein.subtle_effects.init.ModSounds;
 import einstein.subtle_effects.util.Util;
@@ -14,6 +13,8 @@ import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.player.Player;
 
 import java.util.UUID;
+
+import static einstein.subtle_effects.init.ModConfigs.ENTITIES;
 
 public class SleepingTicker extends Ticker<LivingEntity> {
 
@@ -32,21 +33,23 @@ public class SleepingTicker extends Ticker<LivingEntity> {
 
     public SleepingTicker(LivingEntity entity) {
         super(entity);
-        if (entity instanceof Player player) {
-            doesSnore = doesEntitySnore(player, ModConfigs.INSTANCE.playerSnoreChance.get());
-            snoreSound = ModSounds.PLAYER_SNORE.get();
-            if (player.isLocalPlayer()) {
-                shouldDelay = false;
-                breathDelay = 40;
+        switch (entity) {
+            case Player player -> {
+                doesSnore = doesEntitySnore(player, ENTITIES.sleeping.playerSnoreChance.get());
+                snoreSound = ModSounds.PLAYER_SNORE.get();
+                if (player.isLocalPlayer()) {
+                    shouldDelay = false;
+                    breathDelay = 40;
+                }
             }
-        }
-        else if (entity instanceof Villager) {
-            doesSnore = doesEntitySnore(entity, ModConfigs.INSTANCE.villagerSnoreChance.get());
-            snoreSound = ModSounds.VILLAGER_SNORE.get();
-            breathDelay = 80;
-        }
-        else if (entity instanceof Bat) {
-            isBat = true;
+            case Villager villager -> {
+                doesSnore = doesEntitySnore(entity, ENTITIES.sleeping.villagerSnoreChance.get());
+                snoreSound = ModSounds.VILLAGER_SNORE.get();
+                breathDelay = 80;
+            }
+            case Bat bat -> isBat = true;
+            default -> {
+            }
         }
     }
 
@@ -76,10 +79,10 @@ public class SleepingTicker extends Ticker<LivingEntity> {
 
                 snoreTimer = 0;
                 zCount++;
-                if (ModConfigs.INSTANCE.sleepingZs.get()) {
-                    if ((entity instanceof Fox && ModConfigs.INSTANCE.foxesHaveSleepingZs.get())
+                if (ENTITIES.sleeping.sleepingZs) {
+                    if ((entity instanceof Fox && ENTITIES.sleeping.foxesHaveSleepingZs)
                             || (!(entity instanceof Fox)
-                            && (!ModConfigs.INSTANCE.displaySleepingZsOnlyWhenSnoring.get() || doesSnore))) {
+                            && (!ENTITIES.sleeping.displaySleepingZsOnlyWhenSnoring || doesSnore))) {
                         level.addParticle(isBat ? ModParticles.FALLING_SNORING.get() : ModParticles.SNORING.get(), entity.getX(), entity.getY() + 0.5, entity.getZ(), 0, 0, 0);
                     }
                 }
