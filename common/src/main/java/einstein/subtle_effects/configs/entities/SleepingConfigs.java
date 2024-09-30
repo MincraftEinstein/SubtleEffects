@@ -10,6 +10,8 @@ public class SleepingConfigs extends ConfigSection {
     public ValidatedDouble villagerSnoreChance = new ValidatedDouble(1, 1, 0, ValidatedNumber.WidgetType.TEXTBOX);
     public boolean displaySleepingZsOnlyWhenSnoring = false;
     public boolean foxesHaveSleepingZs = true;
+    public boolean batsHaveSleepingZs = true;
+    public boolean catsHaveSleepingZs = true;
     public boolean adjustNameTagWhenSleeping = true;
     public boolean sleepingZs = true;
 }

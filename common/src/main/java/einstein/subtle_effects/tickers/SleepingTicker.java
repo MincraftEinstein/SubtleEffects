@@ -3,6 +3,7 @@ package einstein.subtle_effects.tickers;
 import einstein.subtle_effects.init.ModParticles;
 import einstein.subtle_effects.init.ModSounds;
 import einstein.subtle_effects.util.Util;
+import net.minecraft.client.Minecraft;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.LivingEntity;
@@ -24,6 +25,7 @@ public class SleepingTicker extends Ticker<LivingEntity> {
     private boolean firstSleepTick = true;
     private boolean isFirstBreath = true;
     private boolean isBat = false;
+    private boolean isCat = false;
     private int breathDelay = Util.BREATH_DELAY;
     private int snoreStartDelay = 0;
     private int delayTimer = 0;
@@ -47,7 +49,15 @@ public class SleepingTicker extends Ticker<LivingEntity> {
                 snoreSound = ModSounds.VILLAGER_SNORE.get();
                 breathDelay = 80;
             }
-            case Bat bat -> isBat = true;
+            case Bat bat -> isBat = ENTITIES.sleeping.batsHaveSleepingZs;
+            case Cat cat -> {
+                shouldDelay = false;
+                isCat = ENTITIES.sleeping.catsHaveSleepingZs;
+
+                if (Minecraft.getInstance().player.isSleeping()) {
+                    shouldDelay = true;
+                }
+            }
             default -> {
             }
         }
@@ -55,7 +65,7 @@ public class SleepingTicker extends Ticker<LivingEntity> {
 
     @Override
     public void tick() {
-        if (entity.isSleeping() || (entity instanceof Cat cat && cat.isLying()) || (isBat && ((Bat) entity).isResting())) {
+        if (entity.isSleeping() || (isCat && ((Cat) entity).isLying()) || (isBat && ((Bat) entity).isResting())) {
             if (firstSleepTick) {
                 snoreStartDelay = (shouldDelay ? Util.BREATH_DELAY + random.nextInt(40) : 0);
                 firstSleepTick = false;
