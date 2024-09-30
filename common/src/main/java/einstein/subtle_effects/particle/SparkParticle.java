@@ -1,5 +1,6 @@
 package einstein.subtle_effects.particle;
 
+import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.util.Util;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
@@ -17,7 +18,7 @@ public class SparkParticle extends TextureSheetParticle {
         yd = (yd * 0.1) + ySpeed;
         zd = (yd * 0.1) + zSpeed;
         int i = random.nextInt(11);
-        quadSize *= 0.75F * i / 10;
+        quadSize *= (0.75F * i / 10) * ModConfigs.GENERAL.sparksScale.get();
         lifetime = (int) (20 / (random.nextFloat() * 0.8 + 0.2) * i / lifeTimeModifier);
         lifetime = Math.max(lifetime, 1);
         hasPhysics = true;
