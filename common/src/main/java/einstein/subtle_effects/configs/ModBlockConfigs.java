@@ -25,7 +25,9 @@ public class ModBlockConfigs extends Config {
     public SteamConfigs steam = new SteamConfigs();
 
     public boolean redstoneBlockDust = true;
-    public GlowstoneDustSpawnType glowstoneBlockDust = GlowstoneDustSpawnType.ON;
+    public BlockDustDensity redstoneBlockDustDensity = BlockDustDensity.DEFAULT;
+    public GlowstoneDustDisplayType glowstoneBlockDustDisplayType = GlowstoneDustDisplayType.ON;
+    public BlockDustDensity glowstoneBlockDustDensity = BlockDustDensity.DEFAULT;
     public boolean beehivesHaveSleepingZs = true;
     public boolean fallingBlockDust = true;
     public ValidatedList<ResourceLocation> fallingBlockDustBlocks = new ValidatedIdentifier().toList(getDefaultFallingBlockDustBlocks());
@@ -70,7 +72,7 @@ public class ModBlockConfigs extends Config {
         return list;
     }
 
-    public enum GlowstoneDustSpawnType implements EnumTranslatable {
+    public enum GlowstoneDustDisplayType implements EnumTranslatable {
         OFF,
         ON,
         NETHER_ONLY;
@@ -78,7 +80,28 @@ public class ModBlockConfigs extends Config {
         @NotNull
         @Override
         public String prefix() {
-            return BASE_KEY + "blocks.glowstoneBlockDust";
+            return BASE_KEY + "blocks.glowstoneBlockDustDisplayType";
+        }
+    }
+
+    public enum BlockDustDensity implements EnumTranslatable {
+        DEFAULT(0),
+        MINIMAL(2);
+
+        private final int perSideChance;
+
+        BlockDustDensity(int perSideChance) {
+            this.perSideChance = perSideChance;
+        }
+
+        @NotNull
+        @Override
+        public String prefix() {
+            return BASE_KEY + "blocks.blockDustDensity";
+        }
+
+        public int getPerSideChance() {
+            return perSideChance;
         }
     }
 }

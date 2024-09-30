@@ -36,17 +36,17 @@ public class ModBlockTickers {
     public static void init() {
         register(Blocks.REDSTONE_BLOCK, (state, level, pos, random) -> {
             if (BLOCKS.redstoneBlockDust) {
-                ParticleSpawnUtil.spawnParticlesAroundBlock(DustParticleOptions.REDSTONE, level, pos, random);
+                ParticleSpawnUtil.spawnParticlesAroundBlock(DustParticleOptions.REDSTONE, level, pos, random, BLOCKS.redstoneBlockDustDensity.getPerSideChance());
             }
         });
         register(Blocks.GLOWSTONE, (state, level, pos, random) -> {
-            if (BLOCKS.glowstoneBlockDust.equals(ModBlockConfigs.GlowstoneDustSpawnType.OFF)
-                    || (BLOCKS.glowstoneBlockDust.equals(ModBlockConfigs.GlowstoneDustSpawnType.NETHER_ONLY)
+            if (BLOCKS.glowstoneBlockDustDisplayType.equals(ModBlockConfigs.GlowstoneDustDisplayType.OFF)
+                    || (BLOCKS.glowstoneBlockDustDisplayType.equals(ModBlockConfigs.GlowstoneDustDisplayType.NETHER_ONLY)
                     && !level.dimension().equals(Level.NETHER))) {
                 return;
             }
 
-            ParticleSpawnUtil.spawnParticlesAroundBlock(Util.GLOWSTONE_DUST_PARTICLES, level, pos, random);
+            ParticleSpawnUtil.spawnParticlesAroundBlock(Util.GLOWSTONE_DUST_PARTICLES, level, pos, random, BLOCKS.glowstoneBlockDustDensity.getPerSideChance());
         });
         register(Blocks.TORCHFLOWER, (state, level, pos, random) -> {
             double x = pos.getX() + 0.5;

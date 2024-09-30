@@ -50,8 +50,12 @@ public class ParticleSpawnUtil {
         }
     }
 
-    public static void spawnParticlesAroundBlock(ParticleOptions particle, Level level, BlockPos pos, RandomSource random) {
+    public static void spawnParticlesAroundBlock(ParticleOptions particle, Level level, BlockPos pos, RandomSource random, int perSideChance) {
         for (Direction direction : Direction.values()) {
+            if (perSideChance > 0 && random.nextInt(perSideChance) != 0) {
+                return;
+            }
+
             BlockPos relativePos = pos.relative(direction);
             if (!level.getBlockState(relativePos).isSolidRender(level, relativePos)) {
                 spawnParticlesOnSide(particle, 0.0625F, direction, level, pos, random, 0, 0, 0);
