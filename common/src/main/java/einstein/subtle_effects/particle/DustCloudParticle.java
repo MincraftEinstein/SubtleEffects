@@ -1,5 +1,6 @@
 package einstein.subtle_effects.particle;
 
+import einstein.subtle_effects.init.ModConfigs;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
 import net.minecraft.core.particles.SimpleParticleType;
@@ -17,8 +18,9 @@ public class DustCloudParticle extends TextureSheetParticle {
         gravity = 0.1F;
         lifetime = Math.max(random.nextInt(maxLifeTime), maxLifeTime - 10);
         speedUpWhenYMotionIsBlocked = true;
+        alpha = ModConfigs.ENTITIES.dustClouds.alpha.get();
         setSpriteFromAge(sprites);
-        scale(3);
+        scale(3 * ModConfigs.ENTITIES.dustClouds.scale.get());
         setSize(0.25F, 0.25F);
     }
 
@@ -37,7 +39,7 @@ public class DustCloudParticle extends TextureSheetParticle {
             alpha -= 0.1F;
         }
 
-        if (onGround) {
+        if (onGround || alpha <= 0) {
             remove();
         }
     }
