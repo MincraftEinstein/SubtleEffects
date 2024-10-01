@@ -54,6 +54,14 @@ public class SubtleEffectsClient {
                                 })
                         )
                 )
+                .then(LiteralArgumentBuilder.<T>literal("tickers")
+                        .then(LiteralArgumentBuilder.<T>literal("clear")
+                                .executes(context -> {
+                                    TickerManager.clear();
+                                    return 1;
+                                })
+                        )
+                )
         );
     }
 }
