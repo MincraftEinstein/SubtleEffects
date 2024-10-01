@@ -3,6 +3,8 @@
   "subtitles.subtle_effects.entity.player.snore": "Player Snores",
   "subtitles.subtle_effects.entity.player.stomach_growl": "Stomach Growls",
   "subtitles.subtle_effects.entity.player.heartbeat": "Heart Beating",
+  "command.subtle_effects.clear_tickers": "Cleared Tickers",
+  "command.subtle_effects.clear_particles": "Cleared Particles",
   "config.subtle_effects.smokeType.OFF": "Off",
   "config.subtle_effects.smokeType.DEFAULT": "Default",
   "config.subtle_effects.smokeType.UPDATED": "Updated",

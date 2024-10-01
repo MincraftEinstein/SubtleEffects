@@ -8,6 +8,7 @@ import einstein.subtle_effects.tickers.TickerManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.SharedSuggestionProvider;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 
@@ -45,11 +46,15 @@ public class SubtleEffectsClient {
     }
 
     public static <T extends SharedSuggestionProvider> void registerClientCommands(CommandDispatcher<T> dispatcher, CommandBuildContext buildContext) {
+        Minecraft minecraft = Minecraft.getInstance();
+        Player player = minecraft.player;
+
         dispatcher.register(LiteralArgumentBuilder.<T>literal("subtle_effects")
                 .then(LiteralArgumentBuilder.<T>literal("particles")
                         .then(LiteralArgumentBuilder.<T>literal("clear")
                                 .executes(context -> {
-                                    Minecraft.getInstance().particleEngine.clearParticles();
+                                    minecraft.particleEngine.clearParticles();
+                                    sendSystemMsg(player, Component.translatable("command.subtle_effects.clear_particles"));
                                     return 1;
                                 })
                         )
@@ -58,10 +63,17 @@ public class SubtleEffectsClient {
                         .then(LiteralArgumentBuilder.<T>literal("clear")
                                 .executes(context -> {
                                     TickerManager.clear();
+                                    sendSystemMsg(player, Component.translatable("command.subtle_effects.clear_tickers"));
                                     return 1;
                                 })
                         )
                 )
         );
+    }
+
+    private static void sendSystemMsg(Player player, Component component) {
+        if (player != null) {
+            player.sendSystemMessage(component);
+        }
     }
 }
