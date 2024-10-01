@@ -48,6 +48,7 @@ public class ModBlockConfigs extends Config {
     public boolean endPortalParticles = true;
     public boolean leavesDecayEffects = true;
     public boolean farmlandDestroyEffects = true;
+    public AmethystSparkleDisplayType amethystSparkleDisplayType = AmethystSparkleDisplayType.ON;
 
     public ModBlockConfigs() {
         super(SubtleEffects.loc("blocks"));
@@ -102,6 +103,18 @@ public class ModBlockConfigs extends Config {
 
         public int getPerSideChance() {
             return perSideChance;
+        }
+    }
+
+    public enum AmethystSparkleDisplayType implements EnumTranslatable {
+        OFF,
+        ON,
+        CRYSTALS_ONLY;
+
+        @NotNull
+        @Override
+        public String prefix() {
+            return BASE_KEY + "blocks.amethystSparkleDisplayType";
         }
     }
 }

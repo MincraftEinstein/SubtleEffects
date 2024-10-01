@@ -12,6 +12,7 @@
     "client.MinecraftMixin",
     "client.WaterFluidMixin",
     "client.block.AbstractCandleBlockMixin",
+    "client.block.AmethystClusterBlockAccessor",
     "client.block.BaseFireBlockMixin",
     "client.block.BeehiveBlockMixin",
     "client.block.CampfireBlockMixin",
