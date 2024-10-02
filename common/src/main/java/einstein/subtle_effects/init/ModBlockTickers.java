@@ -14,6 +14,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.util.ParticleUtils;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.*;
@@ -248,6 +249,18 @@ public class ModBlockTickers {
                                 pos.getZ() + 0.5 + nextNonAbsDouble(random, offset),
                                 0, 0, 0
                         );
+                    }
+                }
+            }
+        });
+        register(state -> state.is(Blocks.FLOWERING_AZALEA_LEAVES), (state, level, pos, random) -> {
+            if (BLOCKS.floweringAzaleaPetals) {
+                if (random.nextInt(10) == 0) {
+                    BlockPos belowPos = pos.below();
+                    BlockState belowState = level.getBlockState(belowPos);
+
+                    if (!Block.isFaceFull(belowState.getCollisionShape(level, belowPos), Direction.UP)) {
+                        ParticleUtils.spawnParticleBelow(level, pos, random, ModParticles.AZALEA_PETAL.get());
                     }
                 }
             }

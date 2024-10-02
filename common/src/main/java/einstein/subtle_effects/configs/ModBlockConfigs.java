@@ -49,6 +49,7 @@ public class ModBlockConfigs extends Config {
     public boolean leavesDecayEffects = true;
     public boolean farmlandDestroyEffects = true;
     public AmethystSparkleDisplayType amethystSparkleDisplayType = AmethystSparkleDisplayType.ON;
+    public boolean floweringAzaleaPetals = true;
 
     public ModBlockConfigs() {
         super(SubtleEffects.loc("blocks"));

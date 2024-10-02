@@ -99,6 +99,7 @@
   "config.subtle_effects.blocks.amethystSparkleDisplayType.OFF": "Off",
   "config.subtle_effects.blocks.amethystSparkleDisplayType.ON": "On",
   "config.subtle_effects.blocks.amethystSparkleDisplayType.CRYSTALS_ONLY": "Crystals Only",
+  "subtle_effects.blocks.floweringAzaleaPetals": "Flowering Azalea Petals",
   "subtle_effects.entities.attacked": "Attacked",
   "subtle_effects.entities.attacked.desc": "Particles emitted from a mob when it takes damage from a another mob or player",
   "subtle_effects.entities.attacked.chickenFeathers": "Chicken Feathers",

@@ -3,10 +3,7 @@ package einstein.subtle_effects.init;
 import com.mojang.serialization.MapCodec;
 import einstein.subtle_effects.particle.*;
 import einstein.subtle_effects.particle.option.*;
-import einstein.subtle_effects.particle.provider.SpellCasterMagicProvider;
-import einstein.subtle_effects.particle.provider.MushroomSporeProvider;
-import einstein.subtle_effects.particle.provider.PollenProvider;
-import einstein.subtle_effects.particle.provider.SmokeParticleProvider;
+import einstein.subtle_effects.particle.provider.*;
 import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.client.particle.SuspendedTownParticle;
@@ -59,6 +56,7 @@ public class ModParticles {
     public static final Supplier<ParticleType<FloatParticleOptions>> MAGMA_CUBE_TRAIL = register("magma_cube_trail", FloatParticleOptions::codec, FloatParticleOptions::streamCodec, SlimeTrailParticle.Provider::new);
     public static final Supplier<ParticleType<ColorParticleOption>> SPELL_CASTER_MAGIC = register("spell_caster_magic", ColorParticleOption::codec, ColorParticleOption::streamCodec, SpellCasterMagicProvider::new);
     public static final Supplier<SimpleParticleType> AMETHYST_SPARKLE = register("amethyst_sparkle", SuspendedTownParticle.HappyVillagerProvider::new);
+    public static final Supplier<SimpleParticleType> AZALEA_PETAL = register("azalea_petal", AzaleaParticleProvider::new);
 
     public static void init() {
     }
