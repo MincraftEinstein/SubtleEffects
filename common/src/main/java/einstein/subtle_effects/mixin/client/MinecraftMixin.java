@@ -1,5 +1,6 @@
 package einstein.subtle_effects.mixin.client;
 
+import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.util.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
@@ -22,7 +23,9 @@ public class MinecraftMixin {
     @Inject(method = "setScreen", at = @At("TAIL"))
     private void setScreen(Screen screen, CallbackInfo ci) {
         if (screen != null && player != null) {
-            Util.applyHelmetShader(player.getInventory().getArmor(3));
+            if (ModConfigs.GENERAL.mobSkullShaders) {
+                Util.applyHelmetShader(player.getInventory().getArmor(3));
+            }
         }
     }
 }

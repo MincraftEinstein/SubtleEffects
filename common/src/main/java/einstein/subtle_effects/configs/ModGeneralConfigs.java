@@ -26,6 +26,8 @@ public class ModGeneralConfigs extends Config {
     @Override
     public void onUpdateClient() {
         Minecraft minecraft = Minecraft.getInstance();
+        TickerManager.clear();
+
         if (minecraft.level != null && minecraft.options.getCameraType().isFirstPerson()) {
             if (!mobSkullShaders) {
                 ((ShaderManager) minecraft.gameRenderer).subtleEffects$clearShader();
@@ -37,6 +39,5 @@ public class ModGeneralConfigs extends Config {
                 Util.applyHelmetShader(player.getInventory().getArmor(3));
             }
         }
-        TickerManager.clear();
     }
 }
