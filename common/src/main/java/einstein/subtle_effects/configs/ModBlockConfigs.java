@@ -4,7 +4,9 @@ import einstein.subtle_effects.SubtleEffects;
 import einstein.subtle_effects.configs.blocks.SparksConfigs;
 import einstein.subtle_effects.configs.blocks.SteamConfigs;
 import einstein.subtle_effects.configs.blocks.UpdatedSmokeConfigs;
+import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.tickers.TickerManager;
+import me.fzzyhmstrs.fzzy_config.annotations.Translation;
 import me.fzzyhmstrs.fzzy_config.config.Config;
 import me.fzzyhmstrs.fzzy_config.util.EnumTranslatable;
 import me.fzzyhmstrs.fzzy_config.validation.collection.ValidatedList;
@@ -18,6 +20,7 @@ import java.util.List;
 
 import static einstein.subtle_effects.init.ModConfigs.BASE_KEY;
 
+@Translation(prefix = ModConfigs.BASE_KEY + "blocks")
 public class ModBlockConfigs extends Config {
 
     public SparksConfigs sparks = new SparksConfigs();

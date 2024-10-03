@@ -1,23 +1,25 @@
 package einstein.subtle_effects.configs;
 
 import einstein.subtle_effects.SubtleEffects;
+import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.tickers.TickerManager;
 import einstein.subtle_effects.util.ShaderManager;
 import einstein.subtle_effects.util.Util;
+import me.fzzyhmstrs.fzzy_config.annotations.Translation;
 import me.fzzyhmstrs.fzzy_config.config.Config;
 import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedFloat;
 import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedInt;
-import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedNumber;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.player.Player;
 
+@Translation(prefix = ModConfigs.BASE_KEY + "general")
 public class ModGeneralConfigs extends Config {
 
     public boolean mobSkullShaders;
 
     @ValidatedInt.Restrict(min = 1, max = 32)
     public int particleRenderDistance = 5;
-    public ValidatedFloat sparksScale = new ValidatedFloat(1, 2, 1, ValidatedNumber.WidgetType.TEXTBOX);
+    public ValidatedFloat sparksScale = new ValidatedFloat(1, 2, 1);
 
     public ModGeneralConfigs() {
         super(SubtleEffects.loc("general"));

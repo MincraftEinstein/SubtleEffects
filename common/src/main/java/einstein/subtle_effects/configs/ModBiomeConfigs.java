@@ -2,6 +2,8 @@ package einstein.subtle_effects.configs;
 
 import einstein.subtle_effects.SubtleEffects;
 import einstein.subtle_effects.biome_particles.BiomeParticleManager;
+import einstein.subtle_effects.init.ModConfigs;
+import me.fzzyhmstrs.fzzy_config.annotations.Translation;
 import me.fzzyhmstrs.fzzy_config.config.Config;
 import me.fzzyhmstrs.fzzy_config.validation.collection.ValidatedList;
 import me.fzzyhmstrs.fzzy_config.validation.minecraft.ValidatedIdentifier;
@@ -10,6 +12,7 @@ import net.minecraft.resources.ResourceLocation;
 
 import java.util.Arrays;
 
+@Translation(prefix = ModConfigs.BASE_KEY + "biomes")
 public class ModBiomeConfigs extends Config {
 
     @ValidatedInt.Restrict(min = 0, max = 32)

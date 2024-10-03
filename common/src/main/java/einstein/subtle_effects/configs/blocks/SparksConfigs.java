@@ -1,10 +1,12 @@
 package einstein.subtle_effects.configs.blocks;
 
 import einstein.subtle_effects.init.ModConfigs;
+import me.fzzyhmstrs.fzzy_config.annotations.Translation;
 import me.fzzyhmstrs.fzzy_config.config.ConfigSection;
 import me.fzzyhmstrs.fzzy_config.util.EnumTranslatable;
 import org.jetbrains.annotations.NotNull;
 
+@Translation(prefix = ModConfigs.BASE_KEY + "blocks.sparks")
 public class SparksConfigs extends ConfigSection {
 
     public boolean removeVanillaCampfireSparks = true;

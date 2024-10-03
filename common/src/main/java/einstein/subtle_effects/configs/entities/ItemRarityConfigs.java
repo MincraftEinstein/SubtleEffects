@@ -1,5 +1,7 @@
 package einstein.subtle_effects.configs.entities;
 
+import einstein.subtle_effects.init.ModConfigs;
+import me.fzzyhmstrs.fzzy_config.annotations.Translation;
 import me.fzzyhmstrs.fzzy_config.config.ConfigSection;
 import me.fzzyhmstrs.fzzy_config.util.EnumTranslatable;
 import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedInt;
@@ -7,6 +9,7 @@ import org.jetbrains.annotations.NotNull;
 
 import static einstein.subtle_effects.init.ModConfigs.BASE_KEY;
 
+@Translation(prefix = ModConfigs.BASE_KEY + "entities.itemRarity")
 public class ItemRarityConfigs extends ConfigSection {
 
     public DisplayType particlesDisplayType = DisplayType.ON;
