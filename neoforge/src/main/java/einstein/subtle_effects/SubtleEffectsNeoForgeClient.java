@@ -31,7 +31,6 @@ public class SubtleEffectsNeoForgeClient {
             SubtleEffectsClient.clientTick(minecraft, minecraft.level);
         });
         NeoForge.EVENT_BUS.addListener((RegisterClientCommandsEvent event) -> SubtleEffectsClient.registerClientCommands(event.getDispatcher(), event.getBuildContext()));
-        modEventBus.addListener((RegisterEvent event) -> SubtleEffects.LOGGER.warn("REGISTER EVENT FIRED"));
     }
 
     @SuppressWarnings("unchecked")
