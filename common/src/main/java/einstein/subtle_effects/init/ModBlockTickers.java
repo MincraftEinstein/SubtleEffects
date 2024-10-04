@@ -22,6 +22,7 @@ import net.minecraft.world.level.block.entity.BeaconBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -156,13 +157,13 @@ public class ModBlockTickers {
         register(state -> state.getBlock() instanceof CampfireBlock && BLOCKS.sparks.campfireSparks
                 && state.getValue(CampfireBlock.LIT), (state, level, pos, random) -> {
             ParticleSpawnUtil.spawnSparks(level, random, pos, new Vec3(0.5, 0.4, 0.5),
-                    new Vec3(0.03, 0.05, 0.03), 10, 6, state.is(Blocks.SOUL_CAMPFIRE), true
+                    new Vec3(0.03, 0.05, 0.03), 10, 6, isSoulFlameBlock(state, Blocks.CAMPFIRE, Blocks.SOUL_CAMPFIRE), true
             );
         });
         register(state -> state.getBlock() instanceof TorchBlock && !(state.getBlock() instanceof WallTorchBlock)
                 && BLOCKS.sparks.torchSparks, (state, level, pos, random) -> {
             ParticleSpawnUtil.spawnSparks(level, random, pos, new Vec3(0.5, 0.5, 0.5),
-                    new Vec3(0.01, 0.01, 0.01), 2, -6, state.is(Blocks.SOUL_TORCH), false
+                    new Vec3(0.01, 0.01, 0.01), 2, -6, isSoulFlameBlock(state, Blocks.TORCH, Blocks.SOUL_TORCH), false
             );
         });
         register(state -> state.getBlock() instanceof WallTorchBlock && BLOCKS.sparks.torchSparks,
@@ -170,14 +171,14 @@ public class ModBlockTickers {
                     Direction direction = state.getValue(WallTorchBlock.FACING).getOpposite();
                     ParticleSpawnUtil.spawnSparks(level, random, pos,
                             new Vec3(0.5 + (0.27 * direction.getStepX()), 0.7, 0.5 + (0.27 * direction.getStepZ())),
-                            new Vec3(0.01, 0.01, 0.01), 2, 20, state.is(Blocks.SOUL_WALL_TORCH), false
+                            new Vec3(0.01, 0.01, 0.01), 2, 20, isSoulFlameBlock(state, Blocks.WALL_TORCH, Blocks.SOUL_WALL_TORCH), false
                     );
                 });
         register(state -> state.getBlock() instanceof AbstractCandleBlock && BLOCKS.sparks.candleSparks
                 && state.getValue(AbstractCandleBlock.LIT), (state, level, pos, random) -> {
             AbstractCandleBlock block = (AbstractCandleBlock) state.getBlock();
             block.getParticleOffsets(state).forEach(offset -> ParticleSpawnUtil.spawnSparks(level, random, pos,
-                    offset, new Vec3(0.01, 0.01, 0.01), 1, 20, BuiltInRegistries.BLOCK.getKey(state.getBlock()).getPath().contains("soul"), false)
+                    offset, new Vec3(0.01, 0.01, 0.01), 1, 20, isSoulFlameBlock(state, Blocks.CANDLE, null), false)
             );
         });
         register(state -> state.getBlock() instanceof BaseFireBlock && BLOCKS.sparks.fireSparks,
@@ -211,7 +212,9 @@ public class ModBlockTickers {
                     for (int i = 0; i < 5; i++) {
                         int xSign = nextSign(random);
                         int zSign = nextSign(random);
-                        level.addParticle(state.is(Blocks.SOUL_LANTERN) ? ModParticles.FLOATING_SOUL_SPARK.get() : ModParticles.FLOATING_SPARK.get(),
+                        level.addParticle(isSoulFlameBlock(state, Blocks.LANTERN, Blocks.SOUL_LANTERN)
+                                        ? ModParticles.FLOATING_SOUL_SPARK.get()
+                                        : ModParticles.FLOATING_SPARK.get(),
                                 pos.getX() + 0.5 + random.nextDouble() / 2 * xSign,
                                 pos.getY() + random.nextInt(5) / 10D,
                                 pos.getZ() + 0.5 + random.nextDouble() / 2 * zSign,
@@ -279,7 +282,18 @@ public class ModBlockTickers {
         return block.canBurn(level.getBlockState(pos));
     }
 
+    private static boolean isSoulFlameBlock(BlockState state, Block normalBlock, @Nullable Block soulBlock) {
+        return !state.is(normalBlock) &&
+                ((soulBlock != null && state.is(soulBlock)) ||
+                        BuiltInRegistries.BLOCK.getKey(state.getBlock()).getPath().contains("soul"));
+    }
+
     private static void spawnFireSparks(Level level, RandomSource random, BlockState state, BlockPos pos, double xOffset, double zOffset) {
-        ParticleSpawnUtil.spawnSparks(level, random, pos, new Vec3(xOffset, random.nextDouble(), zOffset), new Vec3(0.03, 0.05, 0.03), 10, 10, state.is(Blocks.SOUL_FIRE), true);
+        ParticleSpawnUtil.spawnSparks(level, random, pos,
+                new Vec3(xOffset, random.nextDouble(), zOffset),
+                new Vec3(0.03, 0.05, 0.03),
+                10, 10,
+                isSoulFlameBlock(state, Blocks.FIRE, Blocks.SOUL_FIRE), true
+        );
     }
 }
