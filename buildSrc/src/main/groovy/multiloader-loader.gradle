@@ -3,10 +3,11 @@ plugins {
 }
 
 configurations {
-    commonJava{
+    commonJava {
         canBeResolved = true
     }
-    commonResources{
+
+    commonResources {
         canBeResolved = true
     }
 }
@@ -17,6 +18,7 @@ dependencies {
             requireCapability "$group:$mod_id"
         }
     }
+
     commonJava project(path: ':common', configuration: 'commonJava')
     commonResources project(path: ':common', configuration: 'commonResources')
     implementation group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.1'
