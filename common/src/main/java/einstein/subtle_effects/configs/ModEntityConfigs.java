@@ -8,6 +8,7 @@ import me.fzzyhmstrs.fzzy_config.annotations.Translation;
 import me.fzzyhmstrs.fzzy_config.config.Config;
 import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedDouble;
 import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedInt;
+import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedNumber;
 
 @Translation(prefix = ModConfigs.BASE_KEY + "entities")
 public class ModEntityConfigs extends Config {
@@ -20,12 +21,12 @@ public class ModEntityConfigs extends Config {
     public PrimedTNTConfigs primedTNT = new PrimedTNTConfigs();
 
     public boolean enderPearlTrail = true;
-    public final ValidatedDouble snowballTrailDensity = new ValidatedDouble(0.2, 1, 0);
-    public final ValidatedDouble allayMagicDensity = new ValidatedDouble(0.2, 1, 0);
-    public final ValidatedDouble vexMagicDensity = new ValidatedDouble(0.2, 1, 0);
+    public ValidatedDouble snowballTrailDensity = new ValidatedDouble(0.2, 1, 0);
+    public ValidatedDouble allayMagicDensity = new ValidatedDouble(0.2, 1, 0);
+    public ValidatedDouble vexMagicDensity = new ValidatedDouble(0.2, 1, 0);
     public boolean sheepShearFluff = true;
     public boolean improvedDragonFireballTrail = true;
-    public final CommandBlockSpawnType commandBlockMinecartParticles = CommandBlockSpawnType.ON;
+    public CommandBlockSpawnType commandBlockMinecartParticles = CommandBlockSpawnType.ON;
     public ValidatedInt stomachGrowlingThreshold = new ValidatedInt(6, 20, 0);
     public ValidatedInt heartBeatingThreshold = new ValidatedInt(6, 20, 0);
     public boolean endCrystalParticles = true;
