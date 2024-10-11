@@ -35,30 +35,28 @@ public class SleepingTicker extends Ticker<LivingEntity> {
 
     public SleepingTicker(LivingEntity entity) {
         super(entity);
-        switch (entity) {
-            case Player player -> {
-                doesSnore = doesEntitySnore(player, ENTITIES.sleeping.playerSnoreChance.get());
-                snoreSound = ModSounds.PLAYER_SNORE.get();
-                if (player.isLocalPlayer()) {
-                    shouldDelay = false;
-                    breathDelay = 40;
-                }
-            }
-            case Villager villager -> {
-                doesSnore = doesEntitySnore(entity, ENTITIES.sleeping.villagerSnoreChance.get());
-                snoreSound = ModSounds.VILLAGER_SNORE.get();
-                breathDelay = 80;
-            }
-            case Bat bat -> isBat = ENTITIES.sleeping.batsHaveSleepingZs;
-            case Cat cat -> {
+        if (entity instanceof Player player) {
+            doesSnore = doesEntitySnore(player, ENTITIES.sleeping.playerSnoreChance.get());
+            snoreSound = ModSounds.PLAYER_SNORE.get();
+            if (player.isLocalPlayer()) {
                 shouldDelay = false;
-                isCat = ENTITIES.sleeping.catsHaveSleepingZs;
-
-                if (Minecraft.getInstance().player.isSleeping()) {
-                    shouldDelay = true;
-                }
+                breathDelay = 40;
             }
-            default -> {
+        }
+        else if (entity instanceof Villager) {
+            doesSnore = doesEntitySnore(entity, ENTITIES.sleeping.villagerSnoreChance.get());
+            snoreSound = ModSounds.VILLAGER_SNORE.get();
+            breathDelay = 80;
+        }
+        else if (entity instanceof Bat) {
+            isBat = ENTITIES.sleeping.batsHaveSleepingZs;
+        }
+        else if (entity instanceof Cat) {
+            shouldDelay = false;
+            isCat = ENTITIES.sleeping.catsHaveSleepingZs;
+
+            if (Minecraft.getInstance().player.isSleeping()) {
+                shouldDelay = true;
             }
         }
     }

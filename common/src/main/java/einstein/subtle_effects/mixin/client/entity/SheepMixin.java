@@ -2,7 +2,7 @@ package einstein.subtle_effects.mixin.client.entity;
 
 import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.init.ModParticles;
-import einstein.subtle_effects.particle.option.IntegerParticleOptions;
+import einstein.subtle_effects.particle.option.ColorParticleOptions;
 import einstein.subtle_effects.util.MathUtil;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -13,6 +13,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
+import org.joml.Vector3f;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -36,7 +37,7 @@ public abstract class SheepMixin extends Animal {
     private void mobInteract(Player player, InteractionHand hand, CallbackInfoReturnable<InteractionResult> cir) {
         if (level().isClientSide() && ModConfigs.ENTITIES.sheepShearFluff) {
             if (player.getItemInHand(hand).is(Items.SHEARS) && readyForShearing()) {
-                IntegerParticleOptions particle = new IntegerParticleOptions(ModParticles.SHEEP_FLUFF.get(), Sheep.getColor(getColor()));
+                ColorParticleOptions particle = new ColorParticleOptions(ModParticles.SHEEP_FLUFF.get(), new Vector3f(Sheep.getColorArray(getColor())));
 
                 for (int i = 0; i < 7; i++) {
                     level().addParticle(particle,

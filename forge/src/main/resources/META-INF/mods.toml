@@ -1,0 +1,36 @@
+modLoader = "javafml"
+loaderVersion = "${forge_loader_version_range}"
+license = "All rights reserved"
+issueTrackerURL="https://github.com/MincraftEinstein/SubtleEffects/issues"
+
+[[mods]]
+    modId = "subtle_effects"
+    version = "${version}"
+    displayName = "Subtle Effects"
+    displayURL="https://curseforge.com/minecraft/mods/subtle-effects"
+    #updateJSONURL="https://change.me.example.invalid/updates.json"
+    logoFile = "pack.png"
+    credits = ""
+    authors = "${mod_author}"
+    description = "${description}"
+
+[[dependencies.subtle_effects]]
+    modId = "forge"
+    mandatory = true
+    versionRange = "[47.0.0,)"
+    ordering = "NONE"
+    side = "BOTH"
+
+[[dependencies.subtle_effects]]
+    modId = "minecraft"
+    mandatory = true
+    versionRange = "[${minecraft_version}, ${max_minecraft_version})"
+    ordering = "NONE"
+    side = "BOTH"
+
+[[dependencies.subtle_effects]]
+    modId = "fzzy_config"
+    mandatory = true
+    versionRange = "[${fzzy_config_version},)"
+    ordering = "NONE"
+    side = "CLIENT"

@@ -1,39 +1,39 @@
 plugins {
-    id 'multiloader-common'
-    id 'net.neoforged.moddev'
+    id 'idea'
+    id 'java'
+    id 'maven-publish'
+    id 'org.spongepowered.gradle.vanilla'
 }
 
-neoForge {
-    neoFormVersion = neo_form_version
+base {
+    archivesName = "${mod_name}-common-${minecraft_version}"
+}
 
-    accessTransformers.from('src/main/resources/META-INF/accesstransformer.cfg')
+minecraft {
+    version(minecraft_version)
 
-    parchment {
-        minecraftVersion = parchment_minecraft_version
-        mappingsVersion = parchment_version
-    }
+    accessWideners(file("src/main/resources/${mod_id}.accesswidener"))
 }
 
 dependencies {
     compileOnly group: 'org.spongepowered', name: 'mixin', version: '0.8.5'
     compileOnly group: 'io.github.llamalad7', name: 'mixinextras-common', version: '0.3.5'
     annotationProcessor group: 'io.github.llamalad7', name: 'mixinextras-common', version: '0.3.5'
+    implementation group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.1'
 
-    compileOnly group: 'me.fzzyhmstrs', name: 'fzzy_config', version: "${fzzy_config_version}+neoforge"
+    compileOnly group: 'me.fzzyhmstrs', name: 'fzzy_config', version: "${fzzy_config_version}+forge"
 }
 
-configurations {
-    commonJava {
-        canBeResolved = false
-        canBeConsumed = true
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            artifactId base.archivesName.get()
+            from components.java
+        }
     }
-    commonResources {
-        canBeResolved = false
-        canBeConsumed = true
+    repositories {
+        maven {
+            url "file://" + System.getenv("local_maven")
+        }
     }
-}
-
-artifacts {
-    commonJava sourceSets.main.java.sourceDirectories.singleFile
-    commonResources sourceSets.main.resources.sourceDirectories.singleFile
 }

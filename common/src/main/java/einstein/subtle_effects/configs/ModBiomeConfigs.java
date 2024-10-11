@@ -40,6 +40,6 @@ public class ModBiomeConfigs extends Config {
     }
 
     private static ValidatedList<ResourceLocation> biomeList(String... biomeIds) {
-        return new ValidatedIdentifier().toList(Arrays.stream(biomeIds).map(ResourceLocation::withDefaultNamespace).toList());
+        return new ValidatedIdentifier().toList(Arrays.stream(biomeIds).map(ResourceLocation::new).toList());
     }
 }

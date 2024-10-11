@@ -1,21 +1,33 @@
 package einstein.subtle_effects.networking.clientbound;
 
 import einstein.subtle_effects.SubtleEffects;
+import einstein.subtle_effects.networking.Packet;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.network.codec.ByteBufCodecs;
-import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
+import org.jetbrains.annotations.Nullable;
 
-public record ClientBoundEntitySpawnSprintingDustCloudsPacket(int entityId) implements CustomPacketPayload {
+public record ClientBoundEntitySpawnSprintingDustCloudsPacket(
+        int entityId) implements Packet {
 
-    public static final Type<ClientBoundEntitySpawnSprintingDustCloudsPacket> TYPE = new Type<>(SubtleEffects.loc("entity_spawn_sprinting_dust_clouds"));
-    public static final StreamCodec<FriendlyByteBuf, ClientBoundEntitySpawnSprintingDustCloudsPacket> STREAM_CODEC = StreamCodec.composite(
-            ByteBufCodecs.INT, ClientBoundEntitySpawnSprintingDustCloudsPacket::entityId,
-            ClientBoundEntitySpawnSprintingDustCloudsPacket::new
-    );
+    public static final ResourceLocation ID = SubtleEffects.loc("entity_spawn_sprinting_dust_clouds");
 
     @Override
-    public Type<? extends CustomPacketPayload> type() {
-        return TYPE;
+    public void encode(FriendlyByteBuf buf) {
+        buf.writeInt(entityId);
+    }
+
+    public static ClientBoundEntitySpawnSprintingDustCloudsPacket decode(FriendlyByteBuf buf) {
+        return new ClientBoundEntitySpawnSprintingDustCloudsPacket(buf.readInt());
+    }
+
+    @Override
+    public void handle(@Nullable ServerPlayer player) {
+        ClientPacketHandlers.handle(this);
+    }
+
+    @Override
+    public ResourceLocation id() {
+        return ID;
     }
 }

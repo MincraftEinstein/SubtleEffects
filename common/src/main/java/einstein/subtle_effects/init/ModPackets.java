@@ -7,16 +7,9 @@ import static einstein.subtle_effects.platform.Services.NETWORK;
 public class ModPackets {
 
     public static void init() {
-        NETWORK.registerToClient(ClientBoundSpawnSnoreParticlePacket.TYPE, ClientBoundSpawnSnoreParticlePacket.STREAM_CODEC);
-        NETWORK.registerToClient(ClientBoundEntityFellPacket.TYPE, ClientBoundEntityFellPacket.STREAM_CODEC);
-        NETWORK.registerToClient(ClientBoundEntitySpawnSprintingDustCloudsPacket.TYPE, ClientBoundEntitySpawnSprintingDustCloudsPacket.STREAM_CODEC);
-        NETWORK.registerToClient(ClientBoundBlockDestroyEffectsPacket.TYPE, ClientBoundBlockDestroyEffectsPacket.STREAM_CODEC);
-    }
-
-    public static void initClientHandlers() {
-        NETWORK.registerClientHandler(ClientBoundSpawnSnoreParticlePacket.TYPE, ClientPacketHandlers::handle);
-        NETWORK.registerClientHandler(ClientBoundEntityFellPacket.TYPE, ClientPacketHandlers::handle);
-        NETWORK.registerClientHandler(ClientBoundEntitySpawnSprintingDustCloudsPacket.TYPE, ClientPacketHandlers::handle);
-        NETWORK.registerClientHandler(ClientBoundBlockDestroyEffectsPacket.TYPE, ClientPacketHandlers::handle);
+        NETWORK.registerToClient(ClientBoundSpawnSnoreParticlePacket.ID, ClientBoundSpawnSnoreParticlePacket.class, ClientBoundSpawnSnoreParticlePacket::decode);
+        NETWORK.registerToClient(ClientBoundEntityFellPacket.ID, ClientBoundEntityFellPacket.class, ClientBoundEntityFellPacket::decode);
+        NETWORK.registerToClient(ClientBoundEntitySpawnSprintingDustCloudsPacket.ID, ClientBoundEntitySpawnSprintingDustCloudsPacket.class, ClientBoundEntitySpawnSprintingDustCloudsPacket::decode);
+        NETWORK.registerToClient(ClientBoundBlockDestroyEffectsPacket.ID, ClientBoundBlockDestroyEffectsPacket.class, ClientBoundBlockDestroyEffectsPacket::decode);
     }
 }

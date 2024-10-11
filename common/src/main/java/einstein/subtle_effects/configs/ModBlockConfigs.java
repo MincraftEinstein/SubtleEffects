@@ -65,14 +65,14 @@ public class ModBlockConfigs extends Config {
 
     private static List<ResourceLocation> getDefaultFallingBlockDustBlocks() {
         List<ResourceLocation> list = new ArrayList<>();
-        list.add(ResourceLocation.withDefaultNamespace("sand"));
-        list.add(ResourceLocation.withDefaultNamespace("suspicious_sand"));
-        list.add(ResourceLocation.withDefaultNamespace("red_sand"));
-        list.add(ResourceLocation.withDefaultNamespace("gravel"));
-        list.add(ResourceLocation.withDefaultNamespace("suspicious_gravel"));
+        list.add(new ResourceLocation("sand"));
+        list.add(new ResourceLocation("suspicious_sand"));
+        list.add(new ResourceLocation("red_sand"));
+        list.add(new ResourceLocation("gravel"));
+        list.add(new ResourceLocation("suspicious_gravel"));
 
         for (DyeColor color : DyeColor.values()) {
-            list.add(ResourceLocation.withDefaultNamespace(color.getName() + "_concrete_powder"));
+            list.add(new ResourceLocation(color.getName() + "_concrete_powder"));
         }
         return list;
     }

@@ -1,6 +1,12 @@
 plugins {
-    id 'multiloader-loader'
+    id 'java'
+    id 'idea'
+    id 'maven-publish'
     id 'fabric-loom'
+}
+
+base {
+    archivesName = "${mod_name}-fabric-${minecraft_version}"
 }
 
 repositories {
@@ -11,13 +17,12 @@ repositories {
 
 dependencies {
     minecraft "com.mojang:minecraft:${minecraft_version}"
-    mappings loom.layered {
-        officialMojangMappings()
-        parchment("org.parchmentmc.data:parchment-${parchment_minecraft_version}:${parchment_version}@zip")
-    }
+    mappings loom.officialMojangMappings()
+    implementation(group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.1')
+    implementation(project(":common"))
 
-    modImplementation "net.fabricmc:fabric-loader:${fabric_version}"
-    modImplementation "net.fabricmc.fabric-api:fabric-api:${fabric_api_version}"
+    modImplementation("net.fabricmc:fabric-loader:${fabric_version}")
+    modImplementation("net.fabricmc.fabric-api:fabric-api:${fabric_api_version}")
     modImplementation("com.terraformersmc:modmenu:${modmenu_version}")
     modImplementation "me.fzzyhmstrs:fzzy_config:${fzzy_config_version}"
 }
@@ -45,6 +50,26 @@ loom {
     }
 }
 
+tasks.withType(JavaCompile).configureEach {
+    source(project(":common").sourceSets.main.allSource)
+}
+
 processResources {
-    exclude('META-INF/accesstransformer.cfg')
+    from project(":common").sourceSets.main.resources
+
+    exclude("META-INF/accesstransformer.cfg")
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            artifactId base.archivesName.get()
+            from components.java
+        }
+    }
+    repositories {
+        maven {
+            url "file://" + System.getenv("local_maven")
+        }
+    }
 }

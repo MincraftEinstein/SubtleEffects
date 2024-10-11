@@ -3,14 +3,13 @@ package einstein.subtle_effects.tickers;
 import einstein.subtle_effects.util.MathUtil;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.world.entity.Crackiness;
 import net.minecraft.world.entity.animal.IronGolem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 
 public class IronGolemTicker extends Ticker<IronGolem> {
 
-    private Crackiness.Level oldCrackinessLevel;
+    private IronGolem.Crackiness oldCrackinessLevel;
     private float oldHealth;
 
     public IronGolemTicker(IronGolem entity) {
@@ -19,7 +18,7 @@ public class IronGolemTicker extends Ticker<IronGolem> {
 
     @Override
     public void tick() {
-        Crackiness.Level crackinessLevel = entity.getCrackiness();
+        IronGolem.Crackiness crackinessLevel = entity.getCrackiness();
         if (oldCrackinessLevel != crackinessLevel) {
             oldCrackinessLevel = crackinessLevel;
 

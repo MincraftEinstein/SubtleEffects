@@ -3,8 +3,8 @@ package einstein.subtle_effects.init;
 import einstein.subtle_effects.configs.CommandBlockSpawnType;
 import einstein.subtle_effects.configs.ModBlockConfigs;
 import einstein.subtle_effects.configs.SmokeType;
-import einstein.subtle_effects.mixin.client.block.AmethystClusterBlockAccessor;
 import einstein.subtle_effects.particle.option.PositionParticleOptions;
+import einstein.subtle_effects.util.AmethystClusterBlockAccessor;
 import einstein.subtle_effects.util.BlockProvider;
 import einstein.subtle_effects.util.ParticleSpawnUtil;
 import einstein.subtle_effects.util.Util;
@@ -240,10 +240,10 @@ public class ModBlockTickers {
             if (BLOCKS.amethystSparkleDisplayType != ModBlockConfigs.AmethystSparkleDisplayType.OFF) {
                 if (random.nextInt(5) == 0) {
                     AmethystClusterBlockAccessor block = (AmethystClusterBlockAccessor) state.getBlock();
-                    float height = block.getHeight();
+                    float height = block.subtleEffects$getHeight();
 
                     if (height >= 5) {
-                        float offset = (block.getAABBOffset() / 16) + 0.0625F;
+                        float offset = (block.subtleEffects$getAABBOffset() / 16) + 0.0625F;
                         float pixelHeight = height / 16;
 
                         level.addParticle(ModParticles.AMETHYST_SPARKLE.get(),

@@ -24,15 +24,14 @@
     ]
   },
   "mixins": [
-    "subtle_effects.mixins.json",
-    "subtle_effects.fabric.mixins.json"
+    "subtle_effects.mixins.json"
   ],
   "accessWidener": "subtle_effects.accesswidener",
   "depends": {
     "fabricloader": ">=${fabric_version}",
     "fabric-api": ">=${fabric_api_version}",
     "minecraft": ">=${minecraft_version} <${max_minecraft_version}",
-    "java": ">=${java_version}",
+    "java": ">=17",
     "fzzy_config": ">=${fzzy_config_version}"
   },
   "custom": {

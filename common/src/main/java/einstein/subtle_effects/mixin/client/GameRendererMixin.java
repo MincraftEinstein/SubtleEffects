@@ -17,7 +17,7 @@ public abstract class GameRendererMixin implements ShaderManager {
     PostChain postEffect;
 
     @Shadow
-    protected abstract void loadEffect(ResourceLocation location);
+    abstract void loadEffect(ResourceLocation location);
 
     @Override
     public void subtleEffects$loadShader(ResourceLocation location) {

@@ -1,15 +1,16 @@
 package einstein.subtle_effects.init;
 
-import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.Codec;
 import einstein.subtle_effects.particle.*;
 import einstein.subtle_effects.particle.option.*;
 import einstein.subtle_effects.particle.provider.*;
 import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.client.particle.SuspendedTownParticle;
-import net.minecraft.core.particles.*;
-import net.minecraft.network.RegistryFriendlyByteBuf;
-import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.core.particles.ItemParticleOption;
+import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.core.particles.ParticleType;
+import net.minecraft.core.particles.SimpleParticleType;
 
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -36,25 +37,25 @@ public class ModParticles {
     public static final Supplier<SimpleParticleType> RED_BLUE_PARROT_FEATHER = register("red_blue_parrot_feather", FeatherParticle.Provider::new);
     public static final Supplier<SimpleParticleType> YELLOW_BLUE_PARROT_FEATHER = register("yellow_blue_parrot_feather", FeatherParticle.Provider::new);
     public static final Supplier<SimpleParticleType> ALLAY_MAGIC = register("allay_magic", AllayMagicParticle.Provider::new);
-    public static final Supplier<ParticleType<BooleanParticleOptions>> VEX_MAGIC = register("vex_magic", BooleanParticleOptions::codec, BooleanParticleOptions::streamCodec, AllayMagicParticle.VexProvider::new);
+    public static final Supplier<ParticleType<BooleanParticleOptions>> VEX_MAGIC = register("vex_magic", BooleanParticleOptions.DESERIALIZER, BooleanParticleOptions::codec, AllayMagicParticle.VexProvider::new);
     public static final Supplier<SimpleParticleType> SMALL_DUST_CLOUD = register("small_dust_cloud", DustCloudParticle.SmallProvider::new);
     public static final Supplier<SimpleParticleType> LARGE_DUST_CLOUD = register("large_dust_cloud", DustCloudParticle.LargeProvider::new);
-    public static final Supplier<ParticleType<IntegerParticleOptions>> SHEEP_FLUFF = register("sheep_fluff", IntegerParticleOptions::codec, IntegerParticleOptions::streamCodec, FeatherParticle.SheepFluffProvider::new);
+    public static final Supplier<ParticleType<ColorParticleOptions>> SHEEP_FLUFF = register("sheep_fluff", ColorParticleOptions.DESERIALIZER, ColorParticleOptions::codec, FeatherParticle.SheepFluffProvider::new);
     public static final Supplier<SimpleParticleType> MUSHROOM_SPORE = register("mushroom_spore", MushroomSporeProvider::new);
     public static final Supplier<SimpleParticleType> FIREFLY = register("firefly", sprites -> new InsectParticle.Provider(() -> new ParticleAnimation(sprites, 16, 3), true));
     public static final Supplier<SimpleParticleType> SMOKE = register("smoke", SmokeParticleProvider::new);
     public static final Supplier<SimpleParticleType> POLLEN = register("pollen", PollenProvider::new);
-    public static final Supplier<ParticleType<DirectionParticleOptions>> COMMAND_BLOCK = register("command_block", type -> DirectionParticleOptions.CODEC, type -> DirectionParticleOptions.STREAM_CODEC, CommandBlockParticle.Provider::new);
-    public static final Supplier<ParticleType<ItemParticleOption>> ITEM_RARITY = register("item_rarity", ItemParticleOption::codec, ItemParticleOption::streamCodec, ItemRarityParticle.Provider::new);
-    public static final Supplier<ParticleType<PositionParticleOptions>> BEACON = register("beacon", PositionParticleOptions::codec, PositionParticleOptions::streamCodec, BeaconParticle.Provider::new);
+    public static final Supplier<ParticleType<DirectionParticleOptions>> COMMAND_BLOCK = register("command_block", DirectionParticleOptions.DESERIALIZER, DirectionParticleOptions::codec, CommandBlockParticle.Provider::new);
+    public static final Supplier<ParticleType<ItemParticleOption>> ITEM_RARITY = register("item_rarity", ItemParticleOption.DESERIALIZER, ItemParticleOption::codec, ItemRarityParticle.Provider::new);
+    public static final Supplier<ParticleType<PositionParticleOptions>> BEACON = register("beacon", PositionParticleOptions.DESERIALIZER, PositionParticleOptions::codec, BeaconParticle.Provider::new);
     public static final Supplier<SimpleParticleType> COMPOST = register("compost", CompostParticle.Provider::new);
     public static final Supplier<SimpleParticleType> STEAM = register("steam", SteamParticle.Provider::new);
     public static final Supplier<SimpleParticleType> END_PORTAL = register("end_portal", EndPortalParticle.Provider::new);
     public static final Supplier<SimpleParticleType> END_CRYSTAL = register("end_crystal", EndCrystalParticle.Provider::new);
     public static final Supplier<SimpleParticleType> SCULK_DUST = register("sculk_dust", SculkDustParticle.Provider::new);
-    public static final Supplier<ParticleType<FloatParticleOptions>> SLIME_TRAIL = register("slime_trail", FloatParticleOptions::codec, FloatParticleOptions::streamCodec, SlimeTrailParticle.Provider::new);
-    public static final Supplier<ParticleType<FloatParticleOptions>> MAGMA_CUBE_TRAIL = register("magma_cube_trail", FloatParticleOptions::codec, FloatParticleOptions::streamCodec, SlimeTrailParticle.Provider::new);
-    public static final Supplier<ParticleType<ColorParticleOption>> SPELL_CASTER_MAGIC = register("spell_caster_magic", ColorParticleOption::codec, ColorParticleOption::streamCodec, SpellCasterMagicProvider::new);
+    public static final Supplier<ParticleType<FloatParticleOptions>> SLIME_TRAIL = register("slime_trail", FloatParticleOptions.DESERIALIZER, FloatParticleOptions::codec, SlimeTrailParticle.Provider::new);
+    public static final Supplier<ParticleType<FloatParticleOptions>> MAGMA_CUBE_TRAIL = register("magma_cube_trail", FloatParticleOptions.DESERIALIZER, FloatParticleOptions::codec, SlimeTrailParticle.Provider::new);
+    public static final Supplier<SimpleParticleType> SPELL_CASTER_MAGIC = register("spell_caster_magic", SpellCasterMagicProvider::new);
     public static final Supplier<SimpleParticleType> AMETHYST_SPARKLE = register("amethyst_sparkle", SuspendedTownParticle.HappyVillagerProvider::new);
     public static final Supplier<SimpleParticleType> AZALEA_PETAL = register("azalea_petal", AzaleaParticleProvider::new);
 
@@ -67,18 +68,13 @@ public class ModParticles {
         return particleType;
     }
 
-    @SuppressWarnings("unchecked")
-    private static <T extends ParticleType<V>, V extends ParticleOptions> Supplier<T> register(String name, Function<ParticleType<V>, MapCodec<V>> codec, Function<ParticleType<V>, StreamCodec<? super RegistryFriendlyByteBuf, V>> streamCodec, Function<SpriteSet, ParticleProvider<V>> provider) {
-        Supplier<T> particleType = (Supplier<T>) REGISTRY.registerParticle(name, () -> new ParticleType<V>(false) {
+    @SuppressWarnings({"unchecked", "deprecation"})
+    private static <T extends ParticleType<V>, V extends ParticleOptions> Supplier<T> register(String name, ParticleOptions.Deserializer<V> deserializer, Function<ParticleType<V>, Codec<V>> codec, Function<SpriteSet, ParticleProvider<V>> provider) {
+        Supplier<T> particleType = (Supplier<T>) REGISTRY.registerParticle(name, () -> new ParticleType<V>(false, deserializer) {
 
             @Override
-            public MapCodec<V> codec() {
+            public Codec<V> codec() {
                 return codec.apply(this);
-            }
-
-            @Override
-            public StreamCodec<? super RegistryFriendlyByteBuf, V> streamCodec() {
-                return streamCodec.apply(this);
             }
         });
         REGISTRY.registerParticleProvider(particleType, provider);

@@ -1,25 +1,36 @@
 package einstein.subtle_effects.networking.clientbound;
 
 import einstein.subtle_effects.SubtleEffects;
+import einstein.subtle_effects.networking.Packet;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.network.codec.ByteBufCodecs;
-import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
+import org.jetbrains.annotations.Nullable;
 
 public record ClientBoundEntityFellPacket(int entityId, double y, float distance,
-                                          int fallDamage) implements CustomPacketPayload {
+                                          int fallDamage) implements Packet {
 
-    public static final Type<ClientBoundEntityFellPacket> TYPE = new Type<>(SubtleEffects.loc("entity_fell"));
-    public static final StreamCodec<FriendlyByteBuf, ClientBoundEntityFellPacket> STREAM_CODEC = StreamCodec.composite(
-            ByteBufCodecs.INT, ClientBoundEntityFellPacket::entityId,
-            ByteBufCodecs.DOUBLE, ClientBoundEntityFellPacket::y,
-            ByteBufCodecs.FLOAT, ClientBoundEntityFellPacket::distance,
-            ByteBufCodecs.INT, ClientBoundEntityFellPacket::fallDamage,
-            ClientBoundEntityFellPacket::new
-    );
+    public static final ResourceLocation ID = SubtleEffects.loc("entity_fell");
 
     @Override
-    public Type<? extends CustomPacketPayload> type() {
-        return TYPE;
+    public void encode(FriendlyByteBuf buf) {
+        buf.writeInt(entityId);
+        buf.writeDouble(y);
+        buf.writeFloat(distance);
+        buf.writeInt(fallDamage);
+    }
+
+    public static ClientBoundEntityFellPacket decode(FriendlyByteBuf buf) {
+        return new ClientBoundEntityFellPacket(buf.readInt(), buf.readDouble(), buf.readFloat(), buf.readInt());
+    }
+
+    @Override
+    public void handle(@Nullable ServerPlayer player) {
+        ClientPacketHandlers.handle(this);
+    }
+
+    @Override
+    public ResourceLocation id() {
+        return ID;
     }
 }
