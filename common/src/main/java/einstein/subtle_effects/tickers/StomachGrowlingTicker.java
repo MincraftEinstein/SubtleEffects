@@ -1,5 +1,6 @@
 package einstein.subtle_effects.tickers;
 
+import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.init.ModSounds;
 import einstein.subtle_effects.util.Util;
 import net.minecraft.sounds.SoundSource;
@@ -20,7 +21,7 @@ public class StomachGrowlingTicker extends Ticker<Player> {
         }
 
         int foodLevel = entity.getFoodData().getFoodLevel();
-        if (foodLevel <= 6) {
+        if (foodLevel <= ModConfigs.ENTITIES.stomachGrowlingThreshold.get()) {
             if (growlTimer == 0) {
                 Util.playClientSound(SoundSource.PLAYERS, entity, ModSounds.PLAYER_STOMACH_GROWL.get(), 1, (random.nextBoolean() ? 1 : 1.5F));
             }
