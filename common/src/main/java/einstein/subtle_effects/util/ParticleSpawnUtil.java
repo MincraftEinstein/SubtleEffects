@@ -28,6 +28,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.function.BiPredicate;
 import java.util.function.Predicate;
 
+import static einstein.subtle_effects.init.ModConfigs.BLOCKS;
 import static einstein.subtle_effects.util.MathUtil.*;
 
 public class ParticleSpawnUtil {
@@ -133,7 +134,7 @@ public class ParticleSpawnUtil {
     public static void spawnHeatedWaterParticles(Level level, BlockPos pos, RandomSource random, boolean isFalling, double height,
                                                  boolean steamConfig, boolean boilingConfig) {
         int brightness = level.getBrightness(LightLayer.BLOCK, pos);
-        if (brightness > 11 || level.getBlockState(pos.below()).is(Blocks.MAGMA_BLOCK)) {
+        if (brightness > BLOCKS.steam.steamingThreshold.get() || level.getBlockState(pos.below()).is(Blocks.MAGMA_BLOCK)) {
             if (steamConfig) {
                 if (!isFalling && !Util.isSolidOrNotEmpty(level, pos.above())) {
                     level.addParticle(ModParticles.STEAM.get(),
@@ -145,7 +146,7 @@ public class ParticleSpawnUtil {
                 }
             }
 
-            if (boilingConfig && brightness >= 13) {
+            if (boilingConfig && brightness >= BLOCKS.steam.boilingThreshold.get()) {
                 level.addParticle(ParticleTypes.BUBBLE,
                         pos.getX() + random.nextDouble(),
                         Mth.clamp(random.nextDouble(), pos.getY(), pos.getY() + height),
