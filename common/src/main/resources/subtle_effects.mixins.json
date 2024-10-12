@@ -20,6 +20,7 @@
     "client.block.EndPortalBlockMixin",
     "client.block.FurnaceBlockMixin",
     "client.block.PumpkinBlockMixin",
+    "client.block.SculkShriekerAndCatalystBlockMixin",
     "client.block.SlimeBlockMixin",
     "client.block.TorchBlockMixin",
     "client.entity.ClientLivingEntityMixin",
