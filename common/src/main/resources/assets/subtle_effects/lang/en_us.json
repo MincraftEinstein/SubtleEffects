@@ -106,6 +106,7 @@
   "config.subtle_effects.blocks.sculkShriekerDestroySouls.desc": "Should a sculk soul particle spawn when a sculk shrieker is broken",
   "config.subtle_effects.blocks.sculkCatalystDestroySouls": "Sculk Catalyst Destroy Souls",
   "config.subtle_effects.blocks.sculkCatalystDestroySouls.desc": "Should a sculk soul particle spawn when a sculk catalyst is broken",
+  "config.subtle_effects.blocks.calibratedSculkSensorAmethystSparkle": "Calibrated Sculk Sensor Amethyst Sparkle",
   "config.subtle_effects.entities.attacked": "Attacked",
   "config.subtle_effects.entities.attacked.desc": "Particles emitted from a mob when it takes damage from a another mob or player",
   "config.subtle_effects.entities.attacked.chickenFeathers": "Chicken Feathers",

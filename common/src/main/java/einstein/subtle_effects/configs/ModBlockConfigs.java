@@ -57,6 +57,7 @@ public class ModBlockConfigs extends Config {
     public boolean sculkVeinSculkDust = true;
     public boolean sculkShriekerDestroySouls = true;
     public boolean sculkCatalystDestroySouls = true;
+    public boolean calibratedSculkSensorAmethystSparkle = true;
 
     public ModBlockConfigs() {
         super(SubtleEffects.loc("blocks"));

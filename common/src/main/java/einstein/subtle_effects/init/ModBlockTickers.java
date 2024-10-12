@@ -21,6 +21,7 @@ import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BeaconBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.SculkSensorPhase;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
@@ -280,6 +281,18 @@ public class ModBlockTickers {
                 if (random.nextInt(30) == 0) {
                     ParticleSpawnUtil.spawnParticlesAroundBlock(ModParticles.SCULK_DUST.get(), level, pos, random, -0.9375F,
                             direction -> direction.getAxis() != Direction.Axis.Y);
+                }
+            }
+        });
+        register(state -> state.is(Blocks.CALIBRATED_SCULK_SENSOR), (state, level, pos, random) -> {
+            if (BLOCKS.calibratedSculkSensorAmethystSparkle) {
+                if (random.nextInt(SculkSensorBlock.getPhase(state) == SculkSensorPhase.ACTIVE ? 1 : 5) == 0) {
+                    level.addParticle(ModParticles.AMETHYST_SPARKLE.get(),
+                            pos.getX() + 0.5 + nextNonAbsDouble(random, 0.25),
+                            pos.getY() + 0.5 + nextNonAbsDouble(random, 0.75),
+                            pos.getZ() + 0.5 + nextNonAbsDouble(random, 0.25),
+                            0, 0, 0
+                    );
                 }
             }
         });
