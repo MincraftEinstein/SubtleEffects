@@ -37,6 +37,7 @@ public class ModEntityConfigs extends Config {
     public boolean replaceSpellCasterParticles = true;
     public boolean ironGolemCrackParticles = true;
     public boolean spectralArrowParticles = true;
+    public boolean wardenDeathSoulParticles = true;
 
     public ModEntityConfigs() {
         super(SubtleEffects.loc("entities"));
