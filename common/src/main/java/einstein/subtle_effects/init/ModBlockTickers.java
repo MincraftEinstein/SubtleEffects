@@ -268,6 +268,21 @@ public class ModBlockTickers {
                 }
             }
         });
+        register(Blocks.SCULK, (state, level, pos, random) -> {
+            if (BLOCKS.sculkBlockSculkDust) {
+                if (random.nextInt(20) == 0) {
+                    ParticleSpawnUtil.spawnParticlesAroundBlock(ModParticles.SCULK_DUST.get(), level, pos, random, 0);
+                }
+            }
+        });
+        register(Blocks.SCULK_VEIN, (state, level, pos, random) -> {
+            if (BLOCKS.sculkVeinSculkDust) {
+                if (random.nextInt(30) == 0) {
+                    ParticleSpawnUtil.spawnParticlesAroundBlock(ModParticles.SCULK_DUST.get(), level, pos, random, -0.9375F,
+                            direction -> direction.getAxis() != Direction.Axis.Y);
+                }
+            }
+        });
     }
 
     private static void register(Block block, BlockProvider provider) {

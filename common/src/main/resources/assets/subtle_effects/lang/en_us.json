@@ -100,6 +100,8 @@
   "config.subtle_effects.blocks.amethystSparkleDisplayType.ON": "On",
   "config.subtle_effects.blocks.amethystSparkleDisplayType.CRYSTALS_ONLY": "Crystals Only",
   "config.subtle_effects.blocks.floweringAzaleaPetals": "Flowering Azalea Petals",
+  "config.subtle_effects.blocks.sculkBlockSculkDust": "Sculk Block Sculk Dust",
+  "config.subtle_effects.blocks.sculkVeinSculkDust": "Sculk Vein Sculk Dust",
   "config.subtle_effects.entities.attacked": "Attacked",
   "config.subtle_effects.entities.attacked.desc": "Particles emitted from a mob when it takes damage from a another mob or player",
   "config.subtle_effects.entities.attacked.chickenFeathers": "Chicken Feathers",
