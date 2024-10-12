@@ -11,7 +11,7 @@ public class SubtleEffectsFabricClient implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
         SubtleEffectsClient.clientSetup();
-        FabricNetworkHelper.init(NetworkHelper.Direction.TO_SERVER);
+        FabricNetworkHelper.init(NetworkHelper.Direction.TO_CLIENT);
         ClientTickEvents.END_CLIENT_TICK.register(minecraft -> SubtleEffectsClient.clientTick(minecraft, minecraft.level));
         ClientCommandRegistrationCallback.EVENT.register(SubtleEffectsClient::registerClientCommands);
     }

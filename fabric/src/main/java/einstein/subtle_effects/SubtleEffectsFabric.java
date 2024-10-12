@@ -9,6 +9,6 @@ public class SubtleEffectsFabric implements ModInitializer {
     @Override
     public void onInitialize() {
         SubtleEffects.init();
-        FabricNetworkHelper.init(NetworkHelper.Direction.TO_CLIENT);
+        FabricNetworkHelper.init(NetworkHelper.Direction.TO_SERVER);
     }
 }
