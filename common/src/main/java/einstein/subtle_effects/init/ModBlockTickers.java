@@ -257,7 +257,7 @@ public class ModBlockTickers {
                 }
             }
         });
-        register(state -> state.is(Blocks.FLOWERING_AZALEA_LEAVES), (state, level, pos, random) -> {
+        register(Blocks.FLOWERING_AZALEA_LEAVES, (state, level, pos, random) -> {
             if (BLOCKS.floweringAzaleaPetals) {
                 if (random.nextInt(10) == 0) {
                     BlockPos belowPos = pos.below();
@@ -284,7 +284,7 @@ public class ModBlockTickers {
                 }
             }
         });
-        register(state -> state.is(Blocks.CALIBRATED_SCULK_SENSOR), (state, level, pos, random) -> {
+        register(Blocks.CALIBRATED_SCULK_SENSOR, (state, level, pos, random) -> {
             if (BLOCKS.calibratedSculkSensorAmethystSparkle) {
                 if (random.nextInt(SculkSensorBlock.getPhase(state) == SculkSensorPhase.ACTIVE ? 1 : 5) == 0) {
                     level.addParticle(ModParticles.AMETHYST_SPARKLE.get(),
