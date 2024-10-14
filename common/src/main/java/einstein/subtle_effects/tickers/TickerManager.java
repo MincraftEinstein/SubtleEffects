@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.function.Supplier;
 
 public class TickerManager {
 
@@ -27,8 +28,8 @@ public class TickerManager {
         REGISTERED_TICKERS.add(new TickerProvider<>(REGISTERED_TICKER_ID++, predicate, function));
     }
 
-    public static <T extends Entity> void registerSimpleTicker(EntityType<T> type, EntityProvider<T> provider) {
-        registerSimpleTicker(entity -> entity.getType().equals(type), provider);
+    public static <T extends Entity> void registerSimpleTicker(EntityType<T> type, Supplier<Boolean> isEnabled, EntityProvider<T> provider) {
+        registerSimpleTicker(entity -> entity.getType().equals(type) && isEnabled.get(), provider);
     }
 
     public static <T extends Entity> void registerSimpleTicker(Predicate<Entity> predicate, EntityProvider<T> provider) {

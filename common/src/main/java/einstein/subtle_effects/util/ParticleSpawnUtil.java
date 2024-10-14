@@ -95,15 +95,19 @@ public class ParticleSpawnUtil {
 
     public static void spawnCreatureMovementDustClouds(LivingEntity entity, Level level, RandomSource random, int YSpeedModifier) {
         if (ModConfigs.ENTITIES.dustClouds.mobSprinting) {
-            level.addParticle(ModParticles.LARGE_DUST_CLOUD.get(),
-                    entity.position().x + entity.getBbWidth() * random.nextDouble() - 1,
-                    entity.getY() + Math.max(Math.min(random.nextFloat(), 0.5), 0.2),
-                    entity.position().z + entity.getBbWidth() * random.nextDouble() - 1,
-                    0,
-                    random.nextDouble() * YSpeedModifier,
-                    0
-            );
+            spawnCreatureMovementDustCloudsNoConfig(entity, level, random, YSpeedModifier);
         }
+    }
+
+    public static void spawnCreatureMovementDustCloudsNoConfig(LivingEntity entity, Level level, RandomSource random, int YSpeedModifier) {
+        level.addParticle(ModParticles.LARGE_DUST_CLOUD.get(),
+                entity.position().x + entity.getBbWidth() * random.nextDouble() - 1,
+                entity.getY() + Math.max(Math.min(random.nextFloat(), 0.5), 0.2),
+                entity.position().z + entity.getBbWidth() * random.nextDouble() - 1,
+                0,
+                random.nextDouble() * YSpeedModifier,
+                0
+        );
     }
 
     public static void spawnLavaSparks(Level level, BlockPos pos, RandomSource random, int count) {

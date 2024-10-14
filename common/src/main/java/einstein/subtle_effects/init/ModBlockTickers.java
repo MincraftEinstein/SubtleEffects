@@ -1,6 +1,5 @@
 package einstein.subtle_effects.init;
 
-import einstein.subtle_effects.configs.CommandBlockSpawnType;
 import einstein.subtle_effects.configs.ModBlockConfigs;
 import einstein.subtle_effects.configs.SmokeType;
 import einstein.subtle_effects.mixin.client.block.AmethystClusterBlockAccessor;
@@ -8,7 +7,6 @@ import einstein.subtle_effects.particle.option.PositionParticleOptions;
 import einstein.subtle_effects.util.BlockProvider;
 import einstein.subtle_effects.util.ParticleSpawnUtil;
 import einstein.subtle_effects.util.Util;
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.DustParticleOptions;
@@ -225,13 +223,11 @@ public class ModBlockTickers {
                         );
                     }
                 });
-        register(state -> state.getBlock() instanceof CommandBlock
-                && (BLOCKS.commandBlockParticles == CommandBlockSpawnType.ON
-                || (BLOCKS.commandBlockParticles == CommandBlockSpawnType.NOT_CREATIVE
-                && !Minecraft.getInstance().player.isCreative())), (state, level, pos, random) ->
-                ParticleSpawnUtil.spawnCmdBlockParticles(level, Vec3.atCenterOf(pos), random, (direction, relativePos) ->
-                        !Util.isSolidOrNotEmpty(level, BlockPos.containing(relativePos))
-                ));
+        register(state -> state.getBlock() instanceof CommandBlock && BLOCKS.commandBlockParticles.canTick(),
+                (state, level, pos, random) ->
+                        ParticleSpawnUtil.spawnCmdBlockParticles(level, Vec3.atCenterOf(pos), random, (direction, relativePos) ->
+                                !Util.isSolidOrNotEmpty(level, BlockPos.containing(relativePos)))
+        );
         register(state -> state.is(Blocks.AMETHYST_BLOCK) || state.is(Blocks.BUDDING_AMETHYST), (state, level, pos, random) -> {
             if (BLOCKS.amethystSparkleDisplayType == ModBlockConfigs.AmethystSparkleDisplayType.ON) {
                 ParticleSpawnUtil.spawnParticlesAroundBlock(ModParticles.AMETHYST_SPARKLE.get(), level, pos, random, 5);
