@@ -1,5 +1,6 @@
 package einstein.subtle_effects.tickers;
 
+import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.init.ModSounds;
 import einstein.subtle_effects.util.Util;
 import net.minecraft.world.entity.player.Player;
@@ -19,9 +20,11 @@ public class HeartbeatTicker extends Ticker<Player> {
         }
 
         float health = entity.getHealth();
-        if (health <= 6) {
+        int threshold = ModConfigs.ENTITIES.heartBeatingThreshold.get();
+
+        if (health <= threshold) {
             beatTimer++;
-            if (beatTimer >= (health > 4 ? 60 : 20)) {
+            if (beatTimer >= (health > ((float) threshold / 2) ? 60 : 20)) {
                 beatTimer = 0;
                 Util.playClientSound(entity.getSoundSource(), entity, ModSounds.PLAYER_HEARTBEAT.get(), 1, 1);
             }

@@ -23,9 +23,12 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.function.BiPredicate;
+import java.util.function.Predicate;
 
+import static einstein.subtle_effects.init.ModConfigs.BLOCKS;
 import static einstein.subtle_effects.util.MathUtil.*;
 
 public class ParticleSpawnUtil {
@@ -51,14 +54,18 @@ public class ParticleSpawnUtil {
     }
 
     public static void spawnParticlesAroundBlock(ParticleOptions particle, Level level, BlockPos pos, RandomSource random, int perSideChance) {
+        spawnParticlesAroundBlock(particle, level, pos, random, 0.0625F, perSideChance > 0 ? direction -> random.nextInt(perSideChance) != 0 : null);
+    }
+
+    public static void spawnParticlesAroundBlock(ParticleOptions particle, Level level, BlockPos pos, RandomSource random, float offset, @Nullable Predicate<Direction> predicate) {
         for (Direction direction : Direction.values()) {
-            if (perSideChance > 0 && random.nextInt(perSideChance) != 0) {
+            if (predicate != null && predicate.test(direction)) {
                 return;
             }
 
             BlockPos relativePos = pos.relative(direction);
             if (!level.getBlockState(relativePos).isSolidRender(level, relativePos)) {
-                spawnParticlesOnSide(particle, 0.0625F, direction, level, pos, random, 0, 0, 0);
+                spawnParticlesOnSide(particle, offset, direction, level, pos, random, 0, 0, 0);
             }
         }
     }
@@ -127,7 +134,7 @@ public class ParticleSpawnUtil {
     public static void spawnHeatedWaterParticles(Level level, BlockPos pos, RandomSource random, boolean isFalling, double height,
                                                  boolean steamConfig, boolean boilingConfig) {
         int brightness = level.getBrightness(LightLayer.BLOCK, pos);
-        if (brightness > 11 || level.getBlockState(pos.below()).is(Blocks.MAGMA_BLOCK)) {
+        if (brightness > BLOCKS.steam.steamingThreshold.get() || level.getBlockState(pos.below()).is(Blocks.MAGMA_BLOCK)) {
             if (steamConfig) {
                 if (!isFalling && !Util.isSolidOrNotEmpty(level, pos.above())) {
                     level.addParticle(ModParticles.STEAM.get(),
@@ -139,7 +146,7 @@ public class ParticleSpawnUtil {
                 }
             }
 
-            if (boilingConfig && brightness >= 13) {
+            if (boilingConfig && brightness >= BLOCKS.steam.boilingThreshold.get()) {
                 level.addParticle(ParticleTypes.BUBBLE,
                         pos.getX() + random.nextDouble(),
                         Mth.clamp(random.nextDouble(), pos.getY(), pos.getY() + height),

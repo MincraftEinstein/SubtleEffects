@@ -53,6 +53,11 @@ public class ModBlockConfigs extends Config {
     public boolean farmlandDestroyEffects = true;
     public AmethystSparkleDisplayType amethystSparkleDisplayType = AmethystSparkleDisplayType.ON;
     public boolean floweringAzaleaPetals = true;
+    public boolean sculkBlockSculkDust = true;
+    public boolean sculkVeinSculkDust = true;
+    public boolean sculkShriekerDestroySouls = true;
+    public boolean sculkCatalystDestroySouls = true;
+    public boolean calibratedSculkSensorAmethystSparkle = true;
 
     public ModBlockConfigs() {
         super(SubtleEffects.loc("blocks"));
