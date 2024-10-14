@@ -99,7 +99,9 @@ public class LevelRendererMixin implements FrustumGetter {
 
     @ModifyReturnValue(method = "addParticleInternal(Lnet/minecraft/core/particles/ParticleOptions;ZZDDDDDD)Lnet/minecraft/client/particle/Particle;", at = @At(value = "RETURN", ordinal = 0))
     private Particle spawnForcedParticle(Particle particle) {
-        ((ParticleAccessor) particle).subtleEffects$force();
+        if (particle != null) {
+            ((ParticleAccessor) particle).subtleEffects$force();
+        }
         return particle;
     }
 
