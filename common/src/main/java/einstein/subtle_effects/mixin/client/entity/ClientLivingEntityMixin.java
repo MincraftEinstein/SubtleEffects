@@ -45,7 +45,7 @@ public abstract class ClientLivingEntityMixin<T extends Entity> extends Entity {
                             position().y() + (getBbHeight() / 2) + MathUtil.nextNonAbsDouble(random),
                             position().z() + (getBbWidth() / 2) + MathUtil.nextNonAbsDouble(random),
                             0,
-                            Mth.nextFloat(getRandom(), 0.01F, 0.1F),
+                            Mth.nextFloat(random, 0.01F, 0.1F),
                             0
                     );
                 }
