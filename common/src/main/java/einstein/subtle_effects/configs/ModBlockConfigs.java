@@ -52,6 +52,7 @@ public class ModBlockConfigs extends Config {
     public boolean leavesDecayEffects = true;
     public boolean farmlandDestroyEffects = true;
     public AmethystSparkleDisplayType amethystSparkleDisplayType = AmethystSparkleDisplayType.ON;
+    public boolean amethystSparkleSounds = true;
     public boolean floweringAzaleaPetals = true;
     public boolean sculkBlockSculkDust = true;
     public boolean sculkVeinSculkDust = true;

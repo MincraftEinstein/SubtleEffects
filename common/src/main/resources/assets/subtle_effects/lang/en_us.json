@@ -103,6 +103,8 @@
   "config.subtle_effects.blocks.amethystSparkleDisplayType.OFF": "Off",
   "config.subtle_effects.blocks.amethystSparkleDisplayType.ON": "On",
   "config.subtle_effects.blocks.amethystSparkleDisplayType.CRYSTALS_ONLY": "Crystals Only",
+  "config.subtle_effects.blocks.amethystSparkleSounds": "Amethyst Sparkle Sounds",
+  "config.subtle_effects.blocks.amethystSparkleSounds.desc": "Should amethyst crystals randomly play the amethyst chime sounds",
   "config.subtle_effects.blocks.floweringAzaleaPetals": "Flowering Azalea Petals",
   "config.subtle_effects.blocks.sculkBlockSculkDust": "Sculk Block Sculk Dust",
   "config.subtle_effects.blocks.sculkVeinSculkDust": "Sculk Vein Sculk Dust",

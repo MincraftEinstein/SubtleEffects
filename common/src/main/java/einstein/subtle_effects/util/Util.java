@@ -40,6 +40,15 @@ public class Util {
         }
     }
 
+    public static void playClientSound(BlockPos pos, SoundEvent sound, SoundSource source, float volume, float pitch) {
+        Minecraft minecraft = Minecraft.getInstance();
+        Level level = minecraft.level;
+
+        if (level != null && level.isClientSide) {
+            level.playSound(minecraft.player, pos.getX(), pos.getY(), pos.getZ(), sound, source, volume, pitch);
+        }
+    }
+
     public static boolean isSolidOrNotEmpty(Level level, BlockPos pos) {
         return level.getBlockState(pos).isSolidRender(level, pos) || !level.getFluidState(pos).isEmpty();
     }

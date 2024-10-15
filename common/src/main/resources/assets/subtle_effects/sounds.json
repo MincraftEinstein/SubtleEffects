@@ -26,5 +26,24 @@
     "sounds": [
       "subtle_effects:entity/player/heartbeat"
     ]
+  },
+  "block.amethyst_cluster.chime": {
+    "subtitle": "subtitles.block.amethyst_block.chime",
+    "sounds": [
+      "minecraft:block/amethyst/step1",
+      "minecraft:block/amethyst/step2",
+      "minecraft:block/amethyst/step3",
+      "minecraft:block/amethyst/step4",
+      "minecraft:block/amethyst/step5",
+      "minecraft:block/amethyst/step6",
+      "minecraft:block/amethyst/step7",
+      "minecraft:block/amethyst/step8",
+      "minecraft:block/amethyst/step9",
+      "minecraft:block/amethyst/step10",
+      "minecraft:block/amethyst/step11",
+      "minecraft:block/amethyst/step12",
+      "minecraft:block/amethyst/step13",
+      "minecraft:block/amethyst/step14"
+    ]
   }
 }
