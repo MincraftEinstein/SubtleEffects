@@ -32,11 +32,12 @@ public class Util {
     public static final Supplier<Item> ENDERMAN_HEAD = Suppliers.memoize(() -> BuiltInRegistries.ITEM.get(ResourceLocation.fromNamespaceAndPath("supplementaries", "enderman_head")));
     public static final Supplier<Boolean> IS_SUPPLEMENTARIES_LOADED = Suppliers.memoize(() -> Services.PLATFORM.isModLoaded("supplementaries"));
 
-    public static void playClientSound(SoundSource source, Entity entity, SoundEvent sound, float volume, float pitch) {
+    public static void playClientSound(Entity entity, SoundEvent sound, SoundSource source, float volume, float pitch) {
         Minecraft minecraft = Minecraft.getInstance();
         Level level = minecraft.level;
-        if (level.isClientSide) {
-            level.playSeededSound(minecraft.player, entity, BuiltInRegistries.SOUND_EVENT.wrapAsHolder(sound), source, volume, pitch, level.random.nextLong());
+
+        if (level != null && level.isClientSide) {
+            level.playSound(minecraft.player, entity, sound, source, volume, pitch);
         }
     }
 

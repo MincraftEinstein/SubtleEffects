@@ -84,7 +84,7 @@ public class SleepingTicker extends Ticker<LivingEntity> {
 
             if (snoreTimer >= Util.SNORE_DELAY) {
                 if (doesSnore && !entity.isSilent() && zCount <= 0 && snoreSound != null) {
-                    Util.playClientSound(SoundSource.NEUTRAL, entity, snoreSound, 1, entity.getVoicePitch());
+                    Util.playClientSound(entity, snoreSound, SoundSource.NEUTRAL, 1, entity.getVoicePitch());
                 }
 
                 snoreTimer = 0;
