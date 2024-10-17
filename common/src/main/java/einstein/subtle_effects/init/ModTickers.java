@@ -84,7 +84,7 @@ public class ModTickers {
             FallingBlockEntity fallingBlock = (FallingBlockEntity) entity;
             if (!fallingBlock.onGround() && !fallingBlock.isNoGravity()) {
                 BlockState state = fallingBlock.getBlockState();
-                if (ModConfigs.BLOCKS.fallingBlockDustBlocks.get().contains(BuiltInRegistries.BLOCK.getKey(state.getBlock()))) {
+                if (ModConfigs.BLOCKS.fallingBlockDustBlocks.get().contains(state.getBlock())) {
                     level.addParticle(new BlockParticleOption(ParticleTypes.FALLING_DUST, state),
                             entity.getRandomX(1),
                             entity.getY() + 0.05,

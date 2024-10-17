@@ -10,9 +10,13 @@ import me.fzzyhmstrs.fzzy_config.annotations.Translation;
 import me.fzzyhmstrs.fzzy_config.config.Config;
 import me.fzzyhmstrs.fzzy_config.util.EnumTranslatable;
 import me.fzzyhmstrs.fzzy_config.validation.collection.ValidatedList;
-import me.fzzyhmstrs.fzzy_config.validation.minecraft.ValidatedIdentifier;
+import me.fzzyhmstrs.fzzy_config.validation.minecraft.ValidatedRegistryType;
+import net.minecraft.Util;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -22,6 +26,16 @@ import static einstein.subtle_effects.init.ModConfigs.BASE_KEY;
 
 @Translation(prefix = ModConfigs.BASE_KEY + "blocks")
 public class ModBlockConfigs extends Config {
+
+    private static final List<Block> DEFAULT_FALLING_BLOCK_DUST_BLOCKS = Util.make(new ArrayList<>(), blocks -> {
+        blocks.add(Blocks.SAND);
+        blocks.add(Blocks.RED_SAND);
+        blocks.add(Blocks.GRAVEL);
+
+        for (DyeColor color : DyeColor.values()) {
+            blocks.add(BuiltInRegistries.BLOCK.get(ResourceLocation.withDefaultNamespace(color.getName() + "_concrete_powder")));
+        }
+    });
 
     public SparksConfigs sparks = new SparksConfigs();
     public UpdatedSmokeConfigs updatedSmoke = new UpdatedSmokeConfigs();
@@ -33,7 +47,7 @@ public class ModBlockConfigs extends Config {
     public BlockDustDensity glowstoneBlockDustDensity = BlockDustDensity.DEFAULT;
     public boolean beehivesHaveSleepingZs = true;
     public boolean fallingBlockDust = true;
-    public ValidatedList<ResourceLocation> fallingBlockDustBlocks = new ValidatedIdentifier().toList(getDefaultFallingBlockDustBlocks());
+    public ValidatedList<Block> fallingBlockDustBlocks = new ValidatedList<>(DEFAULT_FALLING_BLOCK_DUST_BLOCKS, ValidatedRegistryType.of(BuiltInRegistries.BLOCK));
     public SmokeType torchflowerSmoke = SmokeType.DEFAULT;
     public boolean torchflowerFlames = true;
     public boolean dragonEggParticles = true;
@@ -67,20 +81,6 @@ public class ModBlockConfigs extends Config {
     @Override
     public void onUpdateClient() {
         TickerManager.clear();
-    }
-
-    private static List<ResourceLocation> getDefaultFallingBlockDustBlocks() {
-        List<ResourceLocation> list = new ArrayList<>();
-        list.add(ResourceLocation.withDefaultNamespace("sand"));
-        list.add(ResourceLocation.withDefaultNamespace("suspicious_sand"));
-        list.add(ResourceLocation.withDefaultNamespace("red_sand"));
-        list.add(ResourceLocation.withDefaultNamespace("gravel"));
-        list.add(ResourceLocation.withDefaultNamespace("suspicious_gravel"));
-
-        for (DyeColor color : DyeColor.values()) {
-            list.add(ResourceLocation.withDefaultNamespace(color.getName() + "_concrete_powder"));
-        }
-        return list;
     }
 
     public enum GlowstoneDustDisplayType implements EnumTranslatable {
