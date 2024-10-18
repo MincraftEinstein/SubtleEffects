@@ -13,6 +13,8 @@ import net.minecraft.client.renderer.culling.Frustum;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 
+import static einstein.subtle_effects.init.ModConfigs.GENERAL;
+
 @Mixin(ParticleEngine.class)
 public class ParticleEngineMixin {
 
@@ -21,8 +23,8 @@ public class ParticleEngineMixin {
         Frustum frustum = ((FrustumGetter) Minecraft.getInstance().levelRenderer).subtleEffects$getCullingFrustum();
         if (frustum != null && frustum.isVisible(particle.getBoundingBox())) {
             ParticleAccessor accessor = ((ParticleAccessor) particle);
-            if (accessor.getAlpha() != 0) {
-                int distance = ModConfigs.GENERAL.particleRenderDistance * 16;
+            if (!GENERAL.cullParticlesWithNoAlpha || accessor.getAlpha() != 0) {
+                int distance = GENERAL.particleRenderDistance * 16;
                 return accessor.subtleEffects$wasForced() || camera.getPosition().distanceToSqr(accessor.getX(), accessor.getY(), accessor.getZ()) < distance * distance;
             }
         }

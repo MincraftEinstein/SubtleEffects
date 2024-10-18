@@ -234,5 +234,7 @@
   "config.subtle_effects.general.mobSkullShaders.desc": "Apply a mob's spectate shader when wearing its skull/head e.g Creeper head makes everything look green.\nNo new shaders are added",
   "config.subtle_effects.general.particleRenderDistance": "Particle Render Distance",
   "config.subtle_effects.general.particleRenderDistance.desc": "The maximum number of chunks away from the player a particle will render.\nThis does not affect particles spawning/existing in the world only rendering.\nThis affects most particles in the game including particles from other mods, some particles however ignore this value e.g. campfire smoke.",
+  "config.subtle_effects.general.cullParticlesWithNoAlpha": "Cull Particles With No Alpha",
+  "config.subtle_effects.general.cullParticlesWithNoAlpha.desc": "Prevents rendering particles with an alpha (transparency) level of 0. If particles from other mods don't seem to render try disabling this",
   "config.subtle_effects.general.sparksScale": "Sparks Scale"
 }
