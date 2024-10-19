@@ -32,7 +32,7 @@ public class SubtleEffectsNeoForgeClient {
         );
         modEventBus.addListener((AddPackFindersEvent event) ->
                 event.addPackFinders(Util.BCWP_PACK_LOCATION.get(), PackType.CLIENT_RESOURCES,
-                        Util.BCWP_PACK_TITLE, PackSource.BUILT_IN, false, Pack.Position.TOP));
+                        Util.BCWP_PACK_NAME, PackSource.BUILT_IN, false, Pack.Position.TOP));
         NeoForge.EVENT_BUS.addListener((ClientTickEvent.Post event) -> {
             Minecraft minecraft = Minecraft.getInstance();
             SubtleEffectsClient.clientTick(minecraft, minecraft.level);

@@ -1,6 +1,8 @@
 {
   "pack": {
     "pack_format": 34,
-    "description": "Water particles match biome water color"
+    "description": {
+      "translate": "resourcePack.subtle_effects.biome_water_color_particles.description"
+    }
   }
 }

@@ -15,6 +15,6 @@ public class SubtleEffectsFabricClient implements ClientModInitializer {
         SubtleEffectsClient.clientSetup();
         ClientTickEvents.END_CLIENT_TICK.register(minecraft -> SubtleEffectsClient.clientTick(minecraft, minecraft.level));
         ClientCommandRegistrationCallback.EVENT.register(SubtleEffectsClient::registerClientCommands);
-        ResourceManagerHelper.registerBuiltinResourcePack(Util.BCWP_PACK_LOCATION.get(), FabricLoader.getInstance().getModContainer(SubtleEffects.MOD_ID).orElseThrow(), Util.BCWP_PACK_TITLE, ResourcePackActivationType.NORMAL);
+        ResourceManagerHelper.registerBuiltinResourcePack(Util.BCWP_PACK_LOCATION.get(), FabricLoader.getInstance().getModContainer(SubtleEffects.MOD_ID).orElseThrow(), Util.BCWP_PACK_NAME, ResourcePackActivationType.NORMAL);
     }
 }
