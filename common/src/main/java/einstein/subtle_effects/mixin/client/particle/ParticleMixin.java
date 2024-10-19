@@ -5,6 +5,7 @@ import net.minecraft.client.particle.Particle;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.gen.Accessor;
+import org.spongepowered.asm.mixin.gen.Invoker;
 
 @Mixin(Particle.class)
 public abstract class ParticleMixin implements ParticleAccessor {
@@ -27,6 +28,10 @@ public abstract class ParticleMixin implements ParticleAccessor {
     @Override
     @Accessor("alpha")
     public abstract float getAlpha();
+
+    @Override
+    @Invoker("getLightColor")
+    public abstract int subtleEffects$getLightColor(float partialTicks);
 
     @Override
     public boolean subtleEffects$wasForced() {

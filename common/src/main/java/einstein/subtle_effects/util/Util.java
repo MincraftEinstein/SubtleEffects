@@ -1,12 +1,16 @@
 package einstein.subtle_effects.util;
 
 import com.google.common.base.Suppliers;
+import einstein.subtle_effects.SubtleEffects;
 import einstein.subtle_effects.platform.Services;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.DustParticleOptions;
+import net.minecraft.core.particles.ParticleType;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
@@ -18,6 +22,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.SkullBlock;
 import net.minecraft.world.phys.Vec3;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Supplier;
 
 public class Util {
@@ -31,6 +37,23 @@ public class Util {
     public static final ResourceLocation INVERT_SHADER = ResourceLocation.withDefaultNamespace("shaders/post/invert.json");
     public static final Supplier<Item> ENDERMAN_HEAD = Suppliers.memoize(() -> BuiltInRegistries.ITEM.get(ResourceLocation.fromNamespaceAndPath("supplementaries", "enderman_head")));
     public static final Supplier<Boolean> IS_SUPPLEMENTARIES_LOADED = Suppliers.memoize(() -> Services.PLATFORM.isModLoaded("supplementaries"));
+    public static final Supplier<ResourceLocation> BCWP_PACK_LOCATION = Suppliers.memoize(() -> SubtleEffects.loc("biome_color_water_particles").withPrefix(Services.PLATFORM.getPlatformName().equals("NeoForge") ? "resourcepacks/" : ""));
+    public static final Supplier<String> BCWP_PACK_ID = Suppliers.memoize(() -> (Services.PLATFORM.getPlatformName().equals("NeoForge") ? "mod/" : "") + BCWP_PACK_LOCATION.get().toString());
+    public static final Component BCWP_PACK_TITLE = Component.translatable("resourcePack.subtle_effects.biome_water_color_particles");
+    public static final List<ParticleType<?>> BIOME_COLORED_PARTICLES = net.minecraft.Util.make(new ArrayList<>(), particles -> {
+        particles.add(ParticleTypes.BUBBLE);
+        particles.add(ParticleTypes.FISHING);
+        particles.add(ParticleTypes.BUBBLE_POP);
+        particles.add(ParticleTypes.BUBBLE_COLUMN_UP);
+        particles.add(ParticleTypes.CURRENT_DOWN);
+        particles.add(ParticleTypes.RAIN);
+        particles.add(ParticleTypes.SPLASH);
+        particles.add(ParticleTypes.UNDERWATER);
+        particles.add(ParticleTypes.DRIPPING_WATER);
+        particles.add(ParticleTypes.FALLING_WATER);
+        particles.add(ParticleTypes.DRIPPING_DRIPSTONE_WATER);
+        particles.add(ParticleTypes.FALLING_DRIPSTONE_WATER);
+    });
 
     public static void playClientSound(Entity entity, SoundEvent sound, SoundSource source, float volume, float pitch) {
         Minecraft minecraft = Minecraft.getInstance();
@@ -83,5 +106,9 @@ public class Util {
 
     public static void setColorFromHex(Particle particle, int hexColor) {
         particle.setColor((hexColor >> 16) / 255F, (hexColor >> 8) / 255F, hexColor / 255F);
+    }
+
+    public static boolean isBCWPPackLoaded() {
+        return Minecraft.getInstance().getResourcePackRepository().getSelectedIds().contains(BCWP_PACK_ID.get());
     }
 }

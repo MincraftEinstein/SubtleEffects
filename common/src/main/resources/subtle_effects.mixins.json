@@ -35,7 +35,13 @@
     "client.particle.LavaParticleMixin",
     "client.particle.ParticleEngineMixin",
     "client.particle.ParticleMixin",
-    "client.particle.SpriteSetAccessor"
+    "client.particle.SpriteSetAccessor",
+    "client.particle.TextureSheetParticleAccessor",
+    "client.particle.biome_water_colors.BubbleColumnUpParticleProviderMixin",
+    "client.particle.biome_water_colors.BubbleParticleMixin",
+    "client.particle.biome_water_colors.BubbleParticleProviderMixin",
+    "client.particle.biome_water_colors.WaterCurrentDownParticleMixin",
+    "client.particle.biome_water_colors.WaterCurrentDownParticleProviderMixin"
   ],
   "mixins": [
     "common.AbstractHorseMixin",

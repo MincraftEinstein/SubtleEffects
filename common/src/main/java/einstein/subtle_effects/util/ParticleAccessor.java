@@ -13,4 +13,6 @@ public interface ParticleAccessor {
     boolean subtleEffects$wasForced();
 
     void subtleEffects$force();
+
+    int subtleEffects$getLightColor(float partialTicks);
 }
