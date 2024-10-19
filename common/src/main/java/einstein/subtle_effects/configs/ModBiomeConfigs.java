@@ -23,6 +23,7 @@ import java.util.Optional;
 @Translation(prefix = ModConfigs.BASE_KEY + "biomes")
 public class ModBiomeConfigs extends Config {
 
+    public boolean biomeColorRain = true;
     @ValidatedInt.Restrict(min = 0, max = 32)
     public int biomeParticlesRadius = 32;
     public ValidatedList<ResourceLocation> mushroomSporeBiomes = biomeList("mushroom_fields");

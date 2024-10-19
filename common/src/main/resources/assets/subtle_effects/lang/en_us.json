@@ -205,6 +205,7 @@
   "config.subtle_effects.entities.wardenDeathSoulParticles": "Warden Death Soul Particles",
   "config.subtle_effects.entities.wardenDeathSoulParticles.desc": "Should sculk soul particles emit from wardens upon death",
   "config.subtle_effects.biomes": "Biomes",
+  "config.subtle_effects.biomes.biomeColorRain": "Biome Color Rain",
   "config.subtle_effects.biomes.biomeParticlesRadius": "Biome Particles Radius",
   "config.subtle_effects.biomes.biomeParticlesRadius.desc": "The radius around the player that biome particles will spawn in\n0 to disable all biome particles (vanilla not included)",
   "config.subtle_effects.biomes.mushroomSporeBiomes": "Mushroom Spore Biomes",

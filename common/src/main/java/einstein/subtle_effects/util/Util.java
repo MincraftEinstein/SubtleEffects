@@ -54,6 +54,7 @@ public class Util {
         particles.add(ParticleTypes.DRIPPING_DRIPSTONE_WATER);
         particles.add(ParticleTypes.FALLING_DRIPSTONE_WATER);
     });
+    public static final ResourceLocation COLORLESS_RAIN_TEXTURE = SubtleEffects.loc("textures/environment/colorless_rain.png");
 
     public static void playClientSound(Entity entity, SoundEvent sound, SoundSource source, float volume, float pitch) {
         Minecraft minecraft = Minecraft.getInstance();

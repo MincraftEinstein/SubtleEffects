@@ -1,10 +1,15 @@
 package einstein.subtle_effects.mixin.client;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import com.llamalad7.mixinextras.sugar.Local;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import einstein.subtle_effects.init.ModParticles;
 import einstein.subtle_effects.util.FrustumGetter;
 import einstein.subtle_effects.util.ParticleAccessor;
 import einstein.subtle_effects.util.ParticleSpawnUtil;
+import einstein.subtle_effects.util.Util;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.renderer.LevelRenderer;
@@ -13,7 +18,9 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.particles.SimpleParticleType;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.GrindstoneBlock;
 import net.minecraft.world.level.block.state.BlockState;
@@ -26,6 +33,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import static einstein.subtle_effects.init.ModConfigs.BIOMES;
 import static einstein.subtle_effects.init.ModConfigs.BLOCKS;
 import static einstein.subtle_effects.util.MathUtil.nextSign;
 import static net.minecraft.util.Mth.nextFloat;
@@ -39,6 +47,23 @@ public class LevelRendererMixin implements FrustumGetter {
 
     @Shadow
     private Frustum cullingFrustum;
+
+    @WrapOperation(method = "renderSnowAndRain", at = @At(value = "FIELD", target = "Lnet/minecraft/client/renderer/LevelRenderer;RAIN_LOCATION:Lnet/minecraft/resources/ResourceLocation;"))
+    private ResourceLocation replaceRainTexture(Operation<ResourceLocation> original) {
+        if (BIOMES.biomeColorRain) {
+            return Util.COLORLESS_RAIN_TEXTURE;
+        }
+        return original.call();
+    }
+
+    @Redirect(method = "renderSnowAndRain", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/vertex/VertexConsumer;setColor(FFFF)Lcom/mojang/blaze3d/vertex/VertexConsumer;"))
+    private VertexConsumer renderSnowAndRain(VertexConsumer instance, float red, float green, float blue, float alpha, @Local Biome biome, @Local Biome.Precipitation precipitation) {
+        if (precipitation == Biome.Precipitation.RAIN && BIOMES.biomeColorRain) {
+            int waterColor = biome.getWaterColor();
+            return instance.setColor((waterColor >> 16) / 255F, (waterColor >> 8) / 255F, waterColor / 255F, alpha);
+        }
+        return instance.setColor(red, green, blue, alpha);
+    }
 
     @Inject(method = "levelEvent", at = @At("TAIL"))
     private void levelEvent(int type, BlockPos pos, int data, CallbackInfo ci) {
