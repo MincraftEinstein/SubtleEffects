@@ -56,13 +56,13 @@ public class LevelRendererMixin implements FrustumGetter {
         return original.call();
     }
 
-    @Redirect(method = "renderSnowAndRain", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/vertex/VertexConsumer;setColor(FFFF)Lcom/mojang/blaze3d/vertex/VertexConsumer;"))
+    @Redirect(method = "renderSnowAndRain", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/vertex/VertexConsumer;color(FFFF)Lcom/mojang/blaze3d/vertex/VertexConsumer;"))
     private VertexConsumer renderSnowAndRain(VertexConsumer instance, float red, float green, float blue, float alpha, @Local Biome biome, @Local Biome.Precipitation precipitation) {
         if (precipitation == Biome.Precipitation.RAIN && BIOMES.biomeColorRain) {
             int waterColor = biome.getWaterColor();
-            return instance.setColor((waterColor >> 16) / 255F, (waterColor >> 8) / 255F, waterColor / 255F, alpha);
+            return instance.color((waterColor >> 16) / 255F, (waterColor >> 8) / 255F, waterColor / 255F, alpha);
         }
-        return instance.setColor(red, green, blue, alpha);
+        return instance.color(red, green, blue, alpha);
     }
 
     @Inject(method = "levelEvent", at = @At("TAIL"))
