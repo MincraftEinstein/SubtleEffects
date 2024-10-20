@@ -1,6 +1,5 @@
 package einstein.subtle_effects.init;
 
-import einstein.subtle_effects.configs.CommandBlockSpawnType;
 import einstein.subtle_effects.configs.ModBlockConfigs;
 import einstein.subtle_effects.configs.SmokeType;
 import einstein.subtle_effects.particle.option.PositionParticleOptions;
@@ -8,12 +7,14 @@ import einstein.subtle_effects.util.AmethystClusterBlockAccessor;
 import einstein.subtle_effects.util.BlockProvider;
 import einstein.subtle_effects.util.ParticleSpawnUtil;
 import einstein.subtle_effects.util.Util;
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.Mth;
 import net.minecraft.util.ParticleUtils;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
@@ -32,6 +33,7 @@ import java.util.function.Predicate;
 import static einstein.subtle_effects.init.ModConfigs.BLOCKS;
 import static einstein.subtle_effects.util.MathUtil.nextNonAbsDouble;
 import static einstein.subtle_effects.util.MathUtil.nextSign;
+import static einstein.subtle_effects.util.Util.playClientSound;
 
 public class ModBlockTickers {
 
@@ -225,24 +227,22 @@ public class ModBlockTickers {
                         );
                     }
                 });
-        register(state -> state.getBlock() instanceof CommandBlock
-                && (BLOCKS.commandBlockParticles == CommandBlockSpawnType.ON
-                || (BLOCKS.commandBlockParticles == CommandBlockSpawnType.NOT_CREATIVE
-                && !Minecraft.getInstance().player.isCreative())), (state, level, pos, random) ->
-                ParticleSpawnUtil.spawnCmdBlockParticles(level, Vec3.atCenterOf(pos), random, (direction, relativePos) ->
-                        !Util.isSolidOrNotEmpty(level, BlockPos.containing(relativePos))
-                ));
+        register(state -> state.getBlock() instanceof CommandBlock && BLOCKS.commandBlockParticles.canTick(),
+                (state, level, pos, random) ->
+                        ParticleSpawnUtil.spawnCmdBlockParticles(level, Vec3.atCenterOf(pos), random, (direction, relativePos) ->
+                                !Util.isSolidOrNotEmpty(level, BlockPos.containing(relativePos)))
+        );
         register(state -> state.is(Blocks.AMETHYST_BLOCK) || state.is(Blocks.BUDDING_AMETHYST), (state, level, pos, random) -> {
             if (BLOCKS.amethystSparkleDisplayType == ModBlockConfigs.AmethystSparkleDisplayType.ON) {
                 ParticleSpawnUtil.spawnParticlesAroundBlock(ModParticles.AMETHYST_SPARKLE.get(), level, pos, random, 5);
             }
         });
         register(state -> state.getBlock() instanceof AmethystClusterBlock, (state, level, pos, random) -> {
-            if (BLOCKS.amethystSparkleDisplayType != ModBlockConfigs.AmethystSparkleDisplayType.OFF) {
-                if (random.nextInt(5) == 0) {
-                    AmethystClusterBlockAccessor block = (AmethystClusterBlockAccessor) state.getBlock();
-                    float height = block.subtleEffects$getHeight();
+            AmethystClusterBlockAccessor block = (AmethystClusterBlockAccessor) state.getBlock();
+            float height = block.subtleEffects$getHeight();
 
+            if (random.nextInt(5) == 0) {
+                if (BLOCKS.amethystSparkleDisplayType != ModBlockConfigs.AmethystSparkleDisplayType.OFF) {
                     if (height >= 5) {
                         float offset = (block.subtleEffects$getAABBOffset() / 16) + 0.0625F;
                         float pixelHeight = height / 16;
@@ -253,6 +253,17 @@ public class ModBlockTickers {
                                 pos.getZ() + 0.5 + nextNonAbsDouble(random, offset),
                                 0, 0, 0
                         );
+                    }
+                }
+
+                if (BLOCKS.amethystSparkleSounds) {
+                    int chance = random.nextInt(100);
+                    if (chance <= 5) {
+                        if (chance == 0) {
+                            playClientSound(pos, ModSounds.AMETHYST_CLUSTER_CHIME.get(), SoundSource.BLOCKS, Mth.nextFloat(random, 0.15F, 0.3F), 1);
+                            return;
+                        }
+                        playClientSound(pos, SoundEvents.AMETHYST_BLOCK_CHIME, SoundSource.BLOCKS, Mth.nextFloat(random, 0.07F, 1.5F), Mth.nextFloat(random, 0.07F, 1.3F));
                     }
                 }
             }

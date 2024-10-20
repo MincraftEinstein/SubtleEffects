@@ -29,7 +29,7 @@ public class EntityFireTicker extends Ticker<Entity> {
             }
 
             if (random.nextInt(90) == 0 && ENTITIES.burning.sounds) {
-                Util.playClientSound(entity.getSoundSource(), entity, SoundEvents.FIRE_EXTINGUISH, 0.3F, 1);
+                Util.playClientSound(entity, SoundEvents.FIRE_EXTINGUISH, entity.getSoundSource(), 0.3F, 1);
             }
 
             if (bbWidth <= 4 && bbHeight <= 4) {

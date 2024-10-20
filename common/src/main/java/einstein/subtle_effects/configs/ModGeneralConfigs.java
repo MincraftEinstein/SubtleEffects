@@ -16,9 +16,9 @@ import net.minecraft.world.entity.player.Player;
 public class ModGeneralConfigs extends Config {
 
     public boolean mobSkullShaders;
-
     @ValidatedInt.Restrict(min = 1, max = 32)
     public int particleRenderDistance = 5;
+    public boolean cullParticlesWithNoAlpha = true;
     public ValidatedFloat sparksScale = new ValidatedFloat(1, 2, 1);
 
     public ModGeneralConfigs() {

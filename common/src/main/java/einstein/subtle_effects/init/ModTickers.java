@@ -84,7 +84,7 @@ public class ModTickers {
             FallingBlockEntity fallingBlock = (FallingBlockEntity) entity;
             if (!fallingBlock.onGround() && !fallingBlock.isNoGravity()) {
                 BlockState state = fallingBlock.getBlockState();
-                if (ModConfigs.BLOCKS.fallingBlockDustBlocks.get().contains(BuiltInRegistries.BLOCK.getKey(state.getBlock()))) {
+                if (ModConfigs.BLOCKS.fallingBlockDustBlocks.get().contains(state.getBlock())) {
                     level.addParticle(new BlockParticleOption(ParticleTypes.FALLING_DUST, state),
                             entity.getRandomX(1),
                             entity.getY() + 0.05,
@@ -94,7 +94,7 @@ public class ModTickers {
                 }
             }
         });
-        registerSimpleTicker(EntityType.SNOWBALL, (entity, level, random) -> {
+        registerSimpleTicker(EntityType.SNOWBALL, () -> ENTITIES.snowballTrailDensity.get() > 0, (entity, level, random) -> {
             if (shouldSpawn(random, ENTITIES.snowballTrailDensity)) {
                 Vec3 deltaMovement = entity.getDeltaMovement();
                 level.addParticle(ModParticles.SNOWBALL_TRAIL.get(),
@@ -107,19 +107,17 @@ public class ModTickers {
                 );
             }
         });
-        registerSimpleTicker(EntityType.ENDER_PEARL, (entity, level, random) -> {
-            if (ENTITIES.enderPearlTrail) {
-                for (int i = 0; i < 10; i++) {
-                    level.addParticle(ParticleTypes.PORTAL,
-                            entity.getRandomX(2),
-                            entity.getRandomY(),
-                            entity.getRandomZ(2),
-                            0, 0, 0
-                    );
-                }
+        registerSimpleTicker(EntityType.ENDER_PEARL, () -> ENTITIES.enderPearlTrail, (entity, level, random) -> {
+            for (int i = 0; i < 10; i++) {
+                level.addParticle(ParticleTypes.PORTAL,
+                        entity.getRandomX(2),
+                        entity.getRandomY(),
+                        entity.getRandomZ(2),
+                        0, 0, 0
+                );
             }
         });
-        registerSimpleTicker(EntityType.ALLAY, (entity, level, random) -> {
+        registerSimpleTicker(EntityType.ALLAY, () -> ENTITIES.allayMagicDensity.get() > 0, (entity, level, random) -> {
             if (shouldSpawn(random, ENTITIES.allayMagicDensity)) {
                 level.addParticle(ModParticles.ALLAY_MAGIC.get(),
                         entity.getRandomX(1),
@@ -131,7 +129,7 @@ public class ModTickers {
                 );
             }
         });
-        registerSimpleTicker(EntityType.VEX, (entity, level, random) -> {
+        registerSimpleTicker(EntityType.VEX, () -> ENTITIES.vexMagicDensity.get() > 0, (entity, level, random) -> {
             if (shouldSpawn(random, ENTITIES.vexMagicDensity)) {
                 level.addParticle(new BooleanParticleOptions(ModParticles.VEX_MAGIC.get(), entity.isCharging()),
                         entity.getRandomX(1),
@@ -143,51 +141,47 @@ public class ModTickers {
                 );
             }
         });
-        registerSimpleTicker(EntityType.CAMEL, (entity, level, random) -> {
+        registerSimpleTicker(EntityType.CAMEL, () -> ModConfigs.ENTITIES.dustClouds.mobSprinting, (entity, level, random) -> {
             if (entity.isDashing() && entity.onGround()) {
                 for (int i = 0; i < 10; i++) {
-                    ParticleSpawnUtil.spawnCreatureMovementDustClouds(entity, level, random, 5);
+                    ParticleSpawnUtil.spawnCreatureMovementDustCloudsNoConfig(entity, level, random, 5);
                 }
             }
         });
-        registerSimpleTicker(EntityType.DRAGON_FIREBALL, (entity, level, random) -> {
-            if (ENTITIES.improvedDragonFireballTrail) {
-                for (int i = 0; i < 10; i++) {
-                    level.addParticle(ParticleTypes.DRAGON_BREATH,
-                            entity.getRandomX(2),
-                            entity.getRandomY(),
-                            entity.getRandomZ(2),
-                            0, 0, 0
-                    );
-                }
-            }
-        });
-        registerSimpleTicker(EntityType.COMMAND_BLOCK_MINECART, (entity, level, random) -> {
-            if (ENTITIES.commandBlockMinecartParticles == CommandBlockSpawnType.ON
-                    || (ENTITIES.commandBlockMinecartParticles == CommandBlockSpawnType.NOT_CREATIVE
-                    && !Minecraft.getInstance().player.isCreative())) {
-                if (random.nextInt(10) == 0) {
-                    ParticleSpawnUtil.spawnCmdBlockParticles(level, entity.position()
-                                    // The vanilla calculation of the command block's rendered location + 1 block (16) / 75 (the scale of the rendered command block) / .5 (to get the center of the command block)
-                                    .add(0, (double) -(entity.getDisplayOffset() - 8) / 16 + (((double) 16 / 75) / 0.5), 0),
-                            random, (direction, relativePos) -> true
-                    );
-                }
-            }
-        });
-        registerSimpleTicker(EntityType.TNT, (entity, level, random) -> {
-            if (ENTITIES.primedTNT.sparks) {
-                level.addParticle(ModParticles.SHORT_SPARK.get(),
-                        entity.getRandomX(0.5),
-                        entity.getY(1),
-                        entity.getRandomZ(0.5),
-                        nextNonAbsDouble(random, 0.01),
-                        nextNonAbsDouble(random, 0.01),
-                        nextNonAbsDouble(random, 0.01)
+        registerSimpleTicker(EntityType.DRAGON_FIREBALL, () -> ENTITIES.improvedDragonFireballTrail, (entity, level, random) -> {
+            for (int i = 0; i < 10; i++) {
+                level.addParticle(ParticleTypes.DRAGON_BREATH,
+                        entity.getRandomX(2),
+                        entity.getRandomY(),
+                        entity.getRandomZ(2),
+                        0, 0, 0
                 );
             }
-
-            if (ENTITIES.primedTNT.flames && random.nextInt(10) == 0) {
+        });
+        registerSimpleTicker(EntityType.COMMAND_BLOCK_MINECART, () -> ENTITIES.commandBlockMinecartParticles != CommandBlockSpawnType.OFF,
+                (entity, level, random) -> {
+                    if (ENTITIES.commandBlockMinecartParticles.canTick()) {
+                        if (random.nextInt(10) == 0) {
+                            ParticleSpawnUtil.spawnCmdBlockParticles(level, entity.position()
+                                            // The vanilla calculation of the command block's rendered location + 1 block (16) / 75 (the scale of the rendered command block) / .5 (to get the center of the command block)
+                                            .add(0, (double) -(entity.getDisplayOffset() - 8) / 16 + (((double) 16 / 75) / 0.5), 0),
+                                    random, (direction, relativePos) -> true
+                            );
+                        }
+                    }
+                });
+        registerSimpleTicker(EntityType.TNT, () -> ENTITIES.primedTNT.sparks, (entity, level, random) -> {
+            level.addParticle(ModParticles.SHORT_SPARK.get(),
+                    entity.getRandomX(0.5),
+                    entity.getY(1),
+                    entity.getRandomZ(0.5),
+                    nextNonAbsDouble(random, 0.01),
+                    nextNonAbsDouble(random, 0.01),
+                    nextNonAbsDouble(random, 0.01)
+            );
+        });
+        registerSimpleTicker(EntityType.TNT, () -> ENTITIES.primedTNT.flames, (entity, level, random) -> {
+            if (random.nextInt(10) == 0) {
                 level.addParticle(ParticleTypes.FLAME,
                         entity.getX(),
                         entity.getY(1.1),
@@ -196,28 +190,24 @@ public class ModTickers {
                 );
             }
         });
-        registerSimpleTicker(EntityType.END_CRYSTAL, (entity, level, random) -> {
-            if (ENTITIES.endCrystalParticles) {
-                if (level.getBlockState(entity.blockPosition()).getBlock() instanceof BaseFireBlock || random.nextInt(3) == 0) {
-                    level.addParticle(ModParticles.END_CRYSTAL.get(),
-                            entity.getRandomX(1),
-                            entity.getRandomY() + nextNonAbsDouble(random),
-                            entity.getRandomZ(1),
-                            0, 0, 0
-                    );
-                }
+        registerSimpleTicker(EntityType.END_CRYSTAL, () -> ENTITIES.endCrystalParticles, (entity, level, random) -> {
+            if (level.getBlockState(entity.blockPosition()).getBlock() instanceof BaseFireBlock || random.nextInt(3) == 0) {
+                level.addParticle(ModParticles.END_CRYSTAL.get(),
+                        entity.getRandomX(1),
+                        entity.getRandomY() + nextNonAbsDouble(random),
+                        entity.getRandomZ(1),
+                        0, 0, 0
+                );
             }
         });
-        registerSimpleTicker(EntityType.SPECTRAL_ARROW, (entity, level, random) -> {
-            if (ENTITIES.spectralArrowParticles) {
-                if (random.nextInt(3) == 0) {
-                    level.addParticle(Util.GLOWSTONE_DUST_PARTICLES,
-                            entity.getRandomX(1),
-                            entity.getRandomY(),
-                            entity.getRandomZ(1),
-                            0, 0, 0
-                    );
-                }
+        registerSimpleTicker(EntityType.SPECTRAL_ARROW, () -> ENTITIES.spectralArrowParticles, (entity, level, random) -> {
+            if (random.nextInt(3) == 0) {
+                level.addParticle(Util.GLOWSTONE_DUST_PARTICLES,
+                        entity.getRandomX(1),
+                        entity.getRandomY(),
+                        entity.getRandomZ(1),
+                        0, 0, 0
+                );
             }
         });
     }

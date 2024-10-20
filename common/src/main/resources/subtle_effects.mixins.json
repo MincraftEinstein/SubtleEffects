@@ -36,7 +36,11 @@
     "client.particle.LavaParticleMixin",
     "client.particle.ParticleEngineMixin",
     "client.particle.ParticleMixin",
-    "client.particle.SpriteSetAccessor"
+    "client.particle.SpriteSetAccessor",
+    "client.particle.bubbles.BubbleColumnUpParticleProviderMixin",
+    "client.particle.bubbles.BubbleParticleMixin",
+    "client.particle.bubbles.BubbleParticleProviderMixin",
+    "client.particle.bubbles.WaterCurrentDownParticleProviderMixin"
   ],
   "mixins": [
     "common.AbstractHorseMixin",

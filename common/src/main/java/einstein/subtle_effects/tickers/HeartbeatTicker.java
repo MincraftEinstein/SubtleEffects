@@ -26,7 +26,7 @@ public class HeartbeatTicker extends Ticker<Player> {
             beatTimer++;
             if (beatTimer >= (health > ((float) threshold / 2) ? 60 : 20)) {
                 beatTimer = 0;
-                Util.playClientSound(entity.getSoundSource(), entity, ModSounds.PLAYER_HEARTBEAT.get(), 1, 1);
+                Util.playClientSound(entity, ModSounds.PLAYER_HEARTBEAT.get(), entity.getSoundSource(), 1, 1);
             }
         }
     }
