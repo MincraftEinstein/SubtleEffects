@@ -1,18 +1,18 @@
-package einstein.subtle_effects.mixin.client.particle.biome_water_colors;
+package einstein.subtle_effects.mixin.client.particle.bubbles;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import einstein.subtle_effects.util.SpriteSetSetter;
 import einstein.subtle_effects.util.Util;
-import net.minecraft.client.particle.BubbleColumnUpParticle;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.SpriteSet;
+import net.minecraft.client.particle.WaterCurrentDownParticle;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 
-@Mixin(BubbleColumnUpParticle.Provider.class)
-public class BubbleColumnUpParticleProviderMixin {
+@Mixin(WaterCurrentDownParticle.Provider.class)
+public class WaterCurrentDownParticleProviderMixin {
 
     @Shadow
     @Final

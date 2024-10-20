@@ -1,4 +1,4 @@
-package einstein.subtle_effects.mixin.client.particle.biome_water_colors;
+package einstein.subtle_effects.mixin.client.particle.bubbles;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import einstein.subtle_effects.util.SpriteSetSetter;

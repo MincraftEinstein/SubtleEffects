@@ -30,10 +30,6 @@ public abstract class ParticleMixin implements ParticleAccessor {
     public abstract float getAlpha();
 
     @Override
-    @Invoker("getLightColor")
-    public abstract int subtleEffects$getLightColor(float partialTicks);
-
-    @Override
     public boolean subtleEffects$wasForced() {
         return subtleEffects$forced;
     }
