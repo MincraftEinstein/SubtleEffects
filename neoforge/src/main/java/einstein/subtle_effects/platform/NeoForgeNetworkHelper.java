@@ -1,6 +1,7 @@
 package einstein.subtle_effects.platform;
 
 import einstein.subtle_effects.platform.services.NetworkHelper;
+import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.RegistryFriendlyByteBuf;
@@ -15,6 +16,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 public class NeoForgeNetworkHelper implements NetworkHelper {
@@ -28,7 +30,7 @@ public class NeoForgeNetworkHelper implements NetworkHelper {
 
     @SuppressWarnings("unchecked")
     @Override
-    public <T extends CustomPacketPayload> void registerClientHandler(CustomPacketPayload.Type<T> type, Consumer<T> handler) {
+    public <T extends CustomPacketPayload> void registerClientHandler(CustomPacketPayload.Type<T> type, BiConsumer<ClientLevel, T> handler) {
         ((PayloadData<T>) PAYLOAD_DATA.get(type)).handler = handler;
     }
 
@@ -50,7 +52,7 @@ public class NeoForgeNetworkHelper implements NetworkHelper {
     public static class PayloadData<T extends CustomPacketPayload> {
 
         public final StreamCodec<? super RegistryFriendlyByteBuf, T> streamCodec;
-        public Consumer<T> handler;
+        public BiConsumer<ClientLevel, T> handler;
 
         public PayloadData(StreamCodec<? super RegistryFriendlyByteBuf, T> streamCodec) {
             this.streamCodec = streamCodec;

@@ -2,6 +2,8 @@ package einstein.subtle_effects;
 
 import einstein.subtle_effects.platform.NeoForgeNetworkHelper;
 import einstein.subtle_effects.platform.NeoForgeRegistryHelper;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.common.Mod;
@@ -26,6 +28,11 @@ public class SubtleEffectsNeoForge {
     @SuppressWarnings("unchecked")
     private static <T extends CustomPacketPayload> void register(PayloadRegistrar registrar, CustomPacketPayload.Type<T> type, NeoForgeNetworkHelper.PayloadData<?> data) {
         NeoForgeNetworkHelper.PayloadData<T> payloadData = (NeoForgeNetworkHelper.PayloadData<T>) data;
-        registrar.playToClient(type, payloadData.streamCodec, (packet, context) -> payloadData.handler.accept(packet));
+        registrar.playToClient(type, payloadData.streamCodec, (packet, context) -> {
+            ClientLevel level = Minecraft.getInstance().level;
+            if (level != null) {
+                payloadData.handler.accept(level, packet);
+            }
+        });
     }
 }
