@@ -79,48 +79,50 @@ public class LevelRendererMixin implements FrustumGetter {
         BlockState state = level.getBlockState(pos);
         Player player = minecraft.player;
 
-        if (type == 1029) {
-            if (BLOCKS.anvilBreakParticles) {
-                level.addDestroyBlockEffect(pos, Blocks.ANVIL.defaultBlockState());
-            }
-        }
-        else if (type == 1030) {
-            if (BLOCKS.anvilUseParticles) {
-                float pointX = random.nextFloat();
-                float pointZ = random.nextFloat();
-
-                for (int i = 0; i < 20; i++) {
-                    int xSign = nextSign(random);
-                    int zSign = nextSign(random);
-                    level.addParticle(ModParticles.METAL_SPARK.get(),
-                            pos.getX() + pointX,
-                            pos.getY() + 1,
-                            pos.getZ() + pointZ,
-                            nextFloat(random, 0.1F, 0.2F) * xSign,
-                            nextFloat(random, 0.1F, 0.2F),
-                            nextFloat(random, 0.1F, 0.2F) * zSign
-                    );
+        switch (type) {
+            case 1029: {
+                if (BLOCKS.anvilBreakParticles) {
+                    level.addDestroyBlockEffect(pos, Blocks.ANVIL.defaultBlockState());
                 }
             }
-        }
-        else if (type == 1042) {
-            if (BLOCKS.grindstoneUseParticles) {
-                Direction direction = state.getValue(GrindstoneBlock.FACING);
-                AttachFace face = state.getValue(GrindstoneBlock.FACE);
-                Direction side = face == AttachFace.CEILING ? Direction.DOWN : Direction.UP;
+            case 1030: {
+                if (BLOCKS.anvilUseParticles) {
+                    float pointX = random.nextFloat();
+                    float pointZ = random.nextFloat();
 
-                for (int i = 0; i < 20; i++) {
-                    ParticleSpawnUtil.spawnParticlesOnSide(ModParticles.METAL_SPARK.get(), 0, side, level, pos, random,
-                            nextFloat(random, 0.1F, 0.2F) * (direction.getStepX() * 1.5),
-                            face == AttachFace.CEILING ? 0 : nextFloat(random, 0.1F, 0.2F),
-                            nextFloat(random, 0.1F, 0.2F) * (direction.getStepZ() * 1.5)
-                    );
+                    for (int i = 0; i < 20; i++) {
+                        int xSign = nextSign(random);
+                        int zSign = nextSign(random);
+                        level.addParticle(ModParticles.METAL_SPARK.get(),
+                                pos.getX() + pointX,
+                                pos.getY() + 1,
+                                pos.getZ() + pointZ,
+                                nextFloat(random, 0.1F, 0.2F) * xSign,
+                                nextFloat(random, 0.1F, 0.2F),
+                                nextFloat(random, 0.1F, 0.2F) * zSign
+                        );
+                    }
                 }
             }
-        }
-        else if (type == 2013) {
-            if (ENTITIES.dustClouds.landMaceAttack) {
-                ParticleSpawnUtil.spawnEntityFellParticles(player, pos.getY() + 1, 0, 5);
+            case 1042: {
+                if (BLOCKS.grindstoneUseParticles) {
+                    Direction direction = state.getValue(GrindstoneBlock.FACING);
+                    AttachFace face = state.getValue(GrindstoneBlock.FACE);
+                    Direction side = face == AttachFace.CEILING ? Direction.DOWN : Direction.UP;
+
+                    for (int i = 0; i < 20; i++) {
+                        ParticleSpawnUtil.spawnParticlesOnSide(ModParticles.METAL_SPARK.get(), 0, side, level, pos, random,
+                                nextFloat(random, 0.1F, 0.2F) * (direction.getStepX() * 1.5),
+                                face == AttachFace.CEILING ? 0 : nextFloat(random, 0.1F, 0.2F),
+                                nextFloat(random, 0.1F, 0.2F) * (direction.getStepZ() * 1.5)
+                        );
+                    }
+                }
+            }
+            case 2013: {
+                if (ENTITIES.dustClouds.landMaceAttack) {
+                    ParticleSpawnUtil.spawnEntityFellParticles(player, pos.getY() + 1, 0, 5);
+                }
             }
         }
     }
