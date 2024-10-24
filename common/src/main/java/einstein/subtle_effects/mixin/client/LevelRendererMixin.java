@@ -16,7 +16,6 @@ import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
@@ -30,7 +29,6 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import static einstein.subtle_effects.init.ModConfigs.BIOMES;
@@ -56,13 +54,13 @@ public class LevelRendererMixin implements FrustumGetter {
         return original.call();
     }
 
-    @Redirect(method = "renderSnowAndRain", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/vertex/VertexConsumer;setColor(FFFF)Lcom/mojang/blaze3d/vertex/VertexConsumer;"))
-    private VertexConsumer renderSnowAndRain(VertexConsumer instance, float red, float green, float blue, float alpha, @Local Biome biome, @Local Biome.Precipitation precipitation) {
+    @WrapOperation(method = "renderSnowAndRain", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/vertex/VertexConsumer;setColor(FFFF)Lcom/mojang/blaze3d/vertex/VertexConsumer;"))
+    private VertexConsumer renderSnowAndRain(VertexConsumer instance, float red, float green, float blue, float alpha, Operation<VertexConsumer> original, @Local Biome biome, @Local Biome.Precipitation precipitation) {
         if (precipitation == Biome.Precipitation.RAIN && BIOMES.biomeColorRain) {
             int waterColor = biome.getWaterColor();
             return instance.setColor((waterColor >> 16) / 255F, (waterColor >> 8) / 255F, waterColor / 255F, alpha);
         }
-        return instance.setColor(red, green, blue, alpha);
+        return original.call(instance, red, green, blue, alpha);
     }
 
     @Inject(method = "levelEvent", at = @At("TAIL"))
@@ -114,12 +112,12 @@ public class LevelRendererMixin implements FrustumGetter {
         }
     }
 
-    @Redirect(method = "levelEvent", at = @At(value = "FIELD", target = "Lnet/minecraft/core/particles/ParticleTypes;LARGE_SMOKE:Lnet/minecraft/core/particles/SimpleParticleType;"))
-    private SimpleParticleType replaceSmoke() {
+    @WrapOperation(method = "levelEvent", at = @At(value = "FIELD", target = "Lnet/minecraft/core/particles/ParticleTypes;LARGE_SMOKE:Lnet/minecraft/core/particles/SimpleParticleType;"))
+    private SimpleParticleType replaceSmoke(Operation<SimpleParticleType> original) {
         if (BLOCKS.steam.lavaFizzSteam) {
             return ModParticles.STEAM.get();
         }
-        return ParticleTypes.LARGE_SMOKE;
+        return original.call();
     }
 
     @ModifyReturnValue(method = "addParticleInternal(Lnet/minecraft/core/particles/ParticleOptions;ZZDDDDDD)Lnet/minecraft/client/particle/Particle;", at = @At(value = "RETURN", ordinal = 0))
