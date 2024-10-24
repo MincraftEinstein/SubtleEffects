@@ -23,6 +23,7 @@
     "client.block.SculkShriekerAndCatalystBlockMixin",
     "client.block.SlimeBlockMixin",
     "client.block.TorchBlockMixin",
+    "client.block.entity.CampfireBlockEntityMixin",
     "client.entity.ClientLivingEntityMixin",
     "client.entity.EntityRendererMixin",
     "client.entity.MinecartFurnaceMixin",
