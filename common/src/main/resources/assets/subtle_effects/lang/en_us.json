@@ -147,6 +147,8 @@
   "config.subtle_effects.entities.dustClouds.sprinting.desc": "Should a dust cloud form behind a sprinting player",
   "config.subtle_effects.entities.dustClouds.mobSprinting": "Mob Sprinting Dust Clouds",
   "config.subtle_effects.entities.dustClouds.mobSprinting.desc": "Should a dust cloud form behind charging ravagers, galloping horses, and dashing camels",
+  "config.subtle_effects.entities.dustClouds.landMaceAttack": "Land Mace Attack",
+  "config.subtle_effects.entities.dustClouds.landMaceAttack.desc": "Spawn dust clouds when successfully landing a mace attack",
   "config.subtle_effects.entities.burning": "Burning",
   "config.subtle_effects.entities.burning.desc": "Particles emitted from entities on fire",
   "config.subtle_effects.entities.burning.smoke": "Smoke",

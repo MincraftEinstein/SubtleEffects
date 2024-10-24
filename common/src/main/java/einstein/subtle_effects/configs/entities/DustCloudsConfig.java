@@ -14,4 +14,5 @@ public class DustCloudsConfig extends ConfigSection {
     public boolean fallDamage = true;
     public boolean sprinting = true;
     public boolean mobSprinting = true;
+    public boolean landMaceAttack = true;
 }

@@ -10,6 +10,7 @@ import einstein.subtle_effects.util.FrustumGetter;
 import einstein.subtle_effects.util.ParticleAccessor;
 import einstein.subtle_effects.util.ParticleSpawnUtil;
 import einstein.subtle_effects.util.Util;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.renderer.LevelRenderer;
@@ -19,20 +20,21 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.GrindstoneBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.AttachFace;
 import org.jetbrains.annotations.Nullable;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import static einstein.subtle_effects.init.ModConfigs.BIOMES;
-import static einstein.subtle_effects.init.ModConfigs.BLOCKS;
+import static einstein.subtle_effects.init.ModConfigs.*;
 import static einstein.subtle_effects.util.MathUtil.nextSign;
 import static net.minecraft.util.Mth.nextFloat;
 
@@ -45,6 +47,10 @@ public class LevelRendererMixin implements FrustumGetter {
 
     @Shadow
     private Frustum cullingFrustum;
+
+    @Shadow
+    @Final
+    private Minecraft minecraft;
 
     @WrapOperation(method = "renderSnowAndRain", at = @At(value = "FIELD", target = "Lnet/minecraft/client/renderer/LevelRenderer;RAIN_LOCATION:Lnet/minecraft/resources/ResourceLocation;"))
     private ResourceLocation replaceRainTexture(Operation<ResourceLocation> original) {
@@ -68,8 +74,10 @@ public class LevelRendererMixin implements FrustumGetter {
         if (level == null) {
             return;
         }
+
         RandomSource random = level.getRandom();
         BlockState state = level.getBlockState(pos);
+        Player player = minecraft.player;
 
         if (type == 1029) {
             if (BLOCKS.anvilBreakParticles) {
@@ -108,6 +116,11 @@ public class LevelRendererMixin implements FrustumGetter {
                             nextFloat(random, 0.1F, 0.2F) * (direction.getStepZ() * 1.5)
                     );
                 }
+            }
+        }
+        else if (type == 2013) {
+            if (ENTITIES.dustClouds.landMaceAttack) {
+                ParticleSpawnUtil.spawnEntityFellParticles(player, pos.getY() + 1, 0, 5);
             }
         }
     }
