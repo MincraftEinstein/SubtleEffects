@@ -13,6 +13,8 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.animal.goat.Goat;
 import net.minecraft.world.entity.monster.Ravager;
+import net.minecraft.world.entity.monster.Zoglin;
+import net.minecraft.world.entity.monster.hoglin.Hoglin;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
@@ -40,8 +42,8 @@ public abstract class CommonLivingEntityMixin extends Entity {
     @Unique
     private final LivingEntity subtleEffects$me = (LivingEntity) (Object) this;
 
-    public CommonLivingEntityMixin(EntityType<?> entityType, Level level) {
-        super(entityType, level);
+    public CommonLivingEntityMixin(EntityType<?> type, Level level) {
+        super(type, level);
     }
 
     @Inject(method = "<init>", at = @At("TAIL"))
@@ -55,6 +57,11 @@ public abstract class CommonLivingEntityMixin extends Entity {
             subtleEffects$validEntity = true;
             subtleEffects$minSpeed = 0.4F;
         }
+
+        if (subtleEffects$me instanceof Hoglin || subtleEffects$me instanceof Zoglin) {
+            subtleEffects$validEntity = true;
+            subtleEffects$minSpeed = 0.28F;
+        }
     }
 
     @Inject(method = "tick", at = @At("TAIL"))
@@ -62,7 +69,7 @@ public abstract class CommonLivingEntityMixin extends Entity {
         if (!level().isClientSide) {
             if (subtleEffects$canStart || position().distanceToSqr(subtleEffects$lastCheckedPos) > 0.5) {
                 if (subtleEffects$validEntity) {
-                    if (subtleEffects$me.getSpeed() > subtleEffects$minSpeed && onGround()) {
+                    if (onGround() && subtleEffects$me.getSpeed() > subtleEffects$minSpeed) {
                         Services.NETWORK.sendToClientsTracking((ServerLevel) level(), subtleEffects$me.blockPosition(), new ClientBoundEntitySpawnSprintingDustCloudsPacket(getId()));
                         subtleEffects$lastCheckedPos = position();
                         subtleEffects$canStart = false;
