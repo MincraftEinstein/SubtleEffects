@@ -120,9 +120,7 @@ public class LevelRendererMixin implements FrustumGetter {
                 }
             }
             case 2013: {
-                if (ENTITIES.dustClouds.landMaceAttack) {
-                    ParticleSpawnUtil.spawnEntityFellParticles(player, pos.getY() + 1, 0, 5);
-                }
+                ParticleSpawnUtil.spawnEntityFellParticles(player, pos.getY() + 1, 0, 5, ENTITIES.dustClouds.landMaceAttack);
             }
         }
     }

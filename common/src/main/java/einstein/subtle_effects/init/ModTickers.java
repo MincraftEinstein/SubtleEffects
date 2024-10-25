@@ -11,7 +11,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -64,7 +63,7 @@ public class ModTickers {
                             0
                     );
                 });
-        registerSimpleTicker(entity -> entity instanceof Player && ENTITIES.dustClouds.sprinting,
+        registerSimpleTicker(entity -> entity instanceof Player && ENTITIES.dustClouds.playerRunning,
                 (entity, level, random) -> {
                     Player player = (Player) entity;
                     if (player.canSpawnSprintParticle() && player.onGround() && !player.isUsingItem()) {
@@ -141,7 +140,7 @@ public class ModTickers {
                 );
             }
         });
-        registerSimpleTicker(EntityType.CAMEL, () -> ModConfigs.ENTITIES.dustClouds.mobSprinting, (entity, level, random) -> {
+        registerSimpleTicker(EntityType.CAMEL, () -> ModConfigs.ENTITIES.dustClouds.mobRunning, (entity, level, random) -> {
             if (entity.isDashing() && entity.onGround()) {
                 for (int i = 0; i < 10; i++) {
                     ParticleSpawnUtil.spawnCreatureMovementDustCloudsNoConfig(entity, level, random, 5);

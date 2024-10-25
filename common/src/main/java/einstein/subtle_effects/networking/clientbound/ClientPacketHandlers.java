@@ -8,15 +8,18 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.monster.Ravager;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
+
+import static einstein.subtle_effects.init.ModConfigs.ENTITIES;
 
 public class ClientPacketHandlers {
 
     public static void handle(ClientLevel level, ClientBoundEntityFellPacket packet) {
         if (level.getEntity(packet.entityId()) instanceof LivingEntity livingEntity) {
-            ParticleSpawnUtil.spawnEntityFellParticles(livingEntity, packet.y(), packet.distance(), packet.fallDamage());
+            ParticleSpawnUtil.spawnEntityFellParticles(livingEntity, packet.y(), packet.distance(), packet.fallDamage(), livingEntity instanceof Player ? ENTITIES.dustClouds.playerFell: ENTITIES.dustClouds.mobFell);
         }
     }
 

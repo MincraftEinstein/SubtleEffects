@@ -29,6 +29,7 @@ import java.util.function.BiPredicate;
 import java.util.function.Predicate;
 
 import static einstein.subtle_effects.init.ModConfigs.BLOCKS;
+import static einstein.subtle_effects.init.ModConfigs.ENTITIES;
 import static einstein.subtle_effects.util.MathUtil.*;
 
 public class ParticleSpawnUtil {
@@ -82,7 +83,7 @@ public class ParticleSpawnUtil {
     public static void spawnFallDustClouds(LivingEntity entity, float distance, int fallDamage) {
         Level level = entity.level();
         if (level.isClientSide && entity.equals(Minecraft.getInstance().player)) {
-            spawnEntityFellParticles(entity, entity.getY(), distance, fallDamage);
+            spawnEntityFellParticles(entity, entity.getY(), distance, fallDamage, ENTITIES.dustClouds.playerFell);
         }
         else if (level instanceof ServerLevel serverLevel) {
             Services.NETWORK.sendToClientsTracking(
@@ -94,7 +95,7 @@ public class ParticleSpawnUtil {
     }
 
     public static void spawnCreatureMovementDustClouds(LivingEntity entity, Level level, RandomSource random, int YSpeedModifier) {
-        if (ModConfigs.ENTITIES.dustClouds.mobSprinting) {
+        if (ModConfigs.ENTITIES.dustClouds.mobRunning) {
             spawnCreatureMovementDustCloudsNoConfig(entity, level, random, YSpeedModifier);
         }
     }
@@ -161,12 +162,8 @@ public class ParticleSpawnUtil {
         }
     }
 
-    public static void spawnEntityFellParticles(LivingEntity entity, double y, float distance, int fallDamage) {
-        if (entity.getType().is(EntityTypeTags.FALL_DAMAGE_IMMUNE)) {
-            return;
-        }
-
-        if (!ModConfigs.ENTITIES.dustClouds.fallDamage) {
+    public static void spawnEntityFellParticles(LivingEntity entity, double y, float distance, int fallDamage, boolean config) {
+        if (!config || entity.getType().is(EntityTypeTags.FALL_DAMAGE_IMMUNE)) {
             return;
         }
 
