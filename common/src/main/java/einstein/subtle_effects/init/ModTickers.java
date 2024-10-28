@@ -45,6 +45,7 @@ public class ModTickers {
         registerTicker(LOCAL_PLAYER.and(entity -> ENTITIES.stomachGrowlingThreshold.get() > 0), StomachGrowlingTicker::new);
         registerTicker(LOCAL_PLAYER.and(entity -> ModConfigs.GENERAL.mobSkullShaders), MobSkullShaderTicker::new);
         registerTicker(LOCAL_PLAYER.and(entity -> ENTITIES.heartBeatingThreshold.get() > 0), HeartbeatTicker::new);
+        registerTicker(entity -> entity instanceof Player, DrowningTicker::new);
         registerTicker(entity -> entity.getType().equals(EntityType.SLIME) && ENTITIES.slimeTrails, (Slime entity) -> new SlimeTrailTicker<>(entity, ModParticles.SLIME_TRAIL));
         registerTicker(entity -> entity.getType().equals(EntityType.MAGMA_CUBE) && ENTITIES.magmaCubeTrails, (MagmaCube entity) -> new SlimeTrailTicker<>(entity, ModParticles.MAGMA_CUBE_TRAIL));
         registerTicker(entity -> entity.getType().equals(EntityType.IRON_GOLEM) && ENTITIES.ironGolemCrackParticles, IronGolemTicker::new);
