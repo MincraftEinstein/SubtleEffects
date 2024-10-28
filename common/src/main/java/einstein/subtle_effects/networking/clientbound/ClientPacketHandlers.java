@@ -3,12 +3,14 @@ package einstein.subtle_effects.networking.clientbound;
 import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.init.ModParticles;
 import einstein.subtle_effects.util.ParticleSpawnUtil;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.monster.Ravager;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -17,13 +19,23 @@ import static einstein.subtle_effects.init.ModConfigs.ENTITIES;
 
 public class ClientPacketHandlers {
 
-    public static void handle(ClientLevel level, ClientBoundEntityFellPacket packet) {
+    public static void handle(ClientBoundEntityFellPacket packet) {
+        Level level = Minecraft.getInstance().level;
+        if (level == null) {
+            return;
+        }
+
         if (level.getEntity(packet.entityId()) instanceof LivingEntity livingEntity) {
             ParticleSpawnUtil.spawnEntityFellParticles(livingEntity, packet.y(), packet.distance(), packet.fallDamage(), livingEntity instanceof Player ? ENTITIES.dustClouds.playerFell: ENTITIES.dustClouds.mobFell);
         }
     }
 
-    public static void handle(ClientLevel level, ClientBoundEntitySpawnSprintingDustCloudsPacket packet) {
+    public static void handle(ClientBoundEntitySpawnSprintingDustCloudsPacket packet) {
+        Level level = Minecraft.getInstance().level;
+        if (level == null) {
+            return;
+        }
+
         if (level.getEntity(packet.entityId()) instanceof LivingEntity livingEntity) {
             int ySpeedModifier = 5;
             if (livingEntity instanceof Ravager) {
@@ -34,13 +46,23 @@ public class ClientPacketHandlers {
         }
     }
 
-    public static void handle(ClientLevel level, ClientBoundSpawnSnoreParticlePacket packet) {
+    public static void handle(ClientBoundSpawnSnoreParticlePacket packet) {
+        Level level = Minecraft.getInstance().level;
+        if (level == null) {
+            return;
+        }
+
         if (ModConfigs.BLOCKS.beehivesHaveSleepingZs) {
             level.addParticle(ModParticles.SNORING.get(), packet.x(), packet.y(), packet.z(), 0, 0, 0);
         }
     }
 
-    public static void handle(ClientLevel level, ClientBoundBlockDestroyEffectsPacket packet) {
+    public static void handle(ClientBoundBlockDestroyEffectsPacket packet) {
+        Level level = Minecraft.getInstance().level;
+        if (level == null) {
+            return;
+        }
+
         if (getBlockDestroyEffectConfig(packet)) {
             BlockPos pos = packet.pos();
             BlockState state = Block.stateById(packet.stateId());
