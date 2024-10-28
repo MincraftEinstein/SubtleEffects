@@ -15,6 +15,7 @@ import net.minecraft.world.level.Level;
 public class SubtleEffectsClient {
 
     private static boolean HAS_CLEARED = false;
+    private static Level LEVEL;
 
     public static void clientSetup() {
         ModTickers.init();
@@ -26,7 +27,9 @@ public class SubtleEffectsClient {
 
     public static void clientTick(Minecraft minecraft, Level level) {
         Player player = minecraft.player;
-        if (level == null || player == null) {
+        if (level == null || player == null || LEVEL != level) {
+            LEVEL = level;
+
             if (!HAS_CLEARED) {
                 TickerManager.clear();
                 BiomeParticleManager.clear();

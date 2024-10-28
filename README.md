@@ -4,7 +4,7 @@
 
 ![](https://img.shields.io/badge/Mod%20Loaders-NeoForge%20%26%20Fabric-green?style=for-the-badge)
 [![Curseforge Page](https://img.shields.io/badge/Curseforge-Page-orange?style=for-the-badge&logo=curseforge "Curseforge page")](https://curseforge.com/minecraft/mc-mods/subtle-effects)
-[![Modrinth Page](https://img.shields.io/badge/Modrinth-Page-1bd96a?style=for-the-badge&logo=modrinth)]()
+[![Modrinth Page](https://img.shields.io/badge/Modrinth-Page-1bd96a?style=for-the-badge&logo=modrinth)](https://modrinth.com/mod/subtle-effects)
 [![Github](https://img.shields.io/badge/GitHub-Repository-blueviolet?style=for-the-badge&logo=github)](https://github.com/MincraftEinstein/SubtleEffects)
 [![Discord Invite](https://img.shields.io/badge/Discord-Einstein%27s%20Lab-blue?style=for-the-badge&logo=discord)](https://discord.gg/gSsaFAvrBM)
 

@@ -6,9 +6,11 @@ import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.tickers.TickerManager;
 import me.fzzyhmstrs.fzzy_config.annotations.Translation;
 import me.fzzyhmstrs.fzzy_config.config.Config;
+import me.fzzyhmstrs.fzzy_config.util.EnumTranslatable;
 import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedDouble;
 import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedInt;
-import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedNumber;
+import net.minecraft.client.Minecraft;
+import org.jetbrains.annotations.NotNull;
 
 @Translation(prefix = ModConfigs.BASE_KEY + "entities")
 public class ModEntityConfigs extends Config {
@@ -38,6 +40,8 @@ public class ModEntityConfigs extends Config {
     public boolean ironGolemCrackParticles = true;
     public boolean spectralArrowParticles = true;
     public boolean wardenDeathSoulParticles = true;
+    public PerspectiveType drowningBubbles = PerspectiveType.DEFAULT;
+    public ValidatedInt drowningBubblesDensity = new ValidatedInt(10, 15, 3);
 
     public ModEntityConfigs() {
         super(SubtleEffects.loc("entities"));
@@ -46,5 +50,21 @@ public class ModEntityConfigs extends Config {
     @Override
     public void onUpdateClient() {
         TickerManager.clear();
+    }
+
+    public enum PerspectiveType implements EnumTranslatable {
+        OFF,
+        DEFAULT,
+        THIRD_PERSON_ONLY;
+
+        public boolean test(Minecraft minecraft) {
+            return this == DEFAULT || (this == THIRD_PERSON_ONLY && !minecraft.options.getCameraType().isFirstPerson());
+        }
+
+        @NotNull
+        @Override
+        public String prefix() {
+            return ModConfigs.BASE_KEY + "entities.perspectiveType";
+        }
     }
 }

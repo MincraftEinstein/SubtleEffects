@@ -29,7 +29,9 @@ import java.util.function.BiPredicate;
 import java.util.function.Predicate;
 
 import static einstein.subtle_effects.init.ModConfigs.BLOCKS;
+import static einstein.subtle_effects.init.ModConfigs.ENTITIES;
 import static einstein.subtle_effects.util.MathUtil.*;
+import static net.minecraft.util.Mth.DEG_TO_RAD;
 
 public class ParticleSpawnUtil {
 
@@ -82,7 +84,7 @@ public class ParticleSpawnUtil {
     public static void spawnFallDustClouds(LivingEntity entity, float distance, int fallDamage) {
         Level level = entity.level();
         if (level.isClientSide && entity.equals(Minecraft.getInstance().player)) {
-            spawnEntityFellParticles(entity, entity.getY(), distance, fallDamage);
+            spawnEntityFellParticles(entity, entity.getY(), distance, fallDamage, ENTITIES.dustClouds.playerFell);
         }
         else if (level instanceof ServerLevel serverLevel) {
             Services.NETWORK.sendToClientsTracking(
@@ -94,12 +96,16 @@ public class ParticleSpawnUtil {
     }
 
     public static void spawnCreatureMovementDustClouds(LivingEntity entity, Level level, RandomSource random, int YSpeedModifier) {
-        if (ModConfigs.ENTITIES.dustClouds.mobSprinting) {
+        if (ModConfigs.ENTITIES.dustClouds.mobRunning) {
             spawnCreatureMovementDustCloudsNoConfig(entity, level, random, YSpeedModifier);
         }
     }
 
     public static void spawnCreatureMovementDustCloudsNoConfig(LivingEntity entity, Level level, RandomSource random, int YSpeedModifier) {
+        if (ENTITIES.dustClouds.preventWhenRaining && level.isRainingAt(entity.blockPosition())) {
+            return;
+        }
+
         level.addParticle(ModParticles.LARGE_DUST_CLOUD.get(),
                 entity.position().x + entity.getBbWidth() * random.nextDouble() - 1,
                 entity.getY() + Math.max(Math.min(random.nextFloat(), 0.5), 0.2),
@@ -161,12 +167,8 @@ public class ParticleSpawnUtil {
         }
     }
 
-    public static void spawnEntityFellParticles(LivingEntity entity, double y, float distance, int fallDamage) {
-        if (entity.getType().is(EntityTypeTags.FALL_DAMAGE_IMMUNE)) {
-            return;
-        }
-
-        if (!ModConfigs.ENTITIES.dustClouds.fallDamage) {
+    public static void spawnEntityFellParticles(LivingEntity entity, double y, float distance, int fallDamage, boolean config) {
+        if (!config || entity.getType().is(EntityTypeTags.FALL_DAMAGE_IMMUNE)) {
             return;
         }
 
@@ -180,6 +182,10 @@ public class ParticleSpawnUtil {
 
         Level level = entity.level();
         RandomSource random = entity.getRandom();
+
+        if (ENTITIES.dustClouds.preventWhenRaining && level.isRainingAt(entity.blockPosition())) {
+            return;
+        }
 
         if (!level.getFluidState(entity.getOnPos().atY(Mth.floor(y))).isEmpty()) {
             return;
@@ -209,5 +215,23 @@ public class ParticleSpawnUtil {
                     0.5 * nextSign(random)
             );
         }
+    }
+
+    public static void spawnEntityFaceParticles(ParticleOptions options, LivingEntity entity, Level level, RandomSource random, Vec3 offset) {
+        Vec3 speed = new Vec3((random.nextFloat() - 0.5) * 0.1, Math.random() * 0.1 + 0.1, 0);
+        speed = speed.xRot(-entity.getXRot() * DEG_TO_RAD);
+        speed = speed.yRot(-entity.getYRot() * DEG_TO_RAD);
+        spawnEntityHeadParticles(options, entity, level, new Vec3((random.nextFloat() - 0.5) * 0.3, -random.nextFloat() * 0.6 - 0.3, 0.6).add(offset), speed);
+    }
+
+    public static void spawnEntityFaceParticles(ParticleOptions options, LivingEntity entity, Level level, Vec3 offset, Vec3 speed) {
+        spawnEntityHeadParticles(options, entity, level, offset.add(0, 0, 0.6), speed);
+    }
+
+    public static void spawnEntityHeadParticles(ParticleOptions options, LivingEntity entity, Level level, Vec3 pos, Vec3 speed) {
+        pos = pos.xRot(-entity.getXRot() * DEG_TO_RAD);
+        pos = pos.yRot(-entity.getYRot() * DEG_TO_RAD);
+        pos = pos.add(entity.getX(), entity.getEyeY(), entity.getZ());
+        level.addParticle(options, pos.x(), pos.y(), pos.z(), speed.x(), speed.y() + 0.05, speed.z());
     }
 }
