@@ -102,6 +102,10 @@ public class ParticleSpawnUtil {
     }
 
     public static void spawnCreatureMovementDustCloudsNoConfig(LivingEntity entity, Level level, RandomSource random, int YSpeedModifier) {
+        if (ENTITIES.dustClouds.preventWhenRaining && level.isRainingAt(entity.blockPosition())) {
+            return;
+        }
+
         level.addParticle(ModParticles.LARGE_DUST_CLOUD.get(),
                 entity.position().x + entity.getBbWidth() * random.nextDouble() - 1,
                 entity.getY() + Math.max(Math.min(random.nextFloat(), 0.5), 0.2),
@@ -178,6 +182,10 @@ public class ParticleSpawnUtil {
 
         Level level = entity.level();
         RandomSource random = entity.getRandom();
+
+        if (ENTITIES.dustClouds.preventWhenRaining && level.isRainingAt(entity.blockPosition())) {
+            return;
+        }
 
         if (!level.getFluidState(entity.getOnPos().atY(Mth.floor(y))).isEmpty()) {
             return;

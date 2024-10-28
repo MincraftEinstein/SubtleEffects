@@ -153,6 +153,7 @@
   "config.subtle_effects.entities.dustClouds.mobRunning.desc": "Should a dust cloud form behind charging ravagers, hoglins, zoglins, galloping horses, and dashing camels",
   "config.subtle_effects.entities.dustClouds.landMaceAttack": "Land Mace Attack",
   "config.subtle_effects.entities.dustClouds.landMaceAttack.desc": "Spawn dust clouds when successfully landing a mace attack",
+  "config.subtle_effects.entities.dustClouds.preventWhenRaining": "Prevent When Raining",
   "config.subtle_effects.entities.burning": "Burning",
   "config.subtle_effects.entities.burning.desc": "Particles emitted from entities on fire",
   "config.subtle_effects.entities.burning.smoke": "Smoke",

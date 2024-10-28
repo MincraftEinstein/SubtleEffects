@@ -16,4 +16,5 @@ public class DustCloudsConfig extends ConfigSection {
     public boolean mobFell = true;
     public boolean mobRunning = true;
     public boolean landMaceAttack = true;
+    public boolean preventWhenRaining = false;
 }

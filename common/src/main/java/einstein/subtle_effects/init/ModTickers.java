@@ -66,6 +66,10 @@ public class ModTickers {
                 });
         registerSimpleTicker(entity -> entity instanceof Player && ENTITIES.dustClouds.playerRunning,
                 (entity, level, random) -> {
+                    if (ENTITIES.dustClouds.preventWhenRaining && level.isRainingAt(entity.blockPosition())) {
+                        return;
+                    }
+
                     Player player = (Player) entity;
                     if (player.canSpawnSprintParticle() && player.onGround() && !player.isUsingItem()) {
                         if (random.nextBoolean()) {
