@@ -58,29 +58,18 @@ public class ForgeNetworkHelper implements NetworkHelper {
         SubtleEffects.LOGGER.warn("Failed to find packet named: {}", t.id());
     }
 
-    public static void init(Direction directionToRegister) {
-        PACKETS.forEach((clazz, data) -> {
-            registerPacket(clazz, data, directionToRegister);
-        });
+    public static void init() {
+        PACKETS.forEach(ForgeNetworkHelper::registerPacket);
     }
 
     @SuppressWarnings("unchecked")
-    private static <T extends Packet> void registerPacket(Class<?> clazz, PacketData<? extends Packet> packetData, Direction directionToRegister) {
+    private static <T extends Packet> void registerPacket(Class<?> clazz, PacketData<? extends Packet> packetData) {
         PacketData<T> data = (PacketData<T>) packetData;
-        SimpleChannel.MessageBuilder<T> builder = CHANNEL.messageBuilder((Class<T>) clazz, ID++, getDirectionToNetworkDirection(data));
-
-        if (data.direction() == directionToRegister) {
-            builder.decoder(buf -> data.decoder().apply(buf))
-                    .encoder(Packet::encode);
-        }
-        else {
-            builder.consumerMainThread((packet, context) -> {
-                ServerPlayer player = context.get().getSender();
-                packet.handle(player);
-            });
-        }
-
-        builder.add();
+        CHANNEL.messageBuilder((Class<T>) clazz, ID++, getDirectionToNetworkDirection(data))
+                .encoder(Packet::encode)
+                .decoder(buf -> data.decoder().apply(buf))
+                .consumerMainThread((packet, context) -> packet.handle(context.get().getSender()))
+                .add();
     }
 
     private static NetworkDirection getDirectionToNetworkDirection(PacketData<?> data) {

@@ -1,8 +1,6 @@
 package einstein.subtle_effects;
 
-import einstein.subtle_effects.platform.ForgeNetworkHelper;
 import einstein.subtle_effects.platform.ForgeRegistryHelper;
-import einstein.subtle_effects.platform.services.NetworkHelper;
 import einstein.subtle_effects.util.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.ParticleProvider;
@@ -14,7 +12,6 @@ import net.minecraft.server.packs.PathPackResources;
 import net.minecraft.server.packs.repository.Pack;
 import net.minecraft.server.packs.repository.PackSource;
 import net.minecraft.server.packs.repository.RepositorySource;
-import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.RegisterClientCommandsEvent;
 import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
 import net.minecraftforge.common.MinecraftForge;
@@ -22,20 +19,17 @@ import net.minecraftforge.event.AddPackFindersEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.ModList;
-import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.forgespi.language.IModInfo;
 
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-@Mod(value = SubtleEffects.MOD_ID)
-@Mod.EventBusSubscriber(Dist.CLIENT)
 public class SubtleEffectsForgeClient {
 
     public SubtleEffectsForgeClient(IEventBus modEventBus) {
         SubtleEffectsClient.clientSetup();
-        ForgeNetworkHelper.init(NetworkHelper.Direction.TO_SERVER);
+        ForgeRegistryHelper.PARTICLE_TYPES.register(modEventBus);
         modEventBus.addListener((RegisterParticleProvidersEvent event) ->
                 ForgeRegistryHelper.PARTICLE_PROVIDERS.forEach((particle, provider) -> registerParticle(event, particle, provider))
         );

@@ -31,6 +31,6 @@ issueTrackerURL="https://github.com/MincraftEinstein/SubtleEffects/issues"
 [[dependencies.subtle_effects]]
     modId = "fzzy_config"
     mandatory = true
-    versionRange = "[${fzzy_config_version},)"
+    versionRange = "[${fzzy_config_version}+forge,)"
     ordering = "NONE"
     side = "CLIENT"
