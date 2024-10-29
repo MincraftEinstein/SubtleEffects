@@ -84,6 +84,7 @@ public class LevelRendererMixin implements FrustumGetter {
                 if (BLOCKS.anvilBreakParticles) {
                     level.addDestroyBlockEffect(pos, Blocks.ANVIL.defaultBlockState());
                 }
+                break;
             }
             case 1030: {
                 if (BLOCKS.anvilUseParticles) {
@@ -103,6 +104,7 @@ public class LevelRendererMixin implements FrustumGetter {
                         );
                     }
                 }
+                break;
             }
             case 1042: {
                 if (BLOCKS.grindstoneUseParticles) {
@@ -118,9 +120,11 @@ public class LevelRendererMixin implements FrustumGetter {
                         );
                     }
                 }
+                break;
             }
             case 2013: {
                 ParticleSpawnUtil.spawnEntityFellParticles(player, pos.getY() + 1, 0, 5, ENTITIES.dustClouds.landMaceAttack);
+                break;
             }
         }
     }
