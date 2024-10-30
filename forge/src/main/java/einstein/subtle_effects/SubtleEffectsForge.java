@@ -1,5 +1,6 @@
 package einstein.subtle_effects;
 
+import einstein.subtle_effects.init.ModParticles;
 import einstein.subtle_effects.platform.ForgeNetworkHelper;
 import einstein.subtle_effects.platform.ForgeRegistryHelper;
 import net.minecraftforge.api.distmarker.Dist;
@@ -17,6 +18,8 @@ public class SubtleEffectsForge {
     public SubtleEffectsForge(FMLJavaModLoadingContext context) {
         IEventBus modEventBus = context.getModEventBus();
         SubtleEffects.init();
+        ModParticles.init();
+        ForgeRegistryHelper.PARTICLE_TYPES.register(modEventBus);
         DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> new SubtleEffectsForgeClient(modEventBus));
         modEventBus.addListener((FMLCommonSetupEvent event) -> ForgeNetworkHelper.init());
         ForgeRegistryHelper.SOUND_EVENTS.register(modEventBus);

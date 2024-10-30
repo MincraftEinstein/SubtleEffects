@@ -1,5 +1,6 @@
 package einstein.subtle_effects;
 
+import einstein.subtle_effects.init.ModParticles;
 import einstein.subtle_effects.platform.FabricNetworkHelper;
 import einstein.subtle_effects.platform.services.NetworkHelper;
 import einstein.subtle_effects.util.Util;
@@ -15,6 +16,7 @@ public class SubtleEffectsFabricClient implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
         SubtleEffectsClient.clientSetup();
+        ModParticles.init();
         FabricNetworkHelper.init(NetworkHelper.Direction.TO_CLIENT);
         ClientTickEvents.END_CLIENT_TICK.register(minecraft -> SubtleEffectsClient.clientTick(minecraft, minecraft.level));
         ClientCommandRegistrationCallback.EVENT.register(SubtleEffectsClient::registerClientCommands);

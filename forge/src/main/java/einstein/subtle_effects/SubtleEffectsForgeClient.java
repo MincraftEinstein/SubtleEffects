@@ -29,7 +29,6 @@ public class SubtleEffectsForgeClient {
 
     public SubtleEffectsForgeClient(IEventBus modEventBus) {
         SubtleEffectsClient.clientSetup();
-        ForgeRegistryHelper.PARTICLE_TYPES.register(modEventBus);
         modEventBus.addListener((RegisterParticleProvidersEvent event) ->
                 ForgeRegistryHelper.PARTICLE_PROVIDERS.forEach((particle, provider) -> registerParticle(event, particle, provider))
         );

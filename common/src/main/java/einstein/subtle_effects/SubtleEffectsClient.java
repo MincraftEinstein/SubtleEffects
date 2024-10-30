@@ -22,7 +22,7 @@ public class SubtleEffectsClient {
         ModBlockTickers.init();
         BiomeParticleManager.init();
         ModDamageListeners.init();
-        ModParticles.init();
+        ModParticleProviders.init();
     }
 
     public static void clientTick(Minecraft minecraft, Level level) {

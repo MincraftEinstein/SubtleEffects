@@ -17,7 +17,7 @@ public interface NetworkHelper {
     Map<Class<? extends Packet>, PacketData<? extends Packet>> PACKETS = new HashMap<>();
 
     default <T extends Packet> void registerToClient(ResourceLocation id, Class<T> clazz, Function<FriendlyByteBuf, T> decoder) {
-        PACKETS.put(clazz, new PacketData<>(id, Direction.TO_CLIENT, decoder));
+        PACKETS.put(clazz, new PacketData<>(id, Direction.TO_CLIENT, decoder, PacketData.ID++));
     }
 
     <T extends Packet> void sendToServer(T t);
@@ -33,7 +33,9 @@ public interface NetworkHelper {
         TO_SERVER
     }
 
-    record PacketData<T extends Packet>(ResourceLocation id, Direction direction, Function<FriendlyByteBuf, T> decoder) {
+    record PacketData<T extends Packet>(ResourceLocation id, Direction direction, Function<FriendlyByteBuf, T> decoder,
+                                        int rawId) {
 
+        private static int ID;
     }
 }
