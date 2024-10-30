@@ -45,5 +45,12 @@
       "minecraft:block/amethyst/step13",
       "minecraft:block/amethyst/step14"
     ]
+  },
+  "block.campfire.sizzle": {
+    "subtitle": "subtitles.subtle_effects.block.campfire.sizzle",
+    "sounds": [
+      "subtle_effects:block/campfire/sizzle0",
+      "subtle_effects:block/campfire/sizzle1"
+    ]
   }
 }

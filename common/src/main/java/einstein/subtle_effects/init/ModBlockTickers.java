@@ -14,13 +14,14 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.util.Mth;
 import net.minecraft.util.ParticleUtils;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BeaconBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.CampfireBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.SculkSensorPhase;
 import net.minecraft.world.phys.Vec3;
@@ -34,6 +35,7 @@ import static einstein.subtle_effects.init.ModConfigs.BLOCKS;
 import static einstein.subtle_effects.util.MathUtil.nextNonAbsDouble;
 import static einstein.subtle_effects.util.MathUtil.nextSign;
 import static einstein.subtle_effects.util.Util.playClientSound;
+import static net.minecraft.util.Mth.nextFloat;
 
 public class ModBlockTickers {
 
@@ -157,11 +159,23 @@ public class ModBlockTickers {
             }
         });
 
-        register(state -> state.getBlock() instanceof CampfireBlock && BLOCKS.sparks.campfireSparks
+        register(state -> state.getBlock() instanceof CampfireBlock
                 && state.getValue(CampfireBlock.LIT), (state, level, pos, random) -> {
-            ParticleSpawnUtil.spawnSparks(level, random, pos, new Vec3(0.5, 0.4, 0.5),
-                    new Vec3(0.03, 0.05, 0.03), 10, 6, isSoulFlameBlock(state, Blocks.CAMPFIRE, Blocks.SOUL_CAMPFIRE), true
-            );
+            if (BLOCKS.sparks.campfireSparks) {
+                ParticleSpawnUtil.spawnSparks(level, random, pos, new Vec3(0.5, 0.4, 0.5),
+                        new Vec3(0.03, 0.05, 0.03), 10, 6, isSoulFlameBlock(state, Blocks.CAMPFIRE, Blocks.SOUL_CAMPFIRE), true
+                );
+            }
+
+            if (BLOCKS.campfireSizzlingSounds) {
+                if (level.getBlockEntity(pos) instanceof CampfireBlockEntity blockEntity) {
+                    for (ItemStack stack : blockEntity.getItems()) {
+                        if (!stack.isEmpty() && random.nextInt(5) == 0) {
+                            playClientSound(pos, ModSounds.CAMPFIRE_SIZZLE.get(), SoundSource.BLOCKS, nextFloat(random, 0.3F, 0.7F), nextFloat(random, 1F, 1.5F));
+                        }
+                    }
+                }
+            }
         });
         register(state -> state.getBlock() instanceof TorchBlock && !(state.getBlock() instanceof WallTorchBlock)
                 && BLOCKS.sparks.torchSparks, (state, level, pos, random) -> {
@@ -260,10 +274,10 @@ public class ModBlockTickers {
                     int chance = random.nextInt(100);
                     if (chance <= 5) {
                         if (chance == 0) {
-                            playClientSound(pos, ModSounds.AMETHYST_CLUSTER_CHIME.get(), SoundSource.BLOCKS, Mth.nextFloat(random, 0.15F, 0.3F), 1);
+                            playClientSound(pos, ModSounds.AMETHYST_CLUSTER_CHIME.get(), SoundSource.BLOCKS, nextFloat(random, 0.15F, 0.3F), 1);
                             return;
                         }
-                        playClientSound(pos, SoundEvents.AMETHYST_BLOCK_CHIME, SoundSource.BLOCKS, Mth.nextFloat(random, 0.07F, 1.5F), Mth.nextFloat(random, 0.07F, 1.3F));
+                        playClientSound(pos, SoundEvents.AMETHYST_BLOCK_CHIME, SoundSource.BLOCKS, nextFloat(random, 0.07F, 1.5F), nextFloat(random, 0.07F, 1.3F));
                     }
                 }
             }
