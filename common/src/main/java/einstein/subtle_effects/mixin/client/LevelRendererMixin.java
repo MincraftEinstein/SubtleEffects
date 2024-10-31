@@ -137,6 +137,14 @@ public class LevelRendererMixin implements FrustumGetter {
         return original.call();
     }
 
+    @WrapOperation(method = "levelEvent", at = @At(value = "FIELD", target = "Lnet/minecraft/core/particles/ParticleTypes;CLOUD:Lnet/minecraft/core/particles/SimpleParticleType;"))
+    private SimpleParticleType replaceCloud(Operation<SimpleParticleType> original) {
+        if (BLOCKS.steam.spongeDryingOutSteam) {
+            return ModParticles.STEAM.get();
+        }
+        return original.call();
+    }
+
     @ModifyReturnValue(method = "addParticleInternal(Lnet/minecraft/core/particles/ParticleOptions;ZZDDDDDD)Lnet/minecraft/client/particle/Particle;", at = @At(value = "RETURN", ordinal = 0))
     private Particle spawnForcedParticle(Particle particle) {
         if (particle != null) {

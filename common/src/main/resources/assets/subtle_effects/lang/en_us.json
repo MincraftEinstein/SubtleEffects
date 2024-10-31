@@ -42,6 +42,8 @@
   "config.subtle_effects.blocks.steam.lavaFizzSteam": "Lava Fizz Steam",
   "config.subtle_effects.blocks.steam.lavaFizzSteam.desc": "Replaces the smoke particles with steam when lava and water create a block (obsidian/cobblestone/stone)",
   "config.subtle_effects.blocks.steam.replaceCampfireFoodSmoke": "Replaces the vanilla smoke particles emitted from food cooking on a campfire with steam particles",
+  "config.subtle_effects.blocks.steam.spongeDryingOutSteam": "Sponge Drying Out Steam",
+  "config.subtle_effects.blocks.steam.spongeDryingOutSteam.desc": "Replaces the cloud particles when a sponge is dried out in the nether with steam",
   "config.subtle_effects.blocks.steam.steamingWater": "Steaming Water",
   "config.subtle_effects.blocks.steam.steamingWater.desc": "Should water steam when near blocks with a light level greater than 11",
   "config.subtle_effects.blocks.steam.boilingWater": "Boiling Water",
