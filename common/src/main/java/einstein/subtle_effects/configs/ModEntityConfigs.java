@@ -58,6 +58,10 @@ public class ModEntityConfigs extends Config {
         DEFAULT,
         THIRD_PERSON_ONLY;
 
+        public boolean isEnabled() {
+            return this != OFF;
+        }
+
         public boolean test(Minecraft minecraft) {
             return this == DEFAULT || (this == THIRD_PERSON_ONLY && !minecraft.options.getCameraType().isFirstPerson());
         }
