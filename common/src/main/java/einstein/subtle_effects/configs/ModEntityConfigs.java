@@ -42,6 +42,7 @@ public class ModEntityConfigs extends Config {
     public boolean wardenDeathSoulParticles = true;
     public PerspectiveType drowningBubbles = PerspectiveType.DEFAULT;
     public ValidatedInt drowningBubblesDensity = new ValidatedInt(10, 15, 3);
+    public PerspectiveType frostyBreath = PerspectiveType.DEFAULT;
 
     public ModEntityConfigs() {
         super(SubtleEffects.loc("entities"));

@@ -221,6 +221,8 @@
   "config.subtle_effects.entities.drowningBubbles": "Drowning Bubbles",
   "config.subtle_effects.entities.drowningBubbles.desc": "When a player is underwater bubbles will emit from there face",
   "config.subtle_effects.entities.drowningBubblesDensity": "Drowning Bubbles Density",
+  "config.subtle_effects.entities.frostyBreath": "Frosty Breath",
+  "config.subtle_effects.entities.frostyBreath.desc": "When a player is in a cold biome steam will emit from the their face",
   "config.subtle_effects.biomes": "Biomes",
   "config.subtle_effects.biomes.biomeColorRain": "Biome Color Rain",
   "config.subtle_effects.biomes.biomeParticlesRadius": "Biome Particles Radius",

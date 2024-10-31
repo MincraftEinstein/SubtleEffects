@@ -29,7 +29,7 @@ public class DrowningTicker extends Ticker<Player> {
             }
 
             if (random.nextInt(ENTITIES.drowningBubblesDensity.get()) == 0 && entity.isUnderWater()) {
-                ParticleSpawnUtil.spawnEntityFaceParticles(ParticleTypes.BUBBLE,
+                ParticleSpawnUtil.spawnEntityFaceParticle(ParticleTypes.BUBBLE,
                         entity, level, new Vec3(0, -0.1, 0), Vec3.ZERO);
             }
         }

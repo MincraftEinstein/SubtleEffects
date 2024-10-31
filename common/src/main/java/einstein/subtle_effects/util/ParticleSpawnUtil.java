@@ -217,21 +217,28 @@ public class ParticleSpawnUtil {
         }
     }
 
-    public static void spawnEntityFaceParticles(ParticleOptions options, LivingEntity entity, Level level, RandomSource random, Vec3 offset) {
-        Vec3 speed = new Vec3((random.nextFloat() - 0.5) * 0.1, Math.random() * 0.1 + 0.1, 0);
+    // Should be roughly the same as LivingEntity.spawnItemParticles()
+    public static void spawnEntityFaceParticle(ParticleOptions options, LivingEntity entity, Level level, RandomSource random, Vec3 offset) {
+        spawnEntityFaceParticle(options, entity, level, random,
+                new Vec3((random.nextFloat() - 0.5) * 0.3, -random.nextFloat() * 0.6 - 0.3, 0.6).add(offset),
+                new Vec3((random.nextFloat() - 0.5) * 0.1, (Math.random() * 0.1 + 0.1) + 0.05, 0)
+        );
+    }
+
+    public static void spawnEntityFaceParticle(ParticleOptions options, LivingEntity entity, Level level, RandomSource random, Vec3 offset, Vec3 speed) {
         speed = speed.xRot(-entity.getXRot() * DEG_TO_RAD);
         speed = speed.yRot(-entity.getYRot() * DEG_TO_RAD);
-        spawnEntityHeadParticles(options, entity, level, new Vec3((random.nextFloat() - 0.5) * 0.3, -random.nextFloat() * 0.6 - 0.3, 0.6).add(offset), speed);
+        spawnEntityFaceParticle(options, entity, level, offset, speed);
     }
 
-    public static void spawnEntityFaceParticles(ParticleOptions options, LivingEntity entity, Level level, Vec3 offset, Vec3 speed) {
-        spawnEntityHeadParticles(options, entity, level, offset.add(0, 0, 0.6), speed);
+    public static void spawnEntityFaceParticle(ParticleOptions options, LivingEntity entity, Level level, Vec3 offset, Vec3 speed) {
+        spawnEntityHeadParticle(options, entity, level, offset.add(0, 0, 0.6), speed);
     }
 
-    public static void spawnEntityHeadParticles(ParticleOptions options, LivingEntity entity, Level level, Vec3 pos, Vec3 speed) {
+    public static void spawnEntityHeadParticle(ParticleOptions options, LivingEntity entity, Level level, Vec3 pos, Vec3 speed) {
         pos = pos.xRot(-entity.getXRot() * DEG_TO_RAD);
         pos = pos.yRot(-entity.getYRot() * DEG_TO_RAD);
         pos = pos.add(entity.getX(), entity.getEyeY(), entity.getZ());
-        level.addParticle(options, pos.x(), pos.y(), pos.z(), speed.x(), speed.y() + 0.05, speed.z());
+        level.addParticle(options, pos.x(), pos.y(), pos.z(), speed.x(), speed.y(), speed.z());
     }
 }

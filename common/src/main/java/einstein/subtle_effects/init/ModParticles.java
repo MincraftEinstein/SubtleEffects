@@ -57,6 +57,7 @@ public class ModParticles {
     public static final Supplier<ParticleType<ColorParticleOption>> SPELL_CASTER_MAGIC = register("spell_caster_magic", ColorParticleOption::codec, ColorParticleOption::streamCodec, SpellCasterMagicProvider::new);
     public static final Supplier<SimpleParticleType> AMETHYST_SPARKLE = register("amethyst_sparkle", SuspendedTownParticle.HappyVillagerProvider::new);
     public static final Supplier<SimpleParticleType> AZALEA_PETAL = register("azalea_petal", AzaleaParticleProvider::new);
+    public static final Supplier<SimpleParticleType> FROSTY_BREATH = register("frosty_breath", SteamParticle.FrostyBreathProvider::new);
 
     public static void init() {
     }
