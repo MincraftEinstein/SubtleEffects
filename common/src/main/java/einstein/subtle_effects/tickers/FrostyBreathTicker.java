@@ -49,7 +49,7 @@ public class FrostyBreathTicker extends Ticker<LivingEntity> {
                 ParticleSpawnUtil.spawnEntityFaceParticle(ModParticles.FROSTY_BREATH.get(),
                         entity, level, random, new Vec3(0, -0.1, 0),
                         new Vec3(0, 0, Mth.nextDouble(random, 0.005, 0.01)),
-                        minecraft.getTimer().getGameTimeDeltaPartialTick(false)
+                        minecraft.getFrameTime()
                 );
 
                 if (breatheOutTimer >= 7) {

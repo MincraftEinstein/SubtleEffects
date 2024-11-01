@@ -2,6 +2,7 @@ package einstein.subtle_effects.init;
 
 import einstein.subtle_effects.SubtleEffects;
 import einstein.subtle_effects.particle.*;
+import einstein.subtle_effects.particle.emitter.FireFlyEmitter;
 import einstein.subtle_effects.particle.provider.*;
 import einstein.subtle_effects.platform.Services;
 import net.minecraft.client.particle.ParticleProvider;
@@ -41,7 +42,8 @@ public class ModParticleProviders {
         register(LARGE_DUST_CLOUD, DustCloudParticle.LargeProvider::new);
         register(SHEEP_FLUFF, FeatherParticle.SheepFluffProvider::new);
         register(MUSHROOM_SPORE, MushroomSporeProvider::new);
-        register(FIREFLY, sprites -> new InsectParticle.Provider(() -> new ParticleAnimation(sprites, 16, 3), true));
+        register(FIREFLY, FireflyParticle.Provider::new);
+        register(FIREFLY_EMITTER, sprites -> new FireFlyEmitter.Provider());
         register(SMOKE, SmokeParticleProvider::new);
         register(POLLEN, PollenProvider::new);
         register(COMMAND_BLOCK, CommandBlockParticle.Provider::new);
@@ -57,6 +59,7 @@ public class ModParticleProviders {
         register(SPELL_CASTER_MAGIC, SpellCasterMagicProvider::new);
         register(AMETHYST_SPARKLE, SuspendedTownParticle.HappyVillagerProvider::new);
         register(AZALEA_PETAL, AzaleaParticleProvider::new);
+        register(FROSTY_BREATH, SteamParticle.FrostyBreathProvider::new);
         SubtleEffects.LOGGER.info("Forge please do me a favor and STOP EXISTING!!");
     }
 
