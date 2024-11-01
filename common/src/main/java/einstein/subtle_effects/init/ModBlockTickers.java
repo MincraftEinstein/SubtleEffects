@@ -1,5 +1,6 @@
 package einstein.subtle_effects.init;
 
+import einstein.subtle_effects.biome_particles.BiomeParticleManager;
 import einstein.subtle_effects.configs.ModBlockConfigs;
 import einstein.subtle_effects.configs.SmokeType;
 import einstein.subtle_effects.mixin.client.block.AmethystClusterBlockAccessor;
@@ -14,6 +15,7 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.util.ParticleUtils;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.ItemStack;
@@ -316,6 +318,21 @@ public class ModBlockTickers {
                             pos.getX() + 0.5 + nextNonAbsDouble(random, 0.25),
                             pos.getY() + 0.5 + nextNonAbsDouble(random, 0.75),
                             pos.getZ() + 0.5 + nextNonAbsDouble(random, 0.25),
+                            0, 0, 0
+                    );
+                }
+            }
+        });
+        register(state -> state.is(BlockTags.FLOWERS) || (
+                BLOCKS.vegetationFirefliesSpawnType == ModBlockConfigs.VegetationFirefliesSpawnType.GRASS_AND_FLOWERS
+                        && (state.is(Blocks.SHORT_GRASS) || state.is(Blocks.TALL_GRASS))
+        ), (state, level, pos, random) -> {
+            if (BiomeParticleManager.FIREFLY_CONDITIONS.test(level, pos)) {
+                if (random.nextInt(BLOCKS.vegetationFirefliesDensity.get()) == 0) {
+                    level.addParticle(ModParticles.FIREFLY.get(),
+                            pos.getX() + nextNonAbsDouble(random),
+                            pos.getY() + random.nextDouble(),
+                            pos.getZ() + nextNonAbsDouble(random),
                             0, 0, 0
                     );
                 }

@@ -9,13 +9,14 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.Heightmap;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Predicate;
+import java.util.function.BiPredicate;
 import java.util.function.Supplier;
 
 import static einstein.subtle_effects.init.ModConfigs.BIOMES;
@@ -24,20 +25,26 @@ public class BiomeParticleManager {
 
     private static final List<BiomeParticleSettings> REGISTERED = new ArrayList<>();
     private static final BlockPos.MutableBlockPos BIOME_POS = new BlockPos.MutableBlockPos();
-    private static final Predicate<Level> NOT_RAINING = level -> !level.isRaining();
+    private static final BiPredicate<Level, BlockPos> NOT_RAINING = (level, pos) -> !level.isRaining();
+    public static final BiPredicate<Level, BlockPos> FIREFLY_CONDITIONS = NOT_RAINING.and((level, pos) ->
+            level.getDayTime() > 13000
+                    && level.getDayTime() < 23000
+                    && level.getBrightness(LightLayer.BLOCK, pos) <= 5
+                    && level.getBiome(pos).value().warmEnoughToRain(pos)
+    );
 
     public static void init() {
         register(BIOMES.mushroomSporeBiomes, BIOMES.mushroomSporeDensity, 40, ModParticles.MUSHROOM_SPORE, NOT_RAINING);
-        register(BIOMES.fireflyBiomes, BIOMES.fireflyDensity, 20, ModParticles.FIREFLY, level -> NOT_RAINING.test(level) && level.getDayTime() > 13000 && level.getDayTime() < 23000);
+        register(BIOMES.fireflyBiomes, BIOMES.fireflyDensity, 10, ModParticles.FIREFLY, FIREFLY_CONDITIONS);
         register(BIOMES.pollenBiomes, BIOMES.pollenDensity, 10, ModParticles.POLLEN, NOT_RAINING);
-        register(BIOMES.sculkDustBiomes, BIOMES.sculkDustDensity, ModParticles.SCULK_DUST, level -> true);
+        register(BIOMES.sculkDustBiomes, BIOMES.sculkDustDensity, ModParticles.SCULK_DUST, (level, pos) -> true);
     }
 
-    private static void register(ValidatedList<ResourceLocation> biomesConfig, int density, int maxSpawnHeight, Supplier<? extends ParticleOptions> particle, Predicate<Level> spawnConditions) {
+    private static void register(ValidatedList<ResourceLocation> biomesConfig, int density, int maxSpawnHeight, Supplier<? extends ParticleOptions> particle, BiPredicate<Level, BlockPos> spawnConditions) {
         REGISTERED.add(new BiomeParticleSettings(biomesConfig, density, maxSpawnHeight, particle, spawnConditions, false));
     }
 
-    private static void register(ValidatedList<ResourceLocation> biomesConfig, int density, Supplier<? extends ParticleOptions> particle, Predicate<Level> spawnConditions) {
+    private static void register(ValidatedList<ResourceLocation> biomesConfig, int density, Supplier<? extends ParticleOptions> particle, BiPredicate<Level, BlockPos> spawnConditions) {
         REGISTERED.add(new BiomeParticleSettings(biomesConfig, density, 0, particle, spawnConditions, true));
     }
 
@@ -61,7 +68,7 @@ public class BiomeParticleManager {
 
             Holder<Biome> biome = level.getBiome(BIOME_POS);
             for (BiomeParticleSettings settings : REGISTERED) {
-                if (settings.getDensity() > i && settings.checkSpawnConditions(level)) {
+                if (settings.getDensity() > i && settings.checkSpawnConditions(level, BIOME_POS)) {
                     List<Biome> biomes = settings.getBiomes(level);
                     if (biomes.isEmpty()) {
                         continue;

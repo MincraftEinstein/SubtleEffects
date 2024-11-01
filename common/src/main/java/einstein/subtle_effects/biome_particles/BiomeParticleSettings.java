@@ -1,6 +1,7 @@
 package einstein.subtle_effects.biome_particles;
 
 import me.fzzyhmstrs.fzzy_config.validation.collection.ValidatedList;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
@@ -9,7 +10,7 @@ import net.minecraft.world.level.biome.Biome;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.function.Predicate;
+import java.util.function.BiPredicate;
 import java.util.function.Supplier;
 
 public class BiomeParticleSettings {
@@ -18,14 +19,14 @@ public class BiomeParticleSettings {
     private final int density;
     private final int maxSpawnHeight;
     private final Supplier<? extends ParticleOptions> particle;
-    private final Predicate<Level> spawnConditions;
+    private final BiPredicate<Level, BlockPos> spawnConditions;
     private final boolean ignoreHeight;
     private List<Biome> biomes;
 
     public BiomeParticleSettings(ValidatedList<ResourceLocation> biomesConfig,
                                  int density, int maxSpawnHeight,
                                  Supplier<? extends ParticleOptions> particle,
-                                 Predicate<Level> spawnConditions, boolean ignoreHeight) {
+                                 BiPredicate<Level, BlockPos> spawnConditions, boolean ignoreHeight) {
         this.biomesConfig = biomesConfig;
         this.density = density;
         this.maxSpawnHeight = maxSpawnHeight;
@@ -59,8 +60,8 @@ public class BiomeParticleSettings {
         return particle;
     }
 
-    public boolean checkSpawnConditions(Level level) {
-        return spawnConditions.test(level);
+    public boolean checkSpawnConditions(Level level, BlockPos pos) {
+        return spawnConditions.test(level, pos);
     }
 
     public boolean ignoreHeight() {
