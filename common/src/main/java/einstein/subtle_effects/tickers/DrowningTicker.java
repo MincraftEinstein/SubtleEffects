@@ -17,7 +17,7 @@ public class DrowningTicker extends Ticker<LivingEntity> {
 
     @Override
     public void tick() {
-        if (entity.isSpectator()) {
+        if (entity.isSpectator() || entity.getAirSupply() <= 0) {
             return;
         }
 
