@@ -21,21 +21,22 @@ public class DrowningTicker extends Ticker<LivingEntity> {
             return;
         }
 
+        Minecraft minecraft = Minecraft.getInstance();
         if (entity instanceof Player player) {
             if (player.isCreative()) {
                 return;
             }
 
-            Minecraft minecraft = Minecraft.getInstance();
-            Player clientPlayer = minecraft.player;
-            if (player.equals(clientPlayer) && !ENTITIES.drowningBubbles.test(minecraft)) {
+            if (player.equals(minecraft.player) && !ENTITIES.drowningBubbles.test(minecraft)) {
                 return;
             }
         }
 
         if (random.nextInt(ENTITIES.drowningBubblesDensity.get()) == 0 && entity.isUnderWater()) {
             ParticleSpawnUtil.spawnEntityFaceParticle(ParticleTypes.BUBBLE,
-                    entity, level, new Vec3(0, -0.1, 0), Vec3.ZERO);
+                    entity, level, new Vec3(0, -0.1, 0), Vec3.ZERO,
+                    minecraft.getTimer().getGameTimeDeltaPartialTick(false)
+            );
         }
     }
 }

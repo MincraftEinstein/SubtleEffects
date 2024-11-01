@@ -29,14 +29,13 @@ public class FrostyBreathTicker extends Ticker<LivingEntity> {
             return;
         }
 
+        Minecraft minecraft = Minecraft.getInstance();
         if (entity instanceof Player player) {
             if (player.isCreative()) {
                 return;
             }
 
-            Minecraft minecraft = Minecraft.getInstance();
-            Player clientPlayer = minecraft.player;
-            if (player.equals(clientPlayer) && !ENTITIES.frostyBreath.test(minecraft)) {
+            if (player.equals(minecraft.player) && !ENTITIES.frostyBreath.test(minecraft)) {
                 return;
             }
         }
@@ -49,7 +48,8 @@ public class FrostyBreathTicker extends Ticker<LivingEntity> {
             if (breatheTimer >= Util.BREATH_DELAY) {
                 ParticleSpawnUtil.spawnEntityFaceParticle(ModParticles.FROSTY_BREATH.get(),
                         entity, level, random, new Vec3(0, -0.1, 0),
-                        new Vec3(0, 0, Mth.nextDouble(random, 0.005, 0.01))
+                        new Vec3(0, 0, Mth.nextDouble(random, 0.005, 0.01)),
+                        minecraft.getTimer().getGameTimeDeltaPartialTick(false)
                 );
 
                 if (breatheOutTimer >= 7) {
