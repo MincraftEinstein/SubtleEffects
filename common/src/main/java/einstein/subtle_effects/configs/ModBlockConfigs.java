@@ -11,12 +11,16 @@ import me.fzzyhmstrs.fzzy_config.config.Config;
 import me.fzzyhmstrs.fzzy_config.util.EnumTranslatable;
 import me.fzzyhmstrs.fzzy_config.validation.collection.ValidatedList;
 import me.fzzyhmstrs.fzzy_config.validation.minecraft.ValidatedRegistryType;
+import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedInt;
+import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedNumber;
 import net.minecraft.Util;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -73,6 +77,9 @@ public class ModBlockConfigs extends Config {
     public boolean sculkShriekerDestroySouls = true;
     public boolean sculkCatalystDestroySouls = true;
     public boolean calibratedSculkSensorAmethystSparkle = true;
+    public boolean campfireSizzlingSounds = true;
+    public ValidatedInt vegetationFirefliesDensity = new ValidatedInt(30, 100, 0, ValidatedNumber.WidgetType.SLIDER);
+    public VegetationFirefliesSpawnType vegetationFirefliesSpawnType = VegetationFirefliesSpawnType.FLOWERS_ONLY;
 
     public ModBlockConfigs() {
         super(SubtleEffects.loc("blocks"));
@@ -125,6 +132,16 @@ public class ModBlockConfigs extends Config {
         @Override
         public String prefix() {
             return BASE_KEY + "blocks.amethystSparkleDisplayType";
+        }
+    }
+
+    public enum VegetationFirefliesSpawnType implements EnumTranslatable {
+        GRASS_AND_FLOWERS,
+        FLOWERS_ONLY;
+
+        @Override
+        public @NotNull String prefix() {
+            return BASE_KEY + "blocks.vegetationFirefliesSpawnType";
         }
     }
 }

@@ -12,6 +12,7 @@ public class ModSounds {
     public static final Supplier<SoundEvent> PLAYER_STOMACH_GROWL = register("entity.player.stomach_growl");
     public static final Supplier<SoundEvent> PLAYER_HEARTBEAT = register("entity.player.heartbeat");
     public static final Supplier<SoundEvent> AMETHYST_CLUSTER_CHIME = register("block.amethyst_cluster.chime");
+    public static final Supplier<SoundEvent> CAMPFIRE_SIZZLE = register("block.campfire.sizzle");
 
     public static void init() {
     }

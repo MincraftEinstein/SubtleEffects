@@ -1,12 +1,7 @@
 package einstein.subtle_effects.init;
 
 import com.mojang.serialization.Codec;
-import einstein.subtle_effects.particle.*;
 import einstein.subtle_effects.particle.option.*;
-import einstein.subtle_effects.particle.provider.*;
-import net.minecraft.client.particle.ParticleProvider;
-import net.minecraft.client.particle.SpriteSet;
-import net.minecraft.client.particle.SuspendedTownParticle;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
@@ -43,6 +38,7 @@ public class ModParticles {
     public static final Supplier<ParticleType<ColorParticleOptions>> SHEEP_FLUFF = register("sheep_fluff", ColorParticleOptions.DESERIALIZER, ColorParticleOptions::codec);
     public static final Supplier<SimpleParticleType> MUSHROOM_SPORE = register("mushroom_spore");
     public static final Supplier<SimpleParticleType> FIREFLY = register("firefly");
+    public static final Supplier<SimpleParticleType> FIREFLY_EMITTER = register("firefly_emitter");
     public static final Supplier<SimpleParticleType> SMOKE = register("smoke");
     public static final Supplier<SimpleParticleType> POLLEN = register("pollen");
     public static final Supplier<ParticleType<DirectionParticleOptions>> COMMAND_BLOCK = register("command_block", DirectionParticleOptions.DESERIALIZER, DirectionParticleOptions::codec);
@@ -58,6 +54,7 @@ public class ModParticles {
     public static final Supplier<SimpleParticleType> SPELL_CASTER_MAGIC = register("spell_caster_magic");
     public static final Supplier<SimpleParticleType> AMETHYST_SPARKLE = register("amethyst_sparkle");
     public static final Supplier<SimpleParticleType> AZALEA_PETAL = register("azalea_petal");
+    public static final Supplier<SimpleParticleType> FROSTY_BREATH = register("frosty_breath");
 
     public static void init() {
     }

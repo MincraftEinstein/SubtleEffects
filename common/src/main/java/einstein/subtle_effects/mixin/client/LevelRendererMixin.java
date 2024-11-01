@@ -84,6 +84,7 @@ public class LevelRendererMixin implements FrustumGetter {
                 if (BLOCKS.anvilBreakParticles) {
                     level.addDestroyBlockEffect(pos, Blocks.ANVIL.defaultBlockState());
                 }
+                break;
             }
             case 1030: {
                 if (BLOCKS.anvilUseParticles) {
@@ -103,6 +104,7 @@ public class LevelRendererMixin implements FrustumGetter {
                         );
                     }
                 }
+                break;
             }
             case 1042: {
                 if (BLOCKS.grindstoneUseParticles) {
@@ -118,9 +120,11 @@ public class LevelRendererMixin implements FrustumGetter {
                         );
                     }
                 }
+                break;
             }
             case 2013: {
                 ParticleSpawnUtil.spawnEntityFellParticles(player, pos.getY() + 1, 0, 5, ENTITIES.dustClouds.landMaceAttack);
+                break;
             }
         }
     }
@@ -128,6 +132,14 @@ public class LevelRendererMixin implements FrustumGetter {
     @WrapOperation(method = "levelEvent", at = @At(value = "FIELD", target = "Lnet/minecraft/core/particles/ParticleTypes;LARGE_SMOKE:Lnet/minecraft/core/particles/SimpleParticleType;"))
     private SimpleParticleType replaceSmoke(Operation<SimpleParticleType> original) {
         if (BLOCKS.steam.lavaFizzSteam) {
+            return ModParticles.STEAM.get();
+        }
+        return original.call();
+    }
+
+    @WrapOperation(method = "levelEvent", at = @At(value = "FIELD", target = "Lnet/minecraft/core/particles/ParticleTypes;CLOUD:Lnet/minecraft/core/particles/SimpleParticleType;"))
+    private SimpleParticleType replaceCloud(Operation<SimpleParticleType> original) {
+        if (BLOCKS.steam.spongeDryingOutSteam) {
             return ModParticles.STEAM.get();
         }
         return original.call();

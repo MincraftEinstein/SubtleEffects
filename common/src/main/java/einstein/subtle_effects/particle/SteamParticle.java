@@ -4,6 +4,7 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.util.Mth;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class SteamParticle extends SmokeParticle {
@@ -34,6 +35,16 @@ public class SteamParticle extends SmokeParticle {
         @Override
         public Particle createParticle(SimpleParticleType type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
             return new SteamParticle(level, x, y, z, xSpeed, ySpeed, zSpeed, sprites);
+        }
+    }
+
+    public record FrostyBreathProvider(SpriteSet sprites) implements ParticleProvider<SimpleParticleType> {
+
+        @Override
+        public @NotNull Particle createParticle(SimpleParticleType type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+            SteamParticle particle = new SteamParticle(level, x, y, z, xSpeed, ySpeed, zSpeed, sprites);
+            particle.gravity = 0;
+            return particle;
         }
     }
 }

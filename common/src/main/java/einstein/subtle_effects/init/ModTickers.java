@@ -17,11 +17,16 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.FallingBlockEntity;
 import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.monster.AbstractIllager;
 import net.minecraft.world.entity.monster.MagmaCube;
 import net.minecraft.world.entity.monster.Slime;
+import net.minecraft.world.entity.monster.Witch;
+import net.minecraft.world.entity.monster.piglin.AbstractPiglin;
+import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.item.Rarity;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseFireBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
@@ -45,7 +50,8 @@ public class ModTickers {
         registerTicker(LOCAL_PLAYER.and(entity -> ENTITIES.stomachGrowlingThreshold.get() > 0), StomachGrowlingTicker::new);
         registerTicker(LOCAL_PLAYER.and(entity -> ModConfigs.GENERAL.mobSkullShaders), MobSkullShaderTicker::new);
         registerTicker(LOCAL_PLAYER.and(entity -> ENTITIES.heartBeatingThreshold.get() > 0), HeartbeatTicker::new);
-        registerTicker(entity -> entity instanceof Player, DrowningTicker::new);
+        registerTicker(entity -> isHumanoid(entity, !entity.level().dimension().equals(Level.NETHER)) && ENTITIES.drowningBubbles.isEnabled(), DrowningTicker::new);
+        registerTicker(entity -> isHumanoid(entity, !entity.level().dimension().equals(Level.NETHER)) && ENTITIES.frostyBreath.isEnabled(), FrostyBreathTicker::new);
         registerTicker(entity -> entity.getType().equals(EntityType.SLIME) && ENTITIES.slimeTrails, (Slime entity) -> new SlimeTrailTicker<>(entity, ModParticles.SLIME_TRAIL));
         registerTicker(entity -> entity.getType().equals(EntityType.MAGMA_CUBE) && ENTITIES.magmaCubeTrails, (MagmaCube entity) -> new SlimeTrailTicker<>(entity, ModParticles.MAGMA_CUBE_TRAIL));
         registerTicker(entity -> entity.getType().equals(EntityType.IRON_GOLEM) && ENTITIES.ironGolemCrackParticles, IronGolemTicker::new);
@@ -218,5 +224,13 @@ public class ModTickers {
 
     private static boolean shouldSpawn(RandomSource random, ValidatedDouble chanceConfig) {
         return Math.min(random.nextFloat(), 1) < chanceConfig.get();
+    }
+
+    private static boolean isHumanoid(Entity entity, boolean includePiglins) {
+        return entity instanceof Player
+                || entity instanceof Villager
+                || entity instanceof AbstractIllager
+                || entity instanceof Witch
+                || (includePiglins && entity instanceof AbstractPiglin);
     }
 }

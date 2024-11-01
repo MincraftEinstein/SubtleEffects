@@ -14,6 +14,7 @@ import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.EntityTypeTags;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.LivingEntity;
@@ -141,29 +142,48 @@ public class ParticleSpawnUtil {
         }
     }
 
-    public static void spawnHeatedWaterParticles(Level level, BlockPos pos, RandomSource random, boolean isFalling, double height,
-                                                 boolean steamConfig, boolean boilingConfig) {
+    public static void spawnHeatedWaterParticles(Level level, BlockPos pos, RandomSource random, boolean isFalling, double height, boolean steamConfig, boolean boilingConfig) {
         int brightness = level.getBrightness(LightLayer.BLOCK, pos);
-        if (brightness > BLOCKS.steam.steamingThreshold.get() || level.getBlockState(pos.below()).is(Blocks.MAGMA_BLOCK)) {
-            if (steamConfig) {
-                if (!isFalling && !Util.isSolidOrNotEmpty(level, pos.above())) {
-                    level.addParticle(ModParticles.STEAM.get(),
-                            pos.getX() + random.nextDouble(),
-                            pos.getY() + 0.875 + nextDouble(random, 0.5),
-                            pos.getZ() + random.nextDouble(),
-                            0, 0, 0
-                    );
+
+        switch (BLOCKS.steam.spawnLogic) {
+            case NEAR_LAVA -> {
+                for (int x = -1; x < 2; x++) {
+                    for (int y = -1; y < 2; y++) {
+                        for (int z = -1; z < 2; z++) {
+                            if (level.getFluidState(pos.offset(x, y, z)).is(FluidTags.LAVA)) {
+                                spawnHeatedWaterParticles(level, pos, random, isFalling, height, steamConfig, boilingConfig, brightness);
+                            }
+                        }
+                    }
                 }
             }
+            case BRIGHTNESS -> {
+                if (brightness > BLOCKS.steam.steamingThreshold.get() || level.getBlockState(pos.below()).is(Blocks.MAGMA_BLOCK)) {
+                    spawnHeatedWaterParticles(level, pos, random, isFalling, height, steamConfig, boilingConfig, brightness);
+                }
+            }
+        }
+    }
 
-            if (boilingConfig && brightness >= BLOCKS.steam.boilingThreshold.get()) {
-                level.addParticle(ParticleTypes.BUBBLE,
+    private static void spawnHeatedWaterParticles(Level level, BlockPos pos, RandomSource random, boolean isFalling, double height, boolean steamConfig, boolean boilingConfig, int brightness) {
+        if (steamConfig) {
+            if (!isFalling && !Util.isSolidOrNotEmpty(level, pos.above())) {
+                level.addParticle(ModParticles.STEAM.get(),
                         pos.getX() + random.nextDouble(),
-                        Mth.clamp(random.nextDouble(), pos.getY(), pos.getY() + height),
+                        pos.getY() + 0.875 + nextDouble(random, 0.5),
                         pos.getZ() + random.nextDouble(),
                         0, 0, 0
                 );
             }
+        }
+
+        if (boilingConfig && brightness >= BLOCKS.steam.boilingThreshold.get()) {
+            level.addParticle(ParticleTypes.BUBBLE,
+                    pos.getX() + random.nextDouble(),
+                    Mth.clamp(random.nextDouble(), pos.getY(), pos.getY() + height),
+                    pos.getZ() + random.nextDouble(),
+                    0, 0, 0
+            );
         }
     }
 
@@ -217,21 +237,28 @@ public class ParticleSpawnUtil {
         }
     }
 
-    public static void spawnEntityFaceParticles(ParticleOptions options, LivingEntity entity, Level level, RandomSource random, Vec3 offset) {
-        Vec3 speed = new Vec3((random.nextFloat() - 0.5) * 0.1, Math.random() * 0.1 + 0.1, 0);
-        speed = speed.xRot(-entity.getXRot() * DEG_TO_RAD);
-        speed = speed.yRot(-entity.getYRot() * DEG_TO_RAD);
-        spawnEntityHeadParticles(options, entity, level, new Vec3((random.nextFloat() - 0.5) * 0.3, -random.nextFloat() * 0.6 - 0.3, 0.6).add(offset), speed);
+    // Should be roughly the same as LivingEntity.spawnItemParticles()
+    public static void spawnEntityFaceParticle(ParticleOptions options, LivingEntity entity, Level level, RandomSource random, Vec3 offset, float partialTick) {
+        spawnEntityFaceParticle(options, entity, level, random,
+                new Vec3((random.nextFloat() - 0.5) * 0.3, -random.nextFloat() * 0.6 - 0.3, 0.6).add(offset),
+                new Vec3((random.nextFloat() - 0.5) * 0.1, (Math.random() * 0.1 + 0.1) + 0.05, 0), partialTick
+        );
     }
 
-    public static void spawnEntityFaceParticles(ParticleOptions options, LivingEntity entity, Level level, Vec3 offset, Vec3 speed) {
-        spawnEntityHeadParticles(options, entity, level, offset.add(0, 0, 0.6), speed);
+    public static void spawnEntityFaceParticle(ParticleOptions options, LivingEntity entity, Level level, RandomSource random, Vec3 offset, Vec3 speed, float partialTick) {
+        speed = speed.xRot(-entity.getViewXRot(partialTick) * DEG_TO_RAD);
+        speed = speed.yRot(-entity.getViewYRot(partialTick) * DEG_TO_RAD);
+        spawnEntityFaceParticle(options, entity, level, offset, speed, partialTick);
     }
 
-    public static void spawnEntityHeadParticles(ParticleOptions options, LivingEntity entity, Level level, Vec3 pos, Vec3 speed) {
-        pos = pos.xRot(-entity.getXRot() * DEG_TO_RAD);
-        pos = pos.yRot(-entity.getYRot() * DEG_TO_RAD);
+    public static void spawnEntityFaceParticle(ParticleOptions options, LivingEntity entity, Level level, Vec3 offset, Vec3 speed, float partialTick) {
+        spawnEntityHeadParticle(options, entity, level, offset.add(0, 0, 0.6), speed, partialTick);
+    }
+
+    public static void spawnEntityHeadParticle(ParticleOptions options, LivingEntity entity, Level level, Vec3 pos, Vec3 speed, float partialTick) {
+        pos = pos.xRot(-entity.getViewXRot(partialTick) * DEG_TO_RAD);
+        pos = pos.yRot(-entity.getViewYRot(partialTick) * DEG_TO_RAD);
         pos = pos.add(entity.getX(), entity.getEyeY(), entity.getZ());
-        level.addParticle(options, pos.x(), pos.y(), pos.z(), speed.x(), speed.y() + 0.05, speed.z());
+        level.addParticle(options, pos.x(), pos.y(), pos.z(), speed.x(), speed.y(), speed.z());
     }
 }
