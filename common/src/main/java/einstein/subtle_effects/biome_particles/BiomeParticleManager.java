@@ -32,6 +32,7 @@ public class BiomeParticleManager {
                     && level.getBrightness(LightLayer.BLOCK, pos) <= 5
                     && level.getBiome(pos).value().warmEnoughToRain(pos)
     );
+    private static boolean HAS_CLEARED;
 
     public static void init() {
         register(BIOMES.mushroomSporeBiomes, BIOMES.mushroomSporeDensity, 40, ModParticles.MUSHROOM_SPORE, NOT_RAINING);
@@ -49,6 +50,11 @@ public class BiomeParticleManager {
     }
 
     public static void tickBiomeParticles(Level level, Player player) {
+        if (HAS_CLEARED) {
+            HAS_CLEARED = false;
+            REGISTERED.forEach(settings -> settings.update(level));
+        }
+
         int radius = BIOMES.biomeParticlesRadius;
 
         if (radius <= 0) {
@@ -69,7 +75,7 @@ public class BiomeParticleManager {
             Holder<Biome> biome = level.getBiome(BIOME_POS);
             for (BiomeParticleSettings settings : REGISTERED) {
                 if (settings.getDensity() > i && settings.checkSpawnConditions(level, BIOME_POS)) {
-                    List<Biome> biomes = settings.getBiomes(level);
+                    List<Biome> biomes = settings.getBiomes();
                     if (biomes.isEmpty()) {
                         continue;
                     }
@@ -94,5 +100,6 @@ public class BiomeParticleManager {
 
     public static void clear() {
         REGISTERED.forEach(BiomeParticleSettings::clear);
+        HAS_CLEARED = true;
     }
 }

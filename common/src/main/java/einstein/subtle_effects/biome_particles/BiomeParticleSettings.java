@@ -8,6 +8,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.BiPredicate;
@@ -21,7 +22,7 @@ public class BiomeParticleSettings {
     private final Supplier<? extends ParticleOptions> particle;
     private final BiPredicate<Level, BlockPos> spawnConditions;
     private final boolean ignoreHeight;
-    private List<Biome> biomes;
+    private final List<Biome> biomes = new ArrayList<>();
 
     public BiomeParticleSettings(ValidatedList<ResourceLocation> biomesConfig,
                                  int density, int maxSpawnHeight,
@@ -35,17 +36,18 @@ public class BiomeParticleSettings {
         this.ignoreHeight = ignoreHeight;
     }
 
-    public List<Biome> getBiomes(Level level) {
-        if (biomes == null) {
-            biomes = biomesConfig.stream().map(location ->
-                    level.registryAccess().registryOrThrow(Registries.BIOME).get(location)
-            ).filter(Objects::nonNull).toList();
-        }
+    public void update(Level level) {
+        biomes.addAll(biomesConfig.stream().map(location ->
+                level.registryAccess().registryOrThrow(Registries.BIOME).get(location)
+        ).filter(Objects::nonNull).toList());
+    }
+
+    public List<Biome> getBiomes() {
         return biomes;
     }
 
     public void clear() {
-        biomes = null;
+        biomes.clear();
     }
 
     public int getDensity() {
