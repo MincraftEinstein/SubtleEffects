@@ -9,6 +9,7 @@ import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.phys.Vec3;
 
 import static einstein.subtle_effects.init.ModConfigs.ENTITIES;
@@ -38,6 +39,10 @@ public class FrostyBreathTicker extends Ticker<LivingEntity> {
             if (player.equals(minecraft.player) && !ENTITIES.frostyBreath.test(minecraft)) {
                 return;
             }
+        }
+
+        if (level.getBrightness(LightLayer.BLOCK, entity.blockPosition()) >= 10) {
+            return;
         }
 
         if (entity.isInWater() || entity.isEyeInFluid(FluidTags.LAVA)) {
