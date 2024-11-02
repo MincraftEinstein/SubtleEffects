@@ -8,7 +8,9 @@ import me.fzzyhmstrs.fzzy_config.annotations.Translation;
 import me.fzzyhmstrs.fzzy_config.config.Config;
 import me.fzzyhmstrs.fzzy_config.util.EnumTranslatable;
 import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedDouble;
+import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedFloat;
 import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedInt;
+import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedNumber;
 import net.minecraft.client.Minecraft;
 import org.jetbrains.annotations.NotNull;
 
@@ -43,6 +45,7 @@ public class ModEntityConfigs extends Config {
     public PerspectiveType drowningBubbles = PerspectiveType.DEFAULT;
     public ValidatedInt drowningBubblesDensity = new ValidatedInt(10, 15, 3);
     public PerspectiveType frostyBreath = PerspectiveType.DEFAULT;
+    public ValidatedFloat frostyBreathAlpha = new ValidatedFloat(0.5F, 1, 0.2F, ValidatedNumber.WidgetType.SLIDER);
 
     public ModEntityConfigs() {
         super(SubtleEffects.loc("entities"));
