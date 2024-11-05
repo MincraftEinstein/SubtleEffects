@@ -29,6 +29,10 @@ Adding many new subtle details through particles and a few sounds. All of which 
 - Mobs have dust clouds when they hit the ground
 - And much more...
 
+A full list of features can be found on the [wiki](https://github.com/MincraftEinstein/SubtleEffects/wiki).
+
+Requires [Fzzy Config](https://modrinth.com/mod/fzzy-config).
+
 <br>
 <details>
 <summary><b>📜 Terms of Use</b></summary>
@@ -51,6 +55,36 @@ You may not
 </details>
 
 [<img alt="Ko-fi Badge" height="15%" width="15%" src="https://storage.ko-fi.com/cdn/brandasset/kofi_bg_tag_dark.png" alt="Ko-fi badge">](https://ko-fi.com/mincrafteinstein)
+
+---
+
+### 📚 F.A.Q
+
+**Q:** Can XYZ feature be disabled?
+<br>
+**A:** Yes, all features can be disabled in the config menu.
+If you find that a feature/change cannot be disabled please report it as a bug
+
+**Q:** Can vanilla clients or clients without the mod join if the mod is installed on the server?
+<br>
+**A:** Yes, the mod does not need to be installed on the client to join
+
+**Q:** Does this mod work with Fancy Block Particles, Particle Core, Visuality, or Particular?
+<br>
+**A:** Yes
+
+**Q:** Do you take suggestions/feature requests?
+<br>
+**A:** Yes, suggestions and feedback in general is much appreciated.
+You can provide feedback/suggestions in a GitHub issue, in the CurseForge comments, or on my Discord Server.
+Please try to keep your suggestions somewhat minecraft-y feeling, e.g. no blood.
+Please also try not to suggest things that multiple other mods implement, such as rain ripples.
+
+---
+
+### **💬 Translations**
+Feel free to translate this mod into any language or update existing translations.
+To get your translation into the mod, make a pull request on GitHub with the translated language file.
 
 ---
 
