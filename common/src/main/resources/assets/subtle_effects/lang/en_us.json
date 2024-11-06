@@ -235,6 +235,8 @@
   "config.subtle_effects.entities.frostyBreath.desc": "When a player is in a cold biome steam will emit from the their face",
   "config.subtle_effects.entities.frostyBreathAlpha": "Frosty Breath Alpha",
   "config.subtle_effects.entities.frostyBreathAlpha.desc": "The starting alpha transparency",
+  "config.subtle_effects.entities.frostyBreathTime": "Frosty Breath Time",
+  "config.subtle_effects.entities.frostyBreathTime.desc": "The time between frosty breathing spawning in ticks",
   "config.subtle_effects.biomes": "Biomes",
   "config.subtle_effects.biomes.biomeColorRain": "Biome Color Rain",
   "config.subtle_effects.biomes.biomeParticlesRadius": "Biome Particles Radius",

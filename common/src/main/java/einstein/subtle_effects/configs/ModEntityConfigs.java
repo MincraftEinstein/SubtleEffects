@@ -46,6 +46,7 @@ public class ModEntityConfigs extends Config {
     public ValidatedInt drowningBubblesDensity = new ValidatedInt(10, 15, 3);
     public PerspectiveType frostyBreath = PerspectiveType.DEFAULT;
     public ValidatedFloat frostyBreathAlpha = new ValidatedFloat(0.5F, 1, 0.2F, ValidatedNumber.WidgetType.SLIDER);
+    public ValidatedInt frostyBreathTime = new ValidatedInt(60, 200, 10);
 
     public ModEntityConfigs() {
         super(SubtleEffects.loc("entities"));
