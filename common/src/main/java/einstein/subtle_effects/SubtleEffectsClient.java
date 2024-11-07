@@ -57,7 +57,7 @@ public class SubtleEffectsClient {
                         .then(LiteralArgumentBuilder.<T>literal("clear")
                                 .executes(context -> {
                                     minecraft.particleEngine.clearParticles();
-                                    sendSystemMsg(player, Component.translatable("command.subtle_effects.clear_particles"));
+                                    sendSystemMsg(player, Component.translatable("commands.subtle_effects.subtle_effects.particles.clear.success"));
                                     return 1;
                                 })
                         )
@@ -66,7 +66,7 @@ public class SubtleEffectsClient {
                         .then(LiteralArgumentBuilder.<T>literal("clear")
                                 .executes(context -> {
                                     TickerManager.clear();
-                                    sendSystemMsg(player, Component.translatable("command.subtle_effects.clear_tickers"));
+                                    sendSystemMsg(player, Component.translatable("commands.subtle_effects.subtle_effects.tickers.clear.success"));
                                     return 1;
                                 })
                         )
