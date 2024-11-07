@@ -32,7 +32,9 @@ public class ModEntityConfigs extends Config {
     public boolean improvedDragonFireballTrail = true;
     public CommandBlockSpawnType commandBlockMinecartParticles = CommandBlockSpawnType.ON;
     public ValidatedInt stomachGrowlingThreshold = new ValidatedInt(6, 20, 0);
+    public ValidatedFloat stomachGrowlingVolume = new ValidatedFloat(1, 1, 0);
     public ValidatedInt heartBeatingThreshold = new ValidatedInt(6, 20, 0);
+    public ValidatedFloat heartbeatVolume = new ValidatedFloat(1, 1, 0);
     public boolean endCrystalParticles = true;
     public boolean minecartLandingSparks = true;
     public boolean slimeTrails = true;
