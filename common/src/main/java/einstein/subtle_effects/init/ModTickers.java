@@ -1,7 +1,6 @@
 package einstein.subtle_effects.init;
 
 import einstein.subtle_effects.configs.CommandBlockSpawnType;
-import einstein.subtle_effects.configs.entities.ItemRarityConfigs;
 import einstein.subtle_effects.particle.option.BooleanParticleOptions;
 import einstein.subtle_effects.tickers.*;
 import einstein.subtle_effects.tickers.sleeping.*;
@@ -29,7 +28,6 @@ import net.minecraft.world.entity.monster.piglin.AbstractPiglin;
 import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
-import net.minecraft.world.item.Rarity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseFireBlock;
 import net.minecraft.world.level.block.state.BlockState;
@@ -60,10 +58,7 @@ public class ModTickers {
         registerTicker(entity -> entity.getType().equals(EntityType.MAGMA_CUBE) && ENTITIES.magmaCubeTrails, (MagmaCube entity) -> new SlimeTrailTicker<>(entity, ModParticles.MAGMA_CUBE_TRAIL));
         registerTicker(entity -> entity.getType().equals(EntityType.IRON_GOLEM) && ENTITIES.ironGolemCrackParticles, IronGolemTicker::new);
 
-        registerSimpleTicker(entity -> entity instanceof ItemEntity itemEntity
-                        && ENTITIES.itemRarity.particlesDisplayType != ItemRarityConfigs.DisplayType.OFF
-                        && !(itemEntity.getItem().getRarity() == Rarity.COMMON
-                        && ENTITIES.itemRarity.particlesDisplayType == ItemRarityConfigs.DisplayType.NOT_COMMON),
+        registerSimpleTicker(entity -> entity instanceof ItemEntity itemEntity && ENTITIES.itemRarity.particlesDisplayType.test(itemEntity),
                 (entity, level, random) -> {
                     level.addParticle(new ItemParticleOption(ModParticles.ITEM_RARITY.get(), ((ItemEntity) entity).getItem()),
                             entity.getRandomX(1),
