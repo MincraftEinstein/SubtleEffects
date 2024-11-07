@@ -173,7 +173,10 @@ public class ModBlockTickers {
                 if (level.getBlockEntity(pos) instanceof CampfireBlockEntity blockEntity) {
                     for (ItemStack stack : blockEntity.getItems()) {
                         if (!stack.isEmpty() && random.nextInt(5) == 0) {
-                            playClientSound(pos, ModSounds.CAMPFIRE_SIZZLE.get(), SoundSource.BLOCKS, nextFloat(random, 0.3F, 0.7F), nextFloat(random, 1F, 1.5F));
+                            playClientSound(pos, ModSounds.CAMPFIRE_SIZZLE.get(), SoundSource.BLOCKS,
+                                    nextFloat(random, 0.3F, 0.7F) * (BLOCKS.campfireSizzlingSoundVolume.get() * 2),
+                                    nextFloat(random, 1F, 1.5F)
+                            );
                         }
                     }
                 }

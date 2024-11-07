@@ -126,6 +126,7 @@
   "config.subtle_effects.blocks.calibratedSculkSensorAmethystSparkle": "Calibrated Sculk Sensor Amethyst Sparkle",
   "config.subtle_effects.blocks.campfireSizzlingSounds": "Campfire Sizzling Sounds",
   "config.subtle_effects.blocks.campfireSizzlingSounds.desc": "Should campfires play a sizzling sound when cooking food",
+  "config.subtle_effects.blocks.campfireSizzlingSoundVolume": "Campfire Sizzling Sound Volume",
   "config.subtle_effects.blocks.vegetationFirefliesDensity": "Vegetation Fireflies Density",
   "config.subtle_effects.blocks.vegetationFirefliesSpawnType": "Vegetation Fireflies Spawn Type",
   "config.subtle_effects.blocks.vegetationFirefliesSpawnType.GRASS_AND_FLOWERS": "Grass And Flowers",
