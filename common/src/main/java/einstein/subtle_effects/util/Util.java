@@ -83,19 +83,24 @@ public class Util {
     }
 
     public static void applyHelmetShader(ItemStack stack) {
+        ShaderManager shaderManager = (ShaderManager) Minecraft.getInstance().gameRenderer;
         if (stack.getItem() instanceof BlockItem blockItem) {
             if (blockItem.getBlock() instanceof SkullBlock skullBlock) {
                 if (skullBlock.getType() == SkullBlock.Types.CREEPER) {
-                    ((ShaderManager) Minecraft.getInstance().gameRenderer).subtleEffects$loadShader(CREEPER_SHADER);
+                    shaderManager.subtleEffects$loadShader(CREEPER_SHADER);
+                    return;
+                }
+                else if (skullBlock.getType() == SkullBlock.Types.DRAGON) {
+                    shaderManager.subtleEffects$loadShader(INVERT_SHADER);
                     return;
                 }
                 else if (isEndermanHead(stack)) {
-                    ((ShaderManager) Minecraft.getInstance().gameRenderer).subtleEffects$loadShader(INVERT_SHADER);
+                    shaderManager.subtleEffects$loadShader(INVERT_SHADER);
                     return;
                 }
             }
         }
-        ((ShaderManager) Minecraft.getInstance().gameRenderer).subtleEffects$clearShader();
+        shaderManager.subtleEffects$clearShader();
     }
 
     private static boolean isEndermanHead(ItemStack stack) {
