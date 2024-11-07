@@ -86,6 +86,10 @@ Please also try not to suggest things that multiple other mods implement, such a
 Feel free to translate this mod into any language or update existing translations.
 To get your translation into the mod, make a pull request on GitHub with the translated language file.
 
+All translators are credited in the list below.
+
+- Simplified Chinese: [kuhananxianglai](https://github.com/kuhananxianglai)
+
 ---
 
 Want to play with your friends on a server? Get 15% off your first month with code `einstein`.
