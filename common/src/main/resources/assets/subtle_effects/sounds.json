@@ -2,9 +2,18 @@
   "entity.villager.snore": {
     "subtitle": "subtitles.subtle_effects.entity.villager.snore",
     "sounds": [
-      "subtle_effects:mob/villager/snore1",
-      "subtle_effects:mob/villager/snore2",
-      "subtle_effects:mob/villager/snore3"
+      {
+        "name":"subtle_effects:mob/villager/snore1",
+        "volume": 0.8
+      },
+      {
+        "name":"subtle_effects:mob/villager/snore2",
+        "volume": 0.8
+      },
+      {
+        "name":"subtle_effects:mob/villager/snore3",
+        "volume": 0.8
+      }
     ]
   },
   "entity.player.snore": {
