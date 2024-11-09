@@ -173,7 +173,10 @@ public class ModBlockTickers {
                 if (level.getBlockEntity(pos) instanceof CampfireBlockEntity blockEntity) {
                     for (ItemStack stack : blockEntity.getItems()) {
                         if (!stack.isEmpty() && random.nextInt(5) == 0) {
-                            playClientSound(pos, ModSounds.CAMPFIRE_SIZZLE.get(), SoundSource.BLOCKS, nextFloat(random, 0.3F, 0.7F), nextFloat(random, 1F, 1.5F));
+                            playClientSound(pos, ModSounds.CAMPFIRE_SIZZLE.get(), SoundSource.BLOCKS,
+                                    nextFloat(random, 0.3F, 0.7F) * (BLOCKS.campfireSizzlingSoundVolume.get() * 2),
+                                    nextFloat(random, 1F, 1.5F)
+                            );
                         }
                     }
                 }
@@ -323,10 +326,10 @@ public class ModBlockTickers {
                 }
             }
         });
-        register(state -> state.is(BlockTags.FLOWERS) || (
+        register(state -> (state.is(BlockTags.FLOWERS) || (
                 BLOCKS.vegetationFirefliesSpawnType == ModBlockConfigs.VegetationFirefliesSpawnType.GRASS_AND_FLOWERS
                         && (state.is(Blocks.GRASS) || state.is(Blocks.TALL_GRASS))
-        ), (state, level, pos, random) -> {
+        )) && BLOCKS.vegetationFirefliesDensity.get() > 0, (state, level, pos, random) -> {
             if (BiomeParticleManager.FIREFLY_CONDITIONS.test(level, pos)) {
                 if (random.nextInt(BLOCKS.vegetationFirefliesDensity.get()) == 0) {
                     level.addParticle(ModParticles.FIREFLY.get(),

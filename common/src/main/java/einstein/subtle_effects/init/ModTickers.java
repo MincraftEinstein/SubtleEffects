@@ -1,9 +1,9 @@
 package einstein.subtle_effects.init;
 
 import einstein.subtle_effects.configs.CommandBlockSpawnType;
-import einstein.subtle_effects.configs.entities.ItemRarityConfigs;
 import einstein.subtle_effects.particle.option.BooleanParticleOptions;
 import einstein.subtle_effects.tickers.*;
+import einstein.subtle_effects.tickers.sleeping.*;
 import einstein.subtle_effects.util.ParticleSpawnUtil;
 import einstein.subtle_effects.util.Util;
 import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedDouble;
@@ -15,6 +15,9 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ambient.Bat;
+import net.minecraft.world.entity.animal.Cat;
+import net.minecraft.world.entity.animal.Fox;
 import net.minecraft.world.entity.item.FallingBlockEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.AbstractIllager;
@@ -25,7 +28,6 @@ import net.minecraft.world.entity.monster.piglin.AbstractPiglin;
 import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
-import net.minecraft.world.item.Rarity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseFireBlock;
 import net.minecraft.world.level.block.state.BlockState;
@@ -44,7 +46,7 @@ public class ModTickers {
     private static final Predicate<Entity> LOCAL_PLAYER = entity -> entity.equals(Minecraft.getInstance().player);
 
     public static void init() {
-        registerTicker(entity -> entity instanceof LivingEntity, SleepingTicker::new);
+        registerTicker(entity -> entity instanceof LivingEntity, ModTickers::getSleepingTicker);
         registerTicker(entity -> entity instanceof LivingEntity, EntityFireTicker::new);
         registerTicker(entity -> entity instanceof AbstractMinecart && ENTITIES.minecartLandingSparks, MinecartSparksTicker::new);
         registerTicker(LOCAL_PLAYER.and(entity -> ENTITIES.stomachGrowlingThreshold.get() > 0), StomachGrowlingTicker::new);
@@ -56,10 +58,7 @@ public class ModTickers {
         registerTicker(entity -> entity.getType().equals(EntityType.MAGMA_CUBE) && ENTITIES.magmaCubeTrails, (MagmaCube entity) -> new SlimeTrailTicker<>(entity, ModParticles.MAGMA_CUBE_TRAIL));
         registerTicker(entity -> entity.getType().equals(EntityType.IRON_GOLEM) && ENTITIES.ironGolemCrackParticles, IronGolemTicker::new);
 
-        registerSimpleTicker(entity -> entity instanceof ItemEntity itemEntity
-                        && ENTITIES.itemRarity.particlesDisplayType != ItemRarityConfigs.DisplayType.OFF
-                        && !(itemEntity.getItem().getRarity() == Rarity.COMMON
-                        && ENTITIES.itemRarity.particlesDisplayType == ItemRarityConfigs.DisplayType.NOT_COMMON),
+        registerSimpleTicker(entity -> entity instanceof ItemEntity itemEntity && ENTITIES.itemRarity.particlesDisplayType.test(itemEntity),
                 (entity, level, random) -> {
                     level.addParticle(new ItemParticleOption(ModParticles.ITEM_RARITY.get(), ((ItemEntity) entity).getItem()),
                             entity.getRandomX(1),
@@ -151,7 +150,7 @@ public class ModTickers {
                 );
             }
         });
-        registerSimpleTicker(EntityType.CAMEL, () -> ModConfigs.ENTITIES.dustClouds.mobRunning, (entity, level, random) -> {
+        registerSimpleTicker(EntityType.CAMEL, () -> ENTITIES.dustClouds.mobRunning, (entity, level, random) -> {
             if (entity.isDashing() && entity.onGround()) {
                 for (int i = 0; i < 10; i++) {
                     ParticleSpawnUtil.spawnCreatureMovementDustCloudsNoConfig(entity, level, random, 5);
@@ -224,6 +223,17 @@ public class ModTickers {
 
     private static boolean shouldSpawn(RandomSource random, ValidatedDouble chanceConfig) {
         return Math.min(random.nextFloat(), 1) < chanceConfig.get();
+    }
+
+    private static SleepingTicker<?> getSleepingTicker(LivingEntity entity) {
+        return switch (entity) {
+            case Villager villager -> new VillagerSleepingTicker(villager);
+            case Player player -> new PlayerSleepingTicker(player);
+            case Bat bat -> new BatSleepingTicker(bat);
+            case Cat cat -> new CatSleepingTicker(cat);
+            case Fox fox -> new FoxSleepingTicker(fox);
+            default -> new SleepingTicker<>(entity);
+        };
     }
 
     private static boolean isHumanoid(Entity entity, boolean includePiglins) {

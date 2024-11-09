@@ -1,8 +1,8 @@
 package einstein.subtle_effects.particle;
 
 import einstein.subtle_effects.SubtleEffects;
-import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.configs.entities.ItemRarityConfigs;
+import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.util.Util;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -29,8 +29,8 @@ public class ItemRarityParticle extends TextureSheetParticle {
 
     private static TextColor getItemColor(ItemStack stack) {
         if (ModConfigs.ENTITIES.itemRarity.particleColor == ItemRarityConfigs.ColorType.NAME_COLOR) {
-            TextColor nameColor = stack.getHoverName().getStyle().getColor();
-            if (nameColor != null && !nameColor.equals(WHITE_TEXT)) {
+            TextColor nameColor = getItemNameColor(stack);
+            if (nameColor != null) {
                 return nameColor;
             }
         }
@@ -42,6 +42,14 @@ public class ItemRarityParticle extends TextureSheetParticle {
 
         SubtleEffects.LOGGER.error("Failed to get text color for item: {}", stack.getDisplayName());
         return WHITE_TEXT;
+    }
+
+    public static @Nullable TextColor getItemNameColor(ItemStack stack) {
+        TextColor nameColor = stack.getHoverName().getStyle().getColor();
+        if (nameColor != null && !nameColor.equals(WHITE_TEXT)) {
+            return nameColor;
+        }
+        return null;
     }
 
     @Override

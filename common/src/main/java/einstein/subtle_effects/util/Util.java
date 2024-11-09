@@ -37,6 +37,7 @@ public class Util {
     public static final ResourceLocation INVERT_SHADER = new ResourceLocation("shaders/post/invert.json");
     public static final Supplier<Item> ENDERMAN_HEAD = Suppliers.memoize(() -> BuiltInRegistries.ITEM.get(new ResourceLocation("supplementaries", "enderman_head")));
     public static final Supplier<Boolean> IS_SUPPLEMENTARIES_LOADED = Suppliers.memoize(() -> Services.PLATFORM.isModLoaded("supplementaries"));
+    public static final Supplier<Boolean> IS_SERENE_SEANSONS_LOADED = Suppliers.memoize(() -> Services.PLATFORM.isModLoaded("sereneseasons"));
     public static final Supplier<ResourceLocation> BCWP_PACK_LOCATION = Suppliers.memoize(() -> SubtleEffects.loc("biome_color_water_particles").withPrefix(Services.PLATFORM.getPlatformName().equals("Forge") ? "resourcepacks/" : ""));
     public static final Supplier<String> BCWP_PACK_ID = Suppliers.memoize(() -> (Services.PLATFORM.getPlatformName().equals("Forge") ? "mod/" : "") + BCWP_PACK_LOCATION.get().toString());
     public static final Component BCWP_PACK_NAME = Component.translatable("resourcePack.subtle_effects.biome_water_color_particles.name");
@@ -83,19 +84,24 @@ public class Util {
     }
 
     public static void applyHelmetShader(ItemStack stack) {
+        ShaderManager shaderManager = (ShaderManager) Minecraft.getInstance().gameRenderer;
         if (stack.getItem() instanceof BlockItem blockItem) {
             if (blockItem.getBlock() instanceof SkullBlock skullBlock) {
                 if (skullBlock.getType() == SkullBlock.Types.CREEPER) {
-                    ((ShaderManager) Minecraft.getInstance().gameRenderer).subtleEffects$loadShader(CREEPER_SHADER);
+                    shaderManager.subtleEffects$loadShader(CREEPER_SHADER);
+                    return;
+                }
+                else if (skullBlock.getType() == SkullBlock.Types.DRAGON) {
+                    shaderManager.subtleEffects$loadShader(INVERT_SHADER);
                     return;
                 }
                 else if (isEndermanHead(stack)) {
-                    ((ShaderManager) Minecraft.getInstance().gameRenderer).subtleEffects$loadShader(INVERT_SHADER);
+                    shaderManager.subtleEffects$loadShader(INVERT_SHADER);
                     return;
                 }
             }
         }
-        ((ShaderManager) Minecraft.getInstance().gameRenderer).subtleEffects$clearShader();
+        shaderManager.subtleEffects$clearShader();
     }
 
     private static boolean isEndermanHead(ItemStack stack) {

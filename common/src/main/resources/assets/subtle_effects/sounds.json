@@ -2,9 +2,18 @@
   "entity.villager.snore": {
     "subtitle": "subtitles.subtle_effects.entity.villager.snore",
     "sounds": [
-      "subtle_effects:mob/villager/snore1",
-      "subtle_effects:mob/villager/snore2",
-      "subtle_effects:mob/villager/snore3"
+      {
+        "name": "subtle_effects:mob/villager/snore1",
+        "volume": 0.8
+      },
+      {
+        "name": "subtle_effects:mob/villager/snore2",
+        "volume": 0.8
+      },
+      {
+        "name": "subtle_effects:mob/villager/snore3",
+        "volume": 0.8
+      }
     ]
   },
   "entity.player.snore": {
@@ -30,20 +39,10 @@
   "block.amethyst_cluster.chime": {
     "subtitle": "subtitles.block.amethyst_block.chime",
     "sounds": [
-      "minecraft:block/amethyst/step1",
-      "minecraft:block/amethyst/step2",
-      "minecraft:block/amethyst/step3",
-      "minecraft:block/amethyst/step4",
-      "minecraft:block/amethyst/step5",
-      "minecraft:block/amethyst/step6",
-      "minecraft:block/amethyst/step7",
-      "minecraft:block/amethyst/step8",
-      "minecraft:block/amethyst/step9",
-      "minecraft:block/amethyst/step10",
-      "minecraft:block/amethyst/step11",
-      "minecraft:block/amethyst/step12",
-      "minecraft:block/amethyst/step13",
-      "minecraft:block/amethyst/step14"
+      {
+        "name": "block.amethyst_block.step",
+        "type": "event"
+      }
     ]
   },
   "block.campfire.sizzle": {

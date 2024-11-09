@@ -22,6 +22,7 @@ dependencies {
     implementation group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.1'
 
     compileOnly group: 'me.fzzyhmstrs', name: 'fzzy_config', version: "${fzzy_config_version}+forge"
+    compileOnly group: 'com.github.glitchfiend', name: 'SereneSeasons-common', version: "${serene_seasons_version}"
 }
 
 publishing {
