@@ -15,8 +15,8 @@ import static einstein.subtle_effects.SubtleEffects.MOD_ID;
 @Mod(MOD_ID)
 public class SubtleEffectsForge {
 
-    public SubtleEffectsForge(FMLJavaModLoadingContext context) {
-        IEventBus modEventBus = context.getModEventBus();
+    public SubtleEffectsForge() {
+        IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
         SubtleEffects.init();
         ModParticles.init();
         ForgeRegistryHelper.PARTICLE_TYPES.register(modEventBus);
