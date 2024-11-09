@@ -51,4 +51,6 @@ sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 dependencies {
     implementation("me.fzzyhmstrs:fzzy_config:${fzzy_config_version}+neoforge")
+    compileOnly("com.github.glitchfiend:GlitchCore-neoforge:${glitchcore_version}")
+    compileOnly("com.github.glitchfiend:SereneSeasons-neoforge:${serene_seasons_version}")
 }

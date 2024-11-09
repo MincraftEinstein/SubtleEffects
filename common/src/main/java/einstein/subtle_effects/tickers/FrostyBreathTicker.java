@@ -1,7 +1,9 @@
 package einstein.subtle_effects.tickers;
 
+import einstein.subtle_effects.compat.SereneSeasonsCompat;
 import einstein.subtle_effects.init.ModParticles;
 import einstein.subtle_effects.util.ParticleSpawnUtil;
+import einstein.subtle_effects.util.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.tags.FluidTags;
@@ -48,7 +50,7 @@ public class FrostyBreathTicker extends Ticker<LivingEntity> {
             return;
         }
 
-        if (level.getBiome(pos).value().coldEnoughToSnow(pos)) {
+        if (level.getBiome(pos).value().coldEnoughToSnow(pos) || (Util.IS_SERENE_SEANSONS_LOADED.get() && SereneSeasonsCompat.isColdSeason(level))) {
             if (breatheTimer >= ENTITIES.frostyBreathTime.get()) {
                 ParticleSpawnUtil.spawnEntityFaceParticle(ModParticles.FROSTY_BREATH.get(),
                         entity, level, random, new Vec3(0, -0.1, 0),

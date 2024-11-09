@@ -47,6 +47,11 @@ repositories {
         name = "FzzyMaven"
         url = "https://maven.fzzyhmstrs.me/"
     }
+
+    maven {
+        name = 'Forge'
+        url = "https://maven.minecraftforge.net"
+    }
 }
 
 // Declare capabilities on the outgoing configurations.

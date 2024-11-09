@@ -20,6 +20,8 @@ dependencies {
     modImplementation "net.fabricmc.fabric-api:fabric-api:${fabric_api_version}"
     modImplementation("com.terraformersmc:modmenu:${modmenu_version}")
     modImplementation "me.fzzyhmstrs:fzzy_config:${fzzy_config_version}"
+    modCompileOnly "com.github.glitchfiend:GlitchCore-fabric:${glitchcore_version}"
+    modCompileOnly "com.github.glitchfiend:SereneSeasons-fabric:${serene_seasons_version}"
 }
 
 loom {

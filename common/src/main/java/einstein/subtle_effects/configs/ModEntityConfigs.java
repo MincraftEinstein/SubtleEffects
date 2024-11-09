@@ -49,6 +49,7 @@ public class ModEntityConfigs extends Config {
     public PerspectiveType frostyBreath = PerspectiveType.DEFAULT;
     public ValidatedFloat frostyBreathAlpha = new ValidatedFloat(0.5F, 1, 0.2F, ValidatedNumber.WidgetType.SLIDER);
     public ValidatedInt frostyBreathTime = new ValidatedInt(60, 200, 10);
+    public FrostyBreathSeasons frostyBreathSeasons = FrostyBreathSeasons.DEFAULT;
 
     public ModEntityConfigs() {
         super(SubtleEffects.loc("entities"));
@@ -76,6 +77,17 @@ public class ModEntityConfigs extends Config {
         @Override
         public String prefix() {
             return ModConfigs.BASE_KEY + "entities.perspectiveType";
+        }
+    }
+
+    public enum FrostyBreathSeasons implements EnumTranslatable {
+        OFF,
+        DEFAULT,
+        WINTER_ONLY;
+
+        @Override
+        public @NotNull String prefix() {
+            return ModConfigs.BASE_KEY + "entities.frostyBreathSeasons";
         }
     }
 }
