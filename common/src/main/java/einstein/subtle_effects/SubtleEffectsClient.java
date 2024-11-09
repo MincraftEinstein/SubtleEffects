@@ -18,6 +18,7 @@ public class SubtleEffectsClient {
     private static Level LEVEL;
 
     public static void clientSetup() {
+        ModConfigs.init();
         ModPackets.initClientHandlers();
         ModTickers.init();
         ModBlockTickers.init();
