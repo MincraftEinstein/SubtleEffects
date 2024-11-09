@@ -326,10 +326,10 @@ public class ModBlockTickers {
                 }
             }
         });
-        register(state -> state.is(BlockTags.FLOWERS) || (
+        register(state -> (state.is(BlockTags.FLOWERS) || (
                 BLOCKS.vegetationFirefliesSpawnType == ModBlockConfigs.VegetationFirefliesSpawnType.GRASS_AND_FLOWERS
                         && (state.is(Blocks.SHORT_GRASS) || state.is(Blocks.TALL_GRASS))
-        ), (state, level, pos, random) -> {
+        )) && BLOCKS.vegetationFirefliesDensity.get() > 0, (state, level, pos, random) -> {
             if (BiomeParticleManager.FIREFLY_CONDITIONS.test(level, pos)) {
                 if (random.nextInt(BLOCKS.vegetationFirefliesDensity.get()) == 0) {
                     level.addParticle(ModParticles.FIREFLY.get(),
