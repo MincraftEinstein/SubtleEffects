@@ -43,6 +43,9 @@
         "modmenu.discord": "https://discord.gg/gSsaFAvrBM",
         "modmenu.kofi": "https://ko-fi.com/mincrafteinstein"
       }
-    }
+    },
+    "fzzy_config": [
+      "subtle_effects"
+    ]
   }
 }

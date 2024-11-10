@@ -15,6 +15,9 @@ issueTrackerURL="https://github.com/MincraftEinstein/SubtleEffects/issues"
     description = "${description}"
     displayTest = "MATCH_VERSION"
 
+[modProperties]
+    fzzy_config = "subtle_effects"
+
 [[dependencies.subtle_effects]]
     modId = "forge"
     mandatory = true
