@@ -14,6 +14,9 @@ issueTrackerURL="https://github.com/MincraftEinstein/SubtleEffects/issues"
     authors = "${mod_author}"
     description = "${description}"
 
+[modProperties]
+    fzzy_config = "subtle_effects"
+
 [[accessTransformers]]
     file = "META-INF/accesstransformer.cfg"
 
