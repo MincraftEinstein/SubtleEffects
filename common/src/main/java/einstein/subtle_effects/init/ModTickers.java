@@ -226,14 +226,22 @@ public class ModTickers {
     }
 
     private static SleepingTicker<?> getSleepingTicker(LivingEntity entity) {
-        return switch (entity) {
-            case Villager villager -> new VillagerSleepingTicker(villager);
-            case Player player -> new PlayerSleepingTicker(player);
-            case Bat bat -> new BatSleepingTicker(bat);
-            case Cat cat -> new CatSleepingTicker(cat);
-            case Fox fox -> new FoxSleepingTicker(fox);
-            default -> new SleepingTicker<>(entity);
-        };
+        if (entity instanceof Villager villager) {
+            return new VillagerSleepingTicker(villager);
+        }
+        else if (entity instanceof Player player) {
+            return new PlayerSleepingTicker(player);
+        }
+        else if (entity instanceof Bat bat) {
+            return new BatSleepingTicker(bat);
+        }
+        else if (entity instanceof Cat cat) {
+            return new CatSleepingTicker(cat);
+        }
+        else if (entity instanceof Fox fox) {
+            return new FoxSleepingTicker(fox);
+        }
+        return new SleepingTicker<>(entity);
     }
 
     private static boolean isHumanoid(Entity entity, boolean includePiglins) {
