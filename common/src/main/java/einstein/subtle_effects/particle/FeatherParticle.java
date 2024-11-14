@@ -4,6 +4,7 @@ import einstein.subtle_effects.particle.option.IntegerParticleOptions;
 import einstein.subtle_effects.util.Util;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
+import net.minecraft.core.particles.ColorParticleOption;
 import net.minecraft.core.particles.SimpleParticleType;
 import org.jetbrains.annotations.Nullable;
 
@@ -41,13 +42,13 @@ public class FeatherParticle extends TextureSheetParticle {
         }
     }
 
-    public record SheepFluffProvider(SpriteSet sprites) implements ParticleProvider<IntegerParticleOptions> {
+    public record SheepFluffProvider(SpriteSet sprites) implements ParticleProvider<ColorParticleOption> {
 
         @Nullable
         @Override
-        public Particle createParticle(IntegerParticleOptions type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+        public Particle createParticle(ColorParticleOption options, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
             FeatherParticle particle = new FeatherParticle(level, x, y, z, xSpeed, ySpeed, zSpeed, sprites);
-            Util.setColorFromHex(particle, type.integer());
+            particle.setColor(options.getRed(), options.getGreen(), options.getBlue());
             particle.gravity = 0.5F;
             return particle;
         }

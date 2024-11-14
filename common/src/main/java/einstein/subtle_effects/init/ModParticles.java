@@ -40,7 +40,7 @@ public class ModParticles {
     public static final Supplier<ParticleType<BooleanParticleOptions>> VEX_MAGIC = register("vex_magic", BooleanParticleOptions::codec, BooleanParticleOptions::streamCodec, AllayMagicParticle.VexProvider::new);
     public static final Supplier<SimpleParticleType> SMALL_DUST_CLOUD = register("small_dust_cloud", DustCloudParticle.SmallProvider::new);
     public static final Supplier<SimpleParticleType> LARGE_DUST_CLOUD = register("large_dust_cloud", DustCloudParticle.LargeProvider::new);
-    public static final Supplier<ParticleType<IntegerParticleOptions>> SHEEP_FLUFF = register("sheep_fluff", IntegerParticleOptions::codec, IntegerParticleOptions::streamCodec, FeatherParticle.SheepFluffProvider::new);
+    public static final Supplier<ParticleType<ColorParticleOption>> SHEEP_FLUFF = register("sheep_fluff", ColorParticleOption::codec, ColorParticleOption::streamCodec, FeatherParticle.SheepFluffProvider::new);
     public static final Supplier<SimpleParticleType> MUSHROOM_SPORE = register("mushroom_spore", MushroomSporeProvider::new);
     public static final Supplier<SimpleParticleType> FIREFLY = register("firefly", FireflyParticle.Provider::new);
     public static final Supplier<SimpleParticleType> FIREFLY_EMITTER = register("firefly_emitter", sprites -> new FireFlyEmitter.Provider());
