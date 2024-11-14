@@ -34,7 +34,7 @@ public class BeaconParticle extends SparkParticle {
             }
         }
 
-        if (y == yo || y >= level.getMaxBuildHeight()) {
+        if (y == yo || !level.isInsideBuildHeight(Mth.floor(y))) {
             remove();
             return;
         }

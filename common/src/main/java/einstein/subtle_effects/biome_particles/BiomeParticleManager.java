@@ -30,7 +30,7 @@ public class BiomeParticleManager {
             level.getDayTime() > 13000
                     && level.getDayTime() < 23000
                     && level.getBrightness(LightLayer.BLOCK, pos) <= 5
-                    && level.getBiome(pos).value().warmEnoughToRain(pos)
+                    && level.getBiome(pos).value().warmEnoughToRain(pos, level.getSeaLevel())
     );
     private static boolean HAS_CLEARED;
 

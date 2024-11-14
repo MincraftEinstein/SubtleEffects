@@ -6,6 +6,7 @@ import einstein.subtle_effects.platform.Services;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.particles.ParticleTypes;
@@ -20,10 +21,10 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.SkullBlock;
-import net.minecraft.world.phys.Vec3;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Supplier;
 
 public class Util {
@@ -32,10 +33,10 @@ public class Util {
     public static final int SNORE_DELAY = 10;
     public static final int MAX_Z_COUNT = 3;
     public static final int STOMACH_GROWL_DELAY = 300;
-    public static final DustParticleOptions GLOWSTONE_DUST_PARTICLES = new DustParticleOptions(Vec3.fromRGB24(0xFFBC5E).toVector3f(), 1);
-    public static final ResourceLocation CREEPER_SHADER = ResourceLocation.withDefaultNamespace("shaders/post/creeper.json");
-    public static final ResourceLocation INVERT_SHADER = ResourceLocation.withDefaultNamespace("shaders/post/invert.json");
-    public static final Supplier<Item> ENDERMAN_HEAD = Suppliers.memoize(() -> BuiltInRegistries.ITEM.get(ResourceLocation.fromNamespaceAndPath("supplementaries", "enderman_head")));
+    public static final DustParticleOptions GLOWSTONE_DUST_PARTICLES = new DustParticleOptions(0xFFBC5E, 1);
+    public static final ResourceLocation CREEPER_SHADER = ResourceLocation.withDefaultNamespace("creeper");
+    public static final ResourceLocation INVERT_SHADER = ResourceLocation.withDefaultNamespace("invert");
+    public static final Supplier<Optional<Item>> ENDERMAN_HEAD = Suppliers.memoize(() -> BuiltInRegistries.ITEM.get(ResourceLocation.fromNamespaceAndPath("supplementaries", "enderman_head")).map(Holder.Reference::value));
     public static final Supplier<Boolean> IS_SUPPLEMENTARIES_LOADED = Suppliers.memoize(() -> Services.PLATFORM.isModLoaded("supplementaries"));
     public static final Supplier<Boolean> IS_SERENE_SEANSONS_LOADED = Suppliers.memoize(() -> Services.PLATFORM.isModLoaded("sereneseasons"));
     public static final Supplier<ResourceLocation> BCWP_PACK_LOCATION = Suppliers.memoize(() -> SubtleEffects.loc("biome_color_water_particles").withPrefix(Services.PLATFORM.getPlatformName().equals("NeoForge") ? "resourcepacks/" : ""));
@@ -76,7 +77,7 @@ public class Util {
     }
 
     public static boolean isSolidOrNotEmpty(Level level, BlockPos pos) {
-        return level.getBlockState(pos).isSolidRender(level, pos) || !level.getFluidState(pos).isEmpty();
+        return level.getBlockState(pos).isSolidRender() || !level.getFluidState(pos).isEmpty();
     }
 
     public static int getLightColor(int superLight) {
@@ -106,7 +107,8 @@ public class Util {
 
     private static boolean isEndermanHead(ItemStack stack) {
         if (IS_SUPPLEMENTARIES_LOADED.get()) {
-            return stack.is(ENDERMAN_HEAD.get());
+            Item item = ENDERMAN_HEAD.get().orElse(null);
+            return item != null && stack.is(item);
         }
         return false;
     }

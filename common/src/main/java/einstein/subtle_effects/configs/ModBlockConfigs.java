@@ -15,13 +15,12 @@ import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedFloat;
 import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedInt;
 import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedNumber;
 import net.minecraft.Util;
+import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.BlockTags;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -38,7 +37,7 @@ public class ModBlockConfigs extends Config {
         blocks.add(Blocks.GRAVEL);
 
         for (DyeColor color : DyeColor.values()) {
-            blocks.add(BuiltInRegistries.BLOCK.get(ResourceLocation.withDefaultNamespace(color.getName() + "_concrete_powder")));
+            blocks.add(BuiltInRegistries.BLOCK.get(ResourceLocation.withDefaultNamespace(color.getName() + "_concrete_powder")).map(Holder.Reference::value).get());
         }
     });
 

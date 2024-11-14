@@ -59,7 +59,7 @@ public abstract class LavaFluidMixin {
                 BlockPos relativePos = pos.offset(x, 0, z);
                 BlockPos abovePos = relativePos.above();
 
-                if (level.getBlockState(relativePos).isSolidRender(level, relativePos) || !isSame(level.getFluidState(relativePos).getType())) {
+                if (level.getBlockState(relativePos).isSolidRender() || !isSame(level.getFluidState(relativePos).getType())) {
                     continue;
                 }
 

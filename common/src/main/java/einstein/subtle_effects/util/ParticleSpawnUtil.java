@@ -67,7 +67,7 @@ public class ParticleSpawnUtil {
             }
 
             BlockPos relativePos = pos.relative(direction);
-            if (!level.getBlockState(relativePos).isSolidRender(level, relativePos)) {
+            if (!level.getBlockState(relativePos).isSolidRender()) {
                 spawnParticlesOnSide(particle, offset, direction, level, pos, random, 0, 0, 0);
             }
         }

@@ -25,8 +25,8 @@ import java.util.function.Supplier;
 @Mixin(ClientLevel.class)
 public abstract class ClientLevelMixin extends Level {
 
-    protected ClientLevelMixin(WritableLevelData levelData, ResourceKey<Level> dimension, RegistryAccess registryAccess, Holder<DimensionType> dimensionType, Supplier<ProfilerFiller> profiler, boolean isClientSide, boolean isDebug, long biomeZoomSeed, int maxNeighborUpdates) {
-        super(levelData, dimension, registryAccess, dimensionType, profiler, isClientSide, isDebug, biomeZoomSeed, maxNeighborUpdates);
+    protected ClientLevelMixin(WritableLevelData levelData, ResourceKey<Level> dimension, RegistryAccess registryAccess, Holder<DimensionType> dimensionType, boolean isClientSide, boolean isDebug, long biomeZoomSeed, int maxNeighborUpdates) {
+        super(levelData, dimension, registryAccess, dimensionType, isClientSide, isDebug, biomeZoomSeed, maxNeighborUpdates);
     }
 
     @Inject(method = "tickNonPassenger", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;tick()V"))

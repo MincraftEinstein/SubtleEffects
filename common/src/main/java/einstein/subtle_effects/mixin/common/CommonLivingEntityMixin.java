@@ -88,17 +88,17 @@ public abstract class CommonLivingEntityMixin extends Entity {
         return damage;
     }
 
-    @ModifyExpressionValue(method = "travel", at = @At(value = "FIELD", target = "Lnet/minecraft/world/level/Level;isClientSide:Z", ordinal = 0))
+    @ModifyExpressionValue(method = "travelFallFlying", at = @At(value = "FIELD", target = "Lnet/minecraft/world/level/Level;isClientSide:Z", ordinal = 0))
     private boolean cancelFlyIntoWallServerCheck(boolean original) {
         return false;
     }
 
-    @WrapWithCondition(method = "travel", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;playSound(Lnet/minecraft/sounds/SoundEvent;FF)V"))
+    @WrapWithCondition(method = "handleFallFlyingCollisions", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;playSound(Lnet/minecraft/sounds/SoundEvent;FF)V"))
     private boolean cancelFlyIntoWallClientSound(LivingEntity entity, SoundEvent sound, float volume, float pitch) {
         return !level().isClientSide;
     }
 
-    @WrapWithCondition(method = "travel", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;hurt(Lnet/minecraft/world/damagesource/DamageSource;F)Z"))
+    @WrapWithCondition(method = "handleFallFlyingCollisions", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;hurt(Lnet/minecraft/world/damagesource/DamageSource;F)V"))
     private boolean cancelFlyIntoWallClientHurt(LivingEntity entity, DamageSource source, float amount) {
         if (!(entity instanceof Player player && player.isCreative())) {
             ParticleSpawnUtil.spawnFallDustClouds(entity, 10, 10);

@@ -16,7 +16,6 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(LivingEntity.class)
 public abstract class ClientLivingEntityMixin<T extends Entity> extends Entity {
@@ -54,9 +53,9 @@ public abstract class ClientLivingEntityMixin<T extends Entity> extends Entity {
     }
 
     @SuppressWarnings("unchecked")
-    @Inject(method = "hurt", at = @At("HEAD"))
-    private void hurt(DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
-        if (level().isClientSide && !isInvulnerableTo(source) && amount > 0) {
+    @Override
+    public boolean hurtClient(DamageSource source) {
+        if (level().isClientSide && !isInvulnerableToBase(source)) {
             if (source.getEntity() instanceof LivingEntity && isAlive() && hurtTime == 0) {
                 EntityType<T> type = (EntityType<T>) getType();
                 if (ModDamageListeners.REGISTERED.containsKey(type)) {
@@ -64,5 +63,6 @@ public abstract class ClientLivingEntityMixin<T extends Entity> extends Entity {
                 }
             }
         }
+        return super.hurtClient(source);
     }
 }

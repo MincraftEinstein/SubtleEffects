@@ -11,6 +11,7 @@ import net.minecraft.world.level.biome.Biome;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.function.BiPredicate;
 import java.util.function.Supplier;
 
@@ -38,8 +39,8 @@ public class BiomeParticleSettings {
 
     public void update(Level level) {
         biomes.addAll(biomesConfig.stream().map(location ->
-                level.registryAccess().registryOrThrow(Registries.BIOME).get(location)
-        ).filter(Objects::nonNull).toList());
+                level.registryAccess().lookupOrThrow(Registries.BIOME).get(location)
+        ).filter(Optional::isPresent).map(biomeReference -> biomeReference.get().value()).toList());
     }
 
     public List<Biome> getBiomes() {

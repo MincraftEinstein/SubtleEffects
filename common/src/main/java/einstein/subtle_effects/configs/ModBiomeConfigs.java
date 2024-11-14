@@ -62,7 +62,7 @@ public class ModBiomeConfigs extends Config {
     private static Optional<Registry<Biome>> getBiomeRegistry() {
         ClientLevel level = Minecraft.getInstance().level;
         if (level != null) {
-            return level.registryAccess().registry(Registries.BIOME);
+            return level.registryAccess().lookup(Registries.BIOME);
         }
         return Optional.empty();
     }
