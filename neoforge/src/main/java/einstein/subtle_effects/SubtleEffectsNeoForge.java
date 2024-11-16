@@ -20,7 +20,7 @@ public class SubtleEffectsNeoForge {
         NeoForgeRegistryHelper.PARTICLE_TYPES.register(modEventBus);
         NeoForgeRegistryHelper.SOUND_EVENTS.register(modEventBus);
         modEventBus.addListener((RegisterPayloadHandlersEvent event) -> {
-            PayloadRegistrar registrar = event.registrar("1");
+            PayloadRegistrar registrar = event.registrar("1").optional();
             NeoForgeNetworkHelper.PAYLOAD_DATA.forEach((type, payloadData) -> register(registrar, type, payloadData));
         });
     }
