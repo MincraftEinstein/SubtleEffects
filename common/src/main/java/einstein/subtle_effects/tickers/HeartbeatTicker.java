@@ -22,13 +22,13 @@ public class HeartbeatTicker extends Ticker<Player> {
         }
 
         float health = entity.getHealth();
-        int threshold = ENTITIES.heartBeatingThreshold.get();
+        int threshold = ENTITIES.humanoids.player.heartBeatingThreshold.get();
 
         if (health <= threshold) {
             beatTimer++;
             if (beatTimer >= (health > ((float) threshold / 2) ? 60 : 20)) {
                 beatTimer = 0;
-                Util.playClientSound(entity, ModSounds.PLAYER_HEARTBEAT.get(), entity.getSoundSource(), ENTITIES.heartbeatVolume.get(), 1);
+                Util.playClientSound(entity, ModSounds.PLAYER_HEARTBEAT.get(), entity.getSoundSource(), ENTITIES.humanoids.player.heartbeatVolume.get(), 1);
             }
         }
     }

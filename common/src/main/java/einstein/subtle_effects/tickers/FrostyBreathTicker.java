@@ -37,7 +37,7 @@ public class FrostyBreathTicker extends Ticker<LivingEntity> {
                 return;
             }
 
-            if (player.equals(minecraft.player) && !ENTITIES.frostyBreath.test(minecraft)) {
+            if (player.equals(minecraft.player) && !ENTITIES.humanoids.frostyBreath.displayType.test(minecraft)) {
                 return;
             }
         }
@@ -51,7 +51,7 @@ public class FrostyBreathTicker extends Ticker<LivingEntity> {
         }
 
         if (level.getBiome(pos).value().coldEnoughToSnow(pos) || (Util.IS_SERENE_SEANSONS_LOADED.get() && SereneSeasonsCompat.isColdSeason(level))) {
-            if (breatheTimer >= ENTITIES.frostyBreathTime.get()) {
+            if (breatheTimer >= ENTITIES.humanoids.frostyBreath.waitTime.get()) {
                 ParticleSpawnUtil.spawnEntityFaceParticle(ModParticles.FROSTY_BREATH.get(),
                         entity, level, random, new Vec3(0, -0.1, 0),
                         new Vec3(0, 0, Mth.nextDouble(random, 0.005, 0.01)),
