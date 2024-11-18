@@ -23,9 +23,9 @@ public class StomachGrowlingTicker extends Ticker<Player> {
         }
 
         int foodLevel = entity.getFoodData().getFoodLevel();
-        if (foodLevel <= ENTITIES.stomachGrowlingThreshold.get()) {
+        if (foodLevel <= ENTITIES.humanoids.player.stomachGrowlingThreshold.get()) {
             if (growlTimer == 0) {
-                Util.playClientSound(entity, ModSounds.PLAYER_STOMACH_GROWL.get(), SoundSource.PLAYERS, ENTITIES.stomachGrowlingVolume.get(), (random.nextBoolean() ? 1 : 1.5F));
+                Util.playClientSound(entity, ModSounds.PLAYER_STOMACH_GROWL.get(), SoundSource.PLAYERS, ENTITIES.humanoids.player.stomachGrowlingVolume.get(), (random.nextBoolean() ? 1 : 1.5F));
             }
 
             growlTimer++;

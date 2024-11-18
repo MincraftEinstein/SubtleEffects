@@ -49,11 +49,11 @@ public class ModTickers {
         registerTicker(entity -> entity instanceof LivingEntity, ModTickers::getSleepingTicker);
         registerTicker(entity -> entity instanceof LivingEntity, EntityFireTicker::new);
         registerTicker(entity -> entity instanceof AbstractMinecart && ENTITIES.minecartLandingSparks, MinecartSparksTicker::new);
-        registerTicker(LOCAL_PLAYER.and(entity -> ENTITIES.stomachGrowlingThreshold.get() > 0), StomachGrowlingTicker::new);
+        registerTicker(LOCAL_PLAYER.and(entity -> ENTITIES.humanoids.player.stomachGrowlingThreshold.get() > 0), StomachGrowlingTicker::new);
         registerTicker(LOCAL_PLAYER.and(entity -> ModConfigs.GENERAL.mobSkullShaders), MobSkullShaderTicker::new);
-        registerTicker(LOCAL_PLAYER.and(entity -> ENTITIES.heartBeatingThreshold.get() > 0), HeartbeatTicker::new);
-        registerTicker(entity -> isHumanoid(entity, !entity.level().dimension().equals(Level.NETHER)) && ENTITIES.drowningBubbles.isEnabled(), DrowningTicker::new);
-        registerTicker(entity -> isHumanoid(entity, !entity.level().dimension().equals(Level.NETHER)) && ENTITIES.frostyBreath.isEnabled(), FrostyBreathTicker::new);
+        registerTicker(LOCAL_PLAYER.and(entity -> ENTITIES.humanoids.player.heartBeatingThreshold.get() > 0), HeartbeatTicker::new);
+        registerTicker(entity -> isHumanoid(entity, !entity.level().dimension().equals(Level.NETHER)) && ENTITIES.humanoids.drowningBubbles.isEnabled(), DrowningTicker::new);
+        registerTicker(entity -> isHumanoid(entity, !entity.level().dimension().equals(Level.NETHER)) && ENTITIES.humanoids.frostyBreath.displayType.isEnabled(), FrostyBreathTicker::new);
         registerTicker(entity -> entity.getType().equals(EntityType.SLIME) && ENTITIES.slimeTrails, (Slime entity) -> new SlimeTrailTicker<>(entity, ModParticles.SLIME_TRAIL));
         registerTicker(entity -> entity.getType().equals(EntityType.MAGMA_CUBE) && ENTITIES.magmaCubeTrails, (MagmaCube entity) -> new SlimeTrailTicker<>(entity, ModParticles.MAGMA_CUBE_TRAIL));
         registerTicker(entity -> entity.getType().equals(EntityType.IRON_GOLEM) && ENTITIES.ironGolemCrackParticles, IronGolemTicker::new);
