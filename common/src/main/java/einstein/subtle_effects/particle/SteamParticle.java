@@ -44,7 +44,7 @@ public class SteamParticle extends SmokeParticle {
         @Override
         public @NotNull Particle createParticle(SimpleParticleType type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
             SteamParticle particle = new SteamParticle(level, x, y, z, xSpeed, ySpeed, zSpeed, sprites);
-            particle.alpha = ModConfigs.ENTITIES.frostyBreathAlpha.get();
+            particle.alpha = ModConfigs.ENTITIES.humanoids.frostyBreath.alpha.get();
             particle.gravity = 0;
             return particle;
         }

@@ -19,6 +19,7 @@ public class ItemRarityConfigs extends ConfigSection {
 
     public DisplayType particlesDisplayType = DisplayType.ON;
     public ColorType particleColor = ColorType.NAME_COLOR;
+    public boolean mixedColorName = true;
     @ValidatedInt.Restrict(min = 3, max = 15)
     public int particleMaxHeight = 7;
 
@@ -35,7 +36,7 @@ public class ItemRarityConfigs extends ConfigSection {
             ItemStack stack = itemEntity.getItem();
             if (stack.getRarity() == Rarity.COMMON) {
                 if (ENTITIES.itemRarity.particlesDisplayType == ItemRarityConfigs.DisplayType.NOT_COMMON) {
-                    return ENTITIES.itemRarity.particleColor == ColorType.NAME_COLOR && ItemRarityParticle.getItemNameColor(stack) != null;
+                    return ENTITIES.itemRarity.particleColor == ColorType.NAME_COLOR && ItemRarityParticle.getItemNameColor(stack, itemEntity.getRandom()) != null;
                 }
             }
             return true;

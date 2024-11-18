@@ -229,9 +229,9 @@ public class ModBlockTickers {
                     }
                     spawnFireSparks(level, random, state, pos, random.nextDouble(), random.nextDouble());
                 });
-        register(state -> state.getBlock() instanceof LanternBlock && BLOCKS.sparks.lanternSparks,
+        register(state -> state.getBlock() instanceof LanternBlock && BLOCKS.sparks.lanternSparksDensity.get() > 0,
                 (state, level, pos, random) -> {
-                    for (int i = 0; i < 5; i++) {
+                    for (int i = 0; i < BLOCKS.sparks.lanternSparksDensity.get(); i++) {
                         int xSign = nextSign(random);
                         int zSign = nextSign(random);
                         level.addParticle(isSoulFlameBlock(state, Blocks.LANTERN, Blocks.SOUL_LANTERN)

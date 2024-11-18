@@ -73,11 +73,15 @@ If you find that a feature/change cannot be disabled please report it as a bug
 <br>
 **A:** Yes
 
+**Q:** Particular's leaves aren't showing, how do I fix them?
+<br>
+**A:** Disable the 'Cull Particles With No Alpha' config inside the 'General' config section
+
 **Q:** Do you take suggestions/feature requests?
 <br>
-**A:** Yes, suggestions and feedback in general is much appreciated.
-You can provide feedback/suggestions in a GitHub issue, in the CurseForge comments, or on my Discord Server.
-Please try to keep your suggestions somewhat minecraft-y feeling, e.g. no blood.
+**A:** Yes, suggestions and feedback in general are much appreciated.
+You can provide feedback/suggestions in a GitHub issue, the CurseForge comments, or on my Discord Server.
+Please keep your suggestions somewhat Minecraft-y, e.g. no blood.
 Please also try not to suggest things that multiple other mods implement, such as rain ripples.
 
 ---

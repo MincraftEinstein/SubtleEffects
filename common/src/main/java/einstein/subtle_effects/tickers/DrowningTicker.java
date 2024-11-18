@@ -27,12 +27,12 @@ public class DrowningTicker extends Ticker<LivingEntity> {
                 return;
             }
 
-            if (player.equals(minecraft.player) && !ENTITIES.drowningBubbles.test(minecraft)) {
+            if (player.equals(minecraft.player) && !ENTITIES.humanoids.drowningBubbles.test(minecraft)) {
                 return;
             }
         }
 
-        if (random.nextInt(ENTITIES.drowningBubblesDensity.get()) == 0 && entity.isUnderWater()) {
+        if (random.nextInt(ENTITIES.humanoids.drowningBubblesDensity.get()) == 0 && entity.isUnderWater()) {
             ParticleSpawnUtil.spawnEntityFaceParticle(ParticleTypes.BUBBLE,
                     entity, level, new Vec3(0, -0.1, 0), Vec3.ZERO,
                     minecraft.getFrameTime()

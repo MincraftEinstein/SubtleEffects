@@ -8,9 +8,6 @@ import me.fzzyhmstrs.fzzy_config.annotations.Translation;
 import me.fzzyhmstrs.fzzy_config.config.Config;
 import me.fzzyhmstrs.fzzy_config.util.EnumTranslatable;
 import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedDouble;
-import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedFloat;
-import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedInt;
-import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedNumber;
 import net.minecraft.client.Minecraft;
 import org.jetbrains.annotations.NotNull;
 
@@ -19,6 +16,7 @@ public class ModEntityConfigs extends Config {
 
     public EntityAttackedConfigs attacked = new EntityAttackedConfigs();
     public SleepingConfigs sleeping = new SleepingConfigs();
+    public HumanoidConfigs humanoids = new HumanoidConfigs();
     public DustCloudsConfig dustClouds = new DustCloudsConfig();
     public BurningEntityConfigs burning = new BurningEntityConfigs();
     public ItemRarityConfigs itemRarity = new ItemRarityConfigs();
@@ -31,10 +29,6 @@ public class ModEntityConfigs extends Config {
     public boolean sheepShearFluff = true;
     public boolean improvedDragonFireballTrail = true;
     public CommandBlockSpawnType commandBlockMinecartParticles = CommandBlockSpawnType.ON;
-    public ValidatedInt stomachGrowlingThreshold = new ValidatedInt(6, 20, 0);
-    public ValidatedFloat stomachGrowlingVolume = new ValidatedFloat(1, 1, 0);
-    public ValidatedInt heartBeatingThreshold = new ValidatedInt(6, 20, 0);
-    public ValidatedFloat heartbeatVolume = new ValidatedFloat(1, 1, 0);
     public boolean endCrystalParticles = true;
     public boolean minecartLandingSparks = true;
     public boolean slimeTrails = true;
@@ -44,12 +38,6 @@ public class ModEntityConfigs extends Config {
     public boolean ironGolemCrackParticles = true;
     public boolean spectralArrowParticles = true;
     public boolean wardenDeathSoulParticles = true;
-    public PerspectiveType drowningBubbles = PerspectiveType.DEFAULT;
-    public ValidatedInt drowningBubblesDensity = new ValidatedInt(10, 15, 3);
-    public PerspectiveType frostyBreath = PerspectiveType.DEFAULT;
-    public ValidatedFloat frostyBreathAlpha = new ValidatedFloat(0.5F, 1, 0.2F, ValidatedNumber.WidgetType.SLIDER);
-    public ValidatedInt frostyBreathTime = new ValidatedInt(60, 200, 10);
-    public FrostyBreathSeasons frostyBreathSeasons = FrostyBreathSeasons.DEFAULT;
 
     public ModEntityConfigs() {
         super(SubtleEffects.loc("entities"));
@@ -60,7 +48,7 @@ public class ModEntityConfigs extends Config {
         TickerManager.clear();
     }
 
-    public enum PerspectiveType implements EnumTranslatable {
+    public enum PerspectiveDisplayType implements EnumTranslatable {
         OFF,
         DEFAULT,
         THIRD_PERSON_ONLY;
@@ -76,18 +64,7 @@ public class ModEntityConfigs extends Config {
         @NotNull
         @Override
         public String prefix() {
-            return ModConfigs.BASE_KEY + "entities.perspectiveType";
-        }
-    }
-
-    public enum FrostyBreathSeasons implements EnumTranslatable {
-        OFF,
-        DEFAULT,
-        WINTER_ONLY;
-
-        @Override
-        public @NotNull String prefix() {
-            return ModConfigs.BASE_KEY + "entities.frostyBreathSeasons";
+            return ModConfigs.BASE_KEY + "entities.perspectiveDisplayType";
         }
     }
 }
