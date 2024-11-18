@@ -65,7 +65,7 @@ public class ItemRarityParticle extends TextureSheetParticle {
             colors.add(color);
         }
 
-        TextColor nameColor = usesSingleColor ? (color != null ? color : (!colors.isEmpty() ? colors.getFirst() : null)) : colors.get(random.nextInt(colors.size()));
+        TextColor nameColor = usesSingleColor ? (color != null ? color : (!colors.isEmpty() ? colors.get(0) : null)) : colors.get(random.nextInt(colors.size()));
         if (nameColor != null && (!usesSingleColor || !nameColor.equals(WHITE_TEXT))) {
             return nameColor;
         }

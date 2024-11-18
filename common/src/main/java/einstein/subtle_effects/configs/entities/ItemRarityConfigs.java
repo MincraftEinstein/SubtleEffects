@@ -36,7 +36,7 @@ public class ItemRarityConfigs extends ConfigSection {
             ItemStack stack = itemEntity.getItem();
             if (stack.getRarity() == Rarity.COMMON) {
                 if (ENTITIES.itemRarity.particlesDisplayType == ItemRarityConfigs.DisplayType.NOT_COMMON) {
-                    return ENTITIES.itemRarity.particleColor == ColorType.NAME_COLOR && ItemRarityParticle.getItemNameColor(stack, itemEntity.getRandom()) != null;
+                    return ENTITIES.itemRarity.particleColor == ColorType.NAME_COLOR && ItemRarityParticle.getItemNameColor(stack, itemEntity.level().getRandom()) != null;
                 }
             }
             return true;
