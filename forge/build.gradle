@@ -20,6 +20,8 @@ minecraft {
 
     accessTransformer = project(":common").file('src/main/resources/META-INF/accesstransformer.cfg')
 
+    copyIdeResources = true
+
     runs {
         client {
             workingDirectory project.file('runs/client')
