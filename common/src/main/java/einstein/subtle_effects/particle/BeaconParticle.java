@@ -11,14 +11,20 @@ import net.minecraft.world.level.block.entity.BeaconBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class BeaconParticle extends SparkParticle {
 
     private final BlockPos beaconPos;
+    private final List<BeaconBlockEntity.BeaconBeamSection> beamSections = new ArrayList<>();
 
     protected BeaconParticle(ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, SpriteSet sprites, BlockPos beaconPos) {
         super(level, x, y, z, xSpeed, ySpeed, zSpeed, 0, sprites);
         this.beaconPos = beaconPos;
         lifetime = 1;
+        hasPhysics = false;
+        speedUpWhenYMotionIsBlocked = false;
     }
 
     @Override
@@ -28,9 +34,41 @@ public class BeaconParticle extends SparkParticle {
         // every 1 second check if the beacon is still there
         if (age % 20 == 0) {
             BlockEntity blockEntity = level.getBlockEntity(beaconPos);
-            if (!(blockEntity instanceof BeaconBlockEntity)) {
+            if (!(blockEntity instanceof BeaconBlockEntity beaconBlockEntity)) {
                 remove();
                 return;
+            }
+
+            List<BeaconBlockEntity.BeaconBeamSection> sections = beaconBlockEntity.getBeamSections();
+            if (sections.isEmpty()) {
+                remove();
+                return;
+            }
+
+            boolean hadMultipleSections = beamSections.size() > 1;
+            beamSections.clear();
+
+            if (sections.size() > 1 || hadMultipleSections) {
+                beamSections.addAll(sections);
+            }
+        }
+
+        if (y >= Mth.floor(y) && !beamSections.isEmpty()) {
+            BeaconBlockEntity.BeaconBeamSection beamSection = null;
+            int lastHeight = beaconPos.getY() - 1;
+
+            for (BeaconBlockEntity.BeaconBeamSection section : beamSections) {
+                lastHeight += section.getHeight();
+                if (y >= lastHeight) {
+                    beamSection = section;
+                }
+            }
+
+            if (beamSection != null) {
+                int color = beamSection.getColor();
+                rCol = ((color >> 16) & 255) / 255F;
+                gCol = ((color >> 8) & 255) / 255F;
+                bCol = (color & 255) / 255F;
             }
         }
 
