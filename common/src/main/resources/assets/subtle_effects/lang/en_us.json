@@ -220,6 +220,8 @@
   "config.subtle_effects.entities.itemRarity.mixedColorName.desc": "If 'Particle Color' is set to 'Name Color' when an item with multiple colors in it's name spawns rarity particles they will pick a random color from the item's name",
   "config.subtle_effects.entities.itemRarity.particleMaxHeight": "Particle Max Height",
   "config.subtle_effects.entities.itemRarity.particleMaxHeight.desc": "How high item rarity particles float",
+  "config.subtle_effects.entities.itemRarity.particleMaxSpeed": "Particle Max Speed",
+  "config.subtle_effects.entities.itemRarity.particleMaxSpeed.desc": "How fast item rarity particles should move",
   "config.subtle_effects.entities.primedTNT": "Primed TNT",
   "config.subtle_effects.entities.primedTNT.updateSmoke": "Update Smoke",
   "config.subtle_effects.entities.primedTNT.flames": "Flames",

@@ -22,6 +22,7 @@ import static einstein.subtle_effects.init.ModConfigs.ENTITIES;
 public class ItemRarityParticle extends TextureSheetParticle {
 
     private static final TextColor WHITE_TEXT = TextColor.fromLegacyFormat(ChatFormatting.WHITE);
+    private final double maxY;
 
     protected ItemRarityParticle(ClientLevel level, SpriteSet sprites, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, ItemStack stack) {
         super(level, x, y, z, xSpeed, ySpeed, zSpeed);
@@ -31,10 +32,11 @@ public class ItemRarityParticle extends TextureSheetParticle {
         gCol = ((color >> 8) & 255) / 255F;
         bCol = (color & 255) / 255F;
         pickSprite(sprites);
-        int max = ENTITIES.itemRarity.particleMaxHeight;
-        int min = Math.min(5, max);
-        lifetime = Math.max(min, random.nextInt(max));
+        maxY = y + ENTITIES.itemRarity.particleMaxHeight.get();
+        gravity = -0.1F;
+        lifetime = 1;
         xd = 0;
+        yd *= ENTITIES.itemRarity.particleMaxSpeed.get();
         zd = 0;
     }
 
@@ -70,6 +72,18 @@ public class ItemRarityParticle extends TextureSheetParticle {
             return nameColor;
         }
         return null;
+    }
+
+    @Override
+    public void tick() {
+        super.tick();
+
+        if (y == yo || y >= maxY) {
+            remove();
+            return;
+        }
+
+        lifetime++;
     }
 
     @Override
