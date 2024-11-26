@@ -17,11 +17,9 @@ import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedNumber;
 import net.minecraft.Util;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.BlockTags;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -63,7 +61,7 @@ public class ModBlockConfigs extends Config {
     public boolean grindstoneUseParticles = true;
     public CommandBlockSpawnType commandBlockParticles = CommandBlockSpawnType.ON;
     public boolean slimeBlockBounceSounds = true;
-    public boolean beaconParticles = true;
+    public BeaconParticlesDisplayType beaconParticlesDisplayType = BeaconParticlesDisplayType.ON;
     public boolean compostingParticles = true;
     public boolean respawnAnchorParticles = true;
     public boolean beehiveShearParticles = true;
@@ -144,6 +142,17 @@ public class ModBlockConfigs extends Config {
         @Override
         public @NotNull String prefix() {
             return BASE_KEY + "blocks.vegetationFirefliesSpawnType";
+        }
+    }
+
+    public enum BeaconParticlesDisplayType implements EnumTranslatable {
+        OFF,
+        ON,
+        NOT_COLORED;
+
+        @Override
+        public @NotNull String prefix() {
+            return BASE_KEY + "blocks.beaconParticlesDisplayType";
         }
     }
 }

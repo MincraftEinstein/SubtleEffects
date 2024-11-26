@@ -1,5 +1,6 @@
 package einstein.subtle_effects.particle;
 
+import einstein.subtle_effects.configs.ModBlockConfigs;
 import einstein.subtle_effects.particle.option.PositionParticleOptions;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
@@ -13,6 +14,8 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static einstein.subtle_effects.init.ModConfigs.BLOCKS;
 
 public class BeaconParticle extends SparkParticle {
 
@@ -40,7 +43,10 @@ public class BeaconParticle extends SparkParticle {
             }
 
             List<BeaconBlockEntity.BeaconBeamSection> sections = beaconBlockEntity.getBeamSections();
-            if (sections.isEmpty()) {
+            boolean isNotColored = BLOCKS.beaconParticlesDisplayType == ModBlockConfigs.BeaconParticlesDisplayType.NOT_COLORED;
+            boolean hasMultipleSections = sections.size() > 1;
+
+            if (sections.isEmpty() || (hasMultipleSections && isNotColored)) {
                 remove();
                 return;
             }
@@ -48,7 +54,7 @@ public class BeaconParticle extends SparkParticle {
             boolean hadMultipleSections = beamSections.size() > 1;
             beamSections.clear();
 
-            if (sections.size() > 1 || hadMultipleSections) {
+            if ((!isNotColored && hasMultipleSections) || hadMultipleSections) {
                 beamSections.addAll(sections);
             }
         }
