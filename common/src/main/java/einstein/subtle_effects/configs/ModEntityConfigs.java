@@ -20,7 +20,7 @@ public class ModEntityConfigs extends Config {
     public DustCloudsConfig dustClouds = new DustCloudsConfig();
     public BurningEntityConfigs burning = new BurningEntityConfigs();
     public ItemRarityConfigs itemRarity = new ItemRarityConfigs();
-    public PrimedTNTConfigs primedTNT = new PrimedTNTConfigs();
+    public ExplosivesConfigs explosives = new ExplosivesConfigs();
 
     public boolean enderPearlTrail = true;
     public ValidatedDouble snowballTrailDensity = new ValidatedDouble(0.2, 1, 0);

@@ -1,7 +1,6 @@
 package einstein.subtle_effects.init;
 
 import einstein.subtle_effects.configs.CommandBlockSpawnType;
-import einstein.subtle_effects.configs.SmokeType;
 import einstein.subtle_effects.particle.option.BooleanParticleOptions;
 import einstein.subtle_effects.tickers.*;
 import einstein.subtle_effects.tickers.sleeping.*;
@@ -180,7 +179,7 @@ public class ModTickers {
                         }
                     }
                 });
-        registerSimpleTicker(EntityType.TNT, () -> ENTITIES.primedTNT.sparks, (entity, level, random) -> {
+        registerSimpleTicker(EntityType.TNT, () -> ENTITIES.explosives.TNTSparks, (entity, level, random) -> {
             level.addParticle(ModParticles.SHORT_SPARK.get(),
                     entity.getRandomX(0.5),
                     entity.getY(1),
@@ -190,7 +189,7 @@ public class ModTickers {
                     nextNonAbsDouble(random, 0.01)
             );
         });
-        registerSimpleTicker(EntityType.TNT, () -> ENTITIES.primedTNT.flames, (entity, level, random) -> {
+        registerSimpleTicker(EntityType.TNT, () -> ENTITIES.explosives.TNTFlames, (entity, level, random) -> {
             if (random.nextInt(10) == 0) {
                 level.addParticle(ParticleTypes.FLAME,
                         entity.getX(),
@@ -220,7 +219,7 @@ public class ModTickers {
                 );
             }
         });
-        registerSimpleTicker(EntityType.CREEPER, () -> ENTITIES.primedTNT.creeperSparks, (entity, level, random) -> {
+        registerSimpleTicker(EntityType.CREEPER, () -> ENTITIES.explosives.creeperSparks, (entity, level, random) -> {
             if (entity.isIgnited()) {
                 for (int i = 0; i < 3; i++) {
                     level.addParticle(ModParticles.SHORT_SPARK.get(),
@@ -234,9 +233,9 @@ public class ModTickers {
                 }
             }
         });
-        registerSimpleTicker(EntityType.CREEPER, () -> ENTITIES.primedTNT.creeperSmoke.isEnabled(), (entity, level, random) -> {
+        registerSimpleTicker(EntityType.CREEPER, () -> ENTITIES.explosives.creeperSmoke.isEnabled(), (entity, level, random) -> {
             if (entity.isIgnited()) {
-                level.addParticle(ENTITIES.primedTNT.creeperSmoke.getParticle().get(),
+                level.addParticle(ENTITIES.explosives.creeperSmoke.getParticle().get(),
                         entity.getRandomX(1),
                         entity.getRandomY(),
                         entity.getRandomZ(1),

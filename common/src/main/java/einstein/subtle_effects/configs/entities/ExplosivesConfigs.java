@@ -6,11 +6,11 @@ import me.fzzyhmstrs.fzzy_config.annotations.Translation;
 import me.fzzyhmstrs.fzzy_config.config.ConfigSection;
 
 @Translation(prefix = ModConfigs.BASE_KEY + "entities.primedTNT")
-public class PrimedTNTConfigs extends ConfigSection {
+public class ExplosivesConfigs extends ConfigSection {
 
-    public boolean updateSmoke = true;
-    public boolean flames = true;
-    public boolean sparks = true;
+    public boolean TNTUpdateSmoke = true;
+    public boolean TNTFlames = true;
+    public boolean TNTSparks = true;
     public SmokeType creeperSmoke = SmokeType.UPDATED;
     public boolean creeperSparks = true;
 }
