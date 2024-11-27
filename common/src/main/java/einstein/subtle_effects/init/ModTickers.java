@@ -1,6 +1,7 @@
 package einstein.subtle_effects.init;
 
 import einstein.subtle_effects.configs.CommandBlockSpawnType;
+import einstein.subtle_effects.configs.SmokeType;
 import einstein.subtle_effects.particle.option.BooleanParticleOptions;
 import einstein.subtle_effects.tickers.*;
 import einstein.subtle_effects.tickers.sleeping.*;
@@ -216,6 +217,32 @@ public class ModTickers {
                         entity.getRandomY(),
                         entity.getRandomZ(1),
                         0, 0, 0
+                );
+            }
+        });
+        registerSimpleTicker(EntityType.CREEPER, () -> ENTITIES.primedTNT.creeperSparks, (entity, level, random) -> {
+            if (entity.isIgnited()) {
+                for (int i = 0; i < 3; i++) {
+                    level.addParticle(ModParticles.SHORT_SPARK.get(),
+                            entity.getRandomX(1),
+                            entity.getRandomY(),
+                            entity.getRandomZ(1),
+                            nextNonAbsDouble(random, 0.01),
+                            nextNonAbsDouble(random, 0.01),
+                            nextNonAbsDouble(random, 0.01)
+                    );
+                }
+            }
+        });
+        registerSimpleTicker(EntityType.CREEPER, () -> ENTITIES.primedTNT.creeperSmoke != SmokeType.OFF, (entity, level, random) -> {
+            if (entity.isIgnited()) {
+                level.addParticle(ENTITIES.primedTNT.creeperSmoke.getParticle().get(),
+                        entity.getRandomX(1),
+                        entity.getRandomY(),
+                        entity.getRandomZ(1),
+                        nextNonAbsDouble(random, 0.01),
+                        nextNonAbsDouble(random, 0.01),
+                        nextNonAbsDouble(random, 0.01)
                 );
             }
         });

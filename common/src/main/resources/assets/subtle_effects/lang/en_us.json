@@ -229,6 +229,8 @@
   "config.subtle_effects.entities.primedTNT.updateSmoke": "Update Smoke",
   "config.subtle_effects.entities.primedTNT.flames": "Flames",
   "config.subtle_effects.entities.primedTNT.sparks": "Sparks",
+  "config.subtle_effects.entities.primedTNT.creeperSmoke": "Creeper Smoke",
+  "config.subtle_effects.entities.primedTNT.creeperSparks": "Creeper Sparks",
   "config.subtle_effects.entities": "Entities",
   "config.subtle_effects.entities.perspectiveDisplayType.OFF": "Off",
   "config.subtle_effects.entities.perspectiveDisplayType.DEFAULT": "Default",
