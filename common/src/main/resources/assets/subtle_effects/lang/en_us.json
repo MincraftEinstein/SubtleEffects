@@ -291,6 +291,8 @@
   "config.subtle_effects.items.waterEvaporateFromBucketSteam.desc": "Replaces the smoke particles with steam when water evaporates from a bucket in the nether",
   "config.subtle_effects.items.boneMealUsingParticles": "Bone Meal Using Particles",
   "config.subtle_effects.items.boneMealUsingParticles.desc": "Should bone meal item particles spawn when using bone meal",
+  "config.subtle_effects.items.flintAndSteelParticles": "Flint And Steel Particles",
+  "config.subtle_effects.items.flintAndSteelParticles.desc": "Using flint and steel spawns flame and spark particles when lighting a block on fire e.g campfires, candles. This does not affect placing fire",
   "config.subtle_effects.general": "General",
   "config.subtle_effects.general.mobSkullShaders": "Mob Skull Shaders",
   "config.subtle_effects.general.mobSkullShaders.desc": "Apply a mob's spectate shader when wearing its skull/head e.g Creeper head makes everything look green.\nNo new shaders are added",

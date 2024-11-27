@@ -33,6 +33,7 @@
     "client.entity.SpellCasterIllagerMixin",
     "client.item.BoneMealItemMixin",
     "client.item.BucketItemMixin",
+    "client.item.FlintAndSteelItemMixin",
     "client.particle.LavaParticleMixin",
     "client.particle.ParticleEngineMixin",
     "client.particle.ParticleMixin",
