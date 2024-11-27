@@ -64,7 +64,7 @@ public class ModBlockTickers {
             double y = pos.getY() + 0.8;
             double z = pos.getZ() + 0.5;
 
-            if (BLOCKS.torchflowerSmoke != SmokeType.OFF && random.nextInt(3) == 0) {
+            if (BLOCKS.torchflowerSmoke.isEnabled() && random.nextInt(3) == 0) {
                 level.addParticle(BLOCKS.torchflowerSmoke.getParticle().get(), x, y, z, 0, 0, 0);
             }
 

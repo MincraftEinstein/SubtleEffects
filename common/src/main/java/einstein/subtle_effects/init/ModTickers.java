@@ -234,7 +234,7 @@ public class ModTickers {
                 }
             }
         });
-        registerSimpleTicker(EntityType.CREEPER, () -> ENTITIES.primedTNT.creeperSmoke != SmokeType.OFF, (entity, level, random) -> {
+        registerSimpleTicker(EntityType.CREEPER, () -> ENTITIES.primedTNT.creeperSmoke.isEnabled(), (entity, level, random) -> {
             if (entity.isIgnited()) {
                 level.addParticle(ENTITIES.primedTNT.creeperSmoke.getParticle().get(),
                         entity.getRandomX(1),
