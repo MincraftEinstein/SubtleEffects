@@ -5,6 +5,7 @@ import einstein.subtle_effects.particle.ItemRarityParticle;
 import me.fzzyhmstrs.fzzy_config.annotations.Translation;
 import me.fzzyhmstrs.fzzy_config.config.ConfigSection;
 import me.fzzyhmstrs.fzzy_config.util.EnumTranslatable;
+import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedDouble;
 import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedFloat;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
@@ -22,6 +23,7 @@ public class ItemRarityConfigs extends ConfigSection {
     public boolean mixedColorName = true;
     public ValidatedFloat particleMaxHeight = new ValidatedFloat(1, 1.5F, 0.5F);
     public ValidatedFloat particleMaxSpeed = new ValidatedFloat(1, 2, 0.1F);
+    public ValidatedDouble particleDensity = new ValidatedDouble(1, 1, 0.1);
 
     public enum DisplayType implements EnumTranslatable {
         OFF,

@@ -60,14 +60,16 @@ public class ModTickers {
 
         registerSimpleTicker(entity -> entity instanceof ItemEntity itemEntity && ENTITIES.itemRarity.particlesDisplayType.test(itemEntity),
                 (entity, level, random) -> {
-                    level.addParticle(new ItemParticleOption(ModParticles.ITEM_RARITY.get(), ((ItemEntity) entity).getItem()),
-                            entity.getRandomX(1),
-                            entity.getY(),
-                            entity.getRandomZ(1),
-                            0,
-                            nextDouble(random, 0.02),
-                            0
-                    );
+                    if (shouldSpawn(random, ENTITIES.itemRarity.particleDensity)) {
+                        level.addParticle(new ItemParticleOption(ModParticles.ITEM_RARITY.get(), ((ItemEntity) entity).getItem()),
+                                entity.getRandomX(1),
+                                entity.getY(),
+                                entity.getRandomZ(1),
+                                0,
+                                nextDouble(random, 0.02),
+                                0
+                        );
+                    }
                 });
         registerSimpleTicker(entity -> entity instanceof Player && ENTITIES.dustClouds.playerRunning,
                 (entity, level, random) -> {
