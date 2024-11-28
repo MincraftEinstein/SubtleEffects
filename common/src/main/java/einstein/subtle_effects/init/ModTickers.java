@@ -179,7 +179,7 @@ public class ModTickers {
                         }
                     }
                 });
-        registerSimpleTicker(EntityType.TNT, () -> ENTITIES.explosives.TNTSparks, (entity, level, random) -> {
+        registerSimpleTicker(EntityType.TNT, () -> ENTITIES.explosives.tntSparks, (entity, level, random) -> {
             level.addParticle(ModParticles.SHORT_SPARK.get(),
                     entity.getRandomX(0.5),
                     entity.getY(1),
@@ -189,7 +189,7 @@ public class ModTickers {
                     nextNonAbsDouble(random, 0.01)
             );
         });
-        registerSimpleTicker(EntityType.TNT, () -> ENTITIES.explosives.TNTFlames, (entity, level, random) -> {
+        registerSimpleTicker(EntityType.TNT, () -> ENTITIES.explosives.tntFlames, (entity, level, random) -> {
             if (random.nextInt(10) == 0) {
                 level.addParticle(ParticleTypes.FLAME,
                         entity.getX(),
