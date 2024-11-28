@@ -8,6 +8,7 @@ import me.fzzyhmstrs.fzzy_config.annotations.Translation;
 import me.fzzyhmstrs.fzzy_config.config.Config;
 import me.fzzyhmstrs.fzzy_config.util.EnumTranslatable;
 import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedDouble;
+import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedInt;
 import net.minecraft.client.Minecraft;
 import org.jetbrains.annotations.NotNull;
 
@@ -38,6 +39,8 @@ public class ModEntityConfigs extends Config {
     public boolean ironGolemCrackParticles = true;
     public boolean spectralArrowParticles = true;
     public boolean wardenDeathSoulParticles = true;
+    public XPBottleParticlesDisplayType xpBottleParticlesDisplayType = XPBottleParticlesDisplayType.DEFAULT;
+    public ValidatedInt xpBottleParticlesDensity = new ValidatedInt(10, 30, 5);
 
     public ModEntityConfigs() {
         super(SubtleEffects.loc("entities"));
@@ -65,6 +68,17 @@ public class ModEntityConfigs extends Config {
         @Override
         public String prefix() {
             return ModConfigs.BASE_KEY + "entities.perspectiveDisplayType";
+        }
+    }
+
+    public enum XPBottleParticlesDisplayType implements EnumTranslatable {
+        DEFAULT,
+        VANILLA,
+        BOTH;
+
+        @Override
+        public @NotNull String prefix() {
+            return ModConfigs.BASE_KEY + "entities.xpBottleParticlesDisplayType";
         }
     }
 }
