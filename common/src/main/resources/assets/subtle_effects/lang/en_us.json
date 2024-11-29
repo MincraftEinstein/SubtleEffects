@@ -196,6 +196,8 @@
   "config.subtle_effects.entities.dustClouds.playerFell.desc": "Should a cloud of dust appear when a player takes fall damage",
   "config.subtle_effects.entities.dustClouds.playerRunning": "Player Running",
   "config.subtle_effects.entities.dustClouds.playerRunning.desc": "Should a dust cloud form behind a running player",
+  "config.subtle_effects.entities.dustClouds.playerRunningRequiresSpeed": "Player Running Requires Speed",
+  "config.subtle_effects.entities.dustClouds.playerRunningRequiresSpeed.desc": "Forces player running dust clouds to only spawn if the player is using the speed potion effect",
   "config.subtle_effects.entities.dustClouds.mobFell": "Mob Fell",
   "config.subtle_effects.entities.dustClouds.mobFell.desc": "Should a cloud of dust appear when a mob takes fall damage",
   "config.subtle_effects.entities.dustClouds.mobRunning": "Mob Running",

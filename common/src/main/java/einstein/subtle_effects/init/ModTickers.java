@@ -12,6 +12,7 @@ import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -78,6 +79,11 @@ public class ModTickers {
                     }
 
                     Player player = (Player) entity;
+
+                    if (ENTITIES.dustClouds.playerRunningRequiresSpeed && !player.hasEffect(MobEffects.MOVEMENT_SPEED)) {
+                        return;
+                    }
+
                     if (player.canSpawnSprintParticle() && player.onGround() && !player.isUsingItem()) {
                         if (random.nextBoolean()) {
                             level.addParticle(ModParticles.SMALL_DUST_CLOUD.get(),
