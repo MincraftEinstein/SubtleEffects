@@ -47,7 +47,7 @@ public class ModParticles {
     public static final Supplier<SimpleParticleType> SMOKE = register("smoke", SmokeParticleProvider::new);
     public static final Supplier<SimpleParticleType> POLLEN = register("pollen", PollenProvider::new);
     public static final Supplier<ParticleType<DirectionParticleOptions>> COMMAND_BLOCK = register("command_block", type -> DirectionParticleOptions.CODEC, type -> DirectionParticleOptions.STREAM_CODEC, CommandBlockParticle.Provider::new);
-    public static final Supplier<ParticleType<ItemParticleOption>> ITEM_RARITY = register("item_rarity", ItemParticleOption::codec, ItemParticleOption::streamCodec, ItemRarityParticle.Provider::new);
+    public static final Supplier<ParticleType<IntegerParticleOptions>> ITEM_RARITY = register("item_rarity", IntegerParticleOptions::codec, IntegerParticleOptions::streamCodec, ItemRarityParticle.Provider::new);
     public static final Supplier<ParticleType<PositionParticleOptions>> BEACON = register("beacon", PositionParticleOptions::codec, PositionParticleOptions::streamCodec, BeaconParticle.Provider::new);
     public static final Supplier<SimpleParticleType> COMPOST = register("compost", CompostParticle.Provider::new);
     public static final Supplier<SimpleParticleType> STEAM = register("steam", SteamParticle.Provider::new);

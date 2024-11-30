@@ -25,6 +25,6 @@ public record IntegerParticleOptions(ParticleType<IntegerParticleOptions> type,
 
     @Override
     public ParticleType<?> getType() {
-        return ModParticles.SHEEP_FLUFF.get();
+        return type();
     }
 }
