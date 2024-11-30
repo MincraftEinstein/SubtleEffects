@@ -26,12 +26,12 @@ public class BiomeParticleManager {
     private static final List<BiomeParticleSettings> REGISTERED = new ArrayList<>();
     private static final BlockPos.MutableBlockPos BIOME_POS = new BlockPos.MutableBlockPos();
     private static final BiPredicate<Level, BlockPos> NOT_RAINING = (level, pos) -> !level.isRaining();
-    public static final BiPredicate<Level, BlockPos> FIREFLY_CONDITIONS = NOT_RAINING.and((level, pos) ->
-            level.getDayTime() > 13000
-                    && level.getDayTime() < 23000
-                    && level.getBrightness(LightLayer.BLOCK, pos) <= 5
-                    && level.getBiome(pos).value().warmEnoughToRain(pos)
-    );
+    public static final BiPredicate<Level, BlockPos> FIREFLY_CONDITIONS = NOT_RAINING.and((level, pos) -> {
+        float time = level.getDayTime() % 24000F;
+        return time > 13000 && time < 23000
+                && level.getBrightness(LightLayer.BLOCK, pos) <= 5
+                && level.getBiome(pos).value().warmEnoughToRain(pos);
+    });
     private static boolean HAS_CLEARED;
 
     public static void init() {
