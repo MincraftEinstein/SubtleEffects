@@ -11,6 +11,7 @@ public class ModPackets {
         NETWORK.registerToClient(ClientBoundEntityFellPacket.TYPE, ClientBoundEntityFellPacket.STREAM_CODEC);
         NETWORK.registerToClient(ClientBoundEntitySpawnSprintingDustCloudsPacket.TYPE, ClientBoundEntitySpawnSprintingDustCloudsPacket.STREAM_CODEC);
         NETWORK.registerToClient(ClientBoundBlockDestroyEffectsPacket.TYPE, ClientBoundBlockDestroyEffectsPacket.STREAM_CODEC);
+        NETWORK.registerToClient(ClientBoundXPBottleEffectsPacket.TYPE, ClientBoundXPBottleEffectsPacket.STREAM_CODEC);
     }
 
     public static void initClientHandlers() {
@@ -18,5 +19,6 @@ public class ModPackets {
         NETWORK.registerClientHandler(ClientBoundEntityFellPacket.TYPE, ClientPacketHandlers::handle);
         NETWORK.registerClientHandler(ClientBoundEntitySpawnSprintingDustCloudsPacket.TYPE, ClientPacketHandlers::handle);
         NETWORK.registerClientHandler(ClientBoundBlockDestroyEffectsPacket.TYPE, ClientPacketHandlers::handle);
+        NETWORK.registerClientHandler(ClientBoundXPBottleEffectsPacket.TYPE, ClientPacketHandlers::handle);
     }
 }

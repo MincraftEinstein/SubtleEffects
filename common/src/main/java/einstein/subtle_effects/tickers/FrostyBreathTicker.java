@@ -17,8 +17,10 @@ import static einstein.subtle_effects.init.ModConfigs.ENTITIES;
 
 public class FrostyBreathTicker extends Ticker<LivingEntity> {
 
+    private int delayTimer = 0;
     private int breatheTimer = 0;
     private int breatheOutTimer = 0;
+    private final int startDelay = random.nextInt(40);
 
     public FrostyBreathTicker(LivingEntity entity) {
         super(entity);
@@ -51,6 +53,11 @@ public class FrostyBreathTicker extends Ticker<LivingEntity> {
         }
 
         if (level.getBiome(pos).value().coldEnoughToSnow(pos, level.getSeaLevel()) || (Util.IS_SERENE_SEANSONS_LOADED.get() && SereneSeasonsCompat.isColdSeason(level))) {
+            if (delayTimer < startDelay) {
+                delayTimer++;
+                return;
+            }
+
             if (breatheTimer >= ENTITIES.humanoids.frostyBreath.waitTime.get()) {
                 ParticleSpawnUtil.spawnEntityFaceParticle(ModParticles.FROSTY_BREATH.get(),
                         entity, level, random, new Vec3(0, -0.1, 0),

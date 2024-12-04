@@ -62,7 +62,7 @@ public class ModBlockConfigs extends Config {
     public boolean grindstoneUseParticles = true;
     public CommandBlockSpawnType commandBlockParticles = CommandBlockSpawnType.ON;
     public boolean slimeBlockBounceSounds = true;
-    public boolean beaconParticles = true;
+    public BeaconParticlesDisplayType beaconParticlesDisplayType = BeaconParticlesDisplayType.ON;
     public boolean compostingParticles = true;
     public boolean respawnAnchorParticles = true;
     public boolean beehiveShearParticles = true;
@@ -143,6 +143,17 @@ public class ModBlockConfigs extends Config {
         @Override
         public @NotNull String prefix() {
             return BASE_KEY + "blocks.vegetationFirefliesSpawnType";
+        }
+    }
+
+    public enum BeaconParticlesDisplayType implements EnumTranslatable {
+        OFF,
+        ON,
+        NOT_COLORED;
+
+        @Override
+        public @NotNull String prefix() {
+            return BASE_KEY + "blocks.beaconParticlesDisplayType";
         }
     }
 }

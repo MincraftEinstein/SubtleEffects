@@ -13,6 +13,7 @@ public class DustCloudsConfig extends ConfigSection {
     public ValidatedFloat alpha = new ValidatedFloat(1, 1, 0.3F, ValidatedNumber.WidgetType.TEXTBOX);
     public boolean playerFell = true;
     public boolean playerRunning = true;
+    public boolean playerRunningRequiresSpeed = false;
     public boolean mobFell = true;
     public boolean mobRunning = true;
     public boolean landMaceAttack = true;

@@ -29,6 +29,10 @@ public enum SmokeType implements EnumTranslatable {
         return BASE_KEY + "smokeType";
     }
 
+    public boolean isEnabled() {
+        return this != OFF;
+    }
+
     @Nullable
     public Supplier<? extends ParticleOptions> getParticle() {
         return particle;
