@@ -30,6 +30,7 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Predicate;
 
@@ -63,7 +64,7 @@ public class ModBlockTickers {
             double y = pos.getY() + 0.8;
             double z = pos.getZ() + 0.5;
 
-            if (BLOCKS.torchflowerSmoke != SmokeType.OFF && random.nextInt(3) == 0) {
+            if (BLOCKS.torchflowerSmoke.isEnabled() && random.nextInt(3) == 0) {
                 level.addParticle(BLOCKS.torchflowerSmoke.getParticle().get(), x, y, z, 0, 0, 0);
             }
 
@@ -91,10 +92,11 @@ public class ModBlockTickers {
             }
         });
         register(Blocks.BEACON, (state, level, pos, random) -> {
-            if (BLOCKS.beaconParticles) {
+            if (BLOCKS.beaconParticlesDisplayType != ModBlockConfigs.BeaconParticlesDisplayType.OFF) {
                 BlockEntity blockEntity = level.getBlockEntity(pos);
                 if (blockEntity instanceof BeaconBlockEntity beaconBlockEntity) {
-                    if (!beaconBlockEntity.getBeamSections().isEmpty()) {
+                    List<BeaconBlockEntity.BeaconBeamSection> sections = beaconBlockEntity.getBeamSections();
+                    if (!sections.isEmpty() && !(sections.size() > 1 && BLOCKS.beaconParticlesDisplayType == ModBlockConfigs.BeaconParticlesDisplayType.NOT_COLORED)) {
                         PositionParticleOptions options = new PositionParticleOptions(ModParticles.BEACON.get(), beaconBlockEntity.getBlockPos());
                         for (int i = 0; i < 10; i++) {
                             level.addParticle(options,

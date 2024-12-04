@@ -11,5 +11,6 @@ public class ModPackets {
         NETWORK.registerToClient(ClientBoundEntityFellPacket.ID, ClientBoundEntityFellPacket.class, ClientBoundEntityFellPacket::decode);
         NETWORK.registerToClient(ClientBoundEntitySpawnSprintingDustCloudsPacket.ID, ClientBoundEntitySpawnSprintingDustCloudsPacket.class, ClientBoundEntitySpawnSprintingDustCloudsPacket::decode);
         NETWORK.registerToClient(ClientBoundBlockDestroyEffectsPacket.ID, ClientBoundBlockDestroyEffectsPacket.class, ClientBoundBlockDestroyEffectsPacket::decode);
+        NETWORK.registerToClient(ClientBoundXPBottleEffectsPacket.TYPE, ClientBoundXPBottleEffectsPacket.STREAM_CODEC);
     }
 }

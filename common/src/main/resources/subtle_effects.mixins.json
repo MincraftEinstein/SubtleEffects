@@ -33,6 +33,7 @@
     "client.entity.SpellCasterIllagerMixin",
     "client.item.AxeItemMixin",
     "client.item.BoneMealItemMixin",
+    "client.item.FlintAndSteelItemMixin",
     "client.particle.LavaParticleMixin",
     "client.particle.ParticleEngineMixin",
     "client.particle.ParticleMixin",
@@ -43,6 +44,7 @@
     "client.particle.bubbles.WaterCurrentDownParticleProviderMixin"
   ],
   "mixins": [
+    "common.ThrownExperienceBottleMixin",
     "common.AbstractHorseMixin",
     "common.BeehiveBlockEntityMixin",
     "common.CommonLivingEntityMixin",

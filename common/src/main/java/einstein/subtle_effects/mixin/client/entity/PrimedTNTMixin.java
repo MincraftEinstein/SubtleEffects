@@ -14,7 +14,7 @@ public class PrimedTNTMixin {
 
     @WrapOperation(method = "tick", at = @At(value = "FIELD", target = "Lnet/minecraft/core/particles/ParticleTypes;SMOKE:Lnet/minecraft/core/particles/SimpleParticleType;"))
     private SimpleParticleType replaceSmoke(Operation<SimpleParticleType> original) {
-        if (ModConfigs.ENTITIES.primedTNT.updateSmoke) {
+        if (ModConfigs.ENTITIES.explosives.tntUpdateSmoke) {
             return ModParticles.SMOKE.get();
         }
         return original.call();

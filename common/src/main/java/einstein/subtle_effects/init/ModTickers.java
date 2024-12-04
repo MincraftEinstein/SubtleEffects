@@ -1,6 +1,7 @@
 package einstein.subtle_effects.init;
 
 import einstein.subtle_effects.configs.CommandBlockSpawnType;
+import einstein.subtle_effects.configs.entities.ItemRarityConfigs;
 import einstein.subtle_effects.particle.option.BooleanParticleOptions;
 import einstein.subtle_effects.tickers.*;
 import einstein.subtle_effects.tickers.sleeping.*;
@@ -9,9 +10,9 @@ import einstein.subtle_effects.util.Util;
 import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedDouble;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.particles.BlockParticleOption;
-import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -38,7 +39,6 @@ import java.util.function.Predicate;
 import static einstein.subtle_effects.init.ModConfigs.ENTITIES;
 import static einstein.subtle_effects.tickers.TickerManager.registerSimpleTicker;
 import static einstein.subtle_effects.tickers.TickerManager.registerTicker;
-import static einstein.subtle_effects.util.MathUtil.nextDouble;
 import static einstein.subtle_effects.util.MathUtil.nextNonAbsDouble;
 
 public class ModTickers {
@@ -57,18 +57,8 @@ public class ModTickers {
         registerTicker(entity -> entity.getType().equals(EntityType.SLIME) && ENTITIES.slimeTrails, (Slime entity) -> new SlimeTrailTicker<>(entity, ModParticles.SLIME_TRAIL));
         registerTicker(entity -> entity.getType().equals(EntityType.MAGMA_CUBE) && ENTITIES.magmaCubeTrails, (MagmaCube entity) -> new SlimeTrailTicker<>(entity, ModParticles.MAGMA_CUBE_TRAIL));
         registerTicker(entity -> entity.getType().equals(EntityType.IRON_GOLEM) && ENTITIES.ironGolemCrackParticles, IronGolemTicker::new);
+        registerTicker(entity -> entity instanceof ItemEntity && ENTITIES.itemRarity.particlesDisplayType != ItemRarityConfigs.DisplayType.OFF, ItemRarityTicker::new);
 
-        registerSimpleTicker(entity -> entity instanceof ItemEntity itemEntity && ENTITIES.itemRarity.particlesDisplayType.test(itemEntity),
-                (entity, level, random) -> {
-                    level.addParticle(new ItemParticleOption(ModParticles.ITEM_RARITY.get(), ((ItemEntity) entity).getItem()),
-                            entity.getRandomX(1),
-                            entity.getY(),
-                            entity.getRandomZ(1),
-                            0,
-                            nextDouble(random, 0.02),
-                            0
-                    );
-                });
         registerSimpleTicker(entity -> entity instanceof Player && ENTITIES.dustClouds.playerRunning,
                 (entity, level, random) -> {
                     if (ENTITIES.dustClouds.preventWhenRaining && level.isRainingAt(entity.blockPosition())) {
@@ -76,6 +66,11 @@ public class ModTickers {
                     }
 
                     Player player = (Player) entity;
+
+                    if (ENTITIES.dustClouds.playerRunningRequiresSpeed && !player.hasEffect(MobEffects.MOVEMENT_SPEED)) {
+                        return;
+                    }
+
                     if (player.canSpawnSprintParticle() && player.onGround() && !player.isUsingItem()) {
                         if (random.nextBoolean()) {
                             level.addParticle(ModParticles.SMALL_DUST_CLOUD.get(),
@@ -179,7 +174,7 @@ public class ModTickers {
                         }
                     }
                 });
-        registerSimpleTicker(EntityType.TNT, () -> ENTITIES.primedTNT.sparks, (entity, level, random) -> {
+        registerSimpleTicker(EntityType.TNT, () -> ENTITIES.explosives.tntSparks, (entity, level, random) -> {
             level.addParticle(ModParticles.SHORT_SPARK.get(),
                     entity.getRandomX(0.5),
                     entity.getY(1),
@@ -189,7 +184,7 @@ public class ModTickers {
                     nextNonAbsDouble(random, 0.01)
             );
         });
-        registerSimpleTicker(EntityType.TNT, () -> ENTITIES.primedTNT.flames, (entity, level, random) -> {
+        registerSimpleTicker(EntityType.TNT, () -> ENTITIES.explosives.tntFlames, (entity, level, random) -> {
             if (random.nextInt(10) == 0) {
                 level.addParticle(ParticleTypes.FLAME,
                         entity.getX(),
@@ -219,9 +214,35 @@ public class ModTickers {
                 );
             }
         });
+        registerSimpleTicker(EntityType.CREEPER, () -> ENTITIES.explosives.creeperSparks, (entity, level, random) -> {
+            if (entity.isIgnited()) {
+                for (int i = 0; i < 3; i++) {
+                    level.addParticle(ModParticles.SHORT_SPARK.get(),
+                            entity.getRandomX(1),
+                            entity.getRandomY(),
+                            entity.getRandomZ(1),
+                            nextNonAbsDouble(random, 0.01),
+                            nextNonAbsDouble(random, 0.01),
+                            nextNonAbsDouble(random, 0.01)
+                    );
+                }
+            }
+        });
+        registerSimpleTicker(EntityType.CREEPER, () -> ENTITIES.explosives.creeperSmoke.isEnabled(), (entity, level, random) -> {
+            if (entity.isIgnited()) {
+                level.addParticle(ENTITIES.explosives.creeperSmoke.getParticle().get(),
+                        entity.getRandomX(1),
+                        entity.getRandomY(),
+                        entity.getRandomZ(1),
+                        nextNonAbsDouble(random, 0.01),
+                        nextNonAbsDouble(random, 0.01),
+                        nextNonAbsDouble(random, 0.01)
+                );
+            }
+        });
     }
 
-    private static boolean shouldSpawn(RandomSource random, ValidatedDouble chanceConfig) {
+    public static boolean shouldSpawn(RandomSource random, ValidatedDouble chanceConfig) {
         return Math.min(random.nextFloat(), 1) < chanceConfig.get();
     }
 

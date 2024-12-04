@@ -33,7 +33,7 @@ public class EntityFireTicker extends Ticker<Entity> {
             }
 
             if (bbWidth <= 4 && bbHeight <= 4) {
-                if (ENTITIES.burning.smoke != SmokeType.OFF) {
+                if (ENTITIES.burning.smoke.isEnabled()) {
                     level.addParticle(ENTITIES.burning.smoke.getParticle().get(),
                             entity.getRandomX(1),
                             entity.getRandomY(),
