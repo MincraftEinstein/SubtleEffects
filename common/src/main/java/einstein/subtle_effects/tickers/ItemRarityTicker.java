@@ -32,7 +32,7 @@ public class ItemRarityTicker extends Ticker<ItemEntity> {
 
         if (stack.getRarity() == Rarity.COMMON) {
             if (ENTITIES.itemRarity.particlesDisplayType == ItemRarityConfigs.DisplayType.NOT_COMMON) {
-                if (ENTITIES.itemRarity.particleColor != ItemRarityConfigs.ColorType.NAME_COLOR && nameColors.size() == 1 && nameColors.getFirst().equals(WHITE_TEXT)) {
+                if (ENTITIES.itemRarity.particleColor != ItemRarityConfigs.ColorType.NAME_COLOR && nameColors.size() == 1 && nameColors.get(0).equals(WHITE_TEXT)) {
                     nameColors.clear();
                 }
             }
@@ -51,7 +51,7 @@ public class ItemRarityTicker extends Ticker<ItemEntity> {
             }
 
             if (usesSingleColor) {
-                TextColor color = (baseColor != null ? baseColor : (!colors.isEmpty() ? colors.getFirst() : null));
+                TextColor color = (baseColor != null ? baseColor : (!colors.isEmpty() ? colors.get(0) : null));
                 if (color != null && !color.equals(WHITE_TEXT)) {
                     nameColors.add(color);
                     return;
@@ -63,7 +63,7 @@ public class ItemRarityTicker extends Ticker<ItemEntity> {
             }
         }
 
-        TextColor rarityColor = TextColor.fromLegacyFormat(stack.getRarity().color());
+        TextColor rarityColor = TextColor.fromLegacyFormat(stack.getRarity().color);
         if (rarityColor != null) {
             nameColors.add(rarityColor);
             return;
@@ -83,7 +83,7 @@ public class ItemRarityTicker extends Ticker<ItemEntity> {
             level.addParticle(
                     new IntegerParticleOptions(
                             ModParticles.ITEM_RARITY.get(),
-                            (nameColors.size() > 1 ? nameColors.get(random.nextInt(nameColors.size())) : nameColors.getFirst()).getValue()
+                            (nameColors.size() > 1 ? nameColors.get(random.nextInt(nameColors.size())) : nameColors.get(0)).getValue()
                     ),
                     entity.getRandomX(1),
                     entity.getY(),

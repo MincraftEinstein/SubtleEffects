@@ -43,7 +43,7 @@ public class ModParticles {
     public static final Supplier<SimpleParticleType> SMOKE = register("smoke");
     public static final Supplier<SimpleParticleType> POLLEN = register("pollen");
     public static final Supplier<ParticleType<DirectionParticleOptions>> COMMAND_BLOCK = register("command_block", DirectionParticleOptions.DESERIALIZER, DirectionParticleOptions::codec);
-    public static final Supplier<ParticleType<IntegerParticleOptions>> ITEM_RARITY = register("item_rarity", IntegerParticleOptions::codec, IntegerParticleOptions::streamCodec, ItemRarityParticle.Provider::new);
+    public static final Supplier<ParticleType<IntegerParticleOptions>> ITEM_RARITY = register("item_rarity", IntegerParticleOptions.DESERIALIZER, IntegerParticleOptions::codec);
     public static final Supplier<ParticleType<PositionParticleOptions>> BEACON = register("beacon", PositionParticleOptions.DESERIALIZER, PositionParticleOptions::codec);
     public static final Supplier<SimpleParticleType> COMPOST = register("compost");
     public static final Supplier<SimpleParticleType> STEAM = register("steam");
@@ -56,7 +56,7 @@ public class ModParticles {
     public static final Supplier<SimpleParticleType> AMETHYST_SPARKLE = register("amethyst_sparkle");
     public static final Supplier<SimpleParticleType> AZALEA_PETAL = register("azalea_petal");
     public static final Supplier<SimpleParticleType> FROSTY_BREATH = register("frosty_breath");
-    public static final Supplier<ParticleType<FloatParticleOptions>> EXPERIENCE = register("experience", FloatParticleOptions::codec, FloatParticleOptions::streamCodec, ExperienceParticle.Provider::new);
+    public static final Supplier<ParticleType<FloatParticleOptions>> EXPERIENCE = register("experience", FloatParticleOptions.DESERIALIZER, FloatParticleOptions::codec);
 
     public static void init() {
     }

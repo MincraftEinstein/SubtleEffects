@@ -1,21 +1,33 @@
 package einstein.subtle_effects.networking.clientbound;
 
 import einstein.subtle_effects.SubtleEffects;
+import einstein.subtle_effects.networking.Packet;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
+import org.jetbrains.annotations.Nullable;
 
-public record ClientBoundXPBottleEffectsPacket(BlockPos pos) implements CustomPacketPayload {
+public record ClientBoundXPBottleEffectsPacket(BlockPos pos) implements Packet {
 
-    public static final Type<ClientBoundXPBottleEffectsPacket> TYPE = new Type<>(SubtleEffects.loc("xp_bottle_effects"));
-    public static final StreamCodec<FriendlyByteBuf, ClientBoundXPBottleEffectsPacket> STREAM_CODEC = StreamCodec.composite(
-            BlockPos.STREAM_CODEC, ClientBoundXPBottleEffectsPacket::pos,
-            ClientBoundXPBottleEffectsPacket::new
-    );
+    public static final ResourceLocation ID = SubtleEffects.loc("xp_bottle_effects");
 
     @Override
-    public Type<? extends CustomPacketPayload> type() {
-        return TYPE;
+    public void encode(FriendlyByteBuf buf) {
+        buf.writeBlockPos(pos);
+    }
+
+    public static ClientBoundXPBottleEffectsPacket decode(FriendlyByteBuf buf) {
+        return new ClientBoundXPBottleEffectsPacket(buf.readBlockPos());
+    }
+
+    @Override
+    public void handle(@Nullable ServerPlayer player) {
+        ClientPacketHandlers.handle(this);
+    }
+
+    @Override
+    public ResourceLocation id() {
+        return ID;
     }
 }

@@ -6,7 +6,6 @@ import einstein.subtle_effects.init.ModParticles;
 import einstein.subtle_effects.particle.option.FloatParticleOptions;
 import einstein.subtle_effects.util.ParticleSpawnUtil;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
@@ -18,7 +17,7 @@ import net.minecraft.world.entity.monster.Ravager;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.alchemy.PotionContents;
+import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -85,7 +84,12 @@ public class ClientPacketHandlers {
         }
     }
 
-    public static void handle(ClientLevel level, ClientBoundXPBottleEffectsPacket packet) {
+    public static void handle(ClientBoundXPBottleEffectsPacket packet) {
+        Level level = Minecraft.getInstance().level;
+        if (level == null) {
+            return;
+        }
+
         BlockPos pos = packet.pos();
         Vec3 vec3 = Vec3.atBottomCenterOf(pos);
         RandomSource random = level.getRandom();
@@ -93,7 +97,7 @@ public class ClientPacketHandlers {
             level.levelEvent(
                     LevelEvent.PARTICLES_SPELL_POTION_SPLASH,
                     pos,
-                    PotionContents.getColor(Potions.WATER)
+                    PotionUtils.getColor(Potions.WATER)
             );
         }
 

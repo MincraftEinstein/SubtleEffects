@@ -60,6 +60,7 @@ public class ModParticleProviders {
         register(AMETHYST_SPARKLE, SuspendedTownParticle.HappyVillagerProvider::new);
         register(AZALEA_PETAL, AzaleaParticleProvider::new);
         register(FROSTY_BREATH, SteamParticle.FrostyBreathProvider::new);
+        register(EXPERIENCE, ExperienceParticle.Provider::new);
         SubtleEffects.LOGGER.info("Forge please do me a favor and STOP EXISTING!!");
     }
 

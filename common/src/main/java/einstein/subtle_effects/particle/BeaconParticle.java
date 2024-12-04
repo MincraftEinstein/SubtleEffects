@@ -71,10 +71,10 @@ public class BeaconParticle extends SparkParticle {
             }
 
             if (beamSection != null) {
-                int color = beamSection.getColor();
-                rCol = ((color >> 16) & 255) / 255F;
-                gCol = ((color >> 8) & 255) / 255F;
-                bCol = (color & 255) / 255F;
+                float[] colors = beamSection.getColor();
+                rCol = colors[0];
+                gCol = colors[1];
+                bCol = colors[2];
             }
         }
 
