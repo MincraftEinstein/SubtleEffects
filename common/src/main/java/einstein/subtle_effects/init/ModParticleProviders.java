@@ -61,7 +61,7 @@ public class ModParticleProviders {
         register(AZALEA_PETAL, AzaleaParticleProvider::new);
         register(FROSTY_BREATH, SteamParticle.FrostyBreathProvider::new);
         register(EXPERIENCE, ExperienceParticle.Provider::new);
-        SubtleEffects.LOGGER.info("Forge please do me a favor and STOP EXISTING!!");
+        SubtleEffects.LOGGER.info("Forge please do the world a favor and STOP EXISTING!!");
     }
 
     private static <T extends ParticleType<V>, V extends ParticleOptions> void register(Supplier<T> type, Function<SpriteSet, ParticleProvider<V>> provider) {
