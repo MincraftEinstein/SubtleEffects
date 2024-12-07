@@ -213,7 +213,7 @@
   "config.subtle_effects.entities.burning.sounds": "Sounds",
   "config.subtle_effects.entities.itemRarity": "Item Rarity",
   "config.subtle_effects.entities.itemRarity.particlesDisplayType": "Particles Display Type",
-  "config.subtle_effects.entities.itemRarity.particlesDisplayType.desc": "Adds colored particles that float up from items on the ground.\n'Not Common Items' is ignored if 'Particle Color' is set to 'Name Color'",
+  "config.subtle_effects.entities.itemRarity.particlesDisplayType.desc": "Adds colored particles that float up from items on the ground.",
   "config.subtle_effects.entities.itemRarity.particlesDisplayType.OFF": "Off",
   "config.subtle_effects.entities.itemRarity.particlesDisplayType.ON": "On",
   "config.subtle_effects.entities.itemRarity.particlesDisplayType.NOT_COMMON": "Not Common Items",
