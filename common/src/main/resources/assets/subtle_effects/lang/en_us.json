@@ -178,6 +178,8 @@
   "config.subtle_effects.entities.humanoids.frostyBreath.seasons.OFF": "Off",
   "config.subtle_effects.entities.humanoids.frostyBreath.seasons.DEFAULT": "Default",
   "config.subtle_effects.entities.humanoids.frostyBreath.seasons.WINTER_ONLY": "Winter Only",
+  "config.subtle_effects.entities.humanoids.frostyBreath.additionalBiomes": "Additional Biomes",
+  "config.subtle_effects.entities.humanoids.frostyBreath.additionalBiomes.desc": "A list of additional biomes that the effect does not already detect",
   "config.subtle_effects.entities.humanoids.player": "Player",
   "config.subtle_effects.entities.humanoids.player.stomachGrowlingThreshold": "Stomach Growling Threshold",
   "config.subtle_effects.entities.humanoids.player.stomachGrowlingThreshold.desc": "When the player's hunger gets below this point a stomach growl sound will play every 15 sec.\nValue measured in half hunger points.\n0 to disable",
