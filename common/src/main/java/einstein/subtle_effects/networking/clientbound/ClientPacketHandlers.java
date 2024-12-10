@@ -71,7 +71,7 @@ public class ClientPacketHandlers {
             level.levelEvent(
                     LevelEvent.PARTICLES_SPELL_POTION_SPLASH,
                     pos,
-                    PotionContents.getColor(Potions.WATER)
+                    PotionContents.BASE_POTION_COLOR
             );
         }
 

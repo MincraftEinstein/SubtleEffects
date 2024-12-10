@@ -14,7 +14,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 
 import static einstein.subtle_effects.init.ModConfigs.BIOMES;
@@ -25,7 +24,7 @@ public abstract class WeatherEffectsRendererMixin {
     @Shadow
     protected abstract Biome.Precipitation getPrecipitationAt(Level p_362885_, BlockPos p_362817_);
 
-    @WrapOperation(method = "render(Lnet/minecraft/client/renderer/LightTexture;Lnet/minecraft/world/phys/Vec3;IFLjava/util/List;Ljava/util/List;)V", at = @At(value = "FIELD", target = "Lnet/minecraft/client/renderer/WeatherEffectRenderer;RAIN_LOCATION:Lnet/minecraft/resources/ResourceLocation;"))
+    @WrapOperation(method = "render(Lnet/minecraft/client/renderer/MultiBufferSource;Lnet/minecraft/world/phys/Vec3;IFLjava/util/List;Ljava/util/List;)V", at = @At(value = "FIELD", target = "Lnet/minecraft/client/renderer/WeatherEffectRenderer;RAIN_LOCATION:Lnet/minecraft/resources/ResourceLocation;"))
     private ResourceLocation replaceRainTexture(Operation<ResourceLocation> original) {
         if (BIOMES.biomeColorRain) {
             return Util.COLORLESS_RAIN_TEXTURE;
