@@ -36,8 +36,6 @@ public class Util {
     public static final DustParticleOptions GLOWSTONE_DUST_PARTICLES = new DustParticleOptions(Vec3.fromRGB24(0xFFBC5E).toVector3f(), 1);
     public static final ResourceLocation CREEPER_SHADER = ResourceLocation.withDefaultNamespace("shaders/post/creeper.json");
     public static final ResourceLocation INVERT_SHADER = ResourceLocation.withDefaultNamespace("shaders/post/invert.json");
-    public static final Supplier<Item> ENDERMAN_HEAD = Suppliers.memoize(() -> BuiltInRegistries.ITEM.get(ResourceLocation.fromNamespaceAndPath("supplementaries", "enderman_head")));
-    public static final Supplier<Boolean> IS_SUPPLEMENTARIES_LOADED = Suppliers.memoize(() -> Services.PLATFORM.isModLoaded("supplementaries"));
     public static final Supplier<Boolean> IS_SERENE_SEANSONS_LOADED = Suppliers.memoize(() -> Services.PLATFORM.isModLoaded("sereneseasons"));
     public static final Supplier<Boolean> IS_SOUL_FIRED_LOADED = Suppliers.memoize(() -> Services.PLATFORM.isModLoaded("soul_fire_d"));
     public static final Supplier<ResourceLocation> BCWP_PACK_LOCATION = Suppliers.memoize(() -> SubtleEffects.loc("biome_color_water_particles").withPrefix(Services.PLATFORM.getPlatformName().equals("NeoForge") ? "resourcepacks/" : ""));
@@ -97,20 +95,9 @@ public class Util {
                     shaderManager.subtleEffects$loadShader(INVERT_SHADER);
                     return;
                 }
-                else if (isEndermanHead(stack)) {
-                    shaderManager.subtleEffects$loadShader(INVERT_SHADER);
-                    return;
-                }
             }
         }
         shaderManager.subtleEffects$clearShader();
-    }
-
-    private static boolean isEndermanHead(ItemStack stack) {
-        if (IS_SUPPLEMENTARIES_LOADED.get()) {
-            return stack.is(ENDERMAN_HEAD.get());
-        }
-        return false;
     }
 
     public static void setColorFromHex(Particle particle, int hexColor) {
