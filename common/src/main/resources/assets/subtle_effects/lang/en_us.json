@@ -138,6 +138,8 @@
   "config.subtle_effects.blocks.vegetationFirefliesSpawnType": "Vegetation Fireflies Spawn Type",
   "config.subtle_effects.blocks.vegetationFirefliesSpawnType.GRASS_AND_FLOWERS": "Grass And Flowers",
   "config.subtle_effects.blocks.vegetationFirefliesSpawnType.FLOWERS_ONLY": "Flowers Only",
+  "config.subtle_effects.blocks.creakingHeartParticles": "Creaking Heart Particles",
+  "config.subtle_effects.blocks.creakingHeartParticles.desc": "Resin drip particles for Creaking Hearts",
   "config.subtle_effects.entities.attacked": "Attacked",
   "config.subtle_effects.entities.attacked.desc": "Particles emitted from a mob when it takes damage from a another mob or player",
   "config.subtle_effects.entities.attacked.chickenFeathers": "Chicken Feathers",

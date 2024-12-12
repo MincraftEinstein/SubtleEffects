@@ -8,7 +8,10 @@ import einstein.subtle_effects.particle.provider.*;
 import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.client.particle.SuspendedTownParticle;
-import net.minecraft.core.particles.*;
+import net.minecraft.core.particles.ColorParticleOption;
+import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.core.particles.ParticleType;
+import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 
@@ -58,6 +61,9 @@ public class ModParticles {
     public static final Supplier<SimpleParticleType> AZALEA_PETAL = register("azalea_petal", AzaleaParticleProvider::new);
     public static final Supplier<SimpleParticleType> FROSTY_BREATH = register("frosty_breath", SteamParticle.FrostyBreathProvider::new);
     public static final Supplier<ParticleType<FloatParticleOptions>> EXPERIENCE = register("experience", FloatParticleOptions::codec, FloatParticleOptions::streamCodec, ExperienceParticle.Provider::new);
+    public static final Supplier<SimpleParticleType> DRIPPING_RESIN = register("dripping_resin", ResinDripParticleProviders.DrippingResinDropProvider::new);
+    public static final Supplier<SimpleParticleType> FALLING_RESIN = register("falling_resin", ResinDripParticleProviders.FallingResinDropProvider::new);
+    public static final Supplier<SimpleParticleType> LANDING_RESIN = register("landing_resin", ResinDripParticleProviders.LandingResinDropProvider::new);
 
     public static void init() {
     }

@@ -244,6 +244,22 @@ public class ModBlockTickers {
                         }
                     }
                 });
+        register(Blocks.CREAKING_HEART, (state, level, pos, random) -> {
+            if (BLOCKS.creakingHeartParticles) {
+                if (state.getValue(CreakingHeartBlock.ACTIVE) && random.nextInt(5) == 0) {
+                    Direction direction = Direction.getRandom(random);
+
+                    if (direction != Direction.UP) {
+                        BlockPos relativePos = pos.relative(direction);
+                        BlockState relativeState = level.getBlockState(relativePos);
+
+                        if (!state.canOcclude() || !relativeState.isFaceSturdy(level, relativePos, direction.getOpposite())) {
+                            ParticleSpawnUtil.spawnParticlesOnSide(ModParticles.DRIPPING_RESIN.get(), 0.1F, direction, level, pos, random, 0, 0, 0);
+                        }
+                    }
+                }
+            }
+        });
     }
 
     private static void register(Block block, Supplier<Boolean> isEnabled, BlockTickerProvider provider) {

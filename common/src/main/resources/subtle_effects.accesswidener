@@ -5,5 +5,11 @@ accessible method net/minecraft/client/particle/SuspendedParticle <init> (Lnet/m
 accessible method net/minecraft/world/level/block/BaseFireBlock canBurn (Lnet/minecraft/world/level/block/state/BlockState;)Z
 accessible method net/minecraft/world/level/block/AbstractCandleBlock getParticleOffsets (Lnet/minecraft/world/level/block/state/BlockState;)Ljava/lang/Iterable;
 accessible method net/minecraft/client/particle/ParticleEngine clearParticles ()V
+accessible method net/minecraft/client/particle/DripParticle$DripHangParticle <init> (Lnet/minecraft/client/multiplayer/ClientLevel;DDDLnet/minecraft/world/level/material/Fluid;Lnet/minecraft/core/particles/ParticleOptions;)V
+accessible method net/minecraft/client/particle/DripParticle$FallAndLandParticle <init> (Lnet/minecraft/client/multiplayer/ClientLevel;DDDLnet/minecraft/world/level/material/Fluid;Lnet/minecraft/core/particles/ParticleOptions;)V
+accessible method net/minecraft/client/particle/DripParticle$DripLandParticle <init> (Lnet/minecraft/client/multiplayer/ClientLevel;DDDLnet/minecraft/world/level/material/Fluid;)V
 
 accessible class net/minecraft/client/renderer/WeatherEffectRenderer$ColumnInstance
+accessible class net/minecraft/client/particle/DripParticle$DripHangParticle
+accessible class net/minecraft/client/particle/DripParticle$FallAndLandParticle
+accessible class net/minecraft/client/particle/DripParticle$DripLandParticle

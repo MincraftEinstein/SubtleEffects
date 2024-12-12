@@ -3,13 +3,15 @@ package einstein.subtle_effects.mixin.client.particle;
 import einstein.subtle_effects.util.ParticleAccessor;
 import net.minecraft.client.particle.Particle;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.gen.Accessor;
-import org.spongepowered.asm.mixin.gen.Invoker;
 
 @Mixin(Particle.class)
 public abstract class ParticleMixin implements ParticleAccessor {
 
+    @Shadow
+    protected float gravity;
     @Unique
     private boolean subtleEffects$forced = false;
 
@@ -37,5 +39,15 @@ public abstract class ParticleMixin implements ParticleAccessor {
     @Override
     public void subtleEffects$force() {
         subtleEffects$forced = true;
+    }
+
+    @Override
+    public float getGravity() {
+        return gravity;
+    }
+
+    @Override
+    public void setGravity(float gravity) {
+        this.gravity = gravity;
     }
 }
