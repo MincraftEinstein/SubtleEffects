@@ -6,6 +6,7 @@ import einstein.subtle_effects.platform.Services;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.SectionPos;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.particles.ParticleTypes;
@@ -117,5 +118,9 @@ public class Util {
 
     public static boolean isBCWPPackLoaded() {
         return Minecraft.getInstance().getResourcePackRepository().getSelectedIds().contains(BCWP_PACK_ID.get());
+    }
+
+    public static boolean isChunkLoaded(Level level, double blockX, double blockZ) {
+        return level.getChunkSource().hasChunk(SectionPos.blockToSectionCoord(blockX), SectionPos.blockToSectionCoord(blockZ));
     }
 }

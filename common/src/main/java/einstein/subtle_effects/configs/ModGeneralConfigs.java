@@ -19,6 +19,7 @@ public class ModGeneralConfigs extends Config {
     @ValidatedInt.Restrict(min = 1, max = 32)
     public int particleRenderDistance = 5;
     public boolean cullParticlesWithNoAlpha = true;
+    public boolean cullParticlesInUnloadedChunks = true;
     public ValidatedFloat sparksScale = new ValidatedFloat(1, 2, 1);
 
     public ModGeneralConfigs() {

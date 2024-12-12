@@ -314,5 +314,7 @@
   "config.subtle_effects.general.particleRenderDistance.desc": "The maximum number of chunks away from the player a particle will render.\nThis does not affect particles spawning/existing in the world only rendering.\nThis affects most particles in the game including particles from other mods, some particles however ignore this value e.g. campfire smoke.",
   "config.subtle_effects.general.cullParticlesWithNoAlpha": "Cull Particles With No Alpha",
   "config.subtle_effects.general.cullParticlesWithNoAlpha.desc": "Prevents rendering particles with an alpha (transparency) level of 0.\n\n§6Note:§r\nIf particles from other mods don't seem to render try disabling this",
+  "config.subtle_effects.general.cullParticlesInUnloadedChunks": "Cull Particles In Unloaded Chunks",
+  "config.subtle_effects.general.cullParticlesInUnloadedChunks.desc": "Prevents rendering particles in unloaded chunk. This usually doesn't affect anything, unless the server is running slowing",
   "config.subtle_effects.general.sparksScale": "Sparks Scale"
 }
