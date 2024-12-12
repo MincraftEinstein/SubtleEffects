@@ -1,9 +1,9 @@
 package einstein.subtle_effects.tickers;
 
+import einstein.subtle_effects.compat.CompatHelper;
 import einstein.subtle_effects.compat.SereneSeasonsCompat;
 import einstein.subtle_effects.init.ModParticles;
 import einstein.subtle_effects.util.ParticleSpawnUtil;
-import einstein.subtle_effects.util.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
@@ -58,7 +58,7 @@ public class FrostyBreathTicker extends Ticker<LivingEntity> {
         Holder<Biome> biome = level.getBiome(pos);
         if (biome.value().coldEnoughToSnow(pos)
                 || ENTITIES.humanoids.frostyBreath.additionalBiomes.contains(biome.unwrapKey().map(ResourceKey::location).orElse(null))
-                || (Util.IS_SERENE_SEANSONS_LOADED.get() && SereneSeasonsCompat.isColdSeason(level))) {
+                || (CompatHelper.IS_SERENE_SEANSONS_LOADED.get() && SereneSeasonsCompat.isColdSeason(level))) {
             if (delayTimer < startDelay) {
                 delayTimer++;
                 return;

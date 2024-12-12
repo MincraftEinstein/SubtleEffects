@@ -1,5 +1,6 @@
 package einstein.subtle_effects.tickers;
 
+import einstein.subtle_effects.compat.CompatHelper;
 import einstein.subtle_effects.compat.SoulFiredCompat;
 import einstein.subtle_effects.init.ModParticles;
 import einstein.subtle_effects.util.Util;
@@ -73,6 +74,6 @@ public class EntityFireTicker extends Ticker<Entity> {
     }
 
     private ParticleOptions getParticleForFireType(ParticleOptions normal, ParticleOptions soul) {
-        return Util.IS_SOUL_FIRED_LOADED.get() && SoulFiredCompat.isOnSoulFire(entity) ? soul : normal;
+        return CompatHelper.IS_SOUL_FIRED_LOADED.get() && SoulFiredCompat.isOnSoulFire(entity) ? soul : normal;
     }
 }
