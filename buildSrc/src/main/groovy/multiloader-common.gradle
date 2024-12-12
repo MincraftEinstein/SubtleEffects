@@ -52,6 +52,11 @@ repositories {
         name = 'Forge'
         url = "https://maven.minecraftforge.net"
     }
+
+    maven {
+        name = "Crystal Nest"
+        url = "https://maven.crystalnest.it"
+    }
 }
 
 // Declare capabilities on the outgoing configurations.
