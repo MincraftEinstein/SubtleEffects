@@ -4,6 +4,7 @@ import einstein.subtle_effects.SubtleEffects;
 import einstein.subtle_effects.configs.blocks.SparksConfigs;
 import einstein.subtle_effects.configs.blocks.SteamConfigs;
 import einstein.subtle_effects.configs.blocks.UpdatedSmokeConfigs;
+import einstein.subtle_effects.init.ModBlockTickers;
 import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.tickers.TickerManager;
 import me.fzzyhmstrs.fzzy_config.annotations.Translation;
@@ -88,6 +89,7 @@ public class ModBlockConfigs extends Config {
     @Override
     public void onUpdateClient() {
         TickerManager.clear();
+        ModBlockTickers.init();
     }
 
     public enum GlowstoneDustDisplayType implements EnumTranslatable {
