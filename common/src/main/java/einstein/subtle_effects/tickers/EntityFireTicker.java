@@ -2,7 +2,8 @@ package einstein.subtle_effects.tickers;
 
 import einstein.subtle_effects.compat.CompatHelper;
 import einstein.subtle_effects.compat.SoulFiredCompat;
-import einstein.subtle_effects.init.ModParticles;
+import einstein.subtle_effects.particle.SparkParticle;
+import einstein.subtle_effects.util.SparkType;
 import einstein.subtle_effects.util.Util;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
@@ -46,7 +47,10 @@ public class EntityFireTicker extends Ticker<Entity> {
 
                 if (ENTITIES.burning.sparks) {
                     for (int i = 0; i < 2; i++) {
-                        level.addParticle(getParticleForFireType(ModParticles.SHORT_SPARK.get(), ModParticles.SHORT_SOUL_SPARK.get()),
+                        level.addParticle(getParticleForFireType(
+                                        SparkParticle.create(SparkType.SHORT_LIFE, random),
+                                        SparkParticle.createSoul(SparkType.SHORT_LIFE, random)
+                                ),
                                 entity.getRandomX(1),
                                 entity.getRandomY(),
                                 entity.getRandomZ(1),

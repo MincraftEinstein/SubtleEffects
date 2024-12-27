@@ -1,0 +1,13 @@
+{
+  "states": [
+    {
+      "name": "minecraft:furnace",
+      "properties": {
+        "lit": "true"
+      }
+    }
+  ],
+  "options": {
+    "preset": "furnace"
+  }
+}

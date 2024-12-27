@@ -7,6 +7,7 @@ import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.fabricmc.fabric.api.resource.ResourcePackActivationType;
 import net.fabricmc.loader.api.FabricLoader;
+import net.minecraft.server.packs.PackType;
 
 public class SubtleEffectsFabricClient implements ClientModInitializer {
 
@@ -16,5 +17,6 @@ public class SubtleEffectsFabricClient implements ClientModInitializer {
         ClientTickEvents.END_CLIENT_TICK.register(minecraft -> SubtleEffectsClient.clientTick(minecraft, minecraft.level));
         ClientCommandRegistrationCallback.EVENT.register(SubtleEffectsClient::registerClientCommands);
         ResourceManagerHelper.registerBuiltinResourcePack(Util.BCWP_PACK_LOCATION.get(), FabricLoader.getInstance().getModContainer(SubtleEffects.MOD_ID).orElseThrow(), Util.BCWP_PACK_NAME, ResourcePackActivationType.NORMAL);
+        ResourceManagerHelper.get(PackType.CLIENT_RESOURCES).registerReloadListener(new FabricSparkProviderReloadListener());
     }
 }
