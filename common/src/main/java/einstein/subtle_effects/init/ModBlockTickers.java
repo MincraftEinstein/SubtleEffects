@@ -90,14 +90,17 @@ public class ModBlockTickers {
         register(Blocks.BEACON, () -> BLOCKS.beaconParticlesDisplayType != ModBlockConfigs.BeaconParticlesDisplayType.OFF,
                 (state, level, pos, random) -> {
                     BlockEntity blockEntity = level.getBlockEntity(pos);
+
                     if (blockEntity instanceof BeaconBlockEntity beaconBlockEntity) {
                         List<BeaconBlockEntity.BeaconBeamSection> sections = beaconBlockEntity.getBeamSections();
+
                         if (!sections.isEmpty() && !(sections.size() > 1 && BLOCKS.beaconParticlesDisplayType == ModBlockConfigs.BeaconParticlesDisplayType.NOT_COLORED)) {
                             PositionParticleOptions options = new PositionParticleOptions(ModParticles.BEACON.get(), beaconBlockEntity.getBlockPos());
+
                             for (int i = 0; i < 10; i++) {
                                 level.addParticle(options,
                                         pos.getX() + 0.5 + nextNonAbsDouble(random, 0.3),
-                                        pos.getY() + 1,
+                                        pos.getY() + 0.5,
                                         pos.getZ() + 0.5 + nextNonAbsDouble(random, 0.3),
                                         0, 0, 0
                                 );

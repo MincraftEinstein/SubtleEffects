@@ -10,7 +10,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.block.entity.BeaconBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,9 +21,12 @@ public class BeaconParticle extends SparkParticle {
     private final BlockPos beaconPos;
     private final List<BeaconBlockEntity.BeaconBeamSection> beamSections = new ArrayList<>();
 
-    protected BeaconParticle(ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, SpriteSet sprites, BlockPos beaconPos) {
-        super(level, x, y, z, xSpeed, ySpeed, zSpeed, 0, sprites);
+    protected BeaconParticle(ClientLevel level, double x, double y, double z, SpriteSet sprites, BlockPos beaconPos) {
+        super(level, x, y, z, 0, 0, 0, 0, sprites);
         this.beaconPos = beaconPos;
+        xd = 0;
+        yd = 0;
+        zd = 0;
         lifetime = 1;
         hasPhysics = false;
         speedUpWhenYMotionIsBlocked = false;
@@ -93,10 +95,9 @@ public class BeaconParticle extends SparkParticle {
 
     public record Provider(SpriteSet sprites) implements ParticleProvider<PositionParticleOptions> {
 
-        @Nullable
         @Override
         public Particle createParticle(PositionParticleOptions type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
-            return new BeaconParticle(level, x, y, z, xSpeed, ySpeed, zSpeed, sprites, type.pos());
+            return new BeaconParticle(level, x, y, z, sprites, type.pos());
         }
     }
 }
