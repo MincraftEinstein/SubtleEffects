@@ -5,6 +5,101 @@
       "properties": {
         "lit": "true"
       }
+    },    {
+      "name": "minecraft:white_candle",
+      "properties": {
+        "lit": "true"
+      }
+    },
+    {
+      "name": "minecraft:orange_candle",
+      "properties": {
+        "lit": "true"
+      }
+    },
+    {
+      "name": "minecraft:magenta_candle",
+      "properties": {
+        "lit": "true"
+      }
+    },
+    {
+      "name": "minecraft:light_blue_candle",
+      "properties": {
+        "lit": "true"
+      }
+    },
+    {
+      "name": "minecraft:yellow_candle",
+      "properties": {
+        "lit": "true"
+      }
+    },
+    {
+      "name": "minecraft:lime_candle",
+      "properties": {
+        "lit": "true"
+      }
+    },
+    {
+      "name": "minecraft:pink_candle",
+      "properties": {
+        "lit": "true"
+      }
+    },
+    {
+      "name": "minecraft:gray_candle",
+      "properties": {
+        "lit": "true"
+      }
+    },
+    {
+      "name": "minecraft:light_gray_candle",
+      "properties": {
+        "lit": "true"
+      }
+    },
+    {
+      "name": "minecraft:cyan_candle",
+      "properties": {
+        "lit": "true"
+      }
+    },
+    {
+      "name": "minecraft:purple_candle",
+      "properties": {
+        "lit": "true"
+      }
+    },
+    {
+      "name": "minecraft:blue_candle",
+      "properties": {
+        "lit": "true"
+      }
+    },
+    {
+      "name": "minecraft:brown_candle",
+      "properties": {
+        "lit": "true"
+      }
+    },
+    {
+      "name": "minecraft:green_candle",
+      "properties": {
+        "lit": "true"
+      }
+    },
+    {
+      "name": "minecraft:red_candle",
+      "properties": {
+        "lit": "true"
+      }
+    },
+    {
+      "name": "minecraft:black_candle",
+      "properties": {
+        "lit": "true"
+      }
     },
     {
       "name": "minecraft:candle_cake",
