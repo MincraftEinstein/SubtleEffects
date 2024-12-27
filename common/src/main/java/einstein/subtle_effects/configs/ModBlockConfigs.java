@@ -52,6 +52,7 @@ public class ModBlockConfigs extends Config {
     public boolean beehivesHaveSleepingZs = true;
     public boolean fallingBlockDust = true;
     public ValidatedList<Block> fallingBlockDustBlocks = new ValidatedList<>(DEFAULT_FALLING_BLOCK_DUST_BLOCKS, ValidatedRegistryType.of(BuiltInRegistries.BLOCK));
+    public ValidatedInt fallingBlockDustDistance = new ValidatedInt(0, 20, 0);
     public SmokeType torchflowerSmoke = SmokeType.DEFAULT;
     public boolean torchflowerFlames = true;
     public boolean dragonEggParticles = true;

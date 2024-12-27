@@ -38,6 +38,7 @@ import net.minecraft.world.phys.Vec3;
 
 import java.util.function.Predicate;
 
+import static einstein.subtle_effects.init.ModConfigs.BLOCKS;
 import static einstein.subtle_effects.init.ModConfigs.ENTITIES;
 import static einstein.subtle_effects.tickers.TickerManager.registerSimpleTicker;
 import static einstein.subtle_effects.tickers.TickerManager.registerTicker;
@@ -88,6 +89,10 @@ public class ModTickers {
                 });
         registerSimpleTicker(entity -> entity instanceof FallingBlockEntity && ModConfigs.BLOCKS.fallingBlockDust, (entity, level, random) -> {
             FallingBlockEntity fallingBlock = (FallingBlockEntity) entity;
+            if (fallingBlock.fallDistance <= BLOCKS.fallingBlockDustDistance.get()) {
+                return;
+            }
+
             if (!fallingBlock.onGround() && !fallingBlock.isNoGravity()) {
                 BlockState state = fallingBlock.getBlockState();
                 if (ModConfigs.BLOCKS.fallingBlockDustBlocks.get().contains(state.getBlock())) {
