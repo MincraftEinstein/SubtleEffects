@@ -10,6 +10,7 @@
     "client.LavaFluidMixin",
     "client.LevelRendererMixin",
     "client.MinecraftMixin",
+    "client.ScreenEffectRendererMixin",
     "client.WaterFluidMixin",
     "client.block.AbstractCandleBlockMixin",
     "client.block.AmethystClusterBlockAccessor",
