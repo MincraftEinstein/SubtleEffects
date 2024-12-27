@@ -36,6 +36,16 @@
       "subtle_effects:entity/player/heartbeat"
     ]
   },
+  "entity.egg.break": {
+    "subtitle": "subtitles.subtle_effects.entity.egg.break",
+    "sounds": [
+      {
+        "name": "entity.turtle.egg_break",
+        "type": "event",
+        "pitch": 1.7
+      }
+    ]
+  },
   "block.amethyst_cluster.chime": {
     "subtitle": "subtitles.block.amethyst_block.chime",
     "sounds": [

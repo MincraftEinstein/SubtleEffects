@@ -3,6 +3,7 @@
   "subtitles.subtle_effects.entity.player.snore": "Player Snores",
   "subtitles.subtle_effects.entity.player.stomach_growl": "Stomach Growls",
   "subtitles.subtle_effects.entity.player.heartbeat": "Heart Beating",
+  "subtitles.subtle_effects.entity.egg.break": "Egg Smashes",
   "subtitles.subtle_effects.block.campfire.sizzle": "Campfire Sizzles",
   "commands.subtle_effects.subtle_effects.tickers.clear.success": "Cleared Tickers",
   "commands.subtle_effects.subtle_effects.particles.clear.success": "Cleared Particles",
