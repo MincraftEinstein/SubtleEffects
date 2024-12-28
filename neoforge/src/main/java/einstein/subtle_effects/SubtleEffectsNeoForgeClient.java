@@ -16,10 +16,10 @@ import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.client.event.ClientTickEvent;
 import net.neoforged.neoforge.client.event.RegisterClientCommandsEvent;
+import net.neoforged.neoforge.client.event.RegisterClientReloadListenersEvent;
 import net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.AddPackFindersEvent;
-import net.neoforged.neoforge.event.AddReloadListenerEvent;
 
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -35,12 +35,14 @@ public class SubtleEffectsNeoForgeClient {
         modEventBus.addListener((AddPackFindersEvent event) ->
                 event.addPackFinders(Util.BCWP_PACK_LOCATION.get(), PackType.CLIENT_RESOURCES,
                         Util.BCWP_PACK_NAME, PackSource.BUILT_IN, false, Pack.Position.TOP));
+        modEventBus.addListener((RegisterClientReloadListenersEvent event) ->
+                event.registerReloadListener(new SparkProviderReloadListener()));
         NeoForge.EVENT_BUS.addListener((ClientTickEvent.Post event) -> {
             Minecraft minecraft = Minecraft.getInstance();
             SubtleEffectsClient.clientTick(minecraft, minecraft.level);
         });
-        NeoForge.EVENT_BUS.addListener((RegisterClientCommandsEvent event) -> SubtleEffectsClient.registerClientCommands(event.getDispatcher(), event.getBuildContext()));
-        NeoForge.EVENT_BUS.addListener((AddReloadListenerEvent event) -> new SparkProviderReloadListener());
+        NeoForge.EVENT_BUS.addListener((RegisterClientCommandsEvent event) ->
+                SubtleEffectsClient.registerClientCommands(event.getDispatcher(), event.getBuildContext()));
     }
 
     @SuppressWarnings("unchecked")
