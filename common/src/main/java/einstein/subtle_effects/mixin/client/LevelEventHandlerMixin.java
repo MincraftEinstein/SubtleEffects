@@ -3,7 +3,9 @@ package einstein.subtle_effects.mixin.client;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import einstein.subtle_effects.init.ModParticles;
+import einstein.subtle_effects.particle.SparkParticle;
 import einstein.subtle_effects.util.ParticleSpawnUtil;
+import einstein.subtle_effects.util.SparkType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.LevelEventHandler;
 import net.minecraft.core.BlockPos;
@@ -65,7 +67,7 @@ public class LevelEventHandlerMixin {
                     for (int i = 0; i < 20; i++) {
                         int xSign = nextSign(random);
                         int zSign = nextSign(random);
-                        level.addParticle(ModParticles.METAL_SPARK.get(),
+                        level.addParticle(SparkParticle.create(SparkType.METAL, random),
                                 pos.getX() + pointX,
                                 pos.getY() + 1,
                                 pos.getZ() + pointZ,
@@ -84,7 +86,7 @@ public class LevelEventHandlerMixin {
                     Direction side = face == AttachFace.CEILING ? Direction.DOWN : Direction.UP;
 
                     for (int i = 0; i < 20; i++) {
-                        ParticleSpawnUtil.spawnParticlesOnSide(ModParticles.METAL_SPARK.get(), 0, side, level, pos, random,
+                        ParticleSpawnUtil.spawnParticlesOnSide(SparkParticle.create(SparkType.METAL, random), 0, side, level, pos, random,
                                 nextFloat(random, 0.1F, 0.2F) * (direction.getStepX() * 1.5),
                                 face == AttachFace.CEILING ? 0 : nextFloat(random, 0.1F, 0.2F),
                                 nextFloat(random, 0.1F, 0.2F) * (direction.getStepZ() * 1.5)
