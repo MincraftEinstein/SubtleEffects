@@ -1,0 +1,13 @@
+{
+  "states": [
+    {
+      "name": "minecraft:campfire",
+      "properties": {
+        "lit": "true"
+      }
+    }
+  ],
+  "options": {
+    "preset": "campfire"
+  }
+}

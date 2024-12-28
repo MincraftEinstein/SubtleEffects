@@ -12,6 +12,7 @@
     "client.LevelEventHandlerMixin",
     "client.LevelRendererMixin",
     "client.MinecraftMixin",
+    "client.ScreenEffectRendererMixin",
     "client.WaterFluidMixin",
     "client.WeatherEffectsRendererMixin",
     "client.block.AbstractCandleBlockMixin",
@@ -35,6 +36,7 @@
     "client.entity.SheepMixin",
     "client.entity.SlimeMixin",
     "client.entity.SpellCasterIllagerMixin",
+    "client.entity.ThrownEggMixin",
     "client.item.BoneMealItemMixin",
     "client.item.BucketItemMixin",
     "client.item.FlintAndSteelItemMixin",
@@ -48,13 +50,13 @@
     "client.particle.bubbles.WaterCurrentDownParticleProviderMixin"
   ],
   "mixins": [
-    "common.ThrownExperienceBottleMixin",
     "common.AbstractHorseMixin",
     "common.BeehiveBlockEntityMixin",
     "common.CommonLivingEntityMixin",
     "common.FarmBlockMixin",
     "common.LeavesBlockMixin",
-    "common.LlamaMixin"
+    "common.LlamaMixin",
+    "common.ThrownExperienceBottleMixin"
   ],
   "injectors": {
     "defaultRequire": 1

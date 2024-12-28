@@ -4,6 +4,7 @@ import einstein.subtle_effects.SubtleEffects;
 import einstein.subtle_effects.configs.blocks.SparksConfigs;
 import einstein.subtle_effects.configs.blocks.SteamConfigs;
 import einstein.subtle_effects.configs.blocks.UpdatedSmokeConfigs;
+import einstein.subtle_effects.init.ModBlockTickers;
 import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.tickers.TickerManager;
 import me.fzzyhmstrs.fzzy_config.annotations.Translation;
@@ -52,6 +53,7 @@ public class ModBlockConfigs extends Config {
     public boolean beehivesHaveSleepingZs = true;
     public boolean fallingBlockDust = true;
     public ValidatedList<Block> fallingBlockDustBlocks = new ValidatedList<>(DEFAULT_FALLING_BLOCK_DUST_BLOCKS, ValidatedRegistryType.of(BuiltInRegistries.BLOCK));
+    public ValidatedInt fallingBlockDustDistance = new ValidatedInt(0, 20, 0);
     public SmokeType torchflowerSmoke = SmokeType.DEFAULT;
     public boolean torchflowerFlames = true;
     public boolean dragonEggParticles = true;
@@ -89,6 +91,7 @@ public class ModBlockConfigs extends Config {
     @Override
     public void onUpdateClient() {
         TickerManager.clear();
+        ModBlockTickers.init();
     }
 
     public enum GlowstoneDustDisplayType implements EnumTranslatable {

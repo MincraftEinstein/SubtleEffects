@@ -1,8 +1,11 @@
 package einstein.subtle_effects.tickers;
 
-import einstein.subtle_effects.configs.SmokeType;
-import einstein.subtle_effects.init.ModParticles;
+import einstein.subtle_effects.compat.CompatHelper;
+import einstein.subtle_effects.compat.SoulFiredCompat;
+import einstein.subtle_effects.particle.SparkParticle;
+import einstein.subtle_effects.util.SparkType;
 import einstein.subtle_effects.util.Util;
+import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.Entity;
@@ -44,7 +47,10 @@ public class EntityFireTicker extends Ticker<Entity> {
 
                 if (ENTITIES.burning.sparks) {
                     for (int i = 0; i < 2; i++) {
-                        level.addParticle(ModParticles.SHORT_SPARK.get(),
+                        level.addParticle(getParticleForFireType(
+                                        SparkParticle.create(SparkType.SHORT_LIFE, random),
+                                        SparkParticle.createSoul(SparkType.SHORT_LIFE, random)
+                                ),
                                 entity.getRandomX(1),
                                 entity.getRandomY(),
                                 entity.getRandomZ(1),
@@ -60,7 +66,7 @@ public class EntityFireTicker extends Ticker<Entity> {
                 }
 
                 if (ENTITIES.burning.flames) {
-                    level.addParticle(ParticleTypes.FLAME,
+                    level.addParticle(getParticleForFireType(ParticleTypes.FLAME, ParticleTypes.SOUL_FIRE_FLAME),
                             entity.getRandomX(1),
                             entity.getRandomY(),
                             entity.getRandomZ(1),
@@ -69,5 +75,9 @@ public class EntityFireTicker extends Ticker<Entity> {
                 }
             }
         }
+    }
+
+    private ParticleOptions getParticleForFireType(ParticleOptions normal, ParticleOptions soul) {
+        return CompatHelper.IS_SOUL_FIRED_LOADED.get() && SoulFiredCompat.isOnSoulFire(entity) ? soul : normal;
     }
 }

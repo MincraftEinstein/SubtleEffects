@@ -1,0 +1,11 @@
+{
+  "states": [
+    {
+      "name": "minecraft:soul_wall_torch"
+    }
+  ],
+  "options": {
+    "preset": "wall_torch",
+    "colors": "soul"
+  }
+}

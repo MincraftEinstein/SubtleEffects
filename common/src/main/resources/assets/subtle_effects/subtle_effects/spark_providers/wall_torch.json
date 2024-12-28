@@ -1,0 +1,10 @@
+{
+  "states": [
+    {
+      "name": "minecraft:wall_torch"
+    }
+  ],
+  "options": {
+    "preset": "wall_torch"
+  }
+}

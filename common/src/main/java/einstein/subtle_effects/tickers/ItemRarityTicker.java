@@ -25,14 +25,15 @@ public class ItemRarityTicker extends Ticker<ItemEntity> {
 
     private final List<TextColor> nameColors = new ArrayList<>();
     private final ItemStack stack = entity.getItem();
+    private final boolean isCommon = stack.getRarity() == Rarity.COMMON;
 
     public ItemRarityTicker(ItemEntity entity) {
         super(entity);
         getItemNameColors();
 
-        if (stack.getRarity() == Rarity.COMMON) {
+        if (isCommon) {
             if (ENTITIES.itemRarity.particlesDisplayType == ItemRarityConfigs.DisplayType.NOT_COMMON) {
-                if (ENTITIES.itemRarity.particleColor != ItemRarityConfigs.ColorType.NAME_COLOR && nameColors.size() == 1 && nameColors.getFirst().equals(WHITE_TEXT)) {
+                if (nameColors.size() == 1 && nameColors.getFirst().equals(WHITE_TEXT)) {
                     nameColors.clear();
                 }
             }
@@ -52,7 +53,7 @@ public class ItemRarityTicker extends Ticker<ItemEntity> {
 
             if (usesSingleColor) {
                 TextColor color = (baseColor != null ? baseColor : (!colors.isEmpty() ? colors.getFirst() : null));
-                if (color != null && !color.equals(WHITE_TEXT)) {
+                if (color != null && (!isCommon || color.equals(WHITE_TEXT))) {
                     nameColors.add(color);
                     return;
                 }

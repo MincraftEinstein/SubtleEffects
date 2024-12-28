@@ -3,11 +3,14 @@ package einstein.subtle_effects.mixin.client;
 import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.configs.blocks.SparksConfigs;
 import einstein.subtle_effects.init.ModParticles;
+import einstein.subtle_effects.particle.SparkParticle;
 import einstein.subtle_effects.util.MathUtil;
 import einstein.subtle_effects.util.ParticleSpawnUtil;
+import einstein.subtle_effects.util.SparkType;
 import einstein.subtle_effects.util.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.particles.ColorParticleOption;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.Fluid;
@@ -38,7 +41,7 @@ public abstract class LavaFluidMixin {
             for (Direction direction : Direction.values()) {
                 BlockPos relativePos = pos.relative(direction);
                 if (direction.getAxis() != Direction.Axis.Y && !Util.isSolidOrNotEmpty(level, relativePos)) {
-                    ParticleSpawnUtil.spawnParticlesOnSide(ModParticles.FLOATING_SPARK.get(),
+                    ParticleSpawnUtil.spawnParticlesOnSide(SparkParticle.create(SparkType.FLOATING, random),
                             -0.0625F,
                             direction.getOpposite(),
                             level, relativePos, random,

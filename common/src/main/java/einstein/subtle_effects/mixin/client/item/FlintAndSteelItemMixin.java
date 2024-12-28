@@ -1,8 +1,9 @@
 package einstein.subtle_effects.mixin.client.item;
 
 import einstein.subtle_effects.init.ModConfigs;
-import einstein.subtle_effects.init.ModParticles;
+import einstein.subtle_effects.particle.SparkParticle;
 import einstein.subtle_effects.util.MathUtil;
+import einstein.subtle_effects.util.SparkType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.util.RandomSource;
@@ -41,7 +42,7 @@ public class FlintAndSteelItemMixin {
             }
 
             for (int i = 0; i < 10; i++) {
-                level.addParticle(ModParticles.SHORT_SPARK.get(),
+                level.addParticle(SparkParticle.create(SparkType.SHORT_LIFE, random),
                         location.x() + MathUtil.nextNonAbsDouble(random, 0.07),
                         location.y(),
                         location.z() + MathUtil.nextNonAbsDouble(random, 0.07),

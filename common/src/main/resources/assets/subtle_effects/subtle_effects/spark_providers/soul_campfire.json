@@ -1,0 +1,14 @@
+{
+  "states": [
+    {
+      "name": "minecraft:soul_campfire",
+      "properties": {
+        "lit": "true"
+      }
+    }
+  ],
+  "options": {
+    "preset": "campfire",
+    "colors": "soul"
+  }
+}

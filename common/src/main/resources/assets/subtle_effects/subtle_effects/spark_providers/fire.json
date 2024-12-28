@@ -1,0 +1,10 @@
+{
+  "states": [
+    {
+      "name": "minecraft:fire"
+    }
+  ],
+  "options": {
+    "preset": "fire"
+  }
+}

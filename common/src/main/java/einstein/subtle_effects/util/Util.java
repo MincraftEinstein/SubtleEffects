@@ -6,25 +6,22 @@ import einstein.subtle_effects.platform.Services;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Holder;
+import net.minecraft.core.SectionPos;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.SkullBlock;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.function.Supplier;
 
 public class Util {
@@ -36,9 +33,6 @@ public class Util {
     public static final DustParticleOptions GLOWSTONE_DUST_PARTICLES = new DustParticleOptions(0xFFBC5E, 1);
     public static final ResourceLocation CREEPER_SHADER = ResourceLocation.withDefaultNamespace("creeper");
     public static final ResourceLocation INVERT_SHADER = ResourceLocation.withDefaultNamespace("invert");
-    public static final Supplier<Optional<Item>> ENDERMAN_HEAD = Suppliers.memoize(() -> BuiltInRegistries.ITEM.get(ResourceLocation.fromNamespaceAndPath("supplementaries", "enderman_head")).map(Holder.Reference::value));
-    public static final Supplier<Boolean> IS_SUPPLEMENTARIES_LOADED = Suppliers.memoize(() -> Services.PLATFORM.isModLoaded("supplementaries"));
-    public static final Supplier<Boolean> IS_SERENE_SEANSONS_LOADED = Suppliers.memoize(() -> Services.PLATFORM.isModLoaded("sereneseasons"));
     public static final Supplier<ResourceLocation> BCWP_PACK_LOCATION = Suppliers.memoize(() -> SubtleEffects.loc("biome_color_water_particles").withPrefix(Services.PLATFORM.getPlatformName().equals("NeoForge") ? "resourcepacks/" : ""));
     public static final Supplier<String> BCWP_PACK_ID = Suppliers.memoize(() -> (Services.PLATFORM.getPlatformName().equals("NeoForge") ? "mod/" : "") + BCWP_PACK_LOCATION.get().toString());
     public static final Component BCWP_PACK_NAME = Component.translatable("resourcePack.subtle_effects.biome_water_color_particles.name");
@@ -96,21 +90,9 @@ public class Util {
                     shaderManager.subtleEffects$loadShader(INVERT_SHADER);
                     return;
                 }
-                else if (isEndermanHead(stack)) {
-                    shaderManager.subtleEffects$loadShader(INVERT_SHADER);
-                    return;
-                }
             }
         }
         shaderManager.subtleEffects$clearShader();
-    }
-
-    private static boolean isEndermanHead(ItemStack stack) {
-        if (IS_SUPPLEMENTARIES_LOADED.get()) {
-            Item item = ENDERMAN_HEAD.get().orElse(null);
-            return item != null && stack.is(item);
-        }
-        return false;
     }
 
     public static void setColorFromHex(Particle particle, int hexColor) {
@@ -119,5 +101,9 @@ public class Util {
 
     public static boolean isBCWPPackLoaded() {
         return Minecraft.getInstance().getResourcePackRepository().getSelectedIds().contains(BCWP_PACK_ID.get());
+    }
+
+    public static boolean isChunkLoaded(Level level, double blockX, double blockZ) {
+        return level.getChunkSource().hasChunk(SectionPos.blockToSectionCoord(blockX), SectionPos.blockToSectionCoord(blockZ));
     }
 }
