@@ -30,11 +30,7 @@ public class SparkProviderReloadListener extends SimpleJsonResourceReloadListene
         resources.forEach((id, element) -> {
             SparkProvider.CODEC.parse(JsonOps.INSTANCE, element)
                     .resultOrPartial(error -> SubtleEffects.LOGGER.error("Failed to decode spark provider with ID {} - Error: {}", id, error))
-                    .ifPresent(provider -> {
-                        if (provider.options().isPresent()) {
-                            SPARK_PROVIDERS.put(id, provider);
-                        }
-                    });
+                    .ifPresent(provider -> provider.options().ifPresent(options -> SPARK_PROVIDERS.put(id, provider)));
         });
     }
 }

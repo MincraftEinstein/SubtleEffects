@@ -1,6 +1,6 @@
-package einstein.subtle_effects;
+package einstein.subtle_effects.data;
 
-import einstein.subtle_effects.data.SparkProviderReloadListener;
+import einstein.subtle_effects.SubtleEffects;
 import net.fabricmc.fabric.api.resource.IdentifiableResourceReloadListener;
 import net.minecraft.resources.ResourceLocation;
 
@@ -12,6 +12,6 @@ public class FabricSparkProviderReloadListener extends SparkProviderReloadListen
 
     @Override
     public ResourceLocation getFabricId() {
-        return SubtleEffects.loc("block_tickers");
+        return SubtleEffects.loc("spark_providers");
     }
 }
