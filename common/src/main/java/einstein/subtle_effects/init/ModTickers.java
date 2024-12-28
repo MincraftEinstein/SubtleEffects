@@ -2,10 +2,12 @@ package einstein.subtle_effects.init;
 
 import einstein.subtle_effects.configs.CommandBlockSpawnType;
 import einstein.subtle_effects.configs.entities.ItemRarityConfigs;
+import einstein.subtle_effects.particle.SparkParticle;
 import einstein.subtle_effects.particle.option.BooleanParticleOptions;
 import einstein.subtle_effects.tickers.*;
 import einstein.subtle_effects.tickers.sleeping.*;
 import einstein.subtle_effects.util.ParticleSpawnUtil;
+import einstein.subtle_effects.util.SparkType;
 import einstein.subtle_effects.util.Util;
 import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedDouble;
 import net.minecraft.client.Minecraft;
@@ -36,6 +38,7 @@ import net.minecraft.world.phys.Vec3;
 
 import java.util.function.Predicate;
 
+import static einstein.subtle_effects.init.ModConfigs.BLOCKS;
 import static einstein.subtle_effects.init.ModConfigs.ENTITIES;
 import static einstein.subtle_effects.tickers.TickerManager.registerSimpleTicker;
 import static einstein.subtle_effects.tickers.TickerManager.registerTicker;
@@ -86,6 +89,10 @@ public class ModTickers {
                 });
         registerSimpleTicker(entity -> entity instanceof FallingBlockEntity && ModConfigs.BLOCKS.fallingBlockDust, (entity, level, random) -> {
             FallingBlockEntity fallingBlock = (FallingBlockEntity) entity;
+            if (fallingBlock.fallDistance <= BLOCKS.fallingBlockDustDistance.get()) {
+                return;
+            }
+
             if (!fallingBlock.onGround() && !fallingBlock.isNoGravity()) {
                 BlockState state = fallingBlock.getBlockState();
                 if (ModConfigs.BLOCKS.fallingBlockDustBlocks.get().contains(state.getBlock())) {
@@ -175,7 +182,7 @@ public class ModTickers {
                     }
                 });
         registerSimpleTicker(EntityType.TNT, () -> ENTITIES.explosives.tntSparks, (entity, level, random) -> {
-            level.addParticle(ModParticles.SHORT_SPARK.get(),
+            level.addParticle(SparkParticle.create(SparkType.SHORT_LIFE, random),
                     entity.getRandomX(0.5),
                     entity.getY(1),
                     entity.getRandomZ(0.5),
@@ -217,7 +224,7 @@ public class ModTickers {
         registerSimpleTicker(EntityType.CREEPER, () -> ENTITIES.explosives.creeperSparks, (entity, level, random) -> {
             if (entity.isIgnited()) {
                 for (int i = 0; i < 3; i++) {
-                    level.addParticle(ModParticles.SHORT_SPARK.get(),
+                    level.addParticle(SparkParticle.create(SparkType.SHORT_LIFE, random),
                             entity.getRandomX(1),
                             entity.getRandomY(),
                             entity.getRandomZ(1),

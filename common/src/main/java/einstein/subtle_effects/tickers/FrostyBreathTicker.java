@@ -1,16 +1,19 @@
 package einstein.subtle_effects.tickers;
 
+import einstein.subtle_effects.compat.CompatHelper;
 import einstein.subtle_effects.compat.SereneSeasonsCompat;
 import einstein.subtle_effects.init.ModParticles;
 import einstein.subtle_effects.util.ParticleSpawnUtil;
-import einstein.subtle_effects.util.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.LightLayer;
+import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.phys.Vec3;
 
 import static einstein.subtle_effects.init.ModConfigs.ENTITIES;
@@ -52,7 +55,10 @@ public class FrostyBreathTicker extends Ticker<LivingEntity> {
             return;
         }
 
-        if (level.getBiome(pos).value().coldEnoughToSnow(pos) || (Util.IS_SERENE_SEANSONS_LOADED.get() && SereneSeasonsCompat.isColdSeason(level))) {
+        Holder<Biome> biome = level.getBiome(pos);
+        if (biome.value().coldEnoughToSnow(pos)
+                || ENTITIES.humanoids.frostyBreath.additionalBiomes.contains(biome.unwrapKey().map(ResourceKey::location).orElse(null))
+                || (CompatHelper.IS_SERENE_SEANSONS_LOADED.get() && SereneSeasonsCompat.isColdSeason(level))) {
             if (delayTimer < startDelay) {
                 delayTimer++;
                 return;

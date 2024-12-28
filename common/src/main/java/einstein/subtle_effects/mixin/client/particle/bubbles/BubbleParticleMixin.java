@@ -68,7 +68,7 @@ public abstract class BubbleParticleMixin extends TextureSheetParticle implement
     @Override
     public void subtleEffects$setSpriteSet(SpriteSet sprites) {
         List<TextureAtlasSprite> textures = Services.PARTICLE_HELPER.getSpritesFromSet(sprites);
-        if (textures != null && Util.isBCWPPackLoaded()) {
+        if (textures != null && textures.size() > 1 && Util.isBCWPPackLoaded()) {
             setSprite(textures.get(0));
             subtleEffects$overlaySprite = textures.get(1);
         }

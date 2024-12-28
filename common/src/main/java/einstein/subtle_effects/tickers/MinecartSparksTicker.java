@@ -1,6 +1,7 @@
 package einstein.subtle_effects.tickers;
 
-import einstein.subtle_effects.init.ModParticles;
+import einstein.subtle_effects.particle.SparkParticle;
+import einstein.subtle_effects.util.SparkType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Mth;
@@ -66,7 +67,7 @@ public class MinecartSparksTicker extends Ticker<AbstractMinecart> {
             sparksTimer--;
 
             for (int i = 0; i < sparksCount; i++) {
-                level.addParticle(ModParticles.METAL_SPARK.get(),
+                level.addParticle(SparkParticle.create(SparkType.METAL, random),
                         entity.position().x() + entity.getBbWidth() * random.nextDouble() - 1,
                         entity.getY() + Mth.clamp(random.nextFloat(), 0.2, 0.5),
                         entity.position().z() + entity.getBbWidth() * random.nextDouble() - 1,

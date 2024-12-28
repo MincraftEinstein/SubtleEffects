@@ -1,0 +1,10 @@
+{
+  "states": [
+    {
+      "name": "minecraft:lantern"
+    }
+  ],
+  "options": {
+    "preset": "lantern"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "states": [
+    {
+      "name": "minecraft:soul_fire"
+    }
+  ],
+  "options": {
+    "preset": "fire",
+    "colors": "soul"
+  }
+}

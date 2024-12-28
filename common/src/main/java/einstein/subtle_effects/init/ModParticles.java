@@ -17,13 +17,10 @@ public class ModParticles {
 
     public static final Supplier<SimpleParticleType> SNORING = register("snoring");
     public static final Supplier<SimpleParticleType> FALLING_SNORING = register("falling_snoring");
-    public static final Supplier<SimpleParticleType> LONG_SPARK = register("long_spark");
-    public static final Supplier<SimpleParticleType> LONG_SOUL_SPARK = register("long_soul_spark");
-    public static final Supplier<SimpleParticleType> SHORT_SPARK = register("short_spark");
-    public static final Supplier<SimpleParticleType> SHORT_SOUL_SPARK = register("short_soul_spark");
-    public static final Supplier<SimpleParticleType> FLOATING_SPARK = register("floating_spark");
-    public static final Supplier<SimpleParticleType> FLOATING_SOUL_SPARK = register("floating_soul_spark");
-    public static final Supplier<SimpleParticleType> METAL_SPARK = register("metal_spark");
+    public static final Supplier<ParticleType<ColorParticleOptions>> LONG_SPARK = register("long_spark", ColorParticleOption::codec, ColorParticleOption::streamCodec, SparkParticle.LongLifeProvider::new);
+    public static final Supplier<ParticleType<ColorParticleOptions>> SHORT_SPARK = register("short_spark", ColorParticleOption::codec, ColorParticleOption::streamCodec, SparkParticle.ShortLifeProvider::new);
+    public static final Supplier<ParticleType<ColorParticleOptions>> FLOATING_SPARK = register("floating_spark", ColorParticleOption::codec, ColorParticleOption::streamCodec, SparkParticle.FloatingProvider::new);
+    public static final Supplier<ParticleType<ColorParticleOptions>> METAL_SPARK = register("metal_spark", ColorParticleOption::codec, ColorParticleOption::streamCodec, SparkParticle.MetalProvider::new);
     public static final Supplier<SimpleParticleType> SNOW = register("snow");
     public static final Supplier<SimpleParticleType> SNOWBALL_TRAIL = register("snowball_trail");
     public static final Supplier<SimpleParticleType> CHICKEN_FEATHER = register("chicken_feather");

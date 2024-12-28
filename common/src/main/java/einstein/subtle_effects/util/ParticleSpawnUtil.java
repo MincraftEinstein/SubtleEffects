@@ -3,6 +3,7 @@ package einstein.subtle_effects.util;
 import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.init.ModParticles;
 import einstein.subtle_effects.networking.clientbound.ClientBoundEntityFellPacket;
+import einstein.subtle_effects.particle.SparkParticle;
 import einstein.subtle_effects.particle.option.DirectionParticleOptions;
 import einstein.subtle_effects.platform.Services;
 import net.minecraft.client.Minecraft;
@@ -10,7 +11,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.EntityTypeTags;
@@ -26,6 +26,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.List;
 import java.util.function.BiPredicate;
 import java.util.function.Predicate;
 
@@ -36,18 +37,16 @@ import static net.minecraft.util.Mth.DEG_TO_RAD;
 
 public class ParticleSpawnUtil {
 
-    public static void spawnSparks(Level level, RandomSource random, BlockPos pos, Vec3 offset, Vec3 maxSpeeds, int count, int size, boolean isSoulFlame, boolean longLife) {
-        spawnSparks(level, random, pos, offset, maxSpeeds, count, size, size, isSoulFlame, longLife);
-    }
+    public static void spawnSparks(Level level, RandomSource random, BlockPos pos, SparkType sparkType, Box box, Vec3 maxSpeeds, int count, List<Integer> colors) {
+        if (random.nextBoolean()) {
+            Vec3 start = box.min();
+            Vec3 end = box.max();
 
-    public static void spawnSparks(Level level, RandomSource random, BlockPos pos, Vec3 offset, Vec3 maxSpeeds, int count, int xSize, int zSize, boolean isSoulFlame, boolean longLife) {
-        if (random.nextInt(1) == 0) {
             for (int i = 0; i < count; i++) {
-                SimpleParticleType type = (isSoulFlame ? (longLife ? ModParticles.LONG_SOUL_SPARK : ModParticles.SHORT_SOUL_SPARK) : (longLife ? ModParticles.LONG_SPARK : ModParticles.SHORT_SPARK)).get();
-                level.addParticle(type,
-                        pos.getX() + offset.x() + random.nextDouble() / xSize * nextSign(random),
-                        pos.getY() + offset.y(),
-                        pos.getZ() + offset.z() + random.nextDouble() / zSize * nextSign(random),
+                level.addParticle(SparkParticle.create(sparkType, random, colors),
+                        pos.getX() + Mth.nextDouble(random, start.x, end.x),
+                        pos.getY() + Mth.nextDouble(random, start.y, end.y),
+                        pos.getZ() + Mth.nextDouble(random, start.z, end.z),
                         nextNonAbsDouble(random, maxSpeeds.x()),
                         nextNonAbsDouble(random, maxSpeeds.y()),
                         nextNonAbsDouble(random, maxSpeeds.z())
@@ -119,7 +118,7 @@ public class ParticleSpawnUtil {
 
     public static void spawnLavaSparks(Level level, BlockPos pos, RandomSource random, int count) {
         for (int i = 0; i < count; i++) {
-            level.addParticle(ModParticles.FLOATING_SPARK.get(),
+            level.addParticle(SparkParticle.create(SparkType.FLOATING, random),
                     pos.getX() + 0.5 + random.nextDouble() / 2 * nextSign(random),
                     pos.getY() + random.nextDouble() * random.nextInt(3),
                     pos.getZ() + 0.5 + random.nextDouble() / 2 * nextSign(random),

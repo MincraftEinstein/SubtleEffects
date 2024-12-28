@@ -1,13 +1,14 @@
 package einstein.subtle_effects.tickers;
 
 import einstein.subtle_effects.util.EntityProvider;
+import einstein.subtle_effects.util.Util;
 import it.unimi.dsi.fastutil.ints.*;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import org.jetbrains.annotations.Nullable;
+import net.minecraft.world.phys.Vec3;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -90,7 +91,7 @@ public class TickerManager {
 
     @SuppressWarnings("unchecked")
     public static <T extends Entity> void createTickersForEntity(T entity) {
-        if (getPlayer() != null && isEntityInRange(entity, INNER_RANGE)) {
+        if (Minecraft.getInstance().player != null && isEntityInRange(entity, INNER_RANGE)) {
             int entityId = entity.getId();
             Int2ObjectMap<Ticker<?>> tickers = (TICKERS.containsKey(entityId) ? TICKERS.get(entityId) : new Int2ObjectOpenHashMap<>());
 
@@ -109,16 +110,22 @@ public class TickerManager {
     }
 
     private static <T extends Entity> boolean isEntityInRange(T entity, int range) {
-        return getPlayer().position().closerThan(entity.position(), range);
+        Player player = Minecraft.getInstance().player;
+
+        if (player != null) {
+            if (player.is(entity)) {
+                return true;
+            }
+
+            Vec3 position = entity.position();
+            return Util.isChunkLoaded(entity.level(), position.x(), position.z()) && player.position().closerThan(position, range);
+        }
+        return false;
     }
 
     public static void clear() {
         TICKERS.clear();
         REMOVE_QUEUE.clear();
-    }
-
-    private static @Nullable LocalPlayer getPlayer() {
-        return Minecraft.getInstance().player;
     }
 
     public record TickerProvider<T extends Entity>(int id, Predicate<Entity> predicate,

@@ -1,0 +1,10 @@
+{
+  "states": [
+    {
+      "name": "minecraft:torch"
+    }
+  ],
+  "options": {
+    "preset": "torch"
+  }
+}

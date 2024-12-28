@@ -1,0 +1,11 @@
+{
+  "states": [
+    {
+      "name": "minecraft:soul_lantern"
+    }
+  ],
+  "options": {
+    "preset": "lantern",
+    "colors": "soul"
+  }
+}

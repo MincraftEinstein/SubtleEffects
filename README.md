@@ -93,6 +93,7 @@ To get your translation into the mod, make a pull request on GitHub with the tra
 All translators are credited in the list below.
 
 - Simplified Chinese: [kuhananxianglai](https://github.com/kuhananxianglai)
+- Japanese: [gohkenytp](https://github.com/gohkenytp)
 
 ---
 
