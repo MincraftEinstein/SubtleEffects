@@ -21,9 +21,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class ClientLivingEntityMixin<T extends Entity> extends Entity {
 
     @Shadow
-    public int hurtTime;
-
-    @Shadow
     public int deathTime;
 
     public ClientLivingEntityMixin(EntityType<T> type, Level level) {
@@ -50,19 +47,5 @@ public abstract class ClientLivingEntityMixin<T extends Entity> extends Entity {
                 }
             }
         }
-    }
-
-    @SuppressWarnings("unchecked")
-    @Override
-    public boolean hurtClient(DamageSource source) {
-        if (level().isClientSide && !isInvulnerableToBase(source)) {
-            if (source.getEntity() instanceof LivingEntity && isAlive() && hurtTime == 0) {
-                EntityType<T> type = (EntityType<T>) getType();
-                if (ModDamageListeners.REGISTERED.containsKey(type)) {
-                    ((EntityProvider<T>) ModDamageListeners.REGISTERED.get(type)).apply((T) this, level(), random);
-                }
-            }
-        }
-        return super.hurtClient(source);
     }
 }

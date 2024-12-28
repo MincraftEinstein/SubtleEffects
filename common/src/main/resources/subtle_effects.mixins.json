@@ -29,6 +29,7 @@
     "client.block.TorchBlockMixin",
     "client.block.entity.CampfireBlockEntityMixin",
     "client.entity.ClientLivingEntityMixin",
+    "client.entity.EntityMixin",
     "client.entity.EntityRendererMixin",
     "client.entity.EntityRenderStateMixin",
     "client.entity.MinecartFurnaceMixin",
