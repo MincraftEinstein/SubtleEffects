@@ -40,6 +40,16 @@ subprojects {
             name = "FzzyMaven"
             url = "https://maven.fzzyhmstrs.me/"
         }
+
+        maven {
+            name = "Fuzs Mod Resources"
+            url = "https://raw.githubusercontent.com/Fuzss/modresources/main/maven/"
+        }
+
+        maven {
+            name = "Crystal Nest"
+            url = "https://maven.crystalnest.it"
+        }
     }
 
     tasks.withType(JavaCompile).configureEach {

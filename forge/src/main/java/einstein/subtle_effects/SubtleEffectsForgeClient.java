@@ -1,5 +1,6 @@
 package einstein.subtle_effects;
 
+import einstein.subtle_effects.data.SparkProviderReloadListener;
 import einstein.subtle_effects.platform.ForgeRegistryHelper;
 import einstein.subtle_effects.util.Util;
 import net.minecraft.client.Minecraft;
@@ -13,6 +14,7 @@ import net.minecraft.server.packs.repository.Pack;
 import net.minecraft.server.packs.repository.PackSource;
 import net.minecraft.server.packs.repository.RepositorySource;
 import net.minecraftforge.client.event.RegisterClientCommandsEvent;
+import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
 import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.AddPackFindersEvent;
@@ -37,11 +39,14 @@ public class SubtleEffectsForgeClient {
                 event.addRepositorySource(new BCWPSource());
             }
         });
+        modEventBus.addListener((RegisterClientReloadListenersEvent event) ->
+                event.registerReloadListener(new SparkProviderReloadListener()));
         MinecraftForge.EVENT_BUS.addListener((TickEvent.ClientTickEvent event) -> {
             Minecraft minecraft = Minecraft.getInstance();
             SubtleEffectsClient.clientTick(minecraft, minecraft.level);
         });
-        MinecraftForge.EVENT_BUS.addListener((RegisterClientCommandsEvent event) -> SubtleEffectsClient.registerClientCommands(event.getDispatcher(), event.getBuildContext()));
+        MinecraftForge.EVENT_BUS.addListener((RegisterClientCommandsEvent event) ->
+                SubtleEffectsClient.registerClientCommands(event.getDispatcher(), event.getBuildContext()));
     }
 
     @SuppressWarnings("unchecked")

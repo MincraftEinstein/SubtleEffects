@@ -1,13 +1,15 @@
 package einstein.subtle_effects.particle;
 
 import einstein.subtle_effects.init.ModConfigs;
+import einstein.subtle_effects.particle.option.ColorParticleOptions;
 import einstein.subtle_effects.util.SparkType;
 import einstein.subtle_effects.util.Util;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
-import net.minecraft.core.particles.ColorParticleOption;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.phys.Vec3;
+import org.joml.Vector3f;
 
 import java.util.List;
 
@@ -32,15 +34,15 @@ public class SparkParticle extends TextureSheetParticle {
         pickSprite(sprites);
     }
 
-    public static ColorParticleOption create(SparkType sparkType, RandomSource random) {
+    public static ColorParticleOptions create(SparkType sparkType, RandomSource random) {
         return create(sparkType, random, DEFAULT_COLORS);
     }
 
-    public static ColorParticleOption create(SparkType sparkType, RandomSource random, List<Integer> colors) {
-        return ColorParticleOption.create(sparkType.getType().get(), colors.get(random.nextInt(colors.size())));
+    public static ColorParticleOptions create(SparkType sparkType, RandomSource random, List<Integer> colors) {
+        return new ColorParticleOptions(sparkType.getType().get(), Vec3.fromRGB24(colors.get(random.nextInt(colors.size()))).toVector3f());
     }
 
-    public static ColorParticleOption createSoul(SparkType sparkType, RandomSource random) {
+    public static ColorParticleOptions createSoul(SparkType sparkType, RandomSource random) {
         return create(sparkType, random, SOUL_COLORS);
     }
 
@@ -59,44 +61,50 @@ public class SparkParticle extends TextureSheetParticle {
         return Util.getLightColor(super.getLightColor(partialTick));
     }
 
-    public record LongLifeProvider(SpriteSet sprites) implements ParticleProvider<ColorParticleOption> {
+    public record LongLifeProvider(SpriteSet sprites) implements ParticleProvider<ColorParticleOptions> {
 
         @Override
-        public Particle createParticle(ColorParticleOption options, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+        public Particle createParticle(ColorParticleOptions options, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
             SparkParticle particle = new SparkParticle(level, x, y, z, xSpeed, ySpeed, zSpeed, 10, sprites);
-            particle.setColor(options.getRed(), options.getGreen(), options.getBlue());
+            Vector3f color = options.getColor();
+            particle.setColor(color.x(), color.y(), color.z());
             return particle;
         }
     }
 
-    public record ShortLifeProvider(SpriteSet sprites) implements ParticleProvider<ColorParticleOption> {
+    public record ShortLifeProvider(SpriteSet sprites) implements ParticleProvider<ColorParticleOptions> {
 
         @Override
-        public Particle createParticle(ColorParticleOption options, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+        public Particle createParticle(ColorParticleOptions options, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
             SparkParticle particle = new SparkParticle(level, x, y, z, xSpeed, ySpeed, zSpeed, 20, sprites);
-            particle.setColor(options.getRed(), options.getGreen(), options.getBlue());
+            Vector3f color = options.getColor();
+            particle.setColor(color.x(), color.y(), color.z());
             return particle;
         }
     }
 
-    public record FloatingProvider(SpriteSet sprites) implements ParticleProvider<ColorParticleOption> {
+    public record FloatingProvider(SpriteSet sprites) implements ParticleProvider<ColorParticleOptions> {
 
         @Override
-        public Particle createParticle(ColorParticleOption options, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+        public Particle createParticle(ColorParticleOptions options, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
             SparkParticle particle = new SparkParticle(level, x, y, z, xSpeed, ySpeed, zSpeed, 20, sprites);
+            Vector3f color = options.getColor();
+
             particle.gravity = 0;
-            particle.setColor(options.getRed(), options.getGreen(), options.getBlue());
+            particle.setColor(color.x(), color.y(), color.z());
             return particle;
         }
     }
 
-    public record MetalProvider(SpriteSet sprites) implements ParticleProvider<ColorParticleOption> {
+    public record MetalProvider(SpriteSet sprites) implements ParticleProvider<ColorParticleOptions> {
 
         @Override
-        public Particle createParticle(ColorParticleOption options, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+        public Particle createParticle(ColorParticleOptions options, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
             SparkParticle particle = new SparkParticle(level, x, y, z, xSpeed, ySpeed, zSpeed, 20, sprites);
+            Vector3f color = options.getColor();
+
             particle.gravity = 1;
-            particle.setColor(options.getRed(), options.getGreen(), options.getBlue());
+            particle.setColor(color.x(), color.y(), color.z());
             return particle;
         }
     }

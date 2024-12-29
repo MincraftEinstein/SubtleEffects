@@ -48,7 +48,7 @@ public class ModBiomeConfigs extends Config {
         BiomeParticleManager.clear();
     }
 
-    private static ValidatedList<ResourceLocation> biomeList(String... biomeIds) {
+    public static ValidatedList<ResourceLocation> biomeList(String... biomeIds) {
         return new ValidatedList<>(Arrays.stream(biomeIds).map(ResourceLocation::new).toList(),
                 new ValidatedIdentifier(new ResourceLocation("air"),
                         new AllowableIdentifiers(

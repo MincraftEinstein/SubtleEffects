@@ -2,7 +2,7 @@ package einstein.subtle_effects.util;
 
 import com.mojang.serialization.Codec;
 import einstein.subtle_effects.init.ModParticles;
-import net.minecraft.core.particles.ColorParticleOption;
+import einstein.subtle_effects.particle.option.ColorParticleOptions;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.util.StringRepresentable;
 
@@ -17,9 +17,9 @@ public enum SparkType implements StringRepresentable {
     public static final Codec<SparkType> CODEC = StringRepresentable.fromEnum(SparkType::values);
 
     private final String name;
-    private final Supplier<ParticleType<ColorParticleOption>> type;
+    private final Supplier<ParticleType<ColorParticleOptions>> type;
 
-    SparkType(String name, Supplier<ParticleType<ColorParticleOption>> type) {
+    SparkType(String name, Supplier<ParticleType<ColorParticleOptions>> type) {
         this.name = name;
         this.type = type;
     }
@@ -29,7 +29,7 @@ public enum SparkType implements StringRepresentable {
         return name;
     }
 
-    public Supplier<ParticleType<ColorParticleOption>> getType() {
+    public Supplier<ParticleType<ColorParticleOptions>> getType() {
         return type;
     }
 }

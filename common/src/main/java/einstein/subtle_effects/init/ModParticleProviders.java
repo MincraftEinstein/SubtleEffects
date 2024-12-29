@@ -22,11 +22,8 @@ public class ModParticleProviders {
         register(SNORING, SnoringParticle.Provider::new);
         register(FALLING_SNORING, SnoringParticle.FallingProvider::new);
         register(LONG_SPARK, SparkParticle.LongLifeProvider::new);
-        register(LONG_SOUL_SPARK, SparkParticle.LongLifeProvider::new);
         register(SHORT_SPARK, SparkParticle.ShortLifeProvider::new);
-        register(SHORT_SOUL_SPARK, SparkParticle.ShortLifeProvider::new);
         register(FLOATING_SPARK, SparkParticle.FloatingProvider::new);
-        register(FLOATING_SOUL_SPARK, SparkParticle.FloatingProvider::new);
         register(METAL_SPARK, SparkParticle.MetalProvider::new);
         register(SNOW, SnowParticle.Provider::new);
         register(SNOWBALL_TRAIL, SnowParticle.SnowballTrailProvider::new);
