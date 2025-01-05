@@ -41,6 +41,7 @@ public class ModEntityConfigs extends Config {
     public boolean wardenDeathSoulParticles = true;
     public XPBottleParticlesDisplayType xpBottleParticlesDisplayType = XPBottleParticlesDisplayType.DEFAULT;
     public ValidatedInt xpBottleParticlesDensity = new ValidatedInt(10, 30, 5);
+    public boolean eggSmashSound = true;
 
     public ModEntityConfigs() {
         super(SubtleEffects.loc("entities"));
