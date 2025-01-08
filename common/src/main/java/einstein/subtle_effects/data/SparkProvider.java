@@ -8,6 +8,7 @@ import einstein.subtle_effects.util.Box;
 import einstein.subtle_effects.util.SparkType;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.util.StringRepresentable;
+import net.minecraft.util.valueproviders.IntProvider;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
@@ -73,14 +74,14 @@ public record SparkProvider(List<BlockStateHolder> states, Optional<Options> opt
         }
     }
 
-    public record Options(PresetType preset, Optional<SparkType> sparkType, Optional<Box> box, Optional<Integer> count,
-                          Optional<Vec3> velocity, Optional<List<Integer>> colors) {
+    public record Options(PresetType preset, Optional<SparkType> sparkType, Optional<Box> box,
+                          Optional<IntProvider> count, Optional<Vec3> velocity, Optional<List<Integer>> colors) {
 
         public static final Codec<Options> CODEC = RecordCodecBuilder.create(instance -> instance.group(
                 PresetType.CODEC.fieldOf("preset").forGetter(Options::preset),
                 SparkType.CODEC.optionalFieldOf("spark").forGetter(Options::sparkType),
                 Box.CODEC.optionalFieldOf("box").forGetter(Options::box),
-                Codec.INT.optionalFieldOf("count").forGetter(Options::count),
+                IntProvider.CODEC.optionalFieldOf("count").forGetter(Options::count),
                 Vec3.CODEC.optionalFieldOf("velocity").forGetter(Options::velocity),
                 Codec.withAlternative(Codec.list(Codec.INT), Codec.STRING, string -> {
                     if (string.equals("soul")) {

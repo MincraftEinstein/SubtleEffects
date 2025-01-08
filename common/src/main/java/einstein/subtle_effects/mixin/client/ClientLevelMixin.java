@@ -16,6 +16,8 @@ import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.profiling.ProfilerFiller;
+import net.minecraft.util.valueproviders.ConstantInt;
+import net.minecraft.util.valueproviders.IntProvider;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.AbstractCandleBlock;
@@ -176,9 +178,9 @@ public abstract class ClientLevelMixin extends Level {
                                     Box box = options.box().orElse(new Box());
                                     SparkType sparkType = options.sparkType().orElse(SparkType.SHORT_LIFE);
                                     Vec3 velocity = options.velocity().orElse(new Vec3(0.03, 0.05, 0.03));
-                                    int count = options.count().orElse(10);
+                                    IntProvider count = options.count().orElse(ConstantInt.of(10));
 
-                                    ParticleSpawnUtil.spawnSparks(this, random, pos, sparkType, box, velocity, count, colors);
+                                    ParticleSpawnUtil.spawnSparks(this, random, pos, sparkType, box, velocity, count.sample(random), colors);
                                 }
                             }
                         }
