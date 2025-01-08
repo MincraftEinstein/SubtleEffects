@@ -75,13 +75,15 @@ public record SparkProvider(List<BlockStateHolder> states, Optional<Options> opt
     }
 
     public record Options(PresetType preset, Optional<SparkType> sparkType, Optional<Box> box,
-                          Optional<IntProvider> count, Optional<Vec3> velocity, Optional<List<Integer>> colors) {
+                          Optional<IntProvider> count, Optional<Float> chance, Optional<Vec3> velocity,
+                          Optional<List<Integer>> colors) {
 
         public static final Codec<Options> CODEC = RecordCodecBuilder.create(instance -> instance.group(
                 PresetType.CODEC.fieldOf("preset").forGetter(Options::preset),
                 SparkType.CODEC.optionalFieldOf("spark").forGetter(Options::sparkType),
                 Box.CODEC.optionalFieldOf("box").forGetter(Options::box),
                 IntProvider.CODEC.optionalFieldOf("count").forGetter(Options::count),
+                Codec.floatRange(0, 1).optionalFieldOf("chance").forGetter(Options::chance),
                 Vec3.CODEC.optionalFieldOf("velocity").forGetter(Options::velocity),
                 Codec.withAlternative(Codec.list(Codec.INT), Codec.STRING, string -> {
                     if (string.equals("soul")) {

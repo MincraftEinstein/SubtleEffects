@@ -179,8 +179,11 @@ public abstract class ClientLevelMixin extends Level {
                                     SparkType sparkType = options.sparkType().orElse(SparkType.SHORT_LIFE);
                                     Vec3 velocity = options.velocity().orElse(new Vec3(0.03, 0.05, 0.03));
                                     IntProvider count = options.count().orElse(ConstantInt.of(10));
+                                    float chance = options.chance().orElse(1F);
 
-                                    ParticleSpawnUtil.spawnSparks(this, random, pos, sparkType, box, velocity, count.sample(random), colors);
+                                    if (random.nextFloat() <= chance) {
+                                        ParticleSpawnUtil.spawnSparks(this, random, pos, sparkType, box, velocity, count.sample(random), colors);
+                                    }
                                 }
                             }
                         }
