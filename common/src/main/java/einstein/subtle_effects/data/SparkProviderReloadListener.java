@@ -1,5 +1,6 @@
 package einstein.subtle_effects.data;
 
+import net.minecraft.resources.FileToIdConverter;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
@@ -10,11 +11,11 @@ import java.util.Map;
 
 public class SparkProviderReloadListener extends SimpleJsonResourceReloadListener<SparkProvider> {
 
-    public static final String DIRECTORY = "subtle_effects/spark_providers";
+    public static final FileToIdConverter LISTER = FileToIdConverter.json("subtle_effects/spark_providers");
     public static final Map<ResourceLocation, SparkProvider> SPARK_PROVIDERS = new HashMap<>();
 
     public SparkProviderReloadListener() {
-        super(SparkProvider.CODEC, DIRECTORY);
+        super(SparkProvider.CODEC, LISTER);
     }
 
     @Override
