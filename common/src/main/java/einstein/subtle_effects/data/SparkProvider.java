@@ -7,6 +7,8 @@ import einstein.subtle_effects.particle.SparkParticle;
 import einstein.subtle_effects.util.Box;
 import einstein.subtle_effects.util.SparkType;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.util.ExtraCodecs;
+import net.minecraft.util.FastColor;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.util.valueproviders.IntProvider;
 import net.minecraft.world.level.block.Block;
@@ -78,6 +80,11 @@ public record SparkProvider(List<BlockStateHolder> states, Optional<Options> opt
                           Optional<IntProvider> count, Optional<Float> chance, Optional<Vec3> velocity,
                           Optional<List<Integer>> colors) {
 
+        // Backported from 1.21.4
+        public static final Codec<Integer> RGB_COLOR_CODEC = Codec.withAlternative(Codec.INT, ExtraCodecs.VECTOR3F,
+                color -> FastColor.ARGB32.colorFromFloat(1, color.x(), color.y(), color.z())
+        );
+
         public static final Codec<Options> CODEC = RecordCodecBuilder.create(instance -> instance.group(
                 PresetType.CODEC.fieldOf("preset").forGetter(Options::preset),
                 SparkType.CODEC.optionalFieldOf("spark").forGetter(Options::sparkType),
@@ -85,7 +92,7 @@ public record SparkProvider(List<BlockStateHolder> states, Optional<Options> opt
                 IntProvider.CODEC.optionalFieldOf("count").forGetter(Options::count),
                 Codec.floatRange(0, 1).optionalFieldOf("chance").forGetter(Options::chance),
                 Vec3.CODEC.optionalFieldOf("velocity").forGetter(Options::velocity),
-                Codec.withAlternative(Codec.list(Codec.INT), Codec.STRING, string -> {
+                Codec.withAlternative(Codec.list(RGB_COLOR_CODEC), Codec.STRING, string -> {
                     if (string.equals("soul")) {
                         return SparkParticle.SOUL_COLORS;
                     }
