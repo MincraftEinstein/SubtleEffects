@@ -22,6 +22,7 @@ public class ModGeneralConfigs extends Config {
     public boolean cullParticlesInUnloadedChunks = true;
     public ValidatedFloat sparksScale = new ValidatedFloat(1, 2, 1);
     public ValidatedFloat fireHeight = new ValidatedFloat(0, 0.4F, -0.5F);
+    public boolean poppingHearts = true;
 
     public ModGeneralConfigs() {
         super(SubtleEffects.loc("general"));

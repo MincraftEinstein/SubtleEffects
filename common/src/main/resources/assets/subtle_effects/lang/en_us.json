@@ -321,7 +321,9 @@
   "config.subtle_effects.general.cullParticlesWithNoAlpha.desc": "Prevents rendering particles with an alpha (transparency) level of 0.\n\n§6Note:§r\nIf particles from other mods don't seem to render try disabling this",
   "config.subtle_effects.general.cullParticlesInUnloadedChunks": "Cull Particles In Unloaded Chunks",
   "config.subtle_effects.general.cullParticlesInUnloadedChunks.desc": "Prevents rendering particles in unloaded chunk. This usually doesn't affect anything, unless the server is running slowing",
+  "config.subtle_effects.general.sparksScale": "Sparks Scale",
   "config.subtle_effects.general.fireHeight": "Fire Height",
   "config.subtle_effects.general.fireHeight.desc": "The height for the fire screen overlay when burning",
-  "config.subtle_effects.general.sparksScale": "Sparks Scale"
+  "config.subtle_effects.general.poppingHearts": "Popping Hearts",
+  "config.subtle_effects.general.poppingHearts.desc": "Should heart particles play a popping animation before disappearing"
 }
