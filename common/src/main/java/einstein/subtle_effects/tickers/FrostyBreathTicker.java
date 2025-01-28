@@ -38,10 +38,6 @@ public class FrostyBreathTicker extends Ticker<LivingEntity> {
 
         Minecraft minecraft = Minecraft.getInstance();
         if (entity instanceof Player player) {
-            if (player.isCreative()) {
-                return;
-            }
-
             if (player.equals(minecraft.player) && !ENTITIES.humanoids.frostyBreath.displayType.test(minecraft)) {
                 return;
             }
