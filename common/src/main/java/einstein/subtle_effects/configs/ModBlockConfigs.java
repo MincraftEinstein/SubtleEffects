@@ -9,6 +9,7 @@ import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.tickers.TickerManager;
 import me.fzzyhmstrs.fzzy_config.annotations.Translation;
 import me.fzzyhmstrs.fzzy_config.config.Config;
+import me.fzzyhmstrs.fzzy_config.config.ConfigGroup;
 import me.fzzyhmstrs.fzzy_config.util.EnumTranslatable;
 import me.fzzyhmstrs.fzzy_config.validation.collection.ValidatedList;
 import me.fzzyhmstrs.fzzy_config.validation.minecraft.ValidatedRegistryType;
@@ -50,8 +51,10 @@ public class ModBlockConfigs extends Config {
     public GlowstoneDustDisplayType glowstoneBlockDustDisplayType = GlowstoneDustDisplayType.ON;
     public BlockDustDensity glowstoneBlockDustDensity = BlockDustDensity.DEFAULT;
     public boolean beehivesHaveSleepingZs = true;
+    public ConfigGroup fallingBlockDustGroup = new ConfigGroup("falling_block_dust");
     public boolean fallingBlockDust = true;
     public ValidatedList<Block> fallingBlockDustBlocks = new ValidatedList<>(DEFAULT_FALLING_BLOCK_DUST_BLOCKS, ValidatedRegistryType.of(BuiltInRegistries.BLOCK));
+    @ConfigGroup.Pop
     public ValidatedInt fallingBlockDustDistance = new ValidatedInt(0, 20, 0);
     public SmokeType torchflowerSmoke = SmokeType.DEFAULT;
     public boolean torchflowerFlames = true;
