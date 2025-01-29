@@ -18,6 +18,7 @@ public class ModGeneralConfigs extends Config {
 
     public boolean mobSkullShaders;
     public ConfigGroup particleRenderingGroup = new ConfigGroup("particle_rendering");
+    public boolean enableParticleCulling = true;
     @ValidatedInt.Restrict(min = 1, max = 32)
     public int particleRenderDistance = 5;
     public boolean cullParticlesWithNoAlpha = true;
