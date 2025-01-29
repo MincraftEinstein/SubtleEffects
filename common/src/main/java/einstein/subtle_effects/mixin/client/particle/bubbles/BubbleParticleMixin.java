@@ -2,7 +2,6 @@ package einstein.subtle_effects.mixin.client.particle.bubbles;
 
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import einstein.subtle_effects.platform.Services;
-import einstein.subtle_effects.util.ParticleAccessor;
 import einstein.subtle_effects.util.SpriteSetSetter;
 import einstein.subtle_effects.util.Util;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -28,7 +27,7 @@ public abstract class BubbleParticleMixin extends TextureSheetParticle implement
     @Override
     protected void renderRotatedQuad(VertexConsumer buffer, Quaternionf quaternion, float x, float y, float z, float partialTicks) {
         super.renderRotatedQuad(buffer, quaternion, x, y, z, partialTicks);
-        if (subtleEffects$overlaySprite != null && Util.isBCWPPackLoaded()) {
+        if (subtleEffects$overlaySprite != null) {
             int lightColor = getLightColor(partialTicks);
             float quadSize = getQuadSize(partialTicks);
             float u0 = subtleEffects$overlaySprite.getU0();
