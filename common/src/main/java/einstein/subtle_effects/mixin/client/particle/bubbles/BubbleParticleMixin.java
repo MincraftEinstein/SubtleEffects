@@ -32,17 +32,23 @@ public abstract class BubbleParticleMixin extends TextureSheetParticle implement
     @Unique
     private boolean subtleEffects$playsSound;
 
+    @Unique
+    private int subtleEffects$waterColor;
+
     protected BubbleParticleMixin(ClientLevel level, double x, double y, double z) {
         super(level, x, y, z);
     }
 
     @Inject(method = "tick", at = @At("RETURN"))
     private void tick(CallbackInfo ci) {
+        BlockPos pos = BlockPos.containing(x, y, z);
+        subtleEffects$waterColor = level.getBiome(pos).value().getWaterColor();
+
         if (!isAlive()) {
             float volume = ModConfigs.GENERAL.poppingBubblesVolume.get();
 
             if (subtleEffects$playsSound && volume > 0) {
-                if (!level.isWaterAt(BlockPos.containing(x, y, z))) {
+                if (!level.isWaterAt(pos)) {
                     level.playLocalSound(x, y, z, SoundEvents.BUBBLE_COLUMN_BUBBLE_POP, SoundSource.AMBIENT,
                             Mth.nextInt(random, 1, 4) * volume,
                             Mth.nextFloat(random, 1, 1.3F), false
@@ -77,7 +83,14 @@ public abstract class BubbleParticleMixin extends TextureSheetParticle implement
     @Unique
     private void subtleEffects$renderVertex(VertexConsumer buffer, Quaternionf quaternion, float x, float y, float z, float xOffset, float yOffset, float quadSize, float u, float v, int packedLight) {
         Vector3f vector3f = (new Vector3f(xOffset, yOffset, 0)).rotate(quaternion).mul(quadSize).add(x, y, z);
-        buffer.addVertex(vector3f.x(), vector3f.y(), vector3f.z()).setUv(u, v).setColor(1, 1, 1, alpha).setLight(packedLight);
+        float colorIntensity = 0.20F;
+        float whiteIntensity = 1 - colorIntensity;
+
+        buffer.addVertex(vector3f.x(), vector3f.y(), vector3f.z()).setUv(u, v)
+                .setColor(whiteIntensity + (colorIntensity * ((subtleEffects$waterColor >> 16 & 255) / 255F)),
+                        whiteIntensity + (colorIntensity * ((subtleEffects$waterColor >> 8 & 255) / 255F)),
+                        whiteIntensity + (colorIntensity * ((subtleEffects$waterColor & 255) / 255F)), alpha)
+                .setLight(packedLight);
     }
 
     @Override
