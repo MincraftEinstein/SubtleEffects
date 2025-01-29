@@ -26,6 +26,8 @@ public class ModGeneralConfigs extends Config {
     public ValidatedFloat sparksScale = new ValidatedFloat(1, 2, 1);
     public ValidatedFloat fireHeight = new ValidatedFloat(0, 0.4F, -0.5F);
     public boolean poppingHearts = true;
+    public boolean poppingBubbles = true;
+    public ValidatedFloat poppingBubblesVolume = new ValidatedFloat(0.2F, 1, 0);
 
     public ModGeneralConfigs() {
         super(SubtleEffects.loc("general"));

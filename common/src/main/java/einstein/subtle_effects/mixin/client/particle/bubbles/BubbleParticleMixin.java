@@ -1,27 +1,59 @@
 package einstein.subtle_effects.mixin.client.particle.bubbles;
 
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.platform.Services;
-import einstein.subtle_effects.util.SpriteSetSetter;
+import einstein.subtle_effects.util.BubbleSetter;
 import einstein.subtle_effects.util.Util;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.Mth;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.List;
 
 @Mixin({BubbleParticle.class, BubbleColumnUpParticle.class, WaterCurrentDownParticle.class})
-public abstract class BubbleParticleMixin extends TextureSheetParticle implements SpriteSetSetter {
+public abstract class BubbleParticleMixin extends TextureSheetParticle implements BubbleSetter {
 
     @Unique
     private TextureAtlasSprite subtleEffects$overlaySprite;
 
+    @Unique
+    private boolean subtleEffects$playsSound;
+
     protected BubbleParticleMixin(ClientLevel level, double x, double y, double z) {
         super(level, x, y, z);
+    }
+
+    @Inject(method = "tick", at = @At("RETURN"))
+    private void tick(CallbackInfo ci) {
+        if (!isAlive()) {
+            float volume = ModConfigs.GENERAL.poppingBubblesVolume.get();
+
+            if (subtleEffects$playsSound && volume > 0) {
+                if (!level.isWaterAt(BlockPos.containing(x, y, z))) {
+                    level.playLocalSound(x, y, z, SoundEvents.BUBBLE_COLUMN_BUBBLE_POP, SoundSource.AMBIENT,
+                            Mth.nextInt(random, 1, 4) * volume,
+                            Mth.nextFloat(random, 1, 1.3F), false
+                    );
+                }
+            }
+
+            if (ModConfigs.GENERAL.poppingBubbles) {
+                level.addParticle(ParticleTypes.BUBBLE_POP, x, y, z, xd, yd, zd);
+            }
+        }
     }
 
     @Override
@@ -49,8 +81,10 @@ public abstract class BubbleParticleMixin extends TextureSheetParticle implement
     }
 
     @Override
-    public void subtleEffects$setSpriteSet(SpriteSet sprites) {
+    public void subtleEffects$setupBubble(SpriteSet sprites, boolean playsSound) {
         List<TextureAtlasSprite> textures = Services.PARTICLE_HELPER.getSpritesFromSet(sprites);
+        subtleEffects$playsSound = playsSound;
+
         if (textures != null && textures.size() > 1 && Util.isBCWPPackLoaded()) {
             setSprite(textures.getFirst());
             subtleEffects$overlaySprite = textures.get(1);
