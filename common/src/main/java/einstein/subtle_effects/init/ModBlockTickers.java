@@ -140,7 +140,7 @@ public class ModBlockTickers {
             }
         });
         register(state -> state.getBlock() instanceof CampfireBlock && state.getValue(CampfireBlock.LIT),
-                () -> BLOCKS.campfireSizzlingSounds, (state, level, pos, random) -> {
+                () -> BLOCKS.campfireSizzlingSoundVolume.get() > 0, (state, level, pos, random) -> {
                     if (level.getBlockEntity(pos) instanceof CampfireBlockEntity blockEntity) {
                         for (ItemStack stack : blockEntity.getItems()) {
                             if (!stack.isEmpty() && random.nextInt(5) == 0) {
