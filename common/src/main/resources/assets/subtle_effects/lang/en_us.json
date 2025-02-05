@@ -215,6 +215,8 @@
   "config.subtle_effects.entities.burning.flames": "Flames",
   "config.subtle_effects.entities.burning.sparks": "Sparks",
   "config.subtle_effects.entities.burning.sounds": "Sounds",
+  "config.subtle_effects.entities.burning.extinguishSteam": "Extinguish Steam",
+  "config.subtle_effects.entities.burning.extinguishSteam.desc": "When an burning entity is extinguished, from water or a splash water bottle, steam will appear",
   "config.subtle_effects.entities.itemRarity": "Item Rarity",
   "config.subtle_effects.entities.itemRarity.particlesDisplayType": "Particles Display Type",
   "config.subtle_effects.entities.itemRarity.particlesDisplayType.desc": "Adds colored particles that float up from items on the ground.",
