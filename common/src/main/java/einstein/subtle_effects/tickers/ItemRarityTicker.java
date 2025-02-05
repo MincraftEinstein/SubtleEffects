@@ -4,6 +4,7 @@ import einstein.subtle_effects.SubtleEffects;
 import einstein.subtle_effects.configs.entities.ItemRarityConfigs;
 import einstein.subtle_effects.init.ModParticles;
 import einstein.subtle_effects.particle.option.IntegerParticleOptions;
+import einstein.subtle_effects.platform.Services;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextColor;
@@ -64,7 +65,7 @@ public class ItemRarityTicker extends Ticker<ItemEntity> {
             }
         }
 
-        TextColor rarityColor = TextColor.fromLegacyFormat(stack.getRarity().color());
+        TextColor rarityColor = Services.PARTICLE_HELPER.getRarityColor(stack.getRarity());
         if (rarityColor != null) {
             nameColors.add(rarityColor);
             return;
