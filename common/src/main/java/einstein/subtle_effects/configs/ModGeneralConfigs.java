@@ -16,7 +16,7 @@ import net.minecraft.world.entity.player.Player;
 @Translation(prefix = ModConfigs.BASE_KEY + "general")
 public class ModGeneralConfigs extends Config {
 
-    public boolean mobSkullShaders;
+    public boolean mobSkullShaders = true;
     public ConfigGroup particleRenderingGroup = new ConfigGroup("particle_rendering");
     public boolean enableParticleCulling = true;
     @ValidatedInt.Restrict(min = 1, max = 32)
