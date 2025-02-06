@@ -1,6 +1,5 @@
 package einstein.subtle_effects.init;
 
-import com.google.common.base.Predicates;
 import einstein.subtle_effects.configs.CommandBlockSpawnType;
 import einstein.subtle_effects.configs.entities.ItemRarityConfigs;
 import einstein.subtle_effects.particle.SparkParticle;
@@ -18,6 +17,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LightningBolt;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ambient.Bat;
 import net.minecraft.world.entity.animal.Cat;
@@ -50,7 +50,7 @@ public class ModTickers {
     private static final Predicate<Entity> LOCAL_PLAYER = entity -> entity.equals(Minecraft.getInstance().player);
 
     public static void init() {
-        registerTicker(Predicates.alwaysTrue(), EntityFireTicker::new);
+        registerTicker(entity -> !(entity instanceof LightningBolt), EntityFireTicker::new);
         registerTicker(entity -> entity instanceof LivingEntity, ModTickers::getSleepingTicker);
         registerTicker(entity -> entity instanceof AbstractMinecart && ENTITIES.minecartLandingSparks, MinecartSparksTicker::new);
         registerTicker(LOCAL_PLAYER.and(entity -> ENTITIES.humanoids.player.stomachGrowlingThreshold.get() > 0), StomachGrowlingTicker::new);
