@@ -1,26 +1,29 @@
 package einstein.subtle_effects.util;
 
 import com.google.common.base.Suppliers;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import einstein.subtle_effects.SubtleEffects;
+import einstein.subtle_effects.data.MobSkullShader;
+import einstein.subtle_effects.data.MobSkullShaderReloadListener;
+import einstein.subtle_effects.mixin.client.GameRendererAccessor;
 import einstein.subtle_effects.platform.Services;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.Particle;
+import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.client.renderer.PostChain;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.SectionPos;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.SkullBlock;
 import net.minecraft.world.phys.Vec3;
 
 import java.util.ArrayList;
@@ -34,8 +37,6 @@ public class Util {
     public static final int MAX_Z_COUNT = 3;
     public static final int STOMACH_GROWL_DELAY = 300;
     public static final DustParticleOptions GLOWSTONE_DUST_PARTICLES = new DustParticleOptions(Vec3.fromRGB24(0xFFBC5E).toVector3f(), 1);
-    public static final ResourceLocation CREEPER_SHADER = ResourceLocation.withDefaultNamespace("shaders/post/creeper.json");
-    public static final ResourceLocation INVERT_SHADER = ResourceLocation.withDefaultNamespace("shaders/post/invert.json");
     public static final Supplier<ResourceLocation> BCWP_PACK_LOCATION = Suppliers.memoize(() -> SubtleEffects.loc("biome_color_water_particles").withPrefix(Services.PLATFORM.getPlatformName().equals("NeoForge") ? "resourcepacks/" : ""));
     public static final Supplier<String> BCWP_PACK_ID = Suppliers.memoize(() -> (Services.PLATFORM.getPlatformName().equals("NeoForge") ? "mod/" : "") + BCWP_PACK_LOCATION.get().toString());
     public static final Component BCWP_PACK_NAME = Component.translatable("resourcePack.subtle_effects.biome_water_color_particles.name");
@@ -54,6 +55,7 @@ public class Util {
         particles.add(ParticleTypes.FALLING_DRIPSTONE_WATER);
     });
     public static final ResourceLocation COLORLESS_RAIN_TEXTURE = SubtleEffects.loc("textures/environment/colorless_rain.png");
+    public static final Gson GSON = new GsonBuilder().create();
 
     public static void playClientSound(Entity entity, SoundEvent sound, SoundSource source, float volume, float pitch) {
         Minecraft minecraft = Minecraft.getInstance();
@@ -82,20 +84,21 @@ public class Util {
     }
 
     public static void applyHelmetShader(ItemStack stack) {
-        ShaderManager shaderManager = (ShaderManager) Minecraft.getInstance().gameRenderer;
-        if (stack.getItem() instanceof BlockItem blockItem) {
-            if (blockItem.getBlock() instanceof SkullBlock skullBlock) {
-                if (skullBlock.getType() == SkullBlock.Types.CREEPER) {
-                    shaderManager.subtleEffects$loadShader(CREEPER_SHADER);
-                    return;
-                }
-                else if (skullBlock.getType() == SkullBlock.Types.DRAGON) {
-                    shaderManager.subtleEffects$loadShader(INVERT_SHADER);
-                    return;
-                }
+        GameRenderer gameRenderer = Minecraft.getInstance().gameRenderer;
+        for (MobSkullShader mobSkullShader : MobSkullShaderReloadListener.MOB_SKULL_SHADERS.values()) {
+            if (mobSkullShader.stackHolder().matches(stack)) {
+                loadShaderEffect(mobSkullShader.shaderId(), gameRenderer);
+                return;
             }
         }
-        shaderManager.subtleEffects$clearShader();
+        gameRenderer.shutdownEffect();
+    }
+
+    private static void loadShaderEffect(ResourceLocation shaderId, GameRenderer gameRenderer) {
+        PostChain effect = gameRenderer.currentEffect();
+        if (effect == null || !effect.getName().equals(shaderId.toString())) {
+            ((GameRendererAccessor) gameRenderer).loadShaderEffect(shaderId);
+        }
     }
 
     public static void setColorFromHex(Particle particle, int hexColor) {
