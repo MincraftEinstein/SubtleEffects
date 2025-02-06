@@ -5,7 +5,7 @@ import einstein.subtle_effects.init.ModConfigs;
 import me.fzzyhmstrs.fzzy_config.annotations.Translation;
 import me.fzzyhmstrs.fzzy_config.config.ConfigSection;
 
-@Translation(prefix = ModConfigs.BASE_KEY + "entities.primedTNT")
+@Translation(prefix = ModConfigs.BASE_KEY + "entities.explosives")
 public class ExplosivesConfigs extends ConfigSection {
 
     public boolean tntUpdateSmoke = true;
