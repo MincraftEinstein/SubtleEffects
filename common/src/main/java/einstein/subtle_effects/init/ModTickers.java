@@ -62,6 +62,7 @@ public class ModTickers {
         registerTicker(entity -> entity.getType().equals(EntityType.MAGMA_CUBE) && ENTITIES.magmaCubeTrails, (MagmaCube entity) -> new SlimeTrailTicker<>(entity, ModParticles.MAGMA_CUBE_TRAIL));
         registerTicker(entity -> entity.getType().equals(EntityType.IRON_GOLEM) && ENTITIES.ironGolemCrackParticles, IronGolemTicker::new);
         registerTicker(entity -> entity instanceof ItemEntity && ENTITIES.itemRarity.particlesDisplayType != ItemRarityConfigs.DisplayType.OFF, ItemRarityTicker::new);
+        registerTicker(entity -> entity instanceof Witch, WitchTicker::new);
 
         registerSimpleTicker(entity -> entity instanceof Player && ENTITIES.dustClouds.playerRunning,
                 (entity, level, random) -> {
