@@ -7,7 +7,6 @@ import net.minecraft.client.particle.ParticleRenderType;
 import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.core.particles.ColorParticleOption;
 import net.minecraft.util.Mth;
-import org.joml.Vector3f;
 
 public class PotionRingParticle extends FlatPlaneParticle {
 
@@ -18,7 +17,7 @@ public class PotionRingParticle extends FlatPlaneParticle {
         lifetime = 10;
         alpha = 0;
         quadSize = 0.2F;
-        rotation = new Vector3f(-90, 90 * random.nextInt(3), 0).mul(Mth.DEG_TO_RAD);
+        rotation.rotateX(-90 * Mth.DEG_TO_RAD);
         pickSprite(sprites);
         scale(3);
     }

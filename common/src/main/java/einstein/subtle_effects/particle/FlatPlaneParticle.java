@@ -6,12 +6,14 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.TextureSheetParticle;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
+import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
 public abstract class FlatPlaneParticle extends TextureSheetParticle {
 
     // Note: rotation is in radiens
-    protected Vector3f rotation = new Vector3f();
+    protected Quaternionf rotation = new Quaternionf();
+    protected boolean renderBackFace = true;
 
     protected FlatPlaneParticle(ClientLevel level, double x, double y, double z) {
         super(level, x, y, z);
@@ -22,51 +24,37 @@ public abstract class FlatPlaneParticle extends TextureSheetParticle {
     }
 
     @Override
-    public void render(VertexConsumer consumer, Camera camera, float partialTick) {
-        Vec3 pos = camera.getPosition();
-        double x = Mth.lerp(partialTick, xo, this.x) - pos.x();
-        double y = Mth.lerp(partialTick, yo, this.y) - pos.y();
-        double z = Mth.lerp(partialTick, zo, this.z) - pos.z();
-        Vec3[] vertexes = {
-                new Vec3(-1, -1, 0),
-                new Vec3(-1, 1, 0),
-                new Vec3(1, 1, 0),
-                new Vec3(1, -1, 0)
-        };
+    public void render(VertexConsumer consumer, Camera camera, float partialTicks) {
+        Vec3 vec3 = camera.getPosition();
+        float x = (float) (Mth.lerp(partialTicks, xo, this.x) - vec3.x());
+        float y = (float) (Mth.lerp(partialTicks, yo, this.y) - vec3.y());
+        float z = (float) (Mth.lerp(partialTicks, zo, this.z) - vec3.z());
+        float quadSize = getQuadSize(partialTicks);
+        float u0 = getU0();
+        float u1 = getU1();
+        float v0 = getV0();
+        float v1 = getV1();
+        int packedLight = getLightColor(partialTicks);
 
-        for (int i = 0; i < vertexes.length; i++) {
-            vertexes[i] = vertexes[i]
-                    .xRot(rotation.x())
-                    .yRot(rotation.y())
-                    .zRot(rotation.z())
-                    .scale(getQuadSize(partialTick))
-                    .add(x, y, z);
+        if (roll != 0) {
+            rotation.rotateZ(Mth.lerp(partialTicks, oRoll, roll));
         }
 
-        float minU = getU0();
-        float maxU = getU1();
-        float minV = getV0();
-        float maxV = getV1();
-        int lightColor = getLightColor(partialTick);
+        renderVertex(consumer, x, y, z, -1, -1, quadSize, u1, v1, packedLight);
+        renderVertex(consumer, x, y, z, -1, 1, quadSize, u1, v0, packedLight);
+        renderVertex(consumer, x, y, z, 1, 1, quadSize, u0, v0, packedLight);
+        renderVertex(consumer, x, y, z, 1, -1, quadSize, u0, v1, packedLight);
 
-        consumer.addVertex((float) vertexes[0].x(), (float) vertexes[0].y(), (float) vertexes[0].z())
-                .setUv(maxU, maxV)
-                .setColor(rCol, gCol, bCol, alpha)
-                .setLight(lightColor);
+        if (renderBackFace) {
+            renderVertex(consumer, x, y, z, 1, -1, quadSize, u0, v1, packedLight);
+            renderVertex(consumer, x, y, z, 1, 1, quadSize, u0, v0, packedLight);
+            renderVertex(consumer, x, y, z, -1, 1, quadSize, u1, v0, packedLight);
+            renderVertex(consumer, x, y, z, -1, -1, quadSize, u1, v1, packedLight);
+        }
+    }
 
-        consumer.addVertex((float) vertexes[1].x(), (float) vertexes[1].y(), (float) vertexes[1].z())
-                .setUv(maxU, minV)
-                .setColor(rCol, gCol, bCol, alpha)
-                .setLight(lightColor);
-
-        consumer.addVertex((float) vertexes[2].x(), (float) vertexes[2].y(), (float) vertexes[2].z())
-                .setUv(minU, minV)
-                .setColor(rCol, gCol, bCol, alpha)
-                .setLight(lightColor);
-
-        consumer.addVertex((float) vertexes[3].x(), (float) vertexes[3].y(), (float) vertexes[3].z())
-                .setUv(minU, maxV)
-                .setColor(rCol, gCol, bCol, alpha)
-                .setLight(lightColor);
+    private void renderVertex(VertexConsumer buffer, float x, float y, float z, float xOffset, float yOffset, float quadSize, float u, float v, int packedLight) {
+        Vector3f vector3f = new Vector3f(xOffset, yOffset, 0).rotate(rotation).mul(quadSize).add(x, y, z);
+        buffer.addVertex(vector3f.x(), vector3f.y(), vector3f.z()).setUv(u, v).setColor(rCol, gCol, bCol, alpha).setLight(packedLight);
     }
 }
