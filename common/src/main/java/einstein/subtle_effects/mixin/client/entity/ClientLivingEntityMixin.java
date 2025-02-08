@@ -69,24 +69,12 @@ public abstract class ClientLivingEntityMixin<T extends Entity> extends Entity {
                 Level level = subtleEffects$me.level();
                 // noinspection all
                 int color = useItem.get(DataComponents.POTION_CONTENTS).getColor();
-
-                for (int i = 0; i < 3; i++) {
-                    level.addParticle(ColorParticleOption.create(ModParticles.POTION_RING.get(), color),
-                            subtleEffects$me.getX(),
-                            subtleEffects$me.getY() - 0.1 + (0.4 * i),
-                            subtleEffects$me.getZ(),
-                            0, 0, 0
-                    );
-                }
-
-                for (int i = 0; i < 20; i++) {
-                    level.addParticle(ColorParticleOption.create(ModParticles.POTION_DOT.get(), color),
-                            subtleEffects$me.getRandomX(1.5),
-                            subtleEffects$me.getY() + random.nextDouble(),
-                            subtleEffects$me.getRandomZ(1.5),
-                            0, 0.1, 0
-                    );
-                }
+                level.addParticle(ColorParticleOption.create(ModParticles.POTION_EMITTER.get(), color),
+                        subtleEffects$me.getX(),
+                        subtleEffects$me.getY(),
+                        subtleEffects$me.getZ(),
+                        0, 0, 0
+                );
             }
         }
     }

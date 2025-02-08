@@ -3,6 +3,7 @@ package einstein.subtle_effects.init;
 import com.mojang.serialization.MapCodec;
 import einstein.subtle_effects.particle.*;
 import einstein.subtle_effects.particle.emitter.FireFlyEmitter;
+import einstein.subtle_effects.particle.emitter.PotionEmitter;
 import einstein.subtle_effects.particle.option.*;
 import einstein.subtle_effects.particle.provider.*;
 import net.minecraft.client.particle.ParticleProvider;
@@ -61,6 +62,7 @@ public class ModParticles {
     public static final Supplier<SimpleParticleType> HEART_POP = register("heart_pop", HeartPopParticle.Provider::new);
     public static final Supplier<ParticleType<ColorParticleOption>> POTION_RING = register("potion_ring", ColorParticleOption::codec, ColorParticleOption::streamCodec, PotionRingParticle.Provider::new);
     public static final Supplier<ParticleType<ColorParticleOption>> POTION_DOT = register("potion_dot", ColorParticleOption::codec, ColorParticleOption::streamCodec, SparkParticle.PotionDotProvider::new);
+    public static final Supplier<ParticleType<ColorParticleOption>> POTION_EMITTER = register("potion_emitter", ColorParticleOption::codec, ColorParticleOption::streamCodec, sprites -> new PotionEmitter.Provider());
 
     public static void init() {
     }
