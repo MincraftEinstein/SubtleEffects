@@ -56,7 +56,7 @@ public class ItemRarityTicker extends Ticker<ItemEntity> {
 
             if (usesSingleColor) {
                 TextColor color = (baseColor != null ? baseColor : (!colors.isEmpty() ? colors.getFirst() : null));
-                if (color != null && (!isCommon || color.equals(WHITE_TEXT))) {
+                if (color != null && (!isCommon || !color.equals(WHITE_TEXT))) {
                     nameColors.add(color);
                     return;
                 }
