@@ -21,7 +21,7 @@ dependencies {
 
     compileOnly group: 'me.fzzyhmstrs', name: 'fzzy_config', version: "${fzzy_config_version}+neoforge"
     compileOnly group: 'com.github.glitchfiend', name: 'SereneSeasons-common', version: "${serene_seasons_version}"
-    compileOnly group: "it.crystalnest", name: "soul-fire-d-common", version: "${minecraft_version}-${soul_fired_version}"
+    compileOnly group: "it.crystalnest", name: "soul-fire-d-common", version: "${soul_fired_version}"
 }
 
 configurations {

@@ -53,5 +53,5 @@ dependencies {
     implementation("me.fzzyhmstrs:fzzy_config:${fzzy_config_version}+neoforge")
     compileOnly("com.github.glitchfiend:GlitchCore-neoforge:${glitchcore_version}")
     compileOnly("com.github.glitchfiend:SereneSeasons-neoforge:${serene_seasons_version}")
-    compileOnly("it.crystalnest:soul-fire-d-neoforge:${minecraft_version}-${soul_fired_version}")
+    compileOnly("it.crystalnest:soul-fire-d-neoforge:${soul_fired_version}")
 }
