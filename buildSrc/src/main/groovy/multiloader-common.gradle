@@ -57,6 +57,11 @@ repositories {
         name = "Crystal Nest"
         url = "https://maven.crystalnest.it"
     }
+
+    maven {
+        name = "Modrinth"
+        url = "https://api.modrinth.com/maven"
+    }
 }
 
 // Declare capabilities on the outgoing configurations.

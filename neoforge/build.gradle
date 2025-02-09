@@ -54,4 +54,7 @@ dependencies {
     compileOnly("com.github.glitchfiend:GlitchCore-neoforge:${glitchcore_version}")
     compileOnly("com.github.glitchfiend:SereneSeasons-neoforge:${serene_seasons_version}")
     compileOnly("it.crystalnest:soul-fire-d-neoforge:${soul_fired_version}")
+    compileOnly("maven.modrinth:iceberg:${neoforge_iceberg_version}")
+    compileOnly("maven.modrinth:prism-lib:${neoforge_prism_version}")
+    compileOnly("maven.modrinth:item-borders:${neoforge_item_borders_version}")
 }

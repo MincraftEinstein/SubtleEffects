@@ -1,6 +1,8 @@
 package einstein.subtle_effects.tickers;
 
 import einstein.subtle_effects.SubtleEffects;
+import einstein.subtle_effects.compat.CompatHelper;
+import einstein.subtle_effects.compat.ItemBordersCompat;
 import einstein.subtle_effects.configs.entities.ItemRarityConfigs;
 import einstein.subtle_effects.init.ModParticles;
 import einstein.subtle_effects.particle.option.IntegerParticleOptions;
@@ -61,6 +63,20 @@ public class ItemRarityTicker extends Ticker<ItemEntity> {
             }
             else {
                 nameColors.addAll(colors);
+                return;
+            }
+        }
+
+        if (ENTITIES.itemRarity.useItemBorder && CompatHelper.IS_ITEM_BORDERS_LOADED.get()) {
+            TextColor borderColor = ItemBordersCompat.getManualBorderColor(level, stack);
+            if (borderColor != null) {
+                nameColors.add(borderColor);
+                return;
+            }
+
+            List<TextColor> componentColors = ItemBordersCompat.getNBTBorderColor(stack);
+            if (!componentColors.isEmpty()) {
+                nameColors.addAll(componentColors);
                 return;
             }
         }

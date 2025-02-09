@@ -16,6 +16,7 @@ public class ItemRarityConfigs extends ConfigSection {
     public DisplayType particlesDisplayType = DisplayType.ON;
     public ParticleColorType particleColorType = ParticleColorType.NAME_COLOR;
     public boolean mixedColorName = true;
+    public boolean useItemBorder = true;
     public ValidatedFloat particleMaxHeight = new ValidatedFloat(1, 1.5F, 0.5F);
     public ValidatedFloat particleMaxSpeed = new ValidatedFloat(1, 2, 0.1F);
     public ValidatedDouble particleDensity = new ValidatedDouble(1, 1, 0.1);
