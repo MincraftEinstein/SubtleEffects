@@ -100,23 +100,4 @@ public class SparkParticle extends TextureSheetParticle {
             return particle;
         }
     }
-
-    public record PotionDotProvider(SpriteSet sprites) implements ParticleProvider<ColorParticleOption> {
-
-        @Override
-        public Particle createParticle(ColorParticleOption options, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
-            SparkParticle particle = new SparkParticle(level, x, y, z, xSpeed, ySpeed, zSpeed, 10, sprites);
-            float colorIntensity = 0.20F;
-            float whiteIntensity = 1 - colorIntensity;
-
-            particle.setColor(
-                    whiteIntensity + (colorIntensity * options.getRed()),
-                    whiteIntensity + (colorIntensity * options.getGreen()),
-                    whiteIntensity + (colorIntensity * options.getBlue())
-            );
-            particle.scale(2);
-            particle.lifetime = Mth.nextInt(particle.random, 8, 12);
-            return particle;
-        }
-    }
 }

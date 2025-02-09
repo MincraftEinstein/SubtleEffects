@@ -60,9 +60,9 @@ public class ModParticles {
     public static final Supplier<SimpleParticleType> FROSTY_BREATH = register("frosty_breath", SteamParticle.FrostyBreathProvider::new);
     public static final Supplier<ParticleType<FloatParticleOptions>> EXPERIENCE = register("experience", FloatParticleOptions::codec, FloatParticleOptions::streamCodec, ExperienceParticle.Provider::new);
     public static final Supplier<SimpleParticleType> HEART_POP = register("heart_pop", HeartPopParticle.Provider::new);
-    public static final Supplier<ParticleType<ColorParticleOption>> POTION_RING = register("potion_ring", ColorParticleOption::codec, ColorParticleOption::streamCodec, PotionRingParticle.Provider::new);
-    public static final Supplier<ParticleType<ColorParticleOption>> POTION_DOT = register("potion_dot", ColorParticleOption::codec, ColorParticleOption::streamCodec, SparkParticle.PotionDotProvider::new);
-    public static final Supplier<ParticleType<ColorParticleOption>> POTION_EMITTER = register("potion_emitter", ColorParticleOption::codec, ColorParticleOption::streamCodec, sprites -> new PotionEmitter.Provider());
+    public static final Supplier<ParticleType<ColorAndIntegerParticleOptions>> POTION_RING = register("potion_ring", ColorAndIntegerParticleOptions::codec, ColorAndIntegerParticleOptions::streamCodec, PotionRingParticle.Provider::new);
+    public static final Supplier<ParticleType<ColorAndIntegerParticleOptions>> POTION_DOT = register("potion_dot", ColorAndIntegerParticleOptions::codec, ColorAndIntegerParticleOptions::streamCodec, PotionDotParticle.PotionDotProvider::new);
+    public static final Supplier<ParticleType<ColorAndIntegerParticleOptions>> POTION_EMITTER = register("potion_emitter", ColorAndIntegerParticleOptions::codec, ColorAndIntegerParticleOptions::streamCodec, sprites -> new PotionEmitter.Provider());
 
     public static void init() {
     }

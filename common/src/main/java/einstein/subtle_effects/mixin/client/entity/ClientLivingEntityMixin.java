@@ -3,6 +3,7 @@ package einstein.subtle_effects.mixin.client.entity;
 import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.init.ModDamageListeners;
 import einstein.subtle_effects.init.ModParticles;
+import einstein.subtle_effects.particle.option.ColorAndIntegerParticleOptions;
 import einstein.subtle_effects.util.EntityProvider;
 import einstein.subtle_effects.util.MathUtil;
 import net.minecraft.core.component.DataComponents;
@@ -69,7 +70,7 @@ public abstract class ClientLivingEntityMixin<T extends Entity> extends Entity {
                 Level level = subtleEffects$me.level();
                 // noinspection all
                 int color = useItem.get(DataComponents.POTION_CONTENTS).getColor();
-                level.addParticle(ColorParticleOption.create(ModParticles.POTION_EMITTER.get(), color),
+                level.addParticle(new ColorAndIntegerParticleOptions(ModParticles.POTION_EMITTER.get(), color, subtleEffects$me.getId()),
                         subtleEffects$me.getX(),
                         subtleEffects$me.getY(),
                         subtleEffects$me.getZ(),

@@ -1,6 +1,7 @@
 package einstein.subtle_effects.tickers;
 
 import einstein.subtle_effects.init.ModParticles;
+import einstein.subtle_effects.particle.option.ColorAndIntegerParticleOptions;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.particles.ColorParticleOption;
 import net.minecraft.world.entity.monster.Witch;
@@ -24,7 +25,7 @@ public class WitchTicker extends Ticker<Witch> {
                 // noinspection all
                 int color = stack.get(DataComponents.POTION_CONTENTS).getColor();
 
-                level.addParticle(ColorParticleOption.create(ModParticles.POTION_EMITTER.get(), color),
+                level.addParticle(new ColorAndIntegerParticleOptions(ModParticles.POTION_EMITTER.get(), color, entity.getId()),
                         entity.getX(), entity.getY(), entity.getZ(),
                         0, 0, 0);
             }

@@ -37,7 +37,6 @@
     "client.item.BoneMealItemMixin",
     "client.item.BucketItemMixin",
     "client.item.FlintAndSteelItemMixin",
-    "client.particle.ColorParticleOptionAccessor",
     "client.particle.HeartParticleMixin",
     "client.particle.LavaParticleMixin",
     "client.particle.ParticleEngineMixin",
