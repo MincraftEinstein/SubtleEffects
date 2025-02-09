@@ -1,6 +1,7 @@
 package einstein.subtle_effects.init;
 
 import einstein.subtle_effects.configs.CommandBlockSpawnType;
+import einstein.subtle_effects.configs.ModEntityConfigs;
 import einstein.subtle_effects.configs.entities.ItemRarityConfigs;
 import einstein.subtle_effects.particle.SparkParticle;
 import einstein.subtle_effects.particle.option.BooleanParticleOptions;
@@ -62,7 +63,7 @@ public class ModTickers {
         registerTicker(entity -> entity.getType().equals(EntityType.MAGMA_CUBE) && ENTITIES.magmaCubeTrails, (MagmaCube entity) -> new SlimeTrailTicker<>(entity, ModParticles.MAGMA_CUBE_TRAIL));
         registerTicker(entity -> entity.getType().equals(EntityType.IRON_GOLEM) && ENTITIES.ironGolemCrackParticles, IronGolemTicker::new);
         registerTicker(entity -> entity instanceof ItemEntity && ENTITIES.itemRarity.particlesDisplayType != ItemRarityConfigs.DisplayType.OFF, ItemRarityTicker::new);
-        registerTicker(entity -> entity instanceof Witch, WitchTicker::new);
+        registerTicker(entity -> entity instanceof Witch && ENTITIES.humanoids.witchesHavePotionRings && ENTITIES.humanoids.potionRingsDisplayType != ModEntityConfigs.PerspectiveDisplayType.OFF, WitchTicker::new);
 
         registerSimpleTicker(entity -> entity instanceof Player && ENTITIES.dustClouds.playerRunning,
                 (entity, level, random) -> {

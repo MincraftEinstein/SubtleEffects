@@ -1,5 +1,7 @@
 package einstein.subtle_effects.particle.emitter;
 
+import einstein.subtle_effects.configs.entities.HumanoidConfigs;
+import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.init.ModParticles;
 import einstein.subtle_effects.particle.option.ColorAndIntegerParticleOptions;
 import einstein.subtle_effects.util.MathUtil;
@@ -44,20 +46,24 @@ public class PotionEmitter extends NoRenderParticle {
             z = entity.getZ();
         }
 
-        for (int i = 0; i < 3; i++) {
-            level.addParticle(new ColorAndIntegerParticleOptions(ModParticles.POTION_RING.get(), color, entityId),
-                    x, y - 0.1 + (0.4 * i), z,
-                    0, 0, 0
-            );
+        if (ModConfigs.ENTITIES.humanoids.potionRingsParticleType == HumanoidConfigs.PotionRingsParticleType.BOTH || ModConfigs.ENTITIES.humanoids.potionRingsParticleType == HumanoidConfigs.PotionRingsParticleType.RINGS_ONLY) {
+            for (int i = 0; i < 3; i++) {
+                level.addParticle(new ColorAndIntegerParticleOptions(ModParticles.POTION_RING.get(), color, entityId),
+                        x, y - 0.1 + (0.4 * i), z,
+                        0, 0, 0
+                );
+            }
         }
 
-        for (int i = 0; i < 20; i++) {
-            level.addParticle(new ColorAndIntegerParticleOptions(ModParticles.POTION_DOT.get(), color, entityId),
-                    x + MathUtil.nextNonAbsDouble(random, 0.75),
-                    y + random.nextDouble() - 0.5,
-                    z + MathUtil.nextNonAbsDouble(random, 0.75),
-                    0, 0, 0
-            );
+        if (ModConfigs.ENTITIES.humanoids.potionRingsParticleType == HumanoidConfigs.PotionRingsParticleType.BOTH || ModConfigs.ENTITIES.humanoids.potionRingsParticleType == HumanoidConfigs.PotionRingsParticleType.DOTS_ONLY) {
+            for (int i = 0; i < 20; i++) {
+                level.addParticle(new ColorAndIntegerParticleOptions(ModParticles.POTION_DOT.get(), color, entityId),
+                        x + MathUtil.nextNonAbsDouble(random, 0.75),
+                        y + random.nextDouble() - 0.5,
+                        z + MathUtil.nextNonAbsDouble(random, 0.75),
+                        0, 0, 0
+                );
+            }
         }
     }
 
