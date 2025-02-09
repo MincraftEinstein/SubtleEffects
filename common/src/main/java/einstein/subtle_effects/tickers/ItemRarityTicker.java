@@ -42,7 +42,7 @@ public class ItemRarityTicker extends Ticker<ItemEntity> {
     }
 
     private void getItemNameColors() {
-        if (ENTITIES.itemRarity.particleColor == ItemRarityConfigs.ColorType.NAME_COLOR) {
+        if (ENTITIES.itemRarity.particleColorType == ItemRarityConfigs.ParticleColorType.NAME_COLOR) {
             Component hoverName = stack.getHoverName();
             TextColor baseColor = hoverName.getStyle().getColor();
             List<TextColor> colors = new ArrayList<>(hoverName.getSiblings().stream().map(component -> component.getStyle().getColor()).filter(Objects::nonNull).toList());
