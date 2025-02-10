@@ -1,7 +1,6 @@
 package einstein.subtle_effects.init;
 
 import einstein.subtle_effects.configs.CommandBlockSpawnType;
-import einstein.subtle_effects.configs.ModEntityConfigs;
 import einstein.subtle_effects.configs.entities.ItemRarityConfigs;
 import einstein.subtle_effects.particle.SparkParticle;
 import einstein.subtle_effects.particle.option.BooleanParticleOptions;
@@ -30,6 +29,7 @@ import net.minecraft.world.entity.monster.MagmaCube;
 import net.minecraft.world.entity.monster.Slime;
 import net.minecraft.world.entity.monster.Witch;
 import net.minecraft.world.entity.monster.piglin.AbstractPiglin;
+import net.minecraft.world.entity.npc.AbstractVillager;
 import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
@@ -63,7 +63,8 @@ public class ModTickers {
         registerTicker(entity -> entity.getType().equals(EntityType.MAGMA_CUBE) && ENTITIES.magmaCubeTrails, (MagmaCube entity) -> new SlimeTrailTicker<>(entity, ModParticles.MAGMA_CUBE_TRAIL));
         registerTicker(entity -> entity.getType().equals(EntityType.IRON_GOLEM) && ENTITIES.ironGolemCrackParticles, IronGolemTicker::new);
         registerTicker(entity -> entity instanceof ItemEntity && ENTITIES.itemRarity.particlesDisplayType != ItemRarityConfigs.DisplayType.OFF, ItemRarityTicker::new);
-        registerTicker(entity -> entity instanceof Witch && ENTITIES.humanoids.witchesHavePotionRings && ENTITIES.humanoids.potionRingsDisplayType != ModEntityConfigs.PerspectiveDisplayType.OFF, WitchTicker::new);
+        registerTicker(entity -> entity instanceof Witch && ENTITIES.humanoids.NPCsHavePotionRings && ENTITIES.humanoids.potionRingsDisplayType.isEnabled(), WitchPotionRingTicker::new);
+        registerTicker(entity -> isNPC(entity, true) && ENTITIES.humanoids.NPCsHavePotionRings && ENTITIES.humanoids.potionRingsDisplayType.isEnabled(), (LivingEntity entity) -> new HumanoidPotionRingTicker<>(entity));
 
         registerSimpleTicker(entity -> entity instanceof Player && ENTITIES.dustClouds.playerRunning,
                 (entity, level, random) -> {
@@ -269,9 +270,13 @@ public class ModTickers {
 
     private static boolean isHumanoid(Entity entity, boolean includePiglins) {
         return entity instanceof Player
-                || entity instanceof Villager
+                || isNPC(entity, includePiglins)
+                || entity instanceof Witch;
+    }
+
+    private static boolean isNPC(Entity entity, boolean includePiglins) {
+        return entity instanceof AbstractVillager
                 || entity instanceof AbstractIllager
-                || entity instanceof Witch
                 || (includePiglins && entity instanceof AbstractPiglin);
     }
 }

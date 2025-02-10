@@ -22,7 +22,7 @@ public class HumanoidConfigs extends ConfigSection {
     public ModEntityConfigs.PerspectiveDisplayType potionRingsDisplayType = ModEntityConfigs.PerspectiveDisplayType.DEFAULT;
     public PotionRingsParticleType potionRingsParticleType = PotionRingsParticleType.BOTH;
     @ConfigGroup.Pop
-    public boolean witchesHavePotionRings = true;
+    public boolean NPCsHavePotionRings = true;
 
     public enum PotionRingsParticleType implements EnumTranslatable {
         RINGS_ONLY,

@@ -3,22 +3,21 @@ package einstein.subtle_effects.tickers;
 import einstein.subtle_effects.init.ModParticles;
 import einstein.subtle_effects.particle.option.ColorAndIntegerParticleOptions;
 import net.minecraft.core.component.DataComponents;
-import net.minecraft.core.particles.ColorParticleOption;
-import net.minecraft.world.entity.monster.Witch;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 
-public class WitchTicker extends Ticker<Witch> {
+public class HumanoidPotionRingTicker<T extends LivingEntity> extends Ticker<T> {
 
-    private boolean wasDrinkingPotion = false;
+    protected boolean wasUsingItem = false;
 
-    public WitchTicker(Witch entity) {
+    public HumanoidPotionRingTicker(T entity) {
         super(entity);
     }
 
     @Override
     public void tick() {
-        boolean isDrinkingPotion = entity.isDrinkingPotion();
-        if (wasDrinkingPotion != isDrinkingPotion) {
+        boolean isUsingItem = isUsingItem();
+        if (wasUsingItem != isUsingItem) {
             ItemStack stack = entity.getMainHandItem();
 
             if (!stack.isEmpty() && stack.has(DataComponents.POTION_CONTENTS)) {
@@ -30,6 +29,10 @@ public class WitchTicker extends Ticker<Witch> {
                         0, 0, 0);
             }
         }
-        wasDrinkingPotion = isDrinkingPotion;
+        wasUsingItem = isUsingItem;
+    }
+
+    protected boolean isUsingItem() {
+        return entity.isUsingItem();
     }
 }
