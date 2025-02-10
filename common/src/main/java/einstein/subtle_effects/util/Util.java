@@ -4,7 +4,7 @@ import com.google.common.base.Suppliers;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import einstein.subtle_effects.SubtleEffects;
-import einstein.subtle_effects.data.MobSkullShader;
+import einstein.subtle_effects.data.MobSkullShaderData;
 import einstein.subtle_effects.data.MobSkullShaderReloadListener;
 import einstein.subtle_effects.mixin.client.GameRendererAccessor;
 import einstein.subtle_effects.platform.Services;
@@ -85,9 +85,9 @@ public class Util {
 
     public static void applyHelmetShader(ItemStack stack) {
         GameRenderer gameRenderer = Minecraft.getInstance().gameRenderer;
-        for (MobSkullShader mobSkullShader : MobSkullShaderReloadListener.MOB_SKULL_SHADERS.values()) {
-            if (mobSkullShader.stackHolder().matches(stack)) {
-                loadShaderEffect(mobSkullShader.shaderId(), gameRenderer);
+        for (MobSkullShaderData shaderData : MobSkullShaderReloadListener.MOB_SKULL_SHADERS.values()) {
+            if (shaderData.stackHolder().matches(stack)) {
+                loadShaderEffect(shaderData.shaderId(), gameRenderer);
                 return;
             }
         }

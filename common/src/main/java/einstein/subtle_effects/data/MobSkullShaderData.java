@@ -10,13 +10,13 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 
-public record MobSkullShader(ItemStackHolder stackHolder, ResourceLocation shaderId) {
+public record MobSkullShaderData(ItemStackHolder stackHolder, ResourceLocation shaderId) {
 
-    public static final Codec<MobSkullShader> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-            ItemStackHolder.CODEC.fieldOf("item").forGetter(MobSkullShader::stackHolder),
-            ResourceLocation.CODEC.fieldOf("shader").forGetter(MobSkullShader::shaderId)
+    public static final Codec<MobSkullShaderData> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+            ItemStackHolder.CODEC.fieldOf("item").forGetter(MobSkullShaderData::stackHolder),
+            ResourceLocation.CODEC.fieldOf("shader").forGetter(MobSkullShaderData::shaderId)
     ).apply(instance, (item, shaderId) ->
-            new MobSkullShader(item, shaderId.withPath("shaders/post/" + shaderId.getPath() + ".json"))
+            new MobSkullShaderData(item, shaderId.withPath("shaders/post/" + shaderId.getPath() + ".json"))
     ));
 
     public record ItemStackHolder(Item item, DataComponentMap components) {
