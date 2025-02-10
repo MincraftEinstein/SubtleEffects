@@ -1,7 +1,9 @@
 package einstein.subtle_effects.compat;
 
 import com.anthonyhilyard.iceberg.util.Selectors;
+import com.anthonyhilyard.itemborders.compat.LegendaryTooltipsHandler;
 import com.anthonyhilyard.itemborders.config.ItemBordersConfig;
+import com.mojang.datafixers.util.Pair;
 import einstein.subtle_effects.mixin.client.ItemBordersConfigAccessor;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.component.DataComponents;
@@ -15,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.Supplier;
 
 import static com.anthonyhilyard.itemborders.config.ItemBordersConfig.getColor;
 
@@ -75,6 +78,14 @@ public class ItemBordersCompat {
 
                 return colors.stream().filter(Objects::nonNull).toList();
             }
+        }
+
+        if (CompatHelper.IS_LEGENDARY_TOOLTIPS_LOADED.get() && ItemBordersConfig.getInstance().legendaryTooltipsSync.get()) {
+            Pair<Supplier<Integer>, Supplier<Integer>> borderColors = LegendaryTooltipsHandler.getBorderColors(stack);
+            List<TextColor> colors = new ArrayList<>();
+            colors.add(TextColor.fromRgb(borderColors.getFirst().get()));
+            colors.add(TextColor.fromRgb(borderColors.getSecond().get()));
+            return colors;
         }
         return List.of();
     }
