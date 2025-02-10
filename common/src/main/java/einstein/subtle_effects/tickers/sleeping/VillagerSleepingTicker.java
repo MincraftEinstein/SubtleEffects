@@ -1,13 +1,13 @@
 package einstein.subtle_effects.tickers.sleeping;
 
 import einstein.subtle_effects.init.ModSounds;
-import net.minecraft.world.entity.npc.Villager;
+import net.minecraft.world.entity.npc.AbstractVillager;
 
 import static einstein.subtle_effects.init.ModConfigs.ENTITIES;
 
-public class VillagerSleepingTicker extends SleepingTicker<Villager> {
+public class VillagerSleepingTicker extends SleepingTicker<AbstractVillager> {
 
-    public VillagerSleepingTicker(Villager villager) {
+    public VillagerSleepingTicker(AbstractVillager villager) {
         super(villager,
                 doesEntitySnore(villager, ENTITIES.sleeping.villagerSnoreChance.get()),
                 80,

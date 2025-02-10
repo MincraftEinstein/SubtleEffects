@@ -30,7 +30,6 @@ import net.minecraft.world.entity.monster.Slime;
 import net.minecraft.world.entity.monster.Witch;
 import net.minecraft.world.entity.monster.piglin.AbstractPiglin;
 import net.minecraft.world.entity.npc.AbstractVillager;
-import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.level.Level;
@@ -259,7 +258,7 @@ public class ModTickers {
 
     private static SleepingTicker<?> getSleepingTicker(LivingEntity entity) {
         return switch (entity) {
-            case Villager villager -> new VillagerSleepingTicker(villager);
+            case AbstractVillager villager -> new VillagerSleepingTicker(villager);
             case Player player -> new PlayerSleepingTicker(player);
             case Bat bat -> new BatSleepingTicker(bat);
             case Cat cat -> new CatSleepingTicker(cat);
