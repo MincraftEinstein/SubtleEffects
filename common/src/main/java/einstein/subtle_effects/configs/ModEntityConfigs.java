@@ -24,7 +24,7 @@ public class ModEntityConfigs extends Config {
     public ExplosivesConfigs explosives = new ExplosivesConfigs();
 
     public boolean enderPearlTrail = true;
-    public ValidatedDouble snowballTrailDensity = new ValidatedDouble(0.2, 1, 0);
+    public ValidatedDouble snowballTrailDensity = new ValidatedDouble(0.5, 1, 0);
     public ValidatedDouble allayMagicDensity = new ValidatedDouble(0.2, 1, 0);
     public ValidatedDouble vexMagicDensity = new ValidatedDouble(0.2, 1, 0);
     public boolean sheepShearFluff = true;
