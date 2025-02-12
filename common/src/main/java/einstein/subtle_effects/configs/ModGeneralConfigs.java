@@ -28,6 +28,10 @@ public class ModGeneralConfigs extends Config {
     public boolean poppingHearts = true;
     public boolean poppingBubbles = true;
     public ValidatedFloat poppingBubblesVolume = new ValidatedFloat(0.2F, 1, 0);
+    public boolean glowingLavaDrops = true;
+    public boolean fluidDropsEvaporate = true;
+    public ValidatedFloat fluidDropsEvaporationVolume = new ValidatedFloat(0.25F, 1, 0);
+    public boolean dropLandSounds = true;
 
     public ModGeneralConfigs() {
         super(SubtleEffects.loc("general"));

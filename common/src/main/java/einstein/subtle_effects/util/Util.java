@@ -7,6 +7,7 @@ import einstein.subtle_effects.SubtleEffects;
 import einstein.subtle_effects.data.MobSkullShaderData;
 import einstein.subtle_effects.data.MobSkullShaderReloadListener;
 import einstein.subtle_effects.mixin.client.GameRendererAccessor;
+import einstein.subtle_effects.mixin.client.block.AbstractCauldronBlockAccessor;
 import einstein.subtle_effects.platform.Services;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.Particle;
@@ -24,6 +25,11 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.AbstractCauldronBlock;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.Vec3;
 
 import java.util.ArrayList;
@@ -111,5 +117,22 @@ public class Util {
 
     public static boolean isChunkLoaded(Level level, double blockX, double blockZ) {
         return level.getChunkSource().hasChunk(SectionPos.blockToSectionCoord(blockX), SectionPos.blockToSectionCoord(blockZ));
+    }
+
+    public static double getCauldronFillHeight(BlockState state) {
+        if (state.getBlock() instanceof AbstractCauldronBlock block) {
+            return ((AbstractCauldronBlockAccessor) block).getFillHeight(state);
+        }
+        return 0;
+    }
+
+    public static Fluid getCauldronFluid(BlockState state) {
+        if (state.is(Blocks.LAVA_CAULDRON)) {
+            return Fluids.LAVA;
+        }
+        else if (state.is(Blocks.WATER_CAULDRON)) {
+            return Fluids.WATER;
+        }
+        return Fluids.EMPTY;
     }
 }

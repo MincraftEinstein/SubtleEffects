@@ -5,3 +5,4 @@ accessible method net/minecraft/client/particle/SuspendedParticle <init> (Lnet/m
 accessible method net/minecraft/world/level/block/BaseFireBlock canBurn (Lnet/minecraft/world/level/block/state/BlockState;)Z
 accessible method net/minecraft/world/level/block/AbstractCandleBlock getParticleOffsets (Lnet/minecraft/world/level/block/state/BlockState;)Ljava/lang/Iterable;
 accessible method net/minecraft/client/particle/ParticleEngine clearParticles ()V
+accessible method net/minecraft/client/particle/DripParticle getType ()Lnet/minecraft/world/level/material/Fluid;
