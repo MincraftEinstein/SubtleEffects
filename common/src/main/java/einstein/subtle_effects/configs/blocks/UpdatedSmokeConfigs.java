@@ -11,6 +11,5 @@ public class UpdatedSmokeConfigs extends ConfigSection {
     public boolean furnaceSmoke = true;
     public boolean fireSmoke = true;
     public boolean torchSmoke = true;
-    public boolean lavaSparkSmoke = true;
     public boolean campfireDowseSmoke = true;
 }
