@@ -7,7 +7,7 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 
 public record ClientBoundEntityFellPacket(int entityId, double y, float distance,
-                                          int fallDamage) implements CustomPacketPayload {
+                                          int fallDamage, TypeConfig config) implements CustomPacketPayload {
 
     public static final Type<ClientBoundEntityFellPacket> TYPE = new Type<>(SubtleEffects.loc("entity_fell"));
     public static final StreamCodec<FriendlyByteBuf, ClientBoundEntityFellPacket> STREAM_CODEC = StreamCodec.composite(
@@ -15,11 +15,24 @@ public record ClientBoundEntityFellPacket(int entityId, double y, float distance
             ByteBufCodecs.DOUBLE, ClientBoundEntityFellPacket::y,
             ByteBufCodecs.FLOAT, ClientBoundEntityFellPacket::distance,
             ByteBufCodecs.INT, ClientBoundEntityFellPacket::fallDamage,
+            TypeConfig.STREAM_CODEC, ClientBoundEntityFellPacket::config,
             ClientBoundEntityFellPacket::new
     );
 
     @Override
     public Type<? extends CustomPacketPayload> type() {
         return TYPE;
+    }
+
+    public enum TypeConfig {
+        ENTITY,
+        PLAYER,
+        MACE,
+        ELYTRA;
+
+        public static final StreamCodec<FriendlyByteBuf, TypeConfig> STREAM_CODEC = StreamCodec.of(
+                FriendlyByteBuf::writeEnum,
+                buf -> buf.readEnum(TypeConfig.class)
+        );
     }
 }

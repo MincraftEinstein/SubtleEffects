@@ -32,7 +32,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import static einstein.subtle_effects.init.ModConfigs.*;
+import static einstein.subtle_effects.init.ModConfigs.BIOMES;
+import static einstein.subtle_effects.init.ModConfigs.BLOCKS;
 import static einstein.subtle_effects.util.MathUtil.nextSign;
 import static net.minecraft.util.Mth.nextFloat;
 
@@ -118,10 +119,6 @@ public class LevelRendererMixin implements FrustumGetter {
                         );
                     }
                 }
-                break;
-            }
-            case 2013: {
-                ParticleSpawnUtil.spawnEntityFellParticles(player, pos.getY() + 1, 0, 5, ENTITIES.dustClouds.landMaceAttack);
                 break;
             }
         }

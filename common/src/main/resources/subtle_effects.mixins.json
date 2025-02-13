@@ -58,6 +58,7 @@
     "common.FarmBlockMixin",
     "common.LeavesBlockMixin",
     "common.LlamaMixin",
+    "common.MaceItemMixin",
     "common.ThrownExperienceBottleMixin"
   ],
   "injectors": {

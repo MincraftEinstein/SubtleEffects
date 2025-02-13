@@ -2,6 +2,7 @@ package einstein.subtle_effects.mixin.common;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
+import einstein.subtle_effects.networking.clientbound.ClientBoundEntityFellPacket;
 import einstein.subtle_effects.networking.clientbound.ClientBoundEntitySpawnSprintingDustCloudsPacket;
 import einstein.subtle_effects.platform.Services;
 import einstein.subtle_effects.util.ParticleSpawnUtil;
@@ -84,7 +85,11 @@ public abstract class CommonLivingEntityMixin extends Entity {
 
     @ModifyExpressionValue(method = "causeFallDamage", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;calculateFallDamage(FF)I"))
     private int calculateFallDamage(int damage, float distance, float damageMultiplier) {
-        ParticleSpawnUtil.spawnFallDustClouds(subtleEffects$me, damageMultiplier, damage);
+        ParticleSpawnUtil.spawnFallDustClouds(subtleEffects$me, damageMultiplier, damage,
+                subtleEffects$me instanceof Player
+                        ? ClientBoundEntityFellPacket.TypeConfig.PLAYER
+                        : ClientBoundEntityFellPacket.TypeConfig.ENTITY
+        );
         return damage;
     }
 
@@ -101,7 +106,7 @@ public abstract class CommonLivingEntityMixin extends Entity {
     @WrapWithCondition(method = "travel", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;hurt(Lnet/minecraft/world/damagesource/DamageSource;F)Z"))
     private boolean cancelFlyIntoWallClientHurt(LivingEntity entity, DamageSource source, float amount) {
         if (!(entity instanceof Player player && player.isCreative())) {
-            ParticleSpawnUtil.spawnFallDustClouds(entity, 10, 10);
+            ParticleSpawnUtil.spawnFallDustClouds(entity, 10, 10, ClientBoundEntityFellPacket.TypeConfig.ELYTRA);
         }
         return !level().isClientSide;
     }
