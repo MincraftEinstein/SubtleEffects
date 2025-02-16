@@ -194,14 +194,27 @@ public class ModTickers {
                     nextNonAbsDouble(random, 0.01)
             );
         });
-        registerSimpleTicker(EntityType.TNT, () -> ENTITIES.explosives.tntFlames, (entity, level, random) -> {
+        registerSimpleTicker(EntityType.TNT, () -> ENTITIES.explosives.tntFlamesDensity.get() > 0, (entity, level, random) -> {
             if (random.nextInt(10) == 0) {
-                level.addParticle(ParticleTypes.FLAME,
-                        entity.getX(),
-                        entity.getY(1.1),
-                        entity.getZ(),
-                        0, 0, 0
-                );
+                int density = ENTITIES.explosives.tntFlamesDensity.get();
+                if (density == 1) {
+                    level.addParticle(ParticleTypes.FLAME,
+                            entity.getX(),
+                            entity.getY(1.1),
+                            entity.getZ(),
+                            0, 0, 0
+                    );
+                    return;
+                }
+
+                for (int i = 0; i < density; i++) {
+                    level.addParticle(ParticleTypes.FLAME,
+                            entity.getRandomX(0.7),
+                            entity.getRandomY(),
+                            entity.getRandomZ(0.7),
+                            0, 0, 0
+                    );
+                }
             }
         });
         registerSimpleTicker(EntityType.END_CRYSTAL, () -> ENTITIES.endCrystalParticles, (entity, level, random) -> {
