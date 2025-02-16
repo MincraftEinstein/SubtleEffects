@@ -35,6 +35,7 @@ public class ModEntityConfigs extends Config {
     public boolean slimeTrails = true;
     public boolean magmaCubeTrails = true;
     public boolean replaceSlimeSquishParticles = true;
+    public boolean replaceOozingEffectParticles = true;
     public boolean replaceSpellCasterParticles = true;
     public boolean ironGolemCrackParticles = true;
     public boolean spectralArrowParticles = true;

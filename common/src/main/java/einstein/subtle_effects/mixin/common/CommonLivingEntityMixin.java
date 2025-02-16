@@ -2,10 +2,16 @@ package einstein.subtle_effects.mixin.common;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.networking.clientbound.ClientBoundEntityFellPacket;
 import einstein.subtle_effects.networking.clientbound.ClientBoundEntitySpawnSprintingDustCloudsPacket;
 import einstein.subtle_effects.platform.Services;
 import einstein.subtle_effects.util.ParticleSpawnUtil;
+import net.minecraft.core.particles.BlockParticleOption;
+import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.damagesource.DamageSource;
@@ -18,6 +24,7 @@ import net.minecraft.world.entity.monster.Zoglin;
 import net.minecraft.world.entity.monster.hoglin.Hoglin;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.Vec3;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -109,5 +116,19 @@ public abstract class CommonLivingEntityMixin extends Entity {
             ParticleSpawnUtil.spawnFallDustClouds(entity, 10, 10, ClientBoundEntityFellPacket.TypeConfig.ELYTRA);
         }
         return !level().isClientSide;
+    }
+
+    @WrapOperation(method = "tickEffects", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/Level;addParticle(Lnet/minecraft/core/particles/ParticleOptions;DDDDDD)V"))
+    private void replaceSlimeEffect(Level level, ParticleOptions options, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, Operation<Void> original) {
+        if (level.isClientSide) {
+            if (ModConfigs.ENTITIES.replaceOozingEffectParticles && options.getType().equals(ParticleTypes.ITEM_SLIME)) {
+                level.addParticle(
+                        new BlockParticleOption(ParticleTypes.BLOCK, Blocks.SLIME_BLOCK.defaultBlockState()),
+                        x, y, z, 0, 0, 0
+                );
+                return;
+            }
+            original.call(level, options, x, y, z, xSpeed, ySpeed, zSpeed);
+        }
     }
 }
