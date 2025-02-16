@@ -38,8 +38,7 @@ import java.util.List;
 import java.util.function.Supplier;
 
 import static einstein.subtle_effects.init.ModConfigs.BLOCKS;
-import static einstein.subtle_effects.util.MathUtil.nextDouble;
-import static einstein.subtle_effects.util.MathUtil.nextSign;
+import static einstein.subtle_effects.util.MathUtil.*;
 
 @Mixin(ClientLevel.class)
 public abstract class ClientLevelMixin extends Level {
@@ -170,7 +169,9 @@ public abstract class ClientLevelMixin extends Level {
                                             pos.getY() + (random.nextDouble() * 6 / 16),
                                             pos.getZ() + 0.5 + (0.6 * direction.getStepZ()) + random.nextDouble()
                                                     / (axis == Direction.Axis.Z ? 10 : 3) * nextSign(random),
-                                            0.01, 0.01, 0.01
+                                            nextNonAbsDouble(random, 0.01),
+                                            nextNonAbsDouble(random, 0.01),
+                                            nextNonAbsDouble(random, 0.01)
                                     );
                                 }
                             }
@@ -199,7 +200,9 @@ public abstract class ClientLevelMixin extends Level {
                     pos.getX() + xOffset + random.nextDouble() / 10 * nextSign(random),
                     pos.getY() + random.nextDouble(),
                     pos.getZ() + zOffset + random.nextDouble() / 10 * nextSign(random),
-                    0.03, 0.05, 0.03
+                    nextNonAbsDouble(random, 0.03),
+                    nextNonAbsDouble(random, 0.05),
+                    nextNonAbsDouble(random, 0.03)
             );
         }
     }
