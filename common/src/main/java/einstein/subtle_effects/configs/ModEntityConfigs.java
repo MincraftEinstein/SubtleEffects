@@ -8,6 +8,7 @@ import me.fzzyhmstrs.fzzy_config.annotations.Translation;
 import me.fzzyhmstrs.fzzy_config.config.Config;
 import me.fzzyhmstrs.fzzy_config.util.EnumTranslatable;
 import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedDouble;
+import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedFloat;
 import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedInt;
 import net.minecraft.client.Minecraft;
 import org.jetbrains.annotations.NotNull;
@@ -31,7 +32,8 @@ public class ModEntityConfigs extends Config {
     public boolean improvedDragonFireballTrail = true;
     public CommandBlockSpawnType commandBlockMinecartParticles = CommandBlockSpawnType.ON;
     public boolean endCrystalParticles = true;
-    public boolean minecartLandingSparks = true;
+    public MinecartSparksDisplayType minecartSparksDisplayType = MinecartSparksDisplayType.DEFAULT;
+    public ValidatedFloat minecartSparksDensity = new ValidatedFloat(0.5F, 1, 0);
     public boolean slimeTrails = true;
     public boolean magmaCubeTrails = true;
     public boolean replaceSlimeSquishParticles = true;
@@ -81,6 +83,17 @@ public class ModEntityConfigs extends Config {
         @Override
         public @NotNull String prefix() {
             return ModConfigs.BASE_KEY + "entities.xpBottleParticlesDisplayType";
+        }
+    }
+
+    public enum MinecartSparksDisplayType implements EnumTranslatable {
+        OFF,
+        LAND_ON_RAIL,
+        DEFAULT;
+
+        @Override
+        public @NotNull String prefix() {
+            return ModConfigs.BASE_KEY + "entities.minecartSparksDisplayType";
         }
     }
 }
