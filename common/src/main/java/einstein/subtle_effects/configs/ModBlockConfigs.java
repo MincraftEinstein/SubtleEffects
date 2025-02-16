@@ -66,7 +66,11 @@ public class ModBlockConfigs extends Config {
     public boolean grindstoneUseParticles = true;
     public CommandBlockSpawnType commandBlockParticles = CommandBlockSpawnType.ON;
     public boolean slimeBlockBounceSounds = true;
+    public ConfigGroup beaconParticlesGroup = new ConfigGroup("beacon_particles");
     public BeaconParticlesDisplayType beaconParticlesDisplayType = BeaconParticlesDisplayType.ON;
+    public ValidatedInt beaconParticlesDensity = new ValidatedInt(10, 20, 1);
+    @ConfigGroup.Pop
+    public ValidatedFloat beaconParticlesSpeed = new ValidatedFloat(1, 2, 0.5F);
     public boolean compostingParticles = true;
     public boolean respawnAnchorParticles = true;
     public boolean beehiveShearParticles = true;

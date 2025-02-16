@@ -97,7 +97,7 @@ public class ModBlockTickers {
                         if (!sections.isEmpty() && !(sections.size() > 1 && BLOCKS.beaconParticlesDisplayType == ModBlockConfigs.BeaconParticlesDisplayType.NOT_COLORED)) {
                             PositionParticleOptions options = new PositionParticleOptions(ModParticles.BEACON.get(), beaconBlockEntity.getBlockPos());
 
-                            for (int i = 0; i < 10; i++) {
+                            for (int i = 0; i < BLOCKS.beaconParticlesDensity.get(); i++) {
                                 level.addParticle(options,
                                         pos.getX() + 0.5 + nextNonAbsDouble(random, 0.3),
                                         pos.getY() + 0.5,
