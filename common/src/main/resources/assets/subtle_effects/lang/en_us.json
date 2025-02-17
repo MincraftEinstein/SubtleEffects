@@ -198,7 +198,7 @@
   "config.subtle_effects.entities.humanoids.drowningBubbles": "Drowning Bubbles",
   "config.subtle_effects.entities.humanoids.drowningBubbles.desc": "When a player is underwater bubbles will emit from there face",
   "config.subtle_effects.entities.humanoids.drowningBubblesDensity": "Drowning Bubbles Density",
-  "config.subtle_effects.entities.humanoids.potionRings": "Potion Rings",
+  "config.subtle_effects.entities.humanoids.potionRingsGroup": "Potion Rings",
   "config.subtle_effects.entities.humanoids.potionRingsDisplayType": "Potion Rings Display Type",
   "config.subtle_effects.entities.humanoids.potionRingsParticleType": "Potion Rings Particle Type",
   "config.subtle_effects.entities.humanoids.potionRingsParticleType.RINGS_ONLY": "Rings Only",

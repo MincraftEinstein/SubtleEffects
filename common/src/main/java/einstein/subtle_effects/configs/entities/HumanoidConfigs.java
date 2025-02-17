@@ -18,7 +18,7 @@ public class HumanoidConfigs extends ConfigSection {
     public PlayerConfigs player = new PlayerConfigs();
     public ModEntityConfigs.PerspectiveDisplayType drowningBubbles = ModEntityConfigs.PerspectiveDisplayType.DEFAULT;
     public ValidatedInt drowningBubblesDensity = new ValidatedInt(10, 15, 3);
-    public ConfigGroup potionRings = new ConfigGroup("potion_rings");
+    public ConfigGroup potionRingsGroup = new ConfigGroup("potion_rings");
     public ModEntityConfigs.PerspectiveDisplayType potionRingsDisplayType = ModEntityConfigs.PerspectiveDisplayType.DEFAULT;
     public PotionRingsParticleType potionRingsParticleType = PotionRingsParticleType.BOTH;
     @ConfigGroup.Pop
