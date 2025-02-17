@@ -57,7 +57,7 @@ public class ModTickers {
         registerTicker(LOCAL_PLAYER.and(entity -> ENTITIES.humanoids.player.stomachGrowlingThreshold.get() > 0), StomachGrowlingTicker::new);
         registerTicker(LOCAL_PLAYER.and(entity -> ModConfigs.GENERAL.mobSkullShaders), MobSkullShaderTicker::new);
         registerTicker(LOCAL_PLAYER.and(entity -> ENTITIES.humanoids.player.heartBeatingThreshold.get() > 0), HeartbeatTicker::new);
-        registerTicker(entity -> isHumanoid(entity, !entity.level().dimension().equals(Level.NETHER)) && ENTITIES.humanoids.drowningBubbles.isEnabled(), DrowningTicker::new);
+        registerTicker(entity -> isHumanoid(entity, !entity.level().dimension().equals(Level.NETHER)) && ENTITIES.humanoids.drowningBubblesDisplayType.isEnabled(), DrowningTicker::new);
         registerTicker(entity -> isHumanoid(entity, !entity.level().dimension().equals(Level.NETHER)) && ENTITIES.humanoids.frostyBreath.displayType.isEnabled(), FrostyBreathTicker::new);
         registerTicker(entity -> entity.getType().equals(EntityType.SLIME) && ENTITIES.slimeTrails, (Slime entity) -> new SlimeTrailTicker<>(entity, ModParticles.SLIME_TRAIL));
         registerTicker(entity -> entity.getType().equals(EntityType.MAGMA_CUBE) && ENTITIES.magmaCubeTrails, (MagmaCube entity) -> new SlimeTrailTicker<>(entity, ModParticles.MAGMA_CUBE_TRAIL));

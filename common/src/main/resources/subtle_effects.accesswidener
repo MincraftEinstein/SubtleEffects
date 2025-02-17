@@ -6,3 +6,5 @@ accessible method net/minecraft/world/level/block/BaseFireBlock canBurn (Lnet/mi
 accessible method net/minecraft/world/level/block/AbstractCandleBlock getParticleOffsets (Lnet/minecraft/world/level/block/state/BlockState;)Ljava/lang/Iterable;
 accessible method net/minecraft/client/particle/ParticleEngine clearParticles ()V
 accessible method net/minecraft/client/particle/DripParticle getType ()Lnet/minecraft/world/level/material/Fluid;
+accessible method net/minecraft/client/particle/BubbleParticle <init> (Lnet/minecraft/client/multiplayer/ClientLevel;DDDDDD)V
+accessible method net/minecraft/client/particle/BubblePopParticle <init> (Lnet/minecraft/client/multiplayer/ClientLevel;DDDDDDLnet/minecraft/client/particle/SpriteSet;)V

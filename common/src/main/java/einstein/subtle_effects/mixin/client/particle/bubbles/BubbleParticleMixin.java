@@ -2,6 +2,8 @@ package einstein.subtle_effects.mixin.client.particle.bubbles;
 
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import einstein.subtle_effects.init.ModConfigs;
+import einstein.subtle_effects.init.ModParticles;
+import einstein.subtle_effects.particle.DrowningBubbleParticle;
 import einstein.subtle_effects.platform.Services;
 import einstein.subtle_effects.util.BubbleSetter;
 import einstein.subtle_effects.util.Util;
@@ -57,6 +59,11 @@ public abstract class BubbleParticleMixin extends TextureSheetParticle implement
             }
 
             if (ModConfigs.GENERAL.poppingBubbles) {
+                if (((TextureSheetParticle) this) instanceof DrowningBubbleParticle) {
+                    level.addParticle(ModParticles.DROWNING_BUBBLE_POP.get(), x, y, z, xd, yd, zd);
+                    return;
+                }
+
                 level.addParticle(ParticleTypes.BUBBLE_POP, x, y, z, xd, yd, zd);
             }
         }

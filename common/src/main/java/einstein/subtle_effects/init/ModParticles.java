@@ -64,6 +64,8 @@ public class ModParticles {
     public static final Supplier<ParticleType<ColorAndIntegerParticleOptions>> POTION_DOT = register("potion_dot", ColorAndIntegerParticleOptions::codec, ColorAndIntegerParticleOptions::streamCodec, PotionDotParticle.PotionDotProvider::new);
     public static final Supplier<ParticleType<ColorAndIntegerParticleOptions>> POTION_EMITTER = register("potion_emitter", ColorAndIntegerParticleOptions::codec, ColorAndIntegerParticleOptions::streamCodec, sprites -> new PotionEmitter.Provider());
     public static final Supplier<SimpleParticleType> IRON_GOLEM = register("iron_golem", CustomTerrainParticle.IronGolemProvider::new);
+    public static final Supplier<SimpleParticleType> DROWNING_BUBBLE = register("drowning_bubble", DrowningBubbleParticle.Provider::new);
+    public static final Supplier<SimpleParticleType> DROWNING_BUBBLE_POP = register("drowning_bubble_pop", DrowningBubblePopParticle.Provider::new);
 
     public static void init() {
     }

@@ -6,6 +6,7 @@ import com.google.gson.GsonBuilder;
 import einstein.subtle_effects.SubtleEffects;
 import einstein.subtle_effects.data.MobSkullShaderData;
 import einstein.subtle_effects.data.MobSkullShaderReloadListener;
+import einstein.subtle_effects.init.ModParticles;
 import einstein.subtle_effects.mixin.client.GameRendererAccessor;
 import einstein.subtle_effects.mixin.client.block.AbstractCauldronBlockAccessor;
 import einstein.subtle_effects.platform.Services;
@@ -59,6 +60,8 @@ public class Util {
         particles.add(ParticleTypes.FALLING_WATER);
         particles.add(ParticleTypes.DRIPPING_DRIPSTONE_WATER);
         particles.add(ParticleTypes.FALLING_DRIPSTONE_WATER);
+        particles.add(ModParticles.DROWNING_BUBBLE.get());
+        particles.add(ModParticles.DROWNING_BUBBLE_POP.get());
     });
     public static final ResourceLocation COLORLESS_RAIN_TEXTURE = SubtleEffects.loc("textures/environment/colorless_rain.png");
     public static final Gson GSON = new GsonBuilder().create();
