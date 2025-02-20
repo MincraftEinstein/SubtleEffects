@@ -14,7 +14,7 @@ public class LavaParticleMixin {
 
     @WrapOperation(method = "tick", at = @At(value = "FIELD", target = "Lnet/minecraft/core/particles/ParticleTypes;SMOKE:Lnet/minecraft/core/particles/SimpleParticleType;"))
     private SimpleParticleType replaceSmoke(Operation<SimpleParticleType> original) {
-        if (ModConfigs.BLOCKS.updatedSmoke.lavaSparkSmoke) {
+        if (ModConfigs.GENERAL.lavaSparkSmoke) {
             return ModParticles.SMOKE.get();
         }
         return original.call();

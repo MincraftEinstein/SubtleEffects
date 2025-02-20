@@ -1,11 +1,8 @@
 package einstein.subtle_effects.tickers;
 
+import einstein.subtle_effects.init.ModParticles;
 import einstein.subtle_effects.util.MathUtil;
-import net.minecraft.core.particles.ItemParticleOption;
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.entity.animal.IronGolem;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 
 public class IronGolemTicker extends Ticker<IronGolem> {
 
@@ -26,7 +23,7 @@ public class IronGolemTicker extends Ticker<IronGolem> {
             if (oldHealth != health) {
                 if (health < oldHealth) {
                     for (int i = 0; i < 20; i++) {
-                        level.addParticle(new ItemParticleOption(ParticleTypes.ITEM, new ItemStack(Items.IRON_INGOT)),
+                        level.addParticle(ModParticles.IRON_GOLEM.get(),
                                 entity.getRandomX(0.5),
                                 entity.getRandomY(),
                                 entity.getRandomZ(0.5),

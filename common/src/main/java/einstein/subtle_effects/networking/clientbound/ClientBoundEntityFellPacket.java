@@ -8,7 +8,7 @@ import net.minecraft.server.level.ServerPlayer;
 import org.jetbrains.annotations.Nullable;
 
 public record ClientBoundEntityFellPacket(int entityId, double y, float distance,
-                                          int fallDamage) implements Packet {
+                                          int fallDamage, TypeConfig config) implements Packet {
 
     public static final ResourceLocation ID = SubtleEffects.loc("entity_fell");
 
@@ -18,10 +18,11 @@ public record ClientBoundEntityFellPacket(int entityId, double y, float distance
         buf.writeDouble(y);
         buf.writeFloat(distance);
         buf.writeInt(fallDamage);
+        buf.writeEnum(config);
     }
 
     public static ClientBoundEntityFellPacket decode(FriendlyByteBuf buf) {
-        return new ClientBoundEntityFellPacket(buf.readInt(), buf.readDouble(), buf.readFloat(), buf.readInt());
+        return new ClientBoundEntityFellPacket(buf.readInt(), buf.readDouble(), buf.readFloat(), buf.readInt(), buf.readEnum(TypeConfig.class));
     }
 
     @Override
@@ -32,5 +33,12 @@ public record ClientBoundEntityFellPacket(int entityId, double y, float distance
     @Override
     public ResourceLocation id() {
         return ID;
+    }
+
+    public enum TypeConfig {
+        ENTITY,
+        PLAYER,
+        MACE,
+        ELYTRA;
     }
 }

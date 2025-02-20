@@ -1,6 +1,7 @@
 package einstein.subtle_effects.biome_particles;
 
 import me.fzzyhmstrs.fzzy_config.validation.collection.ValidatedList;
+import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedInt;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.registries.Registries;
@@ -17,7 +18,7 @@ import java.util.function.Supplier;
 public class BiomeParticleSettings {
 
     private final ValidatedList<ResourceLocation> biomesConfig;
-    private final int density;
+    private final ValidatedInt density;
     private final int maxSpawnHeight;
     private final Supplier<? extends ParticleOptions> particle;
     private final BiPredicate<Level, BlockPos> spawnConditions;
@@ -25,7 +26,7 @@ public class BiomeParticleSettings {
     private final List<Biome> biomes = new ArrayList<>();
 
     public BiomeParticleSettings(ValidatedList<ResourceLocation> biomesConfig,
-                                 int density, int maxSpawnHeight,
+                                 ValidatedInt density, int maxSpawnHeight,
                                  Supplier<? extends ParticleOptions> particle,
                                  BiPredicate<Level, BlockPos> spawnConditions, boolean ignoreHeight) {
         this.biomesConfig = biomesConfig;
@@ -51,7 +52,7 @@ public class BiomeParticleSettings {
     }
 
     public int getDensity() {
-        return density;
+        return density.get();
     }
 
     public int getMaxSpawnHeight() {

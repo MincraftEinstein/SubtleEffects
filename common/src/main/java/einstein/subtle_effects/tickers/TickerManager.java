@@ -26,7 +26,7 @@ public class TickerManager {
     private static int REGISTERED_TICKER_ID = 0;
 
     public static <T extends Entity> void registerTicker(Predicate<Entity> predicate, Function<T, Ticker<T>> function) {
-        REGISTERED_TICKERS.add(new TickerProvider<>(REGISTERED_TICKER_ID++, predicate, function));
+        REGISTERED_TICKERS.add(new TickerProvider<T>(REGISTERED_TICKER_ID++, predicate, function));
     }
 
     public static <T extends Entity> void registerSimpleTicker(EntityType<T> type, Supplier<Boolean> isEnabled, EntityProvider<T> provider) {
@@ -34,7 +34,7 @@ public class TickerManager {
     }
 
     public static <T extends Entity> void registerSimpleTicker(Predicate<Entity> predicate, EntityProvider<T> provider) {
-        REGISTERED_TICKERS.add(new TickerProvider<T>(REGISTERED_TICKER_ID++, predicate, entity -> new SimpleTicker<>(entity, provider)));
+        TickerManager.<T>registerTicker(predicate, entity -> new SimpleTicker<>(entity, provider));
     }
 
     public static void tickTickers(Level level) {

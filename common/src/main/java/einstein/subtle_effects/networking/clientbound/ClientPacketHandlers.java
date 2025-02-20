@@ -37,7 +37,7 @@ public class ClientPacketHandlers {
         }
 
         if (level.getEntity(packet.entityId()) instanceof LivingEntity livingEntity) {
-            ParticleSpawnUtil.spawnEntityFellParticles(livingEntity, packet.y(), packet.distance(), packet.fallDamage(), livingEntity instanceof Player ? ENTITIES.dustClouds.playerFell : ENTITIES.dustClouds.mobFell);
+            ParticleSpawnUtil.spawnEntityFellParticles(livingEntity, packet.y(), packet.distance(), packet.fallDamage(), getEntityFellConfig(packet));
         }
     }
 
@@ -146,6 +146,15 @@ public class ClientPacketHandlers {
         return switch (packet.config()) {
             case LEAVES_DECAY -> ModConfigs.BLOCKS.leavesDecayEffects;
             case FARMLAND_DESTROY -> ModConfigs.BLOCKS.farmlandDestroyEffects;
+        };
+    }
+
+    private static boolean getEntityFellConfig(ClientBoundEntityFellPacket packet) {
+        return switch (packet.config()){
+            case ENTITY -> ENTITIES.dustClouds.mobFell;
+            case PLAYER -> ENTITIES.dustClouds.playerFell;
+            case MACE -> ENTITIES.dustClouds.landMaceAttack;
+            case ELYTRA -> ENTITIES.dustClouds.flyIntoWall;
         };
     }
 }

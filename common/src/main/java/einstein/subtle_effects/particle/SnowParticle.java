@@ -14,8 +14,6 @@ public class SnowParticle extends TextureSheetParticle {
     protected SnowParticle(ClientLevel level, SpriteSet sprites, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
         super(level, x, y, z, xSpeed, ySpeed, zSpeed);
         lifetime = 20;
-        quadSize = 0.1F;
-        setSize(0.1F, 0.1F);
         pickSprite(sprites);
     }
 
@@ -27,9 +25,11 @@ public class SnowParticle extends TextureSheetParticle {
     @Override
     public void tick() {
         super.tick();
+
         pos.set(x, y, z);
         oRoll = roll;
         roll = oRoll + 0.1F;
+
         if (onGround || level.getFluidState(pos).is(Fluids.WATER)) {
             remove();
         }
@@ -37,7 +37,6 @@ public class SnowParticle extends TextureSheetParticle {
 
     public record Provider(SpriteSet sprites) implements ParticleProvider<SimpleParticleType> {
 
-        @Nullable
         @Override
         public Particle createParticle(SimpleParticleType type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
             SnowParticle particle = new SnowParticle(level, sprites, x, y, z, xSpeed, ySpeed, zSpeed);
@@ -50,7 +49,6 @@ public class SnowParticle extends TextureSheetParticle {
 
         private static final float GRAVITY = 0.1F;
 
-        @Nullable
         @Override
         public Particle createParticle(SimpleParticleType type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
             SnowParticle particle = new SnowParticle(level, sprites, x, y, z, 0, 0, 0);

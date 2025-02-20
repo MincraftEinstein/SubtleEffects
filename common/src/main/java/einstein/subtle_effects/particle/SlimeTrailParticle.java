@@ -1,18 +1,16 @@
 package einstein.subtle_effects.particle;
 
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import einstein.subtle_effects.particle.option.FloatParticleOptions;
-import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.client.particle.*;
+import net.minecraft.client.particle.Particle;
+import net.minecraft.client.particle.ParticleProvider;
+import net.minecraft.client.particle.ParticleRenderType;
+import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
-import net.minecraft.world.phys.Vec3;
-import org.jetbrains.annotations.Nullable;
 
-public class SlimeTrailParticle extends TextureSheetParticle {
+public class SlimeTrailParticle extends FlatPlaneParticle {
 
-    private final int rotation;
     private final BlockPos pos;
 
     protected SlimeTrailParticle(ClientLevel level, SpriteSet sprites, double x, double y, double z, float scale) {
@@ -21,8 +19,9 @@ public class SlimeTrailParticle extends TextureSheetParticle {
         quadSize = 0.5F * scale;
         setSize(quadSize + 1, 0.1F);
         lifetime = (int) Math.min(300 + (200 * scale), 1200);
-        rotation = random.nextInt(3);
+        rotation.rotateY(90 * random.nextInt(3) * Mth.DEG_TO_RAD).rotateX(-90 * Mth.DEG_TO_RAD);
         pos = new BlockPos.MutableBlockPos(x, y, z);
+        renderBackFace = false;
     }
 
     @Override
@@ -50,39 +49,8 @@ public class SlimeTrailParticle extends TextureSheetParticle {
         }
     }
 
-    @Override
-    public void render(VertexConsumer consumer, Camera camera, float partialTick) {
-        Vec3 pos = camera.getPosition();
-        double x = Mth.lerp(partialTick, xo, this.x) - pos.x();
-        double y = Mth.lerp(partialTick, yo, this.y) - pos.y();
-        double z = Mth.lerp(partialTick, zo, this.z) - pos.z();
-        Vec3[] vec3s = {new Vec3(-1, -1, 0), new Vec3(-1, 1, 0), new Vec3(1, 1, 0), new Vec3(1, -1, 0)};
-
-        for (int i = 0; i < vec3s.length; i++) {
-            vec3s[i] = vec3s[i].xRot(toRot(-90))
-                    .yRot(toRot(90 * rotation))
-                    .scale(getQuadSize(partialTick)).add(x, y, z);
-        }
-
-        float minU = getU0();
-        float maxU = getU1();
-        float minV = getV0();
-        float maxV = getV1();
-        int lightColor = getLightColor(partialTick);
-
-        consumer.vertex(vec3s[0].x(), vec3s[0].y(), vec3s[0].z()).uv(maxU, maxV).color(rCol, gCol, bCol, alpha).uv2(lightColor).endVertex();
-        consumer.vertex(vec3s[1].x(), vec3s[1].y(), vec3s[1].z()).uv(maxU, minV).color(rCol, gCol, bCol, alpha).uv2(lightColor).endVertex();
-        consumer.vertex(vec3s[2].x(), vec3s[2].y(), vec3s[2].z()).uv(minU, minV).color(rCol, gCol, bCol, alpha).uv2(lightColor).endVertex();
-        consumer.vertex(vec3s[3].x(), vec3s[3].y(), vec3s[3].z()).uv(minU, maxV).color(rCol, gCol, bCol, alpha).uv2(lightColor).endVertex();
-    }
-
-    private static float toRot(float degrees) {
-        return degrees * 0.017453292F;
-    }
-
     public record Provider(SpriteSet sprites) implements ParticleProvider<FloatParticleOptions> {
 
-        @Nullable
         @Override
         public Particle createParticle(FloatParticleOptions options, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
             return new SlimeTrailParticle(level, sprites, x, y, z, Math.min(options.f(), 64));

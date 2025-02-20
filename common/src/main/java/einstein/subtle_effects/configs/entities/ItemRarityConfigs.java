@@ -14,8 +14,9 @@ import static einstein.subtle_effects.init.ModConfigs.BASE_KEY;
 public class ItemRarityConfigs extends ConfigSection {
 
     public DisplayType particlesDisplayType = DisplayType.ON;
-    public ColorType particleColor = ColorType.NAME_COLOR;
+    public ParticleColorType particleColorType = ParticleColorType.NAME_COLOR;
     public boolean mixedColorName = true;
+    public boolean useItemBorder = true;
     public ValidatedFloat particleMaxHeight = new ValidatedFloat(1, 1.5F, 0.5F);
     public ValidatedFloat particleMaxSpeed = new ValidatedFloat(1, 2, 0.1F);
     public ValidatedDouble particleDensity = new ValidatedDouble(1, 1, 0.1);
@@ -32,14 +33,14 @@ public class ItemRarityConfigs extends ConfigSection {
         }
     }
 
-    public enum ColorType implements EnumTranslatable {
+    public enum ParticleColorType implements EnumTranslatable {
         RARITY_COLOR,
         NAME_COLOR;
 
         @NotNull
         @Override
         public String prefix() {
-            return BASE_KEY + "entities.itemRarity.particleColor";
+            return BASE_KEY + "entities.itemRarity.particleColorType";
         }
     }
 }

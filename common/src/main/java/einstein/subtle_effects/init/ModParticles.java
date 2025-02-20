@@ -1,9 +1,6 @@
 package einstein.subtle_effects.init;
 
 import com.mojang.serialization.Codec;
-import einstein.subtle_effects.particle.ExperienceParticle;
-import einstein.subtle_effects.particle.ItemRarityParticle;
-import einstein.subtle_effects.particle.SparkParticle;
 import einstein.subtle_effects.particle.option.*;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
@@ -55,6 +52,13 @@ public class ModParticles {
     public static final Supplier<SimpleParticleType> AZALEA_PETAL = register("azalea_petal");
     public static final Supplier<SimpleParticleType> FROSTY_BREATH = register("frosty_breath");
     public static final Supplier<ParticleType<FloatParticleOptions>> EXPERIENCE = register("experience", FloatParticleOptions.DESERIALIZER, FloatParticleOptions::codec);
+    public static final Supplier<SimpleParticleType> HEART_POP = register("heart_pop");
+    public static final Supplier<ParticleType<ColorAndIntegerParticleOptions>> POTION_RING = register("potion_ring", ColorAndIntegerParticleOptions::codec, ColorAndIntegerParticleOptions::streamCodec);
+    public static final Supplier<ParticleType<ColorAndIntegerParticleOptions>> POTION_DOT = register("potion_dot", ColorAndIntegerParticleOptions::codec, ColorAndIntegerParticleOptions::streamCodec);
+    public static final Supplier<ParticleType<ColorAndIntegerParticleOptions>> POTION_EMITTER = register("potion_emitter", ColorAndIntegerParticleOptions::codec, ColorAndIntegerParticleOptions::streamCodec);
+    public static final Supplier<SimpleParticleType> IRON_GOLEM = register("iron_golem");
+    public static final Supplier<SimpleParticleType> DROWNING_BUBBLE = register("drowning_bubble");
+    public static final Supplier<SimpleParticleType> DROWNING_BUBBLE_POP = register("drowning_bubble_pop");
 
     public static void init() {
     }

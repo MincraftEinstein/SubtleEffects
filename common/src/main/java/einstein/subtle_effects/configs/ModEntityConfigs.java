@@ -8,6 +8,7 @@ import me.fzzyhmstrs.fzzy_config.annotations.Translation;
 import me.fzzyhmstrs.fzzy_config.config.Config;
 import me.fzzyhmstrs.fzzy_config.util.EnumTranslatable;
 import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedDouble;
+import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedFloat;
 import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedInt;
 import net.minecraft.client.Minecraft;
 import org.jetbrains.annotations.NotNull;
@@ -24,23 +25,26 @@ public class ModEntityConfigs extends Config {
     public ExplosivesConfigs explosives = new ExplosivesConfigs();
 
     public boolean enderPearlTrail = true;
-    public ValidatedDouble snowballTrailDensity = new ValidatedDouble(0.2, 1, 0);
+    public ValidatedDouble snowballTrailDensity = new ValidatedDouble(0.5, 1, 0);
     public ValidatedDouble allayMagicDensity = new ValidatedDouble(0.2, 1, 0);
     public ValidatedDouble vexMagicDensity = new ValidatedDouble(0.2, 1, 0);
     public boolean sheepShearFluff = true;
     public boolean improvedDragonFireballTrail = true;
     public CommandBlockSpawnType commandBlockMinecartParticles = CommandBlockSpawnType.ON;
     public boolean endCrystalParticles = true;
-    public boolean minecartLandingSparks = true;
+    public MinecartSparksDisplayType minecartSparksDisplayType = MinecartSparksDisplayType.DEFAULT;
+    public ValidatedFloat minecartSparksDensity = new ValidatedFloat(0.5F, 1, 0);
     public boolean slimeTrails = true;
     public boolean magmaCubeTrails = true;
     public boolean replaceSlimeSquishParticles = true;
+    public boolean replaceOozingEffectParticles = true;
     public boolean replaceSpellCasterParticles = true;
     public boolean ironGolemCrackParticles = true;
     public boolean spectralArrowParticles = true;
     public boolean wardenDeathSoulParticles = true;
     public XPBottleParticlesDisplayType xpBottleParticlesDisplayType = XPBottleParticlesDisplayType.DEFAULT;
-    public ValidatedInt xpBottleParticlesDensity = new ValidatedInt(10, 30, 5);
+    public ValidatedInt xpBottleParticlesDensity = new ValidatedInt(10, 200, 5);
+    public boolean eggSmashSound = true;
 
     public ModEntityConfigs() {
         super(SubtleEffects.loc("entities"));
@@ -79,6 +83,17 @@ public class ModEntityConfigs extends Config {
         @Override
         public @NotNull String prefix() {
             return ModConfigs.BASE_KEY + "entities.xpBottleParticlesDisplayType";
+        }
+    }
+
+    public enum MinecartSparksDisplayType implements EnumTranslatable {
+        OFF,
+        LAND_ON_RAIL,
+        DEFAULT;
+
+        @Override
+        public @NotNull String prefix() {
+            return ModConfigs.BASE_KEY + "entities.minecartSparksDisplayType";
         }
     }
 }
