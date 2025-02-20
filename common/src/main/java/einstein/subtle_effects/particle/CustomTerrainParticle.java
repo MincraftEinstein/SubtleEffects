@@ -3,6 +3,8 @@ package einstein.subtle_effects.particle;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
+import net.minecraft.client.renderer.texture.TextureAtlas;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.InventoryMenu;
@@ -26,10 +28,11 @@ public class CustomTerrainParticle extends TerrainParticle {
 
     public record CompostProvider(SpriteSet sprites) implements ParticleProvider<SimpleParticleType> {
 
+        @SuppressWarnings("deprecation")
         @Override
         public Particle createParticle(SimpleParticleType type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
             CustomTerrainParticle particle = new CustomTerrainParticle(level, x, y, z, xSpeed, ySpeed, zSpeed, ParticleRenderType.TERRAIN_SHEET);
-            particle.setSprite(Minecraft.getInstance().getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(COMPOST_TEXTURE));
+            particle.setSprite(Minecraft.getInstance().getTextureAtlas(TextureAtlas.LOCATION_BLOCKS).apply(COMPOST_TEXTURE));
             return particle;
         }
     }

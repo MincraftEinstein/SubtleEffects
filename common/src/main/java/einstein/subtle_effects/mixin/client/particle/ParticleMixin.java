@@ -49,9 +49,4 @@ public abstract class ParticleMixin implements ParticleAccessor {
     public float getGravity() {
         return gravity;
     }
-
-    @Override
-    public void setGravity(float gravity) {
-        this.gravity = gravity;
-    }
 }

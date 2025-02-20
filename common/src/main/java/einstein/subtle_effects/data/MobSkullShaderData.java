@@ -15,9 +15,7 @@ public record MobSkullShaderData(ItemStackHolder stackHolder, ResourceLocation s
     public static final Codec<MobSkullShaderData> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             ItemStackHolder.CODEC.fieldOf("item").forGetter(MobSkullShaderData::stackHolder),
             ResourceLocation.CODEC.fieldOf("shader").forGetter(MobSkullShaderData::shaderId)
-    ).apply(instance, (item, shaderId) ->
-            new MobSkullShaderData(item, shaderId.withPath("shaders/post/" + shaderId.getPath() + ".json"))
-    ));
+    ).apply(instance, MobSkullShaderData::new));
 
     public record ItemStackHolder(Item item, DataComponentMap components) {
 

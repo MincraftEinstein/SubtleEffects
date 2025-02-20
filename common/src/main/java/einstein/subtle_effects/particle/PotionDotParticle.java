@@ -3,7 +3,7 @@ package einstein.subtle_effects.particle;
 import einstein.subtle_effects.particle.option.ColorAndIntegerParticleOptions;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
-import net.minecraft.util.FastColor;
+import net.minecraft.util.ARGB;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import org.jetbrains.annotations.Nullable;
@@ -35,9 +35,9 @@ public class PotionDotParticle extends TextureSheetParticle {
         float colorIntensity = 0.30F;
         float whiteIntensity = 1 - colorIntensity;
         setColor(
-                whiteIntensity + (colorIntensity * (FastColor.ARGB32.red(color) / 255F)),
-                whiteIntensity + (colorIntensity * (FastColor.ARGB32.green(color) / 255F)),
-                whiteIntensity + (colorIntensity * (FastColor.ARGB32.blue(color) / 255F))
+                whiteIntensity + (colorIntensity * (ARGB.red(color) / 255F)),
+                whiteIntensity + (colorIntensity * (ARGB.green(color) / 255F)),
+                whiteIntensity + (colorIntensity * (ARGB.blue(color) / 255F))
         );
     }
 

@@ -13,7 +13,6 @@ import einstein.subtle_effects.platform.Services;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.renderer.GameRenderer;
-import net.minecraft.client.renderer.PostChain;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.SectionPos;
 import net.minecraft.core.particles.DustParticleOptions;
@@ -31,7 +30,6 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraft.world.phys.Vec3;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,7 +41,7 @@ public class Util {
     public static final int SNORE_DELAY = 10;
     public static final int MAX_Z_COUNT = 3;
     public static final int STOMACH_GROWL_DELAY = 300;
-    public static final DustParticleOptions GLOWSTONE_DUST_PARTICLES = new DustParticleOptions(Vec3.fromRGB24(0xFFBC5E).toVector3f(), 1);
+    public static final DustParticleOptions GLOWSTONE_DUST_PARTICLES = new DustParticleOptions(0xFFBC5E, 1);
     public static final Supplier<ResourceLocation> BCWP_PACK_LOCATION = Suppliers.memoize(() -> SubtleEffects.loc("biome_color_water_particles").withPrefix(Services.PLATFORM.getPlatformName().equals("NeoForge") ? "resourcepacks/" : ""));
     public static final Supplier<String> BCWP_PACK_ID = Suppliers.memoize(() -> (Services.PLATFORM.getPlatformName().equals("NeoForge") ? "mod/" : "") + BCWP_PACK_LOCATION.get().toString());
     public static final Component BCWP_PACK_NAME = Component.translatable("resourcePack.subtle_effects.biome_water_color_particles.name");
@@ -100,13 +98,13 @@ public class Util {
                 return;
             }
         }
-        gameRenderer.shutdownEffect();
+        gameRenderer.clearPostEffect();
     }
 
     private static void loadShaderEffect(ResourceLocation shaderId, GameRenderer gameRenderer) {
-        PostChain effect = gameRenderer.currentEffect();
-        if (effect == null || !effect.getName().equals(shaderId.toString())) {
-            ((GameRendererAccessor) gameRenderer).loadShaderEffect(shaderId);
+        ResourceLocation effect = gameRenderer.currentPostEffect();
+        if (effect == null || !effect.equals(shaderId)) {
+            ((GameRendererAccessor) gameRenderer).setShaderEffect(shaderId);
         }
     }
 

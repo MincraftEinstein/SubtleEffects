@@ -1,9 +1,7 @@
 package einstein.subtle_effects.data;
 
-import com.google.gson.JsonElement;
-import com.mojang.serialization.JsonOps;
 import einstein.subtle_effects.SubtleEffects;
-import einstein.subtle_effects.util.Util;
+import net.minecraft.resources.FileToIdConverter;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
@@ -14,31 +12,23 @@ import net.minecraft.world.item.Items;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MobSkullShaderReloadListener extends SimpleJsonResourceReloadListener {
+public class MobSkullShaderReloadListener extends SimpleJsonResourceReloadListener<MobSkullShaderData> {
 
-    public static final String DIRECTORY = "subtle_effects/mob_skull_shaders";
+    public static final FileToIdConverter DIRECTORY = FileToIdConverter.json("subtle_effects/mob_skull_shaders");
     public static final Map<ResourceLocation, MobSkullShaderData> MOB_SKULL_SHADERS = new HashMap<>();
 
     public MobSkullShaderReloadListener() {
-        super(Util.GSON, DIRECTORY);
+        super(MobSkullShaderData.CODEC, DIRECTORY);
     }
 
     @Override
-    protected void apply(Map<ResourceLocation, JsonElement> resources, ResourceManager manager, ProfilerFiller profiler) {
-        Map<ResourceLocation, MobSkullShaderData> dataMap = new HashMap<>();
+    protected void apply(Map<ResourceLocation, MobSkullShaderData> resources, ResourceManager manager, ProfilerFiller profiler) {
         MOB_SKULL_SHADERS.clear();
-
-        resources.forEach((id, element) -> {
-            MobSkullShaderData.CODEC.parse(JsonOps.INSTANCE, element)
-                    .resultOrPartial(error -> SubtleEffects.LOGGER.error("Failed to decode mob skull shader with ID {} - Error: {}", id, error))
-                    .ifPresent(shaderData -> dataMap.put(id, shaderData));
-        });
-
-        load(manager, dataMap);
+        load(manager, resources);
     }
 
-    private static void load(ResourceManager manager, Map<ResourceLocation, MobSkullShaderData> dataMap) {
-        dataMap.forEach((location, shaderData) -> {
+    private static void load(ResourceManager manager, Map<ResourceLocation, MobSkullShaderData> resources) {
+        resources.forEach((location, shaderData) -> {
             Item item = shaderData.stackHolder().item();
             if (item.equals(Items.AIR)) {
                 SubtleEffects.LOGGER.error("Item in Mob Skull Shader '{}' can not be air", location);
@@ -46,7 +36,7 @@ public class MobSkullShaderReloadListener extends SimpleJsonResourceReloadListen
             }
 
             ResourceLocation shaderId = shaderData.shaderId();
-            if (manager.getResource(shaderId).isEmpty()) {
+            if (manager.getResource(shaderId.withPath("post_effect/" + shaderId.getPath() + ".json")).isEmpty()) {
                 SubtleEffects.LOGGER.error("Could not find post shader with ID '{}' for Mob Skull Shader: '{}'", shaderId, location);
                 return;
             }

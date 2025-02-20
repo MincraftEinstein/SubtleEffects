@@ -15,7 +15,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class MaceItemMixin {
 
     @Inject(method = "knockback", at = @At("HEAD"))
-    private static void spawnDustClouds(Level level, Player player, Entity entity, CallbackInfo ci) {
-        ParticleSpawnUtil.spawnFallDustClouds(player, 10, 10, ClientBoundEntityFellPacket.TypeConfig.MACE);
+    private static void spawnDustClouds(Level level, Entity attacker, Entity target, CallbackInfo ci) {
+        ParticleSpawnUtil.spawnFallDustClouds(attacker, 10, 10, ClientBoundEntityFellPacket.TypeConfig.MACE);
     }
 }

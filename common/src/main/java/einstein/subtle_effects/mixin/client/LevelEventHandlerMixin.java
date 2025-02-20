@@ -27,7 +27,6 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import static einstein.subtle_effects.init.ModConfigs.BLOCKS;
-import static einstein.subtle_effects.init.ModConfigs.ENTITIES;
 import static einstein.subtle_effects.util.MathUtil.nextSign;
 import static net.minecraft.util.Mth.nextFloat;
 
@@ -93,10 +92,6 @@ public class LevelEventHandlerMixin {
                         );
                     }
                 }
-                break;
-            }
-            case LevelEvent.PARTICLES_SMASH_ATTACK: {
-                ParticleSpawnUtil.spawnEntityFellParticles(player, pos.getY() + 1, 0, 5, ENTITIES.dustClouds.landMaceAttack);
                 break;
             }
         }

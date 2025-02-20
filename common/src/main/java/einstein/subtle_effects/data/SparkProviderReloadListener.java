@@ -1,10 +1,8 @@
 package einstein.subtle_effects.data;
 
-import com.google.gson.JsonElement;
-import com.mojang.serialization.JsonOps;
 import einstein.subtle_effects.SubtleEffects;
-import einstein.subtle_effects.util.Util;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.FileToIdConverter;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
@@ -17,31 +15,23 @@ import net.minecraft.world.level.block.state.properties.Property;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class SparkProviderReloadListener extends SimpleJsonResourceReloadListener {
+public class SparkProviderReloadListener extends SimpleJsonResourceReloadListener<SparkProviderData> {
 
-    public static final String DIRECTORY = "subtle_effects/spark_providers";
+    public static final FileToIdConverter DIRECTORY = FileToIdConverter.json("subtle_effects/spark_providers");
     public static final Map<ResourceLocation, SparkProvider> SPARK_PROVIDERS = new HashMap<>();
 
     public SparkProviderReloadListener() {
-        super(Util.GSON, DIRECTORY);
+        super(SparkProviderData.CODEC, DIRECTORY);
     }
 
     @Override
-    protected void apply(Map<ResourceLocation, JsonElement> resources, ResourceManager manager, ProfilerFiller filler) {
-        Map<ResourceLocation, SparkProviderData> dataMap = new HashMap<>();
+    protected void apply(Map<ResourceLocation, SparkProviderData> resources, ResourceManager manager, ProfilerFiller filler) {
         SPARK_PROVIDERS.clear();
-
-        resources.forEach((id, element) ->
-                SparkProviderData.CODEC.parse(JsonOps.INSTANCE, element)
-                        .resultOrPartial(error -> SubtleEffects.LOGGER.error("Failed to decode spark provider with ID {} - Error: {}", id, error))
-                        .ifPresent(provider -> provider.options().ifPresent(options -> dataMap.put(id, provider)))
-        );
-
-        load(dataMap);
+        load(resources);
     }
 
-    private static void load(Map<ResourceLocation, SparkProviderData> dataMap) {
-        dataMap.forEach((location, providerData) -> {
+    private static void load(Map<ResourceLocation, SparkProviderData> resources) {
+        resources.forEach((location, providerData) -> {
             Optional<SparkProviderData.Options> options = providerData.options();
             if (options.isEmpty()) {
                 return;
@@ -58,7 +48,7 @@ public class SparkProviderReloadListener extends SimpleJsonResourceReloadListene
                 }
 
                 if (isRequired || isRegistered) {
-                    Block block = BuiltInRegistries.BLOCK.get(blockId);
+                    Block block = BuiltInRegistries.BLOCK.get(blockId).get().value();
                     if (block.defaultBlockState().isAir()) {
                         SubtleEffects.LOGGER.error("Block in Spark Provider '{}' can not be air", location);
                     }

@@ -17,6 +17,7 @@ import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.animal.camel.Camel;
 import net.minecraft.world.entity.animal.horse.AbstractHorse;
@@ -81,10 +82,10 @@ public class ParticleSpawnUtil {
         level.addParticle(particle, pos.getX() + xOffset, pos.getY() + yOffset, pos.getZ() + zOffset, xSpeed, ySpeed, zSpeed);
     }
 
-    public static void spawnFallDustClouds(LivingEntity entity, float distance, int fallDamage, ClientBoundEntityFellPacket.TypeConfig config) {
+    public static void spawnFallDustClouds(Entity entity, float distance, int fallDamage, ClientBoundEntityFellPacket.TypeConfig config) {
         Level level = entity.level();
         if (level.isClientSide && entity.equals(Minecraft.getInstance().player)) {
-            spawnEntityFellParticles(entity, entity.getY(), distance, fallDamage, ENTITIES.dustClouds.playerFell);
+            spawnEntityFellParticles((LivingEntity) entity, entity.getY(), distance, fallDamage, ENTITIES.dustClouds.playerFell);
         }
         else if (level instanceof ServerLevel serverLevel) {
             Services.NETWORK.sendToClientsTracking(

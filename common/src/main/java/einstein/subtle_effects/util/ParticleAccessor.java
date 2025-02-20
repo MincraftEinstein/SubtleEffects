@@ -17,6 +17,4 @@ public interface ParticleAccessor {
     void subtleEffects$force();
 
     float getGravity();
-
-    void setGravity(float gravity);
 }
