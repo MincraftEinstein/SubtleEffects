@@ -1,15 +1,19 @@
 package einstein.subtle_effects.particle;
 
-import einstein.subtle_effects.init.ModConfigs;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import net.minecraft.client.Camera;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
 import net.minecraft.core.particles.SimpleParticleType;
-import org.jetbrains.annotations.Nullable;
+
+import static einstein.subtle_effects.init.ModConfigs.ENTITIES;
 
 public class DustCloudParticle extends TextureSheetParticle {
 
     private final SpriteSet sprites;
     private final double ySpeed;
+    private final Minecraft minecraft = Minecraft.getInstance();
 
     protected DustCloudParticle(ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, int maxLifeTime, SpriteSet sprites) {
         super(level, x, y, z, xSpeed, 0, zSpeed);
@@ -18,15 +22,23 @@ public class DustCloudParticle extends TextureSheetParticle {
         gravity = 0.1F;
         lifetime = Math.max(random.nextInt(maxLifeTime), maxLifeTime - 10);
         speedUpWhenYMotionIsBlocked = true;
-        alpha = ModConfigs.ENTITIES.dustClouds.alpha.get();
+        alpha = ENTITIES.dustClouds.alpha.get();
         setSpriteFromAge(sprites);
-        scale(3 * ModConfigs.ENTITIES.dustClouds.scale.get());
+        scale(3 * ENTITIES.dustClouds.scale.get());
         setSize(0.25F, 0.25F);
     }
 
     @Override
     public ParticleRenderType getRenderType() {
         return ParticleRenderType.PARTICLE_SHEET_TRANSLUCENT;
+    }
+
+    @Override
+    public void render(VertexConsumer consumer, Camera camera, float partialTicks) {
+        if (ENTITIES.dustClouds.lessViewBlocking && minecraft.options.getCameraType().isFirstPerson() && camera.getEntity().distanceToSqr(x, y, z) < 4) {
+            return;
+        }
+        super.render(consumer, camera, partialTicks);
     }
 
     @Override
@@ -46,7 +58,6 @@ public class DustCloudParticle extends TextureSheetParticle {
 
     public record SmallProvider(SpriteSet sprites) implements ParticleProvider<SimpleParticleType> {
 
-        @Nullable
         @Override
         public Particle createParticle(SimpleParticleType type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
             return new DustCloudParticle(level, x, y, z, xSpeed, ySpeed, zSpeed, 25, sprites);
@@ -55,7 +66,6 @@ public class DustCloudParticle extends TextureSheetParticle {
 
     public record LargeProvider(SpriteSet sprites) implements ParticleProvider<SimpleParticleType> {
 
-        @Nullable
         @Override
         public Particle createParticle(SimpleParticleType type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
             return new DustCloudParticle(level, x, y, z, xSpeed, ySpeed, zSpeed, 35, sprites);

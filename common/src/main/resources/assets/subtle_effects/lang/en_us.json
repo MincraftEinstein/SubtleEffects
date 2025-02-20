@@ -216,6 +216,8 @@
   "config.subtle_effects.entities.dustClouds.fallingGroup": "Falling",
   "config.subtle_effects.entities.dustClouds.flyIntoWall": "Fly Into Wall",
   "config.subtle_effects.entities.dustClouds.flyIntoWall.desc": "Should dust clouds be spawned when flying into a wall, like with an elytra",
+  "config.subtle_effects.entities.dustClouds.lessViewBlocking": "Less View Blocking",
+  "config.subtle_effects.entities.dustClouds.lessViewBlocking.desc": "Will prevent dust clouds from rendering within about 2 blocks of the player in first person",
   "config.subtle_effects.entities.dustClouds.playerFell": "Player Fell",
   "config.subtle_effects.entities.dustClouds.playerFell.desc": "Should a cloud of dust appear when a player takes fall damage",
   "config.subtle_effects.entities.dustClouds.mobFell": "Mob Fell",
