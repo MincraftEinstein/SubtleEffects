@@ -81,7 +81,7 @@ public class ParticleSpawnUtil {
         level.addParticle(particle, pos.getX() + xOffset, pos.getY() + yOffset, pos.getZ() + zOffset, xSpeed, ySpeed, zSpeed);
     }
 
-    public static void spawnFallDustClouds(LivingEntity entity, float distance, int fallDamage) {
+    public static void spawnFallDustClouds(LivingEntity entity, float distance, int fallDamage, ClientBoundEntityFellPacket.TypeConfig config) {
         Level level = entity.level();
         if (level.isClientSide && entity.equals(Minecraft.getInstance().player)) {
             spawnEntityFellParticles(entity, entity.getY(), distance, fallDamage, ENTITIES.dustClouds.playerFell);
@@ -90,7 +90,7 @@ public class ParticleSpawnUtil {
             Services.NETWORK.sendToClientsTracking(
                     entity instanceof ServerPlayer player ? player : null,
                     serverLevel, entity.blockPosition(),
-                    new ClientBoundEntityFellPacket(entity.getId(), entity.getY(), distance, fallDamage)
+                    new ClientBoundEntityFellPacket(entity.getId(), entity.getY(), distance, fallDamage, config)
             );
         }
     }

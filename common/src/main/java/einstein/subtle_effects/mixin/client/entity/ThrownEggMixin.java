@@ -1,5 +1,6 @@
 package einstein.subtle_effects.mixin.client.entity;
 
+import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.init.ModSounds;
 import einstein.subtle_effects.util.Util;
 import net.minecraft.sounds.SoundSource;
@@ -15,7 +16,7 @@ public class ThrownEggMixin {
 
     @Inject(method = "handleEntityEvent", at = @At("TAIL"))
     private void handle(byte id, CallbackInfo ci) {
-        if (id == 3) {
+        if (id == 3 && ModConfigs.ENTITIES.eggSmashSound) {
             Util.playClientSound(((Entity) (Object) this).blockPosition(), ModSounds.EGG_BREAK.get(), SoundSource.PLAYERS, 1F, 1F);
         }
     }

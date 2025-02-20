@@ -22,7 +22,10 @@ dependencies {
     modImplementation "me.fzzyhmstrs:fzzy_config:${fzzy_config_version}"
     modCompileOnly "com.github.glitchfiend:GlitchCore-fabric:${glitchcore_version}"
     modCompileOnly "com.github.glitchfiend:SereneSeasons-fabric:${serene_seasons_version}"
-    modCompileOnly "it.crystalnest:soul-fire-d-fabric:${minecraft_version}-${soul_fired_version}"
+    modCompileOnly "it.crystalnest:soul-fire-d-fabric:${soul_fired_version}"
+    modCompileOnly "maven.modrinth:iceberg:${fabric_iceberg_version}"
+    modCompileOnly "maven.modrinth:prism-lib:${fabric_prism_version}"
+    modCompileOnly "maven.modrinth:item-borders:${fabric_item_borders_version}"
 }
 
 loom {

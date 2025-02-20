@@ -9,6 +9,7 @@ import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.tickers.TickerManager;
 import me.fzzyhmstrs.fzzy_config.annotations.Translation;
 import me.fzzyhmstrs.fzzy_config.config.Config;
+import me.fzzyhmstrs.fzzy_config.config.ConfigGroup;
 import me.fzzyhmstrs.fzzy_config.util.EnumTranslatable;
 import me.fzzyhmstrs.fzzy_config.validation.collection.ValidatedList;
 import me.fzzyhmstrs.fzzy_config.validation.minecraft.ValidatedRegistryType;
@@ -51,8 +52,10 @@ public class ModBlockConfigs extends Config {
     public GlowstoneDustDisplayType glowstoneBlockDustDisplayType = GlowstoneDustDisplayType.ON;
     public BlockDustDensity glowstoneBlockDustDensity = BlockDustDensity.DEFAULT;
     public boolean beehivesHaveSleepingZs = true;
+    public ConfigGroup fallingBlockDustGroup = new ConfigGroup("falling_block_dust");
     public boolean fallingBlockDust = true;
     public ValidatedList<Block> fallingBlockDustBlocks = new ValidatedList<>(DEFAULT_FALLING_BLOCK_DUST_BLOCKS, ValidatedRegistryType.of(BuiltInRegistries.BLOCK));
+    @ConfigGroup.Pop
     public ValidatedInt fallingBlockDustDistance = new ValidatedInt(0, 20, 0);
     public SmokeType torchflowerSmoke = SmokeType.DEFAULT;
     public boolean torchflowerFlames = true;
@@ -64,7 +67,11 @@ public class ModBlockConfigs extends Config {
     public boolean grindstoneUseParticles = true;
     public CommandBlockSpawnType commandBlockParticles = CommandBlockSpawnType.ON;
     public boolean slimeBlockBounceSounds = true;
+    public ConfigGroup beaconParticlesGroup = new ConfigGroup("beacon_particles");
     public BeaconParticlesDisplayType beaconParticlesDisplayType = BeaconParticlesDisplayType.ON;
+    public ValidatedInt beaconParticlesDensity = new ValidatedInt(10, 20, 1);
+    @ConfigGroup.Pop
+    public ValidatedFloat beaconParticlesSpeed = new ValidatedFloat(1, 2, 0.5F);
     public boolean compostingParticles = true;
     public boolean respawnAnchorParticles = true;
     public boolean beehiveShearParticles = true;
@@ -79,7 +86,6 @@ public class ModBlockConfigs extends Config {
     public boolean sculkShriekerDestroySouls = true;
     public boolean sculkCatalystDestroySouls = true;
     public boolean calibratedSculkSensorAmethystSparkle = true;
-    public boolean campfireSizzlingSounds = true;
     public ValidatedFloat campfireSizzlingSoundVolume = new ValidatedFloat(0.5F, 1, 0);
     public ValidatedInt vegetationFirefliesDensity = new ValidatedInt(30, 100, 0, ValidatedNumber.WidgetType.SLIDER);
     public VegetationFirefliesSpawnType vegetationFirefliesSpawnType = VegetationFirefliesSpawnType.FLOWERS_ONLY;

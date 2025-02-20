@@ -1,6 +1,6 @@
 package einstein.subtle_effects.mixin.client;
 
-import einstein.subtle_effects.data.SparkProvider;
+import einstein.subtle_effects.data.SparkProviderData;
 import einstein.subtle_effects.data.SparkProviderReloadListener;
 import einstein.subtle_effects.init.ModBlockTickers;
 import einstein.subtle_effects.particle.SparkParticle;
@@ -16,6 +16,8 @@ import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.profiling.ProfilerFiller;
+import net.minecraft.util.valueproviders.ConstantInt;
+import net.minecraft.util.valueproviders.IntProvider;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.AbstractCandleBlock;
@@ -36,8 +38,7 @@ import java.util.List;
 import java.util.function.Supplier;
 
 import static einstein.subtle_effects.init.ModConfigs.BLOCKS;
-import static einstein.subtle_effects.util.MathUtil.nextDouble;
-import static einstein.subtle_effects.util.MathUtil.nextSign;
+import static einstein.subtle_effects.util.MathUtil.*;
 
 @Mixin(ClientLevel.class)
 public abstract class ClientLevelMixin extends Level {
@@ -69,120 +70,124 @@ public abstract class ClientLevelMixin extends Level {
             });
 
             SparkProviderReloadListener.SPARK_PROVIDERS.forEach((id, provider) -> {
-                provider.options().ifPresent(options -> {
-                    SparkProvider.PresetType preset = options.preset();
-                    List<Integer> colors = options.colors().orElse(SparkParticle.DEFAULT_COLORS);
+                SparkProviderData.Options options = provider.options();
+                SparkProviderData.PresetType preset = options.preset();
+                List<Integer> colors = options.colors().orElse(SparkParticle.DEFAULT_COLORS);
 
-                    provider.states().forEach(stateHolder -> {
-                        if (stateHolder.matches(state)) {
-                            switch (preset) {
-                                case CAMPFIRE -> {
-                                    if (BLOCKS.sparks.campfireSparks) {
-                                        ParticleSpawnUtil.spawnSparks(this, random, pos, SparkType.LONG_LIFE,
-                                                new Box(0.3, 0.4, 0.3, 0.6, 0.4, 0.6),
-                                                new Vec3(0.03, 0.05, 0.03), 10, colors
-                                        );
-                                    }
+                provider.states().forEach(stateHolder -> {
+                    if (stateHolder.matches(state)) {
+                        switch (preset) {
+                            case CAMPFIRE -> {
+                                if (BLOCKS.sparks.campfireSparks) {
+                                    ParticleSpawnUtil.spawnSparks(this, random, pos, SparkType.LONG_LIFE,
+                                            new Box(0.3, 0.4, 0.3, 0.6, 0.4, 0.6),
+                                            new Vec3(0.03, 0.05, 0.03), 10, colors
+                                    );
                                 }
-                                case TORCH -> {
-                                    if (BLOCKS.sparks.torchSparks) {
-                                        ParticleSpawnUtil.spawnSparks(this, random, pos, SparkType.SHORT_LIFE,
-                                                new Box(0.3, 0.5, 0.3, 0.6, 0.5, 0.6),
-                                                new Vec3(0.01, 0.01, 0.01), 2, colors
-                                        );
-                                    }
-                                }
-                                case WALL_TORCH -> {
-                                    if (!BLOCKS.sparks.torchSparks || !state.hasProperty(BlockStateProperties.HORIZONTAL_FACING)) {
-                                        return;
-                                    }
-
-                                    Direction direction = state.getValue(BlockStateProperties.HORIZONTAL_FACING).getOpposite();
-                                    Vec3 offset = new Vec3(0.5 + (0.27 * direction.getStepX()), 0.7, 0.5 + (0.27 * direction.getStepZ()));
+                            }
+                            case TORCH -> {
+                                if (BLOCKS.sparks.torchSparks) {
                                     ParticleSpawnUtil.spawnSparks(this, random, pos, SparkType.SHORT_LIFE,
-                                            new Box(
-                                                    offset.subtract(0.05, 0, 0.05),
-                                                    offset.add(0.05, 0, 0.05)
-                                            ),
+                                            new Box(0.3, 0.5, 0.3, 0.6, 0.5, 0.6),
                                             new Vec3(0.01, 0.01, 0.01), 2, colors
                                     );
                                 }
-                                case CANDLE -> {
-                                    if (BLOCKS.sparks.candleSparks && block instanceof AbstractCandleBlock candleBlock) {
-                                        candleBlock.getParticleOffsets(state).forEach(offset -> {
-                                            ParticleSpawnUtil.spawnSparks(this, random, pos, SparkType.SHORT_LIFE, new Box(
-                                                    offset.subtract(0.05, 0, 0.05),
-                                                    offset.add(0.05, 0, 0.05)
-                                            ), new Vec3(0.01, 0.01, 0.01), 2, colors);
-                                        });
-                                    }
+                            }
+                            case WALL_TORCH -> {
+                                if (!BLOCKS.sparks.torchSparks || !state.hasProperty(BlockStateProperties.HORIZONTAL_FACING)) {
+                                    return;
                                 }
-                                case LANTERN -> {
-                                    for (int i = 0; i < BLOCKS.sparks.lanternSparksDensity.get(); i++) {
-                                        int xSign = nextSign(random);
-                                        int zSign = nextSign(random);
-                                        addParticle(SparkParticle.create(SparkType.FLOATING, random, colors),
-                                                pos.getX() + 0.5 + (nextDouble(random, 0.5) * xSign),
-                                                pos.getY() + random.nextInt(5) / 10D,
-                                                pos.getZ() + 0.5 + (nextDouble(random, 0.5) * zSign),
-                                                nextDouble(random, 0.03) * xSign,
-                                                0,
-                                                nextDouble(random, 0.03) * zSign
-                                        );
-                                    }
+
+                                Direction direction = state.getValue(BlockStateProperties.HORIZONTAL_FACING).getOpposite();
+                                Vec3 offset = new Vec3(0.5 + (0.27 * direction.getStepX()), 0.7, 0.5 + (0.27 * direction.getStepZ()));
+                                ParticleSpawnUtil.spawnSparks(this, random, pos, SparkType.SHORT_LIFE,
+                                        new Box(
+                                                offset.subtract(0.05, 0, 0.05),
+                                                offset.add(0.05, 0, 0.05)
+                                        ),
+                                        new Vec3(0.01, 0.01, 0.01), 2, colors
+                                );
+                            }
+                            case CANDLE -> {
+                                if (BLOCKS.sparks.candleSparks && block instanceof AbstractCandleBlock candleBlock) {
+                                    candleBlock.getParticleOffsets(state).forEach(offset -> {
+                                        ParticleSpawnUtil.spawnSparks(this, random, pos, SparkType.SHORT_LIFE, new Box(
+                                                offset.subtract(0.05, 0, 0.05),
+                                                offset.add(0.05, 0, 0.05)
+                                        ), new Vec3(0.01, 0.01, 0.01), 2, colors);
+                                    });
                                 }
-                                case FIRE -> {
-                                    if (BLOCKS.sparks.fireSparks && block instanceof BaseFireBlock fireBlock) {
-                                        BlockPos belowPos = pos.below();
-                                        BlockState belowState = getBlockState(belowPos);
+                            }
+                            case LANTERN -> {
+                                for (int i = 0; i < BLOCKS.sparks.lanternSparksDensity.get(); i++) {
+                                    int xSign = nextSign(random);
+                                    int zSign = nextSign(random);
+                                    addParticle(SparkParticle.create(SparkType.FLOATING, random, colors),
+                                            pos.getX() + 0.5 + (nextDouble(random, 0.5) * xSign),
+                                            pos.getY() + random.nextInt(5) / 10D,
+                                            pos.getZ() + 0.5 + (nextDouble(random, 0.5) * zSign),
+                                            nextDouble(random, 0.03) * xSign,
+                                            0,
+                                            nextDouble(random, 0.03) * zSign
+                                    );
+                                }
+                            }
+                            case FIRE -> {
+                                if (BLOCKS.sparks.fireSparks && block instanceof BaseFireBlock fireBlock) {
+                                    BlockPos belowPos = pos.below();
+                                    BlockState belowState = getBlockState(belowPos);
 
-                                        if (!fireBlock.canBurn(belowState) && !belowState.isFaceSturdy(this, belowPos, Direction.UP)) {
-                                            for (Direction direction : Direction.Plane.HORIZONTAL) {
-                                                if (fireBlock.canBurn(getBlockState(pos.relative(direction)))) {
-                                                    Direction.Axis axis = direction.getAxis();
-                                                    int i = direction.getAxisDirection() == Direction.AxisDirection.NEGATIVE ? 0 : 1;
+                                    if (!fireBlock.canBurn(belowState) && !belowState.isFaceSturdy(this, belowPos, Direction.UP)) {
+                                        for (Direction direction : Direction.Plane.HORIZONTAL) {
+                                            if (fireBlock.canBurn(getBlockState(pos.relative(direction)))) {
+                                                Direction.Axis axis = direction.getAxis();
+                                                int i = direction.getAxisDirection() == Direction.AxisDirection.NEGATIVE ? 0 : 1;
 
-                                                    subtleEffects$spawnFireSparks(this, random, pos, colors,
-                                                            axis == Direction.Axis.X ? i : random.nextDouble(),
-                                                            axis == Direction.Axis.Z ? random.nextDouble() : i
-                                                    );
-                                                }
+                                                subtleEffects$spawnFireSparks(this, random, pos, colors,
+                                                        axis == Direction.Axis.X ? i : random.nextDouble(),
+                                                        axis == Direction.Axis.Z ? random.nextDouble() : i
+                                                );
                                             }
-                                            return;
                                         }
-                                        subtleEffects$spawnFireSparks(this, random, pos, colors, random.nextDouble(), random.nextDouble());
-                                    }
-                                }
-                                case FURNACE -> {
-                                    if (!BLOCKS.sparks.furnaceSparks || !state.hasProperty(BlockStateProperties.HORIZONTAL_FACING)) {
                                         return;
                                     }
-
-                                    Direction direction = state.getValue(BlockStateProperties.HORIZONTAL_FACING);
-                                    Direction.Axis axis = direction.getAxis();
-
-                                    for (int i = 0; i < 3; i++) {
-                                        addParticle(SparkParticle.create(SparkType.SHORT_LIFE, random, colors),
-                                                pos.getX() + 0.5 + (0.6 * direction.getStepX()) + random.nextDouble()
-                                                        / (axis == Direction.Axis.X ? 10 : 3) * nextSign(random),
-                                                pos.getY() + (random.nextDouble() * 6 / 16),
-                                                pos.getZ() + 0.5 + (0.6 * direction.getStepZ()) + random.nextDouble()
-                                                        / (axis == Direction.Axis.Z ? 10 : 3) * nextSign(random),
-                                                0.01, 0.01, 0.01
-                                        );
-                                    }
+                                    subtleEffects$spawnFireSparks(this, random, pos, colors, random.nextDouble(), random.nextDouble());
                                 }
-                                case CUSTOM -> {
-                                    Box box = options.box().orElse(new Box());
-                                    SparkType sparkType = options.sparkType().orElse(SparkType.SHORT_LIFE);
-                                    Vec3 velocity = options.velocity().orElse(new Vec3(0.03, 0.05, 0.03));
-                                    int count = options.count().orElse(10);
+                            }
+                            case FURNACE -> {
+                                if (!BLOCKS.sparks.furnaceSparks || !state.hasProperty(BlockStateProperties.HORIZONTAL_FACING)) {
+                                    return;
+                                }
 
-                                    ParticleSpawnUtil.spawnSparks(this, random, pos, sparkType, box, velocity, count, colors);
+                                Direction direction = state.getValue(BlockStateProperties.HORIZONTAL_FACING);
+                                Direction.Axis axis = direction.getAxis();
+
+                                for (int i = 0; i < 3; i++) {
+                                    addParticle(SparkParticle.create(SparkType.SHORT_LIFE, random, colors),
+                                            pos.getX() + 0.5 + (0.6 * direction.getStepX()) + random.nextDouble()
+                                                    / (axis == Direction.Axis.X ? 10 : 3) * nextSign(random),
+                                            pos.getY() + (random.nextDouble() * 6 / 16),
+                                            pos.getZ() + 0.5 + (0.6 * direction.getStepZ()) + random.nextDouble()
+                                                    / (axis == Direction.Axis.Z ? 10 : 3) * nextSign(random),
+                                            nextNonAbsDouble(random, 0.01),
+                                            nextNonAbsDouble(random, 0.01),
+                                            nextNonAbsDouble(random, 0.01)
+                                    );
+                                }
+                            }
+                            case CUSTOM -> {
+                                Box box = options.box().orElse(new Box());
+                                SparkType sparkType = options.sparkType().orElse(SparkType.SHORT_LIFE);
+                                Vec3 velocity = options.velocity().orElse(new Vec3(0.03, 0.05, 0.03));
+                                IntProvider count = options.count().orElse(ConstantInt.of(10));
+                                float chance = options.chance().orElse(1F);
+
+                                if (random.nextFloat() <= chance) {
+                                    ParticleSpawnUtil.spawnSparks(this, random, pos, sparkType, box, velocity, count.sample(random), colors);
                                 }
                             }
                         }
-                    });
+                    }
                 });
             });
         }
@@ -195,7 +200,9 @@ public abstract class ClientLevelMixin extends Level {
                     pos.getX() + xOffset + random.nextDouble() / 10 * nextSign(random),
                     pos.getY() + random.nextDouble(),
                     pos.getZ() + zOffset + random.nextDouble() / 10 * nextSign(random),
-                    0.03, 0.05, 0.03
+                    nextNonAbsDouble(random, 0.03),
+                    nextNonAbsDouble(random, 0.05),
+                    nextNonAbsDouble(random, 0.03)
             );
         }
     }

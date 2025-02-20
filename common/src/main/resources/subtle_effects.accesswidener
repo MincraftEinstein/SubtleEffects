@@ -8,6 +8,9 @@ accessible method net/minecraft/client/particle/ParticleEngine clearParticles ()
 accessible method net/minecraft/client/particle/DripParticle$DripHangParticle <init> (Lnet/minecraft/client/multiplayer/ClientLevel;DDDLnet/minecraft/world/level/material/Fluid;Lnet/minecraft/core/particles/ParticleOptions;)V
 accessible method net/minecraft/client/particle/DripParticle$FallAndLandParticle <init> (Lnet/minecraft/client/multiplayer/ClientLevel;DDDLnet/minecraft/world/level/material/Fluid;Lnet/minecraft/core/particles/ParticleOptions;)V
 accessible method net/minecraft/client/particle/DripParticle$DripLandParticle <init> (Lnet/minecraft/client/multiplayer/ClientLevel;DDDLnet/minecraft/world/level/material/Fluid;)V
+accessible method net/minecraft/client/particle/DripParticle getType ()Lnet/minecraft/world/level/material/Fluid;
+accessible method net/minecraft/client/particle/BubbleParticle <init> (Lnet/minecraft/client/multiplayer/ClientLevel;DDDDDD)V
+accessible method net/minecraft/client/particle/BubblePopParticle <init> (Lnet/minecraft/client/multiplayer/ClientLevel;DDDDDDLnet/minecraft/client/particle/SpriteSet;)V
 
 accessible class net/minecraft/client/renderer/WeatherEffectRenderer$ColumnInstance
 accessible class net/minecraft/client/particle/DripParticle$DripHangParticle

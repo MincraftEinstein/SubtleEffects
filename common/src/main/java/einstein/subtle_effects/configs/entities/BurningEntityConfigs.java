@@ -12,4 +12,5 @@ public class BurningEntityConfigs extends ConfigSection {
     public boolean flames = true;
     public boolean sparks = true;
     public boolean sounds = true;
+    public boolean extinguishSteam = true;
 }

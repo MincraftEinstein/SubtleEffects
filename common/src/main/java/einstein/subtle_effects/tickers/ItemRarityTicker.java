@@ -1,9 +1,12 @@
 package einstein.subtle_effects.tickers;
 
 import einstein.subtle_effects.SubtleEffects;
+import einstein.subtle_effects.compat.CompatHelper;
+import einstein.subtle_effects.compat.ItemBordersCompat;
 import einstein.subtle_effects.configs.entities.ItemRarityConfigs;
 import einstein.subtle_effects.init.ModParticles;
 import einstein.subtle_effects.particle.option.IntegerParticleOptions;
+import einstein.subtle_effects.platform.Services;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextColor;
@@ -41,7 +44,7 @@ public class ItemRarityTicker extends Ticker<ItemEntity> {
     }
 
     private void getItemNameColors() {
-        if (ENTITIES.itemRarity.particleColor == ItemRarityConfigs.ColorType.NAME_COLOR) {
+        if (ENTITIES.itemRarity.particleColorType == ItemRarityConfigs.ParticleColorType.NAME_COLOR) {
             Component hoverName = stack.getHoverName();
             TextColor baseColor = hoverName.getStyle().getColor();
             List<TextColor> colors = new ArrayList<>(hoverName.getSiblings().stream().map(component -> component.getStyle().getColor()).filter(Objects::nonNull).toList());
@@ -53,7 +56,7 @@ public class ItemRarityTicker extends Ticker<ItemEntity> {
 
             if (usesSingleColor) {
                 TextColor color = (baseColor != null ? baseColor : (!colors.isEmpty() ? colors.getFirst() : null));
-                if (color != null && (!isCommon || color.equals(WHITE_TEXT))) {
+                if (color != null && (!isCommon || !color.equals(WHITE_TEXT))) {
                     nameColors.add(color);
                     return;
                 }
@@ -64,7 +67,21 @@ public class ItemRarityTicker extends Ticker<ItemEntity> {
             }
         }
 
-        TextColor rarityColor = TextColor.fromLegacyFormat(stack.getRarity().color());
+        if (ENTITIES.itemRarity.useItemBorder && CompatHelper.IS_ITEM_BORDERS_LOADED.get()) {
+            TextColor borderColor = ItemBordersCompat.getManualBorderColor(level, stack);
+            if (borderColor != null) {
+                nameColors.add(borderColor);
+                return;
+            }
+
+            List<TextColor> componentColors = ItemBordersCompat.getNBTBorderColor(stack);
+            if (!componentColors.isEmpty()) {
+                nameColors.addAll(componentColors);
+                return;
+            }
+        }
+
+        TextColor rarityColor = Services.PARTICLE_HELPER.getRarityColor(stack.getRarity());
         if (rarityColor != null) {
             nameColors.add(rarityColor);
             return;

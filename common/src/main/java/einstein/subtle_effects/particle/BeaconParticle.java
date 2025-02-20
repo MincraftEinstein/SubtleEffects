@@ -27,6 +27,7 @@ public class BeaconParticle extends SparkParticle {
         xd = 0;
         yd = 0;
         zd = 0;
+        gravity = -0.1F * BLOCKS.beaconParticlesSpeed.get();
         lifetime = 1;
         hasPhysics = false;
         speedUpWhenYMotionIsBlocked = false;

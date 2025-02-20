@@ -32,6 +32,10 @@ public abstract class ParticleMixin implements ParticleAccessor {
     public abstract float getAlpha();
 
     @Override
+    @Accessor("gravity")
+    public abstract void setGravity(float gravity);
+
+    @Override
     public boolean subtleEffects$wasForced() {
         return subtleEffects$forced;
     }

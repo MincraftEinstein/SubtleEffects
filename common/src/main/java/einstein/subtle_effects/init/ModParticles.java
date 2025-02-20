@@ -3,6 +3,7 @@ package einstein.subtle_effects.init;
 import com.mojang.serialization.MapCodec;
 import einstein.subtle_effects.particle.*;
 import einstein.subtle_effects.particle.emitter.FireFlyEmitter;
+import einstein.subtle_effects.particle.emitter.PotionEmitter;
 import einstein.subtle_effects.particle.option.*;
 import einstein.subtle_effects.particle.provider.*;
 import net.minecraft.client.particle.ParticleProvider;
@@ -49,7 +50,7 @@ public class ModParticles {
     public static final Supplier<ParticleType<DirectionParticleOptions>> COMMAND_BLOCK = register("command_block", type -> DirectionParticleOptions.CODEC, type -> DirectionParticleOptions.STREAM_CODEC, CommandBlockParticle.Provider::new);
     public static final Supplier<ParticleType<IntegerParticleOptions>> ITEM_RARITY = register("item_rarity", IntegerParticleOptions::codec, IntegerParticleOptions::streamCodec, ItemRarityParticle.Provider::new);
     public static final Supplier<ParticleType<PositionParticleOptions>> BEACON = register("beacon", PositionParticleOptions::codec, PositionParticleOptions::streamCodec, BeaconParticle.Provider::new);
-    public static final Supplier<SimpleParticleType> COMPOST = register("compost", CompostParticle.Provider::new);
+    public static final Supplier<SimpleParticleType> COMPOST = register("compost", CustomTerrainParticle.CompostProvider::new);
     public static final Supplier<SimpleParticleType> STEAM = register("steam", SteamParticle.Provider::new);
     public static final Supplier<SimpleParticleType> END_PORTAL = register("end_portal", EndPortalParticle.Provider::new);
     public static final Supplier<SimpleParticleType> END_CRYSTAL = register("end_crystal", EndCrystalParticle.Provider::new);
@@ -64,6 +65,13 @@ public class ModParticles {
     public static final Supplier<SimpleParticleType> DRIPPING_RESIN = register("dripping_resin", ResinDripParticleProviders.DrippingResinDropProvider::new);
     public static final Supplier<SimpleParticleType> FALLING_RESIN = register("falling_resin", ResinDripParticleProviders.FallingResinDropProvider::new);
     public static final Supplier<SimpleParticleType> LANDING_RESIN = register("landing_resin", ResinDripParticleProviders.LandingResinDropProvider::new);
+    public static final Supplier<SimpleParticleType> HEART_POP = register("heart_pop", HeartPopParticle.Provider::new);
+    public static final Supplier<ParticleType<ColorAndIntegerParticleOptions>> POTION_RING = register("potion_ring", ColorAndIntegerParticleOptions::codec, ColorAndIntegerParticleOptions::streamCodec, PotionRingParticle.Provider::new);
+    public static final Supplier<ParticleType<ColorAndIntegerParticleOptions>> POTION_DOT = register("potion_dot", ColorAndIntegerParticleOptions::codec, ColorAndIntegerParticleOptions::streamCodec, PotionDotParticle.PotionDotProvider::new);
+    public static final Supplier<ParticleType<ColorAndIntegerParticleOptions>> POTION_EMITTER = register("potion_emitter", ColorAndIntegerParticleOptions::codec, ColorAndIntegerParticleOptions::streamCodec, sprites -> new PotionEmitter.Provider());
+    public static final Supplier<SimpleParticleType> IRON_GOLEM = register("iron_golem", CustomTerrainParticle.IronGolemProvider::new);
+    public static final Supplier<SimpleParticleType> DROWNING_BUBBLE = register("drowning_bubble", DrowningBubbleParticle.Provider::new);
+    public static final Supplier<SimpleParticleType> DROWNING_BUBBLE_POP = register("drowning_bubble_pop", DrowningBubblePopParticle.Provider::new);
 
     public static void init() {
     }

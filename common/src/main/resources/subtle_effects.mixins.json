@@ -7,7 +7,9 @@
   "client": [
     "client.ClientLevelMixin",
     "client.ColumnInstanceMixin",
+    "client.GameRendererAccessor",
     "client.GameRendererMixin",
+    "client.ItemBordersConfigAccessor",
     "client.LavaFluidMixin",
     "client.LevelEventHandlerMixin",
     "client.LevelRendererMixin",
@@ -16,6 +18,7 @@
     "client.WaterFluidMixin",
     "client.WeatherEffectsRendererMixin",
     "client.block.AbstractCandleBlockMixin",
+    "client.block.AbstractCauldronBlockAccessor",
     "client.block.AmethystClusterBlockAccessor",
     "client.block.BaseFireBlockMixin",
     "client.block.BeehiveBlockMixin",
@@ -28,6 +31,7 @@
     "client.block.SlimeBlockMixin",
     "client.block.TorchBlockMixin",
     "client.block.entity.CampfireBlockEntityMixin",
+    "client.entity.ClientEntityMixin",
     "client.entity.ClientLivingEntityMixin",
     "client.entity.EntityMixin",
     "client.entity.EntityRendererMixin",
@@ -41,6 +45,9 @@
     "client.item.BoneMealItemMixin",
     "client.item.BucketItemMixin",
     "client.item.FlintAndSteelItemMixin",
+    "client.particle.DripParticleMixin",
+    "client.particle.FallAndLandParticleMixin",
+    "client.particle.HeartParticleMixin",
     "client.particle.LavaParticleMixin",
     "client.particle.ParticleEngineMixin",
     "client.particle.ParticleMixin",
@@ -57,6 +64,7 @@
     "common.FarmBlockMixin",
     "common.LeavesBlockMixin",
     "common.LlamaMixin",
+    "common.MaceItemMixin",
     "common.ThrownExperienceBottleMixin"
   ],
   "injectors": {

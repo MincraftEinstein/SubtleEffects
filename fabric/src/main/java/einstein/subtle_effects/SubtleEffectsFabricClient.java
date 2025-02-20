@@ -1,5 +1,6 @@
 package einstein.subtle_effects;
 
+import einstein.subtle_effects.data.FabricMobSkullShaderReloadListener;
 import einstein.subtle_effects.data.FabricSparkProviderReloadListener;
 import einstein.subtle_effects.util.Util;
 import net.fabricmc.api.ClientModInitializer;
@@ -18,6 +19,8 @@ public class SubtleEffectsFabricClient implements ClientModInitializer {
         ClientTickEvents.END_CLIENT_TICK.register(minecraft -> SubtleEffectsClient.clientTick(minecraft, minecraft.level));
         ClientCommandRegistrationCallback.EVENT.register(SubtleEffectsClient::registerClientCommands);
         ResourceManagerHelper.registerBuiltinResourcePack(Util.BCWP_PACK_LOCATION.get(), FabricLoader.getInstance().getModContainer(SubtleEffects.MOD_ID).orElseThrow(), Util.BCWP_PACK_NAME, ResourcePackActivationType.NORMAL);
-        ResourceManagerHelper.get(PackType.CLIENT_RESOURCES).registerReloadListener(new FabricSparkProviderReloadListener());
+        ResourceManagerHelper helper = ResourceManagerHelper.get(PackType.CLIENT_RESOURCES);
+        helper.registerReloadListener(new FabricSparkProviderReloadListener());
+        helper.registerReloadListener(new FabricMobSkullShaderReloadListener());
     }
 }

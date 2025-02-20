@@ -50,6 +50,10 @@ public class ParticleEngineMixin {
 
     @Unique
     private static boolean subtleEffects$shouldRenderParticle(Particle particle, Camera camera) {
+        if (!GENERAL.enableParticleCulling) {
+            return true;
+        }
+
         Minecraft minecraft = Minecraft.getInstance();
         Frustum frustum = ((FrustumGetter) minecraft.levelRenderer).subtleEffects$getCullingFrustum();
         if (frustum != null && frustum.isVisible(particle.getBoundingBox())) {
