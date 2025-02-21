@@ -31,6 +31,7 @@ dependencies {
     modCompileOnly "maven.modrinth:iceberg:${fabric_iceberg_version}"
     modCompileOnly "maven.modrinth:prism-lib:${fabric_prism_version}"
     modCompileOnly "maven.modrinth:item-borders:${fabric_item_borders_version}"
+    modCompileOnly "fuzs.forgeconfigapiport:forgeconfigapiport-fabric:${config_api_port}"
 }
 
 loom {

@@ -1,17 +1,14 @@
 package einstein.subtle_effects.compat;
 
 import com.anthonyhilyard.iceberg.util.Selectors;
+import com.anthonyhilyard.itemborders.ItemBordersConfig;
 import com.anthonyhilyard.itemborders.compat.LegendaryTooltipsHandler;
-import com.anthonyhilyard.itemborders.config.ItemBordersConfig;
 import com.mojang.datafixers.util.Pair;
 import einstein.subtle_effects.mixin.client.ItemBordersConfigAccessor;
-import net.minecraft.core.RegistryAccess;
-import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.TextColor;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Level;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,15 +16,14 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.function.Supplier;
 
-import static com.anthonyhilyard.itemborders.config.ItemBordersConfig.getColor;
+import static com.anthonyhilyard.itemborders.ItemBordersConfig.getColor;
 
 public class ItemBordersCompat {
 
     private static final String ITEM_BORDERS_COLORS_TAG = "itemborders_colors";
 
-    public static TextColor getManualBorderColor(Level level, ItemStack stack) {
-        Map<String, Object> manualBorders = ((ItemBordersConfigAccessor) ItemBordersConfig.getInstance()).getManualBorders().get();
-        RegistryAccess access = level.registryAccess();
+    public static TextColor getManualBorderColor(ItemStack stack) {
+        Map<String, Object> manualBorders = ((ItemBordersConfigAccessor) ItemBordersConfigAccessor.getInstance()).getManualBorders().get().valueMap();
 
         for (String colorString : manualBorders.keySet()) {
             TextColor color = getColor(colorString);
@@ -35,12 +31,12 @@ public class ItemBordersCompat {
             if (color != null) {
                 Object object = manualBorders.get(colorString);
 
-                if (matchesStack(access, stack, object)) {
+                if (matchesStack(stack, object)) {
                     return color;
                 }
                 else if (object instanceof List<?> list) {
                     for (Object obj : list) {
-                        if (matchesStack(access, stack, obj)) {
+                        if (matchesStack(stack, obj)) {
                             return color;
                         }
                     }
@@ -50,18 +46,19 @@ public class ItemBordersCompat {
         return null;
     }
 
-    private static boolean matchesStack(RegistryAccess access, ItemStack stack, Object object) {
+    private static boolean matchesStack(ItemStack stack, Object object) {
         if (object instanceof String string) {
-            return Selectors.itemMatches(stack, string, access);
+            return Selectors.itemMatches(stack, string);
         }
         return false;
     }
 
     public static List<TextColor> getNBTBorderColor(ItemStack stack) {
-        if (stack.has(DataComponents.CUSTOM_DATA)) {
+        if (stack.hasTag()) {
             // noinspection all
-            CompoundTag tag = stack.get(DataComponents.CUSTOM_DATA).copyTag();
+            CompoundTag tag = stack.getTag();
 
+            // noinspection all
             if (tag.contains(ITEM_BORDERS_COLORS_TAG)) {
                 CompoundTag colorsTag = tag.getCompound(ITEM_BORDERS_COLORS_TAG);
                 List<TextColor> colors = new ArrayList<>();
@@ -80,7 +77,8 @@ public class ItemBordersCompat {
             }
         }
 
-        if (CompatHelper.IS_LEGENDARY_TOOLTIPS_LOADED.get() && ItemBordersConfig.getInstance().legendaryTooltipsSync.get()) {
+        // noinspection all
+        if (CompatHelper.IS_LEGENDARY_TOOLTIPS_LOADED.get() && ItemBordersConfigAccessor.getInstance().legendaryTooltipsSync.get()) {
             Pair<Supplier<Integer>, Supplier<Integer>> borderColors = LegendaryTooltipsHandler.getBorderColors(stack);
             List<TextColor> colors = new ArrayList<>();
             colors.add(TextColor.fromRgb(borderColors.getFirst().get()));

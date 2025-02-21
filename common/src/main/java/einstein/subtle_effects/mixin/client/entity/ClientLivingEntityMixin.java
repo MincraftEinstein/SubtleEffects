@@ -7,7 +7,6 @@ import einstein.subtle_effects.particle.option.ColorAndIntegerParticleOptions;
 import einstein.subtle_effects.util.EntityProvider;
 import einstein.subtle_effects.util.MathUtil;
 import net.minecraft.client.Minecraft;
-import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
@@ -16,6 +15,8 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.PotionItem;
+import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraft.world.level.Level;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -76,10 +77,10 @@ public abstract class ClientLivingEntityMixin<T extends Entity> extends Entity {
             }
 
             ItemStack useItem = subtleEffects$me.getUseItem();
-            if (useItem.has(DataComponents.POTION_CONTENTS)) {
+            if (useItem.getItem() instanceof PotionItem) {
                 Level level = subtleEffects$me.level();
                 // noinspection all
-                int color = useItem.get(DataComponents.POTION_CONTENTS).getColor();
+                int color = PotionUtils.getColor(useItem);
                 level.addParticle(new ColorAndIntegerParticleOptions(ModParticles.POTION_EMITTER.get(), color, subtleEffects$me.getId()),
                         subtleEffects$me.getX(),
                         subtleEffects$me.getY(),

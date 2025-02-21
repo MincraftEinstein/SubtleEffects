@@ -21,7 +21,7 @@ public class SlimeTrailParticle extends FlatPlaneParticle {
         lifetime = (int) Math.min(300 + (200 * scale), 1200);
         rotation.rotateY(90 * random.nextInt(3) * Mth.DEG_TO_RAD).rotateX(-90 * Mth.DEG_TO_RAD);
         pos = new BlockPos.MutableBlockPos(x, y, z);
-        renderBackFace = false;
+        renderBackFace = true;
     }
 
     @Override

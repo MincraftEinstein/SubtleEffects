@@ -55,6 +55,6 @@ public abstract class FlatPlaneParticle extends TextureSheetParticle {
 
     private void renderVertex(VertexConsumer buffer, float x, float y, float z, float xOffset, float yOffset, float quadSize, float u, float v, int packedLight) {
         Vector3f vector3f = new Vector3f(xOffset, yOffset, 0).rotate(rotation).mul(quadSize).add(x, y, z);
-        buffer.addVertex(vector3f.x(), vector3f.y(), vector3f.z()).setUv(u, v).setColor(rCol, gCol, bCol, alpha).setLight(packedLight);
+        buffer.vertex(vector3f.x(), vector3f.y(), vector3f.z()).uv(u, v).color(rCol, gCol, bCol, alpha).uv2(packedLight);
     }
 }

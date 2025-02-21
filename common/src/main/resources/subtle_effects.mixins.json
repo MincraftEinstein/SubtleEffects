@@ -14,9 +14,8 @@
     "client.ScreenEffectRendererMixin",
     "client.WaterFluidMixin",
     "client.block.AbstractCandleBlockMixin",
-    "client.block.AmethystClusterBlockMixin",
     "client.block.AbstractCauldronBlockAccessor",
-    "client.block.AmethystClusterBlockAccessor",
+    "client.block.AmethystClusterBlockMixin",
     "client.block.BaseFireBlockMixin",
     "client.block.BeehiveBlockMixin",
     "client.block.CampfireBlockMixin",
@@ -59,7 +58,6 @@
     "common.FarmBlockMixin",
     "common.LeavesBlockMixin",
     "common.LlamaMixin",
-    "common.MaceItemMixin",
     "common.ThrownExperienceBottleMixin"
   ],
   "injectors": {

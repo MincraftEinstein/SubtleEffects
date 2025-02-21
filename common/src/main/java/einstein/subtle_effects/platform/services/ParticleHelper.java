@@ -17,6 +17,6 @@ public interface ParticleHelper {
     }
 
     default TextColor getRarityColor(Rarity rarity) {
-        return TextColor.fromLegacyFormat(rarity.color());
+        return TextColor.fromLegacyFormat(rarity.color);
     }
 }

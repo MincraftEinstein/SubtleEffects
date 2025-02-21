@@ -68,7 +68,7 @@ public class ItemRarityTicker extends Ticker<ItemEntity> {
         }
 
         if (ENTITIES.itemRarity.useItemBorder && CompatHelper.IS_ITEM_BORDERS_LOADED.get()) {
-            TextColor borderColor = ItemBordersCompat.getManualBorderColor(level, stack);
+            TextColor borderColor = ItemBordersCompat.getManualBorderColor(stack);
             if (borderColor != null) {
                 nameColors.add(borderColor);
                 return;

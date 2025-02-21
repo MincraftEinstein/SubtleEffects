@@ -3,6 +3,7 @@ package einstein.subtle_effects.init;
 import einstein.subtle_effects.SubtleEffects;
 import einstein.subtle_effects.particle.*;
 import einstein.subtle_effects.particle.emitter.FireFlyEmitter;
+import einstein.subtle_effects.particle.emitter.PotionEmitter;
 import einstein.subtle_effects.particle.provider.*;
 import einstein.subtle_effects.platform.Services;
 import net.minecraft.client.particle.ParticleProvider;
@@ -46,7 +47,7 @@ public class ModParticleProviders {
         register(COMMAND_BLOCK, CommandBlockParticle.Provider::new);
         register(ITEM_RARITY, ItemRarityParticle.Provider::new);
         register(BEACON, BeaconParticle.Provider::new);
-        register(COMPOST, CompostParticle.Provider::new);
+        register(COMPOST, CustomTerrainParticle.CompostProvider::new);
         register(STEAM, SteamParticle.Provider::new);
         register(END_PORTAL, EndPortalParticle.Provider::new);
         register(END_CRYSTAL, EndCrystalParticle.Provider::new);
@@ -58,6 +59,13 @@ public class ModParticleProviders {
         register(AZALEA_PETAL, AzaleaParticleProvider::new);
         register(FROSTY_BREATH, SteamParticle.FrostyBreathProvider::new);
         register(EXPERIENCE, ExperienceParticle.Provider::new);
+        register(HEART_POP, HeartPopParticle.Provider::new);
+        register(POTION_RING, PotionRingParticle.Provider::new);
+        register(POTION_DOT, PotionDotParticle.PotionDotProvider::new);
+        register(POTION_EMITTER, sprites -> new PotionEmitter.Provider());
+        register(IRON_GOLEM, CustomTerrainParticle.IronGolemProvider::new);
+        register(DROWNING_BUBBLE, DrowningBubbleParticle.Provider::new);
+        register(DROWNING_BUBBLE_POP, DrowningBubblePopParticle.Provider::new);
         SubtleEffects.LOGGER.info("Forge please do the world a favor and STOP EXISTING!!");
     }
 

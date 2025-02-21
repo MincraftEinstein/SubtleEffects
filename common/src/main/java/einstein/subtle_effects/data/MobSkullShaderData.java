@@ -2,9 +2,6 @@ package einstein.subtle_effects.data;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.core.component.DataComponentMap;
-import net.minecraft.core.component.DataComponentType;
-import net.minecraft.core.component.TypedDataComponent;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
@@ -19,25 +16,14 @@ public record MobSkullShaderData(ItemStackHolder stackHolder, ResourceLocation s
             new MobSkullShaderData(item, shaderId.withPath("shaders/post/" + shaderId.getPath() + ".json"))
     ));
 
-    public record ItemStackHolder(Item item, DataComponentMap components) {
+    public record ItemStackHolder(Item item) {
 
         public static final Codec<ItemStackHolder> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-                BuiltInRegistries.ITEM.byNameCodec().fieldOf("id").forGetter(ItemStackHolder::item),
-                DataComponentMap.CODEC.optionalFieldOf("components", DataComponentMap.EMPTY).forGetter(ItemStackHolder::components)
+                BuiltInRegistries.ITEM.byNameCodec().fieldOf("id").forGetter(ItemStackHolder::item)
         ).apply(instance, ItemStackHolder::new));
 
         public boolean matches(ItemStack stack) {
-            if (stack.is(item)) {
-                for (TypedDataComponent<?> component : components) {
-                    DataComponentType<?> type = component.type();
-
-                    if (!stack.has(type) || !component.value().equals(stack.get(type))) {
-                        return false;
-                    }
-                }
-                return true;
-            }
-            return false;
+            return stack.is(item);
         }
     }
 }

@@ -21,9 +21,19 @@ public class CommonMixinLogic {
     }
 
     public static boolean shouldRenderParticle(Particle particle, Camera camera) {
-        Frustum frustum = ((FrustumGetter) Minecraft.getInstance().levelRenderer).subtleEffects$getCullingFrustum();
+        if (!GENERAL.enableParticleCulling) {
+            return true;
+        }
+
+        Minecraft minecraft = Minecraft.getInstance();
+        Frustum frustum = ((FrustumGetter) minecraft.levelRenderer).subtleEffects$getCullingFrustum();
         if (frustum != null && frustum.isVisible(particle.getBoundingBox())) {
             ParticleAccessor accessor = ((ParticleAccessor) particle);
+
+            if (GENERAL.cullParticlesInUnloadedChunks && !Util.isChunkLoaded(minecraft.level, accessor.getX(), accessor.getZ())) {
+                return false;
+            }
+
             if (!GENERAL.cullParticlesWithNoAlpha || accessor.getAlpha() != 0) {
                 int distance = GENERAL.particleRenderDistance * 16;
                 return accessor.subtleEffects$wasForced() || camera.getPosition().distanceToSqr(accessor.getX(), accessor.getY(), accessor.getZ()) < distance * distance;

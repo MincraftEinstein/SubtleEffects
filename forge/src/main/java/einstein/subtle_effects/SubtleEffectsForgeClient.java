@@ -1,5 +1,6 @@
 package einstein.subtle_effects;
 
+import einstein.subtle_effects.data.MobSkullShaderReloadListener;
 import einstein.subtle_effects.data.SparkProviderReloadListener;
 import einstein.subtle_effects.platform.ForgeRegistryHelper;
 import einstein.subtle_effects.util.Util;
@@ -39,8 +40,10 @@ public class SubtleEffectsForgeClient {
                 event.addRepositorySource(new BCWPSource());
             }
         });
-        modEventBus.addListener((RegisterClientReloadListenersEvent event) ->
-                event.registerReloadListener(new SparkProviderReloadListener()));
+        modEventBus.addListener((RegisterClientReloadListenersEvent event) -> {
+            event.registerReloadListener(new SparkProviderReloadListener());
+            event.registerReloadListener(new MobSkullShaderReloadListener());
+        });
         MinecraftForge.EVENT_BUS.addListener((TickEvent.ClientTickEvent event) -> {
             Minecraft minecraft = Minecraft.getInstance();
             SubtleEffectsClient.clientTick(minecraft, minecraft.level);

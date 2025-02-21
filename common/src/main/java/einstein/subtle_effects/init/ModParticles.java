@@ -53,9 +53,9 @@ public class ModParticles {
     public static final Supplier<SimpleParticleType> FROSTY_BREATH = register("frosty_breath");
     public static final Supplier<ParticleType<FloatParticleOptions>> EXPERIENCE = register("experience", FloatParticleOptions.DESERIALIZER, FloatParticleOptions::codec);
     public static final Supplier<SimpleParticleType> HEART_POP = register("heart_pop");
-    public static final Supplier<ParticleType<ColorAndIntegerParticleOptions>> POTION_RING = register("potion_ring", ColorAndIntegerParticleOptions::codec, ColorAndIntegerParticleOptions::streamCodec);
-    public static final Supplier<ParticleType<ColorAndIntegerParticleOptions>> POTION_DOT = register("potion_dot", ColorAndIntegerParticleOptions::codec, ColorAndIntegerParticleOptions::streamCodec);
-    public static final Supplier<ParticleType<ColorAndIntegerParticleOptions>> POTION_EMITTER = register("potion_emitter", ColorAndIntegerParticleOptions::codec, ColorAndIntegerParticleOptions::streamCodec);
+    public static final Supplier<ParticleType<ColorAndIntegerParticleOptions>> POTION_RING = register("potion_ring", ColorAndIntegerParticleOptions.DESERIALIZER, ColorAndIntegerParticleOptions::codec);
+    public static final Supplier<ParticleType<ColorAndIntegerParticleOptions>> POTION_DOT = register("potion_dot", ColorAndIntegerParticleOptions.DESERIALIZER, ColorAndIntegerParticleOptions::codec);
+    public static final Supplier<ParticleType<ColorAndIntegerParticleOptions>> POTION_EMITTER = register("potion_emitter", ColorAndIntegerParticleOptions.DESERIALIZER, ColorAndIntegerParticleOptions::codec);
     public static final Supplier<SimpleParticleType> IRON_GOLEM = register("iron_golem");
     public static final Supplier<SimpleParticleType> DROWNING_BUBBLE = register("drowning_bubble");
     public static final Supplier<SimpleParticleType> DROWNING_BUBBLE_POP = register("drowning_bubble_pop");
