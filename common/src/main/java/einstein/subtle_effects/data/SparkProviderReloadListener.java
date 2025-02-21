@@ -19,6 +19,7 @@ public class SparkProviderReloadListener extends SimpleJsonResourceReloadListene
 
     public static final FileToIdConverter DIRECTORY = FileToIdConverter.json("subtle_effects/spark_providers");
     public static final Map<ResourceLocation, SparkProvider> SPARK_PROVIDERS = new HashMap<>();
+    public static final ResourceLocation ID = SubtleEffects.loc("spark_providers");
 
     public SparkProviderReloadListener() {
         super(SparkProviderData.CODEC, DIRECTORY);

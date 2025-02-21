@@ -16,6 +16,7 @@ public class MobSkullShaderReloadListener extends SimpleJsonResourceReloadListen
 
     public static final FileToIdConverter DIRECTORY = FileToIdConverter.json("subtle_effects/mob_skull_shaders");
     public static final Map<ResourceLocation, MobSkullShaderData> MOB_SKULL_SHADERS = new HashMap<>();
+    public static final ResourceLocation ID = SubtleEffects.loc("mob_skull_shaders");
 
     public MobSkullShaderReloadListener() {
         super(MobSkullShaderData.CODEC, DIRECTORY);
