@@ -18,20 +18,19 @@ public class MobSkullShaderTicker extends Ticker<Player> {
 
     @Override
     public void tick() {
+        CameraType cameraType = Minecraft.getInstance().options.getCameraType();
         ItemStack helmetStack = entity.getInventory().getArmor(3);
+
         if ((oldHelmetStack.isEmpty() != helmetStack.isEmpty())
                 || !ItemStack.isSameItem(oldHelmetStack, helmetStack)) {
             oldHelmetStack = helmetStack.copy();
-            Util.applyHelmetShader(helmetStack);
+            Util.applyHelmetShader(helmetStack, cameraType);
         }
 
-        CameraType cameraType = Minecraft.getInstance().options.getCameraType();
         if (oldCameraType != cameraType) {
             oldCameraType = cameraType;
 
-            if (cameraType.isFirstPerson()) {
-                Util.applyHelmetShader(helmetStack);
-            }
+            Util.applyHelmetShader(helmetStack, cameraType);
         }
     }
 }
