@@ -17,7 +17,7 @@ public class DrowningTicker extends Ticker<LivingEntity> {
 
     @Override
     public void tick() {
-        if (entity.isSpectator() || entity.getAirSupply() <= 0) {
+        if (entity.isSpectator() || entity.getAirSupply() <= 0 || !entity.isUnderWater()) {
             return;
         }
 
@@ -28,7 +28,7 @@ public class DrowningTicker extends Ticker<LivingEntity> {
             }
         }
 
-        if (random.nextInt() < ENTITIES.humanoids.drowningBubblesDensity.get() && entity.isUnderWater()) {
+        if (random.nextInt(ENTITIES.humanoids.drowningBubblesDensity.get()) == 0) {
             ParticleSpawnUtil.spawnEntityFaceParticle(ModParticles.DROWNING_BUBBLE.get(),
                     entity, level, new Vec3(0, -0.1, 0), Vec3.ZERO,
                     minecraft.getTimer().getGameTimeDeltaPartialTick(false)
