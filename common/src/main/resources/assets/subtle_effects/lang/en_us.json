@@ -315,6 +315,7 @@
   "config.subtle_effects.entities.xpBottleParticlesDensity.desc": "Does not change the vanilla particle effect",
   "config.subtle_effects.entities.eggSmashSound": "Egg Smash Sound",
   "config.subtle_effects.entities.eggSmashSound.desc": "Plays an egg break sound when a thrown egg hits something",
+  "config.subtle_effects.entities.freezingSnowFlakes": "Freezing Snow Flakes",
   "config.subtle_effects.biomes": "Biomes",
   "config.subtle_effects.biomes.biomeColorRain": "Biome Color Rain",
   "config.subtle_effects.biomes.biomeParticlesRadius": "Biome Particles Radius",

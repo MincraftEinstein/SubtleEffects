@@ -28,6 +28,7 @@ public class ModParticles {
     public static final Supplier<ParticleType<ColorParticleOption>> METAL_SPARK = register("metal_spark", ColorParticleOption::codec, ColorParticleOption::streamCodec, SparkParticle.MetalProvider::new);
     public static final Supplier<SimpleParticleType> SNOW = register("snow", SnowParticle.Provider::new);
     public static final Supplier<SimpleParticleType> SNOWBALL_TRAIL = register("snowball_trail", SnowParticle.SnowballTrailProvider::new);
+    public static final Supplier<SimpleParticleType> FREEZING = register("freezing", SnowParticle.FreezingProvider::new);
     public static final Supplier<SimpleParticleType> CHICKEN_FEATHER = register("chicken_feather", FeatherParticle.Provider::new);
     public static final Supplier<SimpleParticleType> BLUE_PARROT_FEATHER = register("blue_parrot_feather", FeatherParticle.Provider::new);
     public static final Supplier<SimpleParticleType> GRAY_PARROT_FEATHER = register("gray_parrot_feather", FeatherParticle.Provider::new);
