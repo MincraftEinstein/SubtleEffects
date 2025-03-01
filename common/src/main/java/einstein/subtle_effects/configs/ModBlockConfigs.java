@@ -88,6 +88,7 @@ public class ModBlockConfigs extends Config {
     public ValidatedFloat campfireSizzlingSoundVolume = new ValidatedFloat(0.5F, 1, 0);
     public ValidatedInt vegetationFirefliesDensity = new ValidatedInt(30, 100, 0, ValidatedNumber.WidgetType.SLIDER);
     public VegetationFirefliesSpawnType vegetationFirefliesSpawnType = VegetationFirefliesSpawnType.FLOWERS_ONLY;
+    public boolean replacePowderSnowFlakes = true;
 
     public ModBlockConfigs() {
         super(SubtleEffects.loc("blocks"));
