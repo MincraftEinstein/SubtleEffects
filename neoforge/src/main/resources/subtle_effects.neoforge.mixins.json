@@ -8,6 +8,9 @@
     "client.FluidTypeMixin",
     "client.item.AxeItemMixin"
   ],
+  "mixins": [
+    "common.RegistryManagerMixin"
+  ],
   "injectors": {
     "defaultRequire": 1
   }

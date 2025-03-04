@@ -12,6 +12,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.ChunkPos;
 import net.neoforged.neoforge.network.PacketDistributor;
+import net.neoforged.neoforge.network.registration.NetworkRegistry;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
@@ -41,10 +42,22 @@ public class NeoForgeNetworkHelper implements NetworkHelper {
 
     @Override
     public <T extends CustomPacketPayload> void sendToClientsTracking(@Nullable ServerPlayer exceptPlayer, ServerLevel level, BlockPos pos, T packet) {
+        sendToClientsTracking(exceptPlayer, level, pos, packet, null);
+    }
+
+    @Override
+    public <T extends CustomPacketPayload> void sendToClientsTracking(@Nullable ServerPlayer exceptPlayer, ServerLevel level, BlockPos pos, T packet, @Nullable Consumer<ServerPlayer> skippedPlayerConsumer) {
         ClientboundCustomPayloadPacket payloadPacket = new ClientboundCustomPayloadPacket(packet);
         level.getChunkSource().chunkMap.getPlayers(new ChunkPos(pos), false).forEach(player -> {
             if (!player.equals(exceptPlayer)) {
-                player.connection.send(payloadPacket);
+                if (player.connection.hasChannel(packet.type().id())) {
+                    player.connection.send(payloadPacket);
+                    return;
+                }
+
+                if (skippedPlayerConsumer != null) {
+                    skippedPlayerConsumer.accept(player);
+                }
             }
         });
     }
