@@ -37,7 +37,7 @@ public class NeoForgeNetworkHelper implements NetworkHelper {
 
     @Override
     public <T extends CustomPacketPayload> void sendToClientsTracking(ServerLevel level, BlockPos pos, T packet) {
-        PacketDistributor.sendToPlayersTrackingChunk(level, new ChunkPos(pos), packet);
+        sendToClientsTracking(null, level, pos, packet);
     }
 
     @Override
