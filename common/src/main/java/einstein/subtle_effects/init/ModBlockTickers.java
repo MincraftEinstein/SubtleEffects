@@ -26,7 +26,10 @@ import net.minecraft.world.level.block.entity.BeaconBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.CampfireBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.SculkSensorPhase;
+import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.level.material.LavaFluid;
 import net.minecraft.world.phys.Vec3;
 
 import java.util.HashMap;
@@ -88,8 +91,8 @@ public class ModBlockTickers {
                 );
             }
         });
-        register(Blocks.LAVA_CAULDRON, () -> BLOCKS.sparks.lavaCauldronSparks, (state, level, pos, random) -> {
-            ParticleSpawnUtil.spawnLavaSparks(level, pos.above(), random, 5);
+        register(Blocks.LAVA_CAULDRON, () -> BLOCKS.lavaCauldronEffects, (state, level, pos, random) -> {
+            ((LavaFluid.Source) Fluids.LAVA).animateTick(level, pos, Fluids.LAVA.defaultFluidState().setValue(BlockStateProperties.FALLING, false), random);
         });
         register(Blocks.BEACON, () -> BLOCKS.beaconParticlesDisplayType != ModBlockConfigs.BeaconParticlesDisplayType.OFF,
                 (state, level, pos, random) -> {
