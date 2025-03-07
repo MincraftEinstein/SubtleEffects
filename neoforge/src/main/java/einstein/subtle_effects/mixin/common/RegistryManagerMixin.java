@@ -2,6 +2,7 @@ package einstein.subtle_effects.mixin.common;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.sugar.Local;
+import einstein.subtle_effects.SubtleEffects;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
@@ -27,6 +28,7 @@ public class RegistryManagerMixin {
 
     @Unique
     private static <T> boolean subtleEffects$isNotDisabledRegistry(ResourceKey<T> key) {
-        return !key.equals(Registries.PARTICLE_TYPE) && !key.equals(Registries.SOUND_EVENT); // TODO add server config
+        return !SubtleEffects.SERVER_CONFIGS.disableRegistrySyncing ||
+                (!key.equals(Registries.PARTICLE_TYPE) && !key.equals(Registries.SOUND_EVENT));
     }
 }

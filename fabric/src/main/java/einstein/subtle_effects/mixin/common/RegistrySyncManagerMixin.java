@@ -21,7 +21,7 @@ public class RegistrySyncManagerMixin {
     @WrapOperation(method = "createAndPopulateRegistryMap", at = @At(value = "INVOKE", target = "Lnet/minecraft/core/Registry;keySet()Ljava/util/Set;"))
     private static Set<ResourceLocation> disableParticleRegistrySyncing(Registry<? extends Registry<?>> registry, Operation<Set<ResourceLocation>> original) {
         Set<ResourceLocation> registryIds = new HashSet<>(original.call(registry));
-        if (true) { // TODO add server config
+        if (SubtleEffects.SERVER_CONFIGS.disableRegistrySyncing) {
             subtleEffects$removeRegistry(registryIds, Registries.PARTICLE_TYPE);
             subtleEffects$removeRegistry(registryIds, Registries.SOUND_EVENT);
         }
