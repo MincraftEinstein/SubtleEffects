@@ -59,4 +59,17 @@ public class SnowParticle extends TextureSheetParticle {
             return particle;
         }
     }
+
+    public record FreezingProvider(SpriteSet sprites) implements ParticleProvider<SimpleParticleType> {
+
+        @Override
+        public Particle createParticle(SimpleParticleType type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+            SnowParticle particle = new SnowParticle(level, sprites, x, y, z, 0, 0, 0);
+            particle.gravity = 0.05F;
+            particle.xd = 0;
+            particle.yd = -0.05F;
+            particle.zd = 0;
+            return particle;
+        }
+    }
 }

@@ -14,6 +14,8 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.function.Consumer;
+
 public class FabricNetworkHelper implements NetworkHelper {
 
     @Override

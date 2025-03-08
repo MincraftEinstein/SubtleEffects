@@ -55,7 +55,7 @@ public class ModGeneralConfigs extends Config {
 
             Player player = minecraft.player;
             if (player != null) {
-                Util.applyHelmetShader(player.getInventory().getArmor(3));
+                Util.applyHelmetShader(player.getInventory().getArmor(3), minecraft.options.getCameraType());
             }
         }
     }

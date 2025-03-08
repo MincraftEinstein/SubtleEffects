@@ -116,19 +116,6 @@ public class ParticleSpawnUtil {
         );
     }
 
-    public static void spawnLavaSparks(Level level, BlockPos pos, RandomSource random, int count) {
-        for (int i = 0; i < count; i++) {
-            level.addParticle(SparkParticle.create(SparkType.FLOATING, random),
-                    pos.getX() + 0.5 + random.nextDouble() / 2 * nextSign(random),
-                    pos.getY() + random.nextDouble() * random.nextInt(3),
-                    pos.getZ() + 0.5 + random.nextDouble() / 2 * nextSign(random),
-                    nextNonAbsDouble(random, 0.1),
-                    nextNonAbsDouble(random, 0.07),
-                    nextNonAbsDouble(random, 0.1)
-            );
-        }
-    }
-
     public static void spawnCmdBlockParticles(Level level, Vec3 pos, RandomSource random, BiPredicate<Direction, Vec3> directionValidator) {
         for (Direction direction : Direction.values()) {
             Vec3 endPos = pos.relative(direction, 1);
@@ -143,6 +130,7 @@ public class ParticleSpawnUtil {
 
     public static void spawnHeatedWaterParticles(Level level, BlockPos pos, RandomSource random, boolean isFalling, double height, boolean steamConfig, boolean boilingConfig) {
         int brightness = level.getBrightness(LightLayer.BLOCK, pos);
+        height -= 0.1;
 
         switch (BLOCKS.steam.spawnLogic) {
             case NEAR_LAVA -> {

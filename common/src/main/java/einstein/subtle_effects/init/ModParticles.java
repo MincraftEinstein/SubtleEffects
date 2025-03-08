@@ -21,6 +21,7 @@ public class ModParticles {
     public static final Supplier<ParticleType<ColorParticleOptions>> METAL_SPARK = register("metal_spark", ColorParticleOptions.DESERIALIZER, ColorParticleOptions::codec);
     public static final Supplier<SimpleParticleType> SNOW = register("snow");
     public static final Supplier<SimpleParticleType> SNOWBALL_TRAIL = register("snowball_trail");
+    public static final Supplier<SimpleParticleType> FREEZING = register("freezing");
     public static final Supplier<SimpleParticleType> CHICKEN_FEATHER = register("chicken_feather");
     public static final Supplier<SimpleParticleType> BLUE_PARROT_FEATHER = register("blue_parrot_feather");
     public static final Supplier<SimpleParticleType> GRAY_PARROT_FEATHER = register("gray_parrot_feather");

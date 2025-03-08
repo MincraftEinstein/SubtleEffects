@@ -8,6 +8,9 @@
     "client.item.BucketItemMixin",
     "client.particle.FabricParticleEngineMixin"
   ],
+  "mixins": [
+    "common.RegistrySyncManagerMixin"
+  ],
   "injectors": {
     "defaultRequire": 1
   }

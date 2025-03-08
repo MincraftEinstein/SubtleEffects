@@ -16,9 +16,12 @@ import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.LavaFluid;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
+import static einstein.subtle_effects.util.MathUtil.*;
 
 @Mixin(LavaFluid.class)
 public abstract class LavaFluidMixin {
@@ -52,33 +55,36 @@ public abstract class LavaFluidMixin {
             return;
         }
 
-        int count = 5;
-        int poolSize = 0;
-
+        int count = 1;
         for (int x = -1; x < 2; x++) {
             for (int z = -1; z < 2; z++) {
                 BlockPos relativePos = pos.offset(x, 0, z);
-                BlockPos abovePos = relativePos.above();
 
-                if (level.getBlockState(relativePos).isSolidRender(level, relativePos) || !isSame(level.getFluidState(relativePos).getType())) {
+                if (!isSame(level.getFluidState(relativePos).getType()) || level.getBlockState(relativePos).isSolidRender(level, relativePos)) {
+                    count = 5;
                     continue;
                 }
 
+                BlockPos abovePos = relativePos.above();
                 if (Util.isSolidOrNotEmpty(level, abovePos)) {
                     if (abovePos.equals(pos.above())) {
                         return;
                     }
-                    continue;
-                }
 
-                poolSize++;
+                    count = 5;
+                }
             }
         }
 
-        if (poolSize == 9) {
-            count = 1;
+        for (int i = 0; i < count; i++) {
+            level.addParticle(SparkParticle.create(SparkType.FLOATING, random),
+                    pos.getX() + 0.5 + random.nextDouble() / 2 * nextSign(random),
+                    pos.getY() + 0.75 + random.nextDouble() * random.nextInt(3),
+                    pos.getZ() + 0.5 + random.nextDouble() / 2 * nextSign(random),
+                    nextNonAbsDouble(random, 0.1),
+                    nextDouble(random, 0.07),
+                    nextNonAbsDouble(random, 0.1)
+            );
         }
-
-        ParticleSpawnUtil.spawnLavaSparks(level, pos, random, count);
     }
 }

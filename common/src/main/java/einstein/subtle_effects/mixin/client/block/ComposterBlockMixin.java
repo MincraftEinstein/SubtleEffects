@@ -22,13 +22,15 @@ public class ComposterBlockMixin {
             RandomSource random = level.getRandom();
             BlockState state = level.getBlockState(pos);
 
-            for (int i = 0; i < 10; i++) {
-                level.addParticle(ModParticles.COMPOST.get(),
-                        pos.getX() + 0.5 + MathUtil.nextNonAbsDouble(random, 0.3),
-                        pos.getY() + 0.1875 + (0.125 * state.getValue(ComposterBlock.LEVEL)),
-                        pos.getZ() + 0.5 + MathUtil.nextNonAbsDouble(random, 0.3),
-                        0, 0, 0
-                );
+            if (state.getBlock() instanceof ComposterBlock) {
+                for (int i = 0; i < 10; i++) {
+                    level.addParticle(ModParticles.COMPOST.get(),
+                            pos.getX() + 0.5 + MathUtil.nextNonAbsDouble(random, 0.3),
+                            pos.getY() + 0.1875 + (0.125 * state.getValue(ComposterBlock.LEVEL)),
+                            pos.getZ() + 0.5 + MathUtil.nextNonAbsDouble(random, 0.3),
+                            0, 0, 0
+                    );
+                }
             }
         }
     }
