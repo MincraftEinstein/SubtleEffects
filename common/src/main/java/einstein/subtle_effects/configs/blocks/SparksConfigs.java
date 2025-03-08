@@ -17,7 +17,6 @@ public class SparksConfigs extends ConfigSection {
     public boolean campfireSparks = true;
     public boolean torchSparks = true;
     public ValidatedInt lanternSparksDensity = new ValidatedInt(5, 10, 0);
-    public boolean lavaCauldronSparks = true;
     public LavaSparksSpawnType lavaSparks = LavaSparksSpawnType.ON;
 
     public enum LavaSparksSpawnType implements EnumTranslatable {

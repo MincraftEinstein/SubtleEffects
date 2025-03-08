@@ -9,6 +9,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
@@ -21,4 +22,6 @@ public interface NetworkHelper {
     <T extends CustomPacketPayload> void sendToClientsTracking(ServerLevel level, BlockPos pos, T packet);
 
     <T extends CustomPacketPayload> void sendToClientsTracking(@Nullable ServerPlayer exceptPlayer, ServerLevel level, BlockPos pos, T packet);
+
+    <T extends CustomPacketPayload> void sendToClientsTracking(@Nullable ServerPlayer exceptPlayer, ServerLevel level, BlockPos pos, T packet, @Nullable Consumer<ServerPlayer> skippedPlayerConsumer);
 }

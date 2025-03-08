@@ -1,5 +1,6 @@
 package einstein.subtle_effects.init;
 
+import einstein.subtle_effects.SubtleEffects;
 import einstein.subtle_effects.biome_particles.BiomeParticleManager;
 import einstein.subtle_effects.configs.CommandBlockSpawnType;
 import einstein.subtle_effects.configs.ModBlockConfigs;
@@ -13,6 +14,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.BlockTags;
@@ -24,7 +26,10 @@ import net.minecraft.world.level.block.entity.BeaconBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.CampfireBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.SculkSensorPhase;
+import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.level.material.LavaFluid;
 import net.minecraft.world.phys.Vec3;
 
 import java.util.HashMap;
@@ -41,10 +46,12 @@ import static net.minecraft.util.Mth.nextFloat;
 
 public class ModBlockTickers {
 
-    public static final Map<Predicate<BlockState>, BlockTickerProvider> REGISTERED = new HashMap<>();
+    public static final Map<Block, BlockTickerProvider> REGISTERED = new HashMap<>();
+    public static final Map<Predicate<BlockState>, BlockTickerProvider> REGISTERED_SPECIAL = new HashMap<>();
 
     public static void init() {
         REGISTERED.clear();
+        REGISTERED_SPECIAL.clear();
 
         register(Blocks.REDSTONE_BLOCK, () -> BLOCKS.redstoneBlockDust, (state, level, pos, random) -> {
             ParticleSpawnUtil.spawnParticlesAroundBlock(DustParticleOptions.REDSTONE, level, pos, random, BLOCKS.redstoneBlockDustDensity.getPerSideChance());
@@ -84,8 +91,8 @@ public class ModBlockTickers {
                 );
             }
         });
-        register(Blocks.LAVA_CAULDRON, () -> BLOCKS.sparks.lavaCauldronSparks, (state, level, pos, random) -> {
-            ParticleSpawnUtil.spawnLavaSparks(level, pos.above(), random, 5);
+        register(Blocks.LAVA_CAULDRON, () -> BLOCKS.lavaCauldronEffects, (state, level, pos, random) -> {
+            ((LavaFluid.Source) Fluids.LAVA).animateTick(level, pos, Fluids.LAVA.defaultFluidState().setValue(BlockStateProperties.FALLING, false), random);
         });
         register(Blocks.BEACON, () -> BLOCKS.beaconParticlesDisplayType != ModBlockConfigs.BeaconParticlesDisplayType.OFF,
                 (state, level, pos, random) -> {
@@ -261,12 +268,16 @@ public class ModBlockTickers {
     }
 
     private static void register(Block block, Supplier<Boolean> isEnabled, BlockTickerProvider provider) {
-        register(state -> state.is(block), isEnabled, provider);
+        if (isEnabled.get()) {
+            if (REGISTERED.put(block, provider) != null) {
+                SubtleEffects.LOGGER.error("Found duplicate block tickers using {}", BuiltInRegistries.BLOCK.getKey(block));
+            }
+        }
     }
 
     private static void register(Predicate<BlockState> predicate, Supplier<Boolean> isEnabled, BlockTickerProvider provider) {
         if (isEnabled.get()) {
-            REGISTERED.put(predicate, provider);
+            REGISTERED_SPECIAL.put(predicate, provider);
         }
     }
 }

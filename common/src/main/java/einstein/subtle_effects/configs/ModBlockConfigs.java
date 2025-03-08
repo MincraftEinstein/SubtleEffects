@@ -90,6 +90,8 @@ public class ModBlockConfigs extends Config {
     public ValidatedInt vegetationFirefliesDensity = new ValidatedInt(30, 100, 0, ValidatedNumber.WidgetType.SLIDER);
     public VegetationFirefliesSpawnType vegetationFirefliesSpawnType = VegetationFirefliesSpawnType.FLOWERS_ONLY;
     public boolean creakingHeartParticles = true;
+    public boolean replacePowderSnowFlakes = true;
+    public boolean lavaCauldronEffects = true;
 
     public ModBlockConfigs() {
         super(SubtleEffects.loc("blocks"));

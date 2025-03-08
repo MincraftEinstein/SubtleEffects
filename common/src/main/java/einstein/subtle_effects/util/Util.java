@@ -10,6 +10,7 @@ import einstein.subtle_effects.init.ModParticles;
 import einstein.subtle_effects.mixin.client.GameRendererAccessor;
 import einstein.subtle_effects.mixin.client.block.AbstractCauldronBlockAccessor;
 import einstein.subtle_effects.platform.Services;
+import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.renderer.GameRenderer;
@@ -90,7 +91,11 @@ public class Util {
         return 240 | superLight >> 16 & 0xFF << 16;
     }
 
-    public static void applyHelmetShader(ItemStack stack) {
+    public static void applyHelmetShader(ItemStack stack, CameraType cameraType) {
+        if (!cameraType.isFirstPerson()) {
+            return;
+        }
+
         GameRenderer gameRenderer = Minecraft.getInstance().gameRenderer;
         for (MobSkullShaderData shaderData : MobSkullShaderReloadListener.MOB_SKULL_SHADERS.values()) {
             if (shaderData.stackHolder().matches(stack)) {

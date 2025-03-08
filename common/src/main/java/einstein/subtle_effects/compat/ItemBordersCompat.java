@@ -82,10 +82,12 @@ public class ItemBordersCompat {
 
         if (CompatHelper.IS_LEGENDARY_TOOLTIPS_LOADED.get() && ItemBordersConfig.getInstance().legendaryTooltipsSync.get()) {
             Pair<Supplier<Integer>, Supplier<Integer>> borderColors = LegendaryTooltipsHandler.getBorderColors(stack);
-            List<TextColor> colors = new ArrayList<>();
-            colors.add(TextColor.fromRgb(borderColors.getFirst().get()));
-            colors.add(TextColor.fromRgb(borderColors.getSecond().get()));
-            return colors;
+            if (borderColors != null) {
+                List<TextColor> colors = new ArrayList<>();
+                colors.add(TextColor.fromRgb(borderColors.getFirst().get()));
+                colors.add(TextColor.fromRgb(borderColors.getSecond().get()));
+                return colors;
+            }
         }
         return List.of();
     }

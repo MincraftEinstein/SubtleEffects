@@ -2,7 +2,6 @@ package einstein.subtle_effects.mixin.client.particle;
 
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import com.llamalad7.mixinextras.sugar.Local;
-import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import einstein.subtle_effects.util.FrustumGetter;
 import einstein.subtle_effects.util.ParticleAccessor;
@@ -12,7 +11,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleEngine;
-import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
@@ -40,11 +38,6 @@ public class ParticleEngineMixin {
 
     @WrapWithCondition(method = "renderParticleType*", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/particle/Particle;render(Lcom/mojang/blaze3d/vertex/VertexConsumer;Lnet/minecraft/client/Camera;F)V"))
     private static boolean shouldRenderParticle(Particle particle, VertexConsumer consumer, Camera camera, float partialTick) {
-        return subtleEffects$shouldRenderParticle(particle, camera);
-    }
-
-    @WrapWithCondition(method = "renderCustomParticles*", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/particle/Particle;renderCustom(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;Lnet/minecraft/client/Camera;F)V"))
-    private static boolean shouldRenderCustomParticle(Particle particle, PoseStack poseStack, MultiBufferSource source, Camera camera, float partialTick) {
         return subtleEffects$shouldRenderParticle(particle, camera);
     }
 

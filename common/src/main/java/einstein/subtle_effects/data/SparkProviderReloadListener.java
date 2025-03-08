@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 public class SparkProviderReloadListener extends SimpleJsonResourceReloadListener<SparkProviderData> {
 
     public static final FileToIdConverter DIRECTORY = FileToIdConverter.json("subtle_effects/spark_providers");
-    public static final Map<ResourceLocation, SparkProvider> SPARK_PROVIDERS = new HashMap<>();
+    public static final Map<Block, List<SparkProvider>> PROVIDERS = new HashMap<>();
     public static final ResourceLocation ID = SubtleEffects.loc("spark_providers");
 
     public SparkProviderReloadListener() {
@@ -27,25 +27,26 @@ public class SparkProviderReloadListener extends SimpleJsonResourceReloadListene
 
     @Override
     protected void apply(Map<ResourceLocation, SparkProviderData> resources, ResourceManager manager, ProfilerFiller filler) {
-        SPARK_PROVIDERS.clear();
+        PROVIDERS.clear();
         load(resources);
     }
 
     private static void load(Map<ResourceLocation, SparkProviderData> resources) {
         resources.forEach((location, providerData) -> {
-            Optional<SparkProviderData.Options> options = providerData.options();
-            if (options.isEmpty()) {
+            Optional<SparkProviderData.Options> providerOptions = providerData.options();
+            if (providerOptions.isEmpty()) {
                 return;
             }
 
-            List<BlockStateHolder> stateHolders = providerData.states().stream().map(providerEntry -> {
+            SparkProviderData.Options options = providerOptions.get();
+            providerData.states().forEach(providerEntry -> {
                 ResourceLocation blockId = providerEntry.id();
                 boolean isRequired = providerEntry.required();
                 boolean isRegistered = BuiltInRegistries.BLOCK.containsKey(blockId);
 
                 if (isRequired && !isRegistered) {
                     SubtleEffects.LOGGER.warn("Could not find required block for states '{}' in Spark Provider: '{}'", blockId, location);
-                    return null;
+                    return;
                 }
 
                 if (isRequired || isRegistered) {
@@ -55,17 +56,23 @@ public class SparkProviderReloadListener extends SimpleJsonResourceReloadListene
                     }
 
                     StateDefinition<Block, BlockState> definition = block.getStateDefinition();
-                    return new BlockStateHolder(block, isRequired, providerEntry.properties()
+                    BlockStateHolder stateHolder = new BlockStateHolder(block, isRequired, providerEntry.properties()
                             .entrySet().stream()
                             .map(entry -> convertToProperties(entry, definition.getProperty(entry.getKey())))
                             .filter(Objects::nonNull)
                             .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (c1, c2) -> c1))
                     );
-                }
-                return null;
-            }).filter(Objects::nonNull).toList();
 
-            SPARK_PROVIDERS.put(location, new SparkProvider(stateHolders, options.get()));
+                    if (PROVIDERS.containsKey(block)) {
+                        PROVIDERS.get(block).add(new SparkProvider(stateHolder, options));
+                        return;
+                    }
+
+                    List<SparkProvider> providers = new ArrayList<>();
+                    providers.add(new SparkProvider(stateHolder, options));
+                    PROVIDERS.put(block, providers);
+                }
+            });
         });
     }
 
@@ -103,7 +110,7 @@ public class SparkProviderReloadListener extends SimpleJsonResourceReloadListene
         }
     }
 
-    public record SparkProvider(List<BlockStateHolder> states, SparkProviderData.Options options) {
+    public record SparkProvider(BlockStateHolder stateHolder, SparkProviderData.Options options) {
 
     }
 }

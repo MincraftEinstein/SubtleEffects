@@ -264,6 +264,16 @@ public class ModTickers {
                 );
             }
         });
+        registerSimpleTicker(entity -> entity instanceof LivingEntity && entity.canFreeze() && ENTITIES.freezingSnowFlakes, (entity, level, random) -> {
+            if (entity.isFreezing() || entity.getTicksFrozen() > 0) {
+                level.addParticle(ModParticles.FREEZING.get(),
+                    entity.getRandomX(1),
+                    entity.getRandomY(),
+                    entity.getRandomZ(1),
+                    0, 0, 0
+                );
+            }
+        });
     }
 
     public static boolean shouldSpawn(RandomSource random, ValidatedDouble chanceConfig) {

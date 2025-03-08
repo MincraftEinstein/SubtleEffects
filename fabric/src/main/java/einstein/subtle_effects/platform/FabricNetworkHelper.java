@@ -15,6 +15,8 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
@@ -42,9 +44,21 @@ public class FabricNetworkHelper implements NetworkHelper {
 
     @Override
     public <T extends CustomPacketPayload> void sendToClientsTracking(@Nullable ServerPlayer exceptPlayer, ServerLevel level, BlockPos pos, T packet) {
+        sendToClientsTracking(exceptPlayer, level, pos, packet, null);
+    }
+
+    @Override
+    public <T extends CustomPacketPayload> void sendToClientsTracking(@Nullable ServerPlayer exceptPlayer, ServerLevel level, BlockPos pos, T packet, @Nullable Consumer<ServerPlayer> skippedPlayerConsumer) {
         PlayerLookup.tracking(level, pos).forEach(player -> {
-            if (!player.equals(exceptPlayer) && ServerPlayNetworking.canSend(player, packet.type())) {
-                ServerPlayNetworking.send(player, packet);
+            if (!player.equals(exceptPlayer)) {
+                if (ServerPlayNetworking.canSend(player, packet.type())) {
+                    ServerPlayNetworking.send(player, packet);
+                    return;
+                }
+
+                if (skippedPlayerConsumer != null) {
+                    skippedPlayerConsumer.accept(player);
+                }
             }
         });
     }

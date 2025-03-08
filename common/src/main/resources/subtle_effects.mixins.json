@@ -25,6 +25,7 @@
     "client.block.ComposterBlockMixin",
     "client.block.EndPortalBlockMixin",
     "client.block.FurnaceBlockMixin",
+    "client.block.PowderSnowBlockMixin",
     "client.block.PumpkinBlockMixin",
     "client.block.SculkShriekerAndCatalystBlockMixin",
     "client.block.SlimeBlockMixin",
