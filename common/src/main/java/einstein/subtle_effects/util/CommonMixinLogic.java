@@ -6,6 +6,7 @@ import einstein.subtle_effects.init.ModParticles;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.Particle;
+import net.minecraft.client.particle.ParticleRenderType;
 import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.core.particles.SimpleParticleType;
 
@@ -22,6 +23,10 @@ public class CommonMixinLogic {
 
     public static boolean shouldRenderParticle(Particle particle, Camera camera) {
         if (!GENERAL.enableParticleCulling) {
+            return true;
+        }
+
+        if (particle.getRenderType() == ParticleRenderType.CUSTOM) {
             return true;
         }
 

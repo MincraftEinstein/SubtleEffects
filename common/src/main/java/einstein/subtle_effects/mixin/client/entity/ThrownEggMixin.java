@@ -23,7 +23,7 @@ public class ThrownEggMixin {
         float volume = ModConfigs.ENTITIES.eggSmashSoundVolume.get();
 
         if (id == 3 && volume > 0) {
-            subtleEffects$me.level().playSound(Minecraft.getInstance().player, subtleEffects$me.getX(), subtleEffects$me.getY(), subtleEffects$me.getZ(), ModSounds.EGG_BREAK.get(), SoundSource.PLAYERS, volume, Mth.nextFloat(subtleEffects$me.getRandom(), 0.7F, 1.5F));
+            subtleEffects$me.level().playSound(Minecraft.getInstance().player, subtleEffects$me.getX(), subtleEffects$me.getY(), subtleEffects$me.getZ(), ModSounds.EGG_BREAK.get(), SoundSource.PLAYERS, volume, Mth.nextFloat(subtleEffects$me.level().getRandom(), 0.7F, 1.5F));
         }
     }
 }

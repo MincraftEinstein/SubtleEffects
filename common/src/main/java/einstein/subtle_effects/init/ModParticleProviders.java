@@ -28,6 +28,7 @@ public class ModParticleProviders {
         register(METAL_SPARK, SparkParticle.MetalProvider::new);
         register(SNOW, SnowParticle.Provider::new);
         register(SNOWBALL_TRAIL, SnowParticle.SnowballTrailProvider::new);
+        register(FREEZING, SnowParticle.FreezingProvider::new);
         register(CHICKEN_FEATHER, FeatherParticle.Provider::new);
         register(BLUE_PARROT_FEATHER, FeatherParticle.Provider::new);
         register(GRAY_PARROT_FEATHER, FeatherParticle.Provider::new);

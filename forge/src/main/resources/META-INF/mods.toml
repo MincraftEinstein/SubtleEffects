@@ -13,7 +13,7 @@ issueTrackerURL="https://github.com/MincraftEinstein/SubtleEffects/issues"
     credits = ""
     authors = "${mod_author}"
     description = "${description}"
-    displayTest = "MATCH_VERSION"
+    displayTest = "IGNORE_ALL_VERSION"
 
 [modProperties]
     fzzy_config = "subtle_effects"

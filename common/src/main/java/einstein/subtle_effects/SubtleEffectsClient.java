@@ -39,7 +39,7 @@ public class SubtleEffectsClient {
             return;
         }
 
-        if (minecraft.isPaused() || level.tickRateManager().isFrozen()) {
+        if (minecraft.isPaused()) {
             return;
         }
 

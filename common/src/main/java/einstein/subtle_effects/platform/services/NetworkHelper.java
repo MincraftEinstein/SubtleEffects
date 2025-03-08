@@ -10,6 +10,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 public interface NetworkHelper {
@@ -20,13 +21,15 @@ public interface NetworkHelper {
         PACKETS.put(clazz, new PacketData<>(id, Direction.TO_CLIENT, decoder, PacketData.ID++));
     }
 
-    <T extends Packet> void sendToServer(T t);
+    <T extends Packet> boolean sendToServer(T t);
 
-    <T extends Packet> void sendToClient(T t, ServerPlayer player);
+    <T extends Packet> boolean sendToClient(T t, ServerPlayer player);
 
     <T extends Packet> void sendToClientsTracking(ServerLevel level, BlockPos pos, T t);
 
     <T extends Packet> void sendToClientsTracking(@Nullable ServerPlayer exceptPlayer, ServerLevel level, BlockPos pos, T t);
+
+    <T extends Packet> void sendToClientsTracking(@Nullable ServerPlayer exceptPlayer, ServerLevel level, BlockPos pos, T t, @Nullable Consumer<ServerPlayer> skippedPlayersConsumer);
 
     enum Direction {
         TO_CLIENT,

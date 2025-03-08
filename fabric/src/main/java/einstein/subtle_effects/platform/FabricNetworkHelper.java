@@ -1,6 +1,5 @@
 package einstein.subtle_effects.platform;
 
-import com.mojang.authlib.GameProfile;
 import einstein.subtle_effects.SubtleEffects;
 import einstein.subtle_effects.networking.Packet;
 import einstein.subtle_effects.platform.services.NetworkHelper;
@@ -10,39 +9,24 @@ import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 public class FabricNetworkHelper implements NetworkHelper {
 
     @Override
-    public <T extends Packet> void sendToServer(T t) {
-        if (ClientPlayNetworking.canSend(t.id())) {
-            PacketData<?> data = PACKETS.get(t.getClass());
-            FriendlyByteBuf buf = PacketByteBufs.create();
-            t.encode(buf);
-            ClientPlayNetworking.send(data.id(), buf);
-            return;
-        }
-
-        SubtleEffects.LOGGER.warn("Unable to send packet to server");
+    public <T extends Packet> boolean sendToServer(T t) {
+        return send(t, ClientPlayNetworking.canSend(t.id()), ClientPlayNetworking::send);
     }
 
     @Override
-    public <T extends Packet> void sendToClient(T t, ServerPlayer player) {
-        if (ServerPlayNetworking.canSend(player, t.id())) {
-            PacketData<?> data = PACKETS.get(t.getClass());
-            FriendlyByteBuf buf = PacketByteBufs.create();
-            t.encode(buf);
-            ServerPlayNetworking.send(player, data.id(), buf);
-            return;
-        }
-
-        GameProfile profile = player.getGameProfile();
-        SubtleEffects.LOGGER.warn("Unable to send packet to client: {}, {}", profile.getName(), profile.getId());
+    public <T extends Packet> boolean sendToClient(T t, ServerPlayer player) {
+        return send(t, ServerPlayNetworking.canSend(player, t.id()), (id, buf) -> ServerPlayNetworking.send(player, id, buf));
     }
 
     @Override
@@ -52,11 +36,34 @@ public class FabricNetworkHelper implements NetworkHelper {
 
     @Override
     public <T extends Packet> void sendToClientsTracking(@Nullable ServerPlayer exceptPlayer, ServerLevel level, BlockPos pos, T t) {
+        sendToClientsTracking(exceptPlayer, level, pos, t, player -> {});
+    }
+
+    @Override
+    public <T extends Packet> void sendToClientsTracking(@Nullable ServerPlayer exceptPlayer, ServerLevel level, BlockPos pos, T t, @Nullable Consumer<ServerPlayer> skippedPlayerConsumer) {
         PlayerLookup.tracking(level, pos).forEach(player -> {
             if (!player.equals(exceptPlayer)) {
-                sendToClient(t, player);
+                if (!sendToClient(t, player) && skippedPlayerConsumer != null) {
+                    skippedPlayerConsumer.accept(player);
+                }
             }
         });
+    }
+
+    private static <T extends Packet> boolean send(T t, boolean canSend, BiConsumer<ResourceLocation, FriendlyByteBuf> consumer) {
+        Class<? extends Packet> packetClass = t.getClass();
+        ResourceLocation id = t.id();
+        if (canSend) {
+            if (PACKETS.containsKey(packetClass)) {
+                PacketData<?> data = PACKETS.get(packetClass);
+                FriendlyByteBuf buf = PacketByteBufs.create();
+                t.encode(buf);
+                consumer.accept(data.id(), buf);
+                return true;
+            }
+            SubtleEffects.LOGGER.warn("Failed to find packet named: {}", id);
+        }
+        return false;
     }
 
     public static void init(Direction directionToRegister) {
