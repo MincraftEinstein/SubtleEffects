@@ -35,7 +35,7 @@ public class MinecraftMixin {
     private void setScreen(Screen screen, CallbackInfo ci) {
         if (screen != null && player != null) {
             if (ModConfigs.GENERAL.mobSkullShaders) {
-                gameRenderer.shutdownEffect();
+                gameRenderer.clearPostEffect();
                 Util.applyHelmetShader(player.getInventory().getArmor(3), options.getCameraType());
             }
         }
