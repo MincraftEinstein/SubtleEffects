@@ -1,9 +1,9 @@
 package einstein.subtle_effects;
 
 import einstein.subtle_effects.data.MobSkullShaderReloadListener;
+import einstein.subtle_effects.data.BCWPPackManager;
 import einstein.subtle_effects.data.SparkProviderReloadListener;
 import einstein.subtle_effects.platform.NeoForgeRegistryHelper;
-import einstein.subtle_effects.util.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.client.particle.SpriteSet;
@@ -34,11 +34,12 @@ public class SubtleEffectsNeoForgeClient {
                 NeoForgeRegistryHelper.PARTICLE_PROVIDERS.forEach((particle, provider) -> registerParticle(event, particle, provider))
         );
         modEventBus.addListener((AddPackFindersEvent event) ->
-                event.addPackFinders(Util.BCWP_PACK_LOCATION.get(), PackType.CLIENT_RESOURCES,
-                        Util.BCWP_PACK_NAME, PackSource.BUILT_IN, false, Pack.Position.TOP));
+                event.addPackFinders(BCWPPackManager.PACK_LOCATION.get(), PackType.CLIENT_RESOURCES,
+                        BCWPPackManager.PACK_NAME, PackSource.BUILT_IN, false, Pack.Position.TOP));
         modEventBus.addListener((RegisterClientReloadListenersEvent event) -> {
             event.registerReloadListener(new SparkProviderReloadListener());
             event.registerReloadListener(new MobSkullShaderReloadListener());
+            event.registerReloadListener(new BCWPPackManager());
         });
         NeoForge.EVENT_BUS.addListener((ClientTickEvent.Post event) -> {
             Minecraft minecraft = Minecraft.getInstance();

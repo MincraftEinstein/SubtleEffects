@@ -1,9 +1,8 @@
 package einstein.subtle_effects.particle;
 
+import einstein.subtle_effects.data.BCWPPackManager;
 import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.util.BubbleSetter;
-import einstein.subtle_effects.util.ParticleAccessor;
-import einstein.subtle_effects.util.Util;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
 import net.minecraft.core.particles.SimpleParticleType;
@@ -28,7 +27,7 @@ public class DrowningBubbleParticle extends BubbleParticle {
             DrowningBubbleParticle particle = new DrowningBubbleParticle(level, x, y, z, xSpeed, ySpeed, zSpeed);
             particle.pickSprite(sprites);
 
-            if (Util.isBCWPPackLoaded()) {
+            if (BCWPPackManager.isPackLoaded()) {
                 ((BubbleSetter) particle).subtleEffects$setupBubble(sprites, false);
             }
             return particle;
