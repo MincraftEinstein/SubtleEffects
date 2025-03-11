@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
 
-public class BCWPPackManager implements ResourceManagerReloadListener {
+public class BCWPPackManager implements ResourceManagerReloadListener, NamedReloadListener {
 
     public static final Supplier<ResourceLocation> PACK_LOCATION = Suppliers.memoize(() -> SubtleEffects.loc("biome_color_water_particles").withPrefix(Services.PLATFORM.getPlatformName().equals("NeoForge") ? "resourcepacks/" : ""));
     public static final Supplier<String> PACK_ID = Suppliers.memoize(() -> (Services.PLATFORM.getPlatformName().equals("NeoForge") ? "mod/" : "") + PACK_LOCATION.get().toString());
@@ -52,5 +52,10 @@ public class BCWPPackManager implements ResourceManagerReloadListener {
 
     public static boolean isPackLoaded() {
         return IS_PACK_LOADED.get();
+    }
+
+    @Override
+    public ResourceLocation getId() {
+        return SubtleEffects.loc("biome_color_water_particles_pack_manager");
     }
 }
