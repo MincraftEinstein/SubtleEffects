@@ -19,8 +19,8 @@ import java.util.function.Supplier;
 
 public class BCWPPackManager implements ResourceManagerReloadListener, NamedReloadListener {
 
-    public static final Supplier<ResourceLocation> PACK_LOCATION = Suppliers.memoize(() -> SubtleEffects.loc("biome_color_water_particles").withPrefix(Services.PLATFORM.getPlatformName().equals("NeoForge") ? "resourcepacks/" : ""));
-    public static final Supplier<String> PACK_ID = Suppliers.memoize(() -> (Services.PLATFORM.getPlatformName().equals("NeoForge") ? "mod/" : "") + PACK_LOCATION.get().toString());
+    public static final Supplier<ResourceLocation> PACK_LOCATION = Suppliers.memoize(() -> SubtleEffects.loc("biome_color_water_particles").withPrefix(Services.PLATFORM.getPlatform().isForgeLike() ? "resourcepacks/" : ""));
+    public static final Supplier<String> PACK_ID = Suppliers.memoize(() -> (Services.PLATFORM.getPlatform().isForgeLike() ? "mod/" : "") + PACK_LOCATION.get().toString());
     public static final Component PACK_NAME = Component.translatable("resourcePack.subtle_effects.biome_water_color_particles.name");
     public static final List<ParticleType<?>> BIOME_COLORED_PARTICLES = Util.make(new ArrayList<>(), particles -> {
         particles.add(ParticleTypes.BUBBLE);
