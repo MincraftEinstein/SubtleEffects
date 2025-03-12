@@ -7,8 +7,8 @@ import net.minecraftforge.fml.loading.FMLLoader;
 public class ForgePlatformHelper implements IPlatformHelper {
 
     @Override
-    public String getPlatformName() {
-        return "Forge";
+    public Platform getPlatform() {
+        return Platform.FORGE;
     }
 
     @Override

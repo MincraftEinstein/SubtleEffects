@@ -1,6 +1,7 @@
 package einstein.subtle_effects.mixin.client.particle;
 
 import com.llamalad7.mixinextras.sugar.Local;
+import einstein.subtle_effects.data.BCWPPackManager;
 import einstein.subtle_effects.util.Util;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
@@ -21,7 +22,7 @@ public class ParticleEngineMixin {
 
     @Inject(method = "createParticle", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/particle/ParticleEngine;add(Lnet/minecraft/client/particle/Particle;)V"))
     private void modifyColor(ParticleOptions options, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, CallbackInfoReturnable<Particle> cir, @Local Particle particle) {
-        if (Util.isBCWPPackLoaded() && Util.BIOME_COLORED_PARTICLES.contains(options.getType())) {
+        if (BCWPPackManager.isPackLoaded() && BCWPPackManager.BIOME_COLORED_PARTICLES.contains(options.getType())) {
             Util.setColorFromHex(particle, level.getBiome(BlockPos.containing(x, y, z)).value().getWaterColor());
         }
     }

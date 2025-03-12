@@ -1,8 +1,8 @@
 package einstein.subtle_effects.mixin.client.particle.bubbles;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
+import einstein.subtle_effects.data.BCWPPackManager;
 import einstein.subtle_effects.util.BubbleSetter;
-import einstein.subtle_effects.util.Util;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.client.particle.WaterCurrentDownParticle;
@@ -20,7 +20,7 @@ public class WaterCurrentDownParticleProviderMixin {
 
     @ModifyReturnValue(method = "createParticle(Lnet/minecraft/core/particles/SimpleParticleType;Lnet/minecraft/client/multiplayer/ClientLevel;DDDDDD)Lnet/minecraft/client/particle/Particle;", at = @At("RETURN"))
     private Particle createParticle(Particle particle) {
-        if (particle != null && Util.isBCWPPackLoaded()) {
+        if (particle != null && BCWPPackManager.isPackLoaded()) {
             ((BubbleSetter) particle).subtleEffects$setupBubble(sprite, false);
         }
         return particle;

@@ -14,7 +14,7 @@ import net.minecraft.world.item.Items;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MobSkullShaderReloadListener extends SimpleJsonResourceReloadListener {
+public class MobSkullShaderReloadListener extends SimpleJsonResourceReloadListener implements NamedReloadListener{
 
     public static final String DIRECTORY = "subtle_effects/mob_skull_shaders";
     public static final Map<ResourceLocation, MobSkullShaderData> MOB_SKULL_SHADERS = new HashMap<>();
@@ -53,5 +53,10 @@ public class MobSkullShaderReloadListener extends SimpleJsonResourceReloadListen
 
             MOB_SKULL_SHADERS.put(location, shaderData);
         });
+    }
+
+    @Override
+    public ResourceLocation getId() {
+        return SubtleEffects.loc("mob_skull_shaders");
     }
 }

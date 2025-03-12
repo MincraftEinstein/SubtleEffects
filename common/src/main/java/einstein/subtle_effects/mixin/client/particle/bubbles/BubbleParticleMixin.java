@@ -1,6 +1,7 @@
 package einstein.subtle_effects.mixin.client.particle.bubbles;
 
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import einstein.subtle_effects.data.BCWPPackManager;
 import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.init.ModParticles;
 import einstein.subtle_effects.particle.DrowningBubbleParticle;
@@ -122,7 +123,7 @@ public abstract class BubbleParticleMixin extends TextureSheetParticle implement
         List<TextureAtlasSprite> textures = Services.PARTICLE_HELPER.getSpritesFromSet(sprites);
         subtleEffects$playsSound = playsSound;
 
-        if (textures != null && textures.size() > 1 && Util.isBCWPPackLoaded()) {
+        if (textures != null && textures.size() > 1 && BCWPPackManager.isPackLoaded()) {
             setSprite(textures.get(0));
             subtleEffects$overlaySprite = textures.get(1);
         }
