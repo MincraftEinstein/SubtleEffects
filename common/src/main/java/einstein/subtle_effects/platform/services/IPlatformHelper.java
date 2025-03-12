@@ -7,7 +7,7 @@ public interface IPlatformHelper {
      *
      * @return The name of the current platform.
      */
-    String getPlatformName();
+    Platform getPlatform();
 
     /**
      * Checks if a mod with the given id is loaded.
@@ -29,7 +29,42 @@ public interface IPlatformHelper {
      *
      * @return The name of the environment type.
      */
-    default String getEnvironmentName() {
-        return isDevelopmentEnvironment() ? "development" : "production";
+    default Environment getEnvironmentName() {
+        return isDevelopmentEnvironment() ? Environment.DEVELOPMENT : Environment.PRODUCTION;
+    }
+
+    enum Platform {
+        FABRIC("fabric"),
+        FORGE("forge"),
+        NEOFORGE("neoforge");
+
+        private final String name;
+
+        Platform(String name) {
+            this.name = name;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public boolean isForgeLike() {
+            return this == NEOFORGE || this == FORGE;
+        }
+    }
+
+    enum Environment {
+        DEVELOPMENT("development"),
+        PRODUCTION("production");
+
+        private final String name;
+
+        Environment(String name) {
+            this.name = name;
+        }
+
+        public String getName() {
+            return name;
+        }
     }
 }

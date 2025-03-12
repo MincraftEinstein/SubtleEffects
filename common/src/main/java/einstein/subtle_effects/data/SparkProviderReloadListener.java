@@ -11,15 +11,15 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.Property;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class SparkProviderReloadListener extends SimpleJsonResourceReloadListener<SparkProviderData> {
+public class SparkProviderReloadListener extends SimpleJsonResourceReloadListener<SparkProviderData> implements NamedReloadListener {
 
     public static final FileToIdConverter DIRECTORY = FileToIdConverter.json("subtle_effects/spark_providers");
     public static final Map<Block, List<SparkProvider>> PROVIDERS = new HashMap<>();
-    public static final ResourceLocation ID = SubtleEffects.loc("spark_providers");
 
     public SparkProviderReloadListener() {
         super(SparkProviderData.CODEC, DIRECTORY);
@@ -76,7 +76,8 @@ public class SparkProviderReloadListener extends SimpleJsonResourceReloadListene
         });
     }
 
-    private static <T extends Comparable<T>> Map.Entry<Property<T>, Comparable<T>> convertToProperties(Map.Entry<String, String> entry, Property<T> property) {
+    @Nullable
+    private static <T extends Comparable<T>> Map.Entry<Property<T>, Comparable<T>> convertToProperties(Map.Entry<String, String> entry, @Nullable Property<T> property) {
         String propertyName = entry.getKey();
         String valueName = entry.getValue();
 
@@ -94,9 +95,14 @@ public class SparkProviderReloadListener extends SimpleJsonResourceReloadListene
         return null;
     }
 
+    @Override
+    public ResourceLocation getId() {
+        return SubtleEffects.loc("spark_providers");
+    }
+
     public record BlockStateHolder(Block block, boolean required, Map<Property<?>, Comparable<?>> properties) {
 
-        public boolean matches(BlockState state) {
+        public boolean matches(@Nullable BlockState state) {
             if (state != null && state.is(block)) {
                 for (Map.Entry<Property<?>, Comparable<?>> entry : properties.entrySet()) {
                     if (!Objects.equals(state.getValue(entry.getKey()), entry.getValue())) {

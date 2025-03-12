@@ -1,9 +1,10 @@
 package einstein.subtle_effects;
 
+import einstein.subtle_effects.data.BCWPPackManager;
 import einstein.subtle_effects.data.MobSkullShaderReloadListener;
+import einstein.subtle_effects.data.NamedReloadListener;
 import einstein.subtle_effects.data.SparkProviderReloadListener;
 import einstein.subtle_effects.platform.NeoForgeRegistryHelper;
-import einstein.subtle_effects.util.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.client.particle.SpriteSet;
@@ -12,6 +13,7 @@ import net.minecraft.core.particles.ParticleType;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.repository.Pack;
 import net.minecraft.server.packs.repository.PackSource;
+import net.minecraft.server.packs.resources.PreparableReloadListener;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.common.Mod;
@@ -34,11 +36,12 @@ public class SubtleEffectsNeoForgeClient {
                 NeoForgeRegistryHelper.PARTICLE_PROVIDERS.forEach((particle, provider) -> registerParticle(event, particle, provider))
         );
         modEventBus.addListener((AddPackFindersEvent event) ->
-                event.addPackFinders(Util.BCWP_PACK_LOCATION.get(), PackType.CLIENT_RESOURCES,
-                        Util.BCWP_PACK_NAME, PackSource.BUILT_IN, false, Pack.Position.TOP));
+                event.addPackFinders(BCWPPackManager.PACK_LOCATION.get(), PackType.CLIENT_RESOURCES,
+                        BCWPPackManager.PACK_NAME, PackSource.BUILT_IN, false, Pack.Position.TOP));
         modEventBus.addListener((AddClientReloadListenersEvent event) -> {
-            event.addListener(SparkProviderReloadListener.ID, new SparkProviderReloadListener());
-            event.addListener(MobSkullShaderReloadListener.ID, new MobSkullShaderReloadListener());
+            addReloadListener(event, new SparkProviderReloadListener());
+            addReloadListener(event, new MobSkullShaderReloadListener());
+            addReloadListener(event, new BCWPPackManager());
         });
         NeoForge.EVENT_BUS.addListener((ClientTickEvent.Post event) -> {
             Minecraft minecraft = Minecraft.getInstance();
@@ -46,6 +49,10 @@ public class SubtleEffectsNeoForgeClient {
         });
         NeoForge.EVENT_BUS.addListener((RegisterClientCommandsEvent event) ->
                 SubtleEffectsClient.registerClientCommands(event.getDispatcher(), event.getBuildContext()));
+    }
+
+    private static <T extends PreparableReloadListener & NamedReloadListener> void addReloadListener(AddClientReloadListenersEvent event, T listener) {
+        event.addListener(listener.getId(), listener);
     }
 
     @SuppressWarnings("unchecked")
