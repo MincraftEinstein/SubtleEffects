@@ -1,5 +1,6 @@
 package einstein.subtle_effects;
 
+import einstein.subtle_effects.data.BCWPPackManager;
 import einstein.subtle_effects.data.MobSkullShaderReloadListener;
 import einstein.subtle_effects.data.SparkProviderReloadListener;
 import einstein.subtle_effects.platform.ForgeRegistryHelper;
@@ -43,6 +44,7 @@ public class SubtleEffectsForgeClient {
         modEventBus.addListener((RegisterClientReloadListenersEvent event) -> {
             event.registerReloadListener(new SparkProviderReloadListener());
             event.registerReloadListener(new MobSkullShaderReloadListener());
+            event.registerReloadListener(new BCWPPackManager());
         });
         MinecraftForge.EVENT_BUS.addListener((TickEvent.ClientTickEvent event) -> {
             Minecraft minecraft = Minecraft.getInstance();
@@ -66,8 +68,8 @@ public class SubtleEffectsForgeClient {
             IModInfo info = ModList.get().getModContainerById(SubtleEffects.MOD_ID).orElseThrow().getModInfo();
 
             consumer.accept(Pack.readMetaAndCreate(
-                    "mod/" + Util.BCWP_PACK_LOCATION.get().toString(), Util.BCWP_PACK_NAME, false, path ->
-                            new PathPackResources(path, info.getOwningFile().getFile().findResource(Util.BCWP_PACK_LOCATION.get().getPath()), true),
+                    "mod/" + BCWPPackManager.PACK_LOCATION.get().toString(), BCWPPackManager.PACK_NAME, false, path ->
+                            new PathPackResources(path, info.getOwningFile().getFile().findResource(BCWPPackManager.PACK_LOCATION.get().getPath()), true),
                     PackType.CLIENT_RESOURCES, Pack.Position.TOP, PackSource.BUILT_IN
             ));
         }
