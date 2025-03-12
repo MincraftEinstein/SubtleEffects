@@ -20,7 +20,7 @@ public class RegistryManagerMixin {
 
     @Inject(method = "lambda$takeSnapshot$2", at = @At("HEAD"), cancellable = true)
     private void cancelSnapshotForRegistries(Map<ResourceLocation, ForgeRegistry.Snapshot> snapshots, ResourceLocation registryId, CallbackInfo ci) {
-        if (subtleEffects$isNotDisabledRegistry(registryId)) {
+        if (!subtleEffects$isNotDisabledRegistry(registryId)) {
             ci.cancel();
         }
     }
