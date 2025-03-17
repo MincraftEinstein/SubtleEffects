@@ -31,7 +31,6 @@ public class Util {
     public static final int BREATH_DELAY = 60;
     public static final int SNORE_DELAY = 10;
     public static final int MAX_Z_COUNT = 3;
-    public static final int STOMACH_GROWL_DELAY = 300;
     public static final DustParticleOptions GLOWSTONE_DUST_PARTICLES = new DustParticleOptions(0xFFBC5E, 1);
     public static final ResourceLocation COLORLESS_RAIN_TEXTURE = SubtleEffects.loc("textures/environment/colorless_rain.png");
     public static final Gson GSON = new GsonBuilder().create();
