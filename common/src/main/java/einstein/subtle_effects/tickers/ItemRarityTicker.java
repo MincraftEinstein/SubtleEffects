@@ -7,6 +7,8 @@ import einstein.subtle_effects.configs.entities.ItemRarityConfigs;
 import einstein.subtle_effects.init.ModParticles;
 import einstein.subtle_effects.particle.option.IntegerParticleOptions;
 import einstein.subtle_effects.platform.Services;
+import me.fzzyhmstrs.fzzy_config.validation.minecraft.ValidatedIngredient;
+import me.fzzyhmstrs.fzzy_config.validation.misc.ValidatedColor;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextColor;
@@ -16,6 +18,7 @@ import net.minecraft.world.item.Rarity;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import static einstein.subtle_effects.init.ModConfigs.ENTITIES;
@@ -44,6 +47,22 @@ public class ItemRarityTicker extends Ticker<ItemEntity> {
     }
 
     private void getItemNameColors() {
+        if (!ENTITIES.itemRarity.colorOverrides.isEmpty()) {
+            for (Map.Entry<ValidatedIngredient.IngredientProvider, ValidatedColor.ColorHolder> entry : ENTITIES.itemRarity.colorOverrides.entrySet()) {
+                if (entry.getKey().provide().test(stack)) {
+                    nameColors.add(TextColor.fromRgb(entry.getValue().argb()));
+
+                    if (!ENTITIES.itemRarity.mixedColorName) {
+                        break;
+                    }
+                }
+            }
+
+            if (ENTITIES.itemRarity.particleColorType == ItemRarityConfigs.ParticleColorType.ONLY_COLOR_OVERRIDES) {
+                return;
+            }
+        }
+
         if (ENTITIES.itemRarity.particleColorType == ItemRarityConfigs.ParticleColorType.NAME_COLOR) {
             Component hoverName = stack.getHoverName();
             TextColor baseColor = hoverName.getStyle().getColor();
