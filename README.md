@@ -96,6 +96,7 @@ All translators are credited in the list below.
 - Japanese: [gohkenytp](https://github.com/gohkenytp)
 - Mexican Spanish: [TheLegendofSaram](https://github.com/TheLegendofSaram)
 - Korean: [sunbatheproductions](https://github.com/sunbatheproductions)
+- Russian: [Det-rovv](https://github.com/Det-rovv)
 
 ---
 
