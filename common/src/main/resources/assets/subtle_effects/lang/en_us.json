@@ -196,7 +196,7 @@
   "config.subtle_effects.entities.humanoids.player.stomachGrowlingThreshold.desc": "When the player's hunger gets below this point a stomach growl sound will play every 15 sec.\nValue measured in half hunger points.\n0 to disable",
   "config.subtle_effects.entities.humanoids.player.stomachGrowlingVolume": "Stomach Growling volume",
   "config.subtle_effects.entities.humanoids.player.stomachGrowlingWaitTime": "Stomach Growling Wait Time",
-  "config.subtle_effects.entities.humanoids.player.stomachGrowlingWaitTime.desc": "The time between heart beat sounds playing",
+  "config.subtle_effects.entities.humanoids.player.stomachGrowlingWaitTime.desc": "The time between stomach growl sounds playing",
   "config.subtle_effects.entities.humanoids.player.heartBeatingGroup": "Heart Beating",
   "config.subtle_effects.entities.humanoids.player.heartBeatingThreshold": "Heart Beating Threshold",
   "config.subtle_effects.entities.humanoids.player.heartBeatingThreshold.desc": "When the player's health gets below this point a heart beat sound will play every 3 sec and every 1 sec when the player's health is below half this value.\nValue measured in half hearts.\n0 to disable",
