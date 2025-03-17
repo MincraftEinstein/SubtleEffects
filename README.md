@@ -95,6 +95,7 @@ All translators are credited in the list below.
 - Simplified Chinese: [kuhananxianglai](https://github.com/kuhananxianglai)
 - Japanese: [gohkenytp](https://github.com/gohkenytp)
 - Mexican Spanish: [TheLegendofSaram](https://github.com/TheLegendofSaram)
+- Korean: [sunbatheproductions](https://github.com/sunbatheproductions)
 
 ---
 
