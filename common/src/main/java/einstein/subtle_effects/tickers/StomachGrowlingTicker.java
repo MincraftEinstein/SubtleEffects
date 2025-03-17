@@ -1,6 +1,5 @@
 package einstein.subtle_effects.tickers;
 
-import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.init.ModSounds;
 import einstein.subtle_effects.util.Util;
 import net.minecraft.sounds.SoundSource;
@@ -30,7 +29,7 @@ public class StomachGrowlingTicker extends Ticker<Player> {
 
             growlTimer++;
 
-            if (growlTimer >= Util.STOMACH_GROWL_DELAY) {
+            if (growlTimer >= ENTITIES.humanoids.player.stomachGrowlingWaitTime.get() * 20) {
                 growlTimer = 0;
             }
         }
