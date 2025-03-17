@@ -106,6 +106,10 @@ public class ParticleSpawnUtil {
             return;
         }
 
+        if (entity.isInvisible()) {
+            return;
+        }
+
         level.addParticle(ModParticles.LARGE_DUST_CLOUD.get(),
                 entity.position().x + entity.getBbWidth() * random.nextDouble() - 1,
                 entity.getY() + Math.max(Math.min(random.nextFloat(), 0.5), 0.2),
@@ -176,6 +180,10 @@ public class ParticleSpawnUtil {
 
     public static void spawnEntityFellParticles(LivingEntity entity, double y, float distance, int fallDamage, boolean config) {
         if (!config || entity.getType().is(EntityTypeTags.FALL_DAMAGE_IMMUNE)) {
+            return;
+        }
+
+        if (entity.isInvisible()) {
             return;
         }
 
