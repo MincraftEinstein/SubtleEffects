@@ -10,11 +10,14 @@ import einstein.subtle_effects.platform.Services;
 import me.fzzyhmstrs.fzzy_config.validation.minecraft.ValidatedIngredient;
 import me.fzzyhmstrs.fzzy_config.validation.misc.ValidatedColor;
 import net.minecraft.ChatFormatting;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextColor;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
+import net.minecraft.world.level.dimension.DimensionType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +31,7 @@ import static einstein.subtle_effects.util.MathUtil.nextDouble;
 public class ItemRarityTicker extends Ticker<ItemEntity> {
 
     private static final TextColor WHITE_TEXT = TextColor.fromLegacyFormat(ChatFormatting.WHITE);
+    private static final TagKey<DimensionType> DIMENSIONS = TagKey.create(Registries.DIMENSION_TYPE, SubtleEffects.loc("no_item_rarities"));
 
     private final List<TextColor> nameColors = new ArrayList<>();
     private final ItemStack stack = entity.getItem();
@@ -47,6 +51,10 @@ public class ItemRarityTicker extends Ticker<ItemEntity> {
     }
 
     private void getItemNameColors() {
+        if (level.dimensionTypeRegistration().is(DIMENSIONS)) {
+            return;
+        }
+
         if (!ENTITIES.itemRarity.colorOverrides.isEmpty()) {
             for (Map.Entry<ValidatedIngredient.IngredientProvider, ValidatedColor.ColorHolder> entry : ENTITIES.itemRarity.colorOverrides.entrySet()) {
                 if (entry.getKey().provide().test(stack)) {
