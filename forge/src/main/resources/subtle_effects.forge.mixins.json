@@ -9,9 +9,6 @@
     "client.item.BucketItemMixin",
     "client.particle.ForgeParticleEngineMixin"
   ],
-  "mixins": [
-    "common.RegistryManagerMixin"
-  ],
   "injectors": {
     "defaultRequire": 1
   }
