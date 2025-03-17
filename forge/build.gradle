@@ -65,7 +65,7 @@ dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
     compileOnly project(":common")
     annotationProcessor("org.spongepowered:mixin:0.8.5-SNAPSHOT:processor")
-    implementation(fg.deobf("me.fzzyhmstrs:fzzy_config:0.6.5-fix1+1.20.1+forge"))
+    implementation(fg.deobf("me.fzzyhmstrs:fzzy_config:${fzzy_config_version}+forge"))
     implementation("thedarkcolour:kotlinforforge:4.11.0")
     implementation(jarJar("io.github.llamalad7:mixinextras-forge:0.3.5")) {
         jarJar.ranged(it, "[0.3.5,)")

@@ -10,7 +10,9 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.AABB;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -21,6 +23,9 @@ import static einstein.subtle_effects.util.MathUtil.nextDouble;
 @Mixin(Entity.class)
 public abstract class ClientEntityMixin {
 
+    @Shadow
+    @Final
+    protected RandomSource random;
     @Unique
     private final Entity subtleEffects$me = (Entity) (Object) this;
 
@@ -30,7 +35,6 @@ public abstract class ClientEntityMixin {
 
         if (level.isClientSide() && ModConfigs.ENTITIES.burning.extinguishSteam) {
             AABB boundingBox = subtleEffects$me.getBoundingBox();
-            RandomSource random = subtleEffects$me.getRandom();
 
             for (int x = Mth.floor(boundingBox.minX); x < Mth.ceil(boundingBox.maxX); x++) {
                 for (int y = Mth.floor(boundingBox.minY); y < Mth.ceil(boundingBox.maxY); y++) {
