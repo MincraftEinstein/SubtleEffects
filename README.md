@@ -84,6 +84,10 @@ You can provide feedback/suggestions in a GitHub issue, the CurseForge comments,
 Please keep your suggestions somewhat Minecraft-y, e.g. no blood.
 Please also try not to suggest things that multiple other mods implement, such as rain ripples.
 
+**Q:** The mod isn't working/no particles are appearing.
+<br>
+**A:** Check your Video Settings to make sure that the Particles setting is not set to minimal
+
 ---
 
 ### **💬 Translations**
@@ -93,7 +97,7 @@ To get your translation into the mod, make a pull request on GitHub with the tra
 All translators are credited in the list below.
 
 - Simplified Chinese: [kuhananxianglai](https://github.com/kuhananxianglai)
-- Japanese: [gohkenytp](https://github.com/gohkenytp)
+- Japanese: [gohkenytp](https://github.com/gohkenytp), [Kazumadness](https://github.com/gohkenytp)
 - Mexican Spanish: [TheLegendofSaram](https://github.com/TheLegendofSaram)
 - Korean: [sunbatheproductions](https://github.com/sunbatheproductions)
 - Russian: [Det-rovv](https://github.com/Det-rovv)
