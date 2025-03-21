@@ -183,7 +183,7 @@ public class ModTickers {
                         if (random.nextInt(10) == 0) {
                             ParticleSpawnUtil.spawnCmdBlockParticles(level, entity.position()
                                             // The vanilla calculation of the command block's rendered location + 1 block (16) / 75 (the scale of the rendered command block) / .5 (to get the center of the command block)
-                                            .add(0, (double) -(entity.getDisplayOffset() - 8) / 16 + (((double) 16 / 75) / 0.5), 0),
+                                            .add(0, -(entity.getDisplayOffset() - 8) / 16D + ((16 / 75D) / 0.5D), 0),
                                     random, (direction, relativePos) -> true
                             );
                         }
