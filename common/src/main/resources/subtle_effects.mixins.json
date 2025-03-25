@@ -30,6 +30,7 @@
     "client.block.entity.CampfireBlockEntityMixin",
     "client.entity.ClientEntityMixin",
     "client.entity.ClientLivingEntityMixin",
+    "client.entity.EntityAccessor",
     "client.entity.EntityRendererMixin",
     "client.entity.MinecartFurnaceMixin",
     "client.entity.PrimedTNTMixin",

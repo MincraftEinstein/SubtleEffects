@@ -51,6 +51,7 @@ public class ModTickers {
     private static final Predicate<Entity> LOCAL_PLAYER = entity -> entity.equals(Minecraft.getInstance().player);
 
     public static void init() {
+        registerTicker(entity -> true, EntityWaterCauldronTicker::new);
         registerTicker(entity -> !(entity instanceof LightningBolt), EntityFireTicker::new);
         registerTicker(entity -> entity instanceof LivingEntity, ModTickers::getSleepingTicker);
         registerTicker(entity -> entity instanceof AbstractMinecart && ENTITIES.minecartSparksDisplayType != ModEntityConfigs.MinecartSparksDisplayType.OFF, MinecartSparksTicker::new);
