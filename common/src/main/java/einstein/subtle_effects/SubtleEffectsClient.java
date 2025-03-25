@@ -2,6 +2,7 @@ package einstein.subtle_effects;
 
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
+import com.mojang.brigadier.tree.LiteralCommandNode;
 import einstein.subtle_effects.biome_particles.BiomeParticleManager;
 import einstein.subtle_effects.init.*;
 import einstein.subtle_effects.tickers.TickerManager;
@@ -9,6 +10,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.SharedSuggestionProvider;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 
@@ -53,26 +55,37 @@ public class SubtleEffectsClient {
         Minecraft minecraft = Minecraft.getInstance();
         Player player = minecraft.player;
 
-        dispatcher.register(LiteralArgumentBuilder.<T>literal("subtle_effects")
-                .then(LiteralArgumentBuilder.<T>literal("particles")
-                        .then(LiteralArgumentBuilder.<T>literal("clear")
-                                .executes(context -> {
-                                    minecraft.particleEngine.clearParticles();
-                                    sendSystemMsg(player, Component.translatable("commands.subtle_effects.subtle_effects.particles.clear.success"));
-                                    return 1;
-                                })
-                        )
-                )
-                .then(LiteralArgumentBuilder.<T>literal("tickers")
-                        .then(LiteralArgumentBuilder.<T>literal("clear")
-                                .executes(context -> {
-                                    TickerManager.clear();
-                                    sendSystemMsg(player, Component.translatable("commands.subtle_effects.subtle_effects.tickers.clear.success"));
-                                    return 1;
-                                })
-                        )
-                )
-        );
+        // Particle Args
+        LiteralArgumentBuilder<T> particlesClear = LiteralArgumentBuilder.<T>literal("clear")
+                .executes(context -> {
+                    minecraft.particleEngine.clearParticles();
+                    sendSystemMsg(player, getMsgTranslation("subtle_effects.particles.clear.success"));
+                    return 1;
+                });
+        LiteralArgumentBuilder<T> particles = LiteralArgumentBuilder.<T>literal("particles")
+                .then(particlesClear);
+
+        // Ticker Args
+        LiteralArgumentBuilder<T> tickersClear = LiteralArgumentBuilder.<T>literal("clear")
+                .executes(context -> {
+                    TickerManager.clear();
+                    sendSystemMsg(player, getMsgTranslation("subtle_effects.tickers.clear.success"));
+                    return 1;
+                });
+        LiteralArgumentBuilder<T> tickers = LiteralArgumentBuilder.<T>literal("tickers")
+                .then(tickersClear);
+
+        // SE Command
+        LiteralArgumentBuilder<T> subtleEffects = LiteralArgumentBuilder.<T>literal("subtle_effects")
+                .then(particles)
+                .then(tickers);
+
+        LiteralCommandNode<T> subtleEffectsNode = dispatcher.register(subtleEffects);
+        dispatcher.register(LiteralArgumentBuilder.<T>literal("se").redirect(subtleEffectsNode));
+    }
+
+    private static MutableComponent getMsgTranslation(String string) {
+        return Component.translatable("commands.subtle_effects." + string);
     }
 
     private static void sendSystemMsg(Player player, Component component) {
