@@ -101,6 +101,7 @@ All translators are credited in the list below.
 - Mexican Spanish: [TheLegendofSaram](https://github.com/TheLegendofSaram)
 - Korean: [sunbatheproductions](https://github.com/sunbatheproductions)
 - Russian: [Det-rovv](https://github.com/Det-rovv)
+- Ukrainian: [sunbatheproductions](https://github.com/sunbatheproductions)
 
 ---
 
