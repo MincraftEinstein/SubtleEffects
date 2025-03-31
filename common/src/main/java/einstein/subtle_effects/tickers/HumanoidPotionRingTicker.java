@@ -23,11 +23,16 @@ public class HumanoidPotionRingTicker<T extends LivingEntity> extends Ticker<T> 
 
             if (!stack.isEmpty() && stack.getItem() instanceof PotionItem) {
                 // noinspection all
-                int color = PotionUtils.getColor(stack);
+                if (!PotionUtils.getMobEffects(stack).isEmpty()) {
+                    int color = PotionUtils.getColor(stack);
 
-                level.addParticle(new ColorAndIntegerParticleOptions(ModParticles.POTION_EMITTER.get(), color, entity.getId()),
-                        entity.getX(), entity.getY(), entity.getZ(),
-                        0, 0, 0);
+                    level.addParticle(new ColorAndIntegerParticleOptions(ModParticles.POTION_EMITTER.get(), color, entity.getId()),
+                            entity.getX(),
+                            entity.getY(),
+                            entity.getZ(),
+                            0, 0, 0
+                    );
+                }
             }
         }
         wasUsingItem = isUsingItem;

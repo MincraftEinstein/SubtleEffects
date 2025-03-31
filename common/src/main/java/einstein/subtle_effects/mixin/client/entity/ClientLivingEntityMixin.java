@@ -79,14 +79,17 @@ public abstract class ClientLivingEntityMixin<T extends Entity> extends Entity {
             ItemStack useItem = subtleEffects$me.getUseItem();
             if (useItem.getItem() instanceof PotionItem) {
                 Level level = subtleEffects$me.level();
+
                 // noinspection all
-                int color = PotionUtils.getColor(useItem);
-                level.addParticle(new ColorAndIntegerParticleOptions(ModParticles.POTION_EMITTER.get(), color, subtleEffects$me.getId()),
-                        subtleEffects$me.getX(),
-                        subtleEffects$me.getY(),
-                        subtleEffects$me.getZ(),
-                        0, 0, 0
-                );
+                if (!PotionUtils.getMobEffects(useItem).isEmpty()) {
+                    int color = PotionUtils.getColor(useItem);
+                    level.addParticle(new ColorAndIntegerParticleOptions(ModParticles.POTION_EMITTER.get(), color, subtleEffects$me.getId()),
+                            subtleEffects$me.getX(),
+                            subtleEffects$me.getY(),
+                            subtleEffects$me.getZ(),
+                            0, 0, 0
+                    );
+                }
             }
         }
     }
