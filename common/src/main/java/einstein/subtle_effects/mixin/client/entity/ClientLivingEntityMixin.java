@@ -16,6 +16,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.alchemy.PotionContents;
 import net.minecraft.world.level.Level;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -78,14 +79,18 @@ public abstract class ClientLivingEntityMixin<T extends Entity> extends Entity {
             ItemStack useItem = subtleEffects$me.getUseItem();
             if (useItem.has(DataComponents.POTION_CONTENTS)) {
                 Level level = subtleEffects$me.level();
+                PotionContents contents = useItem.get(DataComponents.POTION_CONTENTS);
+
                 // noinspection all
-                int color = useItem.get(DataComponents.POTION_CONTENTS).getColor();
-                level.addParticle(new ColorAndIntegerParticleOptions(ModParticles.POTION_EMITTER.get(), color, subtleEffects$me.getId()),
-                        subtleEffects$me.getX(),
-                        subtleEffects$me.getY(),
-                        subtleEffects$me.getZ(),
-                        0, 0, 0
-                );
+                if (contents.hasEffects()) {
+                    int color = contents.getColor();
+                    level.addParticle(new ColorAndIntegerParticleOptions(ModParticles.POTION_EMITTER.get(), color, subtleEffects$me.getId()),
+                            subtleEffects$me.getX(),
+                            subtleEffects$me.getY(),
+                            subtleEffects$me.getZ(),
+                            0, 0, 0
+                    );
+                }
             }
         }
     }
