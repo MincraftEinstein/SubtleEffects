@@ -7,6 +7,7 @@ import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.alchemy.PotionContents;
 import net.minecraft.world.item.component.Consumable;
 import net.minecraft.world.level.Level;
 import org.spongepowered.asm.mixin.Mixin;
@@ -31,15 +32,20 @@ public class ConsumableMixin {
             }
 
             ItemStack useItem = entity.getUseItem();
-            if (useItem.has(DataComponents.POTION_CONTENTS)) {
+            if (!stack.isEmpty() && useItem.has(DataComponents.POTION_CONTENTS)) {
+                PotionContents contents = useItem.get(DataComponents.POTION_CONTENTS);
+
                 // noinspection all
-                int color = useItem.get(DataComponents.POTION_CONTENTS).getColor();
-                level.addParticle(new ColorAndIntegerParticleOptions(ModParticles.POTION_EMITTER.get(), color, entity.getId()),
-                        entity.getX(),
-                        entity.getY(),
-                        entity.getZ(),
-                        0, 0, 0
-                );
+                if (contents.hasEffects()) {
+                    int color = contents.getColor();
+
+                    level.addParticle(new ColorAndIntegerParticleOptions(ModParticles.POTION_EMITTER.get(), color, entity.getId()),
+                            entity.getX(),
+                            entity.getY(),
+                            entity.getZ(),
+                            0, 0, 0
+                    );
+                }
             }
         }
     }
