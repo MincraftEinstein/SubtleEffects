@@ -8,6 +8,7 @@ import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
+import net.minecraft.world.level.block.entity.BeaconBeamOwner;
 import net.minecraft.world.level.block.entity.BeaconBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
@@ -19,7 +20,7 @@ import static einstein.subtle_effects.init.ModConfigs.BLOCKS;
 public class BeaconParticle extends SparkParticle {
 
     private final BlockPos beaconPos;
-    private final List<BeaconBlockEntity.BeaconBeamSection> beamSections = new ArrayList<>();
+    private final List<BeaconBeamOwner.Section> beamSections = new ArrayList<>();
 
     protected BeaconParticle(ClientLevel level, double x, double y, double z, SpriteSet sprites, BlockPos beaconPos) {
         super(level, x, y, z, 0, 0, 0, 0, sprites);
@@ -45,7 +46,7 @@ public class BeaconParticle extends SparkParticle {
                 return;
             }
 
-            List<BeaconBlockEntity.BeaconBeamSection> sections = beaconBlockEntity.getBeamSections();
+            List<BeaconBeamOwner.Section> sections = beaconBlockEntity.getBeamSections();
             boolean isNotColored = BLOCKS.beaconParticlesDisplayType == ModBlockConfigs.BeaconParticlesDisplayType.NOT_COLORED;
             boolean hasMultipleSections = sections.size() > 1;
 
@@ -63,10 +64,10 @@ public class BeaconParticle extends SparkParticle {
         }
 
         if (y >= Mth.floor(y) && !beamSections.isEmpty()) {
-            BeaconBlockEntity.BeaconBeamSection beamSection = null;
+            BeaconBeamOwner.Section beamSection = null;
             int lastHeight = beaconPos.getY() - 1;
 
-            for (BeaconBlockEntity.BeaconBeamSection section : beamSections) {
+            for (BeaconBeamOwner.Section section : beamSections) {
                 lastHeight += section.getHeight();
                 if (y >= lastHeight) {
                     beamSection = section;

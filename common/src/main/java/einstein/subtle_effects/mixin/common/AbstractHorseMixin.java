@@ -27,8 +27,8 @@ public abstract class AbstractHorseMixin extends Animal {
         super(type, level);
     }
 
-    @ModifyExpressionValue(method = "causeFallDamage", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/animal/horse/AbstractHorse;calculateFallDamage(FF)I"))
-    private int calculateFallDamage(int damage, float distance, float damageMultiplier) {
+    @ModifyExpressionValue(method = "causeFallDamage", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/animal/horse/AbstractHorse;calculateFallDamage(DF)I"))
+    private int calculateFallDamage(int damage, double distance, float damageMultiplier) {
         ParticleSpawnUtil.spawnFallDustClouds(subtleEffects$me, damageMultiplier, damage, ClientBoundEntityFellPacket.TypeConfig.ENTITY);
         return damage;
     }

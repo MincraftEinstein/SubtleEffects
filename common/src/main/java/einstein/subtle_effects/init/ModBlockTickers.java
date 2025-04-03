@@ -22,11 +22,13 @@ import net.minecraft.util.ParticleUtils;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.entity.BeaconBeamOwner;
 import net.minecraft.world.level.block.entity.BeaconBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.CampfireBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.CreakingHeartState;
 import net.minecraft.world.level.block.state.properties.SculkSensorPhase;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.material.LavaFluid;
@@ -99,7 +101,7 @@ public class ModBlockTickers {
                     BlockEntity blockEntity = level.getBlockEntity(pos);
 
                     if (blockEntity instanceof BeaconBlockEntity beaconBlockEntity) {
-                        List<BeaconBlockEntity.BeaconBeamSection> sections = beaconBlockEntity.getBeamSections();
+                        List<BeaconBeamOwner.Section> sections = beaconBlockEntity.getBeamSections();
 
                         if (!sections.isEmpty() && !(sections.size() > 1 && BLOCKS.beaconParticlesDisplayType == ModBlockConfigs.BeaconParticlesDisplayType.NOT_COLORED)) {
                             PositionParticleOptions options = new PositionParticleOptions(ModParticles.BEACON.get(), beaconBlockEntity.getBlockPos());
@@ -252,7 +254,7 @@ public class ModBlockTickers {
                     }
                 });
         register(Blocks.CREAKING_HEART, () -> BLOCKS.creakingHeartParticles, (state, level, pos, random) -> {
-            if (state.getValue(CreakingHeartBlock.ACTIVE) && random.nextInt(5) == 0) {
+            if (state.getValue(CreakingHeartBlock.STATE) == CreakingHeartState.AWAKE && random.nextInt(5) == 0) {
                 Direction direction = Direction.getRandom(random);
 
                 if (direction != Direction.UP) {

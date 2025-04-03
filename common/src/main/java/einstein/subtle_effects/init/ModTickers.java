@@ -79,7 +79,7 @@ public class ModTickers {
 
                     Player player = (Player) entity;
 
-                    if (ENTITIES.dustClouds.playerRunningRequiresSpeed && !player.hasEffect(MobEffects.MOVEMENT_SPEED)) {
+                    if (ENTITIES.dustClouds.playerRunningRequiresSpeed && !player.hasEffect(MobEffects.SPEED)) {
                         return;
                     }
 

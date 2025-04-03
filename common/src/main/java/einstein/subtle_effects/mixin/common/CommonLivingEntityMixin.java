@@ -90,8 +90,8 @@ public abstract class CommonLivingEntityMixin extends Entity {
         }
     }
 
-    @ModifyExpressionValue(method = "causeFallDamage", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;calculateFallDamage(FF)I"))
-    private int calculateFallDamage(int damage, float distance, float damageMultiplier) {
+    @ModifyExpressionValue(method = "causeFallDamage", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;calculateFallDamage(DF)I"))
+    private int calculateFallDamage(int damage, double distance, float damageMultiplier) {
         ParticleSpawnUtil.spawnFallDustClouds(subtleEffects$me, damageMultiplier, damage,
                 subtleEffects$me instanceof Player
                         ? ClientBoundEntityFellPacket.TypeConfig.PLAYER

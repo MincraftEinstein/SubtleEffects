@@ -10,6 +10,7 @@ import me.fzzyhmstrs.fzzy_config.config.ConfigGroup;
 import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedFloat;
 import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedInt;
 import net.minecraft.client.Minecraft;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 
 @Translation(prefix = ModConfigs.BASE_KEY + "general")
@@ -55,7 +56,7 @@ public class ModGeneralConfigs extends Config {
 
             Player player = minecraft.player;
             if (player != null) {
-                Util.applyHelmetShader(player.getInventory().getArmor(3), minecraft.options.getCameraType());
+                Util.applyHelmetShader(player.getItemBySlot(EquipmentSlot.HEAD), minecraft.options.getCameraType());
             }
         }
     }

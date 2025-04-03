@@ -10,6 +10,6 @@ public interface AmethystClusterBlockAccessor {
     @Accessor("height")
     float getHeight();
 
-    @Accessor("aabbOffset")
+    @Accessor("width")
     float getAABBOffset();
 }

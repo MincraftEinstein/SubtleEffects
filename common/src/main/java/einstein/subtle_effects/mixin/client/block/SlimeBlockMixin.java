@@ -17,7 +17,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class SlimeBlockMixin {
 
     @Inject(method = "fallOn", at = @At("HEAD"))
-    private void bounceUp(Level level, BlockState state, BlockPos pos, Entity entity, float distance, CallbackInfo ci) {
+    private void bounceUp(Level level, BlockState state, BlockPos pos, Entity entity, double distance, CallbackInfo ci) {
         if (entity.level().isClientSide && ModConfigs.BLOCKS.slimeBlockBounceSounds) {
             if (distance > 1) {
                 if (distance < 4) {

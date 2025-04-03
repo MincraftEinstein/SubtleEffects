@@ -31,7 +31,7 @@ public class BeehiveBlockEntityMixin {
     @Inject(method = "serverTick", at = @At("HEAD"))
     private static void serverTick(Level level, BlockPos pos, BlockState state, BeehiveBlockEntity blockEntity, CallbackInfo ci) {
         BeehiveBlockEntityMixin me = (BeehiveBlockEntityMixin) (Object) blockEntity;
-        if (!blockEntity.isEmpty() && level.isNight()) {
+        if (!blockEntity.isEmpty() && level.isDarkOutside()) {
             if (me.subtleEffects$breatheTimer < Util.BREATH_DELAY) {
                 me.subtleEffects$breatheTimer++;
                 return;
