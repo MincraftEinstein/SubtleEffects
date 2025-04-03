@@ -92,6 +92,7 @@ public class ModBlockConfigs extends Config {
     public boolean creakingHeartParticles = true;
     public boolean replacePowderSnowFlakes = true;
     public boolean lavaCauldronEffects = true;
+    public boolean idleEyeBlossomParticles = true;
 
     public ModBlockConfigs() {
         super(SubtleEffects.loc("blocks"));

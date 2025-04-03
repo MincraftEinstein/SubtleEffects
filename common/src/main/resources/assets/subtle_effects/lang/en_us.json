@@ -147,6 +147,8 @@
   "config.subtle_effects.blocks.replacePowderSnowFlakes": "Replace Powder Snow Flakes",
   "config.subtle_effects.blocks.lavaCauldronEffects": "Lava Cauldron Effects",
   "config.subtle_effects.blocks.lavaCauldronEffects.desc": "Apply lava sounds and particles to lava cauldrons",
+  "config.subtle_effects.blocks.idleEyeBlossomParticles": "Idle Eye Blossom Particles",
+  "config.subtle_effects.blocks.idleEyeBlossomParticles.desc": "Should open eye blossoms emit particles when they are idle",
   "config.subtle_effects.entities.attacked": "Attacked",
   "config.subtle_effects.entities.attacked.desc": "Particles emitted from a mob when it takes damage from a another mob or player",
   "config.subtle_effects.entities.attacked.chickenFeathers": "Chicken Feathers",
