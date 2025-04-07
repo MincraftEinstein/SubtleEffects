@@ -127,7 +127,7 @@ public class ParticleSpawnUtil {
 
             if (directionValidator.test(direction, endPos)) {
                 Vec3 speed = pos.vectorTo(relativePos).offsetRandom(random, 1);
-                level.addParticle(new DirectionParticleOptions(direction), endPos.x(), endPos.y(), endPos.z(), speed.x(), speed.y(), speed.z());
+                level.addParticle(new DirectionParticleOptions(ModParticles.COMMAND_BLOCK.get(), direction), endPos.x(), endPos.y(), endPos.z(), speed.x(), speed.y(), speed.z());
             }
         }
     }

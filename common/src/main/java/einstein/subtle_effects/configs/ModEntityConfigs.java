@@ -45,6 +45,7 @@ public class ModEntityConfigs extends Config {
     public XPBottleParticlesDisplayType xpBottleParticlesDisplayType = XPBottleParticlesDisplayType.DEFAULT;
     public ValidatedInt xpBottleParticlesDensity = new ValidatedInt(10, 200, 5);
     public ValidatedFloat eggSmashSoundVolume = new ValidatedFloat(0.5F, 1, 0);
+    public boolean eggSplatParticles = true;
     public boolean freezingSnowFlakes = true;
 
     public ModEntityConfigs() {
