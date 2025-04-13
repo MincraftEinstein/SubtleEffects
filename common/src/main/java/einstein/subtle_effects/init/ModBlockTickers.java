@@ -67,16 +67,29 @@ public class ModBlockTickers {
                 });
         register(Blocks.TORCHFLOWER, () -> BLOCKS.torchflowerSmoke.isEnabled() || BLOCKS.torchflowerFlames,
                 (state, level, pos, random) -> {
-                    double x = pos.getX() + 0.5;
-                    double y = pos.getY() + 0.8;
-                    double z = pos.getZ() + 0.5;
+                    Vec3 center = state.getShape(level, pos).bounds().getCenter();
+                    Vec3 offsetPos = new Vec3(
+                            pos.getX() + center.x(),
+                            pos.getY() + center.y() + 0.3,
+                            pos.getZ() + center.z()
+                    );
 
                     if (BLOCKS.torchflowerSmoke.isEnabled() && random.nextInt(3) == 0) {
-                        level.addParticle(BLOCKS.torchflowerSmoke.getParticle().get(), x, y, z, 0, 0, 0);
+                        level.addParticle(BLOCKS.torchflowerSmoke.getParticle().get(),
+                                offsetPos.x(),
+                                offsetPos.y(),
+                                offsetPos.z(),
+                                0, 0, 0
+                        );
                     }
 
                     if (BLOCKS.torchflowerFlames && random.nextInt(5) == 0) {
-                        level.addParticle(ParticleTypes.FLAME, x, y, z, 0, 0, 0);
+                        level.addParticle(ParticleTypes.FLAME,
+                                offsetPos.x(),
+                                offsetPos.y(),
+                                offsetPos.z(),
+                                0, 0, 0
+                        );
                     }
                 });
         register(Blocks.DRAGON_EGG, () -> BLOCKS.dragonEggParticles, (state, level, pos, random) -> {
