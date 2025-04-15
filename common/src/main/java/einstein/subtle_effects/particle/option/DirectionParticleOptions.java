@@ -2,26 +2,26 @@ package einstein.subtle_effects.particle.option;
 
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import einstein.subtle_effects.init.ModParticles;
+import io.netty.buffer.ByteBuf;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
-import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 
-public record DirectionParticleOptions(Direction direction) implements ParticleOptions {
+public record DirectionParticleOptions(ParticleType<?> type, Direction direction) implements ParticleOptions {
 
-    public static final MapCodec<DirectionParticleOptions> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-            Direction.CODEC.fieldOf("direction").forGetter(DirectionParticleOptions::direction)
-    ).apply(instance, DirectionParticleOptions::new));
+    public static MapCodec<DirectionParticleOptions> codec(ParticleType<DirectionParticleOptions> type) {
+        return RecordCodecBuilder.mapCodec(instance -> instance.group(
+                net.minecraft.core.Direction.CODEC.fieldOf("direction").forGetter(DirectionParticleOptions::direction)
+        ).apply(instance, direction -> new DirectionParticleOptions(type, direction)));
+    }
 
-    public static final StreamCodec<RegistryFriendlyByteBuf, DirectionParticleOptions> STREAM_CODEC = StreamCodec.composite(
-            Direction.STREAM_CODEC, DirectionParticleOptions::direction,
-            DirectionParticleOptions::new
-    );
+    public static StreamCodec<ByteBuf, DirectionParticleOptions> streamCodec(ParticleType<DirectionParticleOptions> type) {
+        return Direction.STREAM_CODEC.map(direction -> new DirectionParticleOptions(type, direction), DirectionParticleOptions::direction);
+    }
 
     @Override
     public ParticleType<?> getType() {
-        return ModParticles.COMMAND_BLOCK.get();
+        return type;
     }
 }
