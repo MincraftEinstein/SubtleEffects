@@ -80,16 +80,18 @@ public class LevelEventHandlerMixin {
             }
             case LevelEvent.SOUND_GRINDSTONE_USED: {
                 if (BLOCKS.grindstoneUseParticles) {
-                    Direction direction = state.getValue(GrindstoneBlock.FACING);
-                    AttachFace face = state.getValue(GrindstoneBlock.FACE);
-                    Direction side = face == AttachFace.CEILING ? Direction.DOWN : Direction.UP;
+                    if (state.hasProperty(GrindstoneBlock.FACING) && state.hasProperty(GrindstoneBlock.FACE)) {
+                        Direction direction = state.getValue(GrindstoneBlock.FACING);
+                        AttachFace face = state.getValue(GrindstoneBlock.FACE);
+                        Direction side = face == AttachFace.CEILING ? Direction.DOWN : Direction.UP;
 
-                    for (int i = 0; i < 20; i++) {
-                        ParticleSpawnUtil.spawnParticlesOnSide(SparkParticle.create(SparkType.METAL, random), 0, side, level, pos, random,
-                                nextFloat(random, 0.1F, 0.2F) * (direction.getStepX() * 1.5),
-                                face == AttachFace.CEILING ? 0 : nextFloat(random, 0.1F, 0.2F),
-                                nextFloat(random, 0.1F, 0.2F) * (direction.getStepZ() * 1.5)
-                        );
+                        for (int i = 0; i < 20; i++) {
+                            ParticleSpawnUtil.spawnParticlesOnSide(SparkParticle.create(SparkType.METAL, random), 0, side, level, pos, random,
+                                    nextFloat(random, 0.1F, 0.2F) * (direction.getStepX() * 1.5),
+                                    face == AttachFace.CEILING ? 0 : nextFloat(random, 0.1F, 0.2F),
+                                    nextFloat(random, 0.1F, 0.2F) * (direction.getStepZ() * 1.5)
+                            );
+                        }
                     }
                 }
                 break;
