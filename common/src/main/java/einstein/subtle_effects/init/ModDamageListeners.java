@@ -1,9 +1,13 @@
 package einstein.subtle_effects.init;
 
 import einstein.subtle_effects.util.EntityProvider;
+import net.minecraft.core.Holder;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.animal.Chicken;
+import net.minecraft.world.entity.animal.ChickenVariant;
+import net.minecraft.world.entity.animal.ChickenVariants;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -18,8 +22,10 @@ public class ModDamageListeners {
     public static void init() {
         register(EntityType.CHICKEN, (entity, level, random) -> {
             if (ENTITIES.attacked.chickenFeathers) {
+                ParticleOptions particle = getChickenFeatherParticle(entity);
+
                 for (int i = 0; i < 10; i++) {
-                    level.addParticle(ModParticles.CHICKEN_FEATHER.get(),
+                    level.addParticle(particle,
                             entity.getX(),
                             entity.getY(0.5),
                             entity.getZ(),
@@ -66,6 +72,18 @@ public class ModDamageListeners {
                 }
             }
         });
+    }
+
+    private static ParticleOptions getChickenFeatherParticle(Chicken chicken) {
+        Holder<ChickenVariant> variant = chicken.getVariant();
+
+        if (variant.is(ChickenVariants.WARM)) {
+            return ModParticles.WARM_CHICKEN_FEATHER.get();
+        }
+        else if (variant.is(ChickenVariants.COLD)) {
+            return ModParticles.COLD_CHICKEN_FEATHER.get();
+        }
+        return ModParticles.CHICKEN_FEATHER.get();
     }
 
     private static <T extends Entity> void register(EntityType<T> type, EntityProvider<T> provider) {

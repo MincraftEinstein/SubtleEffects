@@ -33,6 +33,8 @@ public class ModParticles {
     public static final Supplier<SimpleParticleType> SNOWBALL_TRAIL = register("snowball_trail", SnowParticle.SnowballTrailProvider::new);
     public static final Supplier<SimpleParticleType> FREEZING = register("freezing", SnowParticle.FreezingProvider::new);
     public static final Supplier<SimpleParticleType> CHICKEN_FEATHER = register("chicken_feather", FeatherParticle.Provider::new);
+    public static final Supplier<SimpleParticleType> WARM_CHICKEN_FEATHER = register("warm_chicken_feather", FeatherParticle.Provider::new);
+    public static final Supplier<SimpleParticleType> COLD_CHICKEN_FEATHER = register("cold_chicken_feather", FeatherParticle.Provider::new);
     public static final Supplier<SimpleParticleType> BLUE_PARROT_FEATHER = register("blue_parrot_feather", FeatherParticle.Provider::new);
     public static final Supplier<SimpleParticleType> GRAY_PARROT_FEATHER = register("gray_parrot_feather", FeatherParticle.Provider::new);
     public static final Supplier<SimpleParticleType> GREEN_PARROT_FEATHER = register("green_parrot_feather", FeatherParticle.Provider::new);
