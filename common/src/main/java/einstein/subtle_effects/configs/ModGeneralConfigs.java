@@ -37,6 +37,7 @@ public class ModGeneralConfigs extends Config {
 
     public boolean mobSkullShaders = true;
     public ValidatedFloat fireHeight = new ValidatedFloat(-0.15F, 0.4F, -0.5F);
+    public boolean nightVisionFading = true;
 
     public ModGeneralConfigs() {
         super(SubtleEffects.loc("general"));
