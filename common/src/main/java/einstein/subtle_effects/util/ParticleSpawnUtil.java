@@ -1,14 +1,19 @@
 package einstein.subtle_effects.util;
 
+import einstein.subtle_effects.configs.ModBlockConfigs;
 import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.init.ModParticles;
 import einstein.subtle_effects.networking.clientbound.ClientBoundEntityFellPacket;
+import einstein.subtle_effects.particle.EnderEyePlacedRingParticle;
 import einstein.subtle_effects.particle.SparkParticle;
 import einstein.subtle_effects.particle.option.DirectionParticleOptions;
+import einstein.subtle_effects.particle.option.IntegerParticleOptions;
 import einstein.subtle_effects.platform.Services;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.particles.ColorParticleOption;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
@@ -255,5 +260,25 @@ public class ParticleSpawnUtil {
         pos = pos.yRot(-entity.getViewYRot(partialTick) * DEG_TO_RAD);
         pos = pos.add(entity.getX(), entity.getEyeY(), entity.getZ());
         level.addParticle(options, pos.x(), pos.y(), pos.z(), speed.x(), speed.y(), speed.z());
+    }
+
+    public static void spawnEnderEyePlacementParticles(BlockPos pos, RandomSource random, ClientLevel level, int color) {
+        if (BLOCKS.enderEyePlacedRings) {
+            level.addParticle(ColorParticleOption.create(ModParticles.ENDER_EYE_PLACED_RING.get(), color),
+                    pos.getX() + 0.5, pos.getY() + 0.8125 + EnderEyePlacedRingParticle.SIZE, pos.getZ() + 0.5,
+                    0, 0, 0
+            );
+        }
+
+        if (BLOCKS.enderEyePlacedParticlesDisplayType != ModBlockConfigs.EnderEyePlacedParticlesDisplayType.VANILLA) {
+            for (int i = 0; i < 16; ++i) {
+                level.addParticle(ColorParticleOption.create(ModParticles.SHORT_SPARK.get(), color),
+                        pos.getX() + 0.5 + nextNonAbsDouble(random, 0.25),
+                        pos.getY() + 1,
+                        pos.getZ() + 0.5 + nextNonAbsDouble(random, 0.25),
+                        0, 0, 0
+                );
+            }
+        }
     }
 }

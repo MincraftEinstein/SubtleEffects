@@ -90,6 +90,8 @@ public class ModBlockConfigs extends Config {
     public VegetationFirefliesSpawnType vegetationFirefliesSpawnType = VegetationFirefliesSpawnType.FLOWERS_ONLY;
     public boolean replacePowderSnowFlakes = true;
     public boolean lavaCauldronEffects = true;
+    public boolean enderEyePlacedRings = true;
+    public EnderEyePlacedParticlesDisplayType enderEyePlacedParticlesDisplayType = EnderEyePlacedParticlesDisplayType.BOTH;
 
     public ModBlockConfigs() {
         super(SubtleEffects.loc("blocks"));
@@ -164,6 +166,17 @@ public class ModBlockConfigs extends Config {
         @Override
         public @NotNull String prefix() {
             return BASE_KEY + "blocks.beaconParticlesDisplayType";
+        }
+    }
+
+    public enum EnderEyePlacedParticlesDisplayType implements EnumTranslatable {
+        DOTS,
+        VANILLA,
+        BOTH;
+
+        @Override
+        public @NotNull String prefix() {
+            return BASE_KEY + "blocks.enderEyePlacedParticlesDisplayType";
         }
     }
 }
