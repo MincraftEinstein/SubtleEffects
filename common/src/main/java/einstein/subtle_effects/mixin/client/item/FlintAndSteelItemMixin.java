@@ -4,10 +4,10 @@ import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.particle.SparkParticle;
 import einstein.subtle_effects.util.MathUtil;
 import einstein.subtle_effects.util.SparkType;
-import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.item.FireChargeItem;
 import net.minecraft.world.item.FlintAndSteelItem;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
@@ -17,7 +17,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(FlintAndSteelItem.class)
+@Mixin({FlintAndSteelItem.class, FireChargeItem.class})
 public class FlintAndSteelItemMixin {
 
     @Inject(method = "useOn", at = @At(value = "FIELD", target = "Lnet/minecraft/world/level/gameevent/GameEvent;BLOCK_CHANGE:Lnet/minecraft/core/Holder$Reference;"))
@@ -29,7 +29,6 @@ public class FlintAndSteelItemMixin {
             }
 
             RandomSource random = level.getRandom();
-            BlockPos pos = context.getClickedPos();
             Vec3 location = context.getClickLocation();
 
             for (int i = 0; i < 3; i++) {
