@@ -9,17 +9,17 @@ import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 
-public record ClientBoundBlockDestroyEffectsPacket(int stateId, BlockPos pos, TypeConfig config) implements CustomPacketPayload {
+public record ClientBoundBlockDestroyEffectsPayload(int stateId, BlockPos pos, TypeConfig config) implements CustomPacketPayload {
 
-    public static final Type<ClientBoundBlockDestroyEffectsPacket> TYPE = new Type<>(SubtleEffects.loc("block_destroy_effects"));
-    public static final StreamCodec<FriendlyByteBuf, ClientBoundBlockDestroyEffectsPacket> STREAM_CODEC = StreamCodec.composite(
-            ByteBufCodecs.INT, ClientBoundBlockDestroyEffectsPacket::stateId,
-            BlockPos.STREAM_CODEC, ClientBoundBlockDestroyEffectsPacket::pos,
-            TypeConfig.STREAM_CODEC, ClientBoundBlockDestroyEffectsPacket::config,
-            ClientBoundBlockDestroyEffectsPacket::new
+    public static final Type<ClientBoundBlockDestroyEffectsPayload> TYPE = new Type<>(SubtleEffects.loc("block_destroy_effects"));
+    public static final StreamCodec<FriendlyByteBuf, ClientBoundBlockDestroyEffectsPayload> STREAM_CODEC = StreamCodec.composite(
+            ByteBufCodecs.INT, ClientBoundBlockDestroyEffectsPayload::stateId,
+            BlockPos.STREAM_CODEC, ClientBoundBlockDestroyEffectsPayload::pos,
+            TypeConfig.STREAM_CODEC, ClientBoundBlockDestroyEffectsPayload::config,
+            ClientBoundBlockDestroyEffectsPayload::new
     );
 
-    public ClientBoundBlockDestroyEffectsPacket(BlockState state, BlockPos pos, TypeConfig config) {
+    public ClientBoundBlockDestroyEffectsPayload(BlockState state, BlockPos pos, TypeConfig config) {
         this(Block.getId(state), pos, config);
     }
 

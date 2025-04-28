@@ -1,6 +1,6 @@
 package einstein.subtle_effects.mixin.common;
 
-import einstein.subtle_effects.networking.clientbound.ClientBoundEntityFellPacket;
+import einstein.subtle_effects.networking.clientbound.ClientBoundEntityFellPayload;
 import einstein.subtle_effects.util.ParticleSpawnUtil;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
@@ -16,6 +16,6 @@ public class MaceItemMixin {
 
     @Inject(method = "knockback", at = @At("HEAD"))
     private static void spawnDustClouds(Level level, Player player, Entity entity, CallbackInfo ci) {
-        ParticleSpawnUtil.spawnFallDustClouds(player, 10, 10, ClientBoundEntityFellPacket.TypeConfig.MACE);
+        ParticleSpawnUtil.spawnFallDustClouds(player, 10, 10, ClientBoundEntityFellPayload.TypeConfig.MACE);
     }
 }

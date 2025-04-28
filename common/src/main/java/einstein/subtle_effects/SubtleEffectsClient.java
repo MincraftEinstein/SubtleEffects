@@ -24,7 +24,7 @@ public class SubtleEffectsClient {
 
     public static void clientSetup() {
         ModConfigs.init();
-        ModPackets.initClientHandlers();
+        ModPayloads.initClientHandlers();
         ModTickers.init();
         ModBlockTickers.init();
         BiomeParticleManager.init();

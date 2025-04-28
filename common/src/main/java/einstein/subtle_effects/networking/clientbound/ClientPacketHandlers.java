@@ -14,7 +14,6 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.monster.Ravager;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.PotionContents;
@@ -29,13 +28,13 @@ import static einstein.subtle_effects.init.ModConfigs.ENTITIES;
 
 public class ClientPacketHandlers {
 
-    public static void handle(ClientLevel level, ClientBoundEntityFellPacket packet) {
+    public static void handle(ClientLevel level, ClientBoundEntityFellPayload packet) {
         if (level.getEntity(packet.entityId()) instanceof LivingEntity livingEntity) {
             ParticleSpawnUtil.spawnEntityFellParticles(livingEntity, packet.y(), packet.distance(), packet.fallDamage(), getEntityFellConfig(packet));
         }
     }
 
-    public static void handle(ClientLevel level, ClientBoundEntitySpawnSprintingDustCloudsPacket packet) {
+    public static void handle(ClientLevel level, ClientBoundEntitySpawnSprintingDustCloudsPayload packet) {
         if (level.getEntity(packet.entityId()) instanceof LivingEntity livingEntity) {
             int ySpeedModifier = 5;
             if (livingEntity instanceof Ravager) {
@@ -46,13 +45,13 @@ public class ClientPacketHandlers {
         }
     }
 
-    public static void handle(ClientLevel level, ClientBoundSpawnSnoreParticlePacket packet) {
+    public static void handle(ClientLevel level, ClientBoundSpawnSnoreParticlePayload packet) {
         if (ModConfigs.BLOCKS.beehivesHaveSleepingZs) {
             level.addParticle(ModParticles.SNORING.get(), packet.x(), packet.y(), packet.z(), 0, 0, 0);
         }
     }
 
-    public static void handle(ClientLevel level, ClientBoundBlockDestroyEffectsPacket packet) {
+    public static void handle(ClientLevel level, ClientBoundBlockDestroyEffectsPayload packet) {
         if (getBlockDestroyEffectConfig(packet)) {
             BlockPos pos = packet.pos();
             BlockState state = Block.stateById(packet.stateId());
@@ -63,7 +62,7 @@ public class ClientPacketHandlers {
         }
     }
 
-    public static void handle(ClientLevel level, ClientBoundXPBottleEffectsPacket packet) {
+    public static void handle(ClientLevel level, ClientBoundXPBottleEffectsPayload packet) {
         BlockPos pos = packet.pos();
         Vec3 vec3 = Vec3.atBottomCenterOf(pos);
         RandomSource random = level.getRandom();
@@ -116,14 +115,14 @@ public class ClientPacketHandlers {
     }
 
     // Don't convert to enum parameters, because the server will crash trying to access the client configs
-    private static boolean getBlockDestroyEffectConfig(ClientBoundBlockDestroyEffectsPacket packet) {
+    private static boolean getBlockDestroyEffectConfig(ClientBoundBlockDestroyEffectsPayload packet) {
         return switch (packet.config()) {
             case LEAVES_DECAY -> ModConfigs.BLOCKS.leavesDecayEffects;
             case FARMLAND_DESTROY -> ModConfigs.BLOCKS.farmlandDestroyEffects;
         };
     }
 
-    private static boolean getEntityFellConfig(ClientBoundEntityFellPacket packet) {
+    private static boolean getEntityFellConfig(ClientBoundEntityFellPayload packet) {
         return switch (packet.config()){
             case ENTITY -> ENTITIES.dustClouds.mobFell;
             case PLAYER -> ENTITIES.dustClouds.playerFell;
