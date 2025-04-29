@@ -33,7 +33,7 @@ public class FallingBlocksConfigs extends ConfigSection {
 
     public ValidatedList<Block> dustyBlocks = new ValidatedList<>(DEFAULT_DUSTY_BLOCKS, ValidatedRegistryType.of(BuiltInRegistries.BLOCK));
     public boolean fallingDust = true;
-    public ValidatedInt fallingDustStartDistance = new ValidatedInt(0, 20, 0);
+    public ValidatedInt fallingDustStartDistance = new ValidatedInt(3, 20, 0);
     public boolean landDust = true;
     public boolean landSound = true;
 }

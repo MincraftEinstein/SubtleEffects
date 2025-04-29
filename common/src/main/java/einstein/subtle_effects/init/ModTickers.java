@@ -101,7 +101,10 @@ public class ModTickers {
         registerSimpleTicker(entity -> entity instanceof FallingBlockEntity && BLOCKS.fallingBlocks.fallingDust, (entity, level, random) -> {
             FallingBlockEntity fallingBlock = (FallingBlockEntity) entity;
 
-            if (fallingBlock.fallDistance <= BLOCKS.fallingBlocks.fallingDustStartDistance.get()) {
+            int startDistance = BLOCKS.fallingBlocks.fallingDustStartDistance.get();
+            float fallDistance = fallingBlock.fallDistance;
+
+            if (fallDistance <= startDistance) {
                 return;
             }
 
@@ -110,15 +113,19 @@ public class ModTickers {
                 Block block = state.getBlock();
 
                 if (BLOCKS.fallingBlocks.dustyBlocks.contains(block)) {
-                    level.addParticle(
-                            new BlockParticleOption(ParticleTypes.FALLING_DUST,
-                                    block instanceof BrushableBlock brushableBlock ?
-                                            brushableBlock.getTurnsInto().defaultBlockState() : state),
-                            entity.getRandomX(1),
-                            entity.getY() + 0.05,
-                            entity.getRandomZ(1),
-                            0, 0, 0
-                    );
+                    double size = startDistance > 0 ? fallDistance <= startDistance + ((startDistance / 3F) * 2) ? 0.5 : 1 : 1;
+
+                    for (int i = 0 ; i < (size == 1 ? 2 : 1); i++) {
+                        level.addParticle(
+                                new BlockParticleOption(ParticleTypes.FALLING_DUST,
+                                        block instanceof BrushableBlock brushableBlock ?
+                                                brushableBlock.getTurnsInto().defaultBlockState() : state),
+                                entity.getRandomX(size),
+                                entity.getY() + 0.05,
+                                entity.getRandomZ(size),
+                                0, 0, 0
+                        );
+                    }
                 }
             }
         });
