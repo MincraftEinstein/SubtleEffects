@@ -5,8 +5,10 @@ import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.init.ModParticles;
 import einstein.subtle_effects.particle.option.FloatParticleOptions;
 import einstein.subtle_effects.util.ParticleSpawnUtil;
+import einstein.subtle_effects.util.Util;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvents;
@@ -18,24 +20,25 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.PotionContents;
 import net.minecraft.world.item.alchemy.Potions;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.LevelEvent;
-import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
+import org.joml.Vector3f;
 
+import static einstein.subtle_effects.init.ModConfigs.BLOCKS;
 import static einstein.subtle_effects.init.ModConfigs.ENTITIES;
+import static einstein.subtle_effects.util.MathUtil.*;
 
 public class ClientPacketHandlers {
 
-    public static void handle(ClientLevel level, ClientBoundEntityFellPayload packet) {
-        if (level.getEntity(packet.entityId()) instanceof LivingEntity livingEntity) {
-            ParticleSpawnUtil.spawnEntityFellParticles(livingEntity, packet.y(), packet.distance(), packet.fallDamage(), getEntityFellConfig(packet));
+    public static void handle(ClientLevel level, ClientBoundEntityFellPayload payload) {
+        if (level.getEntity(payload.entityId()) instanceof LivingEntity livingEntity) {
+            ParticleSpawnUtil.spawnEntityFellParticles(livingEntity, payload.y(), payload.distance(), payload.fallDamage(), getEntityFellConfig(payload));
         }
     }
 
-    public static void handle(ClientLevel level, ClientBoundEntitySpawnSprintingDustCloudsPayload packet) {
-        if (level.getEntity(packet.entityId()) instanceof LivingEntity livingEntity) {
+    public static void handle(ClientLevel level, ClientBoundEntitySpawnSprintingDustCloudsPayload payload) {
+        if (level.getEntity(payload.entityId()) instanceof LivingEntity livingEntity) {
             int ySpeedModifier = 5;
             if (livingEntity instanceof Ravager) {
                 ySpeedModifier = 20;
@@ -45,16 +48,16 @@ public class ClientPacketHandlers {
         }
     }
 
-    public static void handle(ClientLevel level, ClientBoundSpawnSnoreParticlePayload packet) {
+    public static void handle(ClientLevel level, ClientBoundSpawnSnoreParticlePayload payload) {
         if (ModConfigs.BLOCKS.beehivesHaveSleepingZs) {
-            level.addParticle(ModParticles.SNORING.get(), packet.x(), packet.y(), packet.z(), 0, 0, 0);
+            level.addParticle(ModParticles.SNORING.get(), payload.x(), payload.y(), payload.z(), 0, 0, 0);
         }
     }
 
-    public static void handle(ClientLevel level, ClientBoundBlockDestroyEffectsPayload packet) {
-        if (getBlockDestroyEffectConfig(packet)) {
-            BlockPos pos = packet.pos();
-            BlockState state = Block.stateById(packet.stateId());
+    public static void handle(ClientLevel level, ClientBoundBlockDestroyEffectsPayload payload) {
+        if (getBlockDestroyEffectConfig(payload)) {
+            BlockPos pos = payload.pos();
+            BlockState state = Block.stateById(payload.stateId());
             SoundType soundType = state.getSoundType();
 
             level.addDestroyBlockEffect(pos, state);
@@ -62,8 +65,8 @@ public class ClientPacketHandlers {
         }
     }
 
-    public static void handle(ClientLevel level, ClientBoundXPBottleEffectsPayload packet) {
-        BlockPos pos = packet.pos();
+    public static void handle(ClientLevel level, ClientBoundXPBottleEffectsPayload payload) {
+        BlockPos pos = payload.pos();
         Vec3 vec3 = Vec3.atBottomCenterOf(pos);
         RandomSource random = level.getRandom();
         if (ENTITIES.xpBottleParticlesDisplayType == ModEntityConfigs.XPBottleParticlesDisplayType.BOTH || ENTITIES.xpBottleParticlesDisplayType == ModEntityConfigs.XPBottleParticlesDisplayType.VANILLA) {
@@ -114,6 +117,49 @@ public class ClientPacketHandlers {
         }
     }
 
+    public static void handle(ClientLevel level, ClientBoundFallingBlockLandPayload payload) {
+        BlockPos pos = payload.pos();
+        BlockState state = Block.stateById(payload.stateId());
+        Block block = state.getBlock();
+
+        if (BLOCKS.fallingBlockLandSound && !(block instanceof AnvilBlock)) {
+            SoundType soundType = state.getSoundType();
+
+            Util.playClientSound(pos, soundType.getPlaceSound(), SoundSource.BLOCKS,
+                    (soundType.getVolume() + 1.0F) / 2F,
+                    soundType.getPitch() * 0.8F
+            );
+        }
+
+        if (BLOCKS.fallingBlockLandDust) {
+            if (block instanceof FallingBlock fallingBlock) {
+                RandomSource random = level.getRandom();
+                int color = fallingBlock.getDustColor(state, level, pos);
+                DustParticleOptions options = new DustParticleOptions(
+                        new Vector3f(
+                                ((color >> 16) & 255) / 255F,
+                                ((color >> 8) & 255) / 255F,
+                                (color & 255) / 255F
+                        ), 1);
+
+                for (int i = 0; i < 25; i++) {
+                    boolean b = random.nextBoolean();
+                    int xSign = nextSign(random);
+                    int zSign = nextSign(random);
+
+                    level.addParticle(options,
+                            pos.getX() + 0.5 + (b ? 0.55 * xSign : nextNonAbsDouble(random, 0.55)),
+                            pos.getY() + nextDouble(random, 0.3),
+                            pos.getZ() + 0.5 + (!b ? 0.55 * zSign : nextNonAbsDouble(random, 0.55)),
+                            b ? 50 * xSign : 0, // 50 because dust velocity gets multiplied by 0.1
+                            0.3,
+                            !b ? 50 * zSign : 0
+                    );
+                }
+            }
+        }
+    }
+
     // Don't convert to enum parameters, because the server will crash trying to access the client configs
     private static boolean getBlockDestroyEffectConfig(ClientBoundBlockDestroyEffectsPayload packet) {
         return switch (packet.config()) {
@@ -123,7 +169,7 @@ public class ClientPacketHandlers {
     }
 
     private static boolean getEntityFellConfig(ClientBoundEntityFellPayload packet) {
-        return switch (packet.config()){
+        return switch (packet.config()) {
             case ENTITY -> ENTITIES.dustClouds.mobFell;
             case PLAYER -> ENTITIES.dustClouds.playerFell;
             case MACE -> ENTITIES.dustClouds.landMaceAttack;

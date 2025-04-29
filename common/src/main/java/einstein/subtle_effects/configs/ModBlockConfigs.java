@@ -56,6 +56,8 @@ public class ModBlockConfigs extends Config {
     public ValidatedList<Block> fallingBlockDustBlocks = new ValidatedList<>(DEFAULT_FALLING_BLOCK_DUST_BLOCKS, ValidatedRegistryType.of(BuiltInRegistries.BLOCK));
     @ConfigGroup.Pop
     public ValidatedInt fallingBlockDustDistance = new ValidatedInt(0, 20, 0);
+    public boolean fallingBlockLandSound = true;
+    public boolean fallingBlockLandDust = true;
     public SmokeType torchflowerSmoke = SmokeType.DEFAULT;
     public boolean torchflowerFlames = true;
     public boolean dragonEggParticles = true;

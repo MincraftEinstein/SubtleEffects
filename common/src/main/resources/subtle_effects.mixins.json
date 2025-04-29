@@ -58,6 +58,7 @@
     "common.AbstractHorseMixin",
     "common.BeehiveBlockEntityMixin",
     "common.CommonLivingEntityMixin",
+    "common.FallingBlockEntityMixin",
     "common.FarmBlockMixin",
     "common.LeavesBlockMixin",
     "common.LlamaMixin",
