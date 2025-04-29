@@ -6,6 +6,7 @@ import einstein.subtle_effects.init.ModParticles;
 import einstein.subtle_effects.particle.option.FloatParticleOptions;
 import einstein.subtle_effects.util.ParticleSpawnUtil;
 import einstein.subtle_effects.util.Util;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.DustParticleOptions;
@@ -132,9 +133,9 @@ public class ClientPacketHandlers {
         }
 
         if (BLOCKS.fallingBlocks.landDust) {
-            if (block instanceof FallingBlock fallingBlock) {
+            if (BLOCKS.fallingBlocks.dustyBlocks.contains(block)) {
                 RandomSource random = level.getRandom();
-                int color = fallingBlock.getDustColor(state, level, pos);
+                int color = getFallingBlockDustColor(level, block, state, pos);
                 DustParticleOptions options = new DustParticleOptions(
                         new Vector3f(
                                 ((color >> 16) & 255) / 255F,
@@ -158,6 +159,22 @@ public class ClientPacketHandlers {
                 }
             }
         }
+    }
+
+    private static int getFallingBlockDustColor(ClientLevel level, Block block, BlockState state, BlockPos pos) {
+        if (block instanceof FallingBlock fallingBlock) {
+            return fallingBlock.getDustColor(state, level, pos);
+        }
+
+        if (block instanceof BrushableBlock brushableBlock) {
+            Block turnsIntoBlock = brushableBlock.getTurnsInto();
+
+            if (turnsIntoBlock != block) {
+                return getFallingBlockDustColor(level, turnsIntoBlock, state, pos);
+            }
+        }
+
+        return Minecraft.getInstance().getBlockColors().getColor(state, level, pos);
     }
 
     // Don't convert to enum parameters, because the server will crash trying to access the client configs

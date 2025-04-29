@@ -35,6 +35,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseFireBlock;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.BrushableBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 
@@ -98,14 +100,20 @@ public class ModTickers {
                 });
         registerSimpleTicker(entity -> entity instanceof FallingBlockEntity && BLOCKS.fallingBlocks.fallingDust, (entity, level, random) -> {
             FallingBlockEntity fallingBlock = (FallingBlockEntity) entity;
+
             if (fallingBlock.fallDistance <= BLOCKS.fallingBlocks.fallingDustStartDistance.get()) {
                 return;
             }
 
             if (!fallingBlock.onGround() && !fallingBlock.isNoGravity()) {
                 BlockState state = fallingBlock.getBlockState();
-                if (BLOCKS.fallingBlocks.dustyBlocks.get().contains(state.getBlock())) {
-                    level.addParticle(new BlockParticleOption(ParticleTypes.FALLING_DUST, state),
+                Block block = state.getBlock();
+
+                if (BLOCKS.fallingBlocks.dustyBlocks.contains(block)) {
+                    level.addParticle(
+                            new BlockParticleOption(ParticleTypes.FALLING_DUST,
+                                    block instanceof BrushableBlock brushableBlock ?
+                                            brushableBlock.getTurnsInto().defaultBlockState() : state),
                             entity.getRandomX(1),
                             entity.getY() + 0.05,
                             entity.getRandomZ(1),
