@@ -1,6 +1,7 @@
 package einstein.subtle_effects.configs;
 
 import einstein.subtle_effects.SubtleEffects;
+import einstein.subtle_effects.configs.blocks.FallingBlocksConfigs;
 import einstein.subtle_effects.configs.blocks.SparksConfigs;
 import einstein.subtle_effects.configs.blocks.SteamConfigs;
 import einstein.subtle_effects.configs.blocks.UpdatedSmokeConfigs;
@@ -11,53 +12,26 @@ import me.fzzyhmstrs.fzzy_config.annotations.Translation;
 import me.fzzyhmstrs.fzzy_config.config.Config;
 import me.fzzyhmstrs.fzzy_config.config.ConfigGroup;
 import me.fzzyhmstrs.fzzy_config.util.EnumTranslatable;
-import me.fzzyhmstrs.fzzy_config.validation.collection.ValidatedList;
-import me.fzzyhmstrs.fzzy_config.validation.minecraft.ValidatedRegistryType;
 import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedFloat;
 import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedInt;
 import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedNumber;
-import net.minecraft.Util;
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.DyeColor;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static einstein.subtle_effects.init.ModConfigs.BASE_KEY;
 
 @Translation(prefix = ModConfigs.BASE_KEY + "blocks")
 public class ModBlockConfigs extends Config {
 
-    private static final List<Block> DEFAULT_FALLING_BLOCK_DUST_BLOCKS = Util.make(new ArrayList<>(), blocks -> {
-        blocks.add(Blocks.SAND);
-        blocks.add(Blocks.RED_SAND);
-        blocks.add(Blocks.GRAVEL);
-
-        for (DyeColor color : DyeColor.values()) {
-            blocks.add(BuiltInRegistries.BLOCK.get(ResourceLocation.withDefaultNamespace(color.getName() + "_concrete_powder")));
-        }
-    });
-
     public SparksConfigs sparks = new SparksConfigs();
     public UpdatedSmokeConfigs updatedSmoke = new UpdatedSmokeConfigs();
     public SteamConfigs steam = new SteamConfigs();
+    public FallingBlocksConfigs fallingBlocks = new FallingBlocksConfigs();
 
     public boolean redstoneBlockDust = true;
     public BlockDustDensity redstoneBlockDustDensity = BlockDustDensity.DEFAULT;
     public GlowstoneDustDisplayType glowstoneBlockDustDisplayType = GlowstoneDustDisplayType.ON;
     public BlockDustDensity glowstoneBlockDustDensity = BlockDustDensity.DEFAULT;
     public boolean beehivesHaveSleepingZs = true;
-    public ConfigGroup fallingBlockDustGroup = new ConfigGroup("falling_block_dust");
-    public boolean fallingBlockDust = true;
-    public ValidatedList<Block> fallingBlockDustBlocks = new ValidatedList<>(DEFAULT_FALLING_BLOCK_DUST_BLOCKS, ValidatedRegistryType.of(BuiltInRegistries.BLOCK));
-    @ConfigGroup.Pop
-    public ValidatedInt fallingBlockDustDistance = new ValidatedInt(0, 20, 0);
-    public boolean fallingBlockLandSound = true;
-    public boolean fallingBlockLandDust = true;
     public SmokeType torchflowerSmoke = SmokeType.DEFAULT;
     public boolean torchflowerFlames = true;
     public boolean dragonEggParticles = true;

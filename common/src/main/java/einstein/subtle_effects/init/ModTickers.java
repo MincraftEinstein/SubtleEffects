@@ -96,15 +96,15 @@ public class ModTickers {
                         }
                     }
                 });
-        registerSimpleTicker(entity -> entity instanceof FallingBlockEntity && ModConfigs.BLOCKS.fallingBlockDust, (entity, level, random) -> {
+        registerSimpleTicker(entity -> entity instanceof FallingBlockEntity && BLOCKS.fallingBlocks.fallingDust, (entity, level, random) -> {
             FallingBlockEntity fallingBlock = (FallingBlockEntity) entity;
-            if (fallingBlock.fallDistance <= BLOCKS.fallingBlockDustDistance.get()) {
+            if (fallingBlock.fallDistance <= BLOCKS.fallingBlocks.fallingDustStartDistance.get()) {
                 return;
             }
 
             if (!fallingBlock.onGround() && !fallingBlock.isNoGravity()) {
                 BlockState state = fallingBlock.getBlockState();
-                if (ModConfigs.BLOCKS.fallingBlockDustBlocks.get().contains(state.getBlock())) {
+                if (BLOCKS.fallingBlocks.dustyBlocks.get().contains(state.getBlock())) {
                     level.addParticle(new BlockParticleOption(ParticleTypes.FALLING_DUST, state),
                             entity.getRandomX(1),
                             entity.getY() + 0.05,
