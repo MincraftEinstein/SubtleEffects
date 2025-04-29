@@ -19,7 +19,6 @@ public class ModGeneralConfigs extends Config {
     public boolean enableParticleCulling = true;
     @ValidatedInt.Restrict(min = 1, max = 32)
     public int particleRenderDistance = 5;
-    public boolean cullParticlesWithNoAlpha = true;
     @ConfigGroup.Pop
     public boolean cullParticlesInUnloadedChunks = true;
 
