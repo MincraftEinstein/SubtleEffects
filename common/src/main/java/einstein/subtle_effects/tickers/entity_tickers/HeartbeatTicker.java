@@ -1,4 +1,4 @@
-package einstein.subtle_effects.tickers;
+package einstein.subtle_effects.tickers.entity_tickers;
 
 import einstein.subtle_effects.init.ModSounds;
 import einstein.subtle_effects.util.Util;
@@ -6,7 +6,7 @@ import net.minecraft.world.entity.player.Player;
 
 import static einstein.subtle_effects.init.ModConfigs.ENTITIES;
 
-public class HeartbeatTicker extends Ticker<Player> {
+public class HeartbeatTicker extends EntityTicker<Player> {
 
     private int beatTimer = 0;
 
@@ -15,7 +15,7 @@ public class HeartbeatTicker extends Ticker<Player> {
     }
 
     @Override
-    public void tick() {
+    public void entityTick() {
         if (entity.isCreative() || entity.isSpectator()) {
             return;
         }

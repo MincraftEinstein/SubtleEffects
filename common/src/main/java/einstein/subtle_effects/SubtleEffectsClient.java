@@ -25,7 +25,7 @@ public class SubtleEffectsClient {
     public static void clientSetup() {
         ModConfigs.init();
         ModPayloads.initClientHandlers();
-        ModTickers.init();
+        ModEntityTickers.init();
         ModBlockTickers.init();
         BiomeParticleManager.init();
         ModDamageListeners.init();
@@ -54,7 +54,7 @@ public class SubtleEffectsClient {
         }
 
         BiomeParticleManager.tickBiomeParticles(level, player);
-        TickerManager.tickTickers(level);
+        TickerManager.tick();
         HAS_CLEARED = false;
     }
 

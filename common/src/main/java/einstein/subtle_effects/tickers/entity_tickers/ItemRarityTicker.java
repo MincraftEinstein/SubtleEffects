@@ -1,4 +1,4 @@
-package einstein.subtle_effects.tickers;
+package einstein.subtle_effects.tickers.entity_tickers;
 
 import einstein.subtle_effects.SubtleEffects;
 import einstein.subtle_effects.compat.CompatHelper;
@@ -25,10 +25,10 @@ import java.util.Map;
 import java.util.Objects;
 
 import static einstein.subtle_effects.init.ModConfigs.ENTITIES;
-import static einstein.subtle_effects.init.ModTickers.shouldSpawn;
+import static einstein.subtle_effects.init.ModEntityTickers.shouldSpawn;
 import static einstein.subtle_effects.util.MathUtil.nextDouble;
 
-public class ItemRarityTicker extends Ticker<ItemEntity> {
+public class ItemRarityTicker extends EntityTicker<ItemEntity> {
 
     private static final TextColor WHITE_TEXT = TextColor.fromLegacyFormat(ChatFormatting.WHITE);
     private static final TagKey<DimensionType> DIMENSIONS = TagKey.create(Registries.DIMENSION_TYPE, SubtleEffects.loc("no_item_rarities"));
@@ -119,7 +119,7 @@ public class ItemRarityTicker extends Ticker<ItemEntity> {
     }
 
     @Override
-    public void tick() {
+    public void entityTick() {
         if (nameColors.isEmpty()) {
             return;
         }

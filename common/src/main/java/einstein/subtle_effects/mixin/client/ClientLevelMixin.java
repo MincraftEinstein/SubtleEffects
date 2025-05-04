@@ -4,7 +4,7 @@ import einstein.subtle_effects.data.SparkProviderData;
 import einstein.subtle_effects.data.SparkProviderReloadListener;
 import einstein.subtle_effects.init.ModBlockTickers;
 import einstein.subtle_effects.particle.SparkParticle;
-import einstein.subtle_effects.tickers.TickerManager;
+import einstein.subtle_effects.tickers.entity_tickers.EntityTickerManager;
 import einstein.subtle_effects.util.BlockTickerProvider;
 import einstein.subtle_effects.util.Box;
 import einstein.subtle_effects.util.ParticleSpawnUtil;
@@ -50,12 +50,12 @@ public abstract class ClientLevelMixin extends Level {
 
     @Inject(method = "tickNonPassenger", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;tick()V"))
     private void entityTick(Entity entity, CallbackInfo ci) {
-        TickerManager.createTickersForEntity(entity);
+        EntityTickerManager.createTickersForEntity(entity);
     }
 
     @Inject(method = "tickPassenger", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;rideTick()V"))
     private void entityRideTick(Entity vehicleEntity, Entity entity, CallbackInfo ci) {
-        TickerManager.createTickersForEntity(entity);
+        EntityTickerManager.createTickersForEntity(entity);
     }
 
     @Inject(method = "doAnimateTick", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/Block;animateTick(Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;Lnet/minecraft/util/RandomSource;)V"))

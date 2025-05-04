@@ -1,4 +1,4 @@
-package einstein.subtle_effects.tickers;
+package einstein.subtle_effects.tickers.entity_tickers;
 
 import einstein.subtle_effects.compat.CompatHelper;
 import einstein.subtle_effects.compat.SoulFiredCompat;
@@ -13,7 +13,7 @@ import net.minecraft.world.entity.Entity;
 import static einstein.subtle_effects.init.ModConfigs.ENTITIES;
 import static einstein.subtle_effects.util.MathUtil.nextNonAbsDouble;
 
-public class EntityFireTicker extends Ticker<Entity> {
+public class EntityFireTicker extends EntityTicker<Entity> {
 
     private final float bbWidth;
     private final float bbHeight;
@@ -25,7 +25,7 @@ public class EntityFireTicker extends Ticker<Entity> {
     }
 
     @Override
-    public void tick() {
+    public void entityTick() {
         if (entity.displayFireAnimation()) {
             if (random.nextInt(90) == 0 && ENTITIES.burning.sounds) {
                 Util.playClientSound(entity, SoundEvents.FIRE_EXTINGUISH, entity.getSoundSource(), 0.3F, 1);

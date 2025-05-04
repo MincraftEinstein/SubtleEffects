@@ -1,4 +1,4 @@
-package einstein.subtle_effects.tickers;
+package einstein.subtle_effects.tickers.entity_tickers;
 
 import einstein.subtle_effects.configs.ModEntityConfigs;
 import einstein.subtle_effects.init.ModConfigs;
@@ -13,7 +13,7 @@ import net.minecraft.world.phys.Vec3;
 import static einstein.subtle_effects.util.MathUtil.nextNonAbsDouble;
 import static net.minecraft.util.Mth.nextFloat;
 
-public class MinecartSparksTicker extends Ticker<AbstractMinecart> {
+public class MinecartSparksTicker extends EntityTicker<AbstractMinecart> {
 
     private static final Vec3[] WHEEL_POSITIONS = new Vec3[] {
             new Vec3(-1, 0, 1),
@@ -33,7 +33,7 @@ public class MinecartSparksTicker extends Ticker<AbstractMinecart> {
     }
 
     @Override
-    public void tick() {
+    public void entityTick() {
         Vec3 currentDeltaMovement = entity.getDeltaMovement();
         if (currentDeltaMovement.x() == 0 && currentDeltaMovement.z() == 0) {
             return;

@@ -1,4 +1,4 @@
-package einstein.subtle_effects.tickers.sleeping;
+package einstein.subtle_effects.tickers.entity_tickers.sleeping;
 
 import einstein.subtle_effects.init.ModSounds;
 import einstein.subtle_effects.util.Util;

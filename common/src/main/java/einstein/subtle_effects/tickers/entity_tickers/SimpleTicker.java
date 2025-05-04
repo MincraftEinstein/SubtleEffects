@@ -1,9 +1,9 @@
-package einstein.subtle_effects.tickers;
+package einstein.subtle_effects.tickers.entity_tickers;
 
 import einstein.subtle_effects.util.EntityProvider;
 import net.minecraft.world.entity.Entity;
 
-public class SimpleTicker<T extends Entity> extends Ticker<T>{
+public class SimpleTicker<T extends Entity> extends EntityTicker<T> {
 
     private final EntityProvider<T> provider;
 
@@ -13,7 +13,7 @@ public class SimpleTicker<T extends Entity> extends Ticker<T>{
     }
 
     @Override
-    public void tick() {
+    public void entityTick() {
         provider.apply(entity, level, random);
     }
 }

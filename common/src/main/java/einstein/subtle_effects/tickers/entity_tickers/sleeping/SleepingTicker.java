@@ -1,7 +1,7 @@
-package einstein.subtle_effects.tickers.sleeping;
+package einstein.subtle_effects.tickers.entity_tickers.sleeping;
 
 import einstein.subtle_effects.init.ModParticles;
-import einstein.subtle_effects.tickers.Ticker;
+import einstein.subtle_effects.tickers.entity_tickers.EntityTicker;
 import einstein.subtle_effects.util.Util;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.sounds.SoundEvent;
@@ -12,7 +12,7 @@ import java.util.UUID;
 
 import static einstein.subtle_effects.init.ModConfigs.ENTITIES;
 
-public class SleepingTicker<T extends LivingEntity> extends Ticker<T> {
+public class SleepingTicker<T extends LivingEntity> extends EntityTicker<T> {
 
     private final SoundEvent snoreSound;
     private final float snoreVolume;
@@ -39,7 +39,7 @@ public class SleepingTicker<T extends LivingEntity> extends Ticker<T> {
     }
 
     @Override
-    public void tick() {
+    public void entityTick() {
         if (isSleeping()) {
             if (firstSleepTick) {
                 snoreStartDelay = (shouldDelay() ? Util.BREATH_DELAY + random.nextInt(40) : 0);

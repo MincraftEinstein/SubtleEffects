@@ -1,4 +1,4 @@
-package einstein.subtle_effects.tickers;
+package einstein.subtle_effects.tickers.entity_tickers;
 
 import einstein.subtle_effects.compat.CompatHelper;
 import einstein.subtle_effects.compat.SereneSeasonsCompat;
@@ -18,7 +18,7 @@ import net.minecraft.world.phys.Vec3;
 
 import static einstein.subtle_effects.init.ModConfigs.ENTITIES;
 
-public class FrostyBreathTicker extends Ticker<LivingEntity> {
+public class FrostyBreathTicker extends EntityTicker<LivingEntity> {
 
     private int delayTimer = 0;
     private int breatheTimer = 0;
@@ -30,7 +30,7 @@ public class FrostyBreathTicker extends Ticker<LivingEntity> {
     }
 
     @Override
-    public void tick() {
+    public void entityTick() {
         BlockPos pos = entity.blockPosition();
         if (entity.isSpectator()) {
             return;

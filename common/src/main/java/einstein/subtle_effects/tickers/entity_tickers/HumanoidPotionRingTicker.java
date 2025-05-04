@@ -1,4 +1,4 @@
-package einstein.subtle_effects.tickers;
+package einstein.subtle_effects.tickers.entity_tickers;
 
 import einstein.subtle_effects.init.ModParticles;
 import einstein.subtle_effects.particle.option.ColorAndIntegerParticleOptions;
@@ -7,7 +7,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.alchemy.PotionContents;
 
-public class HumanoidPotionRingTicker<T extends LivingEntity> extends Ticker<T> {
+public class HumanoidPotionRingTicker<T extends LivingEntity> extends EntityTicker<T> {
 
     protected boolean wasUsingItem = false;
 
@@ -16,7 +16,7 @@ public class HumanoidPotionRingTicker<T extends LivingEntity> extends Ticker<T> 
     }
 
     @Override
-    public void tick() {
+    public void entityTick() {
         boolean isUsingItem = isUsingItem();
         if (wasUsingItem != isUsingItem) {
             ItemStack stack = entity.getMainHandItem();

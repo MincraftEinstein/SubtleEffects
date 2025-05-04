@@ -1,11 +1,11 @@
-package einstein.subtle_effects.tickers;
+package einstein.subtle_effects.tickers.entity_tickers;
 
 import einstein.subtle_effects.init.ModParticles;
 import einstein.subtle_effects.util.MathUtil;
 import net.minecraft.world.entity.Crackiness;
 import net.minecraft.world.entity.animal.IronGolem;
 
-public class IronGolemTicker extends Ticker<IronGolem> {
+public class IronGolemTicker extends EntityTicker<IronGolem> {
 
     private Crackiness.Level oldCrackinessLevel;
     private float oldHealth;
@@ -15,7 +15,7 @@ public class IronGolemTicker extends Ticker<IronGolem> {
     }
 
     @Override
-    public void tick() {
+    public void entityTick() {
         Crackiness.Level crackinessLevel = entity.getCrackiness();
         if (oldCrackinessLevel != crackinessLevel) {
             oldCrackinessLevel = crackinessLevel;
