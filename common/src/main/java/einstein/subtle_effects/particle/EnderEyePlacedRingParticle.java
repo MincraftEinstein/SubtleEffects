@@ -14,6 +14,7 @@ import org.joml.Quaternionf;
 
 public class EnderEyePlacedRingParticle extends FlatPlaneParticle {
 
+    public static final int DEFAULT_COLOR = 0x7abaab;
     public static final float SIZE = 0.2501F;
     private final LifetimeAlpha lifetimeAlpha = new LifetimeAlpha(1, 0, 0, 1);
 

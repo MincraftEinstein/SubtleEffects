@@ -57,4 +57,5 @@ dependencies {
     compileOnly("maven.modrinth:iceberg:${neoforge_iceberg_version}")
     compileOnly("maven.modrinth:prism-lib:${neoforge_prism_version}")
     compileOnly("maven.modrinth:item-borders:${neoforge_item_borders_version}")
+    compileOnly("maven.modrinth:endrem:${neoforge_endrem_version}")
 }

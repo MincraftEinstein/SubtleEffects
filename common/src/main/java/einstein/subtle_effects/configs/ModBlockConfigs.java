@@ -1,26 +1,49 @@
 package einstein.subtle_effects.configs;
 
 import einstein.subtle_effects.SubtleEffects;
+import einstein.subtle_effects.compat.CompatHelper;
+import einstein.subtle_effects.compat.EndRemasteredCompat;
 import einstein.subtle_effects.configs.blocks.FallingBlocksConfigs;
 import einstein.subtle_effects.configs.blocks.SparksConfigs;
 import einstein.subtle_effects.configs.blocks.SteamConfigs;
 import einstein.subtle_effects.configs.blocks.UpdatedSmokeConfigs;
 import einstein.subtle_effects.init.ModBlockTickers;
 import einstein.subtle_effects.init.ModConfigs;
+import einstein.subtle_effects.particle.EnderEyePlacedRingParticle;
 import einstein.subtle_effects.tickers.TickerManager;
+import einstein.subtle_effects.util.Util;
 import me.fzzyhmstrs.fzzy_config.annotations.Translation;
 import me.fzzyhmstrs.fzzy_config.config.Config;
 import me.fzzyhmstrs.fzzy_config.config.ConfigGroup;
+import me.fzzyhmstrs.fzzy_config.util.AllowableIdentifiers;
 import me.fzzyhmstrs.fzzy_config.util.EnumTranslatable;
+import me.fzzyhmstrs.fzzy_config.validation.collection.ValidatedMap;
+import me.fzzyhmstrs.fzzy_config.validation.minecraft.ValidatedIdentifier;
+import me.fzzyhmstrs.fzzy_config.validation.misc.ValidatedColor;
 import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedFloat;
 import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedInt;
 import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedNumber;
+import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
 
+import java.awt.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import static einstein.subtle_effects.init.ModConfigs.BASE_KEY;
+import static einstein.subtle_effects.util.Util.VANILLA_EYE;
 
 @Translation(prefix = ModConfigs.BASE_KEY + "blocks")
 public class ModBlockConfigs extends Config {
+
+    private static final Map<ResourceLocation, ValidatedColor.ColorHolder> DEFAULT_EYE_COLORS = net.minecraft.Util.make(new HashMap<>(), map -> {
+        map.put(VANILLA_EYE, Util.toColorHolder(EnderEyePlacedRingParticle.DEFAULT_COLOR));
+
+        if (CompatHelper.IS_END_REMASTERED_LOADED.get()) {
+            map.putAll(CompatHelper.getDefaultEyes());
+        }
+    });
 
     public SparksConfigs sparks = new SparksConfigs();
     public UpdatedSmokeConfigs updatedSmoke = new UpdatedSmokeConfigs();
@@ -70,6 +93,21 @@ public class ModBlockConfigs extends Config {
     public boolean lavaCauldronEffects = true;
     public boolean enderEyePlacedRings = true;
     public EnderEyePlacedParticlesDisplayType enderEyePlacedParticlesDisplayType = EnderEyePlacedParticlesDisplayType.BOTH;
+    public ValidatedMap<ResourceLocation, ValidatedColor.ColorHolder> eyeColors = new ValidatedMap<>(DEFAULT_EYE_COLORS,
+            getEyeHandler(), new ValidatedColor(new Color(EnderEyePlacedRingParticle.DEFAULT_COLOR), false));
+
+    private static ValidatedIdentifier getEyeHandler() {
+        List<ResourceLocation> eyes = CompatHelper.IS_END_REMASTERED_LOADED.get()
+                ? EndRemasteredCompat.getAllEyes()
+                : CompatHelper.getDefaultEyes().keySet().stream().toList();
+
+        return new ValidatedIdentifier(VANILLA_EYE, new AllowableIdentifiers(id -> {
+            if (eyes.contains(id)) {
+                return true;
+            }
+            return id.equals(VANILLA_EYE);
+        }, () -> eyes, true));
+    }
 
     public ModBlockConfigs() {
         super(SubtleEffects.loc("blocks"));

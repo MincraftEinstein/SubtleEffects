@@ -3,10 +3,14 @@ package einstein.subtle_effects.util;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import einstein.subtle_effects.SubtleEffects;
+import einstein.subtle_effects.compat.CompatHelper;
+import einstein.subtle_effects.compat.EndRemasteredCompat;
 import einstein.subtle_effects.data.MobSkullShaderData;
 import einstein.subtle_effects.data.MobSkullShaderReloadListener;
 import einstein.subtle_effects.mixin.client.GameRendererAccessor;
 import einstein.subtle_effects.mixin.client.block.AbstractCauldronBlockAccessor;
+import einstein.subtle_effects.particle.EnderEyePlacedRingParticle;
+import me.fzzyhmstrs.fzzy_config.validation.misc.ValidatedColor;
 import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.Particle;
@@ -28,6 +32,8 @@ import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.Vec3;
 
+import static einstein.subtle_effects.init.ModConfigs.BLOCKS;
+
 public class Util {
 
     public static final int BREATH_DELAY = 60;
@@ -36,6 +42,7 @@ public class Util {
     public static final DustParticleOptions GLOWSTONE_DUST_PARTICLES = new DustParticleOptions(Vec3.fromRGB24(0xFFBC5E).toVector3f(), 1);
     public static final ResourceLocation COLORLESS_RAIN_TEXTURE = SubtleEffects.loc("textures/environment/colorless_rain.png");
     public static final Gson GSON = new GsonBuilder().create();
+    public static final ResourceLocation VANILLA_EYE = ResourceLocation.withDefaultNamespace("ender_eye");
 
     public static void playClientSound(Entity entity, SoundEvent sound, SoundSource source, float volume, float pitch) {
         Minecraft minecraft = Minecraft.getInstance();
@@ -108,5 +115,26 @@ public class Util {
             return Fluids.WATER;
         }
         return Fluids.EMPTY;
+    }
+
+    public static ValidatedColor.ColorHolder getEyeColorHolder(Level level, BlockPos pos) {
+        if (CompatHelper.IS_END_REMASTERED_LOADED.get()) {
+            ValidatedColor.ColorHolder color = EndRemasteredCompat.getEyeColor(level, pos);
+
+            if (color != null) {
+                return color;
+            }
+        }
+
+        ValidatedColor.ColorHolder vanillaColor = BLOCKS.eyeColors.get(VANILLA_EYE);
+        if (vanillaColor != null) {
+            return vanillaColor;
+        }
+
+        return toColorHolder(EnderEyePlacedRingParticle.DEFAULT_COLOR);
+    }
+
+    public static ValidatedColor.ColorHolder toColorHolder(int color) {
+        return new ValidatedColor.ColorHolder((color >> 16) & 255, (color >> 8) & 255, color & 255, 255, false);
     }
 }

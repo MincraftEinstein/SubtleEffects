@@ -25,6 +25,7 @@ dependencies {
     compileOnly group: "maven.modrinth", name: "iceberg", version: "${neoforge_iceberg_version}"
     compileOnly group: "maven.modrinth", name: "prism-lib", version: "${neoforge_prism_version}"
     compileOnly group: "maven.modrinth", name: "item-borders", version: "${neoforge_item_borders_version}"
+    compileOnly group: "maven.modrinth", name: "endrem", version: "${neoforge_endrem_version}"
 }
 
 configurations {

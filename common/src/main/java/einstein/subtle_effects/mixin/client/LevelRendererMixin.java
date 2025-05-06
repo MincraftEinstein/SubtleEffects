@@ -9,6 +9,7 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import einstein.subtle_effects.configs.ModBlockConfigs;
 import einstein.subtle_effects.init.ModParticles;
 import einstein.subtle_effects.particle.SparkParticle;
+import einstein.subtle_effects.tickers.TickerManager;
 import einstein.subtle_effects.util.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -127,7 +128,7 @@ public class LevelRendererMixin implements FrustumGetter {
                 break;
             }
             case 1503: {
-                ParticleSpawnUtil.spawnEnderEyePlacementParticles(pos, random, level, 0x7abaab);
+                TickerManager.scheduleNext(() -> ParticleSpawnUtil.spawnEnderEyePlacementParticles(pos, random, level, Util.getEyeColorHolder(level, pos).toInt()));
                 break;
             }
         }
