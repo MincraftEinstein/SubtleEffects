@@ -7,7 +7,7 @@ import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import einstein.subtle_effects.configs.ModBlockConfigs;
-import einstein.subtle_effects.configs.ModEntityConfigs;
+import einstein.subtle_effects.configs.ReplacedParticlesDisplayType;
 import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.init.ModParticles;
 import einstein.subtle_effects.particle.SparkParticle;
@@ -148,13 +148,13 @@ public class LevelRendererMixin implements FrustumGetter {
         RandomSource random = level.getRandom();
 
         if (type == LevelEvent.PARTICLES_SCRAPE) {
-            if (ModConfigs.ITEMS.axeScrapeParticlesDisplayType != ModEntityConfigs.XPBottleParticlesDisplayType.DEFAULT) {
+            if (ModConfigs.ITEMS.axeScrapeParticlesDisplayType != ReplacedParticlesDisplayType.DEFAULT) {
                 subtleEffects$spawnCopperParticles(level, pos, count, state, random);
             }
             return;
         }
         else if (type == LevelEvent.PARTICLES_WAX_OFF) {
-            if (ModConfigs.ITEMS.axeWaxOffParticlesDisplayType != ModEntityConfigs.XPBottleParticlesDisplayType.DEFAULT) {
+            if (ModConfigs.ITEMS.axeWaxOffParticlesDisplayType != ReplacedParticlesDisplayType.DEFAULT) {
                 subtleEffects$spawnCopperParticles(level, pos, count, state, random);
             }
             return;

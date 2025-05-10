@@ -1,6 +1,6 @@
 package einstein.subtle_effects.networking.clientbound;
 
-import einstein.subtle_effects.configs.ModEntityConfigs;
+import einstein.subtle_effects.configs.ReplacedParticlesDisplayType;
 import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.init.ModParticles;
 import einstein.subtle_effects.particle.option.FloatParticleOptions;
@@ -70,7 +70,7 @@ public class ClientPacketHandlers {
         BlockPos pos = payload.pos();
         Vec3 vec3 = Vec3.atBottomCenterOf(pos);
         RandomSource random = level.getRandom();
-        if (ENTITIES.xpBottleParticlesDisplayType == ModEntityConfigs.XPBottleParticlesDisplayType.BOTH || ENTITIES.xpBottleParticlesDisplayType == ModEntityConfigs.XPBottleParticlesDisplayType.VANILLA) {
+        if (ENTITIES.xpBottleParticlesDisplayType == ReplacedParticlesDisplayType.BOTH || ENTITIES.xpBottleParticlesDisplayType == ReplacedParticlesDisplayType.VANILLA) {
             level.levelEvent(
                     LevelEvent.PARTICLES_SPELL_POTION_SPLASH,
                     pos,
@@ -78,7 +78,7 @@ public class ClientPacketHandlers {
             );
         }
 
-        if (ENTITIES.xpBottleParticlesDisplayType == ModEntityConfigs.XPBottleParticlesDisplayType.BOTH || ENTITIES.xpBottleParticlesDisplayType == ModEntityConfigs.XPBottleParticlesDisplayType.DEFAULT) {
+        if (ENTITIES.xpBottleParticlesDisplayType == ReplacedParticlesDisplayType.BOTH || ENTITIES.xpBottleParticlesDisplayType == ReplacedParticlesDisplayType.DEFAULT) {
             for (int i = 0; i < ENTITIES.xpBottleParticlesDensity.get(); ++i) {
                 double d = random.nextDouble() * 4;
                 double d1 = random.nextDouble() * Math.PI * 2;
@@ -97,7 +97,7 @@ public class ClientPacketHandlers {
             }
         }
 
-        if (ENTITIES.xpBottleParticlesDisplayType == ModEntityConfigs.XPBottleParticlesDisplayType.DEFAULT) {
+        if (ENTITIES.xpBottleParticlesDisplayType == ReplacedParticlesDisplayType.DEFAULT) {
             for (int i = 0; i < 8; ++i) {
                 level.addParticle(
                         new ItemParticleOption(ParticleTypes.ITEM, new ItemStack(Items.SPLASH_POTION)),

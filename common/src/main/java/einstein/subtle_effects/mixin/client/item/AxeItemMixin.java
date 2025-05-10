@@ -3,7 +3,7 @@ package einstein.subtle_effects.mixin.client.item;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
-import einstein.subtle_effects.configs.ModEntityConfigs;
+import einstein.subtle_effects.configs.ReplacedParticlesDisplayType;
 import einstein.subtle_effects.init.ModParticles;
 import einstein.subtle_effects.util.ParticleSpawnUtil;
 import net.minecraft.core.BlockPos;
@@ -35,12 +35,12 @@ public class AxeItemMixin {
                 }
             }
             else if (sound.equals(SoundEvents.AXE_SCRAPE)) {
-                if (ITEMS.axeScrapeParticlesDisplayType != ModEntityConfigs.XPBottleParticlesDisplayType.VANILLA) {
+                if (ITEMS.axeScrapeParticlesDisplayType != ReplacedParticlesDisplayType.VANILLA) {
                     subtleEffects$spawnCopperParticles(level, pos, state, state);
                 }
             }
             else if (sound.equals(SoundEvents.AXE_WAX_OFF)) {
-                if (ITEMS.axeWaxOffParticlesDisplayType != ModEntityConfigs.XPBottleParticlesDisplayType.VANILLA) {
+                if (ITEMS.axeWaxOffParticlesDisplayType != ReplacedParticlesDisplayType.VANILLA) {
                     subtleEffects$spawnCopperParticles(level, pos, state, Blocks.HONEY_BLOCK.defaultBlockState());
                 }
             }

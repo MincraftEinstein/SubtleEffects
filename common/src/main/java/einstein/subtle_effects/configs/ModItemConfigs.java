@@ -9,8 +9,8 @@ import me.fzzyhmstrs.fzzy_config.config.Config;
 public class ModItemConfigs extends Config {
 
     public boolean axeStripParticles = true;
-    public ModEntityConfigs.XPBottleParticlesDisplayType axeScrapeParticlesDisplayType = ModEntityConfigs.XPBottleParticlesDisplayType.DEFAULT;
-    public ModEntityConfigs.XPBottleParticlesDisplayType axeWaxOffParticlesDisplayType = ModEntityConfigs.XPBottleParticlesDisplayType.DEFAULT;
+    public ReplacedParticlesDisplayType axeScrapeParticlesDisplayType = ReplacedParticlesDisplayType.DEFAULT;
+    public ReplacedParticlesDisplayType axeWaxOffParticlesDisplayType = ReplacedParticlesDisplayType.DEFAULT;
     public boolean waterEvaporateFromBucketSteam = true;
     public boolean boneMealUsingParticles = true;
     public boolean flintAndSteelParticles = true;

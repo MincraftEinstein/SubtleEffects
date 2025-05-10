@@ -42,7 +42,7 @@ public class ModEntityConfigs extends Config {
     public boolean ironGolemCrackParticles = true;
     public boolean spectralArrowParticles = true;
     public boolean wardenDeathSoulParticles = true;
-    public XPBottleParticlesDisplayType xpBottleParticlesDisplayType = XPBottleParticlesDisplayType.DEFAULT;
+    public ReplacedParticlesDisplayType xpBottleParticlesDisplayType = ReplacedParticlesDisplayType.DEFAULT;
     public ValidatedInt xpBottleParticlesDensity = new ValidatedInt(10, 200, 5);
     public ValidatedFloat eggSmashSoundVolume = new ValidatedFloat(0.5F, 1, 0);
     public boolean eggSplatParticles = true;
@@ -74,17 +74,6 @@ public class ModEntityConfigs extends Config {
         @Override
         public String prefix() {
             return ModConfigs.BASE_KEY + "entities.perspectiveDisplayType";
-        }
-    }
-
-    public enum XPBottleParticlesDisplayType implements EnumTranslatable {
-        DEFAULT,
-        VANILLA,
-        BOTH;
-
-        @Override
-        public @NotNull String prefix() {
-            return ModConfigs.BASE_KEY + "entities.xpBottleParticlesDisplayType";
         }
     }
 
