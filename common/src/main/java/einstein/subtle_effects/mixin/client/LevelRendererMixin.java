@@ -99,20 +99,25 @@ public class LevelRendererMixin implements FrustumGetter {
             }
             case 1030: {
                 if (BLOCKS.anvilUseParticles) {
-                    float pointX = random.nextFloat();
-                    float pointZ = random.nextFloat();
+                    for (int i = 0; i < 3; i++) {
+                        TickerManager.schedule(8 * i, () -> {
+                            float pointX = random.nextFloat();
+                            float pointZ = random.nextFloat();
 
-                    for (int i = 0; i < 20; i++) {
-                        int xSign = nextSign(random);
-                        int zSign = nextSign(random);
-                        level.addParticle(SparkParticle.create(SparkType.METAL, random),
-                                pos.getX() + pointX,
-                                pos.getY() + 1,
-                                pos.getZ() + pointZ,
-                                nextFloat(random, 0.1F, 0.2F) * xSign,
-                                nextFloat(random, 0.1F, 0.2F),
-                                nextFloat(random, 0.1F, 0.2F) * zSign
-                        );
+                            for (int i2 = 0; i2 < 20; i2++) {
+                                int xSign = nextSign(random);
+                                int zSign = nextSign(random);
+
+                                level.addParticle(SparkParticle.create(SparkType.METAL, random),
+                                        pos.getX() + pointX,
+                                        pos.getY() + 1,
+                                        pos.getZ() + pointZ,
+                                        nextFloat(random, 0.1F, 0.2F) * xSign,
+                                        nextFloat(random, 0.1F, 0.2F),
+                                        nextFloat(random, 0.1F, 0.2F) * zSign
+                                );
+                            }
+                        });
                     }
                 }
                 break;
