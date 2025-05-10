@@ -27,17 +27,21 @@ import net.minecraft.world.entity.animal.horse.AbstractHorse;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.function.BiPredicate;
 import java.util.function.Predicate;
+import java.util.function.Supplier;
 
 import static einstein.subtle_effects.init.ModConfigs.BLOCKS;
 import static einstein.subtle_effects.init.ModConfigs.ENTITIES;
 import static einstein.subtle_effects.util.MathUtil.*;
 import static net.minecraft.util.Mth.DEG_TO_RAD;
+import static net.minecraft.world.level.block.state.properties.BlockStateProperties.DOUBLE_BLOCK_HALF;
 
 public class ParticleSpawnUtil {
 
@@ -279,5 +283,61 @@ public class ParticleSpawnUtil {
                 );
             }
         }
+    }
+
+    public static void spawnParticlesAroundShape(ParticleOptions particle, Level level, BlockPos pos, BlockState state, int count, Supplier<Vec3> particleSpeed, float offset) {
+        if (state.hasProperty(DOUBLE_BLOCK_HALF)) {
+            DoubleBlockHalf half = state.getValue(DOUBLE_BLOCK_HALF);
+            BlockPos oppositePos = pos.relative(half.getDirectionToOther());
+            BlockState oppositeState = level.getBlockState(oppositePos);
+
+            if (oppositeState.is(state.getBlock()) && oppositeState.hasProperty(DOUBLE_BLOCK_HALF)) {
+                if (half.getOtherHalf().equals(oppositeState.getValue(DOUBLE_BLOCK_HALF))) {
+                    spawnParticlesAroundShape(particle, level, oppositePos, state,
+                            direction ->
+                                    (half == DoubleBlockHalf.LOWER && direction == Direction.UP)
+                                            || (half == DoubleBlockHalf.UPPER && direction == Direction.DOWN),
+                            count, particleSpeed, offset
+                    );
+                }
+            }
+        }
+
+        spawnParticlesAroundShape(particle, level, pos, state, null, count, particleSpeed, offset);
+    }
+
+    public static void spawnParticlesAroundShape(ParticleOptions particle, Level level, BlockPos pos, BlockState state, @Nullable Predicate<Direction> predicate, int count, Supplier<Vec3> particleSpeed, float offset) {
+        RandomSource random = level.getRandom();
+
+        state.getShape(level, pos).forAllBoxes((minX, minY, minZ, maxX, maxY, maxZ) -> {
+            for (Direction direction : Direction.values()) {
+                if (predicate != null && predicate.test(direction)) {
+                    continue;
+                }
+
+                BlockPos relativePos = pos.relative(direction);
+                if (level.getBlockState(relativePos).isSolidRender(level, relativePos)) {
+                    continue;
+                }
+
+                Direction.Axis axis = direction.getAxis();
+                Direction.AxisDirection axisDirection = direction.getAxisDirection();
+                boolean isPositive = axisDirection == Direction.AxisDirection.POSITIVE;
+
+                for (int i = 0; i < count; i++) {
+                    double xOffset = axis == Direction.Axis.X ? (isPositive ? maxX : minX) : Mth.nextDouble(random, minX, maxX);
+                    double yOffset = axis == Direction.Axis.Y ? (isPositive ? maxY : minY) : Mth.nextDouble(random, minY, maxY);
+                    double zOffset = axis == Direction.Axis.Z ? (isPositive ? maxZ : minZ) : Mth.nextDouble(random, minZ, maxZ);
+                    Vec3 speed = particleSpeed.get();
+
+                    level.addParticle(particle,
+                            pos.getX() + xOffset + (offset * axisDirection.getStep()),
+                            pos.getY() + yOffset + (offset * axisDirection.getStep()),
+                            pos.getZ() + zOffset + (offset * axisDirection.getStep()),
+                            speed.x(), speed.y(), speed.z()
+                    );
+                }
+            }
+        });
     }
 }

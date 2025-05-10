@@ -24,8 +24,7 @@
     ]
   },
   "mixins": [
-    "subtle_effects.mixins.json",
-    "subtle_effects.fabric.mixins.json"
+    "subtle_effects.mixins.json"
   ],
   "accessWidener": "subtle_effects.accesswidener",
   "depends": {

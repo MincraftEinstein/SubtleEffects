@@ -39,6 +39,7 @@
     "client.entity.SlimeMixin",
     "client.entity.SpellCasterIllagerMixin",
     "client.entity.ThrownEggMixin",
+    "client.item.AxeItemMixin",
     "client.item.BoneMealItemMixin",
     "client.item.BucketItemMixin",
     "client.item.FlintAndSteelItemMixin",

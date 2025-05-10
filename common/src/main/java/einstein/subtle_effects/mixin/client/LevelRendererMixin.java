@@ -7,6 +7,8 @@ import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import einstein.subtle_effects.configs.ModBlockConfigs;
+import einstein.subtle_effects.configs.ModEntityConfigs;
+import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.init.ModParticles;
 import einstein.subtle_effects.particle.SparkParticle;
 import einstein.subtle_effects.tickers.TickerManager;
@@ -19,25 +21,31 @@ import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
+import net.minecraft.util.valueproviders.IntProvider;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.GrindstoneBlock;
 import net.minecraft.world.level.block.LevelEvent;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.AttachFace;
+import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import static einstein.subtle_effects.init.ModConfigs.BIOMES;
 import static einstein.subtle_effects.init.ModConfigs.BLOCKS;
+import static einstein.subtle_effects.util.MathUtil.nextNonAbsDouble;
 import static einstein.subtle_effects.util.MathUtil.nextSign;
 import static net.minecraft.util.Mth.nextFloat;
 
@@ -132,6 +140,39 @@ public class LevelRendererMixin implements FrustumGetter {
                 break;
             }
         }
+    }
+
+    @WrapOperation(method = "levelEvent", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/ParticleUtils;spawnParticlesOnBlockFaces(Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;Lnet/minecraft/core/particles/ParticleOptions;Lnet/minecraft/util/valueproviders/IntProvider;)V"))
+    private void cancelOrReplaceCopperParticles(Level level, BlockPos pos, ParticleOptions particle, IntProvider count, Operation<Void> original, @Local(argsOnly = true, ordinal = 0) int type) {
+        BlockState state = level.getBlockState(pos);
+        RandomSource random = level.getRandom();
+
+        if (type == LevelEvent.PARTICLES_SCRAPE) {
+            if (ModConfigs.ITEMS.axeScrapeParticlesDisplayType != ModEntityConfigs.XPBottleParticlesDisplayType.DEFAULT) {
+                subtleEffects$spawnCopperParticles(level, pos, count, state, random);
+            }
+            return;
+        }
+        else if (type == LevelEvent.PARTICLES_WAX_OFF) {
+            if (ModConfigs.ITEMS.axeWaxOffParticlesDisplayType != ModEntityConfigs.XPBottleParticlesDisplayType.DEFAULT) {
+                subtleEffects$spawnCopperParticles(level, pos, count, state, random);
+            }
+            return;
+        }
+
+        original.call(level, pos, particle, count);
+    }
+
+    @Unique
+    private static void subtleEffects$spawnCopperParticles(Level level, BlockPos pos, IntProvider count, BlockState state, RandomSource random) {
+        ParticleSpawnUtil.spawnParticlesAroundShape(ParticleTypes.WAX_OFF,
+                level, pos, state, count.sample(random),
+                () -> new Vec3(
+                        nextNonAbsDouble(random, 0.5),
+                        nextNonAbsDouble(random, 0.5),
+                        nextNonAbsDouble(random, 0.5)
+                ), 0.125F
+        );
     }
 
     // Fabric didn't like using a slice for some reason, should try again at some point
