@@ -397,8 +397,5 @@
   "config.subtle_effects.general.fireHeight": "Fire Height",
   "config.subtle_effects.general.fireHeight.desc": "The height for the fire screen overlay when burning. 0 is the vanilla fire height",
   "config.subtle_effects.general.nightVisionFading": "Night Vision Fading",
-  "config.subtle_effects.general.nightVisionFading.desc": "Night vision slowly fades out rather then flashing",
-  "config.subtle_effects.server": "Server",
-  "config.subtle_effects.server.disableRegistrySyncing": "Disable Registry Syncing",
-  "config.subtle_effects.server.disableRegistrySyncing.desc": "Disables the server from preventing clients with mismatched particle and sound registries from joining. This mainly fixes issues with LAN servers, try disabling if you're experiencing connection issues elsewhere"
+  "config.subtle_effects.general.nightVisionFading.desc": "Night vision slowly fades out rather then flashing"
 }
