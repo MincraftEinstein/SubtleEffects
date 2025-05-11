@@ -110,6 +110,8 @@
   "config.subtle_effects.blocks.anvilUseParticles.desc": "Should spark particles fly off anvils when used",
   "config.subtle_effects.blocks.grindstoneUseParticles": "Grindstone Use Particles",
   "config.subtle_effects.blocks.grindstoneUseParticles.desc": "Should spark particles fly off grindstones when used",
+  "config.subtle_effects.blocks.smithingTableUseParticles": "Smithing Table Use Particles",
+  "config.subtle_effects.blocks.smithingTableUseParticles.desc": "Should spark particles fly off smithing tables when used",
   "config.subtle_effects.blocks.commandBlockParticles": "Command Block Particles",
   "config.subtle_effects.blocks.commandBlockParticles.desc": "Should command blocks have particles like in MC Story Mode",
   "config.subtle_effects.blocks.slimeBlockBounceSounds": "Slime Block Bounce Sounds",

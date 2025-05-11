@@ -46,7 +46,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import static einstein.subtle_effects.init.ModConfigs.BIOMES;
 import static einstein.subtle_effects.init.ModConfigs.BLOCKS;
 import static einstein.subtle_effects.util.MathUtil.nextNonAbsDouble;
-import static einstein.subtle_effects.util.MathUtil.nextSign;
 import static net.minecraft.util.Mth.nextFloat;
 
 @Mixin(LevelRenderer.class)
@@ -100,24 +99,9 @@ public class LevelRendererMixin implements FrustumGetter {
             case 1030: {
                 if (BLOCKS.anvilUseParticles) {
                     for (int i = 0; i < 3; i++) {
-                        TickerManager.schedule(8 * i, () -> {
-                            float pointX = random.nextFloat();
-                            float pointZ = random.nextFloat();
-
-                            for (int i2 = 0; i2 < 20; i2++) {
-                                int xSign = nextSign(random);
-                                int zSign = nextSign(random);
-
-                                level.addParticle(SparkParticle.create(SparkType.METAL, random),
-                                        pos.getX() + pointX,
-                                        pos.getY() + 1,
-                                        pos.getZ() + pointZ,
-                                        nextFloat(random, 0.1F, 0.2F) * xSign,
-                                        nextFloat(random, 0.1F, 0.2F),
-                                        nextFloat(random, 0.1F, 0.2F) * zSign
-                                );
-                            }
-                        });
+                        TickerManager.schedule(8 * i, () ->
+                                ParticleSpawnUtil.spawnHammeringWorkstationParticles(pos, random, level)
+                        );
                     }
                 }
                 break;
@@ -137,6 +121,12 @@ public class LevelRendererMixin implements FrustumGetter {
                             );
                         }
                     }
+                }
+                break;
+            }
+            case LevelEvent.SOUND_SMITHING_TABLE_USED: {
+                if (BLOCKS.smithingTableUseParticles) {
+                    ParticleSpawnUtil.spawnHammeringWorkstationParticles(pos, random, level);
                 }
                 break;
             }

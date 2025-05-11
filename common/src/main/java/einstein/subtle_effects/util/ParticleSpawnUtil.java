@@ -41,6 +41,7 @@ import static einstein.subtle_effects.init.ModConfigs.BLOCKS;
 import static einstein.subtle_effects.init.ModConfigs.ENTITIES;
 import static einstein.subtle_effects.util.MathUtil.*;
 import static net.minecraft.util.Mth.DEG_TO_RAD;
+import static net.minecraft.util.Mth.nextFloat;
 import static net.minecraft.world.level.block.state.properties.BlockStateProperties.DOUBLE_BLOCK_HALF;
 
 public class ParticleSpawnUtil {
@@ -339,5 +340,24 @@ public class ParticleSpawnUtil {
                 }
             }
         });
+    }
+
+    public static void spawnHammeringWorkstationParticles(BlockPos pos, RandomSource random, ClientLevel level) {
+        float pointX = random.nextFloat();
+        float pointZ = random.nextFloat();
+
+        for (int i2 = 0; i2 < 20; i2++) {
+            int xSign = nextSign(random);
+            int zSign = nextSign(random);
+
+            level.addParticle(SparkParticle.create(SparkType.METAL, random),
+                    pos.getX() + pointX,
+                    pos.getY() + 1,
+                    pos.getZ() + pointZ,
+                    nextFloat(random, 0.1F, 0.2F) * xSign,
+                    nextFloat(random, 0.1F, 0.2F),
+                    nextFloat(random, 0.1F, 0.2F) * zSign
+            );
+        }
     }
 }
