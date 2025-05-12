@@ -70,6 +70,7 @@ public class ModParticles {
     public static final Supplier<ParticleType<DirectionParticleOptions>> EGG_SPLAT = register("egg_splat", DirectionParticleOptions::codec, DirectionParticleOptions::streamCodec, EggSplatParticle.Provider::new);
     public static final Supplier<ParticleType<ColorParticleOption>> ENDER_EYE_PLACED_RING = register("ender_eye_placed_ring", ColorParticleOption::codec, ColorParticleOption::streamCodec, EnderEyePlacedRingParticle.Provider::new);
     public static final Supplier<ParticleType<BlockParticleOption>> BLOCK_NO_MOMENTUM = register("block_no_momentum", BlockParticleOption::codec, BlockParticleOption::streamCodec, sprites -> new TerrainNoMomentumParticleProvider());
+    public static final Supplier<SimpleParticleType> LAVA_SPLASH = register("lava_splash", LavaSplashParticle.Provider::new);
 
     public static void init() {
     }
