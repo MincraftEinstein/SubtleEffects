@@ -23,16 +23,21 @@ public class ModGeneralConfigs extends Config {
     public boolean cullParticlesInUnloadedChunks = true;
 
     public ConfigGroup particlesGroup = new ConfigGroup("particles");
+
+    public ConfigGroup dripParticlesGroup = new ConfigGroup("particles.drip_particles");
+    public boolean glowingLavaDrops = true;
+    public boolean fluidDropsEvaporate = true;
+    public ValidatedFloat fluidDropsEvaporationVolume = new ValidatedFloat(0.25F, 1, 0);
+    public boolean dropLandInFluidSplashes = true;
+    @ConfigGroup.Pop
+    public boolean dropLandSounds = true;
+
     public boolean lavaSparkSmoke = true;
     public ValidatedFloat sparksScale = new ValidatedFloat(1, 2, 1);
     public boolean poppingHearts = true;
     public boolean poppingBubbles = true;
-    public ValidatedFloat poppingBubblesVolume = new ValidatedFloat(0.2F, 1, 0);
-    public boolean glowingLavaDrops = true;
-    public boolean fluidDropsEvaporate = true;
-    public ValidatedFloat fluidDropsEvaporationVolume = new ValidatedFloat(0.25F, 1, 0);
     @ConfigGroup.Pop
-    public boolean dropLandSounds = true;
+    public ValidatedFloat poppingBubblesVolume = new ValidatedFloat(0.2F, 1, 0);
 
     public boolean mobSkullShaders = true;
     public ValidatedFloat fireHeight = new ValidatedFloat(-0.15F, 0.4F, -0.5F);
