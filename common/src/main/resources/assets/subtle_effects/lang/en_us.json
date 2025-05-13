@@ -405,5 +405,6 @@
   "config.subtle_effects.general.fireHeight": "Fire Height",
   "config.subtle_effects.general.fireHeight.desc": "The height for the fire screen overlay when burning. 0 is the vanilla fire height",
   "config.subtle_effects.general.nightVisionFading": "Night Vision Fading",
-  "config.subtle_effects.general.nightVisionFading.desc": "Night vision slowly fades out rather then flashing"
+  "config.subtle_effects.general.nightVisionFading.desc": "Night vision slowly fades out rather then flashing",
+  "config.subtle_effects.general.enableEasterEggs": "Enable Easter Eggs"
 }
