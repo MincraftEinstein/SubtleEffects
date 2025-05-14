@@ -32,7 +32,7 @@ public class DrowningTicker extends EntityTicker<LivingEntity> {
             }
         }
 
-        if (random.nextInt(ENTITIES.humanoids.drowningBubblesDensity.get()) == 0) {
+        if (Math.min(random.nextInt(30), 30) < ENTITIES.humanoids.drowningBubblesDensity.get()) {
             ParticleSpawnUtil.spawnEntityFaceParticle(ModParticles.DROWNING_BUBBLE.get(),
                     entity, level, new Vec3(0, -0.1, 0), Vec3.ZERO,
                     minecraft.getTimer().getGameTimeDeltaPartialTick(false)
