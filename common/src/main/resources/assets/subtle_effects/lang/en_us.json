@@ -222,6 +222,8 @@
   "config.subtle_effects.entities.humanoids.player.heartbeatVolume": "Heartbeat Volume",
   "config.subtle_effects.entities.humanoids.player.heartBeatingWaitTime": "Heart Beating Wait Time",
   "config.subtle_effects.entities.humanoids.player.heartBeatingWaitTime.desc": "The time between heart beat sounds playing",
+  "config.subtle_effects.entities.humanoids.player.enableBreathingEffectsInCreative": "Enable Breathing Effects In Creative",
+  "config.subtle_effects.entities.humanoids.player.enableBreathingEffectsInCreative.desc": "Should breath effects e.g. Frosty Breath and Drowning Bubbles, be visible in creative mode",
   "config.subtle_effects.entities.humanoids.drowningBubblesGroup": "Drowning Bubbles",
   "config.subtle_effects.entities.humanoids.drowningBubblesDisplayType": "Drowning Bubbles Display Type",
   "config.subtle_effects.entities.humanoids.drowningBubbles.desc": "When a player is underwater bubbles will emit from there face",
