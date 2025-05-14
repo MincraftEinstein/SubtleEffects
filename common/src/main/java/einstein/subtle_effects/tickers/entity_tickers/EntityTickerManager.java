@@ -33,12 +33,12 @@ public class EntityTickerManager {
         REGISTERED.add(new TickerProvider<>(REGISTRATION_ID++, predicate, function));
     }
 
-    public static <T extends Entity> void registerSimple(EntityType<T> type, Supplier<Boolean> isEnabled, EntityProvider<T> provider) {
-        registerSimple(entity -> entity.getType().equals(type) && isEnabled.get(), provider);
+    public static <T extends Entity> void registerSimple(EntityType<T> type, boolean checkVisibility, Supplier<Boolean> isEnabled, EntityProvider<T> provider) {
+        registerSimple(entity -> entity.getType().equals(type) && isEnabled.get(), checkVisibility, provider);
     }
 
-    public static <T extends Entity> void registerSimple(Predicate<Entity> predicate, EntityProvider<T> provider) {
-        EntityTickerManager.<T>register(predicate, entity -> new SimpleTicker<>(entity, provider));
+    public static <T extends Entity> void registerSimple(Predicate<Entity> predicate, boolean checkVisibility, EntityProvider<T> provider) {
+        EntityTickerManager.<T>register(predicate, entity -> new SimpleTicker<>(entity, provider, checkVisibility));
     }
 
     @SuppressWarnings("unchecked")

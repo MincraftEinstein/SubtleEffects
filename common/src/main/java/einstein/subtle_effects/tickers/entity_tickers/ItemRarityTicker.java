@@ -38,7 +38,7 @@ public class ItemRarityTicker extends EntityTicker<ItemEntity> {
     private final boolean isCommon = stack.getRarity() == Rarity.COMMON;
 
     public ItemRarityTicker(ItemEntity entity) {
-        super(entity);
+        super(entity, true);
         getItemNameColors();
 
         if (isCommon) {

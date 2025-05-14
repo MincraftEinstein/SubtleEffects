@@ -69,11 +69,8 @@ public class ModEntityTickers {
         register(entity -> entity instanceof Witch && ENTITIES.humanoids.NPCsHavePotionRings && ENTITIES.humanoids.potionRingsDisplayType.isEnabled(), WitchPotionRingTicker::new);
         register(entity -> isNPC(entity, true) && ENTITIES.humanoids.NPCsHavePotionRings && ENTITIES.humanoids.potionRingsDisplayType.isEnabled(), (LivingEntity entity) -> new HumanoidPotionRingTicker<>(entity));
 
-        registerSimple(entity -> entity instanceof Player && ENTITIES.dustClouds.playerRunning,
+        registerSimple(entity -> entity instanceof Player && ENTITIES.dustClouds.playerRunning, true,
                 (entity, level, random) -> {
-                    if (entity.isInvisible()) {
-                        return;
-                    }
 
                     if (ENTITIES.dustClouds.preventWhenRaining && level.isRainingAt(entity.blockPosition())) {
                         return;
@@ -98,7 +95,7 @@ public class ModEntityTickers {
                         }
                     }
                 });
-        registerSimple(entity -> entity instanceof FallingBlockEntity && BLOCKS.fallingBlocks.fallingDust, (entity, level, random) -> {
+        registerSimple(entity -> entity instanceof FallingBlockEntity && BLOCKS.fallingBlocks.fallingDust, false, (entity, level, random) -> {
             FallingBlockEntity fallingBlock = (FallingBlockEntity) entity;
 
             int startDistance = BLOCKS.fallingBlocks.fallingDustStartDistance.get();
@@ -129,7 +126,7 @@ public class ModEntityTickers {
                 }
             }
         });
-        registerSimple(EntityType.SNOWBALL, () -> ENTITIES.snowballTrailDensity.get() > 0, (entity, level, random) -> {
+        registerSimple(EntityType.SNOWBALL, false, () -> ENTITIES.snowballTrailDensity.get() > 0, (entity, level, random) -> {
             if (shouldSpawn(random, ENTITIES.snowballTrailDensity)) {
                 Vec3 deltaMovement = entity.getDeltaMovement();
                 level.addParticle(ModParticles.SNOWBALL_TRAIL.get(),
@@ -142,7 +139,7 @@ public class ModEntityTickers {
                 );
             }
         });
-        registerSimple(EntityType.ENDER_PEARL, () -> ENTITIES.enderPearlTrail, (entity, level, random) -> {
+        registerSimple(EntityType.ENDER_PEARL, false, () -> ENTITIES.enderPearlTrail, (entity, level, random) -> {
             for (int i = 0; i < 10; i++) {
                 level.addParticle(ParticleTypes.PORTAL,
                         entity.getRandomX(2),
@@ -152,7 +149,7 @@ public class ModEntityTickers {
                 );
             }
         });
-        registerSimple(EntityType.ALLAY, () -> ENTITIES.allayMagicDensity.get() > 0, (entity, level, random) -> {
+        registerSimple(EntityType.ALLAY, true, () -> ENTITIES.allayMagicDensity.get() > 0, (entity, level, random) -> {
             if (shouldSpawn(random, ENTITIES.allayMagicDensity)) {
                 level.addParticle(ModParticles.ALLAY_MAGIC.get(),
                         entity.getRandomX(1),
@@ -164,7 +161,7 @@ public class ModEntityTickers {
                 );
             }
         });
-        registerSimple(EntityType.VEX, () -> ENTITIES.vexMagicDensity.get() > 0, (entity, level, random) -> {
+        registerSimple(EntityType.VEX, true, () -> ENTITIES.vexMagicDensity.get() > 0, (entity, level, random) -> {
             if (shouldSpawn(random, ENTITIES.vexMagicDensity)) {
                 level.addParticle(new BooleanParticleOptions(ModParticles.VEX_MAGIC.get(), entity.isCharging()),
                         entity.getRandomX(1),
@@ -176,14 +173,14 @@ public class ModEntityTickers {
                 );
             }
         });
-        registerSimple(EntityType.CAMEL, () -> ENTITIES.dustClouds.mobRunning, (entity, level, random) -> {
+        registerSimple(EntityType.CAMEL, true, () -> ENTITIES.dustClouds.mobRunning, (entity, level, random) -> {
             if (entity.isDashing() && entity.onGround()) {
                 for (int i = 0; i < 10; i++) {
                     ParticleSpawnUtil.spawnCreatureMovementDustCloudsNoConfig(entity, level, random, 5);
                 }
             }
         });
-        registerSimple(EntityType.DRAGON_FIREBALL, () -> ENTITIES.improvedDragonFireballTrail, (entity, level, random) -> {
+        registerSimple(EntityType.DRAGON_FIREBALL, false, () -> ENTITIES.improvedDragonFireballTrail, (entity, level, random) -> {
             for (int i = 0; i < 10; i++) {
                 level.addParticle(ParticleTypes.DRAGON_BREATH,
                         entity.getRandomX(2),
@@ -193,7 +190,7 @@ public class ModEntityTickers {
                 );
             }
         });
-        registerSimple(EntityType.COMMAND_BLOCK_MINECART, () -> ENTITIES.commandBlockMinecartParticles != CommandBlockSpawnType.OFF,
+        registerSimple(EntityType.COMMAND_BLOCK_MINECART, false, () -> ENTITIES.commandBlockMinecartParticles != CommandBlockSpawnType.OFF,
                 (entity, level, random) -> {
                     if (ENTITIES.commandBlockMinecartParticles.canTick()) {
                         if (random.nextInt(10) == 0) {
@@ -205,7 +202,7 @@ public class ModEntityTickers {
                         }
                     }
                 });
-        registerSimple(EntityType.TNT, () -> ENTITIES.explosives.tntSparks, (entity, level, random) -> {
+        registerSimple(EntityType.TNT, false, () -> ENTITIES.explosives.tntSparks, (entity, level, random) -> {
             level.addParticle(SparkParticle.create(SparkType.SHORT_LIFE, random),
                     entity.getRandomX(0.5),
                     entity.getY(1),
@@ -215,7 +212,7 @@ public class ModEntityTickers {
                     nextNonAbsDouble(random, 0.01)
             );
         });
-        registerSimple(EntityType.TNT, () -> ENTITIES.explosives.tntFlamesDensity.get() > 0, (entity, level, random) -> {
+        registerSimple(EntityType.TNT, false, () -> ENTITIES.explosives.tntFlamesDensity.get() > 0, (entity, level, random) -> {
             if (random.nextInt(10) == 0) {
                 int density = ENTITIES.explosives.tntFlamesDensity.get();
                 if (density == 1) {
@@ -238,7 +235,7 @@ public class ModEntityTickers {
                 }
             }
         });
-        registerSimple(EntityType.END_CRYSTAL, () -> ENTITIES.endCrystalParticles, (entity, level, random) -> {
+        registerSimple(EntityType.END_CRYSTAL, false, () -> ENTITIES.endCrystalParticles, (entity, level, random) -> {
             if (level.getBlockState(entity.blockPosition()).getBlock() instanceof BaseFireBlock || random.nextInt(3) == 0) {
                 level.addParticle(ModParticles.END_CRYSTAL.get(),
                         entity.getRandomX(1),
@@ -248,7 +245,7 @@ public class ModEntityTickers {
                 );
             }
         });
-        registerSimple(EntityType.SPECTRAL_ARROW, () -> ENTITIES.spectralArrowParticles, (entity, level, random) -> {
+        registerSimple(EntityType.SPECTRAL_ARROW, false, () -> ENTITIES.spectralArrowParticles, (entity, level, random) -> {
             if (random.nextInt(3) == 0) {
                 level.addParticle(Util.GLOWSTONE_DUST_PARTICLES,
                         entity.getRandomX(1),
@@ -258,7 +255,7 @@ public class ModEntityTickers {
                 );
             }
         });
-        registerSimple(EntityType.CREEPER, () -> ENTITIES.explosives.creeperSparks, (entity, level, random) -> {
+        registerSimple(EntityType.CREEPER, true, () -> ENTITIES.explosives.creeperSparks, (entity, level, random) -> {
             if (entity.isIgnited()) {
                 for (int i = 0; i < 3; i++) {
                     level.addParticle(SparkParticle.create(SparkType.SHORT_LIFE, random),
@@ -272,7 +269,7 @@ public class ModEntityTickers {
                 }
             }
         });
-        registerSimple(EntityType.CREEPER, () -> ENTITIES.explosives.creeperSmoke.isEnabled(), (entity, level, random) -> {
+        registerSimple(EntityType.CREEPER, true, () -> ENTITIES.explosives.creeperSmoke.isEnabled(), (entity, level, random) -> {
             if (entity.isIgnited()) {
                 level.addParticle(ENTITIES.explosives.creeperSmoke.getParticle().get(),
                         entity.getRandomX(1),
@@ -284,7 +281,7 @@ public class ModEntityTickers {
                 );
             }
         });
-        registerSimple(entity -> entity instanceof LivingEntity && entity.canFreeze() && ENTITIES.freezingSnowFlakes, (entity, level, random) -> {
+        registerSimple(entity -> entity instanceof LivingEntity && entity.canFreeze() && ENTITIES.freezingSnowFlakes, false, (entity, level, random) -> {
             if (entity.isFreezing() || entity.getTicksFrozen() > 0) {
                 level.addParticle(ModParticles.FREEZING.get(),
                         entity.getRandomX(1),

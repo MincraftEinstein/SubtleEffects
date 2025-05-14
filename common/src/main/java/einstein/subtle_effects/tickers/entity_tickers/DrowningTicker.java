@@ -12,7 +12,7 @@ import static einstein.subtle_effects.init.ModConfigs.ENTITIES;
 public class DrowningTicker extends EntityTicker<LivingEntity> {
 
     public DrowningTicker(LivingEntity entity) {
-        super(entity);
+        super(entity, true);
     }
 
     @Override

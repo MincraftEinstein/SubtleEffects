@@ -7,8 +7,8 @@ public class SimpleTicker<T extends Entity> extends EntityTicker<T> {
 
     private final EntityProvider<T> provider;
 
-    public SimpleTicker(T entity, EntityProvider<T> provider) {
-        super(entity);
+    public SimpleTicker(T entity, EntityProvider<T> provider, boolean checkVisibility) {
+        super(entity, checkVisibility);
         this.provider = provider;
     }
 

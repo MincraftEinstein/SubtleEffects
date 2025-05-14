@@ -11,7 +11,7 @@ public class IronGolemTicker extends EntityTicker<IronGolem> {
     private float oldHealth;
 
     public IronGolemTicker(IronGolem entity) {
-        super(entity);
+        super(entity, true);
     }
 
     @Override

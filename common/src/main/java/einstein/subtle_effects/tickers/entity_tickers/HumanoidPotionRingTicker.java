@@ -12,7 +12,7 @@ public class HumanoidPotionRingTicker<T extends LivingEntity> extends EntityTick
     protected boolean wasUsingItem = false;
 
     public HumanoidPotionRingTicker(T entity) {
-        super(entity);
+        super(entity, true);
     }
 
     @Override

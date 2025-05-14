@@ -26,7 +26,7 @@ public class FrostyBreathTicker extends EntityTicker<LivingEntity> {
     private final int startDelay = random.nextInt(40);
 
     public FrostyBreathTicker(LivingEntity entity) {
-        super(entity);
+        super(entity, true);
     }
 
     @Override
