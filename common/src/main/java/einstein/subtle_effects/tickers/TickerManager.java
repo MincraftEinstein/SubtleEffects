@@ -1,5 +1,9 @@
 package einstein.subtle_effects.tickers;
 
+import einstein.subtle_effects.tickers.entity_tickers.EntityTickerManager;
+import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.Nullable;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,9 +42,10 @@ public class TickerManager {
         REMOVE_QUEUE.clear();
     }
 
-    public static void clear() {
+    public static void clear(@Nullable Level level) {
         ADD_QUEUE.clear();
         TICKERS.clear();
         REMOVE_QUEUE.clear();
+        EntityTickerManager.clear(level);
     }
 }

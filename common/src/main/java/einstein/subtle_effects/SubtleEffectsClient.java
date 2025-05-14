@@ -38,7 +38,7 @@ public class SubtleEffectsClient {
             LEVEL = level;
 
             if (!HAS_CLEARED) {
-                TickerManager.clear();
+                TickerManager.clear(level);
                 BiomeParticleManager.clear();
                 HAS_CLEARED = true;
             }
@@ -84,7 +84,7 @@ public class SubtleEffectsClient {
         // Ticker Args
         LiteralArgumentBuilder<T> tickersClear = LiteralArgumentBuilder.<T>literal("clear")
                 .executes(context -> {
-                    TickerManager.clear();
+                    TickerManager.clear(player.level());
                     sendSystemMsg(player, getMsgTranslation("subtle_effects.tickers.clear.success"));
                     return 1;
                 });

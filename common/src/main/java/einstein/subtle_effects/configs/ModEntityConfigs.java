@@ -54,7 +54,7 @@ public class ModEntityConfigs extends Config {
 
     @Override
     public void onUpdateClient() {
-        TickerManager.clear();
+        TickerManager.clear(Minecraft.getInstance().level);
     }
 
     public enum PerspectiveDisplayType implements EnumTranslatable {

@@ -23,6 +23,7 @@ import me.fzzyhmstrs.fzzy_config.validation.misc.ValidatedColor;
 import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedFloat;
 import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedInt;
 import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedNumber;
+import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
 
@@ -116,7 +117,7 @@ public class ModBlockConfigs extends Config {
 
     @Override
     public void onUpdateClient() {
-        TickerManager.clear();
+        TickerManager.clear(Minecraft.getInstance().level);
         ModBlockTickers.init();
     }
 
