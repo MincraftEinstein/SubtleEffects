@@ -76,6 +76,10 @@ public abstract class ClientLivingEntityMixin<T extends Entity> extends Entity {
                 }
             }
 
+            if (subtleEffects$me.isInvisible()) {
+                return;
+            }
+
             ItemStack useItem = subtleEffects$me.getUseItem();
             if (useItem.has(DataComponents.POTION_CONTENTS)) {
                 Level level = subtleEffects$me.level();

@@ -16,7 +16,9 @@ public class LlamaMixin {
 
     @ModifyExpressionValue(method = "causeFallDamage", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/animal/horse/Llama;calculateFallDamage(FF)I"))
     private int calculateFallDamage(int damage, float distance, float damageMultiplier) {
-        ParticleSpawnUtil.spawnFallDustClouds(subtleEffects$me, damageMultiplier, damage, ClientBoundEntityFellPayload.TypeConfig.ENTITY);
+        if (subtleEffects$me.isInvisible()) {
+            ParticleSpawnUtil.spawnFallDustClouds(subtleEffects$me, damageMultiplier, damage, ClientBoundEntityFellPayload.TypeConfig.ENTITY);
+        }
         return damage;
     }
 }
