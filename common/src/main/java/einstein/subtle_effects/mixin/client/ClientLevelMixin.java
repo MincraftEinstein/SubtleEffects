@@ -64,14 +64,16 @@ public abstract class ClientLevelMixin extends Level {
         Block block = state.getBlock();
 
         if (!state.isAir()) {
+            BlockPos immutablePos = pos.immutable();
             BlockTickerProvider tickerProvider = ModBlockTickers.REGISTERED.get(block);
+
             if (tickerProvider != null) {
-                tickerProvider.apply(state, this, pos, random);
+                tickerProvider.apply(state, this, immutablePos, random);
             }
 
             ModBlockTickers.REGISTERED_SPECIAL.forEach((predicate, provider) -> {
                 if (predicate.test(state)) {
-                    provider.apply(state, this, pos, random);
+                    provider.apply(state, this, immutablePos, random);
                 }
             });
 
