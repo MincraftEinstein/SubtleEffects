@@ -380,6 +380,8 @@
   "config.subtle_effects.items.boneMealUsingParticles.desc": "Should bone meal item particles spawn when using bone meal",
   "config.subtle_effects.items.flintAndSteelParticles": "Flint And Steel Particles",
   "config.subtle_effects.items.flintAndSteelParticles.desc": "Using flint and steel spawns flame and spark particles when lighting a block on fire e.g campfires, candles. This does not affect placing fire",
+  "config.subtle_effects.items.increasedItemBreakParticles": "Increased Item Break Particles",
+  "config.subtle_effects.items.increasedItemBreakParticles.desc": "Increases the number of item break particles that appear when equipment (e.g. tools/weapons/armor) breaks so the effect is more noticeable",
   "config.subtle_effects.general": "General",
   "config.subtle_effects.general.particleRenderingGroup": "Particle Rendering",
   "config.subtle_effects.general.enableParticleCulling": "Enable Particle Culling",

@@ -14,6 +14,7 @@ public class ModItemConfigs extends Config {
     public boolean waterEvaporateFromBucketSteam = true;
     public boolean boneMealUsingParticles = true;
     public boolean flintAndSteelParticles = true;
+    public boolean increasedItemBreakParticles = true;
 
     public ModItemConfigs() {
         super(SubtleEffects.loc("items"));
