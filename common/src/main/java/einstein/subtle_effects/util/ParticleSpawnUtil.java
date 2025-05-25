@@ -27,6 +27,7 @@ import net.minecraft.world.entity.animal.horse.AbstractHorse;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.ComposterBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.phys.Vec3;
@@ -358,6 +359,21 @@ public class ParticleSpawnUtil {
                     nextFloat(random, 0.1F, 0.2F),
                     nextFloat(random, 0.1F, 0.2F) * zSign
             );
+        }
+    }
+
+    public static void spawnCompostParticles(Level level, BlockPos pos, ParticleOptions particle, double xSpeed, double ySpeed, double zSpeed) {
+        RandomSource random = level.getRandom();
+        BlockState state = level.getBlockState(pos);
+
+        if (state.getBlock() instanceof ComposterBlock) {
+            for (int i = 0; i < 10; i++) {
+                level.addParticle(particle,
+                        pos.getX() + 0.5 + MathUtil.nextNonAbsDouble(random, 0.3),
+                        pos.getY() + 0.1875 + (0.125 * state.getValue(ComposterBlock.LEVEL)),
+                        pos.getZ() + 0.5 + MathUtil.nextNonAbsDouble(random, 0.3),
+                        xSpeed, ySpeed, zSpeed);
+            }
         }
     }
 }

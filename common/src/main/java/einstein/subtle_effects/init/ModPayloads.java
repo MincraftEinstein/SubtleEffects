@@ -13,6 +13,7 @@ public class ModPayloads {
         NETWORK.registerToClient(ClientBoundBlockDestroyEffectsPayload.TYPE, ClientBoundBlockDestroyEffectsPayload.STREAM_CODEC);
         NETWORK.registerToClient(ClientBoundXPBottleEffectsPayload.TYPE, ClientBoundXPBottleEffectsPayload.STREAM_CODEC);
         NETWORK.registerToClient(ClientBoundFallingBlockLandPayload.TYPE, ClientBoundFallingBlockLandPayload.STREAM_CODEC);
+        NETWORK.registerToClient(ClientBoundCompostItemPayload.TYPE, ClientBoundCompostItemPayload.STREAM_CODEC);
     }
 
     public static void initClientHandlers() {
@@ -22,5 +23,6 @@ public class ModPayloads {
         NETWORK.registerClientHandler(ClientBoundBlockDestroyEffectsPayload.TYPE, ClientPacketHandlers::handle);
         NETWORK.registerClientHandler(ClientBoundXPBottleEffectsPayload.TYPE, ClientPacketHandlers::handle);
         NETWORK.registerClientHandler(ClientBoundFallingBlockLandPayload.TYPE, ClientPacketHandlers::handle);
+        NETWORK.registerClientHandler(ClientBoundCompostItemPayload.TYPE, ClientPacketHandlers::handle);
     }
 }

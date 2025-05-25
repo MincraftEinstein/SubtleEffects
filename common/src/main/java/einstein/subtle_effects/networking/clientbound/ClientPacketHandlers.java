@@ -161,6 +161,16 @@ public class ClientPacketHandlers {
         }
     }
 
+    public static void handle(ClientLevel level, ClientBoundCompostItemPayload payload) {
+        RandomSource random = level.getRandom();
+        ParticleSpawnUtil.spawnCompostParticles(level, payload.pos(),
+                new ItemParticleOption(ParticleTypes.ITEM, payload.stack()),
+                nextNonAbsDouble(random, 0.15),
+                nextNonAbsDouble(random, 0.15),
+                nextNonAbsDouble(random, 0.15)
+        );
+    }
+
     private static int getFallingBlockDustColor(ClientLevel level, Block block, BlockState state, BlockPos pos) {
         if (block instanceof FallingBlock fallingBlock) {
             return fallingBlock.getDustColor(state, level, pos);
