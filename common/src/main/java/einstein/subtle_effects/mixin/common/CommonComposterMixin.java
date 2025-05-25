@@ -1,5 +1,6 @@
 package einstein.subtle_effects.mixin.common;
 
+import com.llamalad7.mixinextras.sugar.Local;
 import einstein.subtle_effects.networking.clientbound.ClientBoundCompostItemPayload;
 import einstein.subtle_effects.platform.Services;
 import net.minecraft.core.BlockPos;
@@ -9,12 +10,16 @@ import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.ComposterBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(ComposterBlock.class)
@@ -26,4 +31,24 @@ public class CommonComposterMixin {
             Services.NETWORK.sendToClientsTracking(serverLevel, pos, new ClientBoundCompostItemPayload(stack, pos));
         }
     }
+
+    @Mixin(targets = "net.minecraft.world.level.block.ComposterBlock$InputContainer")
+    public static class ComposterBlockInputContainerMixin {
+
+        @Shadow
+        @Final
+        private LevelAccessor level;
+
+        @Shadow
+        @Final
+        private BlockPos pos;
+
+        @Inject(method = "setChanged", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/LevelAccessor;levelEvent(ILnet/minecraft/core/BlockPos;I)V"))
+        private void setChanged(CallbackInfo ci, @Local ItemStack stack) {
+            if (level instanceof ServerLevel serverLevel) {
+                Services.NETWORK.sendToClientsTracking(serverLevel, pos, new ClientBoundCompostItemPayload(stack, pos));
+            }
+        }
+    }
+
 }
