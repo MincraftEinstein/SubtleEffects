@@ -74,7 +74,8 @@ public class ModBlockConfigs extends Config {
     public ValidatedInt beaconParticlesDensity = new ValidatedInt(10, 20, 1);
     @ConfigGroup.Pop
     public ValidatedFloat beaconParticlesSpeed = new ValidatedFloat(1, 2, 0.5F);
-    public boolean compostingParticles = true;
+    public boolean compostingCompostParticles = true;
+    public boolean compostingItemParticles = true;
     public boolean respawnAnchorParticles = true;
     public boolean beehiveShearParticles = true;
     public boolean endPortalParticles = true;

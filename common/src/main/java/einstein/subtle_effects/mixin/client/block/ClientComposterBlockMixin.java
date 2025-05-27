@@ -16,7 +16,7 @@ public class ClientComposterBlockMixin {
 
     @Inject(method = "handleFill", at = @At("TAIL"))
     private static void handleFill(Level level, BlockPos pos, boolean success, CallbackInfo ci) {
-        if (ModConfigs.BLOCKS.compostingParticles) {
+        if (ModConfigs.BLOCKS.compostingCompostParticles) {
             ParticleSpawnUtil.spawnCompostParticles(level, pos, ModParticles.COMPOST.get(), 0, 0, 0);
         }
     }
