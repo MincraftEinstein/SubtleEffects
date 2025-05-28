@@ -1,6 +1,6 @@
 {
   "pack": {
-    "pack_format": 34,
+    "pack_format": 48,
     "description": {
       "translate": "resourcePack.subtle_effects.biome_water_color_particles.description"
     }
