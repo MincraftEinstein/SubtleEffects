@@ -48,9 +48,10 @@ public class EinsteinSolarSystemModel extends Model {
             Vector3f rotation = HEAD_ROTATIONS[i];
 
             poseStack.pushPose();
+            poseStack.mulPose(Axis.YP.rotationDegrees(-180 - Mth.rotLerp(partialTicks, player.yBodyRotO, player.yBodyRot)));
             poseStack.mulPose(Axis.YP.rotation(spin)); // Spins the head around the player
 
-            poseStack.translate(0.7 * i1, 0, 0);
+            poseStack.translate(0.7 * i1, player.isCrouching() ? 0 : -0.25, 0);
             poseStack.scale(0.8F, 0.8F, 0.8F);
 
             poseStack.pushPose();
