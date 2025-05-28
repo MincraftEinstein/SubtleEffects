@@ -6,6 +6,7 @@ import einstein.subtle_effects.particle.emitter.FireFlyEmitter;
 import einstein.subtle_effects.particle.emitter.PotionEmitter;
 import einstein.subtle_effects.particle.option.*;
 import einstein.subtle_effects.particle.provider.*;
+import net.minecraft.client.particle.FlyTowardsPositionParticle;
 import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.client.particle.SuspendedTownParticle;
@@ -71,6 +72,7 @@ public class ModParticles {
     public static final Supplier<ParticleType<ColorParticleOption>> ENDER_EYE_PLACED_RING = register("ender_eye_placed_ring", ColorParticleOption::codec, ColorParticleOption::streamCodec, EnderEyePlacedRingParticle.Provider::new);
     public static final Supplier<ParticleType<BlockParticleOption>> BLOCK_NO_MOMENTUM = register("block_no_momentum", BlockParticleOption::codec, BlockParticleOption::streamCodec, sprites -> new TerrainNoMomentumParticleProvider());
     public static final Supplier<SimpleParticleType> LAVA_SPLASH = register("lava_splash", LavaSplashParticle.Provider::new);
+    public static final Supplier<SimpleParticleType> OMINOUS_VAULT_CONNECTION = register("ominous_vault_connection", FlyTowardsPositionParticle.VaultConnectionProvider::new);
 
     public static void init() {
     }
