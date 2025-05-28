@@ -1,6 +1,6 @@
 {
-    "pack": {
-        "description": "Subtle Effects resources",
-        "pack_format": 8
-    }
+  "pack": {
+    "description": "Subtle Effects resources",
+    "pack_format": 15
+  }
 }
