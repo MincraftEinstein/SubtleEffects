@@ -110,7 +110,7 @@ To get your translation into the mod, make a pull request on GitHub with the tra
 All translators are credited in the list below.
 
 - Simplified Chinese: [kuhananxianglai](https://github.com/kuhananxianglai)
-- Japanese: [gohkenytp](https://github.com/gohkenytp), [Kazumadness](https://github.com/gohkenytp)
+- Japanese: [gohkenytp](https://github.com/gohkenytp), [Kazumadness](https://github.com/gohkenytp), [KAGUYA-1137](https://github.com/KAGUYA-1137)
 - Mexican Spanish: [TheLegendofSaram](https://github.com/TheLegendofSaram)
 - Korean: [sunbatheproductions](https://github.com/sunbatheproductions)
 - Russian: [Det-rovv](https://github.com/Det-rovv)
