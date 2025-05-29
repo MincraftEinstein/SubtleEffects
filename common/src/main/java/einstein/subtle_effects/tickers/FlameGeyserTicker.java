@@ -21,6 +21,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import java.util.ArrayList;
 import java.util.List;
 
+import static einstein.subtle_effects.init.ModConfigs.ENVIRONMENT;
 import static einstein.subtle_effects.util.MathUtil.nextNonAbsDouble;
 
 public class FlameGeyserTicker extends Ticker {
@@ -41,7 +42,7 @@ public class FlameGeyserTicker extends Ticker {
         this.pos = pos;
         this.random = random;
         particle = level.getBiome(pos).is(Biomes.SOUL_SAND_VALLEY) ? ParticleTypes.SOUL_FIRE_FLAME : ParticleTypes.FLAME;
-        lifeTime = Mth.nextInt(random, 100, 300);
+        lifeTime = getTickDelay(ENVIRONMENT.flameGeyserActiveTime.get());
         ACTIVE_GEYSERS.add(pos);
     }
 
@@ -66,7 +67,7 @@ public class FlameGeyserTicker extends Ticker {
                 }
 
                 if (age % 5 == 0) {
-                    Util.playClientSound(pos, ModSounds.GEYSER_WHOOSH.get(), SoundSource.BLOCKS, 0.5F, random.nextFloat() * 0.7F + 0.3F);
+                    Util.playClientSound(pos, ModSounds.GEYSER_WHOOSH.get(), SoundSource.BLOCKS, ENVIRONMENT.flameGeyserSoundVolume.get(), random.nextFloat() * 0.7F + 0.3F);
                 }
 
                 for (int i = 0; i < 10; i++) {
@@ -112,6 +113,10 @@ public class FlameGeyserTicker extends Ticker {
         super.remove();
         ACTIVE_GEYSERS.remove(pos);
         INACTIVE_GEYSERS.add(pos);
-        TickerManager.schedule(Mth.nextInt(random, 100, 500), () -> INACTIVE_GEYSERS.remove(pos));
+        TickerManager.schedule(getTickDelay(ENVIRONMENT.flameGeyserInactiveTime.get()), () -> INACTIVE_GEYSERS.remove(pos));
+    }
+
+    private int getTickDelay(int max) {
+        return max >= 300 ? Mth.nextInt(random, max - 200, max) : max;
     }
 }

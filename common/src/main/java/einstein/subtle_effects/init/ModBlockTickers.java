@@ -42,6 +42,7 @@ import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 import static einstein.subtle_effects.init.ModConfigs.BLOCKS;
+import static einstein.subtle_effects.init.ModConfigs.ENVIRONMENT;
 import static einstein.subtle_effects.util.MathUtil.nextNonAbsDouble;
 import static einstein.subtle_effects.util.MathUtil.nextSign;
 import static einstein.subtle_effects.util.Util.playClientSound;
@@ -267,10 +268,10 @@ public class ModBlockTickers {
                         }
                     }
                 });
-        register(state -> FlameGeyserTicker.VALID_BLOCKS.contains(state.getBlock()), () -> true, (state, level, pos, random) -> {
+        register(state -> FlameGeyserTicker.VALID_BLOCKS.contains(state.getBlock()), () -> ENVIRONMENT.flameGeyserSpawnChance.get() > 0, (state, level, pos, random) -> {
             if (level.dimension().equals(Level.NETHER)) {
                 RandomSource blockRandom = RandomSource.create(state.getSeed(pos));
-                if (blockRandom.nextDouble() < 0.005) {
+                if (blockRandom.nextDouble() < (0.0001 * ENVIRONMENT.flameGeyserSpawnChance.get())) {
                     if (!FlameGeyserTicker.ACTIVE_GEYSERS.contains(pos) && !FlameGeyserTicker.INACTIVE_GEYSERS.contains(pos)) {
                         if (FlameGeyserTicker.checkLocation(level, pos, true)) {
                             TickerManager.add(new FlameGeyserTicker(level, pos, blockRandom));
