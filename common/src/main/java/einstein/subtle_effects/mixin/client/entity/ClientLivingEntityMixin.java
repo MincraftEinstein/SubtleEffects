@@ -1,5 +1,7 @@
 package einstein.subtle_effects.mixin.client.entity;
 
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.util.MathUtil;
 import net.minecraft.core.particles.ParticleTypes;
@@ -7,6 +9,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -22,6 +25,15 @@ public abstract class ClientLivingEntityMixin<T extends Entity> extends Entity {
 
     public ClientLivingEntityMixin(EntityType<T> type, Level level) {
         super(type, level);
+    }
+
+    @WrapOperation(method = "breakItem", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;spawnItemParticles(Lnet/minecraft/world/item/ItemStack;I)V"))
+    private void increaseBreakItemParticles(LivingEntity entity, ItemStack stack, int particleCount, Operation<Void> original) {
+        if (ModConfigs.ITEMS.increasedItemBreakParticles) {
+            original.call(entity, stack, 16);
+            return;
+        }
+        original.call(entity, stack, particleCount);
     }
 
     @Inject(method = "tickDeath", at = @At(value = "FIELD", target = "Lnet/minecraft/world/entity/LivingEntity;deathTime:I", ordinal = 0))

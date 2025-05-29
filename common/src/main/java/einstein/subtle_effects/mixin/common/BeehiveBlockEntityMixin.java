@@ -1,6 +1,6 @@
 package einstein.subtle_effects.mixin.common;
 
-import einstein.subtle_effects.networking.clientbound.ClientBoundSpawnSnoreParticlePacket;
+import einstein.subtle_effects.networking.clientbound.ClientBoundSpawnSnoreParticlePayload;
 import einstein.subtle_effects.platform.Services;
 import einstein.subtle_effects.util.Util;
 import net.minecraft.core.BlockPos;
@@ -41,7 +41,7 @@ public class BeehiveBlockEntityMixin {
                 me.subtleEffects$snoreTimer = 0;
                 me.subtleEffects$ZCount++;
                 Direction direction = state.getValue(BeehiveBlock.FACING);
-                Services.NETWORK.sendToClientsTracking((ServerLevel) level, pos, new ClientBoundSpawnSnoreParticlePacket(pos.getX() + 0.5 + (0.6 * direction.getStepX()), pos.getY() + 0.5, pos.getZ() + 0.5 + (0.6 * direction.getStepZ())));
+                Services.NETWORK.sendToClientsTracking((ServerLevel) level, pos, new ClientBoundSpawnSnoreParticlePayload(pos.getX() + 0.5 + (0.6 * direction.getStepX()), pos.getY() + 0.5, pos.getZ() + 0.5 + (0.6 * direction.getStepZ())));
 
                 if (me.subtleEffects$ZCount >= Util.MAX_Z_COUNT) {
                     me.subtleEffects$ZCount = 0;

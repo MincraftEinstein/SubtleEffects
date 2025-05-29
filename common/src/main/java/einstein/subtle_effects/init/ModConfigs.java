@@ -15,7 +15,7 @@ public class ModConfigs {
     public static final ModGeneralConfigs GENERAL = register(ModGeneralConfigs::new);
     public static final ModBlockConfigs BLOCKS = register(ModBlockConfigs::new);
     public static final ModEntityConfigs ENTITIES = register(ModEntityConfigs::new);
-    public static final ModBiomeConfigs BIOMES = register(ModBiomeConfigs::new);
+    public static final ModEnvironmentConfigs ENVIRONMENT = register(ModEnvironmentConfigs::new);
     public static final ModItemConfigs ITEMS = register(ModItemConfigs::new);
 
     public static void init() {

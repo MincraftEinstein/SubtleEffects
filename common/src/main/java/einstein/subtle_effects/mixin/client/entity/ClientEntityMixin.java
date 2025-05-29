@@ -2,7 +2,11 @@ package einstein.subtle_effects.mixin.client.entity;
 
 import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.init.ModParticles;
+import einstein.subtle_effects.tickers.entity_tickers.EntityTicker;
+import einstein.subtle_effects.util.EntityTickersGetter;
 import einstein.subtle_effects.util.Util;
+import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
+import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
@@ -19,10 +23,13 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import static einstein.subtle_effects.util.MathUtil.nextDouble;
 
 @Mixin(Entity.class)
-public abstract class ClientEntityMixin {
+public abstract class ClientEntityMixin implements EntityTickersGetter {
 
     @Unique
     private final Entity subtleEffects$me = (Entity) (Object) this;
+
+    @Unique
+    private final Int2ObjectMap<EntityTicker<?>> subtleEffects$tickers = new Int2ObjectOpenHashMap<>();
 
     @Inject(method = "playEntityOnFireExtinguishedSound", at = @At("TAIL"))
     private void addExtinguishParticles(CallbackInfo ci) {
@@ -57,5 +64,10 @@ public abstract class ClientEntityMixin {
                 }
             }
         }
+    }
+
+    @Override
+    public Int2ObjectMap<EntityTicker<?>> subtleEffects$getTickers() {
+        return subtleEffects$tickers;
     }
 }

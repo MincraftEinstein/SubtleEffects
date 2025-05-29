@@ -11,6 +11,7 @@ import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
+import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
 public class EggSplatParticle extends FlatPlaneParticle {
@@ -58,7 +59,7 @@ public class EggSplatParticle extends FlatPlaneParticle {
     }
 
     @Override
-    protected void renderVertex(VertexConsumer buffer, float x, float y, float z, float xOffset, float yOffset, float quadSize, float u, float v, int packedLight) {
+    protected void renderVertex(VertexConsumer buffer, Quaternionf rotation, float x, float y, float z, float xOffset, float yOffset, float quadSize, float u, float v, int packedLight) {
         Vector3f vector3f = new Vector3f(xOffset, 0, yOffset).rotate(rotation).mul(quadSize).add(x, y, z);
         buffer.addVertex(vector3f.x(), vector3f.y(), vector3f.z()).setUv(u, v).setColor(rCol, gCol, bCol, alpha).setLight(packedLight);
     }

@@ -10,6 +10,7 @@ import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedInt;
 @Translation(prefix = ModConfigs.BASE_KEY + "entities.humanoids.player")
 public class PlayerConfigs extends ConfigSection {
 
+    public boolean enableBreathingEffectsInCreative = true;
     public ConfigGroup stomachGrowlingGroup = new ConfigGroup("stomach_growling");
     public ValidatedInt stomachGrowlingThreshold = new ValidatedInt(6, 20, 0);
     public ValidatedFloat stomachGrowlingVolume = new ValidatedFloat(1, 1, 0);

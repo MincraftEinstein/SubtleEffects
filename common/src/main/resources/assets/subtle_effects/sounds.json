@@ -114,5 +114,11 @@
       "block/pointed_dripstone/drip_lava_cauldron3",
       "block/pointed_dripstone/drip_lava_cauldron4"
     ]
+  },
+  "environment.geyser.whoosh": {
+    "subtitle": "subtitles.subtle_effects.environment.geyser.whoosh",
+    "sounds": [
+      "mob/ghast/fireball4"
+    ]
   }
 }

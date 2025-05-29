@@ -1,10 +1,13 @@
 package einstein.subtle_effects;
 
 import com.mojang.brigadier.CommandDispatcher;
+import com.mojang.brigadier.arguments.BoolArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
+import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import einstein.subtle_effects.biome_particles.BiomeParticleManager;
 import einstein.subtle_effects.init.*;
+import einstein.subtle_effects.tickers.FlameGeyserTicker;
 import einstein.subtle_effects.tickers.TickerManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.commands.CommandBuildContext;
@@ -17,12 +20,13 @@ import net.minecraft.world.level.Level;
 public class SubtleEffectsClient {
 
     private static boolean HAS_CLEARED = false;
+    private static boolean DISPLAY_PARTICLE_COUNT = false;
     private static Level LEVEL;
 
     public static void clientSetup() {
         ModConfigs.init();
-        ModPackets.initClientHandlers();
-        ModTickers.init();
+        ModPayloads.initClientHandlers();
+        ModEntityTickers.init();
         ModBlockTickers.init();
         BiomeParticleManager.init();
         ModDamageListeners.init();
@@ -35,8 +39,10 @@ public class SubtleEffectsClient {
             LEVEL = level;
 
             if (!HAS_CLEARED) {
-                TickerManager.clear();
+                TickerManager.clear(level);
                 BiomeParticleManager.clear();
+                FlameGeyserTicker.ACTIVE_GEYSERS.clear();
+                FlameGeyserTicker.INACTIVE_GEYSERS.clear();
                 HAS_CLEARED = true;
             }
             return;
@@ -46,8 +52,12 @@ public class SubtleEffectsClient {
             return;
         }
 
+        if (DISPLAY_PARTICLE_COUNT) {
+            player.displayClientMessage(Component.translatable("ui.subtle_effects.hud.particle_count", minecraft.particleEngine.countParticles()), true);
+        }
+
         BiomeParticleManager.tickBiomeParticles(level, player);
-        TickerManager.tickTickers(level);
+        TickerManager.tick();
         HAS_CLEARED = false;
     }
 
@@ -61,13 +71,22 @@ public class SubtleEffectsClient {
                     sendSystemMsg(minecraft, getMsgTranslation("subtle_effects.particles.clear.success"));
                     return 1;
                 });
+
+        RequiredArgumentBuilder<T, Boolean> particlesCountEnabled = RequiredArgumentBuilder.<T, Boolean>argument("enabled", BoolArgumentType.bool())
+                .executes(context -> toggleParticleCount(minecraft, BoolArgumentType.getBool(context, "enabled")));
+
+        LiteralArgumentBuilder<T> particlesCount = LiteralArgumentBuilder.<T>literal("count")
+                .executes(context -> toggleParticleCount(minecraft, true))
+                .then(particlesCountEnabled);
+
         LiteralArgumentBuilder<T> particles = LiteralArgumentBuilder.<T>literal("particles")
-                .then(particlesClear);
+                .then(particlesClear)
+                .then(particlesCount);
 
         // Ticker Args
         LiteralArgumentBuilder<T> tickersClear = LiteralArgumentBuilder.<T>literal("clear")
                 .executes(context -> {
-                    TickerManager.clear();
+                    TickerManager.clear(minecraft.level);
                     sendSystemMsg(minecraft, getMsgTranslation("subtle_effects.tickers.clear.success"));
                     return 1;
                 });
@@ -81,6 +100,14 @@ public class SubtleEffectsClient {
 
         LiteralCommandNode<T> subtleEffectsNode = dispatcher.register(subtleEffects);
         dispatcher.register(LiteralArgumentBuilder.<T>literal("se").redirect(subtleEffectsNode));
+    }
+
+    private static int toggleParticleCount(Minecraft minecraft, boolean enabled) {
+        DISPLAY_PARTICLE_COUNT = enabled;
+
+        String enabledString = enabled ? "enable" : "disable";
+        sendSystemMsg(minecraft, getMsgTranslation("subtle_effects.particles.count." + enabledString + ".success"));
+        return 1;
     }
 
     private static MutableComponent getMsgTranslation(String string) {

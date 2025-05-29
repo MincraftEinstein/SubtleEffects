@@ -62,8 +62,19 @@ You may not
 
 **Q:** Can XYZ feature be disabled?
 <br>
-**A:** Yes, all features can be disabled in the config menu.
-If you find that a feature/change cannot be disabled please report it as a bug
+**A:** Yes, all features can be disabled in the config menu. If you find that a feature/change cannot be disabled please report it as a bug
+
+**Q:** How to disable Dust Clouds?
+<br>
+**A:** The configs for dust clouds are located in the `Entities/Dust Clouds` config section
+
+**Q:** How to disable dropped item particles?
+<br>
+**A:** The configs for dropped item particles are located in the `Entities/Item Rarity` config section and can be disabled by changing `Particle Display Type` to `OFF`
+
+**Q:** Will you support Forge?
+<br>
+**A:** Absolutely not, Forge 1.20.1 is the only version I will support Forge on.
 
 **Q:** What game environment does the mod run in?
 <br>
@@ -99,7 +110,9 @@ To get your translation into the mod, make a pull request on GitHub with the tra
 All translators are credited in the list below.
 
 - Simplified Chinese: [kuhananxianglai](https://github.com/kuhananxianglai)
-- Japanese: [gohkenytp](https://github.com/gohkenytp), [Kazumadness](https://github.com/gohkenytp)
+- Traditional Chinese: [OutlinedArc217](https://github.com/OutlinedArc217)
+- Literal Chinese: [OutlinedArc217](https://github.com/OutlinedArc217)
+- Japanese: [gohkenytp](https://github.com/gohkenytp), [Kazumadness](https://github.com/gohkenytp), [KAGUYA-1137](https://github.com/KAGUYA-1137)
 - Mexican Spanish: [TheLegendofSaram](https://github.com/TheLegendofSaram)
 - Korean: [sunbatheproductions](https://github.com/sunbatheproductions)
 - Russian: [Det-rovv](https://github.com/Det-rovv)

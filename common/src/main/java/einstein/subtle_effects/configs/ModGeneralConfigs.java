@@ -20,24 +20,30 @@ public class ModGeneralConfigs extends Config {
     public boolean enableParticleCulling = true;
     @ValidatedInt.Restrict(min = 1, max = 32)
     public int particleRenderDistance = 5;
-    public boolean cullParticlesWithNoAlpha = true;
     @ConfigGroup.Pop
     public boolean cullParticlesInUnloadedChunks = true;
 
     public ConfigGroup particlesGroup = new ConfigGroup("particles");
+
+    public ConfigGroup dripParticlesGroup = new ConfigGroup("particles.drip_particles");
+    public boolean glowingLavaDrops = true;
+    public boolean fluidDropsEvaporate = true;
+    public ValidatedFloat fluidDropsEvaporationVolume = new ValidatedFloat(0.25F, 1, 0);
+    public boolean dropLandInFluidSplashes = true;
+    @ConfigGroup.Pop
+    public boolean dropLandSounds = true;
+
     public boolean lavaSparkSmoke = true;
     public ValidatedFloat sparksScale = new ValidatedFloat(1, 2, 1);
     public boolean poppingHearts = true;
     public boolean poppingBubbles = true;
-    public ValidatedFloat poppingBubblesVolume = new ValidatedFloat(0.2F, 1, 0);
-    public boolean glowingLavaDrops = true;
-    public boolean fluidDropsEvaporate = true;
-    public ValidatedFloat fluidDropsEvaporationVolume = new ValidatedFloat(0.25F, 1, 0);
     @ConfigGroup.Pop
-    public boolean dropLandSounds = true;
+    public ValidatedFloat poppingBubblesVolume = new ValidatedFloat(0.2F, 1, 0);
 
     public boolean mobSkullShaders = true;
     public ValidatedFloat fireHeight = new ValidatedFloat(-0.15F, 0.4F, -0.5F);
+    public boolean nightVisionFading = true;
+    public boolean enableEasterEggs = true;
 
     public ModGeneralConfigs() {
         super(SubtleEffects.loc("general"));
@@ -46,7 +52,7 @@ public class ModGeneralConfigs extends Config {
     @Override
     public void onUpdateClient() {
         Minecraft minecraft = Minecraft.getInstance();
-        TickerManager.clear();
+        TickerManager.clear(Minecraft.getInstance().level);
 
         if (minecraft.level != null && minecraft.options.getCameraType().isFirstPerson()) {
             if (!mobSkullShaders) {
