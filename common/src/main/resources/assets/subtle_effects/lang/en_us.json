@@ -9,6 +9,7 @@
   "subtitles.subtle_effects.block.lava.drip": "Lava drips",
   "subtitles.subtle_effects.block.water.drip_into_fluid": "Water drips into fluid",
   "subtitles.subtle_effects.block.lava.drip_into_fluid": "Lava drips into fluid",
+  "subtitles.subtle_effects.environment.geyser.whoosh": "Geyser whooshing",
   "commands.subtle_effects.subtle_effects.tickers.clear.success": "Cleared Tickers",
   "commands.subtle_effects.subtle_effects.particles.clear.success": "Cleared Particles",
   "commands.subtle_effects.subtle_effects.particles.count.enable.success": "Displaying Particle Count",

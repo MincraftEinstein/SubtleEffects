@@ -7,6 +7,7 @@ import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import einstein.subtle_effects.biome_particles.BiomeParticleManager;
 import einstein.subtle_effects.init.*;
+import einstein.subtle_effects.tickers.FlameGeyserTicker;
 import einstein.subtle_effects.tickers.TickerManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.commands.CommandBuildContext;
@@ -40,6 +41,8 @@ public class SubtleEffectsClient {
             if (!HAS_CLEARED) {
                 TickerManager.clear(level);
                 BiomeParticleManager.clear();
+                FlameGeyserTicker.ACTIVE_GEYSERS.clear();
+                FlameGeyserTicker.INACTIVE_GEYSERS.clear();
                 HAS_CLEARED = true;
             }
             return;
