@@ -6,6 +6,8 @@ import einstein.subtle_effects.configs.CommandBlockSpawnType;
 import einstein.subtle_effects.configs.ModBlockConfigs;
 import einstein.subtle_effects.mixin.client.block.AmethystClusterBlockAccessor;
 import einstein.subtle_effects.particle.option.PositionParticleOptions;
+import einstein.subtle_effects.tickers.FlameGeyserTicker;
+import einstein.subtle_effects.tickers.TickerManager;
 import einstein.subtle_effects.util.BlockTickerProvider;
 import einstein.subtle_effects.util.ParticleSpawnUtil;
 import einstein.subtle_effects.util.Util;
@@ -19,6 +21,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.ParticleUtils;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.*;
@@ -264,6 +267,27 @@ public class ModBlockTickers {
                         }
                     }
                 });
+        // TODO should also spawn from either blackstone or basalt so it can be in basalt deltas (probably blackstone)
+        register(Blocks.NETHERRACK, () -> true, (state, level, pos, random) -> {
+//            if (level.dimension().equals(Level.NETHER)) {
+            BlockPos abovePos = pos.above();
+            // TODO doesn't work right, ends up spawning them in square clusters
+//            if (Double.parseDouble("0." + Math.abs(pos.hashCode())) < 0.2) { // also too common
+            RandomSource blockRandom = RandomSource.create(state.getSeed(pos));
+            if (blockRandom.nextDouble() < 0.005) {
+                if (level.getBlockState(pos).is(Blocks.NETHERRACK)) {
+                    if (!FlameGeyserTicker.ACTIVE_GEYSERS.contains(pos) && !FlameGeyserTicker.INACTIVE_GEYSERS.contains(pos)) {
+                        // TODO shouldn't be able to spawn with fire above
+                        //  also needs to check every block in geyser path
+                        //  update ticker with changes
+                        if (!level.getBlockState(abovePos).isFaceSturdy(level, pos, Direction.DOWN) && level.getFluidState(abovePos).isEmpty()) {
+                            TickerManager.add(new FlameGeyserTicker(level, pos, blockRandom));
+                        }
+                    }
+                }
+            }
+//            }
+        });
     }
 
     private static void register(Block block, Supplier<Boolean> isEnabled, BlockTickerProvider provider) {
