@@ -1,6 +1,6 @@
 package einstein.subtle_effects.configs.entities.humanoids;
 
-import einstein.subtle_effects.configs.ModBiomeConfigs;
+import einstein.subtle_effects.configs.environment.BiomeConfigs;
 import einstein.subtle_effects.configs.ModEntityConfigs;
 import einstein.subtle_effects.init.ModConfigs;
 import me.fzzyhmstrs.fzzy_config.annotations.Translation;
@@ -20,7 +20,7 @@ public class FrostyBreathConfigs extends ConfigSection {
     public ValidatedFloat alpha = new ValidatedFloat(0.5F, 1, 0.2F, ValidatedNumber.WidgetType.SLIDER);
     public ValidatedInt waitTime = new ValidatedInt(60, 200, 10);
     public Seasons seasons = Seasons.DEFAULT;
-    public ValidatedList<ResourceLocation> additionalBiomes = ModBiomeConfigs.biomeList();
+    public ValidatedList<ResourceLocation> additionalBiomes = BiomeConfigs.biomeList();
 
     public enum Seasons implements EnumTranslatable {
         OFF,

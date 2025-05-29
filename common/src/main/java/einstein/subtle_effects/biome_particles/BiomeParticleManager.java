@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.function.BiPredicate;
 import java.util.function.Supplier;
 
-import static einstein.subtle_effects.init.ModConfigs.BIOMES;
+import static einstein.subtle_effects.init.ModConfigs.ENVIRONMENT;
 
 public class BiomeParticleManager {
 
@@ -36,10 +36,10 @@ public class BiomeParticleManager {
     private static boolean HAS_CLEARED;
 
     public static void init() {
-        register(BIOMES.mushroomSporeBiomes, BIOMES.mushroomSporeDensity, 40, ModParticles.MUSHROOM_SPORE, NOT_RAINING);
-        register(BIOMES.fireflyBiomes, BIOMES.fireflyDensity, 10, ModParticles.FIREFLY, FIREFLY_CONDITIONS);
-        register(BIOMES.pollenBiomes, BIOMES.pollenDensity, 10, ModParticles.POLLEN, NOT_RAINING);
-        register(BIOMES.sculkDustBiomes, BIOMES.sculkDustDensity, ModParticles.SCULK_DUST, (level, pos) -> true);
+        register(ENVIRONMENT.biomes.mushroomSporeBiomes, ENVIRONMENT.biomes.mushroomSporeDensity, 40, ModParticles.MUSHROOM_SPORE, NOT_RAINING);
+        register(ENVIRONMENT.biomes.fireflyBiomes, ENVIRONMENT.biomes.fireflyDensity, 10, ModParticles.FIREFLY, FIREFLY_CONDITIONS);
+        register(ENVIRONMENT.biomes.pollenBiomes, ENVIRONMENT.biomes.pollenDensity, 10, ModParticles.POLLEN, NOT_RAINING);
+        register(ENVIRONMENT.biomes.sculkDustBiomes, ENVIRONMENT.biomes.sculkDustDensity, ModParticles.SCULK_DUST, (level, pos) -> true);
     }
 
     private static void register(ValidatedList<ResourceLocation> biomesConfig, ValidatedInt density, int maxSpawnHeight, Supplier<? extends ParticleOptions> particle, BiPredicate<Level, BlockPos> spawnConditions) {
@@ -56,7 +56,7 @@ public class BiomeParticleManager {
             REGISTERED.forEach(settings -> settings.update(level));
         }
 
-        int radius = BIOMES.biomeParticlesRadius;
+        int radius = ENVIRONMENT.biomes.biomeParticlesRadius.get();
 
         if (radius <= 0) {
             return;
