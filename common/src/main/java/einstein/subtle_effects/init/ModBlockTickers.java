@@ -267,26 +267,17 @@ public class ModBlockTickers {
                         }
                     }
                 });
-        // TODO should also spawn from either blackstone or basalt so it can be in basalt deltas (probably blackstone)
-        register(Blocks.NETHERRACK, () -> true, (state, level, pos, random) -> {
-//            if (level.dimension().equals(Level.NETHER)) {
-            BlockPos abovePos = pos.above();
-            // TODO doesn't work right, ends up spawning them in square clusters
-//            if (Double.parseDouble("0." + Math.abs(pos.hashCode())) < 0.2) { // also too common
-            RandomSource blockRandom = RandomSource.create(state.getSeed(pos));
-            if (blockRandom.nextDouble() < 0.005) {
-                if (level.getBlockState(pos).is(Blocks.NETHERRACK)) {
+        register(state -> FlameGeyserTicker.VALID_BLOCKS.contains(state.getBlock()), () -> true, (state, level, pos, random) -> {
+            if (level.dimension().equals(Level.NETHER)) {
+                RandomSource blockRandom = RandomSource.create(state.getSeed(pos));
+                if (blockRandom.nextDouble() < 0.005) {
                     if (!FlameGeyserTicker.ACTIVE_GEYSERS.contains(pos) && !FlameGeyserTicker.INACTIVE_GEYSERS.contains(pos)) {
-                        // TODO shouldn't be able to spawn with fire above
-                        //  also needs to check every block in geyser path
-                        //  update ticker with changes
-                        if (!level.getBlockState(abovePos).isFaceSturdy(level, pos, Direction.DOWN) && level.getFluidState(abovePos).isEmpty()) {
+                        if (FlameGeyserTicker.checkLocation(level, pos, true)) {
                             TickerManager.add(new FlameGeyserTicker(level, pos, blockRandom));
                         }
                     }
                 }
             }
-//            }
         });
     }
 
