@@ -26,7 +26,7 @@ public class EinsteinSolarSystemModel extends Model {
     private final ModelPart hat;
 
     public EinsteinSolarSystemModel(ModelPart rootPart) {
-        super(RenderType::entityCutout);
+        super(rootPart, RenderType::entityCutout);
         head = rootPart.getChild("head");
         hat = rootPart.getChild("hat");
     }
@@ -70,9 +70,5 @@ public class EinsteinSolarSystemModel extends Model {
 
     public static float getSpin(float partialTicks, AbstractClientPlayer player, float speed) {
         return (player.tickCount + partialTicks) / 20F + (Mth.PI * speed);
-    }
-
-    @Override
-    public void renderToBuffer(PoseStack poseStack, VertexConsumer consumer, int packedLight, int packedOverlay, int color) {
     }
 }

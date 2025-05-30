@@ -28,7 +28,9 @@ public class EntityRendererMixin<T extends Entity, S extends EntityRenderState> 
 
     @Inject(method = "extractRenderState", at = @At("TAIL"))
     private void extractRenderState(T entity, S renderState, float partialTicks, CallbackInfo ci) {
-        ((EntityAccessRenderState) renderState).subtleEffects$setEntity(entity);
+        EntityAccessRenderState accessor = (EntityAccessRenderState) renderState;
+        accessor.subtleEffects$setEntity(entity);
+        accessor.setPartialTick(partialTicks);
     }
 
     @WrapOperation(method = "renderNameTag", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/vertex/PoseStack;translate(DDD)V"))

@@ -11,6 +11,8 @@ public class EntityRenderStateMixin implements EntityAccessRenderState {
 
     @Unique
     private Entity subtleEffects$entity;
+    @Unique
+    private float subtleEffects$partialTick;
 
     @Override
     public Entity subtleEffects$getEntity() {
@@ -20,5 +22,15 @@ public class EntityRenderStateMixin implements EntityAccessRenderState {
     @Override
     public void subtleEffects$setEntity(Entity entity) {
         subtleEffects$entity = entity;
+    }
+
+    @Override
+    public float getPartialTick() {
+        return subtleEffects$partialTick;
+    }
+
+    @Override
+    public void setPartialTick(float partialTick) {
+        subtleEffects$partialTick = partialTick;
     }
 }

@@ -136,12 +136,7 @@ public class ClientPacketHandlers {
             if (BLOCKS.fallingBlocks.dustyBlocks.contains(block)) {
                 RandomSource random = level.getRandom();
                 int color = getFallingBlockDustColor(level, block, state, pos);
-                DustParticleOptions options = new DustParticleOptions(
-                        new Vector3f(
-                                ((color >> 16) & 255) / 255F,
-                                ((color >> 8) & 255) / 255F,
-                                (color & 255) / 255F
-                        ), 1);
+                DustParticleOptions options = new DustParticleOptions(color, 1);
 
                 for (int i = 0; i < 25; i++) {
                     boolean b = random.nextBoolean();

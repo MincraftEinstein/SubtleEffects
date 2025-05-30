@@ -99,7 +99,7 @@ public class ModEntityTickers {
             FallingBlockEntity fallingBlock = (FallingBlockEntity) entity;
 
             int startDistance = BLOCKS.fallingBlocks.fallingDustStartDistance.get();
-            float fallDistance = fallingBlock.fallDistance;
+            double fallDistance = fallingBlock.fallDistance;
 
             if (fallDistance <= startDistance) {
                 return;

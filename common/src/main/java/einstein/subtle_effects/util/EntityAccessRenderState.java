@@ -7,4 +7,8 @@ public interface EntityAccessRenderState {
     Entity subtleEffects$getEntity();
 
     void subtleEffects$setEntity(Entity entity);
+
+    float getPartialTick();
+
+    void setPartialTick(float partialTick);
 }

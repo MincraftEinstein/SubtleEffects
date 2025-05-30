@@ -16,7 +16,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 
-import static einstein.subtle_effects.init.ModConfigs.BIOMES;
+import static einstein.subtle_effects.init.ModConfigs.ENVIRONMENT;
 
 @Mixin(WeatherEffectRenderer.class)
 public abstract class WeatherEffectsRendererMixin {
@@ -26,7 +26,7 @@ public abstract class WeatherEffectsRendererMixin {
 
     @WrapOperation(method = "render(Lnet/minecraft/client/renderer/MultiBufferSource;Lnet/minecraft/world/phys/Vec3;IFLjava/util/List;Ljava/util/List;)V", at = @At(value = "FIELD", target = "Lnet/minecraft/client/renderer/WeatherEffectRenderer;RAIN_LOCATION:Lnet/minecraft/resources/ResourceLocation;"))
     private ResourceLocation replaceRainTexture(Operation<ResourceLocation> original) {
-        if (BIOMES.biomeColorRain) {
+        if (ENVIRONMENT.biomeColorRain) {
             return Util.COLORLESS_RAIN_TEXTURE;
         }
         return original.call();
@@ -47,7 +47,7 @@ public abstract class WeatherEffectsRendererMixin {
         if (level != null) {
             BlockPos pos = weatherColumn.subtleEffects$getPos();
 
-            if (getPrecipitationAt(level, pos) == Biome.Precipitation.RAIN && BIOMES.biomeColorRain) {
+            if (getPrecipitationAt(level, pos) == Biome.Precipitation.RAIN && ENVIRONMENT.biomeColorRain) {
                 int waterColor = level.getBiome(pos).value().getWaterColor();
                 return instance.setColor((waterColor >> 16) / 255F, (waterColor >> 8) / 255F, waterColor / 255F, alpha);
             }

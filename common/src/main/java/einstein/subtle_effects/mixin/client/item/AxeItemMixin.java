@@ -11,6 +11,7 @@ import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.AxeItem;
 import net.minecraft.world.level.Level;
@@ -26,8 +27,8 @@ import static einstein.subtle_effects.init.ModConfigs.ITEMS;
 @Mixin(AxeItem.class)
 public class AxeItemMixin {
 
-    @WrapOperation(method = "evaluateNewBlockState", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/Level;playSound(Lnet/minecraft/world/entity/player/Player;Lnet/minecraft/core/BlockPos;Lnet/minecraft/sounds/SoundEvent;Lnet/minecraft/sounds/SoundSource;FF)V"))
-    private void evaluateNewBlockState(Level level, Player player, BlockPos pos, SoundEvent sound, SoundSource source, float volume, float pitch, Operation<Void> original, @Local(argsOnly = true) BlockState state) {
+    @WrapOperation(method = "evaluateNewBlockState", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/Level;playSound(Lnet/minecraft/world/entity/Entity;Lnet/minecraft/core/BlockPos;Lnet/minecraft/sounds/SoundEvent;Lnet/minecraft/sounds/SoundSource;FF)V"))
+    private void evaluateNewBlockState(Level level, Entity entity, BlockPos pos, SoundEvent sound, SoundSource source, float volume, float pitch, Operation<Void> original, @Local(argsOnly = true) BlockState state) {
         if (level.isClientSide) {
             if (sound.equals(SoundEvents.AXE_STRIP)) {
                 if (ITEMS.axeStripParticles) {
@@ -46,7 +47,7 @@ public class AxeItemMixin {
             }
         }
 
-        original.call(level, player, pos, sound, source, volume, pitch);
+        original.call(level, entity, pos, sound, source, volume, pitch);
     }
 
     @Unique
