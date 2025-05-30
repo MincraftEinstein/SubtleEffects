@@ -1,5 +1,7 @@
 package einstein.subtle_effects;
 
+import einstein.subtle_effects.client.model.entity.EinsteinSolarSystemModel;
+import einstein.subtle_effects.client.renderer.entity.EinsteinSolarSystemLayer;
 import einstein.subtle_effects.data.*;
 import einstein.subtle_effects.init.ModParticles;
 import einstein.subtle_effects.platform.FabricNetworkHelper;
@@ -7,11 +9,14 @@ import einstein.subtle_effects.platform.services.NetworkHelper;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
+import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
+import net.fabricmc.fabric.api.client.rendering.v1.LivingEntityFeatureRendererRegistrationCallback;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.fabricmc.fabric.api.resource.ResourcePackActivationType;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.resources.PreparableReloadListener;
+import net.minecraft.world.entity.EntityType;
 
 public class SubtleEffectsFabricClient implements ClientModInitializer {
 
@@ -27,6 +32,12 @@ public class SubtleEffectsFabricClient implements ClientModInitializer {
         addReloadListener(helper, new SparkProviderReloadListener());
         addReloadListener(helper, new MobSkullShaderReloadListener());
         addReloadListener(helper, new BCWPPackManager());
+        EntityModelLayerRegistry.registerModelLayer(EinsteinSolarSystemModel.MODEL_LAYER, EinsteinSolarSystemModel::createLayer);
+        LivingEntityFeatureRendererRegistrationCallback.EVENT.register((type, renderer, registrationHelper, context) -> {
+            if (type.equals(EntityType.PLAYER)) {
+                registrationHelper.register(new EinsteinSolarSystemLayer(renderer, context));
+            }
+        });
     }
 
     private static <T extends PreparableReloadListener & NamedReloadListener> void addReloadListener(ResourceManagerHelper helper, T listener) {

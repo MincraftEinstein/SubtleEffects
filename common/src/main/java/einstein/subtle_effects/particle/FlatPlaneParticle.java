@@ -25,35 +25,43 @@ public abstract class FlatPlaneParticle extends TextureSheetParticle {
 
     @Override
     public void render(VertexConsumer consumer, Camera camera, float partialTicks) {
+        if (roll != 0) {
+            rotation.rotateZ(Mth.lerp(partialTicks, oRoll, roll));
+        }
+
+        renderQuad(consumer, camera, partialTicks);
+    }
+
+    protected void renderQuad(VertexConsumer consumer, Camera camera, float partialTicks) {
         Vec3 vec3 = camera.getPosition();
         float x = (float) (Mth.lerp(partialTicks, xo, this.x) - vec3.x());
         float y = (float) (Mth.lerp(partialTicks, yo, this.y) - vec3.y());
         float z = (float) (Mth.lerp(partialTicks, zo, this.z) - vec3.z());
+
+        renderQuad(consumer, rotation, partialTicks, x, y, z, false);
+
+        if (renderBackFace) {
+            renderQuad(consumer, rotation, partialTicks, x, y, z, true);
+        }
+    }
+
+    protected void renderQuad(VertexConsumer consumer, Quaternionf rotation, float partialTicks, float x, float y, float z, boolean renderInverted) {
         float quadSize = getQuadSize(partialTicks);
         float u0 = getU0();
         float u1 = getU1();
         float v0 = getV0();
         float v1 = getV1();
         int packedLight = getLightColor(partialTicks);
+        int i = renderInverted ? 1 : -1;
+        int i2 = renderInverted ? -1 : 1;
 
-        if (roll != 0) {
-            rotation.rotateZ(Mth.lerp(partialTicks, oRoll, roll));
-        }
-
-        renderVertex(consumer, x, y, z, -1, -1, quadSize, u1, v1, packedLight);
-        renderVertex(consumer, x, y, z, -1, 1, quadSize, u1, v0, packedLight);
-        renderVertex(consumer, x, y, z, 1, 1, quadSize, u0, v0, packedLight);
-        renderVertex(consumer, x, y, z, 1, -1, quadSize, u0, v1, packedLight);
-
-        if (renderBackFace) {
-            renderVertex(consumer, x, y, z, 1, -1, quadSize, u0, v1, packedLight);
-            renderVertex(consumer, x, y, z, 1, 1, quadSize, u0, v0, packedLight);
-            renderVertex(consumer, x, y, z, -1, 1, quadSize, u1, v0, packedLight);
-            renderVertex(consumer, x, y, z, -1, -1, quadSize, u1, v1, packedLight);
-        }
+        renderVertex(consumer, rotation, x, y, z, i, -1, quadSize, u1, v1, packedLight);
+        renderVertex(consumer, rotation, x, y, z, i, 1, quadSize, u1, v0, packedLight);
+        renderVertex(consumer, rotation, x, y, z, i2, 1, quadSize, u0, v0, packedLight);
+        renderVertex(consumer, rotation, x, y, z, i2, -1, quadSize, u0, v1, packedLight);
     }
 
-    private void renderVertex(VertexConsumer buffer, float x, float y, float z, float xOffset, float yOffset, float quadSize, float u, float v, int packedLight) {
+    protected void renderVertex(VertexConsumer buffer, Quaternionf rotation, float x, float y, float z, float xOffset, float yOffset, float quadSize, float u, float v, int packedLight) {
         Vector3f vector3f = new Vector3f(xOffset, yOffset, 0).rotate(rotation).mul(quadSize).add(x, y, z);
         buffer.vertex(vector3f.x(), vector3f.y(), vector3f.z()).uv(u, v).color(rCol, gCol, bCol, alpha).uv2(packedLight);
     }

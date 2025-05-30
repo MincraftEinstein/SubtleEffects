@@ -16,7 +16,6 @@ import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.LavaFluid;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -38,7 +37,7 @@ public abstract class LavaFluidMixin {
             return;
         }
 
-        if (state.getValue(LavaFluid.FALLING)) {
+        if (state.hasProperty(LavaFluid.FALLING) && state.getValue(LavaFluid.FALLING)) {
             for (Direction direction : Direction.values()) {
                 BlockPos relativePos = pos.relative(direction);
                 if (direction.getAxis() != Direction.Axis.Y && !Util.isSolidOrNotEmpty(level, relativePos)) {

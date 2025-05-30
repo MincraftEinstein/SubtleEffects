@@ -1,5 +1,7 @@
 package einstein.subtle_effects.mixin.client.entity;
 
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.init.ModDamageListeners;
 import einstein.subtle_effects.init.ModParticles;
@@ -44,6 +46,15 @@ public abstract class ClientLivingEntityMixin<T extends Entity> extends Entity {
         super(type, level);
     }
 
+    @WrapOperation(method = "breakItem", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;spawnItemParticles(Lnet/minecraft/world/item/ItemStack;I)V"))
+    private void increaseBreakItemParticles(LivingEntity entity, ItemStack stack, int particleCount, Operation<Void> original) {
+        if (ModConfigs.ITEMS.increasedItemBreakParticles) {
+            original.call(entity, stack, 16);
+            return;
+        }
+        original.call(entity, stack, particleCount);
+    }
+
     @Inject(method = "tickDeath", at = @At(value = "FIELD", target = "Lnet/minecraft/world/entity/LivingEntity;deathTime:I", ordinal = 0))
     private void deathTick(CallbackInfo ci) {
         if (!level().isClientSide) {
@@ -74,6 +85,10 @@ public abstract class ClientLivingEntityMixin<T extends Entity> extends Entity {
                 if (player.equals(minecraft.player) && !ENTITIES.humanoids.potionRingsDisplayType.test(minecraft)) {
                     return;
                 }
+            }
+
+            if (subtleEffects$me.isInvisible()) {
+                return;
             }
 
             ItemStack useItem = subtleEffects$me.getUseItem();

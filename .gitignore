@@ -13,6 +13,7 @@ out
 *.iml
 .idea/*
 !.idea/scopes
+!.idea/icon.png
 
 # gradle
 build

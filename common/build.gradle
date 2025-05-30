@@ -28,6 +28,7 @@ dependencies {
     compileOnly group: "maven.modrinth", name: "prism-lib", version: "${forge_prism_version}"
     compileOnly group: "maven.modrinth", name: "item-borders", version: "${forge_item_borders_version}"
     compileOnly group: "fuzs.forgeconfigapiport", name: "forgeconfigapiport-common", version: "${config_api_port}"
+    compileOnly group: "maven.modrinth", name: "endrem", version: "${forge_endrem_version}"
 }
 
 publishing {

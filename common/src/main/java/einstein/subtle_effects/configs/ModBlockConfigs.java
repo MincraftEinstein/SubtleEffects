@@ -1,61 +1,63 @@
 package einstein.subtle_effects.configs;
 
 import einstein.subtle_effects.SubtleEffects;
+import einstein.subtle_effects.compat.CompatHelper;
+import einstein.subtle_effects.compat.EndRemasteredCompat;
+import einstein.subtle_effects.configs.blocks.FallingBlocksConfigs;
 import einstein.subtle_effects.configs.blocks.SparksConfigs;
 import einstein.subtle_effects.configs.blocks.SteamConfigs;
 import einstein.subtle_effects.configs.blocks.UpdatedSmokeConfigs;
 import einstein.subtle_effects.init.ModBlockTickers;
 import einstein.subtle_effects.init.ModConfigs;
+import einstein.subtle_effects.particle.EnderEyePlacedRingParticle;
 import einstein.subtle_effects.tickers.TickerManager;
+import einstein.subtle_effects.util.Util;
 import me.fzzyhmstrs.fzzy_config.annotations.Translation;
 import me.fzzyhmstrs.fzzy_config.config.Config;
 import me.fzzyhmstrs.fzzy_config.config.ConfigGroup;
+import me.fzzyhmstrs.fzzy_config.util.AllowableIdentifiers;
 import me.fzzyhmstrs.fzzy_config.util.EnumTranslatable;
-import me.fzzyhmstrs.fzzy_config.validation.collection.ValidatedList;
-import me.fzzyhmstrs.fzzy_config.validation.minecraft.ValidatedRegistryType;
+import me.fzzyhmstrs.fzzy_config.validation.collection.ValidatedMap;
+import me.fzzyhmstrs.fzzy_config.validation.minecraft.ValidatedIdentifier;
+import me.fzzyhmstrs.fzzy_config.validation.misc.ValidatedColor;
 import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedFloat;
 import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedInt;
 import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedNumber;
-import net.minecraft.Util;
-import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.DyeColor;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
+import java.awt.*;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static einstein.subtle_effects.init.ModConfigs.BASE_KEY;
+import static einstein.subtle_effects.util.Util.VANILLA_EYE;
 
 @Translation(prefix = ModConfigs.BASE_KEY + "blocks")
 public class ModBlockConfigs extends Config {
 
-    private static final List<Block> DEFAULT_FALLING_BLOCK_DUST_BLOCKS = Util.make(new ArrayList<>(), blocks -> {
-        blocks.add(Blocks.SAND);
-        blocks.add(Blocks.RED_SAND);
-        blocks.add(Blocks.GRAVEL);
+    private static final Map<ResourceLocation, ValidatedColor.ColorHolder> DEFAULT_EYE_COLORS = net.minecraft.Util.make(new HashMap<>(), map -> {
+        map.put(VANILLA_EYE, Util.toColorHolder(EnderEyePlacedRingParticle.DEFAULT_COLOR));
 
-        for (DyeColor color : DyeColor.values()) {
-            blocks.add(BuiltInRegistries.BLOCK.get(new ResourceLocation(color.getName() + "_concrete_powder")));
+        if (CompatHelper.IS_END_REMASTERED_LOADED.get()) {
+            map.putAll(CompatHelper.getDefaultEyes());
         }
     });
 
     public SparksConfigs sparks = new SparksConfigs();
     public UpdatedSmokeConfigs updatedSmoke = new UpdatedSmokeConfigs();
     public SteamConfigs steam = new SteamConfigs();
+    public FallingBlocksConfigs fallingBlocks = new FallingBlocksConfigs();
 
+    public ConfigGroup dustyBlocks = new ConfigGroup("dusty_blocks");
     public boolean redstoneBlockDust = true;
     public BlockDustDensity redstoneBlockDustDensity = BlockDustDensity.DEFAULT;
     public GlowstoneDustDisplayType glowstoneBlockDustDisplayType = GlowstoneDustDisplayType.ON;
+    @ConfigGroup.Pop
     public BlockDustDensity glowstoneBlockDustDensity = BlockDustDensity.DEFAULT;
     public boolean beehivesHaveSleepingZs = true;
-    public ConfigGroup fallingBlockDustGroup = new ConfigGroup("falling_block_dust");
-    public boolean fallingBlockDust = true;
-    public ValidatedList<Block> fallingBlockDustBlocks = new ValidatedList<>(DEFAULT_FALLING_BLOCK_DUST_BLOCKS, ValidatedRegistryType.of(BuiltInRegistries.BLOCK));
-    @ConfigGroup.Pop
-    public ValidatedInt fallingBlockDustDistance = new ValidatedInt(0, 20, 0);
     public SmokeType torchflowerSmoke = SmokeType.DEFAULT;
     public boolean torchflowerFlames = true;
     public boolean dragonEggParticles = true;
@@ -64,6 +66,7 @@ public class ModBlockConfigs extends Config {
     public boolean anvilBreakParticles = true;
     public boolean anvilUseParticles = true;
     public boolean grindstoneUseParticles = true;
+    public boolean smithingTableUseParticles = true;
     public CommandBlockSpawnType commandBlockParticles = CommandBlockSpawnType.ON;
     public boolean slimeBlockBounceSounds = true;
     public ConfigGroup beaconParticlesGroup = new ConfigGroup("beacon_particles");
@@ -71,7 +74,8 @@ public class ModBlockConfigs extends Config {
     public ValidatedInt beaconParticlesDensity = new ValidatedInt(10, 20, 1);
     @ConfigGroup.Pop
     public ValidatedFloat beaconParticlesSpeed = new ValidatedFloat(1, 2, 0.5F);
-    public boolean compostingParticles = true;
+    public boolean compostingCompostParticles = true;
+    public boolean compostingItemParticles = true;
     public boolean respawnAnchorParticles = true;
     public boolean beehiveShearParticles = true;
     public boolean endPortalParticles = true;
@@ -90,6 +94,24 @@ public class ModBlockConfigs extends Config {
     public VegetationFirefliesSpawnType vegetationFirefliesSpawnType = VegetationFirefliesSpawnType.FLOWERS_ONLY;
     public boolean replacePowderSnowFlakes = true;
     public boolean lavaCauldronEffects = true;
+    public boolean enderEyePlacedRings = true;
+    public EnderEyePlacedParticlesDisplayType enderEyePlacedParticlesDisplayType = EnderEyePlacedParticlesDisplayType.BOTH;
+    public ValidatedMap<ResourceLocation, ValidatedColor.ColorHolder> eyeColors = new ValidatedMap<>(DEFAULT_EYE_COLORS,
+            getEyeHandler(), new ValidatedColor(new Color(EnderEyePlacedRingParticle.DEFAULT_COLOR), false));
+    public boolean replaceOminousVaultConnection = true;
+
+    private static ValidatedIdentifier getEyeHandler() {
+        List<ResourceLocation> eyes = CompatHelper.IS_END_REMASTERED_LOADED.get()
+                ? EndRemasteredCompat.getAllEyes()
+                : CompatHelper.getDefaultEyes().keySet().stream().toList();
+
+        return new ValidatedIdentifier(VANILLA_EYE, new AllowableIdentifiers(id -> {
+            if (eyes.contains(id)) {
+                return true;
+            }
+            return id.equals(VANILLA_EYE);
+        }, () -> eyes, true));
+    }
 
     public ModBlockConfigs() {
         super(SubtleEffects.loc("blocks"));
@@ -97,7 +119,7 @@ public class ModBlockConfigs extends Config {
 
     @Override
     public void onUpdateClient() {
-        TickerManager.clear();
+        TickerManager.clear(Minecraft.getInstance().level);
         ModBlockTickers.init();
     }
 
@@ -164,6 +186,17 @@ public class ModBlockConfigs extends Config {
         @Override
         public @NotNull String prefix() {
             return BASE_KEY + "blocks.beaconParticlesDisplayType";
+        }
+    }
+
+    public enum EnderEyePlacedParticlesDisplayType implements EnumTranslatable {
+        DOTS,
+        VANILLA,
+        BOTH;
+
+        @Override
+        public @NotNull String prefix() {
+            return BASE_KEY + "blocks.enderEyePlacedParticlesDisplayType";
         }
     }
 }

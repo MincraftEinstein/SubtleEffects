@@ -5,6 +5,8 @@ import einstein.subtle_effects.biome_particles.BiomeParticleManager;
 import einstein.subtle_effects.configs.CommandBlockSpawnType;
 import einstein.subtle_effects.configs.ModBlockConfigs;
 import einstein.subtle_effects.particle.option.PositionParticleOptions;
+import einstein.subtle_effects.tickers.FlameGeyserTicker;
+import einstein.subtle_effects.tickers.TickerManager;
 import einstein.subtle_effects.util.AmethystClusterBlockAccessor;
 import einstein.subtle_effects.util.BlockTickerProvider;
 import einstein.subtle_effects.util.ParticleSpawnUtil;
@@ -19,9 +21,11 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.ParticleUtils;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.entity.BeaconBeamOwner;
 import net.minecraft.world.level.block.entity.BeaconBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.CampfireBlockEntity;
@@ -39,6 +43,7 @@ import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 import static einstein.subtle_effects.init.ModConfigs.BLOCKS;
+import static einstein.subtle_effects.init.ModConfigs.ENVIRONMENT;
 import static einstein.subtle_effects.util.MathUtil.nextNonAbsDouble;
 import static einstein.subtle_effects.util.MathUtil.nextSign;
 import static einstein.subtle_effects.util.Util.playClientSound;
@@ -67,16 +72,29 @@ public class ModBlockTickers {
                 });
         register(Blocks.TORCHFLOWER, () -> BLOCKS.torchflowerSmoke.isEnabled() || BLOCKS.torchflowerFlames,
                 (state, level, pos, random) -> {
-                    double x = pos.getX() + 0.5;
-                    double y = pos.getY() + 0.8;
-                    double z = pos.getZ() + 0.5;
+                    Vec3 center = state.getShape(level, pos).bounds().getCenter();
+                    Vec3 offsetPos = new Vec3(
+                            pos.getX() + center.x(),
+                            pos.getY() + center.y() + 0.3,
+                            pos.getZ() + center.z()
+                    );
 
                     if (BLOCKS.torchflowerSmoke.isEnabled() && random.nextInt(3) == 0) {
-                        level.addParticle(BLOCKS.torchflowerSmoke.getParticle().get(), x, y, z, 0, 0, 0);
+                        level.addParticle(BLOCKS.torchflowerSmoke.getParticle().get(),
+                                offsetPos.x(),
+                                offsetPos.y(),
+                                offsetPos.z(),
+                                0, 0, 0
+                        );
                     }
 
                     if (BLOCKS.torchflowerFlames && random.nextInt(5) == 0) {
-                        level.addParticle(ParticleTypes.FLAME, x, y, z, 0, 0, 0);
+                        level.addParticle(ParticleTypes.FLAME,
+                                offsetPos.x(),
+                                offsetPos.y(),
+                                offsetPos.z(),
+                                0, 0, 0
+                        );
                     }
                 });
         register(Blocks.DRAGON_EGG, () -> BLOCKS.dragonEggParticles, (state, level, pos, random) -> {
@@ -99,7 +117,7 @@ public class ModBlockTickers {
                     BlockEntity blockEntity = level.getBlockEntity(pos);
 
                     if (blockEntity instanceof BeaconBlockEntity beaconBlockEntity) {
-                        List<BeaconBlockEntity.BeaconBeamSection> sections = beaconBlockEntity.getBeamSections();
+                        List<BeaconBeamOwner.Section> sections = beaconBlockEntity.getBeamSections();
 
                         if (!sections.isEmpty() && !(sections.size() > 1 && BLOCKS.beaconParticlesDisplayType == ModBlockConfigs.BeaconParticlesDisplayType.NOT_COLORED)) {
                             PositionParticleOptions options = new PositionParticleOptions(ModParticles.BEACON.get(), beaconBlockEntity.getBlockPos());
@@ -237,7 +255,7 @@ public class ModBlockTickers {
                 );
             }
         });
-        register(state -> (state.is(BlockTags.FLOWERS) || (BLOCKS.vegetationFirefliesSpawnType == ModBlockConfigs.VegetationFirefliesSpawnType.GRASS_AND_FLOWERS && (state.is(Blocks.GRASS) || state.is(Blocks.TALL_GRASS)))),
+        register(state -> (state.is(BlockTags.FLOWERS) || (BLOCKS.vegetationFirefliesSpawnType == ModBlockConfigs.VegetationFirefliesSpawnType.GRASS_AND_FLOWERS && (state.is(Blocks.SHORT_GRASS) || state.is(Blocks.TALL_GRASS)))),
                 () -> BLOCKS.vegetationFirefliesDensity.get() > 0,
                 (state, level, pos, random) -> {
                     if (BiomeParticleManager.FIREFLY_CONDITIONS.test(level, pos)) {
@@ -251,6 +269,18 @@ public class ModBlockTickers {
                         }
                     }
                 });
+        register(state -> FlameGeyserTicker.VALID_BLOCKS.contains(state.getBlock()), () -> ENVIRONMENT.flameGeyserSpawnChance.get() > 0, (state, level, pos, random) -> {
+            if (level.dimension().equals(Level.NETHER)) {
+                RandomSource blockRandom = RandomSource.create(state.getSeed(pos));
+                if (blockRandom.nextDouble() < (0.0001 * ENVIRONMENT.flameGeyserSpawnChance.get())) {
+                    if (!FlameGeyserTicker.ACTIVE_GEYSERS.contains(pos) && !FlameGeyserTicker.INACTIVE_GEYSERS.contains(pos)) {
+                        if (FlameGeyserTicker.checkLocation(level, pos, true)) {
+                            TickerManager.add(new FlameGeyserTicker(level, pos, blockRandom));
+                        }
+                    }
+                }
+            }
+        });
     }
 
     private static void register(Block block, Supplier<Boolean> isEnabled, BlockTickerProvider provider) {

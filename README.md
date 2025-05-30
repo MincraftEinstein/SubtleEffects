@@ -9,7 +9,7 @@
 [![Discord Invite](https://img.shields.io/badge/Discord-Einstein%27s%20Lab-blue?style=for-the-badge&logo=discord)](https://discord.gg/gSsaFAvrBM)
 
 ### **📘 Description**
-Adding many new subtle details through particles and a few sounds. All of which can be toggled and some can be customized. The mod also comes with built-in particle culling and a particle render distance
+Adding many new subtle details through particles and a few sounds. All of which can be toggled and some can be further customized. The mod also comes with built-in particle culling and a particle render distance. This mod was designed to be mainly client-sided, but there are a few features that require server access to work, see FAQ for more details.
 
 **✨ Some Key Features**
 - Particle culling
@@ -62,12 +62,25 @@ You may not
 
 **Q:** Can XYZ feature be disabled?
 <br>
-**A:** Yes, all features can be disabled in the config menu.
-If you find that a feature/change cannot be disabled please report it as a bug
+**A:** Yes, all features can be disabled in the config menu. If you find that a feature/change cannot be disabled please report it as a bug
 
-**Q:** Can vanilla clients or clients without the mod join if the mod is installed on the server?
+**Q:** How to disable Dust Clouds?
 <br>
-**A:** Yes, the mod does not need to be installed on the client to join
+**A:** The configs for dust clouds are located in the `Entities/Dust Clouds` config section
+
+**Q:** How to disable dropped item particles?
+<br>
+**A:** The configs for dropped item particles are located in the `Entities/Item Rarity` config section and can be disabled by changing `Particle Display Type` to `OFF`
+
+**Q:** Will you support Forge?
+<br>
+**A:** Absolutely not, Forge 1.20.1 is the only version I will support Forge on.
+
+**Q:** What game environment does the mod run in?
+<br>
+**A:** The mod was designed to run client side, however, there are some extra features and details that only work if the mod is also installed on the server. If installed on the server all clients will need the mod installed to join, including LAN servers. For a list of features that require server access visit the [wiki](https://github.com/MincraftEinstein/SubtleEffects/wiki).
+<br>
+Note: Forge 1.20.1 does NOT support the mod running client side only.
 
 **Q:** Does this mod work with Fancy Block Particles, Particle Core, Visuality, or Particular?
 <br>
@@ -97,7 +110,9 @@ To get your translation into the mod, make a pull request on GitHub with the tra
 All translators are credited in the list below.
 
 - Simplified Chinese: [kuhananxianglai](https://github.com/kuhananxianglai)
-- Japanese: [gohkenytp](https://github.com/gohkenytp), [Kazumadness](https://github.com/gohkenytp)
+- Traditional Chinese: [OutlinedArc217](https://github.com/OutlinedArc217)
+- Literal Chinese: [OutlinedArc217](https://github.com/OutlinedArc217)
+- Japanese: [gohkenytp](https://github.com/gohkenytp), [Kazumadness](https://github.com/gohkenytp), [KAGUYA-1137](https://github.com/KAGUYA-1137)
 - Mexican Spanish: [TheLegendofSaram](https://github.com/TheLegendofSaram)
 - Korean: [sunbatheproductions](https://github.com/sunbatheproductions)
 - Russian: [Det-rovv](https://github.com/Det-rovv)

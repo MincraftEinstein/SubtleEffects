@@ -5,6 +5,7 @@ import net.minecraft.world.level.Level;
 import sereneseasons.api.season.ISeasonState;
 import sereneseasons.api.season.Season;
 import sereneseasons.api.season.SeasonHelper;
+import sereneseasons.init.ModConfig;
 
 import static einstein.subtle_effects.init.ModConfigs.ENTITIES;
 
@@ -12,6 +13,10 @@ public class SereneSeasonsCompat {
 
     public static boolean isColdSeason(Level level) {
         if (ENTITIES.humanoids.frostyBreath.seasons == FrostyBreathConfigs.Seasons.OFF) {
+            return false;
+        }
+
+        if (!ModConfig.seasons.isDimensionWhitelisted(level.dimension())) {
             return false;
         }
 

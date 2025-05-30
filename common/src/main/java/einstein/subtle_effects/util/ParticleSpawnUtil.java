@@ -1,14 +1,18 @@
 package einstein.subtle_effects.util;
 
+import einstein.subtle_effects.configs.ModBlockConfigs;
 import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.init.ModParticles;
-import einstein.subtle_effects.networking.clientbound.ClientBoundEntityFellPacket;
+import einstein.subtle_effects.networking.clientbound.ClientBoundEntityFellPayload;
+import einstein.subtle_effects.particle.EnderEyePlacedRingParticle;
 import einstein.subtle_effects.particle.SparkParticle;
 import einstein.subtle_effects.particle.option.DirectionParticleOptions;
 import einstein.subtle_effects.platform.Services;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.particles.ColorParticleOption;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
@@ -23,17 +27,23 @@ import net.minecraft.world.entity.animal.horse.AbstractHorse;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.ComposterBlock;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.function.BiPredicate;
 import java.util.function.Predicate;
+import java.util.function.Supplier;
 
 import static einstein.subtle_effects.init.ModConfigs.BLOCKS;
 import static einstein.subtle_effects.init.ModConfigs.ENTITIES;
 import static einstein.subtle_effects.util.MathUtil.*;
 import static net.minecraft.util.Mth.DEG_TO_RAD;
+import static net.minecraft.util.Mth.nextFloat;
+import static net.minecraft.world.level.block.state.properties.BlockStateProperties.DOUBLE_BLOCK_HALF;
 
 public class ParticleSpawnUtil {
 
@@ -81,7 +91,7 @@ public class ParticleSpawnUtil {
         level.addParticle(particle, pos.getX() + xOffset, pos.getY() + yOffset, pos.getZ() + zOffset, xSpeed, ySpeed, zSpeed);
     }
 
-    public static void spawnFallDustClouds(LivingEntity entity, float distance, int fallDamage, ClientBoundEntityFellPacket.TypeConfig config) {
+    public static void spawnFallDustClouds(LivingEntity entity, float distance, int fallDamage, ClientBoundEntityFellPayload.TypeConfig config) {
         Level level = entity.level();
         if (level.isClientSide && entity.equals(Minecraft.getInstance().player)) {
             spawnEntityFellParticles(entity, entity.getY(), distance, fallDamage, ENTITIES.dustClouds.playerFell);
@@ -90,7 +100,7 @@ public class ParticleSpawnUtil {
             Services.NETWORK.sendToClientsTracking(
                     entity instanceof ServerPlayer player ? player : null,
                     serverLevel, entity.blockPosition(),
-                    new ClientBoundEntityFellPacket(entity.getId(), entity.getY(), distance, fallDamage, config)
+                    new ClientBoundEntityFellPayload(entity.getId(), entity.getY(), distance, fallDamage, config)
             );
         }
     }
@@ -255,5 +265,115 @@ public class ParticleSpawnUtil {
         pos = pos.yRot(-entity.getViewYRot(partialTick) * DEG_TO_RAD);
         pos = pos.add(entity.getX(), entity.getEyeY(), entity.getZ());
         level.addParticle(options, pos.x(), pos.y(), pos.z(), speed.x(), speed.y(), speed.z());
+    }
+
+    public static void spawnEnderEyePlacementParticles(BlockPos pos, RandomSource random, ClientLevel level, int color) {
+        if (BLOCKS.enderEyePlacedRings) {
+            level.addParticle(ColorParticleOption.create(ModParticles.ENDER_EYE_PLACED_RING.get(), color),
+                    pos.getX() + 0.5, pos.getY() + 0.8125 + EnderEyePlacedRingParticle.SIZE, pos.getZ() + 0.5,
+                    0, 0, 0
+            );
+        }
+
+        if (BLOCKS.enderEyePlacedParticlesDisplayType != ModBlockConfigs.EnderEyePlacedParticlesDisplayType.VANILLA) {
+            for (int i = 0; i < 16; ++i) {
+                level.addParticle(ColorParticleOption.create(ModParticles.SHORT_SPARK.get(), color),
+                        pos.getX() + 0.5 + nextNonAbsDouble(random, 0.25),
+                        pos.getY() + 1,
+                        pos.getZ() + 0.5 + nextNonAbsDouble(random, 0.25),
+                        0, 0, 0
+                );
+            }
+        }
+    }
+
+    public static void spawnParticlesAroundShape(ParticleOptions particle, Level level, BlockPos pos, BlockState state, int count, Supplier<Vec3> particleSpeed, float offset) {
+        if (state.hasProperty(DOUBLE_BLOCK_HALF)) {
+            DoubleBlockHalf half = state.getValue(DOUBLE_BLOCK_HALF);
+            BlockPos oppositePos = pos.relative(half.getDirectionToOther());
+            BlockState oppositeState = level.getBlockState(oppositePos);
+
+            if (oppositeState.is(state.getBlock()) && oppositeState.hasProperty(DOUBLE_BLOCK_HALF)) {
+                if (half.getOtherHalf().equals(oppositeState.getValue(DOUBLE_BLOCK_HALF))) {
+                    spawnParticlesAroundShape(particle, level, oppositePos, state,
+                            direction ->
+                                    (half == DoubleBlockHalf.LOWER && direction == Direction.UP)
+                                            || (half == DoubleBlockHalf.UPPER && direction == Direction.DOWN),
+                            count, particleSpeed, offset
+                    );
+                }
+            }
+        }
+
+        spawnParticlesAroundShape(particle, level, pos, state, null, count, particleSpeed, offset);
+    }
+
+    public static void spawnParticlesAroundShape(ParticleOptions particle, Level level, BlockPos pos, BlockState state, @Nullable Predicate<Direction> predicate, int count, Supplier<Vec3> particleSpeed, float offset) {
+        RandomSource random = level.getRandom();
+
+        state.getShape(level, pos).forAllBoxes((minX, minY, minZ, maxX, maxY, maxZ) -> {
+            for (Direction direction : Direction.values()) {
+                if (predicate != null && predicate.test(direction)) {
+                    continue;
+                }
+
+                BlockPos relativePos = pos.relative(direction);
+                if (level.getBlockState(relativePos).isSolidRender(level, relativePos)) {
+                    continue;
+                }
+
+                Direction.Axis axis = direction.getAxis();
+                Direction.AxisDirection axisDirection = direction.getAxisDirection();
+                boolean isPositive = axisDirection == Direction.AxisDirection.POSITIVE;
+
+                for (int i = 0; i < count; i++) {
+                    double xOffset = axis == Direction.Axis.X ? (isPositive ? maxX : minX) : Mth.nextDouble(random, minX, maxX);
+                    double yOffset = axis == Direction.Axis.Y ? (isPositive ? maxY : minY) : Mth.nextDouble(random, minY, maxY);
+                    double zOffset = axis == Direction.Axis.Z ? (isPositive ? maxZ : minZ) : Mth.nextDouble(random, minZ, maxZ);
+                    Vec3 speed = particleSpeed.get();
+
+                    level.addParticle(particle,
+                            pos.getX() + xOffset + (offset * axisDirection.getStep()),
+                            pos.getY() + yOffset + (offset * axisDirection.getStep()),
+                            pos.getZ() + zOffset + (offset * axisDirection.getStep()),
+                            speed.x(), speed.y(), speed.z()
+                    );
+                }
+            }
+        });
+    }
+
+    public static void spawnHammeringWorkstationParticles(BlockPos pos, RandomSource random, ClientLevel level) {
+        float pointX = random.nextFloat();
+        float pointZ = random.nextFloat();
+
+        for (int i2 = 0; i2 < 20; i2++) {
+            int xSign = nextSign(random);
+            int zSign = nextSign(random);
+
+            level.addParticle(SparkParticle.create(SparkType.METAL, random),
+                    pos.getX() + pointX,
+                    pos.getY() + 1,
+                    pos.getZ() + pointZ,
+                    nextFloat(random, 0.1F, 0.2F) * xSign,
+                    nextFloat(random, 0.1F, 0.2F),
+                    nextFloat(random, 0.1F, 0.2F) * zSign
+            );
+        }
+    }
+
+    public static void spawnCompostParticles(Level level, BlockPos pos, ParticleOptions particle, double xSpeed, double ySpeed, double zSpeed) {
+        RandomSource random = level.getRandom();
+        BlockState state = level.getBlockState(pos);
+
+        if (state.getBlock() instanceof ComposterBlock) {
+            for (int i = 0; i < 10; i++) {
+                level.addParticle(particle,
+                        pos.getX() + 0.5 + MathUtil.nextNonAbsDouble(random, 0.3),
+                        pos.getY() + 0.1875 + (0.125 * state.getValue(ComposterBlock.LEVEL)),
+                        pos.getZ() + 0.5 + MathUtil.nextNonAbsDouble(random, 0.3),
+                        xSpeed, ySpeed, zSpeed);
+            }
+        }
     }
 }

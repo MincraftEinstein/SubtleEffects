@@ -2,9 +2,7 @@ package einstein.subtle_effects.init;
 
 import com.mojang.serialization.Codec;
 import einstein.subtle_effects.particle.option.*;
-import net.minecraft.core.particles.ParticleOptions;
-import net.minecraft.core.particles.ParticleType;
-import net.minecraft.core.particles.SimpleParticleType;
+import net.minecraft.core.particles.*;
 
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -60,6 +58,11 @@ public class ModParticles {
     public static final Supplier<SimpleParticleType> IRON_GOLEM = register("iron_golem");
     public static final Supplier<SimpleParticleType> DROWNING_BUBBLE = register("drowning_bubble");
     public static final Supplier<SimpleParticleType> DROWNING_BUBBLE_POP = register("drowning_bubble_pop");
+    public static final Supplier<ParticleType<DirectionParticleOptions>> EGG_SPLAT = register("egg_splat", DirectionParticleOptions.DESERIALIZER, DirectionParticleOptions::codec);
+    public static final Supplier<ParticleType<ColorParticleOptions>> ENDER_EYE_PLACED_RING = register("ender_eye_placed_ring", ColorParticleOptions.DESERIALIZER, ColorParticleOptions::codec);
+    public static final Supplier<ParticleType<BlockParticleOption>> BLOCK_NO_MOMENTUM = register("block_no_momentum", BlockParticleOption.DESERIALIZER, BlockParticleOption::codec);
+    public static final Supplier<SimpleParticleType> LAVA_SPLASH = register("lava_splash");
+    public static final Supplier<ParticleType<IntegerParticleOptions>> GEYSER_HOLE = register("geyser_spout", IntegerParticleOptions.DESERIALIZER, IntegerParticleOptions::codec);
 
     public static void init() {
     }
