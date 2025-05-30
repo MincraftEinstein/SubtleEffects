@@ -12,5 +12,7 @@ public class ModPackets {
         NETWORK.registerToClient(ClientBoundEntitySpawnSprintingDustCloudsPacket.ID, ClientBoundEntitySpawnSprintingDustCloudsPacket.class, ClientBoundEntitySpawnSprintingDustCloudsPacket::decode);
         NETWORK.registerToClient(ClientBoundBlockDestroyEffectsPacket.ID, ClientBoundBlockDestroyEffectsPacket.class, ClientBoundBlockDestroyEffectsPacket::decode);
         NETWORK.registerToClient(ClientBoundXPBottleEffectsPacket.ID, ClientBoundXPBottleEffectsPacket.class, ClientBoundXPBottleEffectsPacket::decode);
+        NETWORK.registerToClient(ClientBoundFallingBlockLandPayload.ID, ClientBoundFallingBlockLandPayload.class, ClientBoundFallingBlockLandPayload::decode);
+        NETWORK.registerToClient(ClientBoundCompostItemPayload.ID, ClientBoundCompostItemPayload.class, ClientBoundCompostItemPayload::decode);
     }
 }

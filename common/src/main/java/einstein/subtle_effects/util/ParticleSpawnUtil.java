@@ -3,16 +3,16 @@ package einstein.subtle_effects.util;
 import einstein.subtle_effects.configs.ModBlockConfigs;
 import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.init.ModParticles;
-import einstein.subtle_effects.networking.clientbound.ClientBoundEntityFellPayload;
+import einstein.subtle_effects.networking.clientbound.ClientBoundEntityFellPacket;
 import einstein.subtle_effects.particle.EnderEyePlacedRingParticle;
 import einstein.subtle_effects.particle.SparkParticle;
+import einstein.subtle_effects.particle.option.ColorParticleOptions;
 import einstein.subtle_effects.particle.option.DirectionParticleOptions;
 import einstein.subtle_effects.platform.Services;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.particles.ColorParticleOption;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
@@ -91,7 +91,7 @@ public class ParticleSpawnUtil {
         level.addParticle(particle, pos.getX() + xOffset, pos.getY() + yOffset, pos.getZ() + zOffset, xSpeed, ySpeed, zSpeed);
     }
 
-    public static void spawnFallDustClouds(LivingEntity entity, float distance, int fallDamage, ClientBoundEntityFellPayload.TypeConfig config) {
+    public static void spawnFallDustClouds(LivingEntity entity, float distance, int fallDamage, ClientBoundEntityFellPacket.TypeConfig config) {
         Level level = entity.level();
         if (level.isClientSide && entity.equals(Minecraft.getInstance().player)) {
             spawnEntityFellParticles(entity, entity.getY(), distance, fallDamage, ENTITIES.dustClouds.playerFell);
@@ -100,7 +100,7 @@ public class ParticleSpawnUtil {
             Services.NETWORK.sendToClientsTracking(
                     entity instanceof ServerPlayer player ? player : null,
                     serverLevel, entity.blockPosition(),
-                    new ClientBoundEntityFellPayload(entity.getId(), entity.getY(), distance, fallDamage, config)
+                    new ClientBoundEntityFellPacket(entity.getId(), entity.getY(), distance, fallDamage, config)
             );
         }
     }
@@ -269,7 +269,7 @@ public class ParticleSpawnUtil {
 
     public static void spawnEnderEyePlacementParticles(BlockPos pos, RandomSource random, ClientLevel level, int color) {
         if (BLOCKS.enderEyePlacedRings) {
-            level.addParticle(ColorParticleOption.create(ModParticles.ENDER_EYE_PLACED_RING.get(), color),
+            level.addParticle(new ColorParticleOptions(ModParticles.ENDER_EYE_PLACED_RING.get(), Vec3.fromRGB24(color).toVector3f()),
                     pos.getX() + 0.5, pos.getY() + 0.8125 + EnderEyePlacedRingParticle.SIZE, pos.getZ() + 0.5,
                     0, 0, 0
             );
@@ -277,7 +277,7 @@ public class ParticleSpawnUtil {
 
         if (BLOCKS.enderEyePlacedParticlesDisplayType != ModBlockConfigs.EnderEyePlacedParticlesDisplayType.VANILLA) {
             for (int i = 0; i < 16; ++i) {
-                level.addParticle(ColorParticleOption.create(ModParticles.SHORT_SPARK.get(), color),
+                level.addParticle(new ColorParticleOptions(ModParticles.SHORT_SPARK.get(), Vec3.fromRGB24(color).toVector3f()),
                         pos.getX() + 0.5 + nextNonAbsDouble(random, 0.25),
                         pos.getY() + 1,
                         pos.getZ() + 0.5 + nextNonAbsDouble(random, 0.25),
@@ -290,11 +290,12 @@ public class ParticleSpawnUtil {
     public static void spawnParticlesAroundShape(ParticleOptions particle, Level level, BlockPos pos, BlockState state, int count, Supplier<Vec3> particleSpeed, float offset) {
         if (state.hasProperty(DOUBLE_BLOCK_HALF)) {
             DoubleBlockHalf half = state.getValue(DOUBLE_BLOCK_HALF);
-            BlockPos oppositePos = pos.relative(half.getDirectionToOther());
+            BlockPos oppositePos = pos.relative(half == DoubleBlockHalf.UPPER ? Direction.UP : Direction.DOWN);
             BlockState oppositeState = level.getBlockState(oppositePos);
 
             if (oppositeState.is(state.getBlock()) && oppositeState.hasProperty(DOUBLE_BLOCK_HALF)) {
-                if (half.getOtherHalf().equals(oppositeState.getValue(DOUBLE_BLOCK_HALF))) {
+                DoubleBlockHalf otherHalf = half == DoubleBlockHalf.UPPER ? DoubleBlockHalf.LOWER : DoubleBlockHalf.UPPER;
+                if (otherHalf.equals(oppositeState.getValue(DOUBLE_BLOCK_HALF))) {
                     spawnParticlesAroundShape(particle, level, oppositePos, state,
                             direction ->
                                     (half == DoubleBlockHalf.LOWER && direction == Direction.UP)

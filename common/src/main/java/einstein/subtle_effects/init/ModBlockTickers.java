@@ -25,7 +25,6 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.*;
-import net.minecraft.world.level.block.entity.BeaconBeamOwner;
 import net.minecraft.world.level.block.entity.BeaconBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.CampfireBlockEntity;
@@ -117,7 +116,7 @@ public class ModBlockTickers {
                     BlockEntity blockEntity = level.getBlockEntity(pos);
 
                     if (blockEntity instanceof BeaconBlockEntity beaconBlockEntity) {
-                        List<BeaconBeamOwner.Section> sections = beaconBlockEntity.getBeamSections();
+                        List<BeaconBlockEntity.BeaconBeamSection> sections = beaconBlockEntity.getBeamSections();
 
                         if (!sections.isEmpty() && !(sections.size() > 1 && BLOCKS.beaconParticlesDisplayType == ModBlockConfigs.BeaconParticlesDisplayType.NOT_COLORED)) {
                             PositionParticleOptions options = new PositionParticleOptions(ModParticles.BEACON.get(), beaconBlockEntity.getBlockPos());
@@ -255,7 +254,7 @@ public class ModBlockTickers {
                 );
             }
         });
-        register(state -> (state.is(BlockTags.FLOWERS) || (BLOCKS.vegetationFirefliesSpawnType == ModBlockConfigs.VegetationFirefliesSpawnType.GRASS_AND_FLOWERS && (state.is(Blocks.SHORT_GRASS) || state.is(Blocks.TALL_GRASS)))),
+        register(state -> (state.is(BlockTags.FLOWERS) || (BLOCKS.vegetationFirefliesSpawnType == ModBlockConfigs.VegetationFirefliesSpawnType.GRASS_AND_FLOWERS && (state.is(Blocks.GRASS) || state.is(Blocks.TALL_GRASS)))),
                 () -> BLOCKS.vegetationFirefliesDensity.get() > 0,
                 (state, level, pos, random) -> {
                     if (BiomeParticleManager.FIREFLY_CONDITIONS.test(level, pos)) {

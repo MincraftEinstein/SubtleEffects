@@ -28,7 +28,7 @@ public class EinsteinSolarSystemLayer extends RenderLayer<AbstractClientPlayer, 
     @Override
     public void render(PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, AbstractClientPlayer player, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
         if (shouldRender(player)) {
-            VertexConsumer consumer = bufferSource.getBuffer(RenderType.entityCutout(player.getSkin().texture()));
+            VertexConsumer consumer = bufferSource.getBuffer(RenderType.entityCutout(player.getSkinTextureLocation()));
             model.render(poseStack, consumer, packedLight, LivingEntityRenderer.getOverlayCoords(player, 0), partialTicks, player);
         }
     }

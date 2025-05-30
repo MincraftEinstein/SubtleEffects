@@ -1,13 +1,16 @@
 package einstein.subtle_effects;
 
+import einstein.subtle_effects.client.model.entity.EinsteinSolarSystemModel;
+import einstein.subtle_effects.client.renderer.entity.EinsteinSolarSystemLayer;
 import einstein.subtle_effects.data.BCWPPackManager;
 import einstein.subtle_effects.data.MobSkullShaderReloadListener;
 import einstein.subtle_effects.data.SparkProviderReloadListener;
 import einstein.subtle_effects.platform.ForgeRegistryHelper;
-import einstein.subtle_effects.util.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.client.particle.SpriteSet;
+import net.minecraft.client.renderer.entity.EntityRenderer;
+import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.server.packs.PackType;
@@ -15,6 +18,7 @@ import net.minecraft.server.packs.PathPackResources;
 import net.minecraft.server.packs.repository.Pack;
 import net.minecraft.server.packs.repository.PackSource;
 import net.minecraft.server.packs.repository.RepositorySource;
+import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.RegisterClientCommandsEvent;
 import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
 import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
@@ -45,6 +49,17 @@ public class SubtleEffectsForgeClient {
             event.registerReloadListener(new SparkProviderReloadListener());
             event.registerReloadListener(new MobSkullShaderReloadListener());
             event.registerReloadListener(new BCWPPackManager());
+        });
+        modEventBus.addListener((EntityRenderersEvent.RegisterLayerDefinitions event) ->
+                event.registerLayerDefinition(EinsteinSolarSystemModel.MODEL_LAYER, EinsteinSolarSystemModel::createLayer));
+        modEventBus.addListener((EntityRenderersEvent.AddLayers event) -> {
+            for (String skinName : event.getSkins()) {
+                EntityRenderer<?> renderer = event.getSkin(skinName);
+
+                if (renderer instanceof PlayerRenderer playerRenderer) {
+                    playerRenderer.addLayer(new EinsteinSolarSystemLayer(playerRenderer, event.getContext()));
+                }
+            }
         });
         MinecraftForge.EVENT_BUS.addListener((TickEvent.ClientTickEvent event) -> {
             Minecraft minecraft = Minecraft.getInstance();

@@ -1,7 +1,7 @@
 package einstein.subtle_effects.mixin.common;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
-import einstein.subtle_effects.networking.clientbound.ClientBoundEntityFellPayload;
+import einstein.subtle_effects.networking.clientbound.ClientBoundEntityFellPacket;
 import einstein.subtle_effects.util.ParticleSpawnUtil;
 import net.minecraft.world.entity.animal.horse.Llama;
 import org.spongepowered.asm.mixin.Mixin;
@@ -17,7 +17,7 @@ public class LlamaMixin {
     @ModifyExpressionValue(method = "causeFallDamage", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/animal/horse/Llama;calculateFallDamage(FF)I"))
     private int calculateFallDamage(int damage, float distance, float damageMultiplier) {
         if (subtleEffects$me.isInvisible()) {
-            ParticleSpawnUtil.spawnFallDustClouds(subtleEffects$me, damageMultiplier, damage, ClientBoundEntityFellPayload.TypeConfig.ENTITY);
+            ParticleSpawnUtil.spawnFallDustClouds(subtleEffects$me, damageMultiplier, damage, ClientBoundEntityFellPacket.TypeConfig.ENTITY);
         }
         return damage;
     }

@@ -78,6 +78,7 @@ dependencies {
     compileOnly("maven.modrinth:iceberg:${forge_iceberg_version}")
     compileOnly("maven.modrinth:prism-lib:${forge_prism_version}")
     compileOnly("maven.modrinth:item-borders:${forge_item_borders_version}")
+    compileOnly("maven.modrinth:endrem:${forge_endrem_version}")
 }
 
 tasks.withType(JavaCompile).configureEach {

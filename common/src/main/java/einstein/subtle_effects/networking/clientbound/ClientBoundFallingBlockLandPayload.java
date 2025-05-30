@@ -1,29 +1,39 @@
 package einstein.subtle_effects.networking.clientbound;
 
 import einstein.subtle_effects.SubtleEffects;
+import einstein.subtle_effects.networking.Packet;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.network.codec.ByteBufCodecs;
-import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.Nullable;
 
-public record ClientBoundFallingBlockLandPayload(int stateId, BlockPos pos) implements CustomPacketPayload {
+public record ClientBoundFallingBlockLandPayload(int stateId, BlockPos pos) implements Packet {
 
-    public static final Type<ClientBoundFallingBlockLandPayload> TYPE = new Type<>(SubtleEffects.loc("falling_block_land"));
-    public static final StreamCodec<FriendlyByteBuf, ClientBoundFallingBlockLandPayload> STREAM_CODEC = StreamCodec.composite(
-            ByteBufCodecs.INT, ClientBoundFallingBlockLandPayload::stateId,
-            BlockPos.STREAM_CODEC, ClientBoundFallingBlockLandPayload::pos,
-            ClientBoundFallingBlockLandPayload::new
-    );
+    public static final ResourceLocation ID = SubtleEffects.loc("falling_block_land");
 
     public ClientBoundFallingBlockLandPayload(BlockState state, BlockPos pos) {
         this(Block.getId(state), pos);
     }
 
     @Override
-    public Type<? extends CustomPacketPayload> type() {
-        return TYPE;
+    public void encode(FriendlyByteBuf buf) {
+        buf.writeInt(stateId);
+        buf.writeBlockPos(pos);
+    }
+
+    public static ClientBoundFallingBlockLandPayload decode(FriendlyByteBuf buf) {
+        return new ClientBoundFallingBlockLandPayload(buf.readInt(), buf.readBlockPos());
+    }
+
+    @Override
+    public void handle(@Nullable ServerPlayer player) {
+        ClientPacketHandlers.handle(this);
+    }
+
+    public ResourceLocation id() {
+        return ID;
     }
 }

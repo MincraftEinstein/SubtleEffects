@@ -48,6 +48,6 @@ public class CompatHelper {
     }
 
     public static ResourceLocation endRemLoc(String path) {
-        return ResourceLocation.fromNamespaceAndPath("endrem", path);
+        return new ResourceLocation("endrem", path);
     }
 }

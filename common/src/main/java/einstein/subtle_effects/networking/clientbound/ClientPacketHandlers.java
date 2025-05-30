@@ -144,7 +144,12 @@ public class ClientPacketHandlers {
         }
     }
 
-    public static void handle(ClientLevel level, ClientBoundFallingBlockLandPayload payload) {
+    public static void handle(ClientBoundFallingBlockLandPayload payload) {
+        Level level = Minecraft.getInstance().level;
+        if (level == null) {
+            return;
+        }
+
         BlockPos pos = payload.pos();
         BlockState state = Block.stateById(payload.stateId());
         Block block = state.getBlock();
@@ -187,8 +192,13 @@ public class ClientPacketHandlers {
         }
     }
 
-    public static void handle(ClientLevel level, ClientBoundCompostItemPayload payload) {
+    public static void handle(ClientBoundCompostItemPayload payload) {
         if (BLOCKS.compostingItemParticles) {
+            Level level = Minecraft.getInstance().level;
+            if (level == null) {
+                return;
+            }
+
             RandomSource random = level.getRandom();
             ParticleSpawnUtil.spawnCompostParticles(level, payload.pos(),
                     new ItemParticleOption(ParticleTypes.ITEM, payload.stack()),
@@ -199,7 +209,7 @@ public class ClientPacketHandlers {
         }
     }
 
-    private static int getFallingBlockDustColor(ClientLevel level, Block block, BlockState state, BlockPos pos) {
+    private static int getFallingBlockDustColor(Level level, Block block, BlockState state, BlockPos pos) {
         if (block instanceof FallingBlock fallingBlock) {
             return fallingBlock.getDustColor(state, level, pos);
         }
@@ -216,14 +226,14 @@ public class ClientPacketHandlers {
     }
 
     // Don't convert to enum parameters, because the server will crash trying to access the client configs
-    private static boolean getBlockDestroyEffectConfig(ClientBoundBlockDestroyEffectsPayload packet) {
+    private static boolean getBlockDestroyEffectConfig(ClientBoundBlockDestroyEffectsPacket packet) {
         return switch (packet.config()) {
             case LEAVES_DECAY -> ModConfigs.BLOCKS.leavesDecayEffects;
             case FARMLAND_DESTROY -> ModConfigs.BLOCKS.farmlandDestroyEffects;
         };
     }
 
-    private static boolean getEntityFellConfig(ClientBoundEntityFellPayload packet) {
+    private static boolean getEntityFellConfig(ClientBoundEntityFellPacket packet) {
         return switch (packet.config()) {
             case ENTITY -> ENTITIES.dustClouds.mobFell;
             case PLAYER -> ENTITIES.dustClouds.playerFell;

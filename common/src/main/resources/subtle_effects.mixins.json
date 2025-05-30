@@ -29,7 +29,6 @@
     "client.block.SlimeBlockMixin",
     "client.block.TorchBlockMixin",
     "client.block.entity.CampfireBlockEntityMixin",
-    "client.block.entity.VaultBlockEntityClientMixin",
     "client.entity.ClientEntityMixin",
     "client.entity.ClientLivingEntityMixin",
     "client.entity.EntityAccessor",

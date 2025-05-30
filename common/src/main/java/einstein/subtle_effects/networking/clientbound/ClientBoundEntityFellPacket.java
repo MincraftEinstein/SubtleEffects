@@ -7,8 +7,8 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import org.jetbrains.annotations.Nullable;
 
-public record ClientBoundEntityFellPacket(int entityId, double y, float distance,
-                                          int fallDamage, TypeConfig config) implements Packet {
+public record ClientBoundEntityFellPacket(int entityId, double y, float distance, int fallDamage,
+                                          TypeConfig config) implements Packet {
 
     public static final ResourceLocation ID = SubtleEffects.loc("entity_fell");
 

@@ -27,7 +27,7 @@ public class FallingBlocksConfigs extends ConfigSection {
         blocks.add(Blocks.SUSPICIOUS_GRAVEL);
 
         for (DyeColor color : DyeColor.values()) {
-            blocks.add(BuiltInRegistries.BLOCK.get(ResourceLocation.withDefaultNamespace(color.getName() + "_concrete_powder")));
+            blocks.add(BuiltInRegistries.BLOCK.get(new ResourceLocation(color.getName() + "_concrete_powder")));
         }
     });
 

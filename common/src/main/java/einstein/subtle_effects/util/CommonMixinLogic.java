@@ -39,10 +39,8 @@ public class CommonMixinLogic {
                 return false;
             }
 
-            if (!GENERAL.cullParticlesWithNoAlpha || accessor.getAlpha() != 0) {
-                int distance = GENERAL.particleRenderDistance * 16;
-                return accessor.subtleEffects$wasForced() || camera.getPosition().distanceToSqr(accessor.getX(), accessor.getY(), accessor.getZ()) < distance * distance;
-            }
+            int distance = GENERAL.particleRenderDistance * 16;
+            return accessor.subtleEffects$wasForced() || camera.getPosition().distanceToSqr(accessor.getX(), accessor.getY(), accessor.getZ()) < distance * distance;
         }
         return false;
     }

@@ -73,6 +73,6 @@ public class EinsteinSolarSystemModel extends Model {
     }
 
     @Override
-    public void renderToBuffer(PoseStack poseStack, VertexConsumer consumer, int packedLight, int packedOverlay, int color) {
+    public void renderToBuffer(PoseStack poseStack, VertexConsumer consumer, int packedLight, int packedOverlay, float f, float f1, float f2, float f3) {
     }
 }

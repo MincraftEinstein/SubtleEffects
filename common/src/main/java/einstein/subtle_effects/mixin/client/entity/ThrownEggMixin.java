@@ -37,7 +37,7 @@ public abstract class ThrownEggMixin {
     private void handle(byte id, CallbackInfo ci) {
         if (id == 3) {
             Level level = subtleEffects$me.level();
-            RandomSource random = subtleEffects$me.getRandom();
+            RandomSource random = subtleEffects$me.level().getRandom();
             float volume = ModConfigs.ENTITIES.eggSmashSoundVolume.get();
 
             if (volume > 0) {

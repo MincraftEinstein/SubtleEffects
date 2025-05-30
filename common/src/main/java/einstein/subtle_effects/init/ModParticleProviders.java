@@ -67,6 +67,11 @@ public class ModParticleProviders {
         register(IRON_GOLEM, CustomTerrainParticle.IronGolemProvider::new);
         register(DROWNING_BUBBLE, DrowningBubbleParticle.Provider::new);
         register(DROWNING_BUBBLE_POP, DrowningBubblePopParticle.Provider::new);
+        register(EGG_SPLAT, EggSplatParticle.Provider::new);
+        register(ENDER_EYE_PLACED_RING, EnderEyePlacedRingParticle.Provider::new);
+        register(BLOCK_NO_MOMENTUM, sprites -> new TerrainNoMomentumParticleProvider());
+        register(LAVA_SPLASH, LavaSplashParticle.Provider::new);
+        register(GEYSER_HOLE, GeyserSpoutParticle.Provider::new);
         SubtleEffects.LOGGER.info("Forge please do the world a favor and STOP EXISTING!!");
     }
 

@@ -5,8 +5,8 @@ import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import einstein.subtle_effects.init.ModConfigs;
-import einstein.subtle_effects.networking.clientbound.ClientBoundEntityFellPayload;
-import einstein.subtle_effects.networking.clientbound.ClientBoundEntitySpawnSprintingDustCloudsPayload;
+import einstein.subtle_effects.networking.clientbound.ClientBoundEntityFellPacket;
+import einstein.subtle_effects.networking.clientbound.ClientBoundEntitySpawnSprintingDustCloudsPacket;
 import einstein.subtle_effects.platform.Services;
 import einstein.subtle_effects.util.ParticleSpawnUtil;
 import net.minecraft.core.particles.BlockParticleOption;
@@ -82,7 +82,7 @@ public abstract class CommonLivingEntityMixin extends Entity {
             if (subtleEffects$canStart || position().distanceToSqr(subtleEffects$lastCheckedPos) > 0.5) {
                 if (subtleEffects$validEntity) {
                     if (onGround() && subtleEffects$me.getSpeed() > subtleEffects$minSpeed) {
-                        Services.NETWORK.sendToClientsTracking((ServerLevel) level(), subtleEffects$me.blockPosition(), new ClientBoundEntitySpawnSprintingDustCloudsPayload(getId()));
+                        Services.NETWORK.sendToClientsTracking((ServerLevel) level(), subtleEffects$me.blockPosition(), new ClientBoundEntitySpawnSprintingDustCloudsPacket(getId()));
                         subtleEffects$lastCheckedPos = position();
                         subtleEffects$canStart = false;
                         return;
@@ -99,8 +99,8 @@ public abstract class CommonLivingEntityMixin extends Entity {
         if (!subtleEffects$me.isInvisible()) {
             ParticleSpawnUtil.spawnFallDustClouds(subtleEffects$me, damageMultiplier, damage,
                     subtleEffects$me instanceof Player
-                            ? ClientBoundEntityFellPayload.TypeConfig.PLAYER
-                            : ClientBoundEntityFellPayload.TypeConfig.ENTITY
+                            ? ClientBoundEntityFellPacket.TypeConfig.PLAYER
+                            : ClientBoundEntityFellPacket.TypeConfig.ENTITY
             );
         }
         return damage;
@@ -120,7 +120,7 @@ public abstract class CommonLivingEntityMixin extends Entity {
     private boolean cancelFlyIntoWallClientHurt(LivingEntity entity, DamageSource source, float amount) {
         if (!(entity instanceof Player player && player.isCreative())) {
             if (!entity.isInvisible()) {
-                ParticleSpawnUtil.spawnFallDustClouds(entity, 10, 10, ClientBoundEntityFellPayload.TypeConfig.ELYTRA);
+                ParticleSpawnUtil.spawnFallDustClouds(entity, 10, 10, ClientBoundEntityFellPacket.TypeConfig.ELYTRA);
             }
         }
         return !level().isClientSide;

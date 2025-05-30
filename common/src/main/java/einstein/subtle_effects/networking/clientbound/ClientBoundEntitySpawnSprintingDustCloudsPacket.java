@@ -7,8 +7,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import org.jetbrains.annotations.Nullable;
 
-public record ClientBoundEntitySpawnSprintingDustCloudsPacket(
-        int entityId) implements Packet {
+public record ClientBoundEntitySpawnSprintingDustCloudsPacket(int entityId) implements Packet {
 
     public static final ResourceLocation ID = SubtleEffects.loc("entity_spawn_sprinting_dust_clouds");
 
