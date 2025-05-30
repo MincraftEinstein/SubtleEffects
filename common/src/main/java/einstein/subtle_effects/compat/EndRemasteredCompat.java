@@ -22,12 +22,17 @@ public class EndRemasteredCompat {
         BlockState state = level.getBlockState(pos);
         if (state.hasProperty(AncientPortalFrame.EYE)) {
             ERFrameProperties eyeType = state.getValue(AncientPortalFrame.EYE);
-            return ModConfigs.BLOCKS.eyeColors.get(endRemLoc(eyeType.toString()));
+            if (eyeType != ERFrameProperties.EMPTY) {
+                return ModConfigs.BLOCKS.eyeColors.get(endRemLoc(eyeType.getSerializedName()));
+            }
         }
         return null;
     }
 
     public static List<ResourceLocation> getAllEyes() {
-        return Arrays.stream(ERFrameProperties.values()).map(eye -> endRemLoc(eye.toString())).toList();
+        return Arrays.stream(ERFrameProperties.values())
+                .filter(eye -> eye != ERFrameProperties.EMPTY)
+                .map(eye -> endRemLoc(eye.getSerializedName()))
+                .toList();
     }
 }
