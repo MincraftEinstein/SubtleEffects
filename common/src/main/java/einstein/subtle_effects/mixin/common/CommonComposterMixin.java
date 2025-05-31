@@ -47,7 +47,11 @@ public class CommonComposterMixin {
         @Inject(method = "setChanged", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/LevelAccessor;levelEvent(ILnet/minecraft/core/BlockPos;I)V"))
         private void setChanged(CallbackInfo ci) {
             if (level instanceof ServerLevel serverLevel) {
-                Services.NETWORK.sendToClientsTracking(serverLevel, pos, new ClientBoundCompostItemPayload(getItem(0), pos));
+                ItemStack stack = getItem(0);
+
+                if (!stack.isEmpty()) {
+                    Services.NETWORK.sendToClientsTracking(serverLevel, pos, new ClientBoundCompostItemPayload(stack, pos));
+                }
             }
         }
     }

@@ -15,7 +15,7 @@ public class GameRendererMixin {
     private static float getNightVisionScale(float original, @Local MobEffectInstance instance) {
         if (ModConfigs.GENERAL.nightVisionFading) {
             int duration = instance.getDuration();
-            return duration > 100 ? 1 : duration * 0.01F;
+            return !instance.endsWithin(100) ? 1 : duration * 0.01F;
         }
         return original;
     }
