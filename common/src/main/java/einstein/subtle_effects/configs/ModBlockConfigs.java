@@ -94,10 +94,14 @@ public class ModBlockConfigs extends Config {
     public VegetationFirefliesSpawnType vegetationFirefliesSpawnType = VegetationFirefliesSpawnType.FLOWERS_ONLY;
     public boolean replacePowderSnowFlakes = true;
     public boolean lavaCauldronEffects = true;
+
+    public ConfigGroup endPortalFrameGroup = new ConfigGroup("end_portal_frame");
     public boolean enderEyePlacedRings = true;
     public EnderEyePlacedParticlesDisplayType enderEyePlacedParticlesDisplayType = EnderEyePlacedParticlesDisplayType.BOTH;
+    @ConfigGroup.Pop
     public ValidatedMap<ResourceLocation, ValidatedColor.ColorHolder> eyeColors = new ValidatedMap<>(DEFAULT_EYE_COLORS,
             getEyeHandler(), new ValidatedColor(new Color(EnderEyePlacedRingParticle.DEFAULT_COLOR), false));
+
     public boolean replaceOminousVaultConnection = true;
 
     private static ValidatedIdentifier getEyeHandler() {

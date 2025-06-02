@@ -161,6 +161,7 @@
   "config.subtle_effects.blocks.replacePowderSnowFlakes": "Replace Powder Snow Flakes",
   "config.subtle_effects.blocks.lavaCauldronEffects": "Lava Cauldron Effects",
   "config.subtle_effects.blocks.lavaCauldronEffects.desc": "Apply lava sounds and particles to lava cauldrons",
+  "config.subtle_effects.blocks.endPortalFrameGroup": "End Portal Frame",
   "config.subtle_effects.blocks.enderEyePlacedRings": "Ender Eye Placed Rings",
   "config.subtle_effects.blocks.enderEyePlacedParticlesDisplayType": "Ender Eye Placed Particles Display Type",
   "config.subtle_effects.blocks.enderEyePlacedParticlesDisplayType.DOTS": "Dots",
