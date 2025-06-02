@@ -97,6 +97,7 @@ public class ModBlockConfigs extends Config {
 
     public ConfigGroup endPortalFrameGroup = new ConfigGroup("end_portal_frame");
     public boolean enderEyePlacedRings = true;
+    public ValidatedInt enderEyePlacedRingsDuration = new ValidatedInt(10, 60, 5);
     public EnderEyePlacedParticlesDisplayType enderEyePlacedParticlesDisplayType = EnderEyePlacedParticlesDisplayType.BOTH;
     @ConfigGroup.Pop
     public ValidatedMap<ResourceLocation, ValidatedColor.ColorHolder> eyeColors = new ValidatedMap<>(DEFAULT_EYE_COLORS,

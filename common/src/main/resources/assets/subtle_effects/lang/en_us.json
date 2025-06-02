@@ -163,6 +163,8 @@
   "config.subtle_effects.blocks.lavaCauldronEffects.desc": "Apply lava sounds and particles to lava cauldrons",
   "config.subtle_effects.blocks.endPortalFrameGroup": "End Portal Frame",
   "config.subtle_effects.blocks.enderEyePlacedRings": "Ender Eye Placed Rings",
+  "config.subtle_effects.blocks.enderEyePlacedRingsDuration": "Ender Eye Placed Rings Duration",
+  "config.subtle_effects.blocks.enderEyePlacedRingsDuration.desc": "The lifetime of the effect in ticks",
   "config.subtle_effects.blocks.enderEyePlacedParticlesDisplayType": "Ender Eye Placed Particles Display Type",
   "config.subtle_effects.blocks.enderEyePlacedParticlesDisplayType.DOTS": "Dots",
   "config.subtle_effects.blocks.enderEyePlacedParticlesDisplayType.VANILLA": "Vanilla",
