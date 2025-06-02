@@ -61,7 +61,7 @@
     "common.AbstractHorseMixin",
     "common.BeehiveBlockEntityMixin",
     "common.CommonComposterMixin",
-    "common.CommonComposterMixin$ComposterBlockInputContainerMixin",
+    "common.CommonComposterMixin$InputContainerMixin",
     "common.CommonLivingEntityMixin",
     "common.FallingBlockEntityMixin",
     "common.FarmBlockMixin",
