@@ -9,6 +9,7 @@ import einstein.subtle_effects.configs.blocks.SteamConfigs;
 import einstein.subtle_effects.configs.blocks.UpdatedSmokeConfigs;
 import einstein.subtle_effects.init.ModBlockTickers;
 import einstein.subtle_effects.init.ModConfigs;
+import einstein.subtle_effects.init.ModParticles;
 import einstein.subtle_effects.particle.EnderEyePlacedRingParticle;
 import einstein.subtle_effects.tickers.TickerManager;
 import einstein.subtle_effects.util.Util;
@@ -24,13 +25,19 @@ import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedFloat;
 import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedInt;
 import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedNumber;
 import net.minecraft.client.Minecraft;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ColorParticleOption;
+import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.BiFunction;
 
 import static einstein.subtle_effects.init.ModConfigs.BASE_KEY;
 import static einstein.subtle_effects.util.Util.VANILLA_EYE;
@@ -99,9 +106,10 @@ public class ModBlockConfigs extends Config {
     public boolean enderEyePlacedRings = true;
     public ValidatedInt enderEyePlacedRingsDuration = new ValidatedInt(10, 60, 5);
     public EnderEyePlacedParticlesDisplayType enderEyePlacedParticlesDisplayType = EnderEyePlacedParticlesDisplayType.BOTH;
-    @ConfigGroup.Pop
     public ValidatedMap<ResourceLocation, ValidatedColor.ColorHolder> eyeColors = new ValidatedMap<>(DEFAULT_EYE_COLORS,
             getEyeHandler(), new ValidatedColor(new Color(EnderEyePlacedRingParticle.DEFAULT_COLOR), false));
+    @ConfigGroup.Pop
+    public EndPortalFrameParticlesDisplayType endPortalFrameParticlesDisplayType = EndPortalFrameParticlesDisplayType.SMOKE;
 
     public boolean replaceOminousVaultConnection = true;
 
@@ -202,6 +210,25 @@ public class ModBlockConfigs extends Config {
         @Override
         public @NotNull String prefix() {
             return BASE_KEY + "blocks.enderEyePlacedParticlesDisplayType";
+        }
+    }
+
+    public enum EndPortalFrameParticlesDisplayType implements EnumTranslatable {
+        OFF(0, null),
+        DOTS(8, (level, pos) -> ColorParticleOption.create(ModParticles.SHORT_SPARK.get(), Util.getEyeColorHolder(level, pos).toInt())),
+        SMOKE(1, (level, pos) -> ParticleTypes.SMOKE);
+
+        public final int count;
+        public final BiFunction<Level, BlockPos, ParticleOptions> particle;
+
+        EndPortalFrameParticlesDisplayType(int count, BiFunction<Level, BlockPos, ParticleOptions> particle) {
+            this.count = count;
+            this.particle = particle;
+        }
+
+        @Override
+        public @NotNull String prefix() {
+            return BASE_KEY + "blocks.endPortalFrameParticlesDisplayType";
         }
     }
 }

@@ -276,14 +276,18 @@ public class ParticleSpawnUtil {
         }
 
         if (BLOCKS.enderEyePlacedParticlesDisplayType != ModBlockConfigs.EnderEyePlacedParticlesDisplayType.VANILLA) {
-            for (int i = 0; i < 16; ++i) {
-                level.addParticle(ColorParticleOption.create(ModParticles.SHORT_SPARK.get(), color),
-                        pos.getX() + 0.5 + nextNonAbsDouble(random, 0.25),
-                        pos.getY() + 1,
-                        pos.getZ() + 0.5 + nextNonAbsDouble(random, 0.25),
-                        0, 0, 0
-                );
-            }
+            spawnEndPortalParticles(level, pos, random, ColorParticleOption.create(ModParticles.SHORT_SPARK.get(), color), 16);
+        }
+    }
+
+    public static void spawnEndPortalParticles(Level level, BlockPos pos, RandomSource random, ParticleOptions particle, int count) {
+        for (int i = 0; i < count; ++i) {
+            level.addParticle(particle,
+                    pos.getX() + 0.5 + nextNonAbsDouble(random, 0.25),
+                    pos.getY() + 0.9375,
+                    pos.getZ() + 0.5 + nextNonAbsDouble(random, 0.25),
+                    0, 0, 0
+            );
         }
     }
 

@@ -2,6 +2,8 @@ package einstein.subtle_effects.init;
 
 import einstein.subtle_effects.SubtleEffects;
 import einstein.subtle_effects.biome_particles.BiomeParticleManager;
+import einstein.subtle_effects.compat.CompatHelper;
+import einstein.subtle_effects.compat.EndRemasteredCompat;
 import einstein.subtle_effects.configs.CommandBlockSpawnType;
 import einstein.subtle_effects.configs.ModBlockConfigs;
 import einstein.subtle_effects.mixin.client.block.AmethystClusterBlockAccessor;
@@ -56,6 +58,10 @@ public class ModBlockTickers {
     public static void init() {
         REGISTERED.clear();
         REGISTERED_SPECIAL.clear();
+
+        if (CompatHelper.IS_END_REMASTERED_LOADED.get()) {
+            EndRemasteredCompat.init();
+        }
 
         register(Blocks.REDSTONE_BLOCK, () -> BLOCKS.redstoneBlockDust, (state, level, pos, random) -> {
             ParticleSpawnUtil.spawnParticlesAroundBlock(DustParticleOptions.REDSTONE, level, pos, random, BLOCKS.redstoneBlockDustDensity.getPerSideChance());
@@ -279,6 +285,13 @@ public class ModBlockTickers {
                     }
                 }
             }
+        });
+        register(Blocks.END_PORTAL_FRAME, () -> BLOCKS.endPortalFrameParticlesDisplayType != ModBlockConfigs.EndPortalFrameParticlesDisplayType.OFF, (state, level, pos, random) -> {
+            if (!state.getValue(EndPortalFrameBlock.HAS_EYE)) {
+                return;
+            }
+
+            ParticleSpawnUtil.spawnEndPortalParticles(level, pos, random, BLOCKS.endPortalFrameParticlesDisplayType.particle.apply(level, pos), BLOCKS.endPortalFrameParticlesDisplayType.count);
         });
     }
 
