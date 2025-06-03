@@ -1,5 +1,6 @@
 package einstein.subtle_effects.mixin.client.entity;
 
+import einstein.subtle_effects.init.ModConfigs;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.animal.Panda;
