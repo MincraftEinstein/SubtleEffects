@@ -72,7 +72,7 @@
   "config.subtle_effects.blocks.steam.boilingThreshold": "Boiling Threshold",
   "config.subtle_effects.blocks.steam.boilingThreshold.desc": "The light level at which water will bubble (boil). The value cannot be lower than the value of Steaming Threshold",
   "config.subtle_effects.blocks": "Blocks",
-  "config.subtle_effects.blocks.dustyBlocks": "Dusty Blocks",
+  "config.subtle_effects.blocks.dustyBlocksGroup": "Dusty Blocks",
   "config.subtle_effects.blocks.blockDustDensity.DEFAULT": "Default",
   "config.subtle_effects.blocks.blockDustDensity.MINIMAL": "Minimal",
   "config.subtle_effects.blocks.redstoneBlockDust": "Redstone Block Dust",

@@ -58,7 +58,7 @@ public class ModBlockConfigs extends Config {
     public SteamConfigs steam = new SteamConfigs();
     public FallingBlocksConfigs fallingBlocks = new FallingBlocksConfigs();
 
-    public ConfigGroup dustyBlocks = new ConfigGroup("dusty_blocks");
+    public ConfigGroup dustyBlocksGroup = new ConfigGroup("dusty_blocks");
     public boolean redstoneBlockDust = true;
     public BlockDustDensity redstoneBlockDustDensity = BlockDustDensity.DEFAULT;
     public GlowstoneDustDisplayType glowstoneBlockDustDisplayType = GlowstoneDustDisplayType.ON;

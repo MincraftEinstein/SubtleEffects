@@ -72,7 +72,7 @@
   "config.subtle_effects.blocks.steam.boilingThreshold": "沸腾阈值",
   "config.subtle_effects.blocks.steam.boilingThreshold.desc": "水开始产生气泡/沸腾的光照等级阈值。此值不可低于蒸发阈值",
   "config.subtle_effects.blocks": "方块",
-  "config.subtle_effects.blocks.dustyBlocks": "可产生尘土的方块",
+  "config.subtle_effects.blocks.dustyBlocksGroup": "可产生尘土的方块",
   "config.subtle_effects.blocks.blockDustDensity.DEFAULT": "默认",
   "config.subtle_effects.blocks.blockDustDensity.MINIMAL": "最少",
   "config.subtle_effects.blocks.redstoneBlockDust": "红石方块尘土",

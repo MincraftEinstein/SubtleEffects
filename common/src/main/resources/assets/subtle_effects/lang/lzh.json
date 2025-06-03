@@ -72,7 +72,7 @@
   "config.subtle_effects.blocks.steam.boilingThreshold": "沸閾",  
   "config.subtle_effects.blocks.steam.boilingThreshold.desc": "水始生泡沸之光明閾。不可低於蒸閾",  
   "config.subtle_effects.blocks": "方塊",  
-  "config.subtle_effects.blocks.dustyBlocks": "可生塵方塊",  
+  "config.subtle_effects.blocks.dustyBlocksGroup": "可生塵方塊",
   "config.subtle_effects.blocks.blockDustDensity.DEFAULT": "常制",  
   "config.subtle_effects.blocks.blockDustDensity.MINIMAL": "最微",  
   "config.subtle_effects.blocks.redstoneBlockDust": "紅石方塵",  
