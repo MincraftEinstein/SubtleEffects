@@ -35,7 +35,8 @@
     "client.entity.EntityAccessor",
     "client.entity.EntityRendererMixin",
     "client.entity.HumanoidModelMixin",
-    "client.entity.MinecartFurnaceMixin",
+    "client.entity.MinecartFurnaceMixin",,
+    "client.entity.PandaMixin"
     "client.entity.PrimedTNTMixin",
     "client.entity.SheepMixin",
     "client.entity.SlimeMixin",
