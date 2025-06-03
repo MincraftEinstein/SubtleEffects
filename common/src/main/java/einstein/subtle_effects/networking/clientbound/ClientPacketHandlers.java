@@ -9,6 +9,7 @@ import einstein.subtle_effects.util.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
@@ -29,6 +30,7 @@ import org.joml.Vector3f;
 import static einstein.subtle_effects.init.ModConfigs.BLOCKS;
 import static einstein.subtle_effects.init.ModConfigs.ENTITIES;
 import static einstein.subtle_effects.util.MathUtil.*;
+import static net.minecraft.util.Mth.nextFloat;
 
 public class ClientPacketHandlers {
 
@@ -170,6 +172,30 @@ public class ClientPacketHandlers {
                     nextNonAbsDouble(random, 0.15),
                     nextNonAbsDouble(random, 0.15)
             );
+        }
+    }
+
+    public static void handle(ClientLevel level, ClientBoundStonecutterUsedPayload payload) {
+        if (!BLOCKS.stonecutterUseParticles) {
+            return;
+        }
+
+        RandomSource random = level.getRandom();
+        ItemStack stack = payload.stack();
+        BlockPos pos = payload.pos();
+        BlockState state = level.getBlockState(pos);
+
+        if (state.hasProperty(StonecutterBlock.FACING)) {
+            Direction direction = state.getValue(StonecutterBlock.FACING).getClockWise();
+
+            for (int i = 0; i < 16; i++) {
+                ParticleSpawnUtil.spawnParticlesOnSide(new ItemParticleOption(ParticleTypes.ITEM, stack),
+                        -0.125F, Direction.UP, level, pos, random,
+                        nextFloat(random, 0.1F, 0.2F) * (direction.getStepX() * 1.5),
+                        nextFloat(random, 0.1F, 0.2F),
+                        nextFloat(random, 0.1F, 0.2F) * (direction.getStepZ() * 1.5)
+                );
+            }
         }
     }
 

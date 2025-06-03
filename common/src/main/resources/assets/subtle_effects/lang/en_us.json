@@ -111,6 +111,8 @@
   "config.subtle_effects.blocks.anvilUseParticles.desc": "Should spark particles fly off anvils when used",
   "config.subtle_effects.blocks.grindstoneUseParticles": "Grindstone Use Particles",
   "config.subtle_effects.blocks.grindstoneUseParticles.desc": "Should spark particles fly off grindstones when used",
+  "config.subtle_effects.blocks.stonecutterUseParticles": "Stonecutter Use Particles",
+  "config.subtle_effects.blocks.stonecutterUseParticles.desc": "Should block destroy particles fly off stonecutters when used",
   "config.subtle_effects.blocks.smithingTableUseParticles": "Smithing Table Use Particles",
   "config.subtle_effects.blocks.smithingTableUseParticles.desc": "Should spark particles fly off smithing tables when used",
   "config.subtle_effects.blocks.commandBlockParticles": "Command Block Particles",
