@@ -73,8 +73,9 @@ public class ModBlockConfigs extends Config {
     public boolean anvilBreakParticles = true;
     public boolean anvilUseParticles = true;
     public boolean grindstoneUseParticles = true;
-    public boolean stonecutterUseParticles = true;
     public boolean smithingTableUseParticles = true;
+    public boolean stonecutterUseParticles = true;
+    public boolean cauldronUseParticles = true;
     public CommandBlockSpawnType commandBlockParticles = CommandBlockSpawnType.ON;
     public boolean slimeBlockBounceSounds = true;
     public ConfigGroup beaconParticlesGroup = new ConfigGroup("beacon_particles");

@@ -16,6 +16,7 @@
     "client.WaterFluidMixin",
     "client.block.AbstractCandleBlockMixin",
     "client.block.AbstractCauldronBlockAccessor",
+    "client.block.AbstractCauldronBlockMixin",
     "client.block.AmethystClusterBlockAccessor",
     "client.block.BaseFireBlockMixin",
     "client.block.BeehiveBlockMixin",
