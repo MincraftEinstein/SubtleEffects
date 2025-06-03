@@ -1,4 +1,4 @@
-package com.example.mixin;
+package einstein.subtle_effects.mixin.client.entity;
 
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -18,6 +18,7 @@ public abstract class PandaMixin {
     // Inject into the interactAt method to detect right-click on entity
     @Inject(method = "interactAt", at = @At("HEAD"), cancellable = true)
     private void onInteractAt(Player player, Vec3 hitVec, InteractionHand hand, CallbackInfoReturnable<InteractionResult> cir) {
+        if (level().isClientSide() && ModConfigs.ENTITIES.pandaFeatherSneeze) {
         Panda panda = (Panda)(Object)this;
         Level level = panda.level();
 
@@ -31,6 +32,7 @@ public abstract class PandaMixin {
                     cir.setReturnValue(InteractionResult.SUCCESS);
                 }
             }
+        }
         }
     }
 }
