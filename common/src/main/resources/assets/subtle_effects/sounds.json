@@ -65,61 +65,44 @@
   "block.water.drip": {
     "subtitle": "subtitles.subtle_effects.block.water.drip",
     "sounds": [
-      "block/pointed_dripstone/drip_water1",
-      "block/pointed_dripstone/drip_water2",
-      "block/pointed_dripstone/drip_water3",
-      "block/pointed_dripstone/drip_water4",
-      "block/pointed_dripstone/drip_water5",
-      "block/pointed_dripstone/drip_water6",
-      "block/pointed_dripstone/drip_water7",
-      "block/pointed_dripstone/drip_water8",
-      "block/pointed_dripstone/drip_water9",
-      "block/pointed_dripstone/drip_water10",
-      "block/pointed_dripstone/drip_water11",
-      "block/pointed_dripstone/drip_water12",
-      "block/pointed_dripstone/drip_water13",
-      "block/pointed_dripstone/drip_water14",
-      "block/pointed_dripstone/drip_water15"
+      {
+        "name": "minecraft:block.pointed_dripstone.drip_water",
+        "type": "event"
+      }
     ]
   },
   "block.lava.drip": {
     "subtitle": "subtitles.subtle_effects.block.lava.drip",
     "sounds": [
-      "block/pointed_dripstone/drip_lava1",
-      "block/pointed_dripstone/drip_lava2",
-      "block/pointed_dripstone/drip_lava3",
-      "block/pointed_dripstone/drip_lava4",
-      "block/pointed_dripstone/drip_lava5",
-      "block/pointed_dripstone/drip_lava6"
+      {
+        "name": "minecraft:block.pointed_dripstone.drip_lava",
+        "type": "event"
+      }
     ]
   },
   "block.water.drip_into_fluid": {
     "subtitle": "subtitles.subtle_effects.block.water.drip_into_fluid",
     "sounds": [
-      "block/pointed_dripstone/drip_water_cauldron1",
-      "block/pointed_dripstone/drip_water_cauldron2",
-      "block/pointed_dripstone/drip_water_cauldron3",
-      "block/pointed_dripstone/drip_water_cauldron4",
-      "block/pointed_dripstone/drip_water_cauldron5",
-      "block/pointed_dripstone/drip_water_cauldron6",
-      "block/pointed_dripstone/drip_water_cauldron7",
-      "block/pointed_dripstone/drip_water_cauldron8"
+      {
+        "name": "minecraft:block.pointed_dripstone.drip_water_into_cauldron",
+        "type": "event"
+      }
     ]
   },
   "block.lava.drip_into_fluid": {
     "subtitle": "subtitles.subtle_effects.block.lava.drip_into_fluid",
     "sounds": [
-      "block/pointed_dripstone/drip_lava_cauldron1",
-      "block/pointed_dripstone/drip_lava_cauldron2",
-      "block/pointed_dripstone/drip_lava_cauldron3",
-      "block/pointed_dripstone/drip_lava_cauldron4"
+      {
+        "name": "minecraft:block.pointed_dripstone.drip_lava_into_cauldron",
+        "type": "event"
+      }
     ]
   },
   "block.cauldron.clean_item": {
     "subtitle": "subtitles.subtle_effects.block.cauldron.clean_item",
     "sounds": [
       {
-        "name": "entity.villager.work_leatherworker",
+        "name": "minecraft:entity.villager.work_leatherworker",
         "type": "event"
       }
     ]
@@ -127,7 +110,7 @@
   "environment.geyser.whoosh": {
     "subtitle": "subtitles.subtle_effects.environment.geyser.whoosh",
     "sounds": [
-      "mob/ghast/fireball4"
+      "minecraft:mob/ghast/fireball4"
     ]
   }
 }
