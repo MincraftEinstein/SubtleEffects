@@ -3,12 +3,15 @@ package einstein.subtle_effects.mixin.client.block;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.llamalad7.mixinextras.sugar.Local;
 import einstein.subtle_effects.init.ModParticles;
+import einstein.subtle_effects.init.ModSounds;
 import einstein.subtle_effects.tickers.TickerManager;
 import einstein.subtle_effects.util.Util;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.cauldron.CauldronInteraction;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.particles.SimpleParticleType;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.level.Level;
@@ -24,7 +27,7 @@ import org.spongepowered.asm.mixin.injection.At;
 public class AbstractCauldronBlockMixin {
 
     @ModifyReturnValue(method = "useItemOn", at = @At("RETURN"))
-    private ItemInteractionResult spawnInteractionParticles(ItemInteractionResult result, @Local(argsOnly = true) BlockState state, @Local(argsOnly = true) Level level, @Local(argsOnly = true) BlockPos pos) {
+    private ItemInteractionResult spawnInteractionParticles(ItemInteractionResult result, @Local(argsOnly = true) BlockState state, @Local(argsOnly = true) Level level, @Local(argsOnly = true) BlockPos pos, @Local CauldronInteraction interaction) {
         if (level.isClientSide && result == ItemInteractionResult.SUCCESS) {
             RandomSource random = level.getRandom();
 
@@ -44,6 +47,10 @@ public class AbstractCauldronBlockMixin {
                                 0, 0, 0
                         );
                     }
+                }
+
+                if (interaction.equals(CauldronInteraction.DYED_ITEM) || interaction.equals(CauldronInteraction.BANNER) || interaction.equals(CauldronInteraction.SHULKER_BOX)) {
+                    Util.playClientSound(pos, ModSounds.CAULDRON_CLEAN_ITEM.get(), SoundSource.BLOCKS, 1, (random.nextFloat() - random.nextFloat()) * 0.2F + 1);
                 }
             });
         }

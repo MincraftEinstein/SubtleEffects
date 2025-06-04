@@ -18,6 +18,7 @@ public class ModSounds {
     public static final Supplier<SoundEvent> DRIP_LAVA = register("block.lava.drip");
     public static final Supplier<SoundEvent> DRIP_WATER_INTO_FLUID = register("block.water.drip_into_fluid");
     public static final Supplier<SoundEvent> DRIP_LAVA_INTO_FLUID = register("block.lava.drip_into_fluid");
+    public static final Supplier<SoundEvent> CAULDRON_CLEAN_ITEM = register("block.cauldron.clean_item");
     public static final Supplier<SoundEvent> GEYSER_WHOOSH = register("environment.geyser.whoosh");
 
     public static void init() {

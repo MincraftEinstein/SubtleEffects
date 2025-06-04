@@ -115,6 +115,15 @@
       "block/pointed_dripstone/drip_lava_cauldron4"
     ]
   },
+  "block.cauldron.clean_item": {
+    "subtitle": "subtitles.subtle_effects.block.cauldron.clean_item",
+    "sounds": [
+      {
+        "name": "entity.villager.work_leatherworker",
+        "type": "event"
+      }
+    ]
+  },
   "environment.geyser.whoosh": {
     "subtitle": "subtitles.subtle_effects.environment.geyser.whoosh",
     "sounds": [
