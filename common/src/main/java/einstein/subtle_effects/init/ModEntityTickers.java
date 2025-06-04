@@ -36,6 +36,7 @@ import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseFireBlock;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.BrushableBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
@@ -282,7 +283,7 @@ public class ModEntityTickers {
             }
         });
         registerSimple(entity -> entity instanceof LivingEntity && entity.canFreeze() && ENTITIES.freezingSnowFlakes, false, (entity, level, random) -> {
-            if (entity.isFreezing() || entity.getTicksFrozen() > 0) {
+            if (entity.isFreezing() || entity.getTicksFrozen() > 0 || entity.getInBlockState().is(Blocks.POWDER_SNOW_CAULDRON)) {
                 level.addParticle(ModParticles.FREEZING.get(),
                         entity.getRandomX(1),
                         entity.getRandomY(),
