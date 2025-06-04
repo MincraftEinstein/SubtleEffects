@@ -9,7 +9,6 @@ import einstein.subtle_effects.particle.SparkParticle;
 import einstein.subtle_effects.particle.option.DirectionParticleOptions;
 import einstein.subtle_effects.platform.Services;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ColorParticleOption;
@@ -267,7 +266,7 @@ public class ParticleSpawnUtil {
         level.addParticle(options, pos.x(), pos.y(), pos.z(), speed.x(), speed.y(), speed.z());
     }
 
-    public static void spawnEnderEyePlacementParticles(BlockPos pos, RandomSource random, ClientLevel level, int color) {
+    public static void spawnEnderEyePlacementParticles(BlockPos pos, RandomSource random, Level level, int color) {
         if (BLOCKS.enderEyePlacedRings) {
             level.addParticle(ColorParticleOption.create(ModParticles.ENDER_EYE_PLACED_RING.get(), color),
                     pos.getX() + 0.5, pos.getY() + 0.8125 + EnderEyePlacedRingParticle.SIZE, pos.getZ() + 0.5,
@@ -347,7 +346,7 @@ public class ParticleSpawnUtil {
         });
     }
 
-    public static void spawnHammeringWorkstationParticles(BlockPos pos, RandomSource random, ClientLevel level) {
+    public static void spawnHammeringWorkstationParticles(BlockPos pos, RandomSource random, Level level) {
         float pointX = random.nextFloat();
         float pointZ = random.nextFloat();
 
