@@ -22,7 +22,6 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.Panda;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemCooldowns;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
@@ -57,10 +56,9 @@ public abstract class PandaMixin extends Animal {
 
             // Check if panda is a baby or weak
             if (isBaby || subtleEffects$panda.isWeak()) {
-                ItemCooldowns cooldowns = player.getCooldowns();
 
                 // Check if player is holding a feather and can be tickled
-                if (player.getItemInHand(hand).is(Items.FEATHER) && !cooldowns.isOnCooldown(Items.FEATHER)) {
+                if (player.getItemInHand(hand).is(Items.FEATHER)) {
                     SoundSource soundSource = getSoundSource();
                     float pitch = isBaby ? 1 : 0.7F;
 
@@ -70,7 +68,6 @@ public abstract class PandaMixin extends Animal {
                             soundSource, 1, pitch
                     );
 
-                    cooldowns.addCooldown(Items.FEATHER, 100);
                     TickerManager.schedule(20, () -> {
                         Util.playClientSound(subtleEffects$panda, SoundEvents.PANDA_SNEEZE,
                                 soundSource, 1, pitch
