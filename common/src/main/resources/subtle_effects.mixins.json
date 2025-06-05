@@ -41,6 +41,7 @@
     "client.entity.PrimedTNTMixin",
     "client.entity.SheepMixin",
     "client.entity.SlimeMixin",
+    "client.entity.SnowballMixin",
     "client.entity.SpellCasterIllagerMixin",
     "client.entity.ThrownEggMixin",
     "client.item.AxeItemMixin",

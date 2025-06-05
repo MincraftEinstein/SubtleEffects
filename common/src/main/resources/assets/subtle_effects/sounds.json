@@ -46,6 +46,15 @@
       }
     ]
   },
+  "entity.snowball.poof": {
+    "subtitle": "subtitles.subtle_effects.entity.snowball.poof",
+    "sounds": [
+      {
+        "name": "entity.snow_golem.hurt",
+        "type": "event"
+      }
+    ]
+  },
   "block.amethyst_cluster.chime": {
     "subtitle": "subtitles.block.amethyst_block.chime",
     "sounds": [

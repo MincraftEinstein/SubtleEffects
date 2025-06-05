@@ -49,6 +49,8 @@ public class ModEntityConfigs extends Config {
     public boolean freezingSnowFlakes = true;
     public boolean featherTicklingPandas = true;
     public boolean improvedPandaSneezes = true;
+    public boolean snowballPoofsHaveSnowflakes = true;
+    public ValidatedFloat snowballPoofSoundVolume = new ValidatedFloat(0.3F, 1, 0);
 
     public ModEntityConfigs() {
         super(SubtleEffects.loc("entities"));

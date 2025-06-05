@@ -14,6 +14,7 @@ public class ModSounds {
     public static final Supplier<SoundEvent> AMETHYST_CLUSTER_CHIME = register("block.amethyst_cluster.chime");
     public static final Supplier<SoundEvent> CAMPFIRE_SIZZLE = register("block.campfire.sizzle");
     public static final Supplier<SoundEvent> EGG_BREAK = register("entity.egg.break");
+    public static final Supplier<SoundEvent> SNOWBALL_POOF = register("entity.snowball.poof");
     public static final Supplier<SoundEvent> DRIP_WATER = register("block.water.drip");
     public static final Supplier<SoundEvent> DRIP_LAVA = register("block.lava.drip");
     public static final Supplier<SoundEvent> DRIP_WATER_INTO_FLUID = register("block.water.drip_into_fluid");
