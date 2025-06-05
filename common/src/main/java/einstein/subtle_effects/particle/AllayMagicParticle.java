@@ -27,7 +27,7 @@ public class AllayMagicParticle extends TextureSheetParticle {
         speedUpWhenYMotionIsBlocked = true;
         setRandomizedColor(this, random, 0.133F, 0.812F, 1);
         setSpriteFromAge(sprites);
-        setAlpha(Mth.clamp(level.random.nextFloat(), 0.5F, 1));
+        setAlpha(Mth.clamp(random.nextFloat(), 0.5F, 1));
     }
 
     @Override
@@ -36,13 +36,13 @@ public class AllayMagicParticle extends TextureSheetParticle {
     }
 
     @Override
-    public float getQuadSize(float scaleFactor) {
-        return quadSize * Mth.clamp((age + scaleFactor) / lifetime * 32.0F, 0.0F, 1.0F);
+    public float getQuadSize(float partialTicks) {
+        return quadSize * Mth.clamp((age + partialTicks) / lifetime * 32, 0, 1);
     }
 
     @Override
     protected int getLightColor(float partialTick) {
-        return Util.getLightColor(super.getLightColor(partialTick));
+        return Util.PARTICLE_LIGHT_COLOR;
     }
 
     @Override

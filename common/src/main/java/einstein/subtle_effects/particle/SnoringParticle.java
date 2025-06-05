@@ -18,7 +18,6 @@ public class SnoringParticle extends SmokeParticle {
 
     public record Provider(SpriteSet sprites) implements ParticleProvider<SimpleParticleType> {
 
-        @Nullable
         @Override
         public Particle createParticle(SimpleParticleType type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
             return new SnoringParticle(level, x, y, z, xSpeed, ySpeed, zSpeed, sprites);
@@ -27,7 +26,6 @@ public class SnoringParticle extends SmokeParticle {
 
     public record FallingProvider(SpriteSet sprites) implements ParticleProvider<SimpleParticleType> {
 
-        @Nullable
         @Override
         public Particle createParticle(SimpleParticleType type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
             SnoringParticle particle = new SnoringParticle(level, x, y, z, xSpeed, ySpeed, zSpeed, sprites);

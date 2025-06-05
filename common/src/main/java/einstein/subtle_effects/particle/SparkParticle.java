@@ -50,13 +50,13 @@ public class SparkParticle extends TextureSheetParticle {
     }
 
     @Override
-    public float getQuadSize(float scaleFactor) {
-        return quadSize * Mth.clamp((age + scaleFactor) / lifetime * 32.0F, 0.0F, 1.0F);
+    public float getQuadSize(float partialTicks) {
+        return quadSize * Mth.clamp((age + partialTicks) / lifetime * 32, 0, 1);
     }
 
     @Override
     public int getLightColor(float partialTick) {
-        return Util.getLightColor(super.getLightColor(partialTick));
+        return Util.PARTICLE_LIGHT_COLOR;
     }
 
     public record LongLifeProvider(SpriteSet sprites) implements ParticleProvider<ColorParticleOption> {

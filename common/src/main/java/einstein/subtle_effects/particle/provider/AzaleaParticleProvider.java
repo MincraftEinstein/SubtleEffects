@@ -10,9 +10,9 @@ import org.jetbrains.annotations.Nullable;
 
 public record AzaleaParticleProvider(SpriteSet sprites) implements ParticleProvider<SimpleParticleType> {
 
-    @Nullable
     @Override
     public Particle createParticle(SimpleParticleType type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+        // Cherry particles don't have a provider
         CherryParticle particle = new CherryParticle(level, x, y, z, sprites) {};
         particle.scale(2);
         return particle;

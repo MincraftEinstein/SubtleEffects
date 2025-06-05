@@ -48,12 +48,11 @@ public class ItemRarityParticle extends TextureSheetParticle {
 
     @Override
     protected int getLightColor(float partialTick) {
-        return Util.getLightColor(super.getLightColor(partialTick));
+        return Util.PARTICLE_LIGHT_COLOR;
     }
 
     public record Provider(SpriteSet sprites) implements ParticleProvider<IntegerParticleOptions> {
 
-        @Nullable
         @Override
         public Particle createParticle(IntegerParticleOptions options, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
             return new ItemRarityParticle(level, sprites, x, y, z, xSpeed, ySpeed, zSpeed, options.integer());

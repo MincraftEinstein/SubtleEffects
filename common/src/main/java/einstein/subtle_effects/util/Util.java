@@ -40,6 +40,7 @@ public class Util {
     public static final int BREATH_DELAY = 60;
     public static final int SNORE_DELAY = 10;
     public static final int MAX_Z_COUNT = 3;
+    public static final int PARTICLE_LIGHT_COLOR = 240;
     public static final DustParticleOptions GLOWSTONE_DUST_PARTICLES = new DustParticleOptions(Vec3.fromRGB24(0xFFBC5E).toVector3f(), 1);
     public static final ResourceLocation COLORLESS_RAIN_TEXTURE = SubtleEffects.loc("textures/environment/colorless_rain.png");
     public static final Gson GSON = new GsonBuilder().create();
@@ -65,10 +66,6 @@ public class Util {
 
     public static boolean isSolidOrNotEmpty(Level level, BlockPos pos) {
         return level.getBlockState(pos).isSolidRender(level, pos) || !level.getFluidState(pos).isEmpty();
-    }
-
-    public static int getLightColor(int superLight) {
-        return 240 | superLight >> 16 & 0xFF << 16;
     }
 
     public static void applyHelmetShader(ItemStack stack, CameraType cameraType) {

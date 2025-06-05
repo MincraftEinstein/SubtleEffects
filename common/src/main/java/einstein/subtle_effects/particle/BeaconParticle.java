@@ -90,8 +90,8 @@ public class BeaconParticle extends SparkParticle {
     }
 
     @Override
-    public float getQuadSize(float scaleFactor) {
-        return quadSize * Mth.clamp((age + scaleFactor) / 20 * 32.0F, 0.0F, 1.0F);
+    public float getQuadSize(float partialTicks) {
+        return quadSize * Mth.clamp((age + partialTicks) / 20 * 32.0F, 0.0F, 1.0F);
     }
 
     public record Provider(SpriteSet sprites) implements ParticleProvider<PositionParticleOptions> {
