@@ -47,8 +47,8 @@ public class ModEntityConfigs extends Config {
     public ValidatedFloat eggSmashSoundVolume = new ValidatedFloat(0.5F, 1, 0);
     public boolean eggSplatParticles = true;
     public boolean freezingSnowFlakes = true;
-    public boolean pandaFeatherSneeze = true;
-    
+    public boolean featherTicklingPandas = true;
+
     public ModEntityConfigs() {
         super(SubtleEffects.loc("entities"));
     }

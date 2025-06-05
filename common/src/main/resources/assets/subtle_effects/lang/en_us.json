@@ -367,6 +367,8 @@
   "config.subtle_effects.entities.eggSplatParticles": "Egg Splat Particles",
   "config.subtle_effects.entities.eggSplatParticles.desc": "Should egg splat particles spawn when breaking an egg",
   "config.subtle_effects.entities.freezingSnowFlakes": "Freezing Snow Flakes",
+  "config.subtle_effects.entities.featherTicklingPandas": "Feather Tickling Pandas",
+  "config.subtle_effects.entities.featherTicklingPandas.desc": "Allows baby and weak pandas to be tickled with a feather to sneeze. No slimeballs will drop",
   "config.subtle_effects.environment": "Environment",
   "config.subtle_effects.environment.biomeColorRain": "Biome Color Rain",
   "config.subtle_effects.environment.flameGeysersGroup": "Flame Geysers",
