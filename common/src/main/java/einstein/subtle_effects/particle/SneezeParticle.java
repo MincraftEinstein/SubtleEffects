@@ -1,4 +1,4 @@
-package einstein.subtle_effects.particle.provider;
+package einstein.subtle_effects.particle;
 
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import einstein.subtle_effects.util.Util;
@@ -21,10 +21,7 @@ public class SneezeParticle extends TextureSheetParticle {
         // Not sure which is the vanilla color, so 37CD87 was used
         // 37CD87. The result of subtracting the vanilla provided color components (200, 50, 120) from 255
         // 37C985. Color picked from a screenshot
-        float multiplier = random.nextFloat() * 0.4F + 0.6F;
-        rCol = Util.randomizeColor(random, 0.21F, multiplier);
-        gCol = Util.randomizeColor(random, 0.8F, multiplier);
-        bCol = Util.randomizeColor(random, 0.52F, multiplier);
+        Util.setRandomizedColor(this, random, 0.21F, 0.8F, 0.52F);
         alpha = lifetimeAlpha.startAlpha();
         friction = 0.98F;
         this.sprites = sprites;

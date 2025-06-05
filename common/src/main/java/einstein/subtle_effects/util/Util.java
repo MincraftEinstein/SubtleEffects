@@ -142,4 +142,13 @@ public class Util {
     public static float randomizeColor(RandomSource random, float color, float multiplier) {
         return (random.nextFloat() * 0.2F + 0.8F) * color * multiplier;
     }
+
+    public static void setRandomizedColor(Particle particle, RandomSource random, float r, float g, float b) {
+        float multiplier = random.nextFloat() * 0.4F + 0.6F;
+        particle.setColor(
+                randomizeColor(random, r, multiplier),
+                randomizeColor(random, g, multiplier),
+                randomizeColor(random, b, multiplier)
+        );
+    }
 }
