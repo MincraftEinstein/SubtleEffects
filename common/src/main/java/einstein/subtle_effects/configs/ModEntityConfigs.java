@@ -6,6 +6,7 @@ import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.tickers.TickerManager;
 import me.fzzyhmstrs.fzzy_config.annotations.Translation;
 import me.fzzyhmstrs.fzzy_config.config.Config;
+import me.fzzyhmstrs.fzzy_config.config.ConfigGroup;
 import me.fzzyhmstrs.fzzy_config.util.EnumTranslatable;
 import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedDouble;
 import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedFloat;
@@ -25,7 +26,6 @@ public class ModEntityConfigs extends Config {
     public ExplosivesConfigs explosives = new ExplosivesConfigs();
 
     public boolean enderPearlTrail = true;
-    public ValidatedDouble snowballTrailDensity = new ValidatedDouble(0.5, 1, 0);
     public ValidatedDouble allayMagicDensity = new ValidatedDouble(0.2, 1, 0);
     public ValidatedDouble vexMagicDensity = new ValidatedDouble(0.2, 1, 0);
     public boolean sheepShearFluff = true;
@@ -49,7 +49,11 @@ public class ModEntityConfigs extends Config {
     public boolean freezingSnowFlakes = true;
     public boolean featherTicklingPandas = true;
     public boolean improvedPandaSneezes = true;
+
+    public ConfigGroup thrownSnowballGroup = new ConfigGroup("thrown_snowball");
+    public ValidatedDouble snowballTrailDensity = new ValidatedDouble(0.5, 1, 0);
     public boolean snowballPoofsHaveSnowflakes = true;
+    @ConfigGroup.Pop
     public ValidatedFloat snowballPoofSoundVolume = new ValidatedFloat(0.3F, 1, 0);
 
     public ModEntityConfigs() {
