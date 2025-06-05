@@ -83,6 +83,7 @@ public class ForgeNetworkHelper implements NetworkHelper {
     @SuppressWarnings("unchecked")
     private static <T extends Packet> void registerPacket(Class<?> clazz, PacketData<? extends Packet> packetData) {
         PacketData<T> data = (PacketData<T>) packetData;
+        SubtleEffects.LOGGER.debug("Registering packet: {} with id: {}", clazz.getSimpleName(), data.rawId());
         CHANNEL.messageBuilder((Class<T>) clazz, data.rawId(), getDirectionToNetworkDirection(data))
                 .encoder(Packet::encode)
                 .decoder(buf -> data.decoder().apply(buf))
