@@ -48,6 +48,7 @@ public class ModEntityConfigs extends Config {
     public boolean eggSplatParticles = true;
     public boolean freezingSnowFlakes = true;
     public boolean featherTicklingPandas = true;
+    public boolean improvedPandaSneezes = true;
 
     public ModEntityConfigs() {
         super(SubtleEffects.loc("entities"));

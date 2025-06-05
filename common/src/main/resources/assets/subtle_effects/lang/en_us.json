@@ -369,6 +369,7 @@
   "config.subtle_effects.entities.freezingSnowFlakes": "Freezing Snow Flakes",
   "config.subtle_effects.entities.featherTicklingPandas": "Feather Tickling Pandas",
   "config.subtle_effects.entities.featherTicklingPandas.desc": "Allows baby and weak pandas to be tickled with a feather to sneeze. No slimeballs will drop",
+  "config.subtle_effects.entities.improvedPandaSneezes": "Improved Panda Sneezes",
   "config.subtle_effects.environment": "Environment",
   "config.subtle_effects.environment.biomeColorRain": "Biome Color Rain",
   "config.subtle_effects.environment.flameGeysersGroup": "Flame Geysers",

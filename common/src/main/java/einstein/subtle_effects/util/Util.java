@@ -22,6 +22,7 @@ import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -136,5 +137,9 @@ public class Util {
 
     public static ValidatedColor.ColorHolder toColorHolder(int color) {
         return new ValidatedColor.ColorHolder((color >> 16) & 255, (color >> 8) & 255, color & 255, 255, false);
+    }
+
+    public static float randomizeColor(RandomSource random, float color, float multiplier) {
+        return (random.nextFloat() * 0.2F + 0.8F) * color * multiplier;
     }
 }

@@ -1,10 +1,17 @@
 package einstein.subtle_effects.mixin.client.entity;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
 import einstein.subtle_effects.init.ModConfigs;
+import einstein.subtle_effects.init.ModParticles;
 import einstein.subtle_effects.tickers.TickerManager;
+import einstein.subtle_effects.util.MathUtil;
+import einstein.subtle_effects.util.ParticleSpawnUtil;
 import einstein.subtle_effects.util.Util;
+import net.minecraft.client.Minecraft;
+import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -58,12 +65,22 @@ public abstract class PandaMixin extends Animal {
                     float pitch = isBaby ? 1 : 0.7F;
 
                     player.swing(hand);
+                    subtleEffects$panda.sneeze(true);
                     Util.playClientSound(subtleEffects$panda, SoundEvents.PANDA_PRE_SNEEZE,
                             soundSource, 1, pitch
                     );
 
                     cooldowns.addCooldown(Items.FEATHER, 100);
                     TickerManager.schedule(20, () -> {
+                        Util.playClientSound(subtleEffects$panda, SoundEvents.PANDA_SNEEZE,
+                                soundSource, 1, pitch
+                        );
+
+                        if (ModConfigs.ENTITIES.improvedPandaSneezes) {
+                            subtleEffects$spawnSneezeParticles(level, isBaby);
+                            return;
+                        }
+
                         Vec3 deltaMovement = subtleEffects$panda.getDeltaMovement();
                         double offset = (getBbWidth() + 1) * (isBaby ? 0.5 : 0.7);
                         float rotation = yBodyRot * Mth.DEG_TO_RAD;
@@ -74,14 +91,31 @@ public abstract class PandaMixin extends Animal {
                                 getZ() + offset * Mth.cos(rotation),
                                 deltaMovement.x, 0, deltaMovement.z
                         );
-
-                        Util.playClientSound(subtleEffects$panda, SoundEvents.PANDA_SNEEZE,
-                                soundSource, 1, pitch
-                        );
                     });
                 }
             }
         }
         return result;
+    }
+
+    @WrapOperation(method = "afterSneeze", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/Level;addParticle(Lnet/minecraft/core/particles/ParticleOptions;DDDDDD)V"))
+    private void replaceSneezeParticles(Level level, ParticleOptions particle, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, Operation<Void> original) {
+        if (level.isClientSide && ModConfigs.ENTITIES.improvedPandaSneezes) {
+            subtleEffects$spawnSneezeParticles(level, subtleEffects$panda.isBaby());
+            return;
+        }
+        original.call(level, particle, x, y, z, xSpeed, ySpeed, zSpeed);
+    }
+
+    @Unique
+    private void subtleEffects$spawnSneezeParticles(Level level, boolean isBaby) {
+        Vec3 offset = isBaby ? new Vec3(-0.03, -0.33, 0) : new Vec3(0, -0.35, 0.9);
+        for (int i = 0; i < 16; i++) {
+            ParticleSpawnUtil.spawnEntityFaceParticle(ModParticles.SNEEZE.get(),
+                    subtleEffects$panda, level, random, offset,
+                    new Vec3(MathUtil.nextNonAbsDouble(random, 0.02), 0, Mth.nextDouble(random, 0.03, 0.08)),
+                    Minecraft.getInstance().getTimer().getGameTimeDeltaPartialTick(false)
+            );
+        }
     }
 }
