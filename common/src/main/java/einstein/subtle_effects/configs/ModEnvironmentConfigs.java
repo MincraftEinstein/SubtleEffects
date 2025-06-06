@@ -22,6 +22,7 @@ public class ModEnvironmentConfigs extends Config {
     public ValidatedInt flameGeyserActiveTime = new ValidatedInt(300, 1000, 50);
     @ConfigGroup.Pop
     public ValidatedInt flameGeyserInactiveTime = new ValidatedInt(500, 1000, 50);
+    public boolean twinklingStars = true;
 
     public ModEnvironmentConfigs() {
         super(SubtleEffects.loc("environment"));
