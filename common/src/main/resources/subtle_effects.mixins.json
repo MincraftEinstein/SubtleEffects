@@ -52,6 +52,8 @@
     "client.item.SolidBucketItemMixin",
     "client.particle.DripParticleMixin",
     "client.particle.FallAndLandParticleMixin",
+    "client.particle.FlyTowardsPositionParticleAccessor",
+    "client.particle.FlyTowardsPositionParticleAccessor$EnchantProviderMixin",
     "client.particle.HeartParticleMixin",
     "client.particle.LavaParticleMixin",
     "client.particle.ParticleEngineMixin",
