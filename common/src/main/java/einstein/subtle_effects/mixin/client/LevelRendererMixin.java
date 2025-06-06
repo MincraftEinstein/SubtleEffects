@@ -51,6 +51,8 @@ import static net.minecraft.util.Mth.nextFloat;
 @Mixin(LevelRenderer.class)
 public class LevelRendererMixin implements FrustumGetter {
 
+    private static final Random STAR_RANDOM = new Random(10842L);
+    
     @Shadow
     @Nullable
     private ClientLevel level;
@@ -206,5 +208,37 @@ public class LevelRendererMixin implements FrustumGetter {
     @Override
     public Frustum subtleEffects$getCullingFrustum() {
         return cullingFrustum;
+    }
+
+    @Inject(method = "renderSky", at = @At(value = "INVOKE",target = "Lnet/minecraft/client/renderer/LevelRenderer;renderStars(Lcom/mojang/blaze3d/vertex/PoseStack;Lcom/mojang/blaze3d/vertex/BufferBuilder;)V",shift = At.Shift.AFTER))
+    private void injectTwinklingStars(PoseStack poseStack, Matrix4f projectionMatrix, float partialTicks, CallbackInfo ci) {
+        if (ENVIRONMENT.twinklingStars) {
+        Minecraft mc = Minecraft.getInstance();
+        Level level = mc.level;
+
+        if (level == null || !level.dimensionType().hasSkyLight()) return;
+
+        Tesselator tesselator = Tesselator.getInstance();
+        BufferBuilder buffer = tesselator.getBuilder();
+
+        RenderSystem.depthMask(false);
+        RenderSystem.setShader(GameRenderer::getPositionColorShader);
+
+        buffer.begin(VertexFormat.Mode.POINTS, DefaultVertexFormat.POSITION_COLOR);
+
+        double time = (level.getGameTime() + partialTicks) * 0.04;
+
+        for (int i = 0; i < 1200; ++i) {
+            double x = (STAR_RANDOM.nextDouble() - 0.5) * 800.0;
+            double y = (STAR_RANDOM.nextDouble() - 0.5) * 800.0;
+            double z = (STAR_RANDOM.nextDouble() - 0.5) * 800.0;
+
+            float alpha = 0.6f + 0.4f * Mth.sin((float) (time + i * 0.1));
+            buffer.vertex(x, y, z).color(1.0f, 1.0f, 1.0f, alpha).endVertex();
+        }
+
+        tesselator.end();
+        RenderSystem.depthMask(true);
+        }
     }
 }
