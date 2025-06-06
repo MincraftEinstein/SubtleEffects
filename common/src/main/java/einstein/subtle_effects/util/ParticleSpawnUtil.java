@@ -3,6 +3,7 @@ package einstein.subtle_effects.util;
 import einstein.subtle_effects.configs.ModBlockConfigs;
 import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.init.ModParticles;
+import einstein.subtle_effects.mixin.client.item.BucketItemAccessor;
 import einstein.subtle_effects.networking.clientbound.ClientBoundEntityFellPayload;
 import einstein.subtle_effects.particle.EnderEyePlacedRingParticle;
 import einstein.subtle_effects.particle.SparkParticle;
@@ -23,6 +24,8 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.animal.camel.Camel;
 import net.minecraft.world.entity.animal.horse.AbstractHorse;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.block.Blocks;
@@ -379,6 +382,26 @@ public class ParticleSpawnUtil {
                         pos.getY() + 0.1875 + (0.125 * state.getValue(ComposterBlock.LEVEL)),
                         pos.getZ() + 0.5 + MathUtil.nextNonAbsDouble(random, 0.3),
                         xSpeed, ySpeed, zSpeed);
+            }
+        }
+    }
+
+    public static void spawnBucketParticles(Level level, BlockPos pos, ItemStack stack) {
+        if (level.isClientSide) {
+            if (stack.getItem() instanceof BucketItemAccessor bucket) {
+                Fluid content = bucket.getContent();
+                boolean isWater = content.isSame(Fluids.WATER);
+
+                if ((isWater && ModConfigs.ITEMS.waterBucketUseParticles) || (content.isSame(Fluids.LAVA) && ModConfigs.ITEMS.lavaBucketUseParticles)) {
+                    if (isWater && level.dimensionType().ultraWarm()) {
+                        return;
+                    }
+
+                    spawnBucketParticles(level, pos, Util.getParticleForFluid(content));
+                }
+            }
+            else if (stack.is(Items.POWDER_SNOW_BUCKET) && ModConfigs.ITEMS.powderSnowBucketUseParticles) {
+                spawnBucketParticles(level, pos, ModParticles.SNOW.get());
             }
         }
     }
