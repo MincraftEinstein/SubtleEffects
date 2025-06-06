@@ -29,6 +29,9 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.ComposterBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
+import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
@@ -376,6 +379,23 @@ public class ParticleSpawnUtil {
                         pos.getY() + 0.1875 + (0.125 * state.getValue(ComposterBlock.LEVEL)),
                         pos.getZ() + 0.5 + MathUtil.nextNonAbsDouble(random, 0.3),
                         xSpeed, ySpeed, zSpeed);
+            }
+        }
+    }
+
+    public static void spawnBucketParticles(Level level, BlockPos pos, ParticleOptions particle) {
+        if (particle != null) {
+            RandomSource random = level.getRandom();
+            FluidState fluidState = level.getFluidState(pos);
+            double fluidHeight = fluidState.getHeight(level, pos);
+
+            for (int i = 0; i < 16; i++) {
+                level.addParticle(particle,
+                        pos.getX() + 0.5 + nextNonAbsDouble(random),
+                        pos.getY() + (fluidHeight == 0 ? random.nextDouble() : fluidHeight),
+                        pos.getZ() + 0.5 + nextNonAbsDouble(random),
+                        0, 0, 0
+                );
             }
         }
     }

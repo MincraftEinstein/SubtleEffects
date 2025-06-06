@@ -7,6 +7,7 @@ import einstein.subtle_effects.compat.CompatHelper;
 import einstein.subtle_effects.compat.EndRemasteredCompat;
 import einstein.subtle_effects.data.MobSkullShaderData;
 import einstein.subtle_effects.data.MobSkullShaderReloadListener;
+import einstein.subtle_effects.init.ModParticles;
 import einstein.subtle_effects.mixin.client.GameRendererAccessor;
 import einstein.subtle_effects.mixin.client.block.AbstractCauldronBlockAccessor;
 import einstein.subtle_effects.particle.EnderEyePlacedRingParticle;
@@ -19,12 +20,15 @@ import net.minecraft.client.renderer.PostChain;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.SectionPos;
 import net.minecraft.core.particles.DustParticleOptions;
+import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.AbstractCauldronBlock;
 import net.minecraft.world.level.block.Blocks;
@@ -32,6 +36,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.Nullable;
 
 import static einstein.subtle_effects.init.ModConfigs.BLOCKS;
 
@@ -113,6 +118,17 @@ public class Util {
             return Fluids.WATER;
         }
         return Fluids.EMPTY;
+    }
+
+    @Nullable
+    public static ParticleOptions getParticleForFluid(Fluid fluid) {
+        if (fluid.isSame(Fluids.WATER)) {
+            return ParticleTypes.SPLASH;
+        }
+        else if (fluid.isSame(Fluids.LAVA)) {
+            return ModParticles.LAVA_SPLASH.get();
+        }
+        return null;
     }
 
     public static ValidatedColor.ColorHolder getEyeColorHolder(Level level, BlockPos pos) {
