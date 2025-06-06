@@ -18,6 +18,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.AbstractCauldronBlock;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.material.Fluids;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -59,12 +61,10 @@ public class AbstractCauldronBlockMixin {
 
     @Unique
     @Nullable
-    private static SimpleParticleType subtleEffects$getCauldronParticle(BlockState state) {
-        if (state.is(Blocks.WATER_CAULDRON)) {
-            return ParticleTypes.SPLASH;
-        }
-        else if (state.is(Blocks.LAVA_CAULDRON)) {
-            return ModParticles.LAVA_SPLASH.get();
+    private static ParticleOptions subtleEffects$getCauldronParticle(BlockState state) {
+        Fluid fluid = Util.getCauldronFluid(state);
+        if (!fluid.isSame(Fluids.EMPTY)) {
+            return Util.getParticleForFluid(fluid);
         }
         else if (state.is(Blocks.POWDER_SNOW_CAULDRON)) {
             return ModParticles.SNOW.get();
