@@ -17,11 +17,11 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(targets = "net.minecraft.world.inventory.StonecutterMenu$2")
-public class StonecutterMenuMixin {
+public class NeoForgeStonecutterMenu$2Mixin {
 
     @Shadow
     @Final
-    StonecutterMenu field_17639;
+    StonecutterMenu this$0;
 
     @Unique
     private ItemStack subtleEffects$inputStack;
@@ -29,11 +29,11 @@ public class StonecutterMenuMixin {
     @Inject(method = "onTake", at = @At("HEAD"))
     private void onTake(Player player, ItemStack stack, CallbackInfo ci) {
         if (!player.level().isClientSide) {
-            subtleEffects$inputStack = ((StonecutterMenuAccessor) field_17639).getInputSlot().getItem().copy();
+            subtleEffects$inputStack = ((StonecutterMenuAccessor) this$0).getInputSlot().getItem().copy();
         }
     }
 
-    @Inject(method = "method_17868", at = @At("TAIL"))
+    @Inject(method = "lambda$onTake$0", at = @At("TAIL"))
     private void spawnParticles(Level level, BlockPos pos, CallbackInfo ci) {
         if (subtleEffects$inputStack != null && !subtleEffects$inputStack.isEmpty()) {
             Services.NETWORK.sendToClientsTracking((ServerLevel) level, pos, new ClientBoundStonecutterUsedPayload(pos, subtleEffects$inputStack));
