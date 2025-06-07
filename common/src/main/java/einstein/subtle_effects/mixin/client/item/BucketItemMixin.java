@@ -22,6 +22,11 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(BucketItem.class)
 public class BucketItemMixin {
 
+    @Inject(method = "use", at = @At(value = "INVOKE", target = "Ljava/util/Optional;ifPresent(Ljava/util/function/Consumer;)V"))
+    private void spawnPickupEffects(Level level, Player player, InteractionHand hand, CallbackInfoReturnable<InteractionResultHolder<ItemStack>> cir, @Local(ordinal = 0) BlockPos pos, @Local(ordinal = 1) ItemStack stack) {
+        ParticleSpawnUtil.spawnBucketParticles(level, pos, stack);
+    }
+
     @Inject(method = "use", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/BucketItem;checkExtraContent(Lnet/minecraft/world/entity/player/Player;Lnet/minecraft/world/level/Level;Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/core/BlockPos;)V"))
     private void spawnPlaceEffects(Level level, Player player, InteractionHand hand, CallbackInfoReturnable<InteractionResultHolder<ItemStack>> cir, @Local(ordinal = 2) BlockPos pos, @Local(ordinal = 0) ItemStack stack) {
         ParticleSpawnUtil.spawnBucketParticles(level, pos, stack);
