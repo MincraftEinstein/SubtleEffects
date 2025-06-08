@@ -31,7 +31,7 @@ public class CommonComposterMixin {
             ItemStack copiedStack = stack.copy();
 
             if (!copiedStack.isEmpty()) {
-                Services.NETWORK.sendToClientsTracking(serverLevel, pos, new ClientBoundCompostItemPayload(copiedStack, pos));
+                Services.NETWORK.sendToClientsTracking(serverLevel, pos, new ClientBoundCompostItemPayload(copiedStack, pos, false));
             }
         }
     }
@@ -53,7 +53,7 @@ public class CommonComposterMixin {
                 ItemStack stack = getItem(0).copy();
 
                 if (!stack.isEmpty()) {
-                    Services.NETWORK.sendToClientsTracking(serverLevel, pos, new ClientBoundCompostItemPayload(stack, pos));
+                    Services.NETWORK.sendToClientsTracking(serverLevel, pos, new ClientBoundCompostItemPayload(stack, pos, false));
                 }
             }
         }

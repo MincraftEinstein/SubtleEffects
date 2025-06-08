@@ -178,7 +178,7 @@ public class ClientPacketHandlers {
     }
 
     public static void handle(ClientLevel level, ClientBoundCompostItemPayload payload) {
-        if (BLOCKS.compostingItemParticles) {
+        if (BLOCKS.compostingItemParticles && (!payload.wasFarmer() || ENTITIES.villagerWorkAtWorkstationParticles)) {
             RandomSource random = level.getRandom();
             ParticleSpawnUtil.spawnCompostParticles(level, payload.pos(),
                     new ItemParticleOption(ParticleTypes.ITEM, payload.stack()),
