@@ -154,6 +154,7 @@
   "config.subtle_effects.blocks.amethystSparkleSounds": "Amethyst Sparkle Sounds",
   "config.subtle_effects.blocks.amethystSparkleSounds.desc": "Should amethyst crystals randomly play the amethyst chime sounds",
   "config.subtle_effects.blocks.floweringAzaleaPetals": "Flowering Azalea Petals",
+  "config.subtle_effects.blocks.sculkGroup": "Sculk",
   "config.subtle_effects.blocks.sculkBlockSculkDust": "Sculk Block Sculk Dust",
   "config.subtle_effects.blocks.sculkVeinSculkDust": "Sculk Vein Sculk Dust",
   "config.subtle_effects.blocks.sculkShriekerDestroySouls": "Sculk Shrieker Destroy Souls",

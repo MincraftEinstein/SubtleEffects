@@ -98,10 +98,12 @@ public class ModBlockConfigs extends Config {
     public AmethystSparkleDisplayType amethystSparkleDisplayType = AmethystSparkleDisplayType.ON;
     public boolean amethystSparkleSounds = true;
     public boolean floweringAzaleaPetals = true;
+    public ConfigGroup sculkGroup = new ConfigGroup("sculk");
     public boolean sculkBlockSculkDust = true;
     public boolean sculkVeinSculkDust = true;
     public boolean sculkShriekerDestroySouls = true;
     public boolean sculkCatalystDestroySouls = true;
+    @ConfigGroup.Pop
     public boolean calibratedSculkSensorAmethystSparkle = true;
     public ValidatedFloat campfireSizzlingSoundVolume = new ValidatedFloat(0.5F, 1, 0);
     public ValidatedInt vegetationFirefliesDensity = new ValidatedInt(30, 100, 0, ValidatedNumber.WidgetType.SLIDER);
