@@ -2,15 +2,12 @@ package einstein.subtle_effects.mixin.client.block;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.llamalad7.mixinextras.sugar.Local;
-import einstein.subtle_effects.init.ModParticles;
 import einstein.subtle_effects.init.ModSounds;
 import einstein.subtle_effects.tickers.TickerManager;
 import einstein.subtle_effects.util.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.cauldron.CauldronInteraction;
 import net.minecraft.core.particles.ParticleOptions;
-import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.ItemInteractionResult;
@@ -18,11 +15,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.AbstractCauldronBlock;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.Fluid;
-import net.minecraft.world.level.material.Fluids;
-import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 
 @Mixin(AbstractCauldronBlock.class)
@@ -37,7 +30,7 @@ public class AbstractCauldronBlockMixin {
                 BlockState newState = level.getBlockState(pos);
                 boolean isEmpty = newState.is(Blocks.CAULDRON);
                 double fluidHeight = Util.getCauldronFillHeight(isEmpty ? state : newState);
-                ParticleOptions particle = subtleEffects$getCauldronParticle(isEmpty ? state : newState);
+                ParticleOptions particle = Util.getCauldronParticle(isEmpty ? state : newState);
 
                 if (fluidHeight > 0 && particle != null) {
                     for (int i = 0; i < 16; i++) {
@@ -57,18 +50,5 @@ public class AbstractCauldronBlockMixin {
             });
         }
         return result;
-    }
-
-    @Unique
-    @Nullable
-    private static ParticleOptions subtleEffects$getCauldronParticle(BlockState state) {
-        Fluid fluid = Util.getCauldronFluid(state);
-        if (!fluid.isSame(Fluids.EMPTY)) {
-            return Util.getParticleForFluid(fluid);
-        }
-        else if (state.is(Blocks.POWDER_SNOW_CAULDRON)) {
-            return ModParticles.SNOW.get();
-        }
-        return null;
     }
 }

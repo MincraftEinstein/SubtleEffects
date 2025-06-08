@@ -15,6 +15,7 @@ public class ModPayloads {
         NETWORK.registerToClient(ClientBoundFallingBlockLandPayload.TYPE, ClientBoundFallingBlockLandPayload.STREAM_CODEC);
         NETWORK.registerToClient(ClientBoundCompostItemPayload.TYPE, ClientBoundCompostItemPayload.STREAM_CODEC);
         NETWORK.registerToClient(ClientBoundStonecutterUsedPayload.TYPE, ClientBoundStonecutterUsedPayload.STREAM_CODEC);
+        NETWORK.registerToClient(ClientBoundVillagerWorkPayload.TYPE, ClientBoundVillagerWorkPayload.STREAM_CODEC);
     }
 
     public static void initClientHandlers() {
@@ -26,5 +27,6 @@ public class ModPayloads {
         NETWORK.registerClientHandler(ClientBoundFallingBlockLandPayload.TYPE, ClientPacketHandlers::handle);
         NETWORK.registerClientHandler(ClientBoundCompostItemPayload.TYPE, ClientPacketHandlers::handle);
         NETWORK.registerClientHandler(ClientBoundStonecutterUsedPayload.TYPE, ClientPacketHandlers::handle);
+        NETWORK.registerClientHandler(ClientBoundVillagerWorkPayload.TYPE, ClientPacketHandlers::handle);
     }
 }

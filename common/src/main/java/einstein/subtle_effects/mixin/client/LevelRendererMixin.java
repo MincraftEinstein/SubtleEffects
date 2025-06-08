@@ -19,7 +19,6 @@ import net.minecraft.client.particle.Particle;
 import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.particles.SimpleParticleType;
@@ -29,10 +28,8 @@ import net.minecraft.util.valueproviders.IntProvider;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
-import net.minecraft.world.level.block.GrindstoneBlock;
 import net.minecraft.world.level.block.LevelEvent;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.AttachFace;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Final;
@@ -90,13 +87,13 @@ public class LevelRendererMixin implements FrustumGetter {
         Player player = minecraft.player;
 
         switch (type) {
-            case 1029: {
+            case LevelEvent.SOUND_ANVIL_BROKEN: {
                 if (BLOCKS.anvilBreakParticles) {
                     level.addDestroyBlockEffect(pos, state);
                 }
                 break;
             }
-            case 1030: {
+            case LevelEvent.SOUND_ANVIL_USED: {
                 if (BLOCKS.anvilUseParticles) {
                     for (int i = 0; i < 3; i++) {
                         TickerManager.schedule(8 * i, () ->
@@ -106,22 +103,8 @@ public class LevelRendererMixin implements FrustumGetter {
                 }
                 break;
             }
-            case 1042: {
-                if (BLOCKS.grindstoneUseParticles) {
-                    if (state.hasProperty(GrindstoneBlock.FACING) && state.hasProperty(GrindstoneBlock.FACE)) {
-                        Direction direction = state.getValue(GrindstoneBlock.FACING);
-                        AttachFace face = state.getValue(GrindstoneBlock.FACE);
-                        Direction side = face == AttachFace.CEILING ? Direction.DOWN : Direction.UP;
-
-                        for (int i = 0; i < 20; i++) {
-                            ParticleSpawnUtil.spawnParticlesOnSide(SparkParticle.create(SparkType.METAL, random), 0, side, level, pos, random,
-                                    nextFloat(random, 0.1F, 0.2F) * (direction.getStepX() * 1.5),
-                                    face == AttachFace.CEILING ? 0 : nextFloat(random, 0.1F, 0.2F),
-                                    nextFloat(random, 0.1F, 0.2F) * (direction.getStepZ() * 1.5)
-                            );
-                        }
-                    }
-                }
+            case LevelEvent.SOUND_GRINDSTONE_USED: {
+                ParticleSpawnUtil.spawnGrindstoneUsedParticles(level, pos, state, random);
                 break;
             }
             case LevelEvent.SOUND_SMITHING_TABLE_USED: {
@@ -130,7 +113,7 @@ public class LevelRendererMixin implements FrustumGetter {
                 }
                 break;
             }
-            case 1503: {
+            case LevelEvent.END_PORTAL_FRAME_FILL: {
                 TickerManager.scheduleNext(() -> ParticleSpawnUtil.spawnEnderEyePlacementParticles(pos, random, level, Util.getEyeColorHolder(level, pos).toInt()));
                 break;
             }

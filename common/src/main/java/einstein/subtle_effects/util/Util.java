@@ -164,4 +164,16 @@ public class Util {
                 randomizeColor(random, b, multiplier)
         );
     }
+
+    @Nullable
+    public static ParticleOptions getCauldronParticle(BlockState state) {
+        Fluid fluid = getCauldronFluid(state);
+        if (!fluid.isSame(Fluids.EMPTY)) {
+            return getParticleForFluid(fluid);
+        }
+        else if (state.is(Blocks.POWDER_SNOW_CAULDRON)) {
+            return ModParticles.SNOW.get();
+        }
+        return null;
+    }
 }

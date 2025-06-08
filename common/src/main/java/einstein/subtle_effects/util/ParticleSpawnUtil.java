@@ -10,9 +10,11 @@ import einstein.subtle_effects.particle.SparkParticle;
 import einstein.subtle_effects.particle.option.DirectionParticleOptions;
 import einstein.subtle_effects.platform.Services;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ColorParticleOption;
+import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
@@ -30,7 +32,10 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.ComposterBlock;
+import net.minecraft.world.level.block.GrindstoneBlock;
+import net.minecraft.world.level.block.StonecutterBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.AttachFace;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
@@ -418,6 +423,45 @@ public class ParticleSpawnUtil {
                         pos.getY() + (fluidHeight == 0 ? random.nextDouble() : fluidHeight),
                         pos.getZ() + 0.5 + nextNonAbsDouble(random),
                         0, 0, 0
+                );
+            }
+        }
+    }
+
+    public static void spawnGrindstoneUsedParticles(Level level, BlockPos pos, BlockState state, RandomSource random) {
+        if (BLOCKS.grindstoneUseParticles) {
+            if (state.hasProperty(GrindstoneBlock.FACING) && state.hasProperty(GrindstoneBlock.FACE)) {
+                Direction direction = state.getValue(GrindstoneBlock.FACING);
+                AttachFace face = state.getValue(GrindstoneBlock.FACE);
+                Direction side = face == AttachFace.CEILING ? Direction.DOWN : Direction.UP;
+
+                for (int i = 0; i < 20; i++) {
+                    spawnParticlesOnSide(SparkParticle.create(SparkType.METAL, random), 0, side, level, pos, random,
+                            nextFloat(random, 0.1F, 0.2F) * (direction.getStepX() * 1.5),
+                            face == AttachFace.CEILING ? 0 : nextFloat(random, 0.1F, 0.2F),
+                            nextFloat(random, 0.1F, 0.2F) * (direction.getStepZ() * 1.5)
+                    );
+                }
+            }
+        }
+    }
+
+    public static void spawnStonecutterParticles(ClientLevel level, ItemStack stack, BlockPos pos, BlockState state) {
+        if (!BLOCKS.stonecutterUseParticles) {
+            return;
+        }
+
+        RandomSource random = level.getRandom();
+
+        if (state.hasProperty(StonecutterBlock.FACING)) {
+            Direction direction = state.getValue(StonecutterBlock.FACING).getClockWise();
+
+            for (int i = 0; i < 16; i++) {
+                spawnParticlesOnSide(new ItemParticleOption(ParticleTypes.ITEM, stack),
+                        -0.125F, Direction.UP, level, pos, random,
+                        nextFloat(random, 0.1F, 0.2F) * (direction.getStepX() * 1.5),
+                        nextFloat(random, 0.1F, 0.2F),
+                        nextFloat(random, 0.1F, 0.2F) * (direction.getStepZ() * 1.5)
                 );
             }
         }

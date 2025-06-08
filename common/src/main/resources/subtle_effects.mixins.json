@@ -76,7 +76,8 @@
     "common.LlamaMixin",
     "common.MaceItemMixin",
     "common.StonecutterMenuAccessor",
-    "common.ThrownExperienceBottleMixin"
+    "common.ThrownExperienceBottleMixin",
+    "common.WorkAtPoiMixin"
   ],
   "injectors": {
     "defaultRequire": 1
