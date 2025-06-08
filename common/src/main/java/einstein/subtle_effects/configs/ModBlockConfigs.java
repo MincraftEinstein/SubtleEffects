@@ -70,6 +70,8 @@ public class ModBlockConfigs extends Config {
     public boolean dragonEggParticles = true;
     public boolean replaceEndPortalSmoke = true;
     public boolean pumpkinCarvedParticles = true;
+
+    public ConfigGroup workstationsGroup = new ConfigGroup("work_stations");
     public boolean anvilBreakParticles = true;
     public boolean anvilUseParticles = true;
     public boolean grindstoneUseParticles = true;
@@ -77,6 +79,10 @@ public class ModBlockConfigs extends Config {
     public boolean stonecutterUseParticles = true;
     public boolean cauldronUseParticles = true;
     public boolean cauldronCleanItemSounds = true;
+    public boolean compostingCompostParticles = true;
+    @ConfigGroup.Pop
+    public boolean compostingItemParticles = true;
+
     public CommandBlockSpawnType commandBlockParticles = CommandBlockSpawnType.ON;
     public boolean slimeBlockBounceSounds = true;
     public ConfigGroup beaconParticlesGroup = new ConfigGroup("beacon_particles");
@@ -84,8 +90,6 @@ public class ModBlockConfigs extends Config {
     public ValidatedInt beaconParticlesDensity = new ValidatedInt(10, 20, 1);
     @ConfigGroup.Pop
     public ValidatedFloat beaconParticlesSpeed = new ValidatedFloat(1, 2, 0.5F);
-    public boolean compostingCompostParticles = true;
-    public boolean compostingItemParticles = true;
     public boolean respawnAnchorParticles = true;
     public boolean beehiveShearParticles = true;
     public boolean endPortalParticles = true;
