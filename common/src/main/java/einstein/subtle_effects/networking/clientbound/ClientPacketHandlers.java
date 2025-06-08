@@ -200,7 +200,6 @@ public class ClientPacketHandlers {
         }
 
         Entity entity = level.getEntity(payload.villagerId());
-
         if (entity instanceof Villager villager) {
             VillagerData villagerData = villager.getVillagerData();
             VillagerProfession profession = villagerData.getProfession();
@@ -210,6 +209,10 @@ public class ClientPacketHandlers {
             BlockState state = level.getBlockState(pos);
 
             if (profession == VillagerProfession.LEATHERWORKER) {
+                if (!BLOCKS.cauldronUseParticles) {
+                    return;
+                }
+
                 double fluidHeight = Util.getCauldronFillHeight(state);
                 ParticleOptions particle = Util.getCauldronParticle(state);
 
