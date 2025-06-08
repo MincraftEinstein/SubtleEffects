@@ -195,6 +195,10 @@ public class ClientPacketHandlers {
     }
 
     public static void handle(ClientLevel level, ClientBoundVillagerWorkPayload payload) {
+        if (!ENTITIES.villagerWorkAtWorkstationParticles) {
+            return;
+        }
+
         Entity entity = level.getEntity(payload.villagerId());
 
         if (entity instanceof Villager villager) {

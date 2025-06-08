@@ -374,6 +374,8 @@
   "config.subtle_effects.entities.snowballTrailDensity.desc": "The density of the snowball particle trail.\n0 to disable",
   "config.subtle_effects.entities.snowballPoofsHaveSnowflakes": "Snowball Poofs Have Snowflakes",
   "config.subtle_effects.entities.snowballPoofSoundVolume": "Snowball Poof Sound Volume",
+  "config.subtle_effects.entities.villagerWorkAtWorkstationParticles": "Villager Work At Workstation Particles",
+  "config.subtle_effects.entities.villagerWorkAtWorkstationParticles.desc": "Should profession/workstation related particles spawn around a workstation when a villager uses it",
   "config.subtle_effects.environment": "Environment",
   "config.subtle_effects.environment.biomeColorRain": "Biome Color Rain",
   "config.subtle_effects.environment.flameGeysersGroup": "Flame Geysers",

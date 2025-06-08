@@ -55,6 +55,7 @@ public class ModEntityConfigs extends Config {
     public boolean snowballPoofsHaveSnowflakes = true;
     @ConfigGroup.Pop
     public ValidatedFloat snowballPoofSoundVolume = new ValidatedFloat(0.3F, 1, 0);
+    public boolean villagerWorkAtWorkstationParticles = true;
 
     public ModEntityConfigs() {
         super(SubtleEffects.loc("entities"));
