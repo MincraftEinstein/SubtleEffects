@@ -1,23 +1,23 @@
 package einstein.subtle_effects.mixin.client.block;
 
+import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
+import com.llamalad7.mixinextras.sugar.Local;
 import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.init.ModParticles;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.EndPortalBlock;
-import net.minecraft.world.level.block.state.BlockState;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(EndPortalBlock.class)
 public class EndPortalBlockMixin {
 
-    @Inject(method = "animateTick", at = @At("HEAD"), cancellable = true)
-    private void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random, CallbackInfo ci) {
+    @WrapWithCondition(method = "animateTick", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/Level;addParticle(Lnet/minecraft/core/particles/ParticleOptions;DDDDDD)V"))
+    private boolean animateTick(Level level, ParticleOptions particle, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, @Local(argsOnly = true) BlockPos pos, @Local(argsOnly = true) RandomSource random) {
         if (random.nextBoolean() && ModConfigs.BLOCKS.endPortalParticles) {
             level.addParticle(ModParticles.END_PORTAL.get(),
                     pos.getX() + random.nextDouble(),
@@ -37,7 +37,9 @@ public class EndPortalBlockMixin {
                     (random.nextDouble() - 0.5) * 0.5
             );
 
-            ci.cancel();
+            return false;
         }
+
+        return true;
     }
 }

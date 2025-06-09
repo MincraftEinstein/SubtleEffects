@@ -9,7 +9,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
-public record ClientBoundCompostItemPayload(ItemStack stack, BlockPos pos) implements Packet {
+public record ClientBoundCompostItemPayload(ItemStack stack, BlockPos pos, boolean wasFarmer) implements Packet {
 
     public static final ResourceLocation ID = SubtleEffects.loc("compost_item");
 
@@ -17,10 +17,11 @@ public record ClientBoundCompostItemPayload(ItemStack stack, BlockPos pos) imple
     public void encode(FriendlyByteBuf buf) {
         buf.writeItem(stack);
         buf.writeBlockPos(pos);
+        buf.writeBoolean(wasFarmer);
     }
 
     public static ClientBoundCompostItemPayload decode(FriendlyByteBuf buf) {
-        return new ClientBoundCompostItemPayload(buf.readItem(), buf.readBlockPos());
+        return new ClientBoundCompostItemPayload(buf.readItem(), buf.readBlockPos(), buf.readBoolean());
     }
 
     @Override

@@ -1,6 +1,7 @@
 package einstein.subtle_effects.particle;
 
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.particle.option.ColorParticleOptions;
 import einstein.subtle_effects.util.LifetimeAlpha;
 import net.minecraft.client.Camera;
@@ -22,7 +23,7 @@ public class EnderEyePlacedRingParticle extends FlatPlaneParticle {
 
     protected EnderEyePlacedRingParticle(ClientLevel level, double x, double y, double z) {
         super(level, x, y, z);
-        lifetime = 10;
+        lifetime = ModConfigs.BLOCKS.enderEyePlacedRingsDuration.get();
         quadSize = SIZE;
         setSize(SIZE, SIZE);
         alpha = lifetimeAlpha.startAlpha();

@@ -8,6 +8,9 @@
     "client.item.BucketItemMixin",
     "client.particle.FabricParticleEngineMixin"
   ],
+  "mixins": [
+    "common.FabricStonecutterMenu$2Mixin"
+  ],
   "injectors": {
     "defaultRequire": 1
   }

@@ -1,5 +1,6 @@
 package einstein.subtle_effects.mixin.common;
 
+import com.llamalad7.mixinextras.sugar.Local;
 import einstein.subtle_effects.networking.clientbound.ClientBoundCompostItemPayload;
 import einstein.subtle_effects.platform.Services;
 import net.minecraft.core.BlockPos;
@@ -26,15 +27,18 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public class CommonComposterMixin {
 
     @Inject(method = "use", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/Level;levelEvent(ILnet/minecraft/core/BlockPos;I)V"))
-    private void useItem(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult, CallbackInfoReturnable<InteractionResult> cir) {
+    private void useItem(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult, CallbackInfoReturnable<InteractionResult> cir, @Local ItemStack stack) {
         if (level instanceof ServerLevel serverLevel) {
-            ItemStack stack = player.getItemInHand(hand);
-            Services.NETWORK.sendToClientsTracking(serverLevel, pos, new ClientBoundCompostItemPayload(stack, pos));
+            ItemStack copiedStack = stack.copy();
+
+            if (!copiedStack.isEmpty()) {
+                Services.NETWORK.sendToClientsTracking(serverLevel, pos, new ClientBoundCompostItemPayload(copiedStack, pos, false));
+            }
         }
     }
 
     @Mixin(targets = "net.minecraft.world.level.block.ComposterBlock$InputContainer")
-    public static abstract class ComposterBlockInputContainerMixin implements WorldlyContainer {
+    public static abstract class InputContainerMixin implements WorldlyContainer {
 
         @Shadow
         @Final
@@ -47,10 +51,10 @@ public class CommonComposterMixin {
         @Inject(method = "setChanged", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/LevelAccessor;levelEvent(ILnet/minecraft/core/BlockPos;I)V"))
         private void setChanged(CallbackInfo ci) {
             if (level instanceof ServerLevel serverLevel) {
-                ItemStack stack = getItem(0);
+                ItemStack stack = getItem(0).copy();
 
                 if (!stack.isEmpty()) {
-                    Services.NETWORK.sendToClientsTracking(serverLevel, pos, new ClientBoundCompostItemPayload(stack, pos));
+                    Services.NETWORK.sendToClientsTracking(serverLevel, pos, new ClientBoundCompostItemPayload(stack, pos, false));
                 }
             }
         }

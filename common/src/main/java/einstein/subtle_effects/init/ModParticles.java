@@ -63,6 +63,7 @@ public class ModParticles {
     public static final Supplier<ParticleType<BlockParticleOption>> BLOCK_NO_MOMENTUM = register("block_no_momentum", BlockParticleOption.DESERIALIZER, BlockParticleOption::codec);
     public static final Supplier<SimpleParticleType> LAVA_SPLASH = register("lava_splash");
     public static final Supplier<ParticleType<IntegerParticleOptions>> GEYSER_HOLE = register("geyser_spout", IntegerParticleOptions.DESERIALIZER, IntegerParticleOptions::codec);
+    public static final Supplier<SimpleParticleType> SNEEZE = register("sneeze");
 
     public static void init() {
     }

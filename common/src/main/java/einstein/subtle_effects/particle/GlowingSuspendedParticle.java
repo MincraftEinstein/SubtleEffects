@@ -13,6 +13,6 @@ public class GlowingSuspendedParticle extends SuspendedParticle {
 
     @Override
     protected int getLightColor(float partialTick) {
-        return Util.getLightColor(super.getLightColor(partialTick));
+        return Util.PARTICLE_LIGHT_COLOR;
     }
 }

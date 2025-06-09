@@ -3,6 +3,7 @@ package einstein.subtle_effects.util;
 import einstein.subtle_effects.configs.ModBlockConfigs;
 import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.init.ModParticles;
+import einstein.subtle_effects.mixin.client.item.BucketItemAccessor;
 import einstein.subtle_effects.networking.clientbound.ClientBoundEntityFellPacket;
 import einstein.subtle_effects.particle.EnderEyePlacedRingParticle;
 import einstein.subtle_effects.particle.SparkParticle;
@@ -13,6 +14,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
@@ -24,12 +26,20 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.animal.camel.Camel;
 import net.minecraft.world.entity.animal.horse.AbstractHorse;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.ComposterBlock;
+import net.minecraft.world.level.block.GrindstoneBlock;
+import net.minecraft.world.level.block.StonecutterBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.AttachFace;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
+import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
@@ -267,7 +277,7 @@ public class ParticleSpawnUtil {
         level.addParticle(options, pos.x(), pos.y(), pos.z(), speed.x(), speed.y(), speed.z());
     }
 
-    public static void spawnEnderEyePlacementParticles(BlockPos pos, RandomSource random, ClientLevel level, int color) {
+    public static void spawnEnderEyePlacementParticles(BlockPos pos, RandomSource random, Level level, int color) {
         if (BLOCKS.enderEyePlacedRings) {
             level.addParticle(new ColorParticleOptions(ModParticles.ENDER_EYE_PLACED_RING.get(), Vec3.fromRGB24(color).toVector3f()),
                     pos.getX() + 0.5, pos.getY() + 0.8125 + EnderEyePlacedRingParticle.SIZE, pos.getZ() + 0.5,
@@ -276,14 +286,18 @@ public class ParticleSpawnUtil {
         }
 
         if (BLOCKS.enderEyePlacedParticlesDisplayType != ModBlockConfigs.EnderEyePlacedParticlesDisplayType.VANILLA) {
-            for (int i = 0; i < 16; ++i) {
-                level.addParticle(new ColorParticleOptions(ModParticles.SHORT_SPARK.get(), Vec3.fromRGB24(color).toVector3f()),
-                        pos.getX() + 0.5 + nextNonAbsDouble(random, 0.25),
-                        pos.getY() + 1,
-                        pos.getZ() + 0.5 + nextNonAbsDouble(random, 0.25),
-                        0, 0, 0
-                );
-            }
+            spawnEndPortalParticles(level, pos, random, new ColorParticleOptions(ModParticles.SHORT_SPARK.get(), Vec3.fromRGB24(color).toVector3f()), 16);
+        }
+    }
+
+    public static void spawnEndPortalParticles(Level level, BlockPos pos, RandomSource random, ParticleOptions particle, int count) {
+        for (int i = 0; i < count; ++i) {
+            level.addParticle(particle,
+                    pos.getX() + 0.5 + nextNonAbsDouble(random, 0.25),
+                    pos.getY() + 0.9375,
+                    pos.getZ() + 0.5 + nextNonAbsDouble(random, 0.25),
+                    0, 0, 0
+            );
         }
     }
 
@@ -344,7 +358,7 @@ public class ParticleSpawnUtil {
         });
     }
 
-    public static void spawnHammeringWorkstationParticles(BlockPos pos, RandomSource random, ClientLevel level) {
+    public static void spawnHammeringWorkstationParticles(BlockPos pos, RandomSource random, Level level) {
         float pointX = random.nextFloat();
         float pointZ = random.nextFloat();
 
@@ -374,6 +388,82 @@ public class ParticleSpawnUtil {
                         pos.getY() + 0.1875 + (0.125 * state.getValue(ComposterBlock.LEVEL)),
                         pos.getZ() + 0.5 + MathUtil.nextNonAbsDouble(random, 0.3),
                         xSpeed, ySpeed, zSpeed);
+            }
+        }
+    }
+
+    public static void spawnBucketParticles(Level level, BlockPos pos, ItemStack stack) {
+        if (level.isClientSide) {
+            if (stack.getItem() instanceof BucketItemAccessor bucket) {
+                Fluid content = bucket.getContent();
+                boolean isWater = content.isSame(Fluids.WATER);
+
+                if ((isWater && ModConfigs.ITEMS.waterBucketUseParticles) || (content.isSame(Fluids.LAVA) && ModConfigs.ITEMS.lavaBucketUseParticles)) {
+                    if (isWater && level.dimensionType().ultraWarm()) {
+                        return;
+                    }
+
+                    spawnBucketParticles(level, pos, Util.getParticleForFluid(content));
+                }
+            }
+            else if (stack.is(Items.POWDER_SNOW_BUCKET) && ModConfigs.ITEMS.powderSnowBucketUseParticles) {
+                spawnBucketParticles(level, pos, ModParticles.SNOW.get());
+            }
+        }
+    }
+
+    public static void spawnBucketParticles(Level level, BlockPos pos, ParticleOptions particle) {
+        if (particle != null) {
+            RandomSource random = level.getRandom();
+            FluidState fluidState = level.getFluidState(pos);
+            double fluidHeight = fluidState.getHeight(level, pos);
+
+            for (int i = 0; i < 16; i++) {
+                level.addParticle(particle,
+                        pos.getX() + 0.5 + nextNonAbsDouble(random),
+                        pos.getY() + (fluidHeight == 0 ? random.nextDouble() : fluidHeight),
+                        pos.getZ() + 0.5 + nextNonAbsDouble(random),
+                        0, 0, 0
+                );
+            }
+        }
+    }
+
+    public static void spawnGrindstoneUsedParticles(Level level, BlockPos pos, BlockState state, RandomSource random) {
+        if (BLOCKS.grindstoneUseParticles) {
+            if (state.hasProperty(GrindstoneBlock.FACING) && state.hasProperty(GrindstoneBlock.FACE)) {
+                Direction direction = state.getValue(GrindstoneBlock.FACING);
+                AttachFace face = state.getValue(GrindstoneBlock.FACE);
+                Direction side = face == AttachFace.CEILING ? Direction.DOWN : Direction.UP;
+
+                for (int i = 0; i < 20; i++) {
+                    spawnParticlesOnSide(SparkParticle.create(SparkType.METAL, random), 0, side, level, pos, random,
+                            nextFloat(random, 0.1F, 0.2F) * (direction.getStepX() * 1.5),
+                            face == AttachFace.CEILING ? 0 : nextFloat(random, 0.1F, 0.2F),
+                            nextFloat(random, 0.1F, 0.2F) * (direction.getStepZ() * 1.5)
+                    );
+                }
+            }
+        }
+    }
+
+    public static void spawnStonecutterParticles(ClientLevel level, ItemStack stack, BlockPos pos, BlockState state) {
+        if (!BLOCKS.stonecutterUseParticles) {
+            return;
+        }
+
+        RandomSource random = level.getRandom();
+
+        if (state.hasProperty(StonecutterBlock.FACING)) {
+            Direction direction = state.getValue(StonecutterBlock.FACING).getClockWise();
+
+            for (int i = 0; i < 16; i++) {
+                spawnParticlesOnSide(new ItemParticleOption(ParticleTypes.ITEM, stack),
+                        -0.125F, Direction.UP, level, pos, random,
+                        nextFloat(random, 0.1F, 0.2F) * (direction.getStepX() * 1.5),
+                        nextFloat(random, 0.1F, 0.2F),
+                        nextFloat(random, 0.1F, 0.2F) * (direction.getStepZ() * 1.5)
+                );
             }
         }
     }

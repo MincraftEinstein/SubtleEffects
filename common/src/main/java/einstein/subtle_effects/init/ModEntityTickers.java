@@ -36,6 +36,7 @@ import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseFireBlock;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.BrushableBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
@@ -53,7 +54,7 @@ public class ModEntityTickers {
     private static final Predicate<Entity> LOCAL_PLAYER = entity -> entity.equals(Minecraft.getInstance().player);
 
     public static void init() {
-        register(entity -> true, EntityWaterCauldronTicker::new);
+        register(entity -> true, EntityCauldronTicker::new);
         register(entity -> !(entity instanceof LightningBolt), EntityFireTicker::new);
         register(entity -> entity instanceof LivingEntity, ModEntityTickers::getSleepingTicker);
         register(entity -> entity instanceof AbstractMinecart && ENTITIES.minecartSparksDisplayType != ModEntityConfigs.MinecartSparksDisplayType.OFF, MinecartSparksTicker::new);
@@ -282,7 +283,7 @@ public class ModEntityTickers {
             }
         });
         registerSimple(entity -> entity instanceof LivingEntity && entity.canFreeze() && ENTITIES.freezingSnowFlakes, false, (entity, level, random) -> {
-            if (entity.isFreezing() || entity.getTicksFrozen() > 0) {
+            if (entity.isFreezing() || entity.getTicksFrozen() > 0 || entity.getInBlockState().is(Blocks.POWDER_SNOW_CAULDRON)) {
                 level.addParticle(ModParticles.FREEZING.get(),
                         entity.getRandomX(1),
                         entity.getRandomY(),
