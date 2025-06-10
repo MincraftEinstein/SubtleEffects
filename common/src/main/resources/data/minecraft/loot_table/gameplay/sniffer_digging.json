@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:loot_table",
+  "pools": [
+    {
+      "name": "sniffer_digging_pool",
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:torchflower_seeds"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:pitcher_pod"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:nautilus_shell"
+        }
+      ]
+    }
+  ]
+}
