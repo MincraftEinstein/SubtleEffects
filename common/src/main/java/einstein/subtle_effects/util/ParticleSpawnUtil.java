@@ -10,7 +10,6 @@ import einstein.subtle_effects.particle.SparkParticle;
 import einstein.subtle_effects.particle.option.DirectionParticleOptions;
 import einstein.subtle_effects.platform.Services;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ColorParticleOption;
@@ -446,7 +445,7 @@ public class ParticleSpawnUtil {
         }
     }
 
-    public static void spawnStonecutterParticles(ClientLevel level, ItemStack stack, BlockPos pos, BlockState state) {
+    public static void spawnStonecutterParticles(Level level, ItemStack stack, BlockPos pos, BlockState state) {
         if (!BLOCKS.stonecutterUseParticles) {
             return;
         }
