@@ -111,7 +111,7 @@ public abstract class PandaMixin extends Animal {
             ParticleSpawnUtil.spawnEntityFaceParticle(ModParticles.SNEEZE.get(),
                     subtleEffects$panda, level, random, offset,
                     new Vec3(MathUtil.nextNonAbsDouble(random, 0.02), 0, Mth.nextDouble(random, 0.03, 0.08)),
-                    Minecraft.getInstance().getTimer().getGameTimeDeltaPartialTick(false)
+                    Minecraft.getInstance().getDeltaTracker().getGameTimeDeltaPartialTick(false)
             );
         }
     }

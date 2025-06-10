@@ -4,7 +4,6 @@ import einstein.subtle_effects.configs.ReplacedParticlesDisplayType;
 import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.init.ModParticles;
 import einstein.subtle_effects.particle.option.FloatParticleOptions;
-import einstein.subtle_effects.particle.option.IntegerParticleOptions;
 import einstein.subtle_effects.tickers.TickerManager;
 import einstein.subtle_effects.util.MathUtil;
 import einstein.subtle_effects.util.ParticleSpawnUtil;
@@ -12,16 +11,14 @@ import einstein.subtle_effects.util.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.particles.DustParticleOptions;
-import net.minecraft.core.particles.ItemParticleOption;
-import net.minecraft.core.particles.ParticleOptions;
-import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.Holder;
+import net.minecraft.core.particles.*;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.animal.Sheep;
+import net.minecraft.world.entity.animal.sheep.Sheep;
 import net.minecraft.world.entity.monster.Ravager;
 import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.npc.VillagerData;
@@ -30,12 +27,10 @@ import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.PotionContents;
-import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.Vec3;
-import org.joml.Vector3f;
 
 import java.util.List;
 
@@ -197,13 +192,13 @@ public class ClientPacketHandlers {
         Entity entity = level.getEntity(payload.villagerId());
         if (entity instanceof Villager villager) {
             VillagerData villagerData = villager.getVillagerData();
-            VillagerProfession profession = villagerData.getProfession();
-            int professionLevel = villagerData.getLevel();
+            Holder<VillagerProfession> profession = villagerData.profession();
+            int professionLevel = villagerData.level();
             RandomSource random = level.getRandom();
             BlockPos pos = payload.pos();
             BlockState state = level.getBlockState(pos);
 
-            if (profession == VillagerProfession.LEATHERWORKER) {
+            if (profession.is(VillagerProfession.LEATHERWORKER)) {
                 if (!BLOCKS.cauldronUseParticles) {
                     return;
                 }
@@ -223,19 +218,19 @@ public class ClientPacketHandlers {
                     }
                 }
             }
-            else if (profession == VillagerProfession.WEAPONSMITH) {
+            else if (profession.is(VillagerProfession.WEAPONSMITH)) {
                 ParticleSpawnUtil.spawnGrindstoneUsedParticles(level, pos, state, random);
             }
-            else if (profession == VillagerProfession.TOOLSMITH) {
+            else if (profession.is(VillagerProfession.TOOLSMITH)) {
                 if (BLOCKS.smithingTableUseParticles) {
                     ParticleSpawnUtil.spawnHammeringWorkstationParticles(pos, random, level);
                 }
             }
-            else if (profession == VillagerProfession.MASON) {
+            else if (profession.is(VillagerProfession.MASON)) {
                 ParticleSpawnUtil.spawnStonecutterParticles(level, new ItemStack(MASON_STONECUTTER_USE_BLOCKS.get(random.nextInt(MASON_STONECUTTER_USE_BLOCKS.size()))), pos, state);
             }
-            else if (profession == VillagerProfession.SHEPHERD) {
-                IntegerParticleOptions particle = new IntegerParticleOptions(ModParticles.SHEEP_FLUFF.get(),
+            else if (profession.is(VillagerProfession.SHEPHERD)) {
+                ColorParticleOption particle = ColorParticleOption.create(ModParticles.SHEEP_FLUFF.get(),
                         Sheep.getColor(getColorForShepherdWoolFluff(professionLevel, random))
                 );
 
@@ -250,7 +245,7 @@ public class ClientPacketHandlers {
                     );
                 }
             }
-            else if (profession == VillagerProfession.FLETCHER) {
+            else if (profession.is(VillagerProfession.FLETCHER)) {
                 for (int i = 0; i < 8; i++) {
                     level.addParticle(ModParticles.CHICKEN_FEATHER.get(),
                             pos.getX() + random.nextDouble(),
@@ -271,7 +266,7 @@ public class ClientPacketHandlers {
                     );
                 }
             }
-            else if (profession == VillagerProfession.BUTCHER || profession == VillagerProfession.ARMORER) {
+            else if (profession.is(VillagerProfession.BUTCHER) || profession.is(VillagerProfession.ARMORER)) {
                 if (state.hasProperty(BlockStateProperties.LIT) && !state.getValue(BlockStateProperties.LIT)) {
                     Block block = state.getBlock();
                     BlockState litState = state.setValue(BlockStateProperties.LIT, true);

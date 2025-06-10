@@ -446,7 +446,7 @@ public class ParticleSpawnUtil {
         }
     }
 
-    public static void spawnStonecutterParticles(ClientLevel level, ItemStack stack, BlockPos pos, BlockState state) {
+    public static void spawnStonecutterParticles(Level level, ItemStack stack, BlockPos pos, BlockState state) {
         if (!BLOCKS.stonecutterUseParticles) {
             return;
         }
