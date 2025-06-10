@@ -14,5 +14,7 @@ public class ModPackets {
         NETWORK.registerToClient(ClientBoundXPBottleEffectsPacket.ID, ClientBoundXPBottleEffectsPacket.class, ClientBoundXPBottleEffectsPacket::decode);
         NETWORK.registerToClient(ClientBoundFallingBlockLandPayload.ID, ClientBoundFallingBlockLandPayload.class, ClientBoundFallingBlockLandPayload::decode);
         NETWORK.registerToClient(ClientBoundCompostItemPayload.ID, ClientBoundCompostItemPayload.class, ClientBoundCompostItemPayload::decode);
+        NETWORK.registerToClient(ClientBoundStonecutterUsedPayload.ID, ClientBoundStonecutterUsedPayload.class, ClientBoundStonecutterUsedPayload::decode);
+        NETWORK.registerToClient(ClientBoundVillagerWorkPacket.ID, ClientBoundVillagerWorkPacket.class, ClientBoundVillagerWorkPacket::decode);
     }
 }

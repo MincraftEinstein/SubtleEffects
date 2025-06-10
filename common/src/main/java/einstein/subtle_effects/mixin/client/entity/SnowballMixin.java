@@ -25,7 +25,7 @@ public class SnowballMixin {
     private void handleEntityEvent(byte event, CallbackInfo ci) {
         if (event == EntityEvent.DEATH) {
             Level level = subtleEffects$me.level();
-            RandomSource random = subtleEffects$me.getRandom();
+            RandomSource random = subtleEffects$me.level().getRandom();
 
             if (ModConfigs.ENTITIES.snowballPoofsHaveSnowflakes) {
                 for (int i = 0; i < 8; i++) {

@@ -72,6 +72,7 @@ public class ModParticleProviders {
         register(BLOCK_NO_MOMENTUM, sprites -> new TerrainNoMomentumParticleProvider());
         register(LAVA_SPLASH, LavaSplashParticle.Provider::new);
         register(GEYSER_HOLE, GeyserSpoutParticle.Provider::new);
+        register(SNEEZE, SneezeParticle.Provider::new);
         SubtleEffects.LOGGER.info("Forge please do the world a favor and STOP EXISTING!!");
     }
 

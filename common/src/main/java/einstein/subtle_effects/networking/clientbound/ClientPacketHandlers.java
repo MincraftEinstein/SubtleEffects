@@ -225,13 +225,23 @@ public class ClientPacketHandlers {
         }
     }
 
-    public static void handle(ClientLevel level, ClientBoundStonecutterUsedPayload payload) {
+    public static void handle(ClientBoundStonecutterUsedPayload payload) {
+        Level level = Minecraft.getInstance().level;
+        if (level == null) {
+            return;
+        }
+
         BlockPos pos = payload.pos();
         ParticleSpawnUtil.spawnStonecutterParticles(level, payload.stack(), pos, level.getBlockState(pos));
     }
 
-    public static void handle(ClientLevel level, ClientBoundVillagerWorkPayload payload) {
+    public static void handle(ClientBoundVillagerWorkPacket payload) {
         if (!ENTITIES.villagerWorkAtWorkstationParticles) {
+            return;
+        }
+
+        Level level = Minecraft.getInstance().level;
+        if (level == null) {
             return;
         }
 

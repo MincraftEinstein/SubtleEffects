@@ -283,7 +283,7 @@ public class ModEntityTickers {
             }
         });
         registerSimple(entity -> entity instanceof LivingEntity && entity.canFreeze() && ENTITIES.freezingSnowFlakes, false, (entity, level, random) -> {
-            if (entity.isFreezing() || entity.getTicksFrozen() > 0 || entity.getInBlockState().is(Blocks.POWDER_SNOW_CAULDRON)) {
+            if (entity.isFreezing() || entity.getTicksFrozen() > 0 || level.getBlockState(entity.blockPosition()).is(Blocks.POWDER_SNOW_CAULDRON)) {
                 level.addParticle(ModParticles.FREEZING.get(),
                         entity.getRandomX(1),
                         entity.getRandomY(),

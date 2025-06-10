@@ -9,4 +9,3 @@ accessible method net/minecraft/client/particle/DripParticle getType ()Lnet/mine
 accessible method net/minecraft/client/particle/BubbleParticle <init> (Lnet/minecraft/client/multiplayer/ClientLevel;DDDDDD)V
 accessible method net/minecraft/client/particle/BubblePopParticle <init> (Lnet/minecraft/client/multiplayer/ClientLevel;DDDDDDLnet/minecraft/client/particle/SpriteSet;)V
 accessible method net/minecraft/client/particle/SplashParticle <init> (Lnet/minecraft/client/multiplayer/ClientLevel;DDDDDD)V
-accessible method net/minecraft/client/particle/FlyTowardsPositionParticle <init> (Lnet/minecraft/client/multiplayer/ClientLevel;DDDDDD)V

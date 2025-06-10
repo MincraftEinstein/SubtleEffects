@@ -9,7 +9,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 
 @Mixin(BucketItem.class)
-public class BucketItemMixin {
+public class FabricBucketItemMixin {
 
     @WrapOperation(method = "emptyContents", at = @At(value = "FIELD", target = "Lnet/minecraft/core/particles/ParticleTypes;LARGE_SMOKE:Lnet/minecraft/core/particles/SimpleParticleType;"))
     private SimpleParticleType replaceSmoke(Operation<SimpleParticleType> original) {

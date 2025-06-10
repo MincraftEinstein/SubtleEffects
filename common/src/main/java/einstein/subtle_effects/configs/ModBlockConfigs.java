@@ -11,6 +11,7 @@ import einstein.subtle_effects.init.ModBlockTickers;
 import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.init.ModParticles;
 import einstein.subtle_effects.particle.EnderEyePlacedRingParticle;
+import einstein.subtle_effects.particle.option.ColorParticleOptions;
 import einstein.subtle_effects.tickers.TickerManager;
 import einstein.subtle_effects.util.Util;
 import me.fzzyhmstrs.fzzy_config.annotations.Translation;
@@ -26,12 +27,13 @@ import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedInt;
 import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedNumber;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.particles.ColorParticleOption;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
+import org.joml.Vector3f;
 
 import java.awt.*;
 import java.util.HashMap;
@@ -224,7 +226,9 @@ public class ModBlockConfigs extends Config {
 
     public enum EndPortalFrameParticlesDisplayType implements EnumTranslatable {
         OFF(0, null),
-        DOTS(8, (level, pos) -> ColorParticleOption.create(ModParticles.SHORT_SPARK.get(), Util.getEyeColorHolder(level, pos).toInt())),
+        DOTS(8, (level, pos) -> {
+            return new ColorParticleOptions(ModParticles.SHORT_SPARK.get(), Vec3.fromRGB24(Util.getEyeColorHolder(level, pos).toInt()).toVector3f());
+        }),
         SMOKE(1, (level, pos) -> ParticleTypes.SMOKE);
 
         public final int count;

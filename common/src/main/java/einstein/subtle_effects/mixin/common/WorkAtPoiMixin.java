@@ -1,6 +1,6 @@
 package einstein.subtle_effects.mixin.common;
 
-import einstein.subtle_effects.networking.clientbound.ClientBoundVillagerWorkPayload;
+import einstein.subtle_effects.networking.clientbound.ClientBoundVillagerWorkPacket;
 import einstein.subtle_effects.platform.Services;
 import net.minecraft.core.GlobalPos;
 import net.minecraft.server.level.ServerLevel;
@@ -21,7 +21,7 @@ public class WorkAtPoiMixin {
     private void spawnWorkEffects(ServerLevel level, Villager villager, long gameTime, CallbackInfo ci) {
         Optional<GlobalPos> memory = villager.getBrain().getMemory(MemoryModuleType.JOB_SITE);
         memory.ifPresent(globalPos -> Services.NETWORK.sendToClientsTracking(level, villager.blockPosition(),
-                new ClientBoundVillagerWorkPayload(villager.getId(), globalPos.pos())
+                new ClientBoundVillagerWorkPacket(villager.getId(), globalPos.pos())
         ));
     }
 }

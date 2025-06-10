@@ -19,7 +19,7 @@ public class EntityCauldronTicker extends EntityTicker<Entity> {
     @Override
     public void entityTick() {
         BlockPos pos = entity.blockPosition();
-        BlockState state = entity.getInBlockState();
+        BlockState state = level.getBlockState(pos);
         double height = Util.getCauldronFillHeight(state);
 
         if ((state.is(Blocks.POWDER_SNOW_CAULDRON) || state.is(Blocks.WATER_CAULDRON)) && height > 0) {

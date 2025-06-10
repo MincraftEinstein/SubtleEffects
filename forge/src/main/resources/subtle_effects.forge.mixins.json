@@ -6,8 +6,12 @@
   "compatibilityLevel": "JAVA_17",
   "client": [
     "client.FluidTypeMixin",
-    "client.item.BucketItemMixin",
+    "client.item.ForgeBucketItemAccessor",
+    "client.item.ForgeBucketItemMixin",
     "client.particle.ForgeParticleEngineMixin"
+  ],
+  "mixins": [
+    "common.ForgeStonecutter$2Menu"
   ],
   "injectors": {
     "defaultRequire": 1

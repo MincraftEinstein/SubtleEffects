@@ -20,6 +20,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Mixin(WorkAtComposter.class)
@@ -38,11 +39,14 @@ public class WorkAtComposterMixin {
     @Inject(method = "compostItems", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/ai/behavior/WorkAtComposter;spawnComposterFillEffects(Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;)V", ordinal = 1))
     private void spawnComposterEffects(ServerLevel level, Villager villager, GlobalPos global, BlockState state, CallbackInfo ci, @Local SimpleContainer inventory) {
         BlockPos pos = global.pos();
-        List<ItemStack> compostableItems = inventory
-                .getItems()
-                .stream()
-                .filter(stack -> !stack.isEmpty() && stack.getCount() > 10 && COMPOSTABLE_ITEMS.contains(stack.getItem()))
-                .toList();
+        List<ItemStack> compostableItems = new ArrayList<>();
+        for (int i = 0; i < inventory.getContainerSize(); i++) {
+            ItemStack stack = inventory.getItem(i);
+
+            if (!stack.isEmpty() && stack.getCount() > 10 && COMPOSTABLE_ITEMS.contains(stack.getItem())) {
+                compostableItems.add(stack);
+            }
+        }
 
         ItemStack stack = compostableItems.isEmpty() ? new ItemStack(Items.WHEAT_SEEDS) : compostableItems.get(level.getRandom().nextInt(compostableItems.size())).copy();
         if (!stack.isEmpty()) {

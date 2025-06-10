@@ -10,7 +10,7 @@ import net.minecraft.core.cauldron.CauldronInteraction;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.AbstractCauldronBlock;
 import net.minecraft.world.level.block.Blocks;
@@ -23,9 +23,9 @@ import static einstein.subtle_effects.init.ModConfigs.BLOCKS;
 @Mixin(AbstractCauldronBlock.class)
 public class AbstractCauldronBlockMixin {
 
-    @ModifyReturnValue(method = "useItemOn", at = @At("RETURN"))
-    private ItemInteractionResult spawnInteractionParticles(ItemInteractionResult result, @Local(argsOnly = true) BlockState state, @Local(argsOnly = true) Level level, @Local(argsOnly = true) BlockPos pos, @Local CauldronInteraction interaction) {
-        if (level.isClientSide && result == ItemInteractionResult.SUCCESS) {
+    @ModifyReturnValue(method = "use", at = @At("RETURN"))
+    private InteractionResult spawnInteractionParticles(InteractionResult result, @Local(argsOnly = true) BlockState state, @Local(argsOnly = true) Level level, @Local(argsOnly = true) BlockPos pos, @Local CauldronInteraction interaction) {
+        if (level.isClientSide && result == InteractionResult.SUCCESS) {
             RandomSource random = level.getRandom();
 
             if (BLOCKS.cauldronUseParticles || BLOCKS.cauldronCleanItemSounds) {

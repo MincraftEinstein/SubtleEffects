@@ -1,5 +1,6 @@
 package einstein.subtle_effects.mixin.client.item;
 
+import com.llamalad7.mixinextras.sugar.Local;
 import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.init.ModParticles;
 import einstein.subtle_effects.util.ParticleSpawnUtil;
@@ -19,10 +20,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(SolidBucketItem.class)
 public class SolidBucketItemMixin {
 
-    @Inject(method = "useOn", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Player;setItemInHand(Lnet/minecraft/world/InteractionHand;Lnet/minecraft/world/item/ItemStack;)V"))
-    private void spawnPlaceEffects(UseOnContext context, CallbackInfoReturnable<InteractionResult> cir) {
+    @Inject(method = "useOn", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/context/UseOnContext;getPlayer()Lnet/minecraft/world/entity/player/Player;"))
+    private void spawnPlaceEffects(UseOnContext context, CallbackInfoReturnable<InteractionResult> cir, @Local InteractionResult result) {
         Level level = context.getLevel();
-        if (level.isClientSide) {
+        if (level.isClientSide && result.consumesAction()) {
             BlockPlaceContext blockContext = new BlockPlaceContext(context);
             BlockPos pos = blockContext.getClickedPos();
             ItemStack stack = blockContext.getItemInHand();
