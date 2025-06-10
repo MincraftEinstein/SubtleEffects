@@ -12,6 +12,9 @@ import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.AABB;
 import org.spongepowered.asm.mixin.Mixin;
@@ -43,8 +46,11 @@ public abstract class ClientEntityMixin implements EntityTickersGetter {
                 for (int y = Mth.floor(boundingBox.minY); y < Mth.ceil(boundingBox.maxY); y++) {
                     for (int z = Mth.floor(boundingBox.minZ); z < Mth.ceil(boundingBox.maxZ); z++) {
                         BlockPos pos = new BlockPos(x, y, z);
+                        BlockState state = level.getBlockState(pos);
+                        FluidState fluidState = level.getFluidState(pos);
+                        double fluidHeight = Math.max(Util.getCauldronFillHeight(state), fluidState.getHeight(level, pos));
 
-                        if (level.getFluidState(pos).is(Fluids.WATER)) {
+                        if (fluidHeight > 0 && (fluidState.is(Fluids.WATER) || state.is(Blocks.WATER_CAULDRON))) {
                             BlockPos abovePos = pos.above();
 
                             if (!Util.isSolidOrNotEmpty(level, abovePos)) {
@@ -53,7 +59,7 @@ public abstract class ClientEntityMixin implements EntityTickersGetter {
                                 for (int i = 0; i < 5; i++) {
                                     level.addParticle(ModParticles.STEAM.get(),
                                             pos.getX() + random.nextDouble(),
-                                            pos.getY() + 0.875 + nextDouble(random, 0.5),
+                                            pos.getY() + fluidHeight + nextDouble(random, 0.5),
                                             pos.getZ() + random.nextDouble(),
                                             0, 0, 0
                                     );

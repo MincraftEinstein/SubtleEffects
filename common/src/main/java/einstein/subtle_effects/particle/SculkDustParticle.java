@@ -20,7 +20,6 @@ public class SculkDustParticle extends GlowingSuspendedParticle {
 
     public record Provider(SpriteSet sprites) implements ParticleProvider<SimpleParticleType> {
 
-        @Nullable
         @Override
         public Particle createParticle(SimpleParticleType type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
             return new SculkDustParticle(level, sprites, x, y, z);

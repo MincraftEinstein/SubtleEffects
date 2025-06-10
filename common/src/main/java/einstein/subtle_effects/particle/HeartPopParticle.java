@@ -34,8 +34,8 @@ public class HeartPopParticle extends TextureSheetParticle {
     }
 
     @Override
-    public float getQuadSize(float scaleFactor) {
-        return quadSize * Mth.clamp(age + scaleFactor / lifetime * 32, 0, 1);
+    public float getQuadSize(float partialTicks) {
+        return quadSize * Mth.clamp(age + partialTicks / lifetime * 32, 0, 1);
     }
 
     public record Provider(SpriteSet sprites) implements ParticleProvider<SimpleParticleType> {

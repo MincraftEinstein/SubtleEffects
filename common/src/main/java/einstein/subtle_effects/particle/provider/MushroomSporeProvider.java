@@ -8,7 +8,6 @@ import org.jetbrains.annotations.Nullable;
 
 public record MushroomSporeProvider(SpriteSet sprites) implements ParticleProvider<SimpleParticleType> {
 
-    @Nullable
     @Override
     public Particle createParticle(SimpleParticleType type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
         RandomSource random = level.getRandom();

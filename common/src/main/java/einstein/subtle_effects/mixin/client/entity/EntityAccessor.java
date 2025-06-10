@@ -9,4 +9,7 @@ public interface EntityAccessor {
 
     @Invoker("doWaterSplashEffect")
     void doWaterSplashingEffects();
+
+    @Invoker("playEntityOnFireExtinguishedSound")
+    void playExtinguishedSound();
 }

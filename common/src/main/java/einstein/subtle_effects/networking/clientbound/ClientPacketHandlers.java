@@ -4,6 +4,9 @@ import einstein.subtle_effects.configs.ReplacedParticlesDisplayType;
 import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.init.ModParticles;
 import einstein.subtle_effects.particle.option.FloatParticleOptions;
+import einstein.subtle_effects.particle.option.IntegerParticleOptions;
+import einstein.subtle_effects.tickers.TickerManager;
+import einstein.subtle_effects.util.MathUtil;
 import einstein.subtle_effects.util.ParticleSpawnUtil;
 import einstein.subtle_effects.util.Util;
 import net.minecraft.client.Minecraft;
@@ -11,26 +14,39 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.core.particles.ItemParticleOption;
+import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.animal.Sheep;
 import net.minecraft.world.entity.monster.Ravager;
+import net.minecraft.world.entity.npc.Villager;
+import net.minecraft.world.entity.npc.VillagerData;
+import net.minecraft.world.entity.npc.VillagerProfession;
+import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.PotionContents;
 import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.Vec3;
 import org.joml.Vector3f;
+
+import java.util.List;
 
 import static einstein.subtle_effects.init.ModConfigs.BLOCKS;
 import static einstein.subtle_effects.init.ModConfigs.ENTITIES;
 import static einstein.subtle_effects.util.MathUtil.*;
 
 public class ClientPacketHandlers {
+
+    private static final List<Block> MASON_STONECUTTER_USE_BLOCKS = List.of(Blocks.STONE, Blocks.CHISELED_STONE_BRICKS, Blocks.QUARTZ_BLOCK, Blocks.ANDESITE, Blocks.DIORITE, Blocks.GRANITE);
+    private static final List<DyeColor> COMMON_SHEPHERD_WOOL_COLORS = List.of(DyeColor.WHITE, DyeColor.GRAY, DyeColor.BLACK, DyeColor.BROWN);
 
     public static void handle(ClientLevel level, ClientBoundEntityFellPayload payload) {
         if (level.getEntity(payload.entityId()) instanceof LivingEntity livingEntity) {
@@ -157,7 +173,7 @@ public class ClientPacketHandlers {
     }
 
     public static void handle(ClientLevel level, ClientBoundCompostItemPayload payload) {
-        if (BLOCKS.compostingItemParticles) {
+        if (BLOCKS.compostingItemParticles && (!payload.wasFarmer() || ENTITIES.villagerWorkAtWorkstationParticles)) {
             RandomSource random = level.getRandom();
             ParticleSpawnUtil.spawnCompostParticles(level, payload.pos(),
                     new ItemParticleOption(ParticleTypes.ITEM, payload.stack()),
@@ -166,6 +182,114 @@ public class ClientPacketHandlers {
                     nextNonAbsDouble(random, 0.15)
             );
         }
+    }
+
+    public static void handle(ClientLevel level, ClientBoundStonecutterUsedPayload payload) {
+        BlockPos pos = payload.pos();
+        ParticleSpawnUtil.spawnStonecutterParticles(level, payload.stack(), pos, level.getBlockState(pos));
+    }
+
+    public static void handle(ClientLevel level, ClientBoundVillagerWorkPayload payload) {
+        if (!ENTITIES.villagerWorkAtWorkstationParticles) {
+            return;
+        }
+
+        Entity entity = level.getEntity(payload.villagerId());
+        if (entity instanceof Villager villager) {
+            VillagerData villagerData = villager.getVillagerData();
+            VillagerProfession profession = villagerData.getProfession();
+            int professionLevel = villagerData.getLevel();
+            RandomSource random = level.getRandom();
+            BlockPos pos = payload.pos();
+            BlockState state = level.getBlockState(pos);
+
+            if (profession == VillagerProfession.LEATHERWORKER) {
+                if (!BLOCKS.cauldronUseParticles) {
+                    return;
+                }
+
+                double fluidHeight = Util.getCauldronFillHeight(state);
+                ParticleOptions particle = Util.getCauldronParticle(state);
+
+                if (fluidHeight > 0 && particle != null) {
+                    for (int i = 0; i < 16; i++) {
+                        level.addParticle(
+                                particle,
+                                pos.getX() + random.nextDouble(),
+                                pos.getY() + fluidHeight,
+                                pos.getZ() + random.nextDouble(),
+                                0, 0, 0
+                        );
+                    }
+                }
+            }
+            else if (profession == VillagerProfession.WEAPONSMITH) {
+                ParticleSpawnUtil.spawnGrindstoneUsedParticles(level, pos, state, random);
+            }
+            else if (profession == VillagerProfession.TOOLSMITH) {
+                if (BLOCKS.smithingTableUseParticles) {
+                    ParticleSpawnUtil.spawnHammeringWorkstationParticles(pos, random, level);
+                }
+            }
+            else if (profession == VillagerProfession.MASON) {
+                ParticleSpawnUtil.spawnStonecutterParticles(level, new ItemStack(MASON_STONECUTTER_USE_BLOCKS.get(random.nextInt(MASON_STONECUTTER_USE_BLOCKS.size()))), pos, state);
+            }
+            else if (profession == VillagerProfession.SHEPHERD) {
+                IntegerParticleOptions particle = new IntegerParticleOptions(ModParticles.SHEEP_FLUFF.get(),
+                        Sheep.getColor(getColorForShepherdWoolFluff(professionLevel, random))
+                );
+
+                for (int i = 0; i < 10; i++) {
+                    level.addParticle(particle,
+                            pos.getX() + random.nextDouble(),
+                            pos.getY() + 1,
+                            pos.getZ() + random.nextDouble(),
+                            MathUtil.nextNonAbsDouble(random),
+                            random.nextDouble(),
+                            MathUtil.nextNonAbsDouble(random)
+                    );
+                }
+            }
+            else if (profession == VillagerProfession.FLETCHER) {
+                for (int i = 0; i < 8; i++) {
+                    level.addParticle(ModParticles.CHICKEN_FEATHER.get(),
+                            pos.getX() + random.nextDouble(),
+                            pos.getY() + 1,
+                            pos.getZ() + random.nextDouble(),
+                            nextNonAbsDouble(random, 0.1),
+                            nextDouble(random, 0.1),
+                            nextNonAbsDouble(random, 0.1)
+                    );
+
+                    level.addParticle(new ItemParticleOption(ParticleTypes.ITEM, new ItemStack(Items.FLINT)),
+                            pos.getX() + random.nextDouble(),
+                            pos.getY() + 1,
+                            pos.getZ() + random.nextDouble(),
+                            nextNonAbsDouble(random, 0.25),
+                            nextDouble(random, 0.25),
+                            nextNonAbsDouble(random, 0.25)
+                    );
+                }
+            }
+            else if (profession == VillagerProfession.BUTCHER || profession == VillagerProfession.ARMORER) {
+                if (state.hasProperty(BlockStateProperties.LIT) && !state.getValue(BlockStateProperties.LIT)) {
+                    Block block = state.getBlock();
+                    BlockState litState = state.setValue(BlockStateProperties.LIT, true);
+                    TickerManager.schedule(10, () -> block.animateTick(litState, level, pos, random));
+
+                    for (int i = 0; i < 2; i++) {
+                        block.animateTick(litState, level, pos, random);
+                    }
+                }
+            }
+        }
+    }
+
+    private static DyeColor getColorForShepherdWoolFluff(int professionLevel, RandomSource random) {
+        if (professionLevel >= 2 && random.nextDouble() < 0.5) {
+            return DyeColor.values()[random.nextInt(DyeColor.values().length)];
+        }
+        return COMMON_SHEPHERD_WOOL_COLORS.get(random.nextInt(COMMON_SHEPHERD_WOOL_COLORS.size()));
     }
 
     private static int getFallingBlockDustColor(ClientLevel level, Block block, BlockState state, BlockPos pos) {

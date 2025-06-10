@@ -37,12 +37,18 @@ public class ModGeneralConfigs extends Config {
     public ValidatedFloat sparksScale = new ValidatedFloat(1, 2, 1);
     public boolean poppingHearts = true;
     public boolean poppingBubbles = true;
-    @ConfigGroup.Pop
     public ValidatedFloat poppingBubblesVolume = new ValidatedFloat(0.2F, 1, 0);
+    public ConfigGroup enchantmentParticlesGroup = new ConfigGroup("enchant_particles");
+    public boolean glowingEnchantmentParticles = true;
+    public boolean translucentEnchantmentParticles = true;
+    @ConfigGroup.Pop
+    @ConfigGroup.Pop
+    public boolean forceWhiteEnchantmentParticles = true;
 
     public boolean mobSkullShaders = true;
     public ValidatedFloat fireHeight = new ValidatedFloat(-0.15F, 0.4F, -0.5F);
     public boolean nightVisionFading = true;
+    public ValidatedInt nightVisionFadingTime = new ValidatedInt(100, 200, 10);
     public boolean enableEasterEggs = true;
 
     public ModGeneralConfigs() {

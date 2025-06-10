@@ -28,12 +28,16 @@ public class CommonComposterMixin {
     @Inject(method = "useItemOn", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/Level;levelEvent(ILnet/minecraft/core/BlockPos;I)V"))
     private void useItem(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult, CallbackInfoReturnable<InteractionResult> cir) {
         if (level instanceof ServerLevel serverLevel) {
-            Services.NETWORK.sendToClientsTracking(serverLevel, pos, new ClientBoundCompostItemPayload(stack, pos));
+            ItemStack copiedStack = stack.copy();
+
+            if (!copiedStack.isEmpty()) {
+                Services.NETWORK.sendToClientsTracking(serverLevel, pos, new ClientBoundCompostItemPayload(copiedStack, pos, false));
+            }
         }
     }
 
     @Mixin(targets = "net.minecraft.world.level.block.ComposterBlock$InputContainer")
-    public static abstract class ComposterBlockInputContainerMixin implements WorldlyContainer {
+    public static abstract class InputContainerMixin implements WorldlyContainer {
 
         @Shadow
         @Final
@@ -46,10 +50,10 @@ public class CommonComposterMixin {
         @Inject(method = "setChanged", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/LevelAccessor;levelEvent(ILnet/minecraft/core/BlockPos;I)V"))
         private void setChanged(CallbackInfo ci) {
             if (level instanceof ServerLevel serverLevel) {
-                ItemStack stack = getItem(0);
+                ItemStack stack = getItem(0).copy();
 
                 if (!stack.isEmpty()) {
-                    Services.NETWORK.sendToClientsTracking(serverLevel, pos, new ClientBoundCompostItemPayload(stack, pos));
+                    Services.NETWORK.sendToClientsTracking(serverLevel, pos, new ClientBoundCompostItemPayload(stack, pos, false));
                 }
             }
         }

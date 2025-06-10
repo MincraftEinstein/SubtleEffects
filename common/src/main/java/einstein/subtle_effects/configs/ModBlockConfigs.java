@@ -9,6 +9,7 @@ import einstein.subtle_effects.configs.blocks.SteamConfigs;
 import einstein.subtle_effects.configs.blocks.UpdatedSmokeConfigs;
 import einstein.subtle_effects.init.ModBlockTickers;
 import einstein.subtle_effects.init.ModConfigs;
+import einstein.subtle_effects.init.ModParticles;
 import einstein.subtle_effects.particle.EnderEyePlacedRingParticle;
 import einstein.subtle_effects.tickers.TickerManager;
 import einstein.subtle_effects.util.Util;
@@ -24,13 +25,19 @@ import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedFloat;
 import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedInt;
 import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedNumber;
 import net.minecraft.client.Minecraft;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ColorParticleOption;
+import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.BiFunction;
 
 import static einstein.subtle_effects.init.ModConfigs.BASE_KEY;
 import static einstein.subtle_effects.util.Util.VANILLA_EYE;
@@ -51,7 +58,7 @@ public class ModBlockConfigs extends Config {
     public SteamConfigs steam = new SteamConfigs();
     public FallingBlocksConfigs fallingBlocks = new FallingBlocksConfigs();
 
-    public ConfigGroup dustyBlocks = new ConfigGroup("dusty_blocks");
+    public ConfigGroup dustyBlocksGroup = new ConfigGroup("dusty_blocks");
     public boolean redstoneBlockDust = true;
     public BlockDustDensity redstoneBlockDustDensity = BlockDustDensity.DEFAULT;
     public GlowstoneDustDisplayType glowstoneBlockDustDisplayType = GlowstoneDustDisplayType.ON;
@@ -63,10 +70,19 @@ public class ModBlockConfigs extends Config {
     public boolean dragonEggParticles = true;
     public boolean replaceEndPortalSmoke = true;
     public boolean pumpkinCarvedParticles = true;
+
+    public ConfigGroup workstationsGroup = new ConfigGroup("work_stations");
     public boolean anvilBreakParticles = true;
     public boolean anvilUseParticles = true;
     public boolean grindstoneUseParticles = true;
     public boolean smithingTableUseParticles = true;
+    public boolean stonecutterUseParticles = true;
+    public boolean cauldronUseParticles = true;
+    public boolean cauldronCleanItemSounds = true;
+    public boolean compostingCompostParticles = true;
+    @ConfigGroup.Pop
+    public boolean compostingItemParticles = true;
+
     public CommandBlockSpawnType commandBlockParticles = CommandBlockSpawnType.ON;
     public boolean slimeBlockBounceSounds = true;
     public ConfigGroup beaconParticlesGroup = new ConfigGroup("beacon_particles");
@@ -74,8 +90,6 @@ public class ModBlockConfigs extends Config {
     public ValidatedInt beaconParticlesDensity = new ValidatedInt(10, 20, 1);
     @ConfigGroup.Pop
     public ValidatedFloat beaconParticlesSpeed = new ValidatedFloat(1, 2, 0.5F);
-    public boolean compostingCompostParticles = true;
-    public boolean compostingItemParticles = true;
     public boolean respawnAnchorParticles = true;
     public boolean beehiveShearParticles = true;
     public boolean endPortalParticles = true;
@@ -84,10 +98,12 @@ public class ModBlockConfigs extends Config {
     public AmethystSparkleDisplayType amethystSparkleDisplayType = AmethystSparkleDisplayType.ON;
     public boolean amethystSparkleSounds = true;
     public boolean floweringAzaleaPetals = true;
+    public ConfigGroup sculkGroup = new ConfigGroup("sculk");
     public boolean sculkBlockSculkDust = true;
     public boolean sculkVeinSculkDust = true;
     public boolean sculkShriekerDestroySouls = true;
     public boolean sculkCatalystDestroySouls = true;
+    @ConfigGroup.Pop
     public boolean calibratedSculkSensorAmethystSparkle = true;
     public ValidatedFloat campfireSizzlingSoundVolume = new ValidatedFloat(0.5F, 1, 0);
     public ValidatedInt vegetationFirefliesDensity = new ValidatedInt(30, 100, 0, ValidatedNumber.WidgetType.SLIDER);
@@ -96,10 +112,16 @@ public class ModBlockConfigs extends Config {
     public boolean replacePowderSnowFlakes = true;
     public boolean lavaCauldronEffects = true;
     public boolean idleEyeBlossomParticles = true;
+
+    public ConfigGroup endPortalFrameGroup = new ConfigGroup("end_portal_frame");
     public boolean enderEyePlacedRings = true;
+    public ValidatedInt enderEyePlacedRingsDuration = new ValidatedInt(10, 60, 5);
     public EnderEyePlacedParticlesDisplayType enderEyePlacedParticlesDisplayType = EnderEyePlacedParticlesDisplayType.BOTH;
     public ValidatedMap<ResourceLocation, ValidatedColor.ColorHolder> eyeColors = new ValidatedMap<>(DEFAULT_EYE_COLORS,
             getEyeHandler(), new ValidatedColor(new Color(EnderEyePlacedRingParticle.DEFAULT_COLOR), false));
+    @ConfigGroup.Pop
+    public EndPortalFrameParticlesDisplayType endPortalFrameParticlesDisplayType = EndPortalFrameParticlesDisplayType.SMOKE;
+
     public boolean replaceOminousVaultConnection = true;
 
     private static ValidatedIdentifier getEyeHandler() {
@@ -199,6 +221,25 @@ public class ModBlockConfigs extends Config {
         @Override
         public @NotNull String prefix() {
             return BASE_KEY + "blocks.enderEyePlacedParticlesDisplayType";
+        }
+    }
+
+    public enum EndPortalFrameParticlesDisplayType implements EnumTranslatable {
+        OFF(0, null),
+        DOTS(8, (level, pos) -> ColorParticleOption.create(ModParticles.SHORT_SPARK.get(), Util.getEyeColorHolder(level, pos).toInt())),
+        SMOKE(1, (level, pos) -> ParticleTypes.SMOKE);
+
+        public final int count;
+        public final BiFunction<Level, BlockPos, ParticleOptions> particle;
+
+        EndPortalFrameParticlesDisplayType(int count, BiFunction<Level, BlockPos, ParticleOptions> particle) {
+            this.count = count;
+            this.particle = particle;
+        }
+
+        @Override
+        public @NotNull String prefix() {
+            return BASE_KEY + "blocks.endPortalFrameParticlesDisplayType";
         }
     }
 }

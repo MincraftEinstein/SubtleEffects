@@ -7,6 +7,9 @@
   "client": [
     "client.FluidTypeMixin"
   ],
+  "mixins": [
+    "common.NeoForgeStonecutterMenu$2Mixin"
+  ],
   "injectors": {
     "defaultRequire": 1
   }

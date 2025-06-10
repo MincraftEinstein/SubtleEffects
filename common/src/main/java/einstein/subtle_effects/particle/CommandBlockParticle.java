@@ -69,7 +69,7 @@ public class CommandBlockParticle extends TextureSheetParticle {
 
     @Override
     public int getLightColor(float partialTick) {
-        return Util.getLightColor(super.getLightColor(partialTick));
+        return Util.PARTICLE_LIGHT_COLOR;
     }
 
     public record Provider(SpriteSet sprites) implements ParticleProvider<DirectionParticleOptions> {
