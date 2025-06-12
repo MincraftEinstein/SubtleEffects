@@ -59,21 +59,21 @@ public abstract class ClientLevelMixin extends Level {
     }
 
     @Inject(method = "doAnimateTick", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/Block;animateTick(Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;Lnet/minecraft/util/RandomSource;)V"))
-    private void animateTick(int x, int y, int z, int range, RandomSource random, Block markerBlock, BlockPos.MutableBlockPos pos, CallbackInfo ci) {
+    private void animateTick(int x, int y, int z, int range, RandomSource random, Block markerBlock, BlockPos.MutableBlockPos mutablePos, CallbackInfo ci) {
+        BlockPos pos = mutablePos.immutable();
         BlockState state = getBlockState(pos);
         Block block = state.getBlock();
 
         if (!state.isAir()) {
-            BlockPos immutablePos = pos.immutable();
             BlockTickerProvider tickerProvider = ModBlockTickers.REGISTERED.get(block);
 
             if (tickerProvider != null) {
-                tickerProvider.apply(state, this, immutablePos, random);
+                tickerProvider.apply(state, this, pos, random);
             }
 
             ModBlockTickers.REGISTERED_SPECIAL.forEach((predicate, provider) -> {
                 if (predicate.test(state)) {
-                    provider.apply(state, this, immutablePos, random);
+                    provider.apply(state, this, pos, random);
                 }
             });
 
