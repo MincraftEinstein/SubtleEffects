@@ -80,6 +80,7 @@ public class ModParticles {
     public static final Supplier<SimpleParticleType> OMINOUS_VAULT_CONNECTION = register("ominous_vault_connection", FlyTowardsPositionParticle.VaultConnectionProvider::new);
     public static final Supplier<ParticleType<IntegerParticleOptions>> GEYSER_HOLE = register("geyser_spout", IntegerParticleOptions::codec, IntegerParticleOptions::streamCodec, GeyserSpoutParticle.Provider::new);
     public static final Supplier<SimpleParticleType> SNEEZE = register("sneeze", SneezeParticle.Provider::new);
+    public static final Supplier<SimpleParticleType> DEAD_LEAF = register("dead_leaf", DeadLeafParticle.Provider::new);
 
     public static void init() {
     }

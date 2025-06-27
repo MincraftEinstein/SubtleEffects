@@ -7,6 +7,7 @@ import einstein.subtle_effects.particle.SparkParticle;
 import einstein.subtle_effects.particle.option.BooleanParticleOptions;
 import einstein.subtle_effects.tickers.entity_tickers.*;
 import einstein.subtle_effects.tickers.entity_tickers.sleeping.*;
+import einstein.subtle_effects.util.MathUtil;
 import einstein.subtle_effects.util.ParticleSpawnUtil;
 import einstein.subtle_effects.util.SparkType;
 import einstein.subtle_effects.util.Util;
@@ -34,10 +35,7 @@ import net.minecraft.world.entity.npc.AbstractVillager;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.BaseFireBlock;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.BrushableBlock;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 
@@ -113,7 +111,7 @@ public class ModEntityTickers {
                 if (BLOCKS.fallingBlocks.dustyBlocks.contains(block)) {
                     double size = startDistance > 0 ? fallDistance <= startDistance + ((startDistance / 3F) * 2) ? 0.5 : 1 : 1;
 
-                    for (int i = 0 ; i < (size == 1 ? 2 : 1); i++) {
+                    for (int i = 0; i < (size == 1 ? 2 : 1); i++) {
                         level.addParticle(
                                 new BlockParticleOption(ParticleTypes.FALLING_DUST,
                                         block instanceof BrushableBlock brushableBlock ?
@@ -290,6 +288,26 @@ public class ModEntityTickers {
                         entity.getRandomZ(1),
                         0, 0, 0
                 );
+            }
+        });
+        registerSimple(entity -> entity instanceof LivingEntity && BLOCKS.leafLitterDeadLeaves, false, (entity, level, random) -> {
+            BlockState state = entity.getInBlockState();
+            if (state.is(Blocks.LEAF_LITTER)) {
+                if (entity.onGround() && entity.getDeltaMovement().horizontalDistanceSqr() > 0.001) {
+                    int amount = LeafLitterBlock.MAX_SEGMENT - state.getValue(LeafLitterBlock.AMOUNT);
+                    amount += entity.isCrouching() ? 4 : 0;
+
+                    if (amount == 0 || random.nextInt(amount) == 0) {
+                        for (int i = 0; i < (entity.isSprinting() ? 4 : 1); i++) {
+                            level.addParticle(ModParticles.DEAD_LEAF.get(),
+                                    entity.getRandomX(1),
+                                    entity.getY(MathUtil.nextDouble(random, 0.3)),
+                                    entity.getRandomZ(1),
+                                    0, 0, 0
+                            );
+                        }
+                    }
+                }
             }
         });
     }

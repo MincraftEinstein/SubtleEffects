@@ -189,6 +189,8 @@
   "config.subtle_effects.blocks.eyeColors": "Eye Colors",
   "config.subtle_effects.blocks.replaceOminousVaultConnection": "Replace Ominous Vault Connection",
   "config.subtle_effects.blocks.replaceOminousVaultConnection.desc": "Replaces the vanilla orange connection particles when near a ominous vault with blue particles",
+  "config.subtle_effects.blocks.leafLitterDeadLeaves": "Leaf Litter Dead Leaves",
+  "config.subtle_effects.blocks.leafLitterDeadLeaves.desc": "When an entity walks over leaf litter, dead leaf particles will be spawned around the entities feet",
   "config.subtle_effects.entities.attacked": "Attacked",
   "config.subtle_effects.entities.attacked.desc": "Particles emitted from a mob when it takes damage from a another mob or player",
   "config.subtle_effects.entities.attacked.chickenFeathers": "Chicken Feathers",
