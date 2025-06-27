@@ -46,6 +46,7 @@ public class ModGeneralConfigs extends Config {
 
     public boolean mobSkullShaders = true;
     public ValidatedFloat fireHeight = new ValidatedFloat(-0.15F, 0.4F, -0.5F);
+    public boolean fireResistanceDisablesFireRendering = true;
     public boolean nightVisionFading = true;
     public ValidatedInt nightVisionFadingTime = new ValidatedInt(100, 200, 10);
     public boolean enableEasterEggs = true;
