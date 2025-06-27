@@ -121,6 +121,7 @@ public class ModBlockConfigs extends Config {
     public EndPortalFrameParticlesDisplayType endPortalFrameParticlesDisplayType = EndPortalFrameParticlesDisplayType.SMOKE;
 
     public boolean replaceOminousVaultConnection = true;
+    public boolean cobwebMovementSounds = true;
 
     private static ValidatedIdentifier getEyeHandler() {
         List<ResourceLocation> eyes = CompatHelper.IS_END_REMASTERED_LOADED.get()
