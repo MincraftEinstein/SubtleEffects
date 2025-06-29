@@ -6,6 +6,7 @@ import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.tickers.TickerManager;
 import me.fzzyhmstrs.fzzy_config.annotations.Translation;
 import me.fzzyhmstrs.fzzy_config.config.Config;
+import me.fzzyhmstrs.fzzy_config.config.ConfigGroup;
 import me.fzzyhmstrs.fzzy_config.util.EnumTranslatable;
 import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedDouble;
 import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedFloat;
@@ -15,12 +16,17 @@ import org.jetbrains.annotations.NotNull;
 @Translation(prefix = ModConfigs.BASE_KEY + "entities")
 public class ModEntityConfigs extends Config {
 
-    public EntityAttackedConfigs attacked = new EntityAttackedConfigs();
     public SleepingConfigs sleeping = new SleepingConfigs();
     public HumanoidConfigs humanoids = new HumanoidConfigs();
     public DustCloudsConfig dustClouds = new DustCloudsConfig();
     public BurningEntityConfigs burning = new BurningEntityConfigs();
     public ExplosivesConfigs explosives = new ExplosivesConfigs();
+
+    public ConfigGroup attackedGroup = new ConfigGroup("attacked");
+    public boolean chickenFeathers = true;
+    public boolean parrotFeathers = true;
+    @ConfigGroup.Pop
+    public boolean snowGolemSnowflakes = true;
 
     public ValidatedDouble allayMagicDensity = new ValidatedDouble(0.2, 1, 0);
     public ValidatedDouble vexMagicDensity = new ValidatedDouble(0.2, 1, 0);
