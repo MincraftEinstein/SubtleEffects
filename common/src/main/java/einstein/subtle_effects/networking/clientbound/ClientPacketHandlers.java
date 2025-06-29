@@ -4,7 +4,7 @@ import einstein.subtle_effects.configs.ReplacedParticlesDisplayType;
 import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.init.ModParticles;
 import einstein.subtle_effects.particle.option.FloatParticleOptions;
-import einstein.subtle_effects.particle.option.IntegerParticleOptions;
+import einstein.subtle_effects.particle.option.SheepFluffParticleOptions;
 import einstein.subtle_effects.tickers.TickerManager;
 import einstein.subtle_effects.util.MathUtil;
 import einstein.subtle_effects.util.ParticleSpawnUtil;
@@ -21,7 +21,6 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.animal.Sheep;
 import net.minecraft.world.entity.monster.Ravager;
 import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.npc.VillagerData;
@@ -240,8 +239,8 @@ public class ClientPacketHandlers {
                 ParticleSpawnUtil.spawnStonecutterParticles(level, new ItemStack(MASON_STONECUTTER_USE_BLOCKS.get(random.nextInt(MASON_STONECUTTER_USE_BLOCKS.size()))), pos, state);
             }
             else if (profession == VillagerProfession.SHEPHERD) {
-                IntegerParticleOptions particle = new IntegerParticleOptions(ModParticles.SHEEP_FLUFF.get(),
-                        Sheep.getColor(getColorForShepherdWoolFluff(professionLevel, random))
+                SheepFluffParticleOptions particle = new SheepFluffParticleOptions(
+                        getColorForShepherdWoolFluff(professionLevel, random), -1, false
                 );
 
                 for (int i = 0; i < 10; i++) {
