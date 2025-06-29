@@ -55,6 +55,7 @@
     "client.particle.FlyTowardsPositionParticleAccessor",
     "client.particle.FlyTowardsPositionParticleAccessor$EnchantProviderMixin",
     "client.particle.HeartParticleMixin",
+    "client.particle.HeartParticleMixin$ProviderMixin",
     "client.particle.LavaParticleMixin",
     "client.particle.ParticleEngineMixin",
     "client.particle.ParticleMixin",
