@@ -103,8 +103,13 @@ public class ModBlockConfigs extends Config {
     public boolean endPortalParticles = true;
     public boolean leavesDecayEffects = true;
     public boolean farmlandDestroyEffects = true;
+
+    public ConfigGroup amethystGroup = new ConfigGroup("amethyst");
     public AmethystSparkleDisplayType amethystSparkleDisplayType = AmethystSparkleDisplayType.ON;
+    public ValidatedList<Block> amethystSparkleEmittingBlocks = new ValidatedList<>(List.of(Blocks.AMETHYST_BLOCK, Blocks.BUDDING_AMETHYST), ValidatedRegistryType.of(BuiltInRegistries.BLOCK));
+    @ConfigGroup.Pop
     public boolean amethystSparkleSounds = true;
+
     public boolean floweringAzaleaPetals = true;
     public ConfigGroup sculkGroup = new ConfigGroup("sculk");
     public boolean sculkBlockSculkDust = true;

@@ -191,8 +191,8 @@ public class ModBlockTickers {
                     ParticleSpawnUtil.spawnCmdBlockParticles(level, Vec3.atCenterOf(pos), random, (direction, relativePos) ->
                             !Util.isSolidOrNotEmpty(level, BlockPos.containing(relativePos)));
                 });
-        register(state -> state.is(Blocks.AMETHYST_BLOCK) || state.is(Blocks.BUDDING_AMETHYST),
-                () -> BLOCKS.amethystSparkleDisplayType == ModBlockConfigs.AmethystSparkleDisplayType.ON,
+        register(state -> BLOCKS.amethystSparkleEmittingBlocks.contains(state.getBlock()),
+                () -> BLOCKS.amethystSparkleDisplayType == ModBlockConfigs.AmethystSparkleDisplayType.ON && !BLOCKS.amethystSparkleEmittingBlocks.isEmpty(),
                 (state, level, pos, random) -> {
                     ParticleSpawnUtil.spawnParticlesAroundBlock(ModParticles.AMETHYST_SPARKLE.get(), level, pos, random, 5);
                 });
