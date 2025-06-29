@@ -13,6 +13,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
@@ -82,11 +83,15 @@ public abstract class ClientEntityMixin implements EntityTickersGetter {
     @Inject(method = "onInsideBlock", at = @At("HEAD"))
     private void inside(BlockState state, CallbackInfo ci) {
         if (subtleEffects$me.level().isClientSide) {
-            if (subtleEffects$me.flyDist > subtleEffects$nextCobwebSound && state.is(Blocks.COBWEB)) {
-                if (subtleEffects$lastPos.distanceToSqr(subtleEffects$me.position()) > 0.5) {
-                    subtleEffects$nextCobwebSound += 0.5;
-                    subtleEffects$lastPos = subtleEffects$me.position();
-                    Util.playClientSound(subtleEffects$me, state.getSoundType().getStepSound(), subtleEffects$me.getSoundSource(), 0.5F, 1);
+            if (ModConfigs.BLOCKS.cobwebMovementSounds) {
+                if (subtleEffects$me.flyDist > subtleEffects$nextCobwebSound && state.is(Blocks.COBWEB)) {
+                    if (subtleEffects$lastPos.distanceToSqr(subtleEffects$me.position()) > 0.5) {
+                        subtleEffects$nextCobwebSound += 0.5;
+                        subtleEffects$lastPos = subtleEffects$me.position();
+
+                        SoundType soundType = state.getSoundType();
+                        Util.playClientSound(subtleEffects$me, soundType.getStepSound(), subtleEffects$me.getSoundSource(), soundType.getVolume() * 0.15F, soundType.getPitch());
+                    }
                 }
             }
         }
