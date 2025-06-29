@@ -38,8 +38,7 @@ import org.joml.Vector3f;
 
 import java.util.List;
 
-import static einstein.subtle_effects.init.ModConfigs.BLOCKS;
-import static einstein.subtle_effects.init.ModConfigs.ENTITIES;
+import static einstein.subtle_effects.init.ModConfigs.*;
 import static einstein.subtle_effects.util.MathUtil.*;
 
 public class ClientPacketHandlers {
@@ -85,7 +84,7 @@ public class ClientPacketHandlers {
         BlockPos pos = payload.pos();
         Vec3 vec3 = Vec3.atBottomCenterOf(pos);
         RandomSource random = level.getRandom();
-        if (ENTITIES.xpBottleParticlesDisplayType == ReplacedParticlesDisplayType.BOTH || ENTITIES.xpBottleParticlesDisplayType == ReplacedParticlesDisplayType.VANILLA) {
+        if (ITEMS.projectiles.xpBottleParticlesDisplayType == ReplacedParticlesDisplayType.BOTH || ITEMS.projectiles.xpBottleParticlesDisplayType == ReplacedParticlesDisplayType.VANILLA) {
             level.levelEvent(
                     LevelEvent.PARTICLES_SPELL_POTION_SPLASH,
                     pos,
@@ -93,8 +92,8 @@ public class ClientPacketHandlers {
             );
         }
 
-        if (ENTITIES.xpBottleParticlesDisplayType == ReplacedParticlesDisplayType.BOTH || ENTITIES.xpBottleParticlesDisplayType == ReplacedParticlesDisplayType.DEFAULT) {
-            for (int i = 0; i < ENTITIES.xpBottleParticlesDensity.get(); ++i) {
+        if (ITEMS.projectiles.xpBottleParticlesDisplayType == ReplacedParticlesDisplayType.BOTH || ITEMS.projectiles.xpBottleParticlesDisplayType == ReplacedParticlesDisplayType.DEFAULT) {
+            for (int i = 0; i < ITEMS.projectiles.xpBottleParticlesDensity.get(); ++i) {
                 double d = random.nextDouble() * 4;
                 double d1 = random.nextDouble() * Math.PI * 2;
                 double xPower = Math.cos(d1) * d;
@@ -112,7 +111,7 @@ public class ClientPacketHandlers {
             }
         }
 
-        if (ENTITIES.xpBottleParticlesDisplayType == ReplacedParticlesDisplayType.DEFAULT) {
+        if (ITEMS.projectiles.xpBottleParticlesDisplayType == ReplacedParticlesDisplayType.DEFAULT) {
             for (int i = 0; i < 8; ++i) {
                 level.addParticle(
                         new ItemParticleOption(ParticleTypes.ITEM, new ItemStack(Items.SPLASH_POTION)),

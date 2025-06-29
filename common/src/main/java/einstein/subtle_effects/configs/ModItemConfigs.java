@@ -2,6 +2,7 @@ package einstein.subtle_effects.configs;
 
 import einstein.subtle_effects.SubtleEffects;
 import einstein.subtle_effects.configs.items.ItemRarityConfigs;
+import einstein.subtle_effects.configs.items.ProjectileConfigs;
 import einstein.subtle_effects.init.ModConfigs;
 import me.fzzyhmstrs.fzzy_config.annotations.Translation;
 import me.fzzyhmstrs.fzzy_config.config.Config;
@@ -11,6 +12,7 @@ import me.fzzyhmstrs.fzzy_config.config.ConfigGroup;
 public class ModItemConfigs extends Config {
 
     public ItemRarityConfigs itemRarity = new ItemRarityConfigs();
+    public ProjectileConfigs projectiles = new ProjectileConfigs();
     public boolean axeStripParticles = true;
     public ReplacedParticlesDisplayType axeScrapeParticlesDisplayType = ReplacedParticlesDisplayType.DEFAULT;
     public ReplacedParticlesDisplayType axeWaxOffParticlesDisplayType = ReplacedParticlesDisplayType.DEFAULT;

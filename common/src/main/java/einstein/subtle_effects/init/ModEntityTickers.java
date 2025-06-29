@@ -126,8 +126,8 @@ public class ModEntityTickers {
                 }
             }
         });
-        registerSimple(EntityType.SNOWBALL, false, () -> ENTITIES.snowballTrailDensity.get() > 0, (entity, level, random) -> {
-            if (shouldSpawn(random, ENTITIES.snowballTrailDensity)) {
+        registerSimple(EntityType.SNOWBALL, false, () -> ITEMS.projectiles.snowballTrailDensity.get() > 0, (entity, level, random) -> {
+            if (shouldSpawn(random, ITEMS.projectiles.snowballTrailDensity)) {
                 Vec3 deltaMovement = entity.getDeltaMovement();
                 level.addParticle(ModParticles.SNOWBALL_TRAIL.get(),
                         entity.getRandomX(1),
@@ -139,7 +139,7 @@ public class ModEntityTickers {
                 );
             }
         });
-        registerSimple(EntityType.ENDER_PEARL, false, () -> ENTITIES.enderPearlTrail, (entity, level, random) -> {
+        registerSimple(EntityType.ENDER_PEARL, false, () -> ITEMS.projectiles.enderPearlTrail, (entity, level, random) -> {
             for (int i = 0; i < 10; i++) {
                 level.addParticle(ParticleTypes.PORTAL,
                         entity.getRandomX(2),
