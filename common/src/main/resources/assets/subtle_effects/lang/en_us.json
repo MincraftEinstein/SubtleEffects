@@ -419,6 +419,7 @@
   "config.subtle_effects.items.projectiles.snowballTrailDensity.desc": "The density of the snowball particle trail.\n0 to disable",
   "config.subtle_effects.items.projectiles.snowballPoofsHaveSnowflakes": "Snowball Poofs Have Snowflakes",
   "config.subtle_effects.items.projectiles.snowballPoofSoundVolume": "Snowball Poof Sound Volume",
+  "config.subtle_effects.items.axeGroup": "Axe",
   "config.subtle_effects.items.axeStripParticles": "Axe Strip Particles",
   "config.subtle_effects.items.axeStripParticles.desc": "Display the destroy particle effect when stripping a block with an axe.\nThis doesn't affect removing oxidization/wax from copper",
   "config.subtle_effects.items.axeScrapeParticlesDisplayType": "Axe Scrape Particles Display Type",

@@ -13,9 +13,13 @@ public class ModItemConfigs extends Config {
 
     public ItemRarityConfigs itemRarity = new ItemRarityConfigs();
     public ProjectileConfigs projectiles = new ProjectileConfigs();
+
+    public ConfigGroup axeGroup = new ConfigGroup("axe");
     public boolean axeStripParticles = true;
     public ReplacedParticlesDisplayType axeScrapeParticlesDisplayType = ReplacedParticlesDisplayType.DEFAULT;
+    @ConfigGroup.Pop
     public ReplacedParticlesDisplayType axeWaxOffParticlesDisplayType = ReplacedParticlesDisplayType.DEFAULT;
+
     public boolean boneMealUsingParticles = true;
     public boolean flintAndSteelParticles = true;
     public boolean increasedItemBreakParticles = true;
