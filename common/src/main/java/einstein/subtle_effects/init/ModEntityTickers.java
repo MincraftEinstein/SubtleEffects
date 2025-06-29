@@ -2,7 +2,7 @@ package einstein.subtle_effects.init;
 
 import einstein.subtle_effects.configs.CommandBlockSpawnType;
 import einstein.subtle_effects.configs.ModEntityConfigs;
-import einstein.subtle_effects.configs.entities.ItemRarityConfigs;
+import einstein.subtle_effects.configs.items.ItemRarityConfigs;
 import einstein.subtle_effects.particle.SparkParticle;
 import einstein.subtle_effects.particle.option.BooleanParticleOptions;
 import einstein.subtle_effects.tickers.entity_tickers.*;
@@ -43,8 +43,7 @@ import net.minecraft.world.phys.Vec3;
 
 import java.util.function.Predicate;
 
-import static einstein.subtle_effects.init.ModConfigs.BLOCKS;
-import static einstein.subtle_effects.init.ModConfigs.ENTITIES;
+import static einstein.subtle_effects.init.ModConfigs.*;
 import static einstein.subtle_effects.tickers.entity_tickers.EntityTickerManager.register;
 import static einstein.subtle_effects.tickers.entity_tickers.EntityTickerManager.registerSimple;
 import static einstein.subtle_effects.util.MathUtil.nextNonAbsDouble;
@@ -66,7 +65,7 @@ public class ModEntityTickers {
         register(entity -> entity.getType().equals(EntityType.SLIME) && ENTITIES.slimeTrails, (Slime entity) -> new SlimeTrailTicker<>(entity, ModParticles.SLIME_TRAIL));
         register(entity -> entity.getType().equals(EntityType.MAGMA_CUBE) && ENTITIES.magmaCubeTrails, (MagmaCube entity) -> new SlimeTrailTicker<>(entity, ModParticles.MAGMA_CUBE_TRAIL));
         register(entity -> entity.getType().equals(EntityType.IRON_GOLEM) && ENTITIES.ironGolemCrackParticles, IronGolemTicker::new);
-        register(entity -> entity instanceof ItemEntity && ENTITIES.itemRarity.particlesDisplayType != ItemRarityConfigs.DisplayType.OFF, ItemRarityTicker::new);
+        register(entity -> entity instanceof ItemEntity && ITEMS.itemRarity.particlesDisplayType != ItemRarityConfigs.DisplayType.OFF, ItemRarityTicker::new);
         register(entity -> entity instanceof Witch && ENTITIES.humanoids.NPCsHavePotionRings && ENTITIES.humanoids.potionRingsDisplayType.isEnabled(), WitchPotionRingTicker::new);
         register(entity -> isNPC(entity, true) && ENTITIES.humanoids.NPCsHavePotionRings && ENTITIES.humanoids.potionRingsDisplayType.isEnabled(), (LivingEntity entity) -> new HumanoidPotionRingTicker<>(entity));
 

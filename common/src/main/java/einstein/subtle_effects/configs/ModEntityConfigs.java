@@ -22,7 +22,6 @@ public class ModEntityConfigs extends Config {
     public HumanoidConfigs humanoids = new HumanoidConfigs();
     public DustCloudsConfig dustClouds = new DustCloudsConfig();
     public BurningEntityConfigs burning = new BurningEntityConfigs();
-    public ItemRarityConfigs itemRarity = new ItemRarityConfigs();
     public ExplosivesConfigs explosives = new ExplosivesConfigs();
 
     public boolean enderPearlTrail = true;

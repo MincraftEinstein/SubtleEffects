@@ -3,7 +3,7 @@ package einstein.subtle_effects.tickers.entity_tickers;
 import einstein.subtle_effects.SubtleEffects;
 import einstein.subtle_effects.compat.CompatHelper;
 import einstein.subtle_effects.compat.ItemBordersCompat;
-import einstein.subtle_effects.configs.entities.ItemRarityConfigs;
+import einstein.subtle_effects.configs.items.ItemRarityConfigs;
 import einstein.subtle_effects.init.ModParticles;
 import einstein.subtle_effects.particle.option.IntegerParticleOptions;
 import einstein.subtle_effects.platform.Services;
@@ -24,7 +24,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-import static einstein.subtle_effects.init.ModConfigs.ENTITIES;
+import static einstein.subtle_effects.init.ModConfigs.ITEMS;
 import static einstein.subtle_effects.init.ModEntityTickers.shouldSpawn;
 import static einstein.subtle_effects.util.MathUtil.nextDouble;
 
@@ -42,7 +42,7 @@ public class ItemRarityTicker extends EntityTicker<ItemEntity> {
         getItemNameColors();
 
         if (isCommon) {
-            if (ENTITIES.itemRarity.particlesDisplayType == ItemRarityConfigs.DisplayType.NOT_COMMON) {
+            if (ITEMS.itemRarity.particlesDisplayType == ItemRarityConfigs.DisplayType.NOT_COMMON) {
                 if (nameColors.size() == 1 && nameColors.getFirst().equals(WHITE_TEXT)) {
                     nameColors.clear();
                 }
@@ -55,27 +55,27 @@ public class ItemRarityTicker extends EntityTicker<ItemEntity> {
             return;
         }
 
-        if (!ENTITIES.itemRarity.colorOverrides.isEmpty()) {
-            for (Map.Entry<ValidatedIngredient.IngredientProvider, ValidatedColor.ColorHolder> entry : ENTITIES.itemRarity.colorOverrides.entrySet()) {
+        if (!ITEMS.itemRarity.colorOverrides.isEmpty()) {
+            for (Map.Entry<ValidatedIngredient.IngredientProvider, ValidatedColor.ColorHolder> entry : ITEMS.itemRarity.colorOverrides.entrySet()) {
                 if (entry.getKey().provide().test(stack)) {
                     nameColors.add(TextColor.fromRgb(entry.getValue().argb()));
 
-                    if (!ENTITIES.itemRarity.mixedColorName) {
+                    if (!ITEMS.itemRarity.mixedColorName) {
                         break;
                     }
                 }
             }
 
-            if (ENTITIES.itemRarity.particleColorType == ItemRarityConfigs.ParticleColorType.ONLY_COLOR_OVERRIDES) {
+            if (ITEMS.itemRarity.particleColorType == ItemRarityConfigs.ParticleColorType.ONLY_COLOR_OVERRIDES) {
                 return;
             }
         }
 
-        if (ENTITIES.itemRarity.particleColorType == ItemRarityConfigs.ParticleColorType.NAME_COLOR) {
+        if (ITEMS.itemRarity.particleColorType == ItemRarityConfigs.ParticleColorType.NAME_COLOR) {
             Component hoverName = stack.getHoverName();
             TextColor baseColor = hoverName.getStyle().getColor();
             List<TextColor> colors = new ArrayList<>(hoverName.getSiblings().stream().map(component -> component.getStyle().getColor()).filter(Objects::nonNull).toList());
-            boolean usesSingleColor = colors.isEmpty() || !ENTITIES.itemRarity.mixedColorName; // isEmpty needs to be stored before adding the baseColor to the 'colors' list
+            boolean usesSingleColor = colors.isEmpty() || !ITEMS.itemRarity.mixedColorName; // isEmpty needs to be stored before adding the baseColor to the 'colors' list
 
             if (baseColor != null) {
                 colors.add(baseColor);
@@ -94,7 +94,7 @@ public class ItemRarityTicker extends EntityTicker<ItemEntity> {
             }
         }
 
-        if (ENTITIES.itemRarity.useItemBorder && CompatHelper.IS_ITEM_BORDERS_LOADED.get()) {
+        if (ITEMS.itemRarity.useItemBorder && CompatHelper.IS_ITEM_BORDERS_LOADED.get()) {
             TextColor borderColor = ItemBordersCompat.getManualBorderColor(level, stack);
             if (borderColor != null) {
                 nameColors.add(borderColor);
@@ -124,7 +124,7 @@ public class ItemRarityTicker extends EntityTicker<ItemEntity> {
             return;
         }
 
-        if (shouldSpawn(random, ENTITIES.itemRarity.particleDensity)) {
+        if (shouldSpawn(random, ITEMS.itemRarity.particleDensity)) {
             level.addParticle(
                     new IntegerParticleOptions(
                             ModParticles.ITEM_RARITY.get(),

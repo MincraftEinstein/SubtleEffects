@@ -1,4 +1,4 @@
-package einstein.subtle_effects.configs.entities;
+package einstein.subtle_effects.configs.items;
 
 import einstein.subtle_effects.init.ModConfigs;
 import me.fzzyhmstrs.fzzy_config.annotations.Translation;
@@ -16,7 +16,7 @@ import java.util.Set;
 
 import static einstein.subtle_effects.init.ModConfigs.BASE_KEY;
 
-@Translation(prefix = ModConfigs.BASE_KEY + "entities.itemRarity")
+@Translation(prefix = ModConfigs.BASE_KEY + "items.itemRarity")
 public class ItemRarityConfigs extends ConfigSection {
 
     public DisplayType particlesDisplayType = DisplayType.ON;
@@ -37,7 +37,7 @@ public class ItemRarityConfigs extends ConfigSection {
         @NotNull
         @Override
         public String prefix() {
-            return BASE_KEY + "entities.itemRarity.particlesDisplayType";
+            return BASE_KEY + "items.itemRarity.particlesDisplayType";
         }
     }
 
@@ -49,7 +49,7 @@ public class ItemRarityConfigs extends ConfigSection {
         @NotNull
         @Override
         public String prefix() {
-            return BASE_KEY + "entities.itemRarity.particleColorType";
+            return BASE_KEY + "items.itemRarity.particleColorType";
         }
     }
 }
