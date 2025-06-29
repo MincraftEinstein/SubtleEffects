@@ -18,8 +18,10 @@ import me.fzzyhmstrs.fzzy_config.config.Config;
 import me.fzzyhmstrs.fzzy_config.config.ConfigGroup;
 import me.fzzyhmstrs.fzzy_config.util.AllowableIdentifiers;
 import me.fzzyhmstrs.fzzy_config.util.EnumTranslatable;
+import me.fzzyhmstrs.fzzy_config.validation.collection.ValidatedList;
 import me.fzzyhmstrs.fzzy_config.validation.collection.ValidatedMap;
 import me.fzzyhmstrs.fzzy_config.validation.minecraft.ValidatedIdentifier;
+import me.fzzyhmstrs.fzzy_config.validation.minecraft.ValidatedRegistryType;
 import me.fzzyhmstrs.fzzy_config.validation.misc.ValidatedColor;
 import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedFloat;
 import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedInt;
@@ -29,8 +31,11 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ColorParticleOption;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
@@ -61,9 +66,12 @@ public class ModBlockConfigs extends Config {
     public ConfigGroup dustyBlocksGroup = new ConfigGroup("dusty_blocks");
     public boolean redstoneBlockDust = true;
     public BlockDustDensity redstoneBlockDustDensity = BlockDustDensity.DEFAULT;
-    public GlowstoneDustDisplayType glowstoneBlockDustDisplayType = GlowstoneDustDisplayType.ON;
-    @ConfigGroup.Pop
+    public ValidatedList<Block> redstoneDustEmittingBlocks = new ValidatedList<>(List.of(Blocks.REDSTONE_BLOCK), ValidatedRegistryType.of(BuiltInRegistries.BLOCK));
+    public boolean glowstoneBlockDust = true;
     public BlockDustDensity glowstoneBlockDustDensity = BlockDustDensity.DEFAULT;
+    public ValidatedList<Block> glowstoneDustEmittingBlocks = new ValidatedList<>(List.of(Blocks.GLOWSTONE), ValidatedRegistryType.of(BuiltInRegistries.BLOCK));
+    @ConfigGroup.Pop
+    public boolean netherOnlyGlowstoneBlockDust = false;
     public boolean beehivesHaveSleepingZs = true;
     public SmokeType torchflowerSmoke = SmokeType.DEFAULT;
     public boolean torchflowerFlames = true;
@@ -144,18 +152,6 @@ public class ModBlockConfigs extends Config {
     public void onUpdateClient() {
         TickerManager.clear(Minecraft.getInstance().level);
         ModBlockTickers.init();
-    }
-
-    public enum GlowstoneDustDisplayType implements EnumTranslatable {
-        OFF,
-        ON,
-        NETHER_ONLY;
-
-        @NotNull
-        @Override
-        public String prefix() {
-            return BASE_KEY + "blocks.glowstoneBlockDustDisplayType";
-        }
     }
 
     public enum BlockDustDensity implements EnumTranslatable {

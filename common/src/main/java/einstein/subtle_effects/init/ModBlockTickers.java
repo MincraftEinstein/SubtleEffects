@@ -63,13 +63,13 @@ public class ModBlockTickers {
             EndRemasteredCompat.init();
         }
 
-        register(Blocks.REDSTONE_BLOCK, () -> BLOCKS.redstoneBlockDust, (state, level, pos, random) -> {
-            ParticleSpawnUtil.spawnParticlesAroundBlock(DustParticleOptions.REDSTONE, level, pos, random, BLOCKS.redstoneBlockDustDensity.getPerSideChance());
-        });
-        register(Blocks.GLOWSTONE, () -> BLOCKS.glowstoneBlockDustDisplayType != ModBlockConfigs.GlowstoneDustDisplayType.OFF,
+        register(state -> BLOCKS.redstoneDustEmittingBlocks.contains(state.getBlock()), () -> BLOCKS.redstoneBlockDust && !BLOCKS.redstoneDustEmittingBlocks.isEmpty(),
+                (state, level, pos, random) ->
+                        ParticleSpawnUtil.spawnParticlesAroundBlock(DustParticleOptions.REDSTONE, level, pos, random, BLOCKS.redstoneBlockDustDensity.getPerSideChance())
+        );
+        register(state -> BLOCKS.glowstoneDustEmittingBlocks.contains(state.getBlock()), () -> BLOCKS.glowstoneBlockDust && !BLOCKS.glowstoneDustEmittingBlocks.isEmpty(),
                 (state, level, pos, random) -> {
-                    if (BLOCKS.glowstoneBlockDustDisplayType.equals(ModBlockConfigs.GlowstoneDustDisplayType.NETHER_ONLY)
-                            && !level.dimension().equals(Level.NETHER)) {
+                    if (BLOCKS.netherOnlyGlowstoneBlockDust && !level.dimension().equals(Level.NETHER)) {
                         return;
                     }
 
