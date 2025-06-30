@@ -23,6 +23,14 @@ public class ModEnvironmentConfigs extends Config {
     @ConfigGroup.Pop
     public ValidatedInt flameGeyserInactiveTime = new ValidatedInt(500, 1000, 50);
 
+    public ConfigGroup smokeGeysersGroup = new ConfigGroup("smoke_geysers");
+    public ValidatedInt smokeGeyserSpawnChance = new ValidatedInt(0, 50, 0);
+    public ValidatedFloat smokeGeyserSoundVolume = new ValidatedFloat(0.2F, 1, 0);
+    public ValidatedInt smokeGeyserActiveTime = new ValidatedInt(300, 1000, 50);
+    public ValidatedInt smokeGeyserInactiveTime = new ValidatedInt(500, 1000, 50);
+    @ConfigGroup.Pop
+    public boolean useUpdatedSmoke = false;
+
     public ModEnvironmentConfigs() {
         super(SubtleEffects.loc("environment"));
     }

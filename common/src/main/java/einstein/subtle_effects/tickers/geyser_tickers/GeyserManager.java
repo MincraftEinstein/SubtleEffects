@@ -13,18 +13,19 @@ import java.util.Map;
 
 public class GeyserManager {
 
+    // TODO needs to be cleared when configs updated
     public static final Map<GeyserType, List<BlockPos>> ACTIVE_GEYSERS = new EnumMap<>(GeyserType.class);
     public static final Map<GeyserType, List<BlockPos>> INACTIVE_GEYSERS = new EnumMap<>(GeyserType.class);
     public static final List<Block> VALID_BLOCKS = List.of(Blocks.NETHERRACK, Blocks.BLACKSTONE, Blocks.SOUL_SOIL);
 
     public static void tick(Level level, BlockState state, BlockPos pos) {
         for (GeyserType type : GeyserType.values()) {
-            if (type.spawnableBlocks.contains(state.getBlock())) {
+            if (type.getSpawnableBlocks().contains(state.getBlock())) {
                 if (type.isNetherOnly && !level.dimension().equals(Level.NETHER)) {
                     return;
                 }
 
-                RandomSource random = RandomSource.create(state.getSeed(pos) + type.ordinal());
+                RandomSource random = RandomSource.create(state.getSeed(pos) * (type.ordinal() + 1));
                 if (random.nextDouble() < (0.0001 * type.spawnChance.get())) {
                     GeyserTicker.trySpawn(type, level, pos, random);
                 }

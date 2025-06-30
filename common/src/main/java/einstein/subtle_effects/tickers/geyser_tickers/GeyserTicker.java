@@ -40,8 +40,6 @@ public abstract class GeyserTicker extends Ticker {
         updateGeyserPositions(ACTIVE_GEYSERS, list -> list.add(pos));
     }
 
-    protected abstract ParticleOptions getParticle();
-
     protected final void updateGeyserPositions(Map<GeyserType, List<BlockPos>> map, Consumer<List<BlockPos>> consumer) {
         if (!map.containsKey(type)) {
             map.put(type, new ArrayList<>());
@@ -52,17 +50,17 @@ public abstract class GeyserTicker extends Ticker {
     public static void trySpawn(GeyserType type, Level level, BlockPos pos, RandomSource random) {
         if ((!ACTIVE_GEYSERS.containsKey(type) || !ACTIVE_GEYSERS.get(type).contains(pos)) &&
                 (!INACTIVE_GEYSERS.containsKey(type) || !INACTIVE_GEYSERS.get(type).contains(pos))) {
-            if (checkLocation(type, level, pos, true)) {
+            if (checkLocation(type, level, pos, type.height)) {
                 TickerManager.add(type.geyserTickerProvider.apply(level, pos, random));
             }
         }
     }
 
-    public static boolean checkLocation(GeyserType type, Level level, BlockPos pos, boolean checkAbove) {
-        if (type.spawnableBlocks.contains(level.getBlockState(pos).getBlock())) {
+    public static boolean checkLocation(GeyserType type, Level level, BlockPos pos, int checkHeight) {
+        if (type.getSpawnableBlocks().contains(level.getBlockState(pos).getBlock())) {
             BlockPos abovePos = pos.above();
             if (isNotFaceSturdyOrFluidEmpty(level, abovePos)) {
-                if (checkAbove) {
+                if (checkHeight > 0) {
                     for (int i = 1; i < 5; i++) {
                         if (!isNotFaceSturdyOrFluidEmpty(level, abovePos.relative(Direction.UP, i))) {
                             return false;
@@ -90,7 +88,7 @@ public abstract class GeyserTicker extends Ticker {
         }
 
         if (Util.isChunkLoaded(level, pos.getX(), pos.getZ())) {
-            if (checkLocation(type, level, pos, false)) {
+            if (checkLocation(type, level, pos, 0)) {
                 if (age == 1) {
                     level.addParticle(new GeyserSpoutParticleOptions(type, lifeTime),
                             pos.getX() + 0.5,
