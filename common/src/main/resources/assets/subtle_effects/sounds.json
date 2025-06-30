@@ -121,5 +121,11 @@
     "sounds": [
       "minecraft:mob/ghast/fireball4"
     ]
+  },
+  "environment.geyser.hiss": {
+    "subtitle": "subtitles.subtle_effects.environment.geyser.hiss",
+    "sounds": [
+      "minecraft:random/fizz"
+    ]
   }
 }
