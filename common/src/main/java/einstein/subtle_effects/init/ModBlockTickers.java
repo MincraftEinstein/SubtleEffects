@@ -8,8 +8,6 @@ import einstein.subtle_effects.configs.CommandBlockSpawnType;
 import einstein.subtle_effects.configs.ModBlockConfigs;
 import einstein.subtle_effects.mixin.client.block.AmethystClusterBlockAccessor;
 import einstein.subtle_effects.particle.option.PositionParticleOptions;
-import einstein.subtle_effects.tickers.FlameGeyserTicker;
-import einstein.subtle_effects.tickers.TickerManager;
 import einstein.subtle_effects.util.BlockTickerProvider;
 import einstein.subtle_effects.util.ParticleSpawnUtil;
 import einstein.subtle_effects.util.Util;
@@ -23,7 +21,6 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.ParticleUtils;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.*;
@@ -44,7 +41,6 @@ import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 import static einstein.subtle_effects.init.ModConfigs.BLOCKS;
-import static einstein.subtle_effects.init.ModConfigs.ENVIRONMENT;
 import static einstein.subtle_effects.util.MathUtil.nextNonAbsDouble;
 import static einstein.subtle_effects.util.MathUtil.nextSign;
 import static einstein.subtle_effects.util.Util.playClientSound;
@@ -274,18 +270,6 @@ public class ModBlockTickers {
                         }
                     }
                 });
-        register(state -> FlameGeyserTicker.VALID_BLOCKS.contains(state.getBlock()), () -> ENVIRONMENT.flameGeyserSpawnChance.get() > 0, (state, level, pos, random) -> {
-            if (level.dimension().equals(Level.NETHER)) {
-                RandomSource blockRandom = RandomSource.create(state.getSeed(pos));
-                if (blockRandom.nextDouble() < (0.0001 * ENVIRONMENT.flameGeyserSpawnChance.get())) {
-                    if (!FlameGeyserTicker.ACTIVE_GEYSERS.contains(pos) && !FlameGeyserTicker.INACTIVE_GEYSERS.contains(pos)) {
-                        if (FlameGeyserTicker.checkLocation(level, pos, true)) {
-                            TickerManager.add(new FlameGeyserTicker(level, pos, blockRandom));
-                        }
-                    }
-                }
-            }
-        });
         register(Blocks.END_PORTAL_FRAME, () -> BLOCKS.endPortalFrameParticlesDisplayType != ModBlockConfigs.EndPortalFrameParticlesDisplayType.OFF, (state, level, pos, random) -> {
             if (!state.getValue(EndPortalFrameBlock.HAS_EYE)) {
                 return;

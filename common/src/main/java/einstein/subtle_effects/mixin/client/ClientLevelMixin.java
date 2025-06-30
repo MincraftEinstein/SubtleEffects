@@ -5,6 +5,7 @@ import einstein.subtle_effects.data.SparkProviderReloadListener;
 import einstein.subtle_effects.init.ModBlockTickers;
 import einstein.subtle_effects.particle.SparkParticle;
 import einstein.subtle_effects.tickers.entity_tickers.EntityTickerManager;
+import einstein.subtle_effects.tickers.geyser_tickers.GeyserManager;
 import einstein.subtle_effects.util.BlockTickerProvider;
 import einstein.subtle_effects.util.Box;
 import einstein.subtle_effects.util.ParticleSpawnUtil;
@@ -70,6 +71,8 @@ public abstract class ClientLevelMixin extends Level {
             if (tickerProvider != null) {
                 tickerProvider.apply(state, this, pos, random);
             }
+
+            GeyserManager.tick(this, state, pos);
 
             ModBlockTickers.REGISTERED_SPECIAL.forEach((predicate, provider) -> {
                 if (predicate.test(state)) {
