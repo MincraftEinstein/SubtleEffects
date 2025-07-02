@@ -23,7 +23,7 @@ public class FlameGeyserTicker extends GeyserTicker {
     @Override
     protected void geyserTick() {
         if (age % 5 == 0) {
-            Util.playClientSound(pos, ModSounds.GEYSER_WHOOSH.get(), SoundSource.BLOCKS, ENVIRONMENT.flameGeyserSoundVolume.get(), random.nextFloat() * 0.7F + 0.3F);
+            Util.playClientSound(pos, ModSounds.GEYSER_WHOOSH.get(), SoundSource.BLOCKS, ENVIRONMENT.geysers.flameGeyserSoundVolume.get(), random.nextFloat() * 0.7F + 0.3F);
         }
 
         for (int i = 0; i < 10; i++) {

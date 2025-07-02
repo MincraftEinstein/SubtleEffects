@@ -22,9 +22,9 @@ import static einstein.subtle_effects.init.ModConfigs.ENVIRONMENT;
 import static einstein.subtle_effects.tickers.geyser_tickers.GeyserManager.VALID_BLOCKS;
 
 public enum GeyserType implements StringRepresentable {
-    FLAME("flame", true, 5, FlameGeyserTicker::new, null, () -> VALID_BLOCKS, ENVIRONMENT.flameGeyserSpawnChance, ENVIRONMENT.flameGeyserActiveTime, ENVIRONMENT.flameGeyserInactiveTime),
-    SMOKE("smoke", true, 4, SmokeGeyserTicker::new, null, () -> VALID_BLOCKS, ENVIRONMENT.smokeGeyserSpawnChance, ENVIRONMENT.smokeGeyserActiveTime, ENVIRONMENT.smokeGeyserInactiveTime),
-    BUBBLE("bubble", false, 3, BubbleGeyserTicker::new, Fluids.WATER, () -> GeyserManager.BUBBLE_GEYSER_BLOCKS, ENVIRONMENT.bubbleGeyserSpawnChance, ENVIRONMENT.bubbleGeyserActiveTime, ENVIRONMENT.bubbleGeyserInactiveTime);
+    FLAME("flame", true, 5, FlameGeyserTicker::new, null, () -> VALID_BLOCKS, ENVIRONMENT.geysers.flameGeyserSpawnChance, ENVIRONMENT.geysers.flameGeyserActiveTime, ENVIRONMENT.geysers.flameGeyserInactiveTime),
+    SMOKE("smoke", true, 4, SmokeGeyserTicker::new, null, () -> VALID_BLOCKS, ENVIRONMENT.geysers.smokeGeyserSpawnChance, ENVIRONMENT.geysers.smokeGeyserActiveTime, ENVIRONMENT.geysers.smokeGeyserInactiveTime),
+    BUBBLE("bubble", false, 3, BubbleGeyserTicker::new, Fluids.WATER, () -> GeyserManager.BUBBLE_GEYSER_BLOCKS, ENVIRONMENT.geysers.bubbleGeyserSpawnChance, ENVIRONMENT.geysers.bubbleGeyserActiveTime, ENVIRONMENT.geysers.bubbleGeyserInactiveTime);
 
     public static final Codec<GeyserType> CODEC = StringRepresentable.fromEnum(GeyserType::values);
     public static final StreamCodec<ByteBuf, GeyserType> STREAM_CODEC = ByteBufCodecs.fromCodec(CODEC);

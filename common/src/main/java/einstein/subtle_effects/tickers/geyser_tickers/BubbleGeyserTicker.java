@@ -21,7 +21,7 @@ public class BubbleGeyserTicker extends GeyserTicker {
     @Override
     protected void geyserTick() {
         if (age % 15 == 0) {
-            Util.playClientSound(pos, SoundEvents.BUBBLE_COLUMN_UPWARDS_AMBIENT, SoundSource.BLOCKS, ENVIRONMENT.bubbleGeyserSoundVolume.get(), 0.9F + random.nextFloat() * 0.15F);
+            Util.playClientSound(pos, SoundEvents.BUBBLE_COLUMN_UPWARDS_AMBIENT, SoundSource.BLOCKS, ENVIRONMENT.geysers.bubbleGeyserSoundVolume.get(), 0.9F + random.nextFloat() * 0.15F);
         }
 
         if (random.nextBoolean()) {
