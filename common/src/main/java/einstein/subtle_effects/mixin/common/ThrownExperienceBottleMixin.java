@@ -15,12 +15,10 @@ import org.spongepowered.asm.mixin.injection.At;
 @Mixin(ThrownExperienceBottle.class)
 public class ThrownExperienceBottleMixin {
 
-    @WrapOperation(method = "onHit", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/Level;levelEvent(ILnet/minecraft/core/BlockPos;I)V"))
-    private void cancelPotionParticles(Level level, int type, BlockPos pos, int data, Operation<Void> original) {
-        if (level instanceof ServerLevel serverLevel) {
-            Services.NETWORK.sendToClientsTracking(null, serverLevel, pos, new ClientBoundXPBottleEffectsPayload(pos), serverPlayer -> {
-                serverPlayer.connection.send(new ClientboundLevelEventPacket(type, pos, data, false));
-            });
-        }
+    @WrapOperation(method = "onHit", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/level/ServerLevel;levelEvent(ILnet/minecraft/core/BlockPos;I)V"))
+    private void cancelPotionParticles(ServerLevel level, int type, BlockPos pos, int data, Operation<Void> original) {
+        Services.NETWORK.sendToClientsTracking(null, level, pos, new ClientBoundXPBottleEffectsPayload(pos), serverPlayer -> {
+            serverPlayer.connection.send(new ClientboundLevelEventPacket(type, pos, data, false));
+        });
     }
 }

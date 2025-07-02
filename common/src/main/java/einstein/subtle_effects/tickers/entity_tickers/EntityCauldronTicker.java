@@ -5,6 +5,7 @@ import einstein.subtle_effects.mixin.client.entity.EntityAccessor;
 import einstein.subtle_effects.util.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -23,7 +24,7 @@ public class EntityCauldronTicker extends EntityTicker<Entity> {
         double height = Util.getCauldronFillHeight(state);
 
         if ((state.is(Blocks.POWDER_SNOW_CAULDRON) || state.is(Blocks.WATER_CAULDRON)) && height > 0) {
-            if (entity.isOnFire() && ((AbstractCauldronBlockAccessor) state.getBlock()).isEntityInside(state, pos, entity)) {
+            if (entity.isOnFire() && isEntityInsideContent(state, pos, entity)) {
                 ((EntityAccessor) entity).playExtinguishedSound();
             }
         }
@@ -38,5 +39,13 @@ public class EntityCauldronTicker extends EntityTicker<Entity> {
             }
         }
         wasInWaterCauldron = false;
+    }
+
+    private static boolean isEntityInsideContent(BlockState state, BlockPos pos, Entity entity) {
+        Block block = state.getBlock();
+        if (block instanceof AbstractCauldronBlockAccessor cauldronBlock) {
+            return entity.getY() < pos.getY() + cauldronBlock.getFillHeight(state) && entity.getBoundingBox().maxY > pos.getY() + 0.25;
+        }
+        return false;
     }
 }

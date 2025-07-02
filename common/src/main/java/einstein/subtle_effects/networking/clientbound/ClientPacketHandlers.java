@@ -9,6 +9,7 @@ import einstein.subtle_effects.util.MathUtil;
 import einstein.subtle_effects.util.ParticleSpawnUtil;
 import einstein.subtle_effects.util.Util;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.color.ColorLerper;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
@@ -231,7 +232,7 @@ public class ClientPacketHandlers {
             }
             else if (profession.is(VillagerProfession.SHEPHERD)) {
                 ColorParticleOption particle = ColorParticleOption.create(ModParticles.SHEEP_FLUFF.get(),
-                        Sheep.getColor(getColorForShepherdWoolFluff(professionLevel, random))
+                        ColorLerper.Type.SHEEP.getColor(getColorForShepherdWoolFluff(professionLevel, random))
                 );
 
                 for (int i = 0; i < 10; i++) {
