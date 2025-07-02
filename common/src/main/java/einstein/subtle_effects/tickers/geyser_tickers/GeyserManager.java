@@ -13,7 +13,6 @@ import java.util.Map;
 
 public class GeyserManager {
 
-    // TODO needs to be cleared when configs updated
     public static final Map<GeyserType, List<BlockPos>> ACTIVE_GEYSERS = new EnumMap<>(GeyserType.class);
     public static final Map<GeyserType, List<BlockPos>> INACTIVE_GEYSERS = new EnumMap<>(GeyserType.class);
     public static final List<Block> VALID_BLOCKS = List.of(Blocks.NETHERRACK, Blocks.BLACKSTONE, Blocks.SOUL_SOIL);
