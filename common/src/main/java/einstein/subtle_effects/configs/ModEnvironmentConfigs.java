@@ -31,6 +31,13 @@ public class ModEnvironmentConfigs extends Config {
     @ConfigGroup.Pop
     public boolean useUpdatedSmoke = false;
 
+    public ConfigGroup bubbleGeysersGroup = new ConfigGroup("bubble_geysers");
+    public ValidatedInt bubbleGeyserSpawnChance = new ValidatedInt(0, 50, 0);
+    public ValidatedFloat bubbleGeyserSoundVolume = new ValidatedFloat(0.5F, 1, 0);
+    public ValidatedInt bubbleGeyserActiveTime = new ValidatedInt(300, 1000, 50);
+    @ConfigGroup.Pop
+    public ValidatedInt bubbleGeyserInactiveTime = new ValidatedInt(500, 1000, 50);
+
     public ModEnvironmentConfigs() {
         super(SubtleEffects.loc("environment"));
     }

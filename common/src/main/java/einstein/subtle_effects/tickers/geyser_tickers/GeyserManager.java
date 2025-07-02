@@ -17,6 +17,7 @@ public class GeyserManager {
     public static final Map<GeyserType, List<BlockPos>> ACTIVE_GEYSERS = new EnumMap<>(GeyserType.class);
     public static final Map<GeyserType, List<BlockPos>> INACTIVE_GEYSERS = new EnumMap<>(GeyserType.class);
     public static final List<Block> VALID_BLOCKS = List.of(Blocks.NETHERRACK, Blocks.BLACKSTONE, Blocks.SOUL_SOIL);
+    public static final List<Block> BUBBLE_GEYSER_BLOCKS = List.of(Blocks.SAND, Blocks.RED_SAND, Blocks.GRAVEL, Blocks.DIRT, Blocks.CLAY);
 
     public static void tick(Level level, BlockState state, BlockPos pos) {
         for (GeyserType type : GeyserType.values()) {

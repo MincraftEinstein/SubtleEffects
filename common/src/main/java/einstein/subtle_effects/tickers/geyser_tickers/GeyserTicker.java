@@ -6,19 +6,18 @@ import einstein.subtle_effects.tickers.TickerManager;
 import einstein.subtle_effects.util.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseFireBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.FluidState;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 
-import static einstein.subtle_effects.init.ModConfigs.ENVIRONMENT;
 import static einstein.subtle_effects.tickers.geyser_tickers.GeyserManager.ACTIVE_GEYSERS;
 import static einstein.subtle_effects.tickers.geyser_tickers.GeyserManager.INACTIVE_GEYSERS;
 
@@ -59,10 +58,10 @@ public abstract class GeyserTicker extends Ticker {
     public static boolean checkLocation(GeyserType type, Level level, BlockPos pos, int checkHeight) {
         if (type.getSpawnableBlocks().contains(level.getBlockState(pos).getBlock())) {
             BlockPos abovePos = pos.above();
-            if (isNotFaceSturdyOrFluidEmpty(level, abovePos)) {
+            if (isNotFaceSturdyOrFluidEmpty(type, level, abovePos)) {
                 if (checkHeight > 0) {
-                    for (int i = 1; i < 5; i++) {
-                        if (!isNotFaceSturdyOrFluidEmpty(level, abovePos.relative(Direction.UP, i))) {
+                    for (int i = 1; i < checkHeight; i++) {
+                        if (!isNotFaceSturdyOrFluidEmpty(type, level, abovePos.relative(Direction.UP, i))) {
                             return false;
                         }
                     }
@@ -73,9 +72,10 @@ public abstract class GeyserTicker extends Ticker {
         return false;
     }
 
-    public static boolean isNotFaceSturdyOrFluidEmpty(Level level, BlockPos pos) {
+    public static boolean isNotFaceSturdyOrFluidEmpty(GeyserType type, Level level, BlockPos pos) {
         BlockState state = level.getBlockState(pos);
-        return !state.isFaceSturdy(level, pos, Direction.DOWN) && !(state.getBlock() instanceof BaseFireBlock) && level.getFluidState(pos).isEmpty();
+        FluidState fluidState = level.getFluidState(pos);
+        return !state.isFaceSturdy(level, pos, Direction.DOWN) && !(state.getBlock() instanceof BaseFireBlock) && (type.fluid != null && fluidState.is(type.fluid) || fluidState.isEmpty());
     }
 
     @Override

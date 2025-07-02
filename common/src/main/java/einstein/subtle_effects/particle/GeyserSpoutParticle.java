@@ -35,7 +35,7 @@ public class GeyserSpoutParticle extends FlatPlaneParticle {
 
     @Override
     public void tick() {
-        if (!FlameGeyserTicker.isNotFaceSturdyOrFluidEmpty(level, pos) || !type.getSpawnableBlocks().contains(level.getBlockState(pos.below()).getBlock())) {
+        if (!FlameGeyserTicker.isNotFaceSturdyOrFluidEmpty(type, level, pos) || !type.getSpawnableBlocks().contains(level.getBlockState(pos.below()).getBlock())) {
             remove();
             return;
         }
