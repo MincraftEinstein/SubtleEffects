@@ -41,8 +41,6 @@ public class SubtleEffectsClient {
             if (!HAS_CLEARED) {
                 TickerManager.clear(level);
                 BiomeParticleManager.clear();
-                GeyserManager.ACTIVE_GEYSERS.clear();
-                GeyserManager.INACTIVE_GEYSERS.clear();
                 HAS_CLEARED = true;
             }
             return;
