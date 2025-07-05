@@ -21,7 +21,7 @@ import static einstein.subtle_effects.init.ModConfigs.BLOCKS;
 public class EndRemasteredCompat {
 
     public static void init() {
-        ModBlockTickers.REGISTERED.put(CommonBlockRegistry.ANCIENT_PORTAL_FRAME, (state, level, pos, random) -> {
+        ModBlockTickers.REGISTERED_SPECIAL.put(state -> state.is(CommonBlockRegistry.ANCIENT_PORTAL_FRAME), (state, level, pos, random) -> {
             if (BLOCKS.endPortalFrameParticlesDisplayType == ModBlockConfigs.EndPortalFrameParticlesDisplayType.OFF) {
                 return;
             }
