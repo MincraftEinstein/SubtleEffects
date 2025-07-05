@@ -24,8 +24,6 @@ public class BiomeConfigs extends ConfigSection {
     public ValidatedInt biomeParticlesRadius = new ValidatedInt(32, 32, 0);
     public ValidatedList<ResourceLocation> mushroomSporeBiomes = biomeList("mushroom_fields");
     public ValidatedInt mushroomSporeDensity = new ValidatedInt(10, 100, 0);
-    public ValidatedList<ResourceLocation> fireflyBiomes = biomeList("swamp", "mangrove_swamp");
-    public ValidatedInt fireflyDensity = new ValidatedInt(6, 100, 0);
     public ValidatedList<ResourceLocation> pollenBiomes = biomeList("flower_forest", "sunflower_plains");
     public ValidatedInt pollenDensity = new ValidatedInt(50, 100, 0);
     public ValidatedList<ResourceLocation> sculkDustBiomes = biomeList("deep_dark");

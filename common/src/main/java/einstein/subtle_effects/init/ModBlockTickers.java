@@ -1,7 +1,6 @@
 package einstein.subtle_effects.init;
 
 import einstein.subtle_effects.SubtleEffects;
-import einstein.subtle_effects.biome_particles.BiomeParticleManager;
 import einstein.subtle_effects.compat.CompatHelper;
 import einstein.subtle_effects.compat.EndRemasteredCompat;
 import einstein.subtle_effects.configs.CommandBlockSpawnType;
@@ -19,7 +18,6 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.tags.BlockTags;
 import net.minecraft.util.ParticleUtils;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -256,20 +254,6 @@ public class ModBlockTickers {
                 );
             }
         });
-        register(state -> (state.is(BlockTags.FLOWERS) || (BLOCKS.vegetationFirefliesSpawnType == ModBlockConfigs.VegetationFirefliesSpawnType.GRASS_AND_FLOWERS && (state.is(Blocks.SHORT_GRASS) || state.is(Blocks.TALL_GRASS)))),
-                () -> BLOCKS.vegetationFirefliesDensity.get() > 0,
-                (state, level, pos, random) -> {
-                    if (BiomeParticleManager.FIREFLY_CONDITIONS.test(level, pos)) {
-                        if (random.nextInt(BLOCKS.vegetationFirefliesDensity.get()) == 0) {
-                            level.addParticle(ModParticles.FIREFLY.get(),
-                                    pos.getX() + nextNonAbsDouble(random),
-                                    pos.getY() + random.nextDouble(),
-                                    pos.getZ() + nextNonAbsDouble(random),
-                                    0, 0, 0
-                            );
-                        }
-                    }
-                });
         register(Blocks.END_PORTAL_FRAME, () -> BLOCKS.endPortalFrameParticlesDisplayType != ModBlockConfigs.EndPortalFrameParticlesDisplayType.OFF, (state, level, pos, random) -> {
             if (!state.getValue(EndPortalFrameBlock.HAS_EYE)) {
                 return;

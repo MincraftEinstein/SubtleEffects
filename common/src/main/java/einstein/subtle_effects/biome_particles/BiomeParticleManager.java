@@ -10,7 +10,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.Heightmap;
@@ -27,17 +26,10 @@ public class BiomeParticleManager {
     private static final List<BiomeParticleSettings> REGISTERED = new ArrayList<>();
     private static final BlockPos.MutableBlockPos BIOME_POS = new BlockPos.MutableBlockPos();
     private static final BiPredicate<Level, BlockPos> NOT_RAINING = (level, pos) -> !level.isRaining();
-    public static final BiPredicate<Level, BlockPos> FIREFLY_CONDITIONS = NOT_RAINING.and((level, pos) -> {
-        float time = level.getDayTime() % 24000F;
-        return time > 13000 && time < 23000
-                && level.getBrightness(LightLayer.BLOCK, pos) <= 5
-                && level.getBiome(pos).value().warmEnoughToRain(pos);
-    });
     private static boolean HAS_CLEARED;
 
     public static void init() {
         register(ENVIRONMENT.biomes.mushroomSporeBiomes, ENVIRONMENT.biomes.mushroomSporeDensity, 40, ModParticles.MUSHROOM_SPORE, NOT_RAINING);
-        register(ENVIRONMENT.biomes.fireflyBiomes, ENVIRONMENT.biomes.fireflyDensity, 10, ModParticles.FIREFLY, FIREFLY_CONDITIONS);
         register(ENVIRONMENT.biomes.pollenBiomes, ENVIRONMENT.biomes.pollenDensity, 10, ModParticles.POLLEN, NOT_RAINING);
         register(ENVIRONMENT.biomes.sculkDustBiomes, ENVIRONMENT.biomes.sculkDustDensity, ModParticles.SCULK_DUST, (level, pos) -> true);
     }

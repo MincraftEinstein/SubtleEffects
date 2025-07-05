@@ -3,6 +3,7 @@ package einstein.subtle_effects.configs;
 import einstein.subtle_effects.SubtleEffects;
 import einstein.subtle_effects.biome_particles.BiomeParticleManager;
 import einstein.subtle_effects.configs.environment.BiomeConfigs;
+import einstein.subtle_effects.configs.environment.FireflyConfigs;
 import einstein.subtle_effects.configs.environment.GeyserConfigs;
 import einstein.subtle_effects.init.ModBlockTickers;
 import einstein.subtle_effects.init.ModConfigs;
@@ -15,6 +16,7 @@ public class ModEnvironmentConfigs extends Config {
     public boolean biomeColorRain = true;
     public BiomeConfigs biomes = new BiomeConfigs();
     public GeyserConfigs geysers = new GeyserConfigs();
+    public FireflyConfigs fireflies = new FireflyConfigs();
 
     public ModEnvironmentConfigs() {
         super(SubtleEffects.loc("environment"));

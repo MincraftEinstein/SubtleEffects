@@ -1,0 +1,76 @@
+package einstein.subtle_effects.configs.environment;
+
+import einstein.subtle_effects.init.ModConfigs;
+import me.fzzyhmstrs.fzzy_config.config.ConfigGroup;
+import me.fzzyhmstrs.fzzy_config.config.ConfigSection;
+import me.fzzyhmstrs.fzzy_config.util.EnumTranslatable;
+import me.fzzyhmstrs.fzzy_config.validation.collection.ValidatedList;
+import me.fzzyhmstrs.fzzy_config.validation.minecraft.ValidatedIdentifier;
+import me.fzzyhmstrs.fzzy_config.validation.minecraft.ValidatedRegistryType;
+import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedInt;
+import net.minecraft.Util;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.dimension.BuiltinDimensionTypes;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class FireflyConfigs extends ConfigSection {
+
+    private static final List<Block> DEFAULT_SPAWNABLE_BLOCKS = Util.make(new ArrayList<>(), blocks -> {
+        blocks.add(Blocks.SHORT_GRASS);
+        blocks.add(Blocks.TALL_GRASS);
+        blocks.add(Blocks.POPPY);
+        blocks.add(Blocks.DANDELION);
+        blocks.add(Blocks.PEONY);
+        blocks.add(Blocks.BLUE_ORCHID);
+        blocks.add(Blocks.ALLIUM);
+        blocks.add(Blocks.AZURE_BLUET);
+        blocks.add(Blocks.ORANGE_TULIP);
+        blocks.add(Blocks.PINK_TULIP);
+        blocks.add(Blocks.RED_TULIP);
+        blocks.add(Blocks.WHITE_TULIP);
+        blocks.add(Blocks.OXEYE_DAISY);
+        blocks.add(Blocks.CORNFLOWER);
+        blocks.add(Blocks.LILY_OF_THE_VALLEY);
+        blocks.add(Blocks.SUNFLOWER);
+        blocks.add(Blocks.LILAC);
+        blocks.add(Blocks.ROSE_BUSH);
+        blocks.add(Blocks.PINK_PETALS);
+        blocks.add(Blocks.FLOWERING_AZALEA);
+    });
+    private static final List<ResourceLocation> DEFAULT_BLOCKED_DIMENSIONS = Util.make(new ArrayList<>(), dimensions -> {
+        dimensions.add(ResourceLocation.fromNamespaceAndPath("twilightforest", "twilight_forest_type"));
+    });
+
+    public boolean firefliesEnabled = true;
+    public ValidatedList<ResourceLocation> dimensionBlocklist = new ValidatedList<>(DEFAULT_BLOCKED_DIMENSIONS,
+            ValidatedIdentifier.ofDynamicKey(Registries.DIMENSION_TYPE, "",
+                    (id, holder) -> true)
+    );
+    public ValidatedList<ResourceLocation> biomesBlocklist = BiomeConfigs.biomeList();
+    public ValidatedList<ResourceLocation> biomesAllowlist = BiomeConfigs.biomeList("lush_caves");
+    public ValidatedList<Block> spawnableBlocks = new ValidatedList<>(DEFAULT_SPAWNABLE_BLOCKS, ValidatedRegistryType.of(BuiltInRegistries.BLOCK));
+    public ValidatedInt defaultDensity = new ValidatedInt(3, 10, 1);
+
+    public ConfigGroup habitatBiomesGroup = new ConfigGroup("habitat_biomes");
+    public ValidatedList<ResourceLocation> habitatBiomes = BiomeConfigs.biomeList("swamp", "mangrove_swamp");
+    public ValidatedInt habitatBiomeDensity = new ValidatedInt(3, 10, 1);
+    public HabitatBiomeSpawnType habitatBiomeSpawnType = HabitatBiomeSpawnType.DEFAULT;
+    public ValidatedInt groupDensity = new ValidatedInt(1, 10, 1);
+
+    public enum HabitatBiomeSpawnType implements EnumTranslatable {
+        DEFAULT,
+        GROUPS;
+
+        @Override
+        public @NotNull String prefix() {
+            return ModConfigs.BASE_KEY + "environment.fireflies.habitatBiomeSpawnType";
+        }
+    }
+}

@@ -1,5 +1,6 @@
 package einstein.subtle_effects.mixin.client;
 
+import einstein.subtle_effects.biome_particles.FireflyManager;
 import einstein.subtle_effects.data.SparkProviderData;
 import einstein.subtle_effects.data.SparkProviderReloadListener;
 import einstein.subtle_effects.init.ModBlockTickers;
@@ -64,6 +65,8 @@ public abstract class ClientLevelMixin extends Level {
         BlockPos pos = mutablePos.immutable();
         BlockState state = getBlockState(pos);
         Block block = state.getBlock();
+
+        FireflyManager.tick(this, pos, state, random);
 
         if (!state.isAir()) {
             BlockTickerProvider tickerProvider = ModBlockTickers.REGISTERED.get(block);
