@@ -5,7 +5,6 @@ import me.fzzyhmstrs.fzzy_config.config.ConfigGroup;
 import me.fzzyhmstrs.fzzy_config.config.ConfigSection;
 import me.fzzyhmstrs.fzzy_config.util.EnumTranslatable;
 import me.fzzyhmstrs.fzzy_config.validation.collection.ValidatedList;
-import me.fzzyhmstrs.fzzy_config.validation.minecraft.ValidatedIdentifier;
 import me.fzzyhmstrs.fzzy_config.validation.minecraft.ValidatedRegistryType;
 import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedInt;
 import net.minecraft.Util;
@@ -14,11 +13,12 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.dimension.BuiltinDimensionTypes;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static einstein.subtle_effects.init.ModConfigs.biomeList;
 
 public class FireflyConfigs extends ConfigSection {
 
@@ -49,17 +49,14 @@ public class FireflyConfigs extends ConfigSection {
     });
 
     public boolean firefliesEnabled = true;
-    public ValidatedList<ResourceLocation> dimensionBlocklist = new ValidatedList<>(DEFAULT_BLOCKED_DIMENSIONS,
-            ValidatedIdentifier.ofDynamicKey(Registries.DIMENSION_TYPE, "",
-                    (id, holder) -> true)
-    );
-    public ValidatedList<ResourceLocation> biomesBlocklist = BiomeConfigs.biomeList();
-    public ValidatedList<ResourceLocation> biomesAllowlist = BiomeConfigs.biomeList("lush_caves");
+    public ValidatedList<ResourceLocation> dimensionBlocklist = ModConfigs.registryList(Registries.DIMENSION_TYPE, DEFAULT_BLOCKED_DIMENSIONS);
+    public ValidatedList<ResourceLocation> biomesBlocklist = biomeList();
+    public ValidatedList<ResourceLocation> biomesAllowlist = biomeList("lush_caves");
     public ValidatedList<Block> spawnableBlocks = new ValidatedList<>(DEFAULT_SPAWNABLE_BLOCKS, ValidatedRegistryType.of(BuiltInRegistries.BLOCK));
     public ValidatedInt defaultDensity = new ValidatedInt(3, 10, 1);
 
     public ConfigGroup habitatBiomesGroup = new ConfigGroup("habitat_biomes");
-    public ValidatedList<ResourceLocation> habitatBiomes = BiomeConfigs.biomeList("swamp", "mangrove_swamp");
+    public ValidatedList<ResourceLocation> habitatBiomes = biomeList("swamp", "mangrove_swamp");
     public ValidatedInt habitatBiomeDensity = new ValidatedInt(3, 10, 1);
     public HabitatBiomeSpawnType habitatBiomeSpawnType = HabitatBiomeSpawnType.DEFAULT;
     public ValidatedInt groupDensity = new ValidatedInt(1, 10, 1);
