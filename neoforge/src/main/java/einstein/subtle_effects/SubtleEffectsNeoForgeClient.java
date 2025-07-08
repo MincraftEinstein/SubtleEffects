@@ -50,7 +50,7 @@ public class SubtleEffectsNeoForgeClient {
                 EntityRenderer<?> renderer = event.getSkin(model);
 
                 if (renderer instanceof PlayerRenderer playerRenderer) {
-                    playerRenderer.addLayer(new EinsteinSolarSystemLayer(playerRenderer, event.getContext()));
+                    playerRenderer.addLayer(new EinsteinSolarSystemLayer<>(playerRenderer, event.getContext()));
                 }
             }
         });
