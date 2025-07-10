@@ -75,7 +75,7 @@ public abstract class GeyserTicker extends Ticker {
     public static boolean isNotFaceSturdyOrFluidEmpty(GeyserType type, Level level, BlockPos pos) {
         BlockState state = level.getBlockState(pos);
         FluidState fluidState = level.getFluidState(pos);
-        return !state.isFaceSturdy(level, pos, Direction.DOWN) && !(state.getBlock() instanceof BaseFireBlock) && (type.fluid != null ? fluidState.is(type.fluid) : fluidState.isEmpty());
+        return !state.isFaceSturdy(level, pos, Direction.DOWN) && !(state.getBlock() instanceof BaseFireBlock) && (type.fluid != null ? fluidState.is(type.fluid) && fluidState.isSource() : fluidState.isEmpty());
     }
 
     @Override
