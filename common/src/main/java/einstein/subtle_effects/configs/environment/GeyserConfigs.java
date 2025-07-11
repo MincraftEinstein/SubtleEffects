@@ -10,6 +10,7 @@ import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedInt;
 @Translation(prefix = ModConfigs.BASE_KEY + "environment.geysers")
 public class GeyserConfigs extends ConfigSection {
 
+    public boolean useUpdatedSmoke = false;
     public ConfigGroup flameGeysersGroup = new ConfigGroup("flame_geysers");
     public ValidatedInt flameGeyserSpawnChance = new ValidatedInt(0, 50, 0);
     public ValidatedFloat flameGeyserSoundVolume = new ValidatedFloat(0.5F, 1, 0);
@@ -21,9 +22,8 @@ public class GeyserConfigs extends ConfigSection {
     public ValidatedInt smokeGeyserSpawnChance = new ValidatedInt(0, 50, 0);
     public ValidatedFloat smokeGeyserSoundVolume = new ValidatedFloat(0.2F, 1, 0);
     public ValidatedInt smokeGeyserActiveTime = new ValidatedInt(300, 1000, 50);
-    public ValidatedInt smokeGeyserInactiveTime = new ValidatedInt(500, 1000, 50);
     @ConfigGroup.Pop
-    public boolean useUpdatedSmoke = false;
+    public ValidatedInt smokeGeyserInactiveTime = new ValidatedInt(500, 1000, 50);
 
     public ConfigGroup bubbleGeysersGroup = new ConfigGroup("bubble_geysers");
     public ValidatedInt bubbleGeyserSpawnChance = new ValidatedInt(0, 50, 0);
