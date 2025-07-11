@@ -29,7 +29,7 @@ public class ModGeneralConfigs extends Config {
     public ValidatedFloat fluidDropsEvaporationVolume = new ValidatedFloat(0.25F, 1, 0);
     public boolean dropLandInFluidSplashes = true;
     @ConfigGroup.Pop
-    public boolean dropLandSounds = true;
+    public ValidatedFloat dropLandSoundVolume = new ValidatedFloat(1, 2, 0);
 
     public boolean lavaSparkSmoke = true;
     public ValidatedFloat sparksScale = new ValidatedFloat(1, 2, 1);
