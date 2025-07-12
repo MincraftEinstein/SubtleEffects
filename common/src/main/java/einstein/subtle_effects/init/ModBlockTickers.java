@@ -13,6 +13,7 @@ import einstein.subtle_effects.util.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -260,6 +261,21 @@ public class ModBlockTickers {
             }
 
             ParticleSpawnUtil.spawnEndPortalParticles(level, pos, random, BLOCKS.endPortalFrameParticlesDisplayType.particle.apply(level, pos), BLOCKS.endPortalFrameParticlesDisplayType.count);
+        });
+        register(state -> state.getBlock() instanceof FallingBlock, () -> BLOCKS.fallingBlocks.weakSupportDust, (state, level, pos, random) -> {
+            if (random.nextInt(16) < BLOCKS.fallingBlocks.weakSupportDustDensity.get()) {
+                Block block = state.getBlock();
+                if (BLOCKS.fallingBlocks.dustyBlocks.contains(block) && !Block.canSupportRigidBlock(level, pos.below())) {
+                    level.addParticle(new BlockParticleOption(ParticleTypes.FALLING_DUST,
+                                    block instanceof BrushableBlock brushableBlock ?
+                                            brushableBlock.getTurnsInto().defaultBlockState() : state),
+                            pos.getX() + random.nextDouble(),
+                            pos.getY() - 0.0625,
+                            pos.getZ() + random.nextDouble(),
+                            0, 0, 0
+                    );
+                }
+            }
         });
     }
 

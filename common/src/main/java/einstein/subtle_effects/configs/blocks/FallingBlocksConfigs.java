@@ -36,4 +36,6 @@ public class FallingBlocksConfigs extends ConfigSection {
     public ValidatedInt fallingDustStartDistance = new ValidatedInt(3, 20, 0);
     public boolean landDust = true;
     public boolean landSound = true;
+    public boolean weakSupportDust = true;
+    public ValidatedInt weakSupportDustDensity = new ValidatedInt(1, 16, 1);
 }
