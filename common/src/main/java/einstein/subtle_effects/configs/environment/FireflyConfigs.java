@@ -1,11 +1,10 @@
 package einstein.subtle_effects.configs.environment;
 
-import einstein.subtle_effects.configs.entities.humanoids.FrostyBreathConfigs;
+import einstein.subtle_effects.configs.ColdSeasonsType;
 import einstein.subtle_effects.init.ModConfigs;
 import me.fzzyhmstrs.fzzy_config.annotations.Translation;
 import me.fzzyhmstrs.fzzy_config.config.ConfigGroup;
 import me.fzzyhmstrs.fzzy_config.config.ConfigSection;
-import me.fzzyhmstrs.fzzy_config.util.EnumTranslatable;
 import me.fzzyhmstrs.fzzy_config.validation.collection.ValidatedList;
 import me.fzzyhmstrs.fzzy_config.validation.minecraft.ValidatedRegistryType;
 import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedInt;
@@ -15,7 +14,6 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,7 +55,7 @@ public class FireflyConfigs extends ConfigSection {
     public ValidatedList<ResourceLocation> biomesAllowlist = biomeList("lush_caves");
     public ValidatedList<Block> spawnableBlocks = new ValidatedList<>(DEFAULT_SPAWNABLE_BLOCKS, ValidatedRegistryType.of(BuiltInRegistries.BLOCK));
     public ValidatedInt defaultDensity = new ValidatedInt(3, 10, 1);
-    public FrostyBreathConfigs.Seasons seasons = FrostyBreathConfigs.Seasons.DEFAULT;
+    public ColdSeasonsType seasons = ColdSeasonsType.DEFAULT;
 
     public ConfigGroup habitatBiomesGroup = new ConfigGroup("habitat_biomes");
     public boolean allowOnlyInHabitatBiomes = false;
