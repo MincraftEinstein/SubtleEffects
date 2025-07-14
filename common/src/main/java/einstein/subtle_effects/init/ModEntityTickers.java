@@ -95,10 +95,10 @@ public class ModEntityTickers {
                         }
                     }
                 });
-        registerSimple(entity -> entity instanceof FallingBlockEntity && BLOCKS.fallingBlocks.fallingDust, false, (entity, level, random) -> {
+        registerSimple(entity -> entity instanceof FallingBlockEntity && BLOCKS.fallingBlocks.whileFallingDust, false, (entity, level, random) -> {
             FallingBlockEntity fallingBlock = (FallingBlockEntity) entity;
 
-            int startDistance = BLOCKS.fallingBlocks.fallingDustStartDistance.get();
+            int startDistance = BLOCKS.fallingBlocks.whileFallingDustStartDistance.get();
             float fallDistance = fallingBlock.fallDistance;
 
             if (fallDistance <= startDistance) {

@@ -134,7 +134,7 @@ public class ClientPacketHandlers {
         BlockState state = Block.stateById(payload.stateId());
         Block block = state.getBlock();
 
-        if (BLOCKS.fallingBlocks.landSound && !(block instanceof AnvilBlock)) {
+        if (BLOCKS.fallingBlocks.onLandSound && !(block instanceof AnvilBlock)) {
             SoundType soundType = state.getSoundType();
 
             Util.playClientSound(pos, soundType.getPlaceSound(), SoundSource.BLOCKS,
@@ -143,7 +143,7 @@ public class ClientPacketHandlers {
             );
         }
 
-        if (BLOCKS.fallingBlocks.landDust) {
+        if (BLOCKS.fallingBlocks.onLandDust) {
             if (BLOCKS.fallingBlocks.dustyBlocks.contains(block)) {
                 RandomSource random = level.getRandom();
                 ParticleOptions options = getParticleForFallingBlock(level, pos, state);
