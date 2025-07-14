@@ -1,6 +1,5 @@
 package einstein.subtle_effects.biome_particles;
 
-import einstein.subtle_effects.configs.environment.FireflyConfigs;
 import einstein.subtle_effects.init.ModParticles;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
@@ -56,10 +55,9 @@ public class FireflyManager {
                 if (((time > 13000 && time < 23000) || level.getBrightness(LightLayer.SKY, pos) == 0) && level.getBrightness(LightLayer.BLOCK, pos) <= 5) {
                     if (!level.isRaining() || !canSeeSky || surfaceLevel > pos.getY()) {
                         if (!state.isCollisionShapeFullBlock(level, pos) && level.getFluidState(pos).isEmpty()) {
-                            boolean groupSpawning = ENVIRONMENT.fireflies.habitatBiomeSpawnType == FireflyConfigs.HabitatBiomeSpawnType.GROUPS;
 
-                            if (canSpawn(random, isHabitatBiome, groupSpawning)) {
-                                level.addParticle(isHabitatBiome && groupSpawning ? ModParticles.FIREFLY_EMITTER.get() : ModParticles.FIREFLY.get(),
+                            if (canSpawn(random, isHabitatBiome)) {
+                                level.addParticle(ModParticles.FIREFLY.get(),
                                         pos.getX() + 0.5 + nextNonAbsDouble(random, 0.4375),
                                         pos.getY() + 0.5 + nextNonAbsDouble(random, 0.4375),
                                         pos.getZ() + 0.5 + nextNonAbsDouble(random, 0.4375),
@@ -73,11 +71,8 @@ public class FireflyManager {
         }
     }
 
-    private static boolean canSpawn(RandomSource random, boolean isHabitatBiome, boolean groupSpawning) {
+    private static boolean canSpawn(RandomSource random, boolean isHabitatBiome) {
         if (isHabitatBiome) {
-            if (groupSpawning) {
-                return random.nextDouble() < (0.00001 * ENVIRONMENT.fireflies.groupDensity.get());
-            }
             return random.nextDouble() < (0.0005 * ENVIRONMENT.fireflies.habitatBiomeDensity.get());
         }
         return random.nextDouble() < (0.008 * ENVIRONMENT.fireflies.defaultDensity.get());

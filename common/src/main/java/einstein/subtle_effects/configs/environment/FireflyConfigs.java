@@ -1,6 +1,7 @@
 package einstein.subtle_effects.configs.environment;
 
 import einstein.subtle_effects.init.ModConfigs;
+import me.fzzyhmstrs.fzzy_config.annotations.Translation;
 import me.fzzyhmstrs.fzzy_config.config.ConfigGroup;
 import me.fzzyhmstrs.fzzy_config.config.ConfigSection;
 import me.fzzyhmstrs.fzzy_config.util.EnumTranslatable;
@@ -20,6 +21,7 @@ import java.util.List;
 
 import static einstein.subtle_effects.init.ModConfigs.biomeList;
 
+@Translation(prefix = ModConfigs.BASE_KEY + "environment.fireflies")
 public class FireflyConfigs extends ConfigSection {
 
     private static final List<Block> DEFAULT_SPAWNABLE_BLOCKS = Util.make(new ArrayList<>(), blocks -> {
@@ -58,16 +60,4 @@ public class FireflyConfigs extends ConfigSection {
     public ConfigGroup habitatBiomesGroup = new ConfigGroup("habitat_biomes");
     public ValidatedList<ResourceLocation> habitatBiomes = biomeList("swamp", "mangrove_swamp");
     public ValidatedInt habitatBiomeDensity = new ValidatedInt(3, 10, 1);
-    public HabitatBiomeSpawnType habitatBiomeSpawnType = HabitatBiomeSpawnType.DEFAULT;
-    public ValidatedInt groupDensity = new ValidatedInt(1, 10, 1);
-
-    public enum HabitatBiomeSpawnType implements EnumTranslatable {
-        DEFAULT,
-        GROUPS;
-
-        @Override
-        public @NotNull String prefix() {
-            return ModConfigs.BASE_KEY + "environment.fireflies.habitatBiomeSpawnType";
-        }
-    }
 }
