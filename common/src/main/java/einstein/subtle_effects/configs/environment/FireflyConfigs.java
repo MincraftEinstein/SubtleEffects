@@ -58,6 +58,7 @@ public class FireflyConfigs extends ConfigSection {
     public ValidatedInt defaultDensity = new ValidatedInt(3, 10, 1);
 
     public ConfigGroup habitatBiomesGroup = new ConfigGroup("habitat_biomes");
+    public boolean allowOnlyInHabitatBiomes = false;
     public ValidatedList<ResourceLocation> habitatBiomes = biomeList("swamp", "mangrove_swamp");
     public ValidatedInt habitatBiomeDensity = new ValidatedInt(3, 10, 1);
 }

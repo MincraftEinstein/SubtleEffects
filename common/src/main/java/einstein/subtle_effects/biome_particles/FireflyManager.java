@@ -39,7 +39,7 @@ public class FireflyManager {
         ResourceLocation biomeId = biomeKey.get().location();
         if (!ENVIRONMENT.fireflies.biomesBlocklist.contains(biomeId)) {
             boolean isHabitatBiome = ENVIRONMENT.fireflies.habitatBiomes.contains(biomeId);
-            if (!isHabitatBiome && !ENVIRONMENT.fireflies.spawnableBlocks.contains(state.getBlock())) {
+            if (!isHabitatBiome && (ENVIRONMENT.fireflies.allowOnlyInHabitatBiomes || !ENVIRONMENT.fireflies.spawnableBlocks.contains(state.getBlock()))) {
                 return;
             }
 
