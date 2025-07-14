@@ -12,10 +12,7 @@ import einstein.subtle_effects.util.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.particles.DustParticleOptions;
-import net.minecraft.core.particles.ItemParticleOption;
-import net.minecraft.core.particles.ParticleOptions;
-import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.particles.*;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
@@ -149,13 +146,7 @@ public class ClientPacketHandlers {
         if (BLOCKS.fallingBlocks.landDust) {
             if (BLOCKS.fallingBlocks.dustyBlocks.contains(block)) {
                 RandomSource random = level.getRandom();
-                int color = getFallingBlockDustColor(level, block, state, pos);
-                DustParticleOptions options = new DustParticleOptions(
-                        new Vector3f(
-                                ((color >> 16) & 255) / 255F,
-                                ((color >> 8) & 255) / 255F,
-                                (color & 255) / 255F
-                        ), 1);
+                ParticleOptions options = getParticleForFallingBlock(level, pos, state);
 
                 for (int i = 0; i < 25; i++) {
                     boolean b = random.nextBoolean();
@@ -293,6 +284,20 @@ public class ClientPacketHandlers {
             return DyeColor.values()[random.nextInt(DyeColor.values().length)];
         }
         return COMMON_SHEPHERD_WOOL_COLORS.get(random.nextInt(COMMON_SHEPHERD_WOOL_COLORS.size()));
+    }
+
+    private static ParticleOptions getParticleForFallingBlock(ClientLevel level, BlockPos pos, BlockState state) {
+        if (Block.canSupportRigidBlock(level, pos.below())) {
+            int color = getFallingBlockDustColor(level, state.getBlock(), state, pos);
+            return new DustParticleOptions(
+                    new Vector3f(
+                            ((color >> 16) & 255) / 255F,
+                            ((color >> 8) & 255) / 255F,
+                            (color & 255) / 255F
+                    ), 1
+            );
+        }
+        return new BlockParticleOption(ParticleTypes.FALLING_DUST, state);
     }
 
     private static int getFallingBlockDustColor(ClientLevel level, Block block, BlockState state, BlockPos pos) {
