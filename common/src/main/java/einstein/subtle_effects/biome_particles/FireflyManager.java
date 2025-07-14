@@ -2,7 +2,7 @@ package einstein.subtle_effects.biome_particles;
 
 import einstein.subtle_effects.compat.CompatHelper;
 import einstein.subtle_effects.compat.SereneSeasonsCompat;
-import einstein.subtle_effects.init.ModParticles;
+import einstein.subtle_effects.configs.environment.FireflyConfigs;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceKey;
@@ -63,7 +63,7 @@ public class FireflyManager {
                         if (!state.isCollisionShapeFullBlock(level, pos) && level.getFluidState(pos).isEmpty()) {
 
                             if (canSpawn(random, isHabitatBiome)) {
-                                level.addParticle(ModParticles.FIREFLY.get(),
+                                level.addParticle(ENVIRONMENT.fireflies.fireFlyType.getParticle().get(),
                                         pos.getX() + 0.5 + nextNonAbsDouble(random, 0.4375),
                                         pos.getY() + 0.5 + nextNonAbsDouble(random, 0.4375),
                                         pos.getZ() + 0.5 + nextNonAbsDouble(random, 0.4375),
@@ -81,6 +81,8 @@ public class FireflyManager {
         if (isHabitatBiome) {
             return random.nextDouble() < (0.0005 * ENVIRONMENT.fireflies.habitatBiomeDensity.get());
         }
-        return random.nextDouble() < (0.008 * ENVIRONMENT.fireflies.defaultDensity.get());
+
+        int spawnRate = ENVIRONMENT.fireflies.fireFlyType == FireflyConfigs.FireFlyType.VANILLA ? 170 : 1;
+        return random.nextDouble() < (0.008 * ENVIRONMENT.fireflies.defaultDensity.get() * spawnRate);
     }
 }
