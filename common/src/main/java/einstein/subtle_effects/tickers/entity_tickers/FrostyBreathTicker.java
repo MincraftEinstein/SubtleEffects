@@ -58,7 +58,7 @@ public class FrostyBreathTicker extends EntityTicker<LivingEntity> {
         Holder<Biome> biome = level.getBiome(pos);
         if (biome.value().coldEnoughToSnow(pos)
                 || ENTITIES.humanoids.frostyBreath.additionalBiomes.contains(biome.unwrapKey().map(ResourceKey::location).orElse(null))
-                || (CompatHelper.IS_SERENE_SEANSONS_LOADED.get() && SereneSeasonsCompat.isColdSeason(level))) {
+                || (CompatHelper.IS_SERENE_SEANSONS_LOADED.get() && SereneSeasonsCompat.isColdSeason(level, ENTITIES.humanoids.frostyBreath.seasons))) {
             if (delayTimer < startDelay) {
                 delayTimer++;
                 return;

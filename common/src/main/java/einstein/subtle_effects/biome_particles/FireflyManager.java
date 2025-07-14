@@ -1,5 +1,6 @@
 package einstein.subtle_effects.biome_particles;
 
+import einstein.subtle_effects.compat.SereneSeasonsCompat;
 import einstein.subtle_effects.init.ModParticles;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
@@ -27,6 +28,10 @@ public class FireflyManager {
 
         Optional<ResourceKey<DimensionType>> dimensionKey = level.dimensionTypeRegistration().unwrapKey();
         if (dimensionKey.isEmpty() || ENVIRONMENT.fireflies.dimensionBlocklist.contains(dimensionKey.get().location())) {
+            return;
+        }
+
+        if (SereneSeasonsCompat.isColdSeason(level, ENVIRONMENT.fireflies.seasons)) {
             return;
         }
 

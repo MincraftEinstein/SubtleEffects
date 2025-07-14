@@ -1,5 +1,6 @@
 package einstein.subtle_effects.configs.environment;
 
+import einstein.subtle_effects.configs.entities.humanoids.FrostyBreathConfigs;
 import einstein.subtle_effects.init.ModConfigs;
 import me.fzzyhmstrs.fzzy_config.annotations.Translation;
 import me.fzzyhmstrs.fzzy_config.config.ConfigGroup;
@@ -56,6 +57,7 @@ public class FireflyConfigs extends ConfigSection {
     public ValidatedList<ResourceLocation> biomesAllowlist = biomeList("lush_caves");
     public ValidatedList<Block> spawnableBlocks = new ValidatedList<>(DEFAULT_SPAWNABLE_BLOCKS, ValidatedRegistryType.of(BuiltInRegistries.BLOCK));
     public ValidatedInt defaultDensity = new ValidatedInt(3, 10, 1);
+    public FrostyBreathConfigs.Seasons seasons = FrostyBreathConfigs.Seasons.DEFAULT;
 
     public ConfigGroup habitatBiomesGroup = new ConfigGroup("habitat_biomes");
     public boolean allowOnlyInHabitatBiomes = false;
