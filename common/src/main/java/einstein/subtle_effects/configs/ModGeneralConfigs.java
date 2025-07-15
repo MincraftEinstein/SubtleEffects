@@ -41,7 +41,7 @@ public class ModGeneralConfigs extends Config {
     public boolean translucentEnchantmentParticles = true;
     @ConfigGroup.Pop
     @ConfigGroup.Pop
-    public boolean forceWhiteEnchantmentParticles = true;
+    public boolean disableRandomizedShading = true;
 
     public boolean mobSkullShaders = true;
     public ValidatedFloat fireHeight = new ValidatedFloat(-0.15F, 0.4F, -0.5F);
