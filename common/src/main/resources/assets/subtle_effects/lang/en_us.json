@@ -195,6 +195,7 @@
   "config.subtle_effects.blocks.endPortalFrameParticlesDisplayType.OFF": "Off",
   "config.subtle_effects.blocks.endPortalFrameParticlesDisplayType.DOTS": "Dots",
   "config.subtle_effects.blocks.endPortalFrameParticlesDisplayType.SMOKE": "Smoke",
+  "config.subtle_effects.blocks.endPortalFrameParticlesDensity": "End Portal Frame Particles Density",
   "config.subtle_effects.blocks.eyeColors": "Eye Colors",
   "config.subtle_effects.blocks.replaceOminousVaultConnection": "Replace Ominous Vault Connection",
   "config.subtle_effects.blocks.replaceOminousVaultConnection.desc": "Replaces the vanilla orange connection particles when near a ominous vault with blue particles",

@@ -291,12 +291,14 @@ public class ParticleSpawnUtil {
 
     public static void spawnEndPortalParticles(Level level, BlockPos pos, RandomSource random, ParticleOptions particle, int count) {
         for (int i = 0; i < count; ++i) {
-            level.addParticle(particle,
-                    pos.getX() + 0.5 + nextNonAbsDouble(random, 0.25),
-                    pos.getY() + 0.9375,
-                    pos.getZ() + 0.5 + nextNonAbsDouble(random, 0.25),
-                    0, 0, 0
-            );
+            if (random.nextDouble() < BLOCKS.endPortalFrameParticlesDensity.get()) {
+                level.addParticle(particle,
+                        pos.getX() + 0.5 + nextNonAbsDouble(random, 0.25),
+                        pos.getY() + 0.9375,
+                        pos.getZ() + 0.5 + nextNonAbsDouble(random, 0.25),
+                        0, 0, 0
+                );
+            }
         }
     }
 

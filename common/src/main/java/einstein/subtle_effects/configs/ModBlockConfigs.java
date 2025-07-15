@@ -130,8 +130,9 @@ public class ModBlockConfigs extends Config {
     public EnderEyePlacedParticlesDisplayType enderEyePlacedParticlesDisplayType = EnderEyePlacedParticlesDisplayType.BOTH;
     public ValidatedMap<ResourceLocation, ValidatedColor.ColorHolder> eyeColors = new ValidatedMap<>(DEFAULT_EYE_COLORS,
             getEyeHandler(), new ValidatedColor(new Color(EnderEyePlacedRingParticle.DEFAULT_COLOR), false));
-    @ConfigGroup.Pop
     public EndPortalFrameParticlesDisplayType endPortalFrameParticlesDisplayType = EndPortalFrameParticlesDisplayType.SMOKE;
+    @ConfigGroup.Pop
+    public ValidatedFloat endPortalFrameParticlesDensity = new ValidatedFloat(1, 1, 0);
 
     public boolean replaceOminousVaultConnection = true;
     public boolean cobwebMovementSounds = true;
