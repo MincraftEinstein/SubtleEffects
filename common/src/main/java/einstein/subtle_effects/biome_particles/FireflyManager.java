@@ -3,10 +3,12 @@ package einstein.subtle_effects.biome_particles;
 import einstein.subtle_effects.compat.CompatHelper;
 import einstein.subtle_effects.compat.SereneSeasonsCompat;
 import einstein.subtle_effects.configs.environment.FireflyConfigs;
+import einstein.subtle_effects.init.ModSounds;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LightLayer;
@@ -70,11 +72,30 @@ public class FireflyManager {
                                         0, 0, 0
                                 );
                             }
+
+                            if (ENVIRONMENT.fireflies.fireflySoundVolume.get() > 0) {
+                                if (canPlaySound(random, isHabitatBiome)) {
+                                    level.playLocalSound(
+                                            pos.getX(), pos.getY(), pos.getZ(),
+                                            ModSounds.FIREFLY_BUZZ.get(),
+                                            SoundSource.AMBIENT,
+                                            ENVIRONMENT.fireflies.fireflySoundVolume.get(),
+                                            1, false
+                                    );
+                                }
+                            }
                         }
                     }
                 }
             }
         }
+    }
+
+    private static boolean canPlaySound(RandomSource random, boolean isHabitatBiome) {
+        if (isHabitatBiome) {
+            return random.nextDouble() < (0.00001 * ENVIRONMENT.fireflies.habitatBiomeDensity.get());
+        }
+        return random.nextDouble() < (0.0003 * ENVIRONMENT.fireflies.defaultDensity.get());
     }
 
     private static boolean canSpawn(RandomSource random, boolean isHabitatBiome) {

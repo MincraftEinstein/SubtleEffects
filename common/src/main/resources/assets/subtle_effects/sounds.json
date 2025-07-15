@@ -127,5 +127,58 @@
     "sounds": [
       "minecraft:random/fizz"
     ]
+  },
+  "environment.firefly.buzz": {
+    "subtitle": "subtitles.subtle_effects.environment.firefly.buzz",
+    "sounds": [
+      {
+        "name": "subtle_effects:block/firefly_bush/firefly_bush1",
+        "volume": 4.0
+      },
+      {
+        "name": "subtle_effects:block/firefly_bush/firefly_bush2",
+        "volume": 4.0
+      },
+      {
+        "name": "subtle_effects:block/firefly_bush/firefly_bush3",
+        "volume": 4.0
+      },
+      {
+        "name": "subtle_effects:block/firefly_bush/firefly_bush4",
+        "volume": 4.0
+      },
+      {
+        "name": "subtle_effects:block/firefly_bush/firefly_bush5",
+        "volume": 4.0
+      },
+      {
+        "name": "subtle_effects:block/firefly_bush/firefly_bush6",
+        "volume": 4.0
+      },
+      {
+        "name": "subtle_effects:block/firefly_bush/firefly_bush7",
+        "volume": 4.0,
+        "weight": 2
+      },
+      {
+        "name": "subtle_effects:block/firefly_bush/firefly_bush8",
+        "volume": 4.0,
+        "weight": 2
+      },
+      {
+        "name": "subtle_effects:block/firefly_bush/firefly_bush9",
+        "volume": 4.0,
+        "weight": 2
+      },
+      {
+        "name": "subtle_effects:block/firefly_bush/firefly_bush10",
+        "volume": 4.0,
+        "weight": 2
+      },
+      {
+        "name": "subtle_effects:block/firefly_bush/firefly_bush11",
+        "volume": 4.0
+      }
+    ]
   }
 }

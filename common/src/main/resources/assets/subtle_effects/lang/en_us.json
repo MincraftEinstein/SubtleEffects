@@ -13,6 +13,7 @@
   "subtitles.subtle_effects.block.cauldron.clean_item": "Item cleaned",
   "subtitles.subtle_effects.environment.geyser.whoosh": "Geyser whooshing",
   "subtitles.subtle_effects.environment.geyser.hiss": "Geyser hisses",
+  "subtitles.subtle_effects.environment.firefly.buzz": "Fireflies buzz",
   "commands.subtle_effects.subtle_effects.tickers.clear.success": "Cleared Tickers",
   "commands.subtle_effects.subtle_effects.particles.clear.success": "Cleared Particles",
   "commands.subtle_effects.subtle_effects.particles.count.enable.success": "Displaying Particle Count",

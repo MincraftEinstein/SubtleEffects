@@ -10,6 +10,7 @@ import me.fzzyhmstrs.fzzy_config.config.ConfigSection;
 import me.fzzyhmstrs.fzzy_config.util.EnumTranslatable;
 import me.fzzyhmstrs.fzzy_config.validation.collection.ValidatedList;
 import me.fzzyhmstrs.fzzy_config.validation.minecraft.ValidatedRegistryType;
+import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedFloat;
 import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedInt;
 import net.minecraft.Util;
 import net.minecraft.core.particles.SimpleParticleType;
@@ -63,6 +64,7 @@ public class FireflyConfigs extends ConfigSection {
     public ValidatedInt defaultDensity = new ValidatedInt(3, 10, 1);
     public ColdSeasonsType seasons = ColdSeasonsType.DEFAULT;
     public FireFlyType fireFlyType = FireFlyType.ORIGINAL;
+    public ValidatedFloat fireflySoundVolume = new ValidatedFloat(1, 2, 0);
 
     public ConfigGroup habitatBiomesGroup = new ConfigGroup("habitat_biomes");
     public boolean allowOnlyInHabitatBiomes = false;

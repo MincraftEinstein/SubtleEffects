@@ -22,6 +22,7 @@ public class ModSounds {
     public static final Supplier<SoundEvent> CAULDRON_CLEAN_ITEM = register("block.cauldron.clean_item");
     public static final Supplier<SoundEvent> GEYSER_WHOOSH = register("environment.geyser.whoosh");
     public static final Supplier<SoundEvent> GEYSER_HISS = register("environment.geyser.hiss");
+    public static final Supplier<SoundEvent> FIREFLY_BUZZ = register("environment.firefly.buzz");
 
     public static void init() {
     }
