@@ -1,7 +1,6 @@
 package einstein.subtle_effects.configs.environment;
 
 import einstein.subtle_effects.configs.ColdSeasonsType;
-import einstein.subtle_effects.configs.ModGeneralConfigs;
 import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.init.ModParticles;
 import me.fzzyhmstrs.fzzy_config.annotations.Translation;
@@ -62,22 +61,22 @@ public class FireflyConfigs extends ConfigSection {
     public ValidatedList<ResourceLocation> biomesAllowlist = biomeList("lush_caves");
     public ValidatedList<Block> spawnableBlocks = new ValidatedList<>(DEFAULT_SPAWNABLE_BLOCKS, ValidatedRegistryType.of(BuiltInRegistries.BLOCK));
     public ValidatedInt defaultDensity = new ValidatedInt(3, 10, 1);
-    public ColdSeasonsType seasons = ColdSeasonsType.DEFAULT;
-    public FireFlyType fireFlyType = FireFlyType.ORIGINAL;
+    public ColdSeasonsType ignoredSeasons = ColdSeasonsType.DEFAULT;
+    public FireflyType fireflyType = FireflyType.ORIGINAL;
     public ValidatedFloat fireflySoundVolume = new ValidatedFloat(1, 2, 0);
 
     public ConfigGroup habitatBiomesGroup = new ConfigGroup("habitat_biomes");
-    public boolean allowOnlyInHabitatBiomes = false;
+    public boolean onlyAllowInHabitatBiomes = false;
     public ValidatedList<ResourceLocation> habitatBiomes = biomeList("swamp", "mangrove_swamp");
     public ValidatedInt habitatBiomeDensity = new ValidatedInt(3, 10, 1);
 
-    public enum FireFlyType implements EnumTranslatable {
+    public enum FireflyType implements EnumTranslatable {
         ORIGINAL(ModParticles.FIREFLY),
         VANILLA(ModParticles.VANILLA_FIREFLY);
 
         private final Supplier<SimpleParticleType> particle;
 
-        FireFlyType(Supplier<SimpleParticleType> particle) {
+        FireflyType(Supplier<SimpleParticleType> particle) {
             this.particle = particle;
         }
 
@@ -87,7 +86,7 @@ public class FireflyConfigs extends ConfigSection {
 
         @Override
         public @NotNull String prefix() {
-            return ModConfigs.BASE_KEY + "general.fireFlyType";
+            return ModConfigs.BASE_KEY + "environment.fireflies.fireflyType";
         }
     }
 }

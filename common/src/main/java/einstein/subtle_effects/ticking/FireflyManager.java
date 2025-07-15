@@ -34,7 +34,7 @@ public class FireflyManager {
             return;
         }
 
-        if (CompatHelper.IS_SERENE_SEANSONS_LOADED.get() && SereneSeasonsCompat.isColdSeason(level, ENVIRONMENT.fireflies.seasons)) {
+        if (CompatHelper.IS_SERENE_SEANSONS_LOADED.get() && SereneSeasonsCompat.isColdSeason(level, ENVIRONMENT.fireflies.ignoredSeasons)) {
             return;
         }
 
@@ -47,7 +47,7 @@ public class FireflyManager {
         ResourceLocation biomeId = biomeKey.get().location();
         if (!ENVIRONMENT.fireflies.biomesBlocklist.contains(biomeId)) {
             boolean isHabitatBiome = ENVIRONMENT.fireflies.habitatBiomes.contains(biomeId);
-            if (!isHabitatBiome && (ENVIRONMENT.fireflies.allowOnlyInHabitatBiomes || !ENVIRONMENT.fireflies.spawnableBlocks.contains(state.getBlock()))) {
+            if (!isHabitatBiome && (ENVIRONMENT.fireflies.onlyAllowInHabitatBiomes || !ENVIRONMENT.fireflies.spawnableBlocks.contains(state.getBlock()))) {
                 return;
             }
 
@@ -65,7 +65,7 @@ public class FireflyManager {
                         if (!state.isCollisionShapeFullBlock(level, pos) && level.getFluidState(pos).isEmpty()) {
 
                             if (canSpawn(random, isHabitatBiome)) {
-                                level.addParticle(ENVIRONMENT.fireflies.fireFlyType.getParticle().get(),
+                                level.addParticle(ENVIRONMENT.fireflies.fireflyType.getParticle().get(),
                                         pos.getX() + 0.5 + nextNonAbsDouble(random, 0.4375),
                                         pos.getY() + 0.5 + nextNonAbsDouble(random, 0.4375),
                                         pos.getZ() + 0.5 + nextNonAbsDouble(random, 0.4375),
@@ -103,7 +103,7 @@ public class FireflyManager {
             return random.nextDouble() < (0.0005 * ENVIRONMENT.fireflies.habitatBiomeDensity.get());
         }
 
-        int spawnRate = ENVIRONMENT.fireflies.fireFlyType == FireflyConfigs.FireFlyType.VANILLA ? 170 : 1;
+        int spawnRate = ENVIRONMENT.fireflies.fireflyType == FireflyConfigs.FireflyType.VANILLA ? 170 : 1;
         return random.nextDouble() < (0.008 * ENVIRONMENT.fireflies.defaultDensity.get() * spawnRate);
     }
 }

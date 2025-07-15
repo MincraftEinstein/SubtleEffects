@@ -17,7 +17,7 @@ public class FireFlyEmitter extends AbstractParticleEmitter {
 
     @Override
     protected void spawnParticle(double x, double y, double z) {
-        level.addParticle(ModConfigs.ENVIRONMENT.fireflies.fireFlyType.getParticle().get(),
+        level.addParticle(ModConfigs.ENVIRONMENT.fireflies.fireflyType.getParticle().get(),
                 x, y, z,
                 nextNonAbsDouble(random, 0.001),
                 nextNonAbsDouble(random, 0.001),
