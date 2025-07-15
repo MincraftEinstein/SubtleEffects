@@ -7,8 +7,10 @@ import einstein.subtle_effects.configs.environment.FireflyConfigs;
 import einstein.subtle_effects.configs.environment.GeyserConfigs;
 import einstein.subtle_effects.init.ModBlockTickers;
 import einstein.subtle_effects.init.ModConfigs;
+import einstein.subtle_effects.tickers.TickerManager;
 import me.fzzyhmstrs.fzzy_config.annotations.Translation;
 import me.fzzyhmstrs.fzzy_config.config.Config;
+import net.minecraft.client.Minecraft;
 
 @Translation(prefix = ModConfigs.BASE_KEY + "environment")
 public class ModEnvironmentConfigs extends Config {
@@ -26,5 +28,6 @@ public class ModEnvironmentConfigs extends Config {
     public void onUpdateClient() {
         BiomeParticleManager.clear();
         ModBlockTickers.init();
+        TickerManager.clear(Minecraft.getInstance().level);
     }
 }
