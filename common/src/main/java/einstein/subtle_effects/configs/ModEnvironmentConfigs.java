@@ -1,13 +1,13 @@
 package einstein.subtle_effects.configs;
 
 import einstein.subtle_effects.SubtleEffects;
-import einstein.subtle_effects.biome_particles.BiomeParticleManager;
+import einstein.subtle_effects.ticking.biome_particles.BiomeParticleManager;
 import einstein.subtle_effects.configs.environment.BiomeConfigs;
 import einstein.subtle_effects.configs.environment.FireflyConfigs;
 import einstein.subtle_effects.configs.environment.GeyserConfigs;
 import einstein.subtle_effects.init.ModBlockTickers;
 import einstein.subtle_effects.init.ModConfigs;
-import einstein.subtle_effects.tickers.TickerManager;
+import einstein.subtle_effects.ticking.tickers.TickerManager;
 import me.fzzyhmstrs.fzzy_config.annotations.Translation;
 import me.fzzyhmstrs.fzzy_config.config.Config;
 import net.minecraft.client.Minecraft;

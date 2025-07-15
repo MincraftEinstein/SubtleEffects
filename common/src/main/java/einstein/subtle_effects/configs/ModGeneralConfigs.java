@@ -2,7 +2,7 @@ package einstein.subtle_effects.configs;
 
 import einstein.subtle_effects.SubtleEffects;
 import einstein.subtle_effects.init.ModConfigs;
-import einstein.subtle_effects.tickers.TickerManager;
+import einstein.subtle_effects.ticking.tickers.TickerManager;
 import einstein.subtle_effects.util.Util;
 import me.fzzyhmstrs.fzzy_config.annotations.Translation;
 import me.fzzyhmstrs.fzzy_config.config.Config;

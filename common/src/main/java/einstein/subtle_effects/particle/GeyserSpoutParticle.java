@@ -1,8 +1,8 @@
 package einstein.subtle_effects.particle;
 
 import einstein.subtle_effects.particle.option.GeyserSpoutParticleOptions;
-import einstein.subtle_effects.tickers.geyser_tickers.FlameGeyserTicker;
-import einstein.subtle_effects.tickers.geyser_tickers.GeyserType;
+import einstein.subtle_effects.ticking.tickers.geyser.FlameGeyserTicker;
+import einstein.subtle_effects.ticking.tickers.geyser.GeyserType;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleProvider;

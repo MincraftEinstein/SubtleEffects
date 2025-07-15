@@ -2,7 +2,7 @@ package einstein.subtle_effects.mixin.client.entity;
 
 import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.init.ModParticles;
-import einstein.subtle_effects.tickers.entity_tickers.EntityTicker;
+import einstein.subtle_effects.ticking.tickers.entity.EntityTicker;
 import einstein.subtle_effects.util.EntityTickersGetter;
 import einstein.subtle_effects.util.Util;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;

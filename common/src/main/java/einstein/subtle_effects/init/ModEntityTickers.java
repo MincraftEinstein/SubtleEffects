@@ -5,8 +5,8 @@ import einstein.subtle_effects.configs.ModEntityConfigs;
 import einstein.subtle_effects.configs.items.ItemRarityConfigs;
 import einstein.subtle_effects.particle.SparkParticle;
 import einstein.subtle_effects.particle.option.BooleanParticleOptions;
-import einstein.subtle_effects.tickers.entity_tickers.*;
-import einstein.subtle_effects.tickers.entity_tickers.sleeping.*;
+import einstein.subtle_effects.ticking.tickers.entity.*;
+import einstein.subtle_effects.ticking.tickers.entity.sleeping.*;
 import einstein.subtle_effects.util.ParticleSpawnUtil;
 import einstein.subtle_effects.util.SparkType;
 import einstein.subtle_effects.util.Util;
@@ -44,8 +44,8 @@ import net.minecraft.world.phys.Vec3;
 import java.util.function.Predicate;
 
 import static einstein.subtle_effects.init.ModConfigs.*;
-import static einstein.subtle_effects.tickers.entity_tickers.EntityTickerManager.register;
-import static einstein.subtle_effects.tickers.entity_tickers.EntityTickerManager.registerSimple;
+import static einstein.subtle_effects.ticking.tickers.entity.EntityTickerManager.register;
+import static einstein.subtle_effects.ticking.tickers.entity.EntityTickerManager.registerSimple;
 import static einstein.subtle_effects.util.MathUtil.nextNonAbsDouble;
 
 public class ModEntityTickers {

@@ -1,10 +1,10 @@
 package einstein.subtle_effects.mixin.client;
 
-import einstein.subtle_effects.biome_particles.FireflyManager;
-import einstein.subtle_effects.tickers.block.SparkProviderManager;
+import einstein.subtle_effects.ticking.FireflyManager;
+import einstein.subtle_effects.ticking.SparkProviderManager;
 import einstein.subtle_effects.init.ModBlockTickers;
-import einstein.subtle_effects.tickers.entity_tickers.EntityTickerManager;
-import einstein.subtle_effects.tickers.geyser_tickers.GeyserManager;
+import einstein.subtle_effects.ticking.tickers.entity.EntityTickerManager;
+import einstein.subtle_effects.ticking.GeyserManager;
 import einstein.subtle_effects.util.BlockTickerProvider;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;

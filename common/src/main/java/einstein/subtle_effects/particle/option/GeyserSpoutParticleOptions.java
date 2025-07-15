@@ -4,7 +4,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import einstein.subtle_effects.init.ModParticles;
-import einstein.subtle_effects.tickers.geyser_tickers.GeyserType;
+import einstein.subtle_effects.ticking.tickers.geyser.GeyserType;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.network.FriendlyByteBuf;
