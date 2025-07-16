@@ -354,6 +354,8 @@
   "config.subtle_effects.entities.improvedPandaSneezes": "Improved Panda Sneezes",
   "config.subtle_effects.entities.villagerWorkAtWorkstationParticles": "Villager Work At Workstation Particles",
   "config.subtle_effects.entities.villagerWorkAtWorkstationParticles.desc": "Should profession/workstation related particles spawn around a workstation when a villager uses it",
+  "config.subtle_effects.entities.improvedBrownMooshroomFeedingEffects": "Improved Brown Mooshroom Feeding Effects",
+  "config.subtle_effects.entities.improvedBrownMooshroomFeedingEffects.desc": "Changes the effects for feeding a brown mooshroom a flower",
   "config.subtle_effects.environment": "Environment",
   "config.subtle_effects.environment.biomeColorRain": "Biome Color Rain",
   "config.subtle_effects.environment.biomes": "Biomes",

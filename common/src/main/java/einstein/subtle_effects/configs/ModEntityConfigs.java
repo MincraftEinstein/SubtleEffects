@@ -48,6 +48,7 @@ public class ModEntityConfigs extends Config {
     public boolean featherTicklingPandas = true;
     public boolean improvedPandaSneezes = true;
     public boolean villagerWorkAtWorkstationParticles = true;
+    public boolean improvedBrownMooshroomFeedingEffects = true;
 
     public ModEntityConfigs() {
         super(SubtleEffects.loc("entities"));
