@@ -35,10 +35,10 @@ public abstract class SpellParticleMixin extends TextureSheetParticle {
         if (subtleEffects$isFirstFrame) {
             subtleEffects$isFirstFrame = false;
 
-            if (subtleEffects$isCloseToPlayer()) {
+            if (subtleEffects$isCloseToPlayer() && GENERAL.potionParticleAlphaNearPlayer.get() < 1) {
                 setAlpha(GENERAL.potionParticleAlphaNearPlayer.get());
             }
-            else if (alpha == 1 || alpha == 0) {
+            else if ((alpha == 1 || alpha == 0) && GENERAL.potionParticleAlpha.get() < 1) {
                 setAlpha(GENERAL.potionParticleAlpha.get());
             }
         }
@@ -47,12 +47,14 @@ public abstract class SpellParticleMixin extends TextureSheetParticle {
 
     @Inject(method = "tick", at = @At("TAIL"))
     private void tick(CallbackInfo ci) {
-        if (subtleEffects$isCloseToPlayer()) {
-            alpha = GENERAL.potionParticleAlphaNearPlayer.get();
-            return;
-        }
+        if (GENERAL.potionParticleAlphaNearPlayer.get() < 1) {
+            if (subtleEffects$isCloseToPlayer()) {
+                alpha = GENERAL.potionParticleAlphaNearPlayer.get();
+                return;
+            }
 
-        alpha = Mth.lerp(0.05F, alpha, originalAlpha);
+            alpha = Mth.lerp(0.05F, alpha, originalAlpha);
+        }
     }
 
     @Unique
