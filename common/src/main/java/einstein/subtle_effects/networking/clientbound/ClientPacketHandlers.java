@@ -13,11 +13,13 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.*;
+import net.minecraft.network.protocol.game.ClientboundLevelParticlesPacket;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.animal.MushroomCow;
 import net.minecraft.world.entity.monster.Ravager;
 import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.npc.VillagerData;
@@ -276,6 +278,35 @@ public class ClientPacketHandlers {
                     }
                 }
             }
+        }
+    }
+
+    public static void handle(ClientLevel level, ClientBoundMooshroomShearedPayload payload) {
+        Entity entity = level.getEntity(payload.entityId());
+        if (entity instanceof MushroomCow mooshroom) {
+            if (!ENTITIES.improvedMooshroomShearingEffects) {
+                level.addParticle(ParticleTypes.EXPLOSION, mooshroom.getX(), mooshroom.getY(0.5F), mooshroom.getZ(), 0, 0, 0);
+                return;
+            }
+
+            RandomSource random = mooshroom.getRandom();
+            ItemParticleOption particle = new ItemParticleOption(ParticleTypes.ITEM, new ItemStack(
+                    mooshroom.getVariant() == MushroomCow.MushroomType.BROWN ? Blocks.BROWN_MUSHROOM_BLOCK : Blocks.RED_MUSHROOM_BLOCK
+            ));
+
+            for (int i = 0; i < 20; i++) {
+                level.addParticle(
+                        particle,
+                        mooshroom.getRandomX(1),
+                        mooshroom.getRandomY(),
+                        mooshroom.getRandomZ(1),
+                        nextNonAbsDouble(random, 0.15),
+                        nextDouble(random, 0.15),
+                        nextNonAbsDouble(random, 0.15)
+                );
+            }
+
+            mooshroom.spawnAnim();
         }
     }
 
