@@ -6,9 +6,11 @@ import einstein.subtle_effects.compat.EndRemasteredCompat;
 import einstein.subtle_effects.configs.CommandBlockSpawnType;
 import einstein.subtle_effects.configs.ModBlockConfigs;
 import einstein.subtle_effects.mixin.client.block.AmethystClusterBlockAccessor;
+import einstein.subtle_effects.particle.SparkParticle;
 import einstein.subtle_effects.particle.option.PositionParticleOptions;
 import einstein.subtle_effects.util.BlockTickerProvider;
 import einstein.subtle_effects.util.ParticleSpawnUtil;
+import einstein.subtle_effects.util.SparkType;
 import einstein.subtle_effects.util.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
@@ -275,6 +277,17 @@ public class ModBlockTickers {
                             0, 0, 0
                     );
                 }
+            }
+        });
+        register(Blocks.BREWING_STAND, () -> true, (state, level, pos, random) -> {
+            for (int i = 0; i < 5; i++) {
+                level.addParticle(
+                        SparkParticle.create(SparkType.SHORT_LIFE, random, SparkParticle.BLAZE_COLORS),
+                        pos.getX() + 0.5 + nextNonAbsDouble(random, 0.125),
+                        pos.getY() + random.nextDouble(),
+                        pos.getZ() + 0.5 + nextNonAbsDouble(random, 0.125),
+                        0, 0, 0
+                );
             }
         });
     }
