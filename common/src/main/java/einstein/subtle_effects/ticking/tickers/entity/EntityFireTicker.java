@@ -9,6 +9,7 @@ import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
 
 import static einstein.subtle_effects.init.ModConfigs.ENTITIES;
 import static einstein.subtle_effects.util.MathUtil.nextNonAbsDouble;
@@ -17,6 +18,7 @@ public class EntityFireTicker extends EntityTicker<Entity> {
 
     private final float bbWidth;
     private final float bbHeight;
+    private final boolean isBlaze = entity.getType().equals(EntityType.BLAZE);
 
     public EntityFireTicker(Entity entity) {
         super(entity);
@@ -26,13 +28,13 @@ public class EntityFireTicker extends EntityTicker<Entity> {
 
     @Override
     public void entityTick() {
-        if (entity.displayFireAnimation()) {
+        if (entity.displayFireAnimation() || isBlaze) {
             if (random.nextInt(90) == 0 && ENTITIES.burning.sounds) {
                 Util.playClientSound(entity, SoundEvents.FIRE_EXTINGUISH, entity.getSoundSource(), 0.3F, 1);
             }
 
             if (bbWidth <= 4 && bbHeight <= 4) {
-                if (ENTITIES.burning.smoke.isEnabled()) {
+                if (ENTITIES.burning.smoke.isEnabled() && !isBlaze) {
                     level.addParticle(ENTITIES.burning.smoke.getParticle().get(),
                             entity.getRandomX(1),
                             entity.getRandomY(),
@@ -43,10 +45,12 @@ public class EntityFireTicker extends EntityTicker<Entity> {
 
                 if (ENTITIES.burning.sparks) {
                     for (int i = 0; i < 2; i++) {
-                        level.addParticle(getParticleForFireType(
-                                        SparkParticle.create(SparkType.SHORT_LIFE, random),
-                                        SparkParticle.createSoul(SparkType.SHORT_LIFE, random)
-                                ),
+                        level.addParticle(isBlaze ?
+                                        SparkParticle.create(SparkType.SHORT_LIFE, random, SparkParticle.BLAZE_COLORS) :
+                                        getParticleForFireType(
+                                                SparkParticle.create(SparkType.SHORT_LIFE, random),
+                                                SparkParticle.createSoul(SparkType.SHORT_LIFE, random)
+                                        ),
                                 entity.getRandomX(1),
                                 entity.getRandomY(),
                                 entity.getRandomZ(1),

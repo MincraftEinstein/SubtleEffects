@@ -50,6 +50,7 @@ public class ModEntityConfigs extends Config {
     public boolean villagerWorkAtWorkstationParticles = true;
     public boolean improvedBrownMooshroomFeedingEffects = true;
     public boolean improvedMooshroomShearingEffects = true;
+    public boolean replaceBlazeSmoke = true;
 
     public ModEntityConfigs() {
         super(SubtleEffects.loc("entities"));
