@@ -3,6 +3,7 @@ package einstein.subtle_effects.networking.clientbound;
 import einstein.subtle_effects.configs.ReplacedParticlesDisplayType;
 import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.init.ModParticles;
+import einstein.subtle_effects.mixin.client.entity.AbstractHorseAccessor;
 import einstein.subtle_effects.particle.option.FloatParticleOptions;
 import einstein.subtle_effects.particle.option.SheepFluffParticleOptions;
 import einstein.subtle_effects.ticking.tickers.TickerManager;
@@ -13,13 +14,15 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.*;
-import net.minecraft.network.protocol.game.ClientboundLevelParticlesPacket;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.MushroomCow;
+import net.minecraft.world.entity.animal.horse.AbstractHorse;
 import net.minecraft.world.entity.monster.Ravager;
 import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.npc.VillagerData;
@@ -307,6 +310,29 @@ public class ClientPacketHandlers {
             }
 
             mooshroom.spawnAnim();
+        }
+    }
+
+    public static void handle(ClientLevel level, ClientBoundAnimalFedPayload payload) {
+        Entity entity = level.getEntity(payload.animalId());
+        ItemStack stack = payload.stack();
+
+        if (entity instanceof Animal animal) {
+            RandomSource random = animal.getRandom();
+
+            for (int i = 0; i < 16; i++) {
+                ParticleSpawnUtil.spawnEntityFaceParticle(new ItemParticleOption(ParticleTypes.ITEM, stack),
+                        animal, level, random, new Vec3(0, 0.3, -0.2),
+                        Minecraft.getInstance().getTimer().getGameTimeDeltaPartialTick(false)
+                );
+            }
+
+            SoundEvent eatingSound = animal.getEatingSound(stack);
+            if (eatingSound.equals(SoundEvents.GENERIC_EAT)) {
+                if (!(animal instanceof AbstractHorse horse && !((AbstractHorseAccessor) horse).getEatSound().equals(SoundEvents.GENERIC_EAT))) {
+                    Util.playClientSound(animal, eatingSound, animal.getSoundSource(), 1, 1);
+                }
+            }
         }
     }
 

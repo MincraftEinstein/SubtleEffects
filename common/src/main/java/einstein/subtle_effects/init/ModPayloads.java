@@ -17,6 +17,7 @@ public class ModPayloads {
         NETWORK.registerToClient(ClientBoundStonecutterUsedPayload.TYPE, ClientBoundStonecutterUsedPayload.STREAM_CODEC);
         NETWORK.registerToClient(ClientBoundVillagerWorkPayload.TYPE, ClientBoundVillagerWorkPayload.STREAM_CODEC);
         NETWORK.registerToClient(ClientBoundMooshroomShearedPayload.TYPE, ClientBoundMooshroomShearedPayload.STREAM_CODEC);
+        NETWORK.registerToClient(ClientBoundAnimalFedPayload.TYPE, ClientBoundAnimalFedPayload.STREAM_CODEC);
     }
 
     public static void initClientHandlers() {
@@ -30,5 +31,6 @@ public class ModPayloads {
         NETWORK.registerClientHandler(ClientBoundStonecutterUsedPayload.TYPE, ClientPacketHandlers::handle);
         NETWORK.registerClientHandler(ClientBoundVillagerWorkPayload.TYPE, ClientPacketHandlers::handle);
         NETWORK.registerClientHandler(ClientBoundMooshroomShearedPayload.TYPE, ClientPacketHandlers::handle);
+        NETWORK.registerClientHandler(ClientBoundAnimalFedPayload.TYPE, ClientPacketHandlers::handle);
     }
 }
