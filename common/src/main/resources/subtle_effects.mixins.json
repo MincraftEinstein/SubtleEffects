@@ -71,6 +71,7 @@
   ],
   "mixins": [
     "common.AbstractHorseMixin",
+    "common.AnimalMixin",
     "common.BeehiveBlockEntityMixin",
     "common.CommonComposterMixin",
     "common.CommonComposterMixin$InputContainerMixin",
