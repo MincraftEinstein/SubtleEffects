@@ -55,6 +55,99 @@
       }
     ]
   },
+  "entity.cow.eat": {
+    "subtitle": "subtitles.subtle_effects.entity.cow.eat",
+    "sounds": [
+      {
+        "name": "entity.mooshroom.eat",
+        "type": "event"
+      }
+    ]
+  },
+  "entity.chicken.eat": {
+    "subtitle": "subtitles.subtle_effects.entity.chicken.eat",
+    "sounds": [
+      {
+        "name": "entity.parrot.eat",
+        "type": "event"
+      }
+    ]
+  },
+  "entity.ocelot.eat": {
+    "subtitle": "subtitles.subtle_effects.entity.ocelot.eat",
+    "sounds": [
+      {
+        "name": "entity.cat.eat",
+        "type": "event"
+      }
+    ]
+  },
+  "entity.sheep.eat": {
+    "subtitle": "subtitles.subtle_effects.entity.sheep.eat",
+    "sounds": [
+      {
+        "name": "entity.goat.eat",
+        "type": "event"
+      }
+    ]
+  },
+  "entity.axolotl.eat": {
+    "subtitle": "subtitles.subtle_effects.entity.axolotl.eat",
+    "sounds": [
+      {
+        "name": "entity.cat.eat",
+        "type": "event"
+      }
+    ]
+  },
+  "entity.bee.eat": {
+    "subtitle": "subtitles.subtle_effects.entity.bee.eat",
+    "sounds": [
+      {
+        "name": "block.cobweb.break",
+        "type": "event",
+        "volume": 0.3
+      }
+    ]
+  },
+  "entity.tadpole.eat": {
+    "subtitle": "subtitles.subtle_effects.entity.tadpole.eat",
+    "sounds": [
+      {
+        "name": "entity.cat.eat",
+        "type": "event"
+      }
+    ]
+  },
+  "entity.rabbit.eat": {
+    "subtitle": "subtitles.subtle_effects.entity.rabbit.eat",
+    "sounds": [
+      {
+        "name": "entity.cat.eat",
+        "type": "event"
+      }
+    ]
+  },
+  "entity.turtle.eat": {
+    "subtitle": "subtitles.subtle_effects.entity.turtle.eat",
+    "sounds": [
+      {
+        "name": "entity.cat.eat",
+        "type": "event",
+        "pitch": 0.6
+      }
+    ]
+  },
+  "entity.hoglin.eat": {
+    "subtitle": "subtitles.subtle_effects.entity.hoglin.eat",
+    "sounds": [
+      {
+        "name": "entity.generic.eat",
+        "type": "event",
+        "pitch": 0.8
+      }
+    ]
+  },
   "block.amethyst_cluster.chime": {
     "subtitle": "subtitles.block.amethyst_block.chime",
     "sounds": [

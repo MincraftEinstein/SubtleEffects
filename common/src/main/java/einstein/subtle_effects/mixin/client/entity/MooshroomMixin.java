@@ -47,8 +47,18 @@ public class MooshroomMixin {
 
     @WrapOperation(method = "mobInteract", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/Level;addParticle(Lnet/minecraft/core/particles/ParticleOptions;DDDDDD)V", ordinal = 1))
     private void spawnFeedingParticles(Level level, ParticleOptions particle, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, Operation<Void> original, @Local Optional<SuspiciousStewEffects> optional, @Local(ordinal = 0) ItemStack heldStack) {
+        RandomSource random = subtleEffects$me.getRandom();
+
+        if (ModConfigs.ENTITIES.animalFeedingParticles) {
+            for (int i = 0; i < 4; i++) {
+                ParticleSpawnUtil.spawnEntityFaceParticle(new ItemParticleOption(ParticleTypes.ITEM, heldStack),
+                        subtleEffects$me, level, random, new Vec3(0, 0.3, -0.2),
+                        Minecraft.getInstance().getTimer().getGameTimeDeltaPartialTick(false)
+                );
+            }
+        }
+
         if (ModConfigs.ENTITIES.improvedBrownMooshroomFeedingEffects) {
-            RandomSource random = subtleEffects$me.getRandom();
             List<SuspiciousStewEffects.Entry> effects = optional.get().effects();
             int color = effects.get(random.nextInt(effects.size())).effect().value().getColor();
 
@@ -60,15 +70,9 @@ public class MooshroomMixin {
                         0, 0, 0
                 );
             }
-
-            for (int i = 0; i < 4; i++) {
-                ParticleSpawnUtil.spawnEntityFaceParticle(new ItemParticleOption(ParticleTypes.ITEM, heldStack),
-                        subtleEffects$me, level, random, new Vec3(0, 0.3, -0.2),
-                        Minecraft.getInstance().getTimer().getGameTimeDeltaPartialTick(false)
-                );
-            }
             return;
         }
+
         original.call(level, particle, x, y, z, xSpeed, ySpeed, zSpeed);
     }
 }

@@ -2,6 +2,7 @@ package einstein.subtle_effects.configs;
 
 import einstein.subtle_effects.SubtleEffects;
 import einstein.subtle_effects.configs.entities.*;
+import einstein.subtle_effects.init.ModAnimalFedEffectSettings;
 import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.ticking.tickers.TickerManager;
 import me.fzzyhmstrs.fzzy_config.annotations.Translation;
@@ -51,6 +52,8 @@ public class ModEntityConfigs extends Config {
     public boolean improvedBrownMooshroomFeedingEffects = true;
     public boolean improvedMooshroomShearingEffects = true;
     public boolean replaceBlazeSmoke = true;
+    public boolean animalFeedingParticles = true;
+    public ValidatedFloat animalFeedingSoundVolume = new ValidatedFloat(1, 1, 0);
 
     public ModEntityConfigs() {
         super(SubtleEffects.loc("entities"));
@@ -59,6 +62,7 @@ public class ModEntityConfigs extends Config {
     @Override
     public void onUpdateClient() {
         TickerManager.clear(Minecraft.getInstance().level);
+        ModAnimalFedEffectSettings.init();
     }
 
     public enum PerspectiveDisplayType implements EnumTranslatable {

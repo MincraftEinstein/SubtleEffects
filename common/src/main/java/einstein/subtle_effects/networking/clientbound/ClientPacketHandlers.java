@@ -2,6 +2,7 @@ package einstein.subtle_effects.networking.clientbound;
 
 import einstein.subtle_effects.configs.ReplacedParticlesDisplayType;
 import einstein.subtle_effects.init.ModConfigs;
+import einstein.subtle_effects.init.ModAnimalFedEffectSettings;
 import einstein.subtle_effects.init.ModParticles;
 import einstein.subtle_effects.mixin.client.entity.AbstractHorseAccessor;
 import einstein.subtle_effects.particle.option.FloatParticleOptions;
@@ -21,9 +22,13 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.animal.Animal;
+import net.minecraft.world.entity.animal.Dolphin;
 import net.minecraft.world.entity.animal.MushroomCow;
+import net.minecraft.world.entity.animal.Parrot;
+import net.minecraft.world.entity.animal.frog.Tadpole;
 import net.minecraft.world.entity.animal.horse.AbstractHorse;
 import net.minecraft.world.entity.monster.Ravager;
+import net.minecraft.world.entity.monster.Strider;
 import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.npc.VillagerData;
 import net.minecraft.world.entity.npc.VillagerProfession;
@@ -39,6 +44,7 @@ import net.minecraft.world.phys.Vec3;
 import org.joml.Vector3f;
 
 import java.util.List;
+import java.util.function.Supplier;
 
 import static einstein.subtle_effects.init.ModConfigs.*;
 import static einstein.subtle_effects.util.MathUtil.*;
@@ -317,23 +323,53 @@ public class ClientPacketHandlers {
         Entity entity = level.getEntity(payload.animalId());
         ItemStack stack = payload.stack();
 
-        if (entity instanceof Animal animal) {
-            RandomSource random = animal.getRandom();
+        if (entity instanceof Animal || entity instanceof Dolphin || entity instanceof Tadpole) {
+            LivingEntity livingEntity = (LivingEntity) entity;
+            RandomSource random = entity.getRandom();
+            ModAnimalFedEffectSettings.Settings settings = ModAnimalFedEffectSettings.getSetting(entity.getType());
 
-            for (int i = 0; i < 16; i++) {
-                ParticleSpawnUtil.spawnEntityFaceParticle(new ItemParticleOption(ParticleTypes.ITEM, stack),
-                        animal, level, random, new Vec3(0, 0.3, -0.2),
-                        Minecraft.getInstance().getTimer().getGameTimeDeltaPartialTick(false)
-                );
-            }
-
-            SoundEvent eatingSound = animal.getEatingSound(stack);
-            if (eatingSound.equals(SoundEvents.GENERIC_EAT)) {
-                if (!(animal instanceof AbstractHorse horse && !((AbstractHorseAccessor) horse).getEatSound().equals(SoundEvents.GENERIC_EAT))) {
-                    Util.playClientSound(animal, eatingSound, animal.getSoundSource(), 1, 1);
+            if (ENTITIES.animalFeedingParticles) {
+                for (int i = 0; i < 16; i++) {
+                    ParticleSpawnUtil.spawnEntityFaceParticle(
+                            new ItemParticleOption(ParticleTypes.ITEM, settings.stackReplacer().apply(stack)),
+                            livingEntity, level, random, settings.offset(),
+                            Minecraft.getInstance().getTimer().getGameTimeDeltaPartialTick(false)
+                    );
                 }
             }
+
+            float volume = ENTITIES.animalFeedingSoundVolume.get();
+            if (volume > 0 && !entity.isSilent()) {
+                Util.playClientSound(entity, getEatSound(livingEntity, stack, settings), entity.getSoundSource(), volume, livingEntity.getVoicePitch());
+            }
         }
+    }
+
+    private static SoundEvent getEatSound(LivingEntity entity, ItemStack stack, ModAnimalFedEffectSettings.Settings settings) {
+        Supplier<SoundEvent> overrideSound = settings.sound();
+        if (overrideSound != null) {
+            return overrideSound.get();
+        }
+        else if (entity instanceof AbstractHorse horse) {
+            SoundEvent horseEatSound = ((AbstractHorseAccessor) horse).getEatSound();
+            if (horseEatSound != null && !horseEatSound.equals(SoundEvents.GENERIC_EAT)) {
+                return horseEatSound;
+            }
+        }
+
+        SoundEvent eatSound = entity.getEatingSound(stack);
+        SoundEvent stackEatSound = stack.getEatingSound();
+
+        if (!eatSound.equals(SoundEvents.GENERIC_EAT) && !eatSound.equals(stackEatSound)) {
+            return eatSound;
+        }
+        else if (entity instanceof Strider) {
+            return SoundEvents.STRIDER_EAT;
+        }
+        else if (entity instanceof Parrot) {
+            return SoundEvents.PARROT_EAT;
+        }
+        return stackEatSound;
     }
 
     private static DyeColor getColorForShepherdWoolFluff(int professionLevel, RandomSource random) {

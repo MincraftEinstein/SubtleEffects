@@ -30,6 +30,7 @@ public class SubtleEffectsClient {
         BiomeParticleManager.init();
         ModDamageListeners.init();
         ModParticles.init();
+        ModAnimalFedEffectSettings.init();
     }
 
     public static void clientTick(Minecraft minecraft, Level level) {
