@@ -152,6 +152,7 @@
   "config.subtle_effects.blocks.compostingItemParticles.desc": "Should item particles be spawned when composting items",
   "config.subtle_effects.blocks.commandBlockParticles": "Command Block Particles",
   "config.subtle_effects.blocks.commandBlockParticles.desc": "Should command blocks have particles like in MC Story Mode",
+  "config.subtle_effects.blocks.commandBlockParticlesDensity": "Command Block Particles Density",
   "config.subtle_effects.blocks.slimeBlockBounceSounds": "Slime Block Bounce Sounds",
   "config.subtle_effects.blocks.slimeBlockBounceSounds.desc": "Slime bounce sounds when bouncing on a slime block",
   "config.subtle_effects.blocks.beaconParticlesGroup": "Beacon Particles",

@@ -23,6 +23,7 @@ import me.fzzyhmstrs.fzzy_config.validation.collection.ValidatedMap;
 import me.fzzyhmstrs.fzzy_config.validation.minecraft.ValidatedIdentifier;
 import me.fzzyhmstrs.fzzy_config.validation.minecraft.ValidatedRegistryType;
 import me.fzzyhmstrs.fzzy_config.validation.misc.ValidatedColor;
+import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedDouble;
 import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedFloat;
 import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedInt;
 import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedNumber;
@@ -92,6 +93,7 @@ public class ModBlockConfigs extends Config {
     public boolean compostingItemParticles = true;
 
     public CommandBlockSpawnType commandBlockParticles = CommandBlockSpawnType.ON;
+    public ValidatedDouble commandBlockParticlesDensity = new ValidatedDouble(1, 1, 0.1);
     public boolean slimeBlockBounceSounds = true;
     public ConfigGroup beaconParticlesGroup = new ConfigGroup("beacon_particles");
     public BeaconParticlesDisplayType beaconParticlesDisplayType = BeaconParticlesDisplayType.ON;
