@@ -4,6 +4,7 @@ import einstein.subtle_effects.init.ModConfigs;
 import me.fzzyhmstrs.fzzy_config.annotations.Translation;
 import me.fzzyhmstrs.fzzy_config.config.ConfigSection;
 import me.fzzyhmstrs.fzzy_config.util.EnumTranslatable;
+import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedDouble;
 import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedInt;
 import org.jetbrains.annotations.NotNull;
 
@@ -18,6 +19,7 @@ public class SparksConfigs extends ConfigSection {
     public boolean torchSparks = true;
     public ValidatedInt lanternSparksDensity = new ValidatedInt(5, 10, 0);
     public LavaSparksSpawnType lavaSparks = LavaSparksSpawnType.ON;
+    public ValidatedDouble lavaSparksDensity = new ValidatedDouble(1, 1, 0.1);
 
     public enum LavaSparksSpawnType implements EnumTranslatable {
         OFF,

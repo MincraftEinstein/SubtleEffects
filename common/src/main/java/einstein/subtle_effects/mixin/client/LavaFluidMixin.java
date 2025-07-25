@@ -76,14 +76,16 @@ public abstract class LavaFluidMixin {
         }
 
         for (int i = 0; i < count; i++) {
-            level.addParticle(SparkParticle.create(SparkType.FLOATING, random),
-                    pos.getX() + 0.5 + random.nextDouble() / 2 * nextSign(random),
-                    pos.getY() + 0.75 + random.nextDouble() * random.nextInt(3),
-                    pos.getZ() + 0.5 + random.nextDouble() / 2 * nextSign(random),
-                    nextNonAbsDouble(random, 0.1),
-                    nextDouble(random, 0.07),
-                    nextNonAbsDouble(random, 0.1)
-            );
+            if (random.nextDouble() < ModConfigs.BLOCKS.sparks.lavaSparksDensity.get()) {
+                level.addParticle(SparkParticle.create(SparkType.FLOATING, random),
+                        pos.getX() + 0.5 + random.nextDouble() / 2 * nextSign(random),
+                        pos.getY() + 0.75 + random.nextDouble() * random.nextInt(3),
+                        pos.getZ() + 0.5 + random.nextDouble() / 2 * nextSign(random),
+                        nextNonAbsDouble(random, 0.1),
+                        nextDouble(random, 0.07),
+                        nextNonAbsDouble(random, 0.1)
+                );
+            }
         }
     }
 }
