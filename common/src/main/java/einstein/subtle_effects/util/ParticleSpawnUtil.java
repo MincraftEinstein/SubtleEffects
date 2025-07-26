@@ -144,9 +144,11 @@ public class ParticleSpawnUtil {
             Vec3 endPos = pos.relative(direction, 1);
             Vec3 relativePos = endPos.relative(direction, -0.5);
 
-            if (directionValidator.test(direction, endPos)) {
-                Vec3 speed = pos.vectorTo(relativePos).offsetRandom(random, 1);
-                level.addParticle(new DirectionParticleOptions(ModParticles.COMMAND_BLOCK.get(), direction), endPos.x(), endPos.y(), endPos.z(), speed.x(), speed.y(), speed.z());
+            if (random.nextDouble() < BLOCKS.commandBlockParticlesDensity.get()) {
+                if (directionValidator.test(direction, endPos)) {
+                    Vec3 speed = pos.vectorTo(relativePos).offsetRandom(random, 1);
+                    level.addParticle(new DirectionParticleOptions(ModParticles.COMMAND_BLOCK.get(), direction), endPos.x(), endPos.y(), endPos.z(), speed.x(), speed.y(), speed.z());
+                }
             }
         }
     }
