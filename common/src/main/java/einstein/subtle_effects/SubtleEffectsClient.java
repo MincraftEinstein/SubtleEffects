@@ -24,6 +24,7 @@ public class SubtleEffectsClient {
 
     public static void clientSetup() {
         ModConfigs.init();
+        ModParticleRenderTypes.init();
         ModPayloads.initClientHandlers();
         ModEntityTickers.init();
         ModBlockTickers.init();

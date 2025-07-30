@@ -77,6 +77,7 @@ public class ModParticles {
     public static final Supplier<ParticleType<GeyserSpoutParticleOptions>> GEYSER_SPOUT = register("geyser_spout", type -> GeyserSpoutParticleOptions.CODEC, type -> GeyserSpoutParticleOptions.STREAM_CODEC, GeyserSpoutParticle.Provider::new);
     public static final Supplier<SimpleParticleType> SNEEZE = register("sneeze", SneezeParticle.Provider::new);
     public static final Supplier<SimpleParticleType> GEYSER_SMOKE = register("geyser_smoke", GeyserSmokeParticleProvider::new);
+    public static final Supplier<ParticleType<ColorParticleOption>> POTION_CLOUD = register("potion_cloud", ColorParticleOption::codec, ColorParticleOption::streamCodec, PotionCloudParticle.Provider::new);
 
     public static void init() {
     }
