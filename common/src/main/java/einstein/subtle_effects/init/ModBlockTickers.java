@@ -279,7 +279,7 @@ public class ModBlockTickers {
                 }
             }
         });
-        register(Blocks.BREWING_STAND, () -> true, (state, level, pos, random) -> {
+        register(Blocks.BREWING_STAND, () -> BLOCKS.sparks.brewingStandSparks, (state, level, pos, random) -> {
             for (int i = 0; i < 5; i++) {
                 level.addParticle(
                         SparkParticle.create(SparkType.SHORT_LIFE, random, SparkParticle.BLAZE_COLORS),

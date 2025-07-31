@@ -59,6 +59,7 @@
   "config.subtle_effects.blocks.sparks.lavaSparksDisplayType.ON": "On",
   "config.subtle_effects.blocks.sparks.lavaSparksDisplayType.NOT_NETHER": "Not Nether",
   "config.subtle_effects.blocks.sparks.lavaSparksDensity": "Lava Sparks Density",
+  "config.subtle_effects.blocks.sparks.brewingStandSparks": "Brewing Stand Sparks",
   "config.subtle_effects.blocks.updatedSmoke": "Updated Smoke",
   "config.subtle_effects.blocks.updatedSmoke.desc": "Replace the old black and gray smoke particles with new campfire style particles",
   "config.subtle_effects.blocks.updatedSmoke.candleSmoke": "Candle Smoke",
