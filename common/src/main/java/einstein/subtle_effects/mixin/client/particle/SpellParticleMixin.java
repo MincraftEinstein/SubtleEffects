@@ -1,9 +1,12 @@
 package einstein.subtle_effects.mixin.client.particle;
 
+import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import einstein.subtle_effects.init.ModParticleRenderTypes;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.client.particle.ParticleRenderType;
 import net.minecraft.client.particle.SpellParticle;
 import net.minecraft.client.particle.TextureSheetParticle;
 import net.minecraft.util.Mth;
@@ -55,6 +58,14 @@ public abstract class SpellParticleMixin extends TextureSheetParticle {
 
             alpha = Mth.lerp(0.05F, alpha, originalAlpha);
         }
+    }
+
+    @ModifyReturnValue(method = "getRenderType", at = @At("RETURN"))
+    private ParticleRenderType replaceRenderType(ParticleRenderType original) {
+        if (true) { // TODO config
+            return ModParticleRenderTypes.BLENDED;
+        }
+        return original;
     }
 
     @Unique
