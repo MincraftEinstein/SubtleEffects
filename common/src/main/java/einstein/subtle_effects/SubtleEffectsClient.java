@@ -5,10 +5,9 @@ import com.mojang.brigadier.arguments.BoolArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import com.mojang.brigadier.tree.LiteralCommandNode;
-import einstein.subtle_effects.biome_particles.BiomeParticleManager;
 import einstein.subtle_effects.init.*;
-import einstein.subtle_effects.tickers.FlameGeyserTicker;
-import einstein.subtle_effects.tickers.TickerManager;
+import einstein.subtle_effects.ticking.biome_particles.BiomeParticleManager;
+import einstein.subtle_effects.ticking.tickers.TickerManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.SharedSuggestionProvider;
@@ -25,12 +24,14 @@ public class SubtleEffectsClient {
 
     public static void clientSetup() {
         ModConfigs.init();
+        ModParticleRenderTypes.init();
         ModPayloads.initClientHandlers();
         ModEntityTickers.init();
         ModBlockTickers.init();
         BiomeParticleManager.init();
         ModDamageListeners.init();
         ModParticles.init();
+        ModAnimalFedEffectSettings.init();
     }
 
     public static void clientTick(Minecraft minecraft, Level level) {
@@ -41,8 +42,6 @@ public class SubtleEffectsClient {
             if (!HAS_CLEARED) {
                 TickerManager.clear(level);
                 BiomeParticleManager.clear();
-                FlameGeyserTicker.ACTIVE_GEYSERS.clear();
-                FlameGeyserTicker.INACTIVE_GEYSERS.clear();
                 HAS_CLEARED = true;
             }
             return;

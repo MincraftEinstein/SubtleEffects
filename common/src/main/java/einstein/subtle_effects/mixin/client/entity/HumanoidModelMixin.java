@@ -1,6 +1,5 @@
 package einstein.subtle_effects.mixin.client.entity;
 
-import einstein.subtle_effects.client.model.entity.EinsteinSolarSystemModel;
 import einstein.subtle_effects.client.renderer.entity.EinsteinSolarSystemLayer;
 import einstein.subtle_effects.util.EntityAccessRenderState;
 import net.minecraft.client.model.HumanoidModel;

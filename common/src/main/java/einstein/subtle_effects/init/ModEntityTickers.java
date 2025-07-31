@@ -2,11 +2,11 @@ package einstein.subtle_effects.init;
 
 import einstein.subtle_effects.configs.CommandBlockSpawnType;
 import einstein.subtle_effects.configs.ModEntityConfigs;
-import einstein.subtle_effects.configs.entities.ItemRarityConfigs;
+import einstein.subtle_effects.configs.items.ItemRarityConfigs;
 import einstein.subtle_effects.particle.SparkParticle;
 import einstein.subtle_effects.particle.option.BooleanParticleOptions;
-import einstein.subtle_effects.tickers.entity_tickers.*;
-import einstein.subtle_effects.tickers.entity_tickers.sleeping.*;
+import einstein.subtle_effects.ticking.tickers.entity.*;
+import einstein.subtle_effects.ticking.tickers.entity.sleeping.*;
 import einstein.subtle_effects.util.MathUtil;
 import einstein.subtle_effects.util.ParticleSpawnUtil;
 import einstein.subtle_effects.util.SparkType;
@@ -41,10 +41,9 @@ import net.minecraft.world.phys.Vec3;
 
 import java.util.function.Predicate;
 
-import static einstein.subtle_effects.init.ModConfigs.BLOCKS;
-import static einstein.subtle_effects.init.ModConfigs.ENTITIES;
-import static einstein.subtle_effects.tickers.entity_tickers.EntityTickerManager.register;
-import static einstein.subtle_effects.tickers.entity_tickers.EntityTickerManager.registerSimple;
+import static einstein.subtle_effects.init.ModConfigs.*;
+import static einstein.subtle_effects.ticking.tickers.entity.EntityTickerManager.register;
+import static einstein.subtle_effects.ticking.tickers.entity.EntityTickerManager.registerSimple;
 import static einstein.subtle_effects.util.MathUtil.nextNonAbsDouble;
 
 public class ModEntityTickers {
@@ -64,7 +63,7 @@ public class ModEntityTickers {
         register(entity -> entity.getType().equals(EntityType.SLIME) && ENTITIES.slimeTrails, (Slime entity) -> new SlimeTrailTicker<>(entity, ModParticles.SLIME_TRAIL));
         register(entity -> entity.getType().equals(EntityType.MAGMA_CUBE) && ENTITIES.magmaCubeTrails, (MagmaCube entity) -> new SlimeTrailTicker<>(entity, ModParticles.MAGMA_CUBE_TRAIL));
         register(entity -> entity.getType().equals(EntityType.IRON_GOLEM) && ENTITIES.ironGolemCrackParticles, IronGolemTicker::new);
-        register(entity -> entity instanceof ItemEntity && ENTITIES.itemRarity.particlesDisplayType != ItemRarityConfigs.DisplayType.OFF, ItemRarityTicker::new);
+        register(entity -> entity instanceof ItemEntity && ITEMS.itemRarity.particlesDisplayType != ItemRarityConfigs.DisplayType.OFF, ItemRarityTicker::new);
         register(entity -> entity instanceof Witch && ENTITIES.humanoids.NPCsHavePotionRings && ENTITIES.humanoids.potionRingsDisplayType.isEnabled(), WitchPotionRingTicker::new);
         register(entity -> isNPC(entity, true) && ENTITIES.humanoids.NPCsHavePotionRings && ENTITIES.humanoids.potionRingsDisplayType.isEnabled(), (LivingEntity entity) -> new HumanoidPotionRingTicker<>(entity));
 
@@ -94,10 +93,10 @@ public class ModEntityTickers {
                         }
                     }
                 });
-        registerSimple(entity -> entity instanceof FallingBlockEntity && BLOCKS.fallingBlocks.fallingDust, false, (entity, level, random) -> {
+        registerSimple(entity -> entity instanceof FallingBlockEntity && BLOCKS.fallingBlocks.whileFallingDust, false, (entity, level, random) -> {
             FallingBlockEntity fallingBlock = (FallingBlockEntity) entity;
 
-            int startDistance = BLOCKS.fallingBlocks.fallingDustStartDistance.get();
+            int startDistance = BLOCKS.fallingBlocks.whileFallingDustStartDistance.get();
             double fallDistance = fallingBlock.fallDistance;
 
             if (fallDistance <= startDistance) {
@@ -125,8 +124,8 @@ public class ModEntityTickers {
                 }
             }
         });
-        registerSimple(EntityType.SNOWBALL, false, () -> ENTITIES.snowballTrailDensity.get() > 0, (entity, level, random) -> {
-            if (shouldSpawn(random, ENTITIES.snowballTrailDensity)) {
+        registerSimple(EntityType.SNOWBALL, false, () -> ITEMS.projectiles.snowballTrailDensity.get() > 0, (entity, level, random) -> {
+            if (shouldSpawn(random, ITEMS.projectiles.snowballTrailDensity)) {
                 Vec3 deltaMovement = entity.getDeltaMovement();
                 level.addParticle(ModParticles.SNOWBALL_TRAIL.get(),
                         entity.getRandomX(1),
@@ -138,7 +137,7 @@ public class ModEntityTickers {
                 );
             }
         });
-        registerSimple(EntityType.ENDER_PEARL, false, () -> ENTITIES.enderPearlTrail, (entity, level, random) -> {
+        registerSimple(EntityType.ENDER_PEARL, false, () -> ITEMS.projectiles.enderPearlTrail, (entity, level, random) -> {
             for (int i = 0; i < 10; i++) {
                 level.addParticle(ParticleTypes.PORTAL,
                         entity.getRandomX(2),

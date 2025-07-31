@@ -78,7 +78,7 @@ public abstract class DripParticleMixin extends TextureSheetParticle {
                         level.playLocalSound(x, y, z,
                                 SoundEvents.LAVA_EXTINGUISH,
                                 SoundSource.BLOCKS,
-                                GENERAL.fluidDropsEvaporationVolume.get(),
+                                Mth.randomBetween(random, 0.3F, 1) * GENERAL.fluidDropsEvaporationVolume.get(),
                                 (2.6F + (random.nextFloat() - random.nextFloat()) * 0.8F),
                                 false
                         );
@@ -90,13 +90,13 @@ public abstract class DripParticleMixin extends TextureSheetParticle {
             }
 
             if (!subtleEffects$dripIntoFluidEffectsPlayed) {
-                if (GENERAL.dropLandSounds) {
+                if (GENERAL.dropLandSoundVolume.get() > 0) {
                     Supplier<SoundEvent> sound = subtleEffects$isLava ? ModSounds.DRIP_LAVA_INTO_FLUID : ModSounds.DRIP_WATER_INTO_FLUID;
 
                     level.playLocalSound(x, y, z,
                             sound.get(),
                             SoundSource.BLOCKS,
-                            Mth.randomBetween(random, 0.3F, 1),
+                            Mth.randomBetween(random, 0.3F, 1) * GENERAL.dropLandSoundVolume.get(),
                             1,
                             false
                     );

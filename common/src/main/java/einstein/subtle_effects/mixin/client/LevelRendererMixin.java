@@ -11,7 +11,7 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 
 @Mixin(LevelRenderer.class)
-public class LevelRendererMixin implements FrustumGetter {
+public abstract class LevelRendererMixin implements FrustumGetter {
 
     @Shadow
     private Frustum cullingFrustum;

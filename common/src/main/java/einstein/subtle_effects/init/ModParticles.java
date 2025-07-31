@@ -42,9 +42,10 @@ public class ModParticles {
     public static final Supplier<ParticleType<BooleanParticleOptions>> VEX_MAGIC = register("vex_magic", BooleanParticleOptions::codec, BooleanParticleOptions::streamCodec, AllayMagicParticle.VexProvider::new);
     public static final Supplier<SimpleParticleType> SMALL_DUST_CLOUD = register("small_dust_cloud", DustCloudParticle.SmallProvider::new);
     public static final Supplier<SimpleParticleType> LARGE_DUST_CLOUD = register("large_dust_cloud", DustCloudParticle.LargeProvider::new);
-    public static final Supplier<ParticleType<ColorParticleOption>> SHEEP_FLUFF = register("sheep_fluff", ColorParticleOption::codec, ColorParticleOption::streamCodec, FeatherParticle.SheepFluffProvider::new);
+    public static final Supplier<ParticleType<SheepFluffParticleOptions>> SHEEP_FLUFF = register("sheep_fluff", type -> SheepFluffParticleOptions.CODEC, type -> SheepFluffParticleOptions.STREAM_CODEC, SheepFluffParticle.Provider::new);
     public static final Supplier<SimpleParticleType> MUSHROOM_SPORE = register("mushroom_spore", MushroomSporeProvider::new);
     public static final Supplier<SimpleParticleType> FIREFLY = register("firefly", FireflyParticle.Provider::new);
+    public static final Supplier<SimpleParticleType> VANILLA_FIREFLY = register("vanilla_firefly", VanillaFireflyParticle.FireflyProvider::new);
     public static final Supplier<SimpleParticleType> FIREFLY_EMITTER = register("firefly_emitter", sprites -> new FireFlyEmitter.Provider());
     public static final Supplier<SimpleParticleType> SMOKE = register("smoke", SmokeParticleProvider::new);
     public static final Supplier<SimpleParticleType> POLLEN = register("pollen", PollenProvider::new);
@@ -78,9 +79,12 @@ public class ModParticles {
     public static final Supplier<ParticleType<BlockParticleOption>> BLOCK_NO_MOMENTUM = register("block_no_momentum", BlockParticleOption::codec, BlockParticleOption::streamCodec, sprites -> new TerrainNoMomentumParticleProvider());
     public static final Supplier<SimpleParticleType> LAVA_SPLASH = register("lava_splash", LavaSplashParticle.Provider::new);
     public static final Supplier<SimpleParticleType> OMINOUS_VAULT_CONNECTION = register("ominous_vault_connection", FlyTowardsPositionParticle.VaultConnectionProvider::new);
-    public static final Supplier<ParticleType<IntegerParticleOptions>> GEYSER_HOLE = register("geyser_spout", IntegerParticleOptions::codec, IntegerParticleOptions::streamCodec, GeyserSpoutParticle.Provider::new);
+    public static final Supplier<ParticleType<GeyserSpoutParticleOptions>> GEYSER_SPOUT = register("geyser_spout", type -> GeyserSpoutParticleOptions.CODEC, type -> GeyserSpoutParticleOptions.STREAM_CODEC, GeyserSpoutParticle.Provider::new);
     public static final Supplier<SimpleParticleType> SNEEZE = register("sneeze", SneezeParticle.Provider::new);
     public static final Supplier<SimpleParticleType> DEAD_LEAF = register("dead_leaf", DeadLeafParticle.Provider::new);
+    public static final Supplier<SimpleParticleType> GEYSER_SMOKE = register("geyser_smoke", GeyserSmokeParticleProvider::new);
+    public static final Supplier<ParticleType<ColorParticleOption>> POTION_CLOUD = register("potion_cloud", ColorParticleOption::codec, ColorParticleOption::streamCodec, PotionCloudParticle.Provider::new);
+    public static final Supplier<ParticleType<ColorParticleOption>> POTION_POOF_CLOUD = register("potion_poof_cloud", ColorParticleOption::codec, ColorParticleOption::streamCodec, PotionPoofCloudProvider::new);
 
     public static void init() {
     }

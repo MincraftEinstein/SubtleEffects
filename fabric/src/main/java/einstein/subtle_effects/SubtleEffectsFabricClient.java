@@ -30,7 +30,7 @@ public class SubtleEffectsFabricClient implements ClientModInitializer {
         EntityModelLayerRegistry.registerModelLayer(EinsteinSolarSystemModel.MODEL_LAYER, EinsteinSolarSystemModel::createLayer);
         LivingEntityFeatureRendererRegistrationCallback.EVENT.register((type, renderer, registrationHelper, context) -> {
             if (type.equals(EntityType.PLAYER)) {
-                registrationHelper.register(new EinsteinSolarSystemLayer(renderer, context));
+                registrationHelper.register(new EinsteinSolarSystemLayer<>(renderer, context));
             }
         });
     }

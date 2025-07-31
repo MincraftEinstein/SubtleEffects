@@ -27,7 +27,7 @@ public class SnowballMixin {
             Level level = subtleEffects$me.level();
             RandomSource random = subtleEffects$me.getRandom();
 
-            if (ModConfigs.ENTITIES.snowballPoofsHaveSnowflakes) {
+            if (ModConfigs.ITEMS.projectiles.snowballPoofsHaveSnowflakes) {
                 for (int i = 0; i < 8; i++) {
                     level.addParticle(ModParticles.SNOW.get(),
                             subtleEffects$me.getX(),
@@ -38,7 +38,7 @@ public class SnowballMixin {
                 }
             }
 
-            float volume = ModConfigs.ENTITIES.snowballPoofSoundVolume.get();
+            float volume = ModConfigs.ITEMS.projectiles.snowballPoofSoundVolume.get();
             if (volume > 0) {
                 level.playSound(
                         Minecraft.getInstance().player,

@@ -14,7 +14,7 @@ public class GameRendererMixin {
 
     @ModifyReturnValue(method = "getNightVisionScale", at = @At("RETURN"))
     private static float getNightVisionScale(float original, @Local MobEffectInstance instance) {
-        if (GENERAL.nightVisionFading) {
+        if (GENERAL.nightVisionFading && instance != null) {
             float brightness = 1;
             int duration = instance.getDuration();
             return !instance.endsWithin(GENERAL.nightVisionFadingTime.get()) ? brightness : duration * (brightness / GENERAL.nightVisionFadingTime.get());

@@ -13,6 +13,8 @@ public class SteamConfigs extends ConfigSection {
     public boolean lavaFizzSteam = true;
     public boolean replaceCampfireFoodSmoke = true;
     public boolean spongeDryingOutSteam = true;
+    public boolean replaceRainEvaporationSteam = true;
+    public boolean lavaCauldronsEvaporateRain = true;
     public SteamSpawnLogicType spawnLogic = SteamSpawnLogicType.BRIGHTNESS;
     public boolean steamingWater = false;
     public boolean boilingWater = false;
