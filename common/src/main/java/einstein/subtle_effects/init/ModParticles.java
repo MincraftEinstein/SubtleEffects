@@ -45,7 +45,6 @@ public class ModParticles {
     public static final Supplier<ParticleType<SheepFluffParticleOptions>> SHEEP_FLUFF = register("sheep_fluff", type -> SheepFluffParticleOptions.CODEC, type -> SheepFluffParticleOptions.STREAM_CODEC, SheepFluffParticle.Provider::new);
     public static final Supplier<SimpleParticleType> MUSHROOM_SPORE = register("mushroom_spore", MushroomSporeProvider::new);
     public static final Supplier<SimpleParticleType> FIREFLY = register("firefly", FireflyParticle.Provider::new);
-    public static final Supplier<SimpleParticleType> VANILLA_FIREFLY = register("vanilla_firefly", VanillaFireflyParticle.FireflyProvider::new);
     public static final Supplier<SimpleParticleType> FIREFLY_EMITTER = register("firefly_emitter", sprites -> new FireFlyEmitter.Provider());
     public static final Supplier<SimpleParticleType> SMOKE = register("smoke", SmokeParticleProvider::new);
     public static final Supplier<SimpleParticleType> POLLEN = register("pollen", PollenProvider::new);

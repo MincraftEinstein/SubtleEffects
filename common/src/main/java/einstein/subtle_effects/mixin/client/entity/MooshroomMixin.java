@@ -53,7 +53,7 @@ public class MooshroomMixin {
             for (int i = 0; i < 4; i++) {
                 ParticleSpawnUtil.spawnEntityFaceParticle(new ItemParticleOption(ParticleTypes.ITEM, heldStack),
                         subtleEffects$me, level, random, new Vec3(0, 0.3, -0.2),
-                        Minecraft.getInstance().getTimer().getGameTimeDeltaPartialTick(false)
+                        Minecraft.getInstance().getDeltaTracker().getGameTimeDeltaPartialTick(false)
                 );
             }
         }

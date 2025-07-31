@@ -6,6 +6,7 @@ import com.mojang.math.Axis;
 import einstein.subtle_effects.client.model.entity.EinsteinSolarSystemModel;
 import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.platform.Services;
+import einstein.subtle_effects.util.EntityRenderStateAccessor;
 import net.minecraft.client.model.HumanoidArmorModel;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.PlayerModel;
@@ -19,12 +20,11 @@ import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.CustomHeadLayer;
 import net.minecraft.client.renderer.entity.layers.HumanoidArmorLayer;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.client.renderer.entity.state.PlayerRenderState;
 import net.minecraft.util.Mth;
-import net.minecraft.world.entity.player.PlayerModelPart;
 import org.joml.Vector3f;
 
-public class EinsteinSolarSystemLayer<T extends AbstractClientPlayer, V extends PlayerModel<T>> extends RenderLayer<T, V> implements RenderLayerParent<T, EinsteinSolarSystemModel<T>> {
+public class EinsteinSolarSystemLayer<T extends PlayerRenderState, V extends PlayerModel> extends RenderLayer<T, V> implements RenderLayerParent<T, EinsteinSolarSystemModel<T>> {
 
     private static final String UUID = "d71e4b41-9315-499f-a934-ca925421fb38";
     private static final Vector3f[] HEAD_ROTATIONS = {
@@ -40,30 +40,31 @@ public class EinsteinSolarSystemLayer<T extends AbstractClientPlayer, V extends 
     public EinsteinSolarSystemLayer(RenderLayerParent<?, ?> renderer, EntityRendererProvider.Context context) {
         super((RenderLayerParent<T, V>) renderer);
         model = new EinsteinSolarSystemModel<>(context.bakeLayer(EinsteinSolarSystemModel.MODEL_LAYER));
-        headLayer = new CustomHeadLayer<>(this, context.getModelSet(), context.getItemInHandRenderer());
-        armorLayer = new HumanoidArmorLayer<>(this,
+        headLayer = new CustomHeadLayer<>(this, context.getModelSet());
+        armorLayer = new EinsteinSolarSystemArmorLayer<>(this,
                 new HumanoidArmorModel<>(context.bakeLayer(ModelLayers.PLAYER_INNER_ARMOR)),
                 new HumanoidArmorModel<>(context.bakeLayer(ModelLayers.PLAYER_OUTER_ARMOR)),
-                context.getModelManager()
+                context.getEquipmentRenderer()
         );
     }
 
     @Override
-    public void render(PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, T player, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
-        if (shouldRender(player)) {
+    public void render(PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, T renderState, float xRot, float yRot) {
+        EntityRenderStateAccessor accessor = (EntityRenderStateAccessor) renderState;
+        if (accessor.shouldRenderSolarSystem()) {
             int headCount = HEAD_ROTATIONS.length;
-            model.hat.visible = player.isModelPartShown(PlayerModelPart.HAT);
+            model.hat.visible = renderState.showHat;
 
             for (int i = 0; i < headCount; i++) {
                 float i1 = i + 1;
-                float spin = getSpin(partialTicks, player, i) * (headCount / i1);
+                float spin = getSpin(accessor, i) * (headCount / i1);
                 Vector3f rotation = HEAD_ROTATIONS[i];
 
                 poseStack.pushPose();
-                poseStack.mulPose(Axis.YP.rotationDegrees(-180 - Mth.rotLerp(partialTicks, player.yBodyRotO, player.yBodyRot)));
+                poseStack.mulPose(Axis.YP.rotationDegrees(-180 - renderState.bodyRot));
                 poseStack.mulPose(Axis.YP.rotation(spin)); // Spins the head around the player
 
-                poseStack.translate(0.7 * i1, player.isCrouching() ? 0 : -0.25, 0);
+                poseStack.translate(0.7 * i1, renderState.isCrouching ? 0 : -0.25, 0);
                 poseStack.scale(0.8F, 0.8F, 0.8F);
 
                 poseStack.pushPose();
@@ -73,12 +74,14 @@ public class EinsteinSolarSystemLayer<T extends AbstractClientPlayer, V extends 
 
                 poseStack.mulPose(Axis.YP.rotation(spin)); // Spins the head itself
 
-                VertexConsumer consumer = bufferSource.getBuffer(RenderType.entityCutout(getTextureLocation(player)));
-                model.renderToBuffer(poseStack, consumer, packedLight, LivingEntityRenderer.getOverlayCoords(player, 0), -1);
+                VertexConsumer consumer = bufferSource.getBuffer(RenderType.entityCutout(renderState.skin.texture()));
+                int packedOverlay = LivingEntityRenderer.getOverlayCoords(renderState, 0);
+                model.setAllVisible(true);
+                model.renderToBuffer(poseStack, consumer, packedLight, packedOverlay, -1);
 
                 poseStack.translate(0, 0.25, 0); // Adjusts the renders to align with the lower head model
-                headLayer.render(poseStack, bufferSource, packedLight, player, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch);
-                armorLayer.render(poseStack, bufferSource, packedLight, player, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch);
+                headLayer.render(poseStack, bufferSource, packedLight, renderState, xRot, yRot);
+                armorLayer.render(poseStack, bufferSource, packedLight, renderState, xRot, yRot);
 
                 poseStack.popPose();
                 poseStack.popPose();
@@ -91,18 +94,13 @@ public class EinsteinSolarSystemLayer<T extends AbstractClientPlayer, V extends 
         return model;
     }
 
-    @Override
-    public ResourceLocation getTextureLocation(T player) {
-        return super.getTextureLocation(player);
-    }
-
     public static boolean shouldRender(AbstractClientPlayer player) {
         return ModConfigs.GENERAL.enableEasterEggs
                 && (player.getStringUUID().equals(UUID) || Services.PLATFORM.isDevelopmentEnvironment())
                 && !player.isInvisible();
     }
 
-    public static float getSpin(float partialTicks, AbstractClientPlayer player, float speed) {
-        return (player.tickCount + partialTicks) / 20F + (Mth.PI * speed);
+    public static float getSpin(EntityRenderStateAccessor accessor, float speed) {
+        return accessor.getSolarSystemSpin() + (Mth.PI * speed);
     }
 }

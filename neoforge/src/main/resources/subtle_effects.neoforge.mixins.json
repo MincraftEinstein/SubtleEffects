@@ -8,6 +8,7 @@
     "client.FluidTypeMixin"
   ],
   "mixins": [
+    "common.NeoForgeCommonMooshroomMixin",
     "common.NeoForgeStonecutterMenu$2Mixin"
   ],
   "injectors": {

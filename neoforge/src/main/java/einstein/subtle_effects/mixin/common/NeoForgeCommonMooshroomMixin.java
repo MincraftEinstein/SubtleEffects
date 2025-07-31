@@ -13,15 +13,15 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 
 @Mixin(MushroomCow.class)
-public class CommonMooshroomMixin {
+public class NeoForgeCommonMooshroomMixin {
 
     @Unique
     private final MushroomCow subtleEffects$me = (MushroomCow) (Object) this;
 
-    @WrapOperation(method = "shear", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/level/ServerLevel;sendParticles(Lnet/minecraft/core/particles/ParticleOptions;DDDIDDDD)I"))
+    @WrapOperation(method = "lambda$shear$2", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/level/ServerLevel;sendParticles(Lnet/minecraft/core/particles/ParticleOptions;DDDIDDDD)I"))
     private <T extends ParticleOptions> int replaceShearingParticles(ServerLevel level, T particle, double x, double y, double z, int count, double xOffset, double yOffset, double zOffset, double speed, Operation<Integer> original) {
         Services.NETWORK.sendToClientsTracking(null, level, BlockPos.containing(x, y, z), new ClientBoundMooshroomShearedPayload(subtleEffects$me.getId()), serverPlayer ->
-                level.sendParticles(serverPlayer, particle, false, x, y, z, count, xOffset, yOffset, zOffset, speed)
+                level.sendParticles(serverPlayer, particle, false, false, x, y, z, count, xOffset, yOffset, zOffset, speed)
         );
         return -1;
     }

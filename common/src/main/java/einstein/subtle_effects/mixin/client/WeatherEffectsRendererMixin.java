@@ -1,21 +1,27 @@
 package einstein.subtle_effects.mixin.client;
 
+import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import einstein.subtle_effects.init.ModParticles;
 import einstein.subtle_effects.util.Util;
 import einstein.subtle_effects.util.WeatherColumnInstance;
 import net.minecraft.client.renderer.WeatherEffectRenderer;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 
+import static einstein.subtle_effects.init.ModConfigs.BLOCKS;
 import static einstein.subtle_effects.init.ModConfigs.ENVIRONMENT;
 
 @Mixin(WeatherEffectRenderer.class)
@@ -30,6 +36,20 @@ public abstract class WeatherEffectsRendererMixin {
             return Util.COLORLESS_RAIN_TEXTURE;
         }
         return original.call();
+    }
+
+    @ModifyExpressionValue(method = "tickRainParticles", at = @At(value = "FIELD", target = "Lnet/minecraft/core/particles/ParticleTypes;SMOKE:Lnet/minecraft/core/particles/SimpleParticleType;"))
+    private SimpleParticleType replaceRainEvaporationParticle(SimpleParticleType original) {
+        if (BLOCKS.steam.replaceRainEvaporationSteam) {
+            return ModParticles.STEAM.get();
+        }
+        return original;
+    }
+
+    // 'original' does not capture the '!', so the returned expression must be written inverted
+    @ModifyExpressionValue(method = "tickRainParticles", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/state/BlockState;is(Lnet/minecraft/world/level/block/Block;)Z"))
+    private boolean modifyRainEvaporationBlocks(boolean original, @Local BlockState state) {
+        return original || (BLOCKS.steam.lavaCauldronsEvaporateRain && state.is(Blocks.LAVA_CAULDRON));
     }
 
     @WrapOperation(method = "collectColumnInstances", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/WeatherEffectRenderer;createRainColumnInstance(Lnet/minecraft/util/RandomSource;IIIIIIF)Lnet/minecraft/client/renderer/WeatherEffectRenderer$ColumnInstance;"))

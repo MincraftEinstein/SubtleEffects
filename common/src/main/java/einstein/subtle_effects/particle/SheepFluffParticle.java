@@ -8,9 +8,9 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.client.particle.SpriteSet;
-import net.minecraft.util.FastColor;
+import net.minecraft.util.ARGB;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.animal.Sheep;
+import net.minecraft.world.entity.animal.sheep.Sheep;
 import net.minecraft.world.item.DyeColor;
 
 public class SheepFluffParticle extends FeatherParticle {
@@ -41,7 +41,7 @@ public class SheepFluffParticle extends FeatherParticle {
             float delta = ((float) (tickCount % speed) + partialTicks) / speed;
             int startColor = Sheep.getColor(DyeColor.byId(i % length));
             int endColor = Sheep.getColor(DyeColor.byId((i + 1) % length));
-            Util.setColorFromHex(this, FastColor.ARGB32.lerp(delta, startColor, endColor));
+            Util.setColorFromHex(this, ARGB.lerp(delta, startColor, endColor));
         }
         super.render(buffer, renderInfo, partialTicks);
     }

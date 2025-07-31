@@ -1,24 +1,19 @@
 package einstein.subtle_effects.client.model.entity;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import einstein.subtle_effects.SubtleEffects;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
-import net.minecraft.client.player.AbstractClientPlayer;
+import net.minecraft.client.renderer.entity.state.PlayerRenderState;
 
-import java.util.List;
-
-public class EinsteinSolarSystemModel<T extends AbstractClientPlayer> extends HumanoidModel<T> {
+public class EinsteinSolarSystemModel<T extends PlayerRenderState> extends HumanoidModel<T> {
 
     public static final ModelLayerLocation MODEL_LAYER = new ModelLayerLocation(SubtleEffects.loc("einstein_solar_system"), "main");
 
     public EinsteinSolarSystemModel(ModelPart rootPart) {
         super(rootPart);
-        young = false;
     }
 
     public static LayerDefinition createLayer() {
@@ -32,27 +27,7 @@ public class EinsteinSolarSystemModel<T extends AbstractClientPlayer> extends Hu
     }
 
     @Override
-    public void renderToBuffer(PoseStack poseStack, VertexConsumer consumer, int packedLight, int packedOverlay, int color) {
-        head.render(poseStack, consumer, packedLight, packedOverlay);
-        hat.render(poseStack, consumer, packedLight, packedOverlay);
-    }
-
-    @Override
-    protected Iterable<ModelPart> bodyParts() {
-        return List.of();
-    }
-
-    @Override
-    public void prepareMobModel(T player, float limbSwing, float limbSwingAmount, float partialTick) {
-    }
-
-    @Override
-    public void setupAnim(T player, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-    }
-
-    @Override
     public void copyPropertiesTo(HumanoidModel<T> model) {
-        model.young = false;
         model.head.copyFrom(head);
         model.hat.copyFrom(hat);
     }

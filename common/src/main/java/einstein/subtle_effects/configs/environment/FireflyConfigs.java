@@ -12,6 +12,7 @@ import me.fzzyhmstrs.fzzy_config.validation.minecraft.ValidatedRegistryType;
 import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedFloat;
 import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedInt;
 import net.minecraft.Util;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
@@ -72,7 +73,7 @@ public class FireflyConfigs extends ConfigSection {
 
     public enum FireflyType implements EnumTranslatable {
         ORIGINAL(ModParticles.FIREFLY),
-        VANILLA(ModParticles.VANILLA_FIREFLY);
+        VANILLA(() -> ParticleTypes.FIREFLY);
 
         private final Supplier<SimpleParticleType> particle;
 

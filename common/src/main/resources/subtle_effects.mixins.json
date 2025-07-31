@@ -84,7 +84,6 @@
     "common.CommonComposterMixin",
     "common.CommonComposterMixin$InputContainerMixin",
     "common.CommonLivingEntityMixin",
-    "common.CommonMooshroomMixin",
     "common.FallingBlockEntityMixin",
     "common.FarmBlockMixin",
     "common.FoodOnAStickItemMixin",

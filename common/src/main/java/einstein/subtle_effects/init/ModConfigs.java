@@ -60,7 +60,7 @@ public class ModConfigs {
     private static <T> Optional<Registry<T>> getRegistry(ResourceKey<? extends Registry<? extends T>> registryKey) {
         ClientLevel level = Minecraft.getInstance().level;
         if (level != null) {
-            return level.registryAccess().registry(registryKey);
+            return level.registryAccess().lookup(registryKey);
         }
         return Optional.empty();
     }
