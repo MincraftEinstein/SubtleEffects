@@ -33,6 +33,7 @@ public class ModEntityConfigs extends Config {
     public ValidatedDouble vexMagicDensity = new ValidatedDouble(0.2, 1, 0);
     public boolean sheepShearFluff = true;
     public boolean improvedDragonFireballTrail = true;
+    public boolean dragonsBreathClouds = true;
     public CommandBlockSpawnType commandBlockMinecartParticles = CommandBlockSpawnType.ON;
     public boolean endCrystalParticles = true;
     public MinecartSparksDisplayType minecartSparksDisplayType = MinecartSparksDisplayType.DEFAULT;

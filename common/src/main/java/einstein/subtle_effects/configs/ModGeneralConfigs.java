@@ -42,8 +42,9 @@ public class ModGeneralConfigs extends Config {
     @ConfigGroup.Pop
     public boolean disableRandomizedShading = true;
     public ValidatedFloat potionParticleAlpha = new ValidatedFloat(0.7F, 1, 0.3F);
-    @ConfigGroup.Pop
     public ValidatedFloat potionParticleAlphaNearPlayer = new ValidatedFloat(0.2F, 1, 0);
+    @ConfigGroup.Pop
+    public boolean replaceSpellParticleRenderType = true;
 
     public boolean mobSkullShaders = true;
     public ValidatedFloat fireHeight = new ValidatedFloat(-0.15F, 0.4F, -0.5F);

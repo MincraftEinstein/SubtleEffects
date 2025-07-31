@@ -2,6 +2,7 @@ package einstein.subtle_effects.mixin.client.entity;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.init.ModParticles;
 import net.minecraft.core.particles.ColorParticleOption;
 import net.minecraft.core.particles.ParticleOptions;
@@ -40,7 +41,7 @@ public abstract class AreaEffectCloudMixin {
 
     @WrapOperation(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/Level;addAlwaysVisibleParticle(Lnet/minecraft/core/particles/ParticleOptions;DDDDDD)V", ordinal = 0))
     private void replaceWaitingParticles(Level level, ParticleOptions options, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, Operation<Void> original) {
-        if (true) { // TODO config
+        if (ModConfigs.ITEMS.lingeringPotionClouds) {
             if (subtleEffects$waitedTime < 10) {
                 return;
             }
@@ -52,7 +53,7 @@ public abstract class AreaEffectCloudMixin {
 
     @WrapOperation(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/Level;addAlwaysVisibleParticle(Lnet/minecraft/core/particles/ParticleOptions;DDDDDD)V", ordinal = 1))
     private void replaceEffectParticles(Level level, ParticleOptions options, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, Operation<Void> original) {
-        if (true) { // TODO config
+        if (ModConfigs.ITEMS.lingeringPotionClouds) {
             boolean isWaiting = isWaiting();
             if (isWaiting && subtleEffects$waitedTime < 10) {
                 return;
@@ -84,7 +85,7 @@ public abstract class AreaEffectCloudMixin {
 
     @WrapOperation(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/Level;addAlwaysVisibleParticle(Lnet/minecraft/core/particles/ParticleOptions;DDDDDD)V", ordinal = 3))
     private void replaceDragonBreathParticles(Level level, ParticleOptions options, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, Operation<Void> original) {
-        if (true) { // TODO config (should be a separate config for dragons breath)
+        if (ModConfigs.ENTITIES.dragonsBreathClouds) {
             if (options.getType() == ParticleTypes.DRAGON_BREATH) {
                 RandomSource random = subtleEffects$me.getRandom();
 

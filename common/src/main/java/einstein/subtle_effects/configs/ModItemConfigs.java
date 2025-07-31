@@ -29,6 +29,8 @@ public class ModItemConfigs extends Config {
     public boolean lavaBucketUseParticles = true;
     @ConfigGroup.Pop
     public boolean powderSnowBucketUseParticles = true;
+    public boolean lingeringPotionClouds = true;
+    public boolean splashPotionClouds = true;
 
     public ModItemConfigs() {
         super(SubtleEffects.loc("items"));

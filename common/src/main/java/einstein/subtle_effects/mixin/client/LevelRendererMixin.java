@@ -46,8 +46,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Slice;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import static einstein.subtle_effects.init.ModConfigs.BLOCKS;
-import static einstein.subtle_effects.init.ModConfigs.ENVIRONMENT;
+import static einstein.subtle_effects.init.ModConfigs.*;
 import static einstein.subtle_effects.util.MathUtil.nextNonAbsDouble;
 
 @Mixin(LevelRenderer.class)
@@ -150,8 +149,9 @@ public abstract class LevelRendererMixin implements FrustumGetter {
             )
     )
     private Particle replaceSplashPotionParticles(LevelRenderer levelRenderer, ParticleOptions options, boolean force, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, Operation<Particle> original, @Local(ordinal = 0) float red, @Local(ordinal = 1) float green, @Local(ordinal = 2) float blue) {
-        if (true && level != null) { // TODO config
+        if (ITEMS.splashPotionClouds && level != null) {
             RandomSource random = level.getRandom();
+
             if (random.nextInt(5) == 0) {
                 double powerModifier = random.nextDouble() * 4;
                 // equivalent of particle.setPower, but since this is done before initial particle velocity is set the outcome is different
