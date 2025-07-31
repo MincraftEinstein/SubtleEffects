@@ -81,7 +81,7 @@ public abstract class LevelRendererMixin implements FrustumGetter {
     }
 
     @ModifyExpressionValue(method = "tickRain", at = @At(value = "FIELD", target = "Lnet/minecraft/core/particles/ParticleTypes;SMOKE:Lnet/minecraft/core/particles/SimpleParticleType;"))
-    private SimpleParticleType a(SimpleParticleType original) {
+    private SimpleParticleType replaceRainEvaporationParticle(SimpleParticleType original) {
         if (BLOCKS.steam.replaceRainEvaporationSteam) {
             return ModParticles.STEAM.get();
         }
@@ -90,7 +90,7 @@ public abstract class LevelRendererMixin implements FrustumGetter {
 
     // 'original' does not capture the '!', so the returned expression must be written inverted
     @ModifyExpressionValue(method = "tickRain", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/state/BlockState;is(Lnet/minecraft/world/level/block/Block;)Z"))
-    private boolean b(boolean original, @Local BlockState state) {
+    private boolean modifyRainEvaporationBlocks(boolean original, @Local BlockState state) {
         return original || (BLOCKS.steam.lavaCauldronsEvaporateRain && state.is(Blocks.LAVA_CAULDRON));
     }
 
