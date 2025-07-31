@@ -1,5 +1,6 @@
 package einstein.subtle_effects.particle;
 
+import einstein.subtle_effects.init.ModParticleRenderTypes;
 import einstein.subtle_effects.particle.option.FloatParticleOptions;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
@@ -26,7 +27,7 @@ public class SlimeTrailParticle extends FlatPlaneParticle {
 
     @Override
     public ParticleRenderType getRenderType() {
-        return ParticleRenderType.PARTICLE_SHEET_TRANSLUCENT;
+        return ModParticleRenderTypes.BLENDED;
     }
 
     @Override
