@@ -12,21 +12,21 @@ public class GeyserConfigs extends ConfigSection {
 
     public boolean useUpdatedSmoke = false;
     public ConfigGroup flameGeysersGroup = new ConfigGroup("flame_geysers");
-    public ValidatedInt flameGeyserSpawnChance = new ValidatedInt(0, 50, 0);
+    public ValidatedInt flameGeyserSpawnChance = new ValidatedInt(5, 50, 0);
     public ValidatedFloat flameGeyserSoundVolume = new ValidatedFloat(0.5F, 1, 0);
     public ValidatedInt flameGeyserActiveTime = new ValidatedInt(300, 1000, 50);
     @ConfigGroup.Pop
     public ValidatedInt flameGeyserInactiveTime = new ValidatedInt(500, 1000, 50);
 
     public ConfigGroup smokeGeysersGroup = new ConfigGroup("smoke_geysers");
-    public ValidatedInt smokeGeyserSpawnChance = new ValidatedInt(0, 50, 0);
+    public ValidatedInt smokeGeyserSpawnChance = new ValidatedInt(5, 50, 0);
     public ValidatedFloat smokeGeyserSoundVolume = new ValidatedFloat(0.2F, 1, 0);
     public ValidatedInt smokeGeyserActiveTime = new ValidatedInt(300, 1000, 50);
     @ConfigGroup.Pop
     public ValidatedInt smokeGeyserInactiveTime = new ValidatedInt(500, 1000, 50);
 
     public ConfigGroup bubbleGeysersGroup = new ConfigGroup("bubble_geysers");
-    public ValidatedInt bubbleGeyserSpawnChance = new ValidatedInt(0, 50, 0);
+    public ValidatedInt bubbleGeyserSpawnChance = new ValidatedInt(5, 50, 0);
     public ValidatedFloat bubbleGeyserSoundVolume = new ValidatedFloat(0.5F, 1, 0);
     public ValidatedInt bubbleGeyserActiveTime = new ValidatedInt(300, 1000, 50);
     @ConfigGroup.Pop
