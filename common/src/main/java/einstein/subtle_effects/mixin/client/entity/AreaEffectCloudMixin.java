@@ -91,7 +91,7 @@ public abstract class AreaEffectCloudMixin {
                 if (random.nextInt(35) == 0) {
                     subtleEffects$spawnPotionCloud(level, random, x, z,
                             Mth.nextFloat(random, 0.7176471F, 0.8745098F),
-                            Mth.nextFloat(random, 0.0F, 0.0F),
+                            0,
                             Mth.nextFloat(random, 0.8235294F, 0.9764706F)
                     );
                 }
@@ -111,4 +111,4 @@ public abstract class AreaEffectCloudMixin {
                 x, subtleEffects$me.getY() + (random.nextDouble() / 10), z, 0, 0, 0
         );
     }
-
+}
