@@ -39,28 +39,43 @@ public abstract class AreaEffectCloudMixin {
     }
 
     @WrapOperation(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/Level;addAlwaysVisibleParticle(Lnet/minecraft/core/particles/ParticleOptions;DDDDDD)V", ordinal = 0))
-    private void cancelForShortWait(Level level, ParticleOptions options, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, Operation<Void> original) {
+    private void replaceWaitingParticles(Level level, ParticleOptions options, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, Operation<Void> original) {
         if (true) { // TODO config
             if (subtleEffects$waitedTime < 10) {
                 return;
             }
+
+            options = ColorParticleOption.create(ModParticles.POTION_POOF_CLOUD.get(), -1);
         }
         original.call(level, options, x, y, z, xSpeed, ySpeed, zSpeed);
     }
 
     @WrapOperation(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/Level;addAlwaysVisibleParticle(Lnet/minecraft/core/particles/ParticleOptions;DDDDDD)V", ordinal = 1))
-    private void replaceEffectParticle(Level level, ParticleOptions options, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, Operation<Void> original) {
+    private void replaceEffectParticles(Level level, ParticleOptions options, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, Operation<Void> original) {
         if (true) { // TODO config
-            RandomSource random = subtleEffects$me.getRandom();
-            if (random.nextInt(20) == 0) {
-                ColorParticleOption colorOption = (ColorParticleOption) options;
-                subtleEffects$spawnPotionCloud(level, random,
-                        x, z,
-                        colorOption.getRed(), colorOption.getGreen(), colorOption.getBlue()
-                );
+            boolean isWaiting = isWaiting();
+            if (isWaiting && subtleEffects$waitedTime < 10) {
+                return;
             }
 
-            if (random.nextInt(20) > 0) {
+            RandomSource random = subtleEffects$me.getRandom();
+
+            if (random.nextInt(isWaiting ? 4 : 20) == 0) {
+                ColorParticleOption colorOption = (ColorParticleOption) options;
+                if (isWaiting) {
+                    level.addParticle(ColorParticleOption.create(ModParticles.POTION_POOF_CLOUD.get(),
+                                    colorOption.getRed(), colorOption.getGreen(), colorOption.getBlue()),
+                            x, y, z, 0, 0, 0
+                    );
+                }
+                else {
+                    subtleEffects$spawnPotionCloud(level, random, x, z,
+                            colorOption.getRed(), colorOption.getGreen(), colorOption.getBlue()
+                    );
+                }
+            }
+
+            if (!isWaiting && random.nextInt(20) > 0) {
                 return;
             }
         }
@@ -68,14 +83,13 @@ public abstract class AreaEffectCloudMixin {
     }
 
     @WrapOperation(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/Level;addAlwaysVisibleParticle(Lnet/minecraft/core/particles/ParticleOptions;DDDDDD)V", ordinal = 3))
-    private void replaceDragonBreathParticle(Level level, ParticleOptions options, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, Operation<Void> original) {
+    private void replaceDragonBreathParticles(Level level, ParticleOptions options, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, Operation<Void> original) {
         if (true) { // TODO config (should be a separate config for dragons breath)
             if (options.getType() == ParticleTypes.DRAGON_BREATH) {
                 RandomSource random = subtleEffects$me.getRandom();
 
                 if (random.nextInt(35) == 0) {
-                    subtleEffects$spawnPotionCloud(level, random,
-                            x, z,
+                    subtleEffects$spawnPotionCloud(level, random, x, z,
                             Mth.nextFloat(random, 0.7176471F, 0.8745098F),
                             Mth.nextFloat(random, 0.0F, 0.0F),
                             Mth.nextFloat(random, 0.8235294F, 0.9764706F)
