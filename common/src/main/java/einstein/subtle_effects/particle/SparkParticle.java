@@ -15,6 +15,7 @@ public class SparkParticle extends TextureSheetParticle {
 
     public static final List<Integer> DEFAULT_COLORS = List.of(0xFFD800, 0xFF6A00);
     public static final List<Integer> SOUL_COLORS = List.of(0x60F5FA, 0x01A7AC);
+    public static final List<Integer> BLAZE_COLORS = List.of(0xFFF847, 0xFFD528, 0xD17800, 0x8B3401);
 
     protected SparkParticle(ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, float lifeTimeModifier, SpriteSet sprites) {
         super(level, x, y, z, xSpeed, ySpeed, zSpeed);

@@ -8,16 +8,15 @@ import einstein.subtle_effects.configs.ModBlockConfigs;
 import einstein.subtle_effects.configs.ReplacedParticlesDisplayType;
 import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.init.ModParticles;
-import einstein.subtle_effects.particle.SparkParticle;
-import einstein.subtle_effects.tickers.TickerManager;
+import einstein.subtle_effects.ticking.tickers.TickerManager;
 import einstein.subtle_effects.util.ParticleSpawnUtil;
-import einstein.subtle_effects.util.SparkType;
 import einstein.subtle_effects.util.Util;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.client.particle.Particle;
 import net.minecraft.client.renderer.LevelEventHandler;
+import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
+import net.minecraft.core.particles.ColorParticleOption;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.particles.SimpleParticleType;
@@ -26,10 +25,8 @@ import net.minecraft.util.valueproviders.IntProvider;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.GrindstoneBlock;
 import net.minecraft.world.level.block.LevelEvent;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.AttachFace;
 import net.minecraft.world.phys.Vec3;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -37,11 +34,12 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.Slice;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import static einstein.subtle_effects.init.ModConfigs.BLOCKS;
+import static einstein.subtle_effects.init.ModConfigs.ITEMS;
 import static einstein.subtle_effects.util.MathUtil.nextNonAbsDouble;
-import static net.minecraft.util.Mth.nextFloat;
 
 @Mixin(LevelEventHandler.class)
 public class LevelEventHandlerMixin {
@@ -98,6 +96,46 @@ public class LevelEventHandlerMixin {
                 break;
             }
         }
+    }
+
+    @WrapOperation(method = "levelEvent",
+            slice = @Slice(
+                    to = @At(value = "FIELD", target = "Lnet/minecraft/sounds/SoundEvents;SPLASH_POTION_BREAK:Lnet/minecraft/sounds/SoundEvent;"),
+                    from = @At(value = "FIELD", target = "Lnet/minecraft/core/particles/ParticleTypes;EFFECT:Lnet/minecraft/core/particles/SimpleParticleType;")
+            ),
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/client/renderer/LevelRenderer;addParticleInternal(Lnet/minecraft/core/particles/ParticleOptions;ZDDDDDD)Lnet/minecraft/client/particle/Particle;"
+            )
+    )
+    private Particle replaceSplashPotionParticles(LevelRenderer levelRenderer, ParticleOptions options, boolean force, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, Operation<Particle> original, @Local(ordinal = 0) float red, @Local(ordinal = 1) float green, @Local(ordinal = 2) float blue) {
+        if (ITEMS.splashPotionClouds && level != null) {
+            RandomSource random = level.getRandom();
+
+            if (random.nextInt(5) == 0) {
+                double powerModifier = random.nextDouble() * 4;
+                // equivalent of particle.setPower, but since this is done before initial particle velocity is set the outcome is different
+                xSpeed *= powerModifier;
+                ySpeed = (ySpeed - 0.1) * powerModifier + 0.1;
+                zSpeed *= powerModifier;
+
+                if (random.nextInt(3) == 0) {
+                    original.call(levelRenderer,
+                            ColorParticleOption.create(ModParticles.POTION_POOF_CLOUD.get(), red, green, blue),
+                            false, x, y, z, xSpeed, ySpeed, zSpeed
+                    );
+                }
+
+                Particle particle = original.call(levelRenderer, options, force, x, y, z, xSpeed, ySpeed, zSpeed);
+                if (particle != null) {
+                    particle.setColor(red, green, blue);
+                }
+            }
+
+            // always returning null to prevent calling particle.setPower
+            return null;
+        }
+        return original.call(levelRenderer, options, force, x, y, z, xSpeed, ySpeed, zSpeed);
     }
 
     @WrapOperation(method = "levelEvent", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/ParticleUtils;spawnParticlesOnBlockFaces(Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;Lnet/minecraft/core/particles/ParticleOptions;Lnet/minecraft/util/valueproviders/IntProvider;)V"))

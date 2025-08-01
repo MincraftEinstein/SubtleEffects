@@ -1,18 +1,16 @@
 package einstein.subtle_effects.compat;
 
-import einstein.subtle_effects.configs.entities.humanoids.FrostyBreathConfigs;
+import einstein.subtle_effects.configs.ColdSeasonsType;
 import net.minecraft.world.level.Level;
 import sereneseasons.api.season.ISeasonState;
 import sereneseasons.api.season.Season;
 import sereneseasons.api.season.SeasonHelper;
 import sereneseasons.init.ModConfig;
 
-import static einstein.subtle_effects.init.ModConfigs.ENTITIES;
-
 public class SereneSeasonsCompat {
 
-    public static boolean isColdSeason(Level level) {
-        if (ENTITIES.humanoids.frostyBreath.seasons == FrostyBreathConfigs.Seasons.OFF) {
+    public static boolean isColdSeason(Level level, ColdSeasonsType seasonsConfig) {
+        if (seasonsConfig == ColdSeasonsType.OFF) {
             return false;
         }
 
@@ -27,7 +25,7 @@ public class SereneSeasonsCompat {
             return true;
         }
 
-        if (ENTITIES.humanoids.frostyBreath.seasons == FrostyBreathConfigs.Seasons.DEFAULT) {
+        if (seasonsConfig == ColdSeasonsType.DEFAULT) {
             Season.SubSeason subSeason = seasonState.getSubSeason();
             return subSeason == Season.SubSeason.LATE_AUTUMN || subSeason == Season.SubSeason.EARLY_SPRING;
         }

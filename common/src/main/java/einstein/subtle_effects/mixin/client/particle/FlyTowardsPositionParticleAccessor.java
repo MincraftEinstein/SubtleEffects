@@ -36,7 +36,7 @@ public interface FlyTowardsPositionParticleAccessor {
                 ((ParticleAccessor) particle).setAlpha(0.5F);
             }
 
-            if (ModConfigs.GENERAL.forceWhiteEnchantmentParticles) {
+            if (ModConfigs.GENERAL.disableRandomizedShading) {
                 particle.setColor(1, 1, 1);
             }
             return particle;

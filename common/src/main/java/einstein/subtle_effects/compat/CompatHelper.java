@@ -17,6 +17,13 @@ public class CompatHelper {
     public static final Supplier<Boolean> IS_ITEM_BORDERS_LOADED = isLoaded("itemborders");
     public static final Supplier<Boolean> IS_LEGENDARY_TOOLTIPS_LOADED = isLoaded("legendarytooltips");
     public static final Supplier<Boolean> IS_END_REMASTERED_LOADED = isLoaded("endrem");
+    public static final Supplier<Boolean> IS_IRIS_LOADED = isLoaded("iris");
+
+    public static void init() {
+        if (IS_IRIS_LOADED.get()) {
+            IrisCompat.init();
+        }
+    }
 
     private static Supplier<Boolean> isLoaded(String modId) {
         return Suppliers.memoize(() -> Services.PLATFORM.isModLoaded(modId));

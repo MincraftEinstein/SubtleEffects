@@ -2,6 +2,7 @@ package einstein.subtle_effects.particle;
 
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import einstein.subtle_effects.init.ModConfigs;
+import einstein.subtle_effects.init.ModParticleRenderTypes;
 import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
@@ -53,7 +54,7 @@ public class EnderEyePlacedRingParticle extends FlatPlaneParticle {
 
     @Override
     public ParticleRenderType getRenderType() {
-        return ParticleRenderType.PARTICLE_SHEET_TRANSLUCENT;
+        return ModParticleRenderTypes.BLENDED;
     }
 
     public record Provider(SpriteSet sprites) implements ParticleProvider<ColorParticleOption> {

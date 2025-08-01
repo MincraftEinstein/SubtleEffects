@@ -2,11 +2,12 @@ package einstein.subtle_effects.init;
 
 import einstein.subtle_effects.configs.CommandBlockSpawnType;
 import einstein.subtle_effects.configs.ModEntityConfigs;
-import einstein.subtle_effects.configs.entities.ItemRarityConfigs;
+import einstein.subtle_effects.configs.items.ItemRarityConfigs;
 import einstein.subtle_effects.particle.SparkParticle;
 import einstein.subtle_effects.particle.option.BooleanParticleOptions;
-import einstein.subtle_effects.tickers.entity_tickers.*;
-import einstein.subtle_effects.tickers.entity_tickers.sleeping.*;
+import einstein.subtle_effects.ticking.tickers.entity.*;
+import einstein.subtle_effects.ticking.tickers.entity.sleeping.*;
+import einstein.subtle_effects.util.MathUtil;
 import einstein.subtle_effects.util.ParticleSpawnUtil;
 import einstein.subtle_effects.util.SparkType;
 import einstein.subtle_effects.util.Util;
@@ -34,19 +35,15 @@ import net.minecraft.world.entity.npc.AbstractVillager;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.BaseFireBlock;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.BrushableBlock;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 
 import java.util.function.Predicate;
 
-import static einstein.subtle_effects.init.ModConfigs.BLOCKS;
-import static einstein.subtle_effects.init.ModConfigs.ENTITIES;
-import static einstein.subtle_effects.tickers.entity_tickers.EntityTickerManager.register;
-import static einstein.subtle_effects.tickers.entity_tickers.EntityTickerManager.registerSimple;
+import static einstein.subtle_effects.init.ModConfigs.*;
+import static einstein.subtle_effects.ticking.tickers.entity.EntityTickerManager.register;
+import static einstein.subtle_effects.ticking.tickers.entity.EntityTickerManager.registerSimple;
 import static einstein.subtle_effects.util.MathUtil.nextNonAbsDouble;
 
 public class ModEntityTickers {
@@ -66,7 +63,7 @@ public class ModEntityTickers {
         register(entity -> entity.getType().equals(EntityType.SLIME) && ENTITIES.slimeTrails, (Slime entity) -> new SlimeTrailTicker<>(entity, ModParticles.SLIME_TRAIL));
         register(entity -> entity.getType().equals(EntityType.MAGMA_CUBE) && ENTITIES.magmaCubeTrails, (MagmaCube entity) -> new SlimeTrailTicker<>(entity, ModParticles.MAGMA_CUBE_TRAIL));
         register(entity -> entity.getType().equals(EntityType.IRON_GOLEM) && ENTITIES.ironGolemCrackParticles, IronGolemTicker::new);
-        register(entity -> entity instanceof ItemEntity && ENTITIES.itemRarity.particlesDisplayType != ItemRarityConfigs.DisplayType.OFF, ItemRarityTicker::new);
+        register(entity -> entity instanceof ItemEntity && ITEMS.itemRarity.particlesDisplayType != ItemRarityConfigs.DisplayType.OFF, ItemRarityTicker::new);
         register(entity -> entity instanceof Witch && ENTITIES.humanoids.NPCsHavePotionRings && ENTITIES.humanoids.potionRingsDisplayType.isEnabled(), WitchPotionRingTicker::new);
         register(entity -> isNPC(entity, true) && ENTITIES.humanoids.NPCsHavePotionRings && ENTITIES.humanoids.potionRingsDisplayType.isEnabled(), (LivingEntity entity) -> new HumanoidPotionRingTicker<>(entity));
 
@@ -96,10 +93,10 @@ public class ModEntityTickers {
                         }
                     }
                 });
-        registerSimple(entity -> entity instanceof FallingBlockEntity && BLOCKS.fallingBlocks.fallingDust, false, (entity, level, random) -> {
+        registerSimple(entity -> entity instanceof FallingBlockEntity && BLOCKS.fallingBlocks.whileFallingDust, false, (entity, level, random) -> {
             FallingBlockEntity fallingBlock = (FallingBlockEntity) entity;
 
-            int startDistance = BLOCKS.fallingBlocks.fallingDustStartDistance.get();
+            int startDistance = BLOCKS.fallingBlocks.whileFallingDustStartDistance.get();
             double fallDistance = fallingBlock.fallDistance;
 
             if (fallDistance <= startDistance) {
@@ -113,7 +110,7 @@ public class ModEntityTickers {
                 if (BLOCKS.fallingBlocks.dustyBlocks.contains(block)) {
                     double size = startDistance > 0 ? fallDistance <= startDistance + ((startDistance / 3F) * 2) ? 0.5 : 1 : 1;
 
-                    for (int i = 0 ; i < (size == 1 ? 2 : 1); i++) {
+                    for (int i = 0; i < (size == 1 ? 2 : 1); i++) {
                         level.addParticle(
                                 new BlockParticleOption(ParticleTypes.FALLING_DUST,
                                         block instanceof BrushableBlock brushableBlock ?
@@ -127,8 +124,8 @@ public class ModEntityTickers {
                 }
             }
         });
-        registerSimple(EntityType.SNOWBALL, false, () -> ENTITIES.snowballTrailDensity.get() > 0, (entity, level, random) -> {
-            if (shouldSpawn(random, ENTITIES.snowballTrailDensity)) {
+        registerSimple(EntityType.SNOWBALL, false, () -> ITEMS.projectiles.snowballTrailDensity.get() > 0, (entity, level, random) -> {
+            if (shouldSpawn(random, ITEMS.projectiles.snowballTrailDensity)) {
                 Vec3 deltaMovement = entity.getDeltaMovement();
                 level.addParticle(ModParticles.SNOWBALL_TRAIL.get(),
                         entity.getRandomX(1),
@@ -140,7 +137,7 @@ public class ModEntityTickers {
                 );
             }
         });
-        registerSimple(EntityType.ENDER_PEARL, false, () -> ENTITIES.enderPearlTrail, (entity, level, random) -> {
+        registerSimple(EntityType.ENDER_PEARL, false, () -> ITEMS.projectiles.enderPearlTrail, (entity, level, random) -> {
             for (int i = 0; i < 10; i++) {
                 level.addParticle(ParticleTypes.PORTAL,
                         entity.getRandomX(2),
@@ -290,6 +287,26 @@ public class ModEntityTickers {
                         entity.getRandomZ(1),
                         0, 0, 0
                 );
+            }
+        });
+        registerSimple(entity -> entity instanceof LivingEntity && BLOCKS.leafLitterDeadLeaves, false, (entity, level, random) -> {
+            BlockState state = entity.getInBlockState();
+            if (state.is(Blocks.LEAF_LITTER)) {
+                if (entity.onGround() && entity.getDeltaMovement().horizontalDistanceSqr() > 0.001) {
+                    int amount = LeafLitterBlock.MAX_SEGMENT - state.getValue(LeafLitterBlock.AMOUNT);
+                    amount += entity.isCrouching() ? 4 : 0;
+
+                    if (amount == 0 || random.nextInt(amount) == 0) {
+                        for (int i = 0; i < (entity.isSprinting() ? 4 : 1); i++) {
+                            level.addParticle(ModParticles.DEAD_LEAF.get(),
+                                    entity.getRandomX(1),
+                                    entity.getY(MathUtil.nextDouble(random, 0.3)),
+                                    entity.getRandomZ(1),
+                                    0, 0, 0
+                            );
+                        }
+                    }
+                }
             }
         });
     }

@@ -57,7 +57,7 @@ public class ParticleEngineMixin {
                 return false;
             }
 
-            int distance = GENERAL.particleRenderDistance * 16;
+            int distance = GENERAL.particleRenderDistance.get() * 16;
             return accessor.subtleEffects$wasForced() || camera.getPosition().distanceToSqr(accessor.getX(), accessor.getY(), accessor.getZ()) < distance * distance;
         }
         return false;

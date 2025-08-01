@@ -2,7 +2,7 @@ package einstein.subtle_effects.mixin.client.entity;
 
 import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.init.ModParticles;
-import einstein.subtle_effects.tickers.entity_tickers.EntityTicker;
+import einstein.subtle_effects.ticking.tickers.entity.EntityTicker;
 import einstein.subtle_effects.util.EntityTickersGetter;
 import einstein.subtle_effects.util.Util;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
@@ -13,10 +13,12 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -33,6 +35,12 @@ public abstract class ClientEntityMixin implements EntityTickersGetter {
 
     @Unique
     private final Int2ObjectMap<EntityTicker<?>> subtleEffects$tickers = new Int2ObjectOpenHashMap<>();
+
+    @Unique
+    private double subtleEffects$nextCobwebSound = 0.5;
+
+    @Unique
+    private Vec3 subtleEffects$lastPos = Vec3.ZERO;
 
     @Inject(method = "playEntityOnFireExtinguishedSound", at = @At("TAIL"))
     private void addExtinguishParticles(CallbackInfo ci) {
@@ -66,6 +74,23 @@ public abstract class ClientEntityMixin implements EntityTickersGetter {
                                 }
                             }
                         }
+                    }
+                }
+            }
+        }
+    }
+
+    @Inject(method = "onInsideBlock", at = @At("HEAD"))
+    private void inside(BlockState state, CallbackInfo ci) {
+        if (subtleEffects$me.level().isClientSide) {
+            if (ModConfigs.BLOCKS.cobwebMovementSounds) {
+                if (subtleEffects$me.flyDist > subtleEffects$nextCobwebSound && state.is(Blocks.COBWEB)) {
+                    if (subtleEffects$lastPos.distanceToSqr(subtleEffects$me.position()) > 0.5) {
+                        subtleEffects$nextCobwebSound += 0.5;
+                        subtleEffects$lastPos = subtleEffects$me.position();
+
+                        SoundType soundType = state.getSoundType();
+                        Util.playClientSound(subtleEffects$me, soundType.getStepSound(), subtleEffects$me.getSoundSource(), soundType.getVolume() * 0.15F, soundType.getPitch());
                     }
                 }
             }

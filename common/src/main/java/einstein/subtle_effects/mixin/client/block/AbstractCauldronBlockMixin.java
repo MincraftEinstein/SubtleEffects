@@ -3,7 +3,7 @@ package einstein.subtle_effects.mixin.client.block;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.llamalad7.mixinextras.sugar.Local;
 import einstein.subtle_effects.init.ModSounds;
-import einstein.subtle_effects.tickers.TickerManager;
+import einstein.subtle_effects.ticking.tickers.TickerManager;
 import einstein.subtle_effects.util.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponents;

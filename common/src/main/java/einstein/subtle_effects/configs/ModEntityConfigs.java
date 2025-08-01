@@ -2,34 +2,38 @@ package einstein.subtle_effects.configs;
 
 import einstein.subtle_effects.SubtleEffects;
 import einstein.subtle_effects.configs.entities.*;
+import einstein.subtle_effects.init.ModAnimalFedEffectSettings;
 import einstein.subtle_effects.init.ModConfigs;
-import einstein.subtle_effects.tickers.TickerManager;
+import einstein.subtle_effects.ticking.tickers.TickerManager;
 import me.fzzyhmstrs.fzzy_config.annotations.Translation;
 import me.fzzyhmstrs.fzzy_config.config.Config;
 import me.fzzyhmstrs.fzzy_config.config.ConfigGroup;
 import me.fzzyhmstrs.fzzy_config.util.EnumTranslatable;
 import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedDouble;
 import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedFloat;
-import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedInt;
 import net.minecraft.client.Minecraft;
 import org.jetbrains.annotations.NotNull;
 
 @Translation(prefix = ModConfigs.BASE_KEY + "entities")
 public class ModEntityConfigs extends Config {
 
-    public EntityAttackedConfigs attacked = new EntityAttackedConfigs();
     public SleepingConfigs sleeping = new SleepingConfigs();
     public HumanoidConfigs humanoids = new HumanoidConfigs();
     public DustCloudsConfig dustClouds = new DustCloudsConfig();
     public BurningEntityConfigs burning = new BurningEntityConfigs();
-    public ItemRarityConfigs itemRarity = new ItemRarityConfigs();
     public ExplosivesConfigs explosives = new ExplosivesConfigs();
 
-    public boolean enderPearlTrail = true;
+    public ConfigGroup attackedGroup = new ConfigGroup("attacked");
+    public boolean chickenFeathers = true;
+    public boolean parrotFeathers = true;
+    @ConfigGroup.Pop
+    public boolean snowGolemSnowflakes = true;
+
     public ValidatedDouble allayMagicDensity = new ValidatedDouble(0.2, 1, 0);
     public ValidatedDouble vexMagicDensity = new ValidatedDouble(0.2, 1, 0);
     public boolean sheepShearFluff = true;
     public boolean improvedDragonFireballTrail = true;
+    public boolean dragonsBreathClouds = true;
     public CommandBlockSpawnType commandBlockMinecartParticles = CommandBlockSpawnType.ON;
     public boolean endCrystalParticles = true;
     public MinecartSparksDisplayType minecartSparksDisplayType = MinecartSparksDisplayType.DEFAULT;
@@ -42,20 +46,15 @@ public class ModEntityConfigs extends Config {
     public boolean ironGolemCrackParticles = true;
     public boolean spectralArrowParticles = true;
     public boolean wardenDeathSoulParticles = true;
-    public ReplacedParticlesDisplayType xpBottleParticlesDisplayType = ReplacedParticlesDisplayType.DEFAULT;
-    public ValidatedInt xpBottleParticlesDensity = new ValidatedInt(10, 200, 5);
-    public ValidatedFloat eggSmashSoundVolume = new ValidatedFloat(0.5F, 1, 0);
-    public boolean eggSplatParticles = true;
     public boolean freezingSnowFlakes = true;
     public boolean featherTicklingPandas = true;
     public boolean improvedPandaSneezes = true;
-
-    public ConfigGroup thrownSnowballGroup = new ConfigGroup("thrown_snowball");
-    public ValidatedDouble snowballTrailDensity = new ValidatedDouble(0.5, 1, 0);
-    public boolean snowballPoofsHaveSnowflakes = true;
-    @ConfigGroup.Pop
-    public ValidatedFloat snowballPoofSoundVolume = new ValidatedFloat(0.3F, 1, 0);
     public boolean villagerWorkAtWorkstationParticles = true;
+    public boolean improvedBrownMooshroomFeedingEffects = true;
+    public boolean improvedMooshroomShearingEffects = true;
+    public boolean replaceBlazeSmoke = true;
+    public boolean animalFeedingParticles = true;
+    public ValidatedFloat animalFeedingSoundVolume = new ValidatedFloat(1, 1, 0);
 
     public ModEntityConfigs() {
         super(SubtleEffects.loc("entities"));
@@ -64,6 +63,7 @@ public class ModEntityConfigs extends Config {
     @Override
     public void onUpdateClient() {
         TickerManager.clear(Minecraft.getInstance().level);
+        ModAnimalFedEffectSettings.init();
     }
 
     public enum PerspectiveDisplayType implements EnumTranslatable {
