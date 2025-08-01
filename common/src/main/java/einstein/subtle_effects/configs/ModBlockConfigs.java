@@ -7,6 +7,7 @@ import einstein.subtle_effects.configs.blocks.FallingBlocksConfigs;
 import einstein.subtle_effects.configs.blocks.SparksConfigs;
 import einstein.subtle_effects.configs.blocks.SteamConfigs;
 import einstein.subtle_effects.configs.blocks.UpdatedSmokeConfigs;
+import einstein.subtle_effects.configs.environment.FireflyConfigs;
 import einstein.subtle_effects.init.ModBlockTickers;
 import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.init.ModParticles;
@@ -26,7 +27,6 @@ import me.fzzyhmstrs.fzzy_config.validation.misc.ValidatedColor;
 import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedDouble;
 import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedFloat;
 import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedInt;
-import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedNumber;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ColorParticleOption;
@@ -139,6 +139,7 @@ public class ModBlockConfigs extends Config {
     public boolean replaceOminousVaultConnection = true;
     public boolean leafLitterDeadLeaves = true;
     public boolean cobwebMovementSounds = true;
+    public FireflyConfigs.FireflyType fireflyBushFireflyType = FireflyConfigs.FireflyType.VANILLA;
 
     private static ValidatedIdentifier getEyeHandler() {
         List<ResourceLocation> eyes = CompatHelper.IS_END_REMASTERED_LOADED.get()

@@ -219,6 +219,7 @@
   "config.subtle_effects.blocks.leafLitterDeadLeaves": "Leaf Litter Dead Leaves",
   "config.subtle_effects.blocks.leafLitterDeadLeaves.desc": "When an entity walks over leaf litter, dead leaf particles will be spawned around the entities feet",
   "config.subtle_effects.blocks.cobwebMovementSounds": "Cobweb Movement Sounds",
+  "config.subtle_effects.blocks.fireflyBushFireflyType": "Firefly Bush Firefly Type",
   "config.subtle_effects.entities.attacked": "Attacked",
   "config.subtle_effects.entities.attacked.desc": "Particles emitted from a mob when it takes damage from a another mob or player",
   "config.subtle_effects.entities.attacked.chickenFeathers": "Chicken Feathers",
