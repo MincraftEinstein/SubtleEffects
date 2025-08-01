@@ -30,7 +30,7 @@ public class ModParticleRenderTypes {
             1536,
             BLENDED_PIPELINE,
             RenderType.CompositeState.builder()
-                    .setTextureState(new RenderStateShard.TextureStateShard(TextureAtlas.LOCATION_PARTICLES, TriState.FALSE, false))
+                    .setTextureState(new RenderStateShard.TextureStateShard(TextureAtlas.LOCATION_PARTICLES, false))
                     .setOutputState(RenderStateShard.PARTICLES_TARGET)
                     .setLightmapState(RenderStateShard.LIGHTMAP)
                     .createCompositeState(false)
