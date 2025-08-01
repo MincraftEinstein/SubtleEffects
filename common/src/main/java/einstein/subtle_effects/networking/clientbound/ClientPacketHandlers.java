@@ -1,28 +1,34 @@
 package einstein.subtle_effects.networking.clientbound;
 
 import einstein.subtle_effects.configs.ReplacedParticlesDisplayType;
+import einstein.subtle_effects.init.ModAnimalFedEffectSettings;
 import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.init.ModParticles;
-import einstein.subtle_effects.particle.option.ColorParticleOptions;
+import einstein.subtle_effects.mixin.client.entity.AbstractHorseAccessor;
 import einstein.subtle_effects.particle.option.FloatParticleOptions;
-import einstein.subtle_effects.tickers.TickerManager;
+import einstein.subtle_effects.particle.option.SheepFluffParticleOptions;
+import einstein.subtle_effects.ticking.tickers.TickerManager;
 import einstein.subtle_effects.util.MathUtil;
 import einstein.subtle_effects.util.ParticleSpawnUtil;
 import einstein.subtle_effects.util.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.particles.DustParticleOptions;
-import net.minecraft.core.particles.ItemParticleOption;
-import net.minecraft.core.particles.ParticleOptions;
-import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.particles.*;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.animal.Sheep;
+import net.minecraft.world.entity.animal.Animal;
+import net.minecraft.world.entity.animal.Dolphin;
+import net.minecraft.world.entity.animal.MushroomCow;
+import net.minecraft.world.entity.animal.Parrot;
+import net.minecraft.world.entity.animal.frog.Tadpole;
+import net.minecraft.world.entity.animal.horse.AbstractHorse;
 import net.minecraft.world.entity.monster.Ravager;
+import net.minecraft.world.entity.monster.Strider;
 import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.npc.VillagerData;
 import net.minecraft.world.entity.npc.VillagerProfession;
@@ -39,9 +45,9 @@ import net.minecraft.world.phys.Vec3;
 import org.joml.Vector3f;
 
 import java.util.List;
+import java.util.function.Supplier;
 
-import static einstein.subtle_effects.init.ModConfigs.BLOCKS;
-import static einstein.subtle_effects.init.ModConfigs.ENTITIES;
+import static einstein.subtle_effects.init.ModConfigs.*;
 import static einstein.subtle_effects.util.MathUtil.*;
 
 public class ClientPacketHandlers {
@@ -112,7 +118,7 @@ public class ClientPacketHandlers {
         BlockPos pos = packet.pos();
         Vec3 vec3 = Vec3.atBottomCenterOf(pos);
         RandomSource random = level.getRandom();
-        if (ENTITIES.xpBottleParticlesDisplayType == ReplacedParticlesDisplayType.BOTH || ENTITIES.xpBottleParticlesDisplayType == ReplacedParticlesDisplayType.VANILLA) {
+        if (ITEMS.projectiles.xpBottleParticlesDisplayType == ReplacedParticlesDisplayType.BOTH || ITEMS.projectiles.xpBottleParticlesDisplayType == ReplacedParticlesDisplayType.VANILLA) {
             level.levelEvent(
                     LevelEvent.PARTICLES_SPELL_POTION_SPLASH,
                     pos,
@@ -120,8 +126,8 @@ public class ClientPacketHandlers {
             );
         }
 
-        if (ENTITIES.xpBottleParticlesDisplayType == ReplacedParticlesDisplayType.BOTH || ENTITIES.xpBottleParticlesDisplayType == ReplacedParticlesDisplayType.DEFAULT) {
-            for (int i = 0; i < ENTITIES.xpBottleParticlesDensity.get(); ++i) {
+        if (ITEMS.projectiles.xpBottleParticlesDisplayType == ReplacedParticlesDisplayType.BOTH || ITEMS.projectiles.xpBottleParticlesDisplayType == ReplacedParticlesDisplayType.DEFAULT) {
+            for (int i = 0; i < ITEMS.projectiles.xpBottleParticlesDensity.get(); ++i) {
                 double d = random.nextDouble() * 4;
                 double d1 = random.nextDouble() * Math.PI * 2;
                 double xPower = Math.cos(d1) * d;
@@ -139,7 +145,7 @@ public class ClientPacketHandlers {
             }
         }
 
-        if (ENTITIES.xpBottleParticlesDisplayType == ReplacedParticlesDisplayType.DEFAULT) {
+        if (ITEMS.projectiles.xpBottleParticlesDisplayType == ReplacedParticlesDisplayType.DEFAULT) {
             for (int i = 0; i < 8; ++i) {
                 level.addParticle(
                         new ItemParticleOption(ParticleTypes.ITEM, new ItemStack(Items.SPLASH_POTION)),
@@ -170,7 +176,7 @@ public class ClientPacketHandlers {
         BlockState state = Block.stateById(payload.stateId());
         Block block = state.getBlock();
 
-        if (BLOCKS.fallingBlocks.landSound && !(block instanceof AnvilBlock)) {
+        if (BLOCKS.fallingBlocks.onLandSound && !(block instanceof AnvilBlock)) {
             SoundType soundType = state.getSoundType();
 
             Util.playClientSound(pos, soundType.getPlaceSound(), SoundSource.BLOCKS,
@@ -179,16 +185,10 @@ public class ClientPacketHandlers {
             );
         }
 
-        if (BLOCKS.fallingBlocks.landDust) {
+        if (BLOCKS.fallingBlocks.onLandDust) {
             if (BLOCKS.fallingBlocks.dustyBlocks.contains(block)) {
                 RandomSource random = level.getRandom();
-                int color = getFallingBlockDustColor(level, block, state, pos);
-                DustParticleOptions options = new DustParticleOptions(
-                        new Vector3f(
-                                ((color >> 16) & 255) / 255F,
-                                ((color >> 8) & 255) / 255F,
-                                (color & 255) / 255F
-                        ), 1);
+                ParticleOptions options = getParticleForFallingBlock(level, pos, state);
 
                 for (int i = 0; i < 25; i++) {
                     boolean b = random.nextBoolean();
@@ -286,8 +286,8 @@ public class ClientPacketHandlers {
                 ParticleSpawnUtil.spawnStonecutterParticles(level, new ItemStack(MASON_STONECUTTER_USE_BLOCKS.get(random.nextInt(MASON_STONECUTTER_USE_BLOCKS.size()))), pos, state);
             }
             else if (profession == VillagerProfession.SHEPHERD) {
-                ColorParticleOptions particle = new ColorParticleOptions(ModParticles.SHEEP_FLUFF.get(),
-                        new Vector3f(Sheep.getColorArray(getColorForShepherdWoolFluff(professionLevel, random)))
+                SheepFluffParticleOptions particle = new SheepFluffParticleOptions(
+                        getColorForShepherdWoolFluff(professionLevel, random), -1, false
                 );
 
                 for (int i = 0; i < 10; i++) {
@@ -336,11 +336,107 @@ public class ClientPacketHandlers {
         }
     }
 
+    public static void handle(ClientLevel level, ClientBoundMooshroomShearedPayload payload) {
+        Entity entity = level.getEntity(payload.entityId());
+        if (entity instanceof MushroomCow mooshroom) {
+            if (!ENTITIES.improvedMooshroomShearingEffects) {
+                level.addParticle(ParticleTypes.EXPLOSION, mooshroom.getX(), mooshroom.getY(0.5F), mooshroom.getZ(), 0, 0, 0);
+                return;
+            }
+
+            RandomSource random = mooshroom.getRandom();
+            ItemParticleOption particle = new ItemParticleOption(ParticleTypes.ITEM, new ItemStack(
+                    mooshroom.getVariant() == MushroomCow.MushroomType.BROWN ? Blocks.BROWN_MUSHROOM_BLOCK : Blocks.RED_MUSHROOM_BLOCK
+            ));
+
+            for (int i = 0; i < 20; i++) {
+                level.addParticle(
+                        particle,
+                        mooshroom.getRandomX(1),
+                        mooshroom.getRandomY(),
+                        mooshroom.getRandomZ(1),
+                        nextNonAbsDouble(random, 0.15),
+                        nextDouble(random, 0.15),
+                        nextNonAbsDouble(random, 0.15)
+                );
+            }
+
+            mooshroom.spawnAnim();
+        }
+    }
+
+    public static void handle(ClientLevel level, ClientBoundAnimalFedPayload payload) {
+        Entity entity = level.getEntity(payload.animalId());
+        ItemStack stack = payload.stack();
+
+        if (entity instanceof Animal || entity instanceof Dolphin || entity instanceof Tadpole) {
+            LivingEntity livingEntity = (LivingEntity) entity;
+            RandomSource random = level.getRandom();
+            ModAnimalFedEffectSettings.Settings settings = ModAnimalFedEffectSettings.getSetting(entity.getType());
+
+            if (ENTITIES.animalFeedingParticles) {
+                for (int i = 0; i < 16; i++) {
+                    ParticleSpawnUtil.spawnEntityFaceParticle(
+                            new ItemParticleOption(ParticleTypes.ITEM, settings.stackReplacer().apply(stack)),
+                            livingEntity, level, random, settings.offset(),
+                            Minecraft.getInstance().getFrameTime()
+                    );
+                }
+            }
+
+            float volume = ENTITIES.animalFeedingSoundVolume.get();
+            if (volume > 0 && !entity.isSilent()) {
+                Util.playClientSound(entity, getEatSound(livingEntity, stack, settings), entity.getSoundSource(), volume, livingEntity.getVoicePitch());
+            }
+        }
+    }
+
+    private static SoundEvent getEatSound(LivingEntity entity, ItemStack stack, ModAnimalFedEffectSettings.Settings settings) {
+        Supplier<SoundEvent> overrideSound = settings.sound();
+        if (overrideSound != null) {
+            return overrideSound.get();
+        }
+        else if (entity instanceof AbstractHorse horse) {
+            SoundEvent horseEatSound = ((AbstractHorseAccessor) horse).getEatSound();
+            if (horseEatSound != null && !horseEatSound.equals(SoundEvents.GENERIC_EAT)) {
+                return horseEatSound;
+            }
+        }
+
+        SoundEvent eatSound = entity.getEatingSound(stack);
+        SoundEvent stackEatSound = stack.getEatingSound();
+
+        if (!eatSound.equals(SoundEvents.GENERIC_EAT) && !eatSound.equals(stackEatSound)) {
+            return eatSound;
+        }
+        else if (entity instanceof Strider) {
+            return SoundEvents.STRIDER_EAT;
+        }
+        else if (entity instanceof Parrot) {
+            return SoundEvents.PARROT_EAT;
+        }
+        return stackEatSound;
+    }
+
     private static DyeColor getColorForShepherdWoolFluff(int professionLevel, RandomSource random) {
         if (professionLevel >= 2 && random.nextDouble() < 0.5) {
             return DyeColor.values()[random.nextInt(DyeColor.values().length)];
         }
         return COMMON_SHEPHERD_WOOL_COLORS.get(random.nextInt(COMMON_SHEPHERD_WOOL_COLORS.size()));
+    }
+
+    private static ParticleOptions getParticleForFallingBlock(Level level, BlockPos pos, BlockState state) {
+        if (Block.canSupportRigidBlock(level, pos.below())) {
+            int color = getFallingBlockDustColor(level, state.getBlock(), state, pos);
+            return new DustParticleOptions(
+                    new Vector3f(
+                            ((color >> 16) & 255) / 255F,
+                            ((color >> 8) & 255) / 255F,
+                            (color & 255) / 255F
+                    ), 1
+            );
+        }
+        return new BlockParticleOption(ParticleTypes.FALLING_DUST, state);
     }
 
     private static int getFallingBlockDustColor(Level level, Block block, BlockState state, BlockPos pos) {

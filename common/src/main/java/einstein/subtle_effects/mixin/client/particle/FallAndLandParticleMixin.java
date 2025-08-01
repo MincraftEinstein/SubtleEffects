@@ -31,12 +31,12 @@ public abstract class FallAndLandParticleMixin extends Particle {
     @SuppressWarnings("deprecation")
     @Inject(method = "postMoveUpdate", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/particle/DripParticle$FallAndLandParticle;remove()V"))
     private void onRemove(CallbackInfo ci) {
-        if (ModConfigs.GENERAL.dropLandSounds) {
+        if (ModConfigs.GENERAL.dropLandSoundVolume.get() > 0) {
             Supplier<SoundEvent> sound = subtleEffects$fluid.is(FluidTags.LAVA) ? ModSounds.DRIP_LAVA : ModSounds.DRIP_WATER;
             level.playLocalSound(x, y, z,
                     sound.get(),
                     SoundSource.BLOCKS,
-                    Mth.randomBetween(random, 0.3F, 1),
+                    ModConfigs.GENERAL.dropLandSoundVolume.get() * Mth.randomBetween(random, 0.3F, 1),
                     1,
                     false
             );

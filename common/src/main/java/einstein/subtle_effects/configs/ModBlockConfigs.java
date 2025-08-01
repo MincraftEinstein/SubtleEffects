@@ -12,28 +12,32 @@ import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.init.ModParticles;
 import einstein.subtle_effects.particle.EnderEyePlacedRingParticle;
 import einstein.subtle_effects.particle.option.ColorParticleOptions;
-import einstein.subtle_effects.tickers.TickerManager;
+import einstein.subtle_effects.ticking.tickers.TickerManager;
 import einstein.subtle_effects.util.Util;
 import me.fzzyhmstrs.fzzy_config.annotations.Translation;
 import me.fzzyhmstrs.fzzy_config.config.Config;
 import me.fzzyhmstrs.fzzy_config.config.ConfigGroup;
 import me.fzzyhmstrs.fzzy_config.util.AllowableIdentifiers;
 import me.fzzyhmstrs.fzzy_config.util.EnumTranslatable;
+import me.fzzyhmstrs.fzzy_config.validation.collection.ValidatedList;
 import me.fzzyhmstrs.fzzy_config.validation.collection.ValidatedMap;
 import me.fzzyhmstrs.fzzy_config.validation.minecraft.ValidatedIdentifier;
+import me.fzzyhmstrs.fzzy_config.validation.minecraft.ValidatedRegistryType;
 import me.fzzyhmstrs.fzzy_config.validation.misc.ValidatedColor;
+import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedDouble;
 import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedFloat;
 import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedInt;
-import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedNumber;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
-import org.joml.Vector3f;
 
 import java.awt.*;
 import java.util.HashMap;
@@ -63,9 +67,12 @@ public class ModBlockConfigs extends Config {
     public ConfigGroup dustyBlocksGroup = new ConfigGroup("dusty_blocks");
     public boolean redstoneBlockDust = true;
     public BlockDustDensity redstoneBlockDustDensity = BlockDustDensity.DEFAULT;
-    public GlowstoneDustDisplayType glowstoneBlockDustDisplayType = GlowstoneDustDisplayType.ON;
-    @ConfigGroup.Pop
+    public ValidatedList<Block> redstoneDustEmittingBlocks = new ValidatedList<>(List.of(Blocks.REDSTONE_BLOCK), ValidatedRegistryType.of(BuiltInRegistries.BLOCK));
+    public boolean glowstoneBlockDust = true;
     public BlockDustDensity glowstoneBlockDustDensity = BlockDustDensity.DEFAULT;
+    public ValidatedList<Block> glowstoneDustEmittingBlocks = new ValidatedList<>(List.of(Blocks.GLOWSTONE), ValidatedRegistryType.of(BuiltInRegistries.BLOCK));
+    @ConfigGroup.Pop
+    public boolean netherOnlyGlowstoneBlockDust = false;
     public boolean beehivesHaveSleepingZs = true;
     public SmokeType torchflowerSmoke = SmokeType.DEFAULT;
     public boolean torchflowerFlames = true;
@@ -86,6 +93,7 @@ public class ModBlockConfigs extends Config {
     public boolean compostingItemParticles = true;
 
     public CommandBlockSpawnType commandBlockParticles = CommandBlockSpawnType.ON;
+    public ValidatedDouble commandBlockParticlesDensity = new ValidatedDouble(1, 1, 0.1);
     public boolean slimeBlockBounceSounds = true;
     public ConfigGroup beaconParticlesGroup = new ConfigGroup("beacon_particles");
     public BeaconParticlesDisplayType beaconParticlesDisplayType = BeaconParticlesDisplayType.ON;
@@ -97,8 +105,13 @@ public class ModBlockConfigs extends Config {
     public boolean endPortalParticles = true;
     public boolean leavesDecayEffects = true;
     public boolean farmlandDestroyEffects = true;
+
+    public ConfigGroup amethystGroup = new ConfigGroup("amethyst");
     public AmethystSparkleDisplayType amethystSparkleDisplayType = AmethystSparkleDisplayType.ON;
+    public ValidatedList<Block> amethystSparkleEmittingBlocks = new ValidatedList<>(List.of(Blocks.AMETHYST_BLOCK, Blocks.BUDDING_AMETHYST), ValidatedRegistryType.of(BuiltInRegistries.BLOCK));
+    @ConfigGroup.Pop
     public boolean amethystSparkleSounds = true;
+
     public boolean floweringAzaleaPetals = true;
     public ConfigGroup sculkGroup = new ConfigGroup("sculk");
     public boolean sculkBlockSculkDust = true;
@@ -108,8 +121,6 @@ public class ModBlockConfigs extends Config {
     @ConfigGroup.Pop
     public boolean calibratedSculkSensorAmethystSparkle = true;
     public ValidatedFloat campfireSizzlingSoundVolume = new ValidatedFloat(0.5F, 1, 0);
-    public ValidatedInt vegetationFirefliesDensity = new ValidatedInt(30, 100, 0, ValidatedNumber.WidgetType.SLIDER);
-    public VegetationFirefliesSpawnType vegetationFirefliesSpawnType = VegetationFirefliesSpawnType.FLOWERS_ONLY;
     public boolean replacePowderSnowFlakes = true;
     public boolean lavaCauldronEffects = true;
 
@@ -119,10 +130,12 @@ public class ModBlockConfigs extends Config {
     public EnderEyePlacedParticlesDisplayType enderEyePlacedParticlesDisplayType = EnderEyePlacedParticlesDisplayType.BOTH;
     public ValidatedMap<ResourceLocation, ValidatedColor.ColorHolder> eyeColors = new ValidatedMap<>(DEFAULT_EYE_COLORS,
             getEyeHandler(), new ValidatedColor(new Color(EnderEyePlacedRingParticle.DEFAULT_COLOR), false));
-    @ConfigGroup.Pop
     public EndPortalFrameParticlesDisplayType endPortalFrameParticlesDisplayType = EndPortalFrameParticlesDisplayType.SMOKE;
+    @ConfigGroup.Pop
+    public ValidatedFloat endPortalFrameParticlesDensity = new ValidatedFloat(1, 1, 0);
 
     public boolean replaceOminousVaultConnection = true;
+    public boolean cobwebMovementSounds = true;
 
     private static ValidatedIdentifier getEyeHandler() {
         List<ResourceLocation> eyes = CompatHelper.IS_END_REMASTERED_LOADED.get()
@@ -145,18 +158,6 @@ public class ModBlockConfigs extends Config {
     public void onUpdateClient() {
         TickerManager.clear(Minecraft.getInstance().level);
         ModBlockTickers.init();
-    }
-
-    public enum GlowstoneDustDisplayType implements EnumTranslatable {
-        OFF,
-        ON,
-        NETHER_ONLY;
-
-        @NotNull
-        @Override
-        public String prefix() {
-            return BASE_KEY + "blocks.glowstoneBlockDustDisplayType";
-        }
     }
 
     public enum BlockDustDensity implements EnumTranslatable {

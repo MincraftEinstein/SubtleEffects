@@ -1,29 +1,23 @@
 package einstein.subtle_effects.init;
 
 import einstein.subtle_effects.SubtleEffects;
-import einstein.subtle_effects.biome_particles.BiomeParticleManager;
 import einstein.subtle_effects.compat.CompatHelper;
 import einstein.subtle_effects.compat.EndRemasteredCompat;
 import einstein.subtle_effects.configs.CommandBlockSpawnType;
 import einstein.subtle_effects.configs.ModBlockConfigs;
+import einstein.subtle_effects.particle.SparkParticle;
 import einstein.subtle_effects.particle.option.PositionParticleOptions;
-import einstein.subtle_effects.tickers.FlameGeyserTicker;
-import einstein.subtle_effects.tickers.TickerManager;
-import einstein.subtle_effects.util.AmethystClusterBlockAccessor;
-import einstein.subtle_effects.util.BlockTickerProvider;
-import einstein.subtle_effects.util.ParticleSpawnUtil;
-import einstein.subtle_effects.util.Util;
+import einstein.subtle_effects.util.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.tags.BlockTags;
 import net.minecraft.util.ParticleUtils;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.*;
@@ -44,7 +38,6 @@ import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 import static einstein.subtle_effects.init.ModConfigs.BLOCKS;
-import static einstein.subtle_effects.init.ModConfigs.ENVIRONMENT;
 import static einstein.subtle_effects.util.MathUtil.nextNonAbsDouble;
 import static einstein.subtle_effects.util.MathUtil.nextSign;
 import static einstein.subtle_effects.util.Util.playClientSound;
@@ -63,13 +56,13 @@ public class ModBlockTickers {
             EndRemasteredCompat.init();
         }
 
-        register(Blocks.REDSTONE_BLOCK, () -> BLOCKS.redstoneBlockDust, (state, level, pos, random) -> {
-            ParticleSpawnUtil.spawnParticlesAroundBlock(DustParticleOptions.REDSTONE, level, pos, random, BLOCKS.redstoneBlockDustDensity.getPerSideChance());
-        });
-        register(Blocks.GLOWSTONE, () -> BLOCKS.glowstoneBlockDustDisplayType != ModBlockConfigs.GlowstoneDustDisplayType.OFF,
+        register(state -> BLOCKS.redstoneDustEmittingBlocks.contains(state.getBlock()), () -> BLOCKS.redstoneBlockDust && !BLOCKS.redstoneDustEmittingBlocks.isEmpty(),
+                (state, level, pos, random) ->
+                        ParticleSpawnUtil.spawnParticlesAroundBlock(DustParticleOptions.REDSTONE, level, pos, random, BLOCKS.redstoneBlockDustDensity.getPerSideChance())
+        );
+        register(state -> BLOCKS.glowstoneDustEmittingBlocks.contains(state.getBlock()), () -> BLOCKS.glowstoneBlockDust && !BLOCKS.glowstoneDustEmittingBlocks.isEmpty(),
                 (state, level, pos, random) -> {
-                    if (BLOCKS.glowstoneBlockDustDisplayType.equals(ModBlockConfigs.GlowstoneDustDisplayType.NETHER_ONLY)
-                            && !level.dimension().equals(Level.NETHER)) {
+                    if (BLOCKS.netherOnlyGlowstoneBlockDust && !level.dimension().equals(Level.NETHER)) {
                         return;
                     }
 
@@ -191,8 +184,8 @@ public class ModBlockTickers {
                     ParticleSpawnUtil.spawnCmdBlockParticles(level, Vec3.atCenterOf(pos), random, (direction, relativePos) ->
                             !Util.isSolidOrNotEmpty(level, BlockPos.containing(relativePos)));
                 });
-        register(state -> state.is(Blocks.AMETHYST_BLOCK) || state.is(Blocks.BUDDING_AMETHYST),
-                () -> BLOCKS.amethystSparkleDisplayType == ModBlockConfigs.AmethystSparkleDisplayType.ON,
+        register(state -> BLOCKS.amethystSparkleEmittingBlocks.contains(state.getBlock()),
+                () -> BLOCKS.amethystSparkleDisplayType == ModBlockConfigs.AmethystSparkleDisplayType.ON && !BLOCKS.amethystSparkleEmittingBlocks.isEmpty(),
                 (state, level, pos, random) -> {
                     ParticleSpawnUtil.spawnParticlesAroundBlock(ModParticles.AMETHYST_SPARKLE.get(), level, pos, random, 5);
                 });
@@ -260,38 +253,38 @@ public class ModBlockTickers {
                 );
             }
         });
-        register(state -> (state.is(BlockTags.FLOWERS) || (BLOCKS.vegetationFirefliesSpawnType == ModBlockConfigs.VegetationFirefliesSpawnType.GRASS_AND_FLOWERS && (state.is(Blocks.GRASS) || state.is(Blocks.TALL_GRASS)))),
-                () -> BLOCKS.vegetationFirefliesDensity.get() > 0,
-                (state, level, pos, random) -> {
-                    if (BiomeParticleManager.FIREFLY_CONDITIONS.test(level, pos)) {
-                        if (random.nextInt(BLOCKS.vegetationFirefliesDensity.get()) == 0) {
-                            level.addParticle(ModParticles.FIREFLY.get(),
-                                    pos.getX() + nextNonAbsDouble(random),
-                                    pos.getY() + random.nextDouble(),
-                                    pos.getZ() + nextNonAbsDouble(random),
-                                    0, 0, 0
-                            );
-                        }
-                    }
-                });
-        register(state -> FlameGeyserTicker.VALID_BLOCKS.contains(state.getBlock()), () -> ENVIRONMENT.flameGeyserSpawnChance.get() > 0, (state, level, pos, random) -> {
-            if (level.dimension().equals(Level.NETHER)) {
-                RandomSource blockRandom = RandomSource.create(state.getSeed(pos));
-                if (blockRandom.nextDouble() < (0.0001 * ENVIRONMENT.flameGeyserSpawnChance.get())) {
-                    if (!FlameGeyserTicker.ACTIVE_GEYSERS.contains(pos) && !FlameGeyserTicker.INACTIVE_GEYSERS.contains(pos)) {
-                        if (FlameGeyserTicker.checkLocation(level, pos, true)) {
-                            TickerManager.add(new FlameGeyserTicker(level, pos, blockRandom));
-                        }
-                    }
-                }
-            }
-        });
         register(Blocks.END_PORTAL_FRAME, () -> BLOCKS.endPortalFrameParticlesDisplayType != ModBlockConfigs.EndPortalFrameParticlesDisplayType.OFF, (state, level, pos, random) -> {
             if (!state.getValue(EndPortalFrameBlock.HAS_EYE)) {
                 return;
             }
 
             ParticleSpawnUtil.spawnEndPortalParticles(level, pos, random, BLOCKS.endPortalFrameParticlesDisplayType.particle.apply(level, pos), BLOCKS.endPortalFrameParticlesDisplayType.count);
+        });
+        register(state -> state.getBlock() instanceof FallingBlock, () -> BLOCKS.fallingBlocks.weakSupportDust, (state, level, pos, random) -> {
+            if (random.nextInt(16) < BLOCKS.fallingBlocks.weakSupportDustDensity.get()) {
+                Block block = state.getBlock();
+                if (BLOCKS.fallingBlocks.dustyBlocks.contains(block) && !Block.canSupportRigidBlock(level, pos.below())) {
+                    level.addParticle(new BlockParticleOption(ParticleTypes.FALLING_DUST,
+                                    block instanceof BrushableBlock brushableBlock ?
+                                            brushableBlock.getTurnsInto().defaultBlockState() : state),
+                            pos.getX() + random.nextDouble(),
+                            pos.getY() - 0.0625,
+                            pos.getZ() + random.nextDouble(),
+                            0, 0, 0
+                    );
+                }
+            }
+        });
+        register(Blocks.BREWING_STAND, () -> BLOCKS.sparks.brewingStandSparks, (state, level, pos, random) -> {
+            for (int i = 0; i < 5; i++) {
+                level.addParticle(
+                        SparkParticle.create(SparkType.SHORT_LIFE, random, SparkParticle.BLAZE_COLORS),
+                        pos.getX() + 0.5 + nextNonAbsDouble(random, 0.125),
+                        pos.getY() + random.nextDouble(),
+                        pos.getZ() + 0.5 + nextNonAbsDouble(random, 0.125),
+                        0, 0, 0
+                );
+            }
         });
     }
 

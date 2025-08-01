@@ -19,6 +19,12 @@ public class LavaSplashParticle extends SplashParticle {
         return 240;
     }
 
+    // Workaround to prevent ParticleRain overriding textures for biome water color tinting
+    @Override
+    public void pickSprite(SpriteSet sprite) {
+        setSprite(sprite.get(random));
+    }
+
     public record Provider(SpriteSet sprites) implements ParticleProvider<SimpleParticleType> {
 
         @Override

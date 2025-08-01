@@ -2,7 +2,7 @@ package einstein.subtle_effects.configs;
 
 import einstein.subtle_effects.SubtleEffects;
 import einstein.subtle_effects.init.ModConfigs;
-import einstein.subtle_effects.tickers.TickerManager;
+import einstein.subtle_effects.ticking.tickers.TickerManager;
 import einstein.subtle_effects.util.Util;
 import me.fzzyhmstrs.fzzy_config.annotations.Translation;
 import me.fzzyhmstrs.fzzy_config.config.Config;
@@ -17,8 +17,7 @@ public class ModGeneralConfigs extends Config {
 
     public ConfigGroup particleRenderingGroup = new ConfigGroup("particle_rendering");
     public boolean enableParticleCulling = true;
-    @ValidatedInt.Restrict(min = 1, max = 32)
-    public int particleRenderDistance = 5;
+    public ValidatedInt particleRenderDistance = new ValidatedInt(5, 32, 1);
     @ConfigGroup.Pop
     public boolean cullParticlesInUnloadedChunks = true;
 
@@ -30,7 +29,7 @@ public class ModGeneralConfigs extends Config {
     public ValidatedFloat fluidDropsEvaporationVolume = new ValidatedFloat(0.25F, 1, 0);
     public boolean dropLandInFluidSplashes = true;
     @ConfigGroup.Pop
-    public boolean dropLandSounds = true;
+    public ValidatedFloat dropLandSoundVolume = new ValidatedFloat(1, 2, 0);
 
     public boolean lavaSparkSmoke = true;
     public ValidatedFloat sparksScale = new ValidatedFloat(1, 2, 1);
@@ -41,11 +40,15 @@ public class ModGeneralConfigs extends Config {
     public boolean glowingEnchantmentParticles = true;
     public boolean translucentEnchantmentParticles = true;
     @ConfigGroup.Pop
+    public boolean disableRandomizedShading = true;
+    public ValidatedFloat potionParticleAlpha = new ValidatedFloat(0.7F, 1, 0.3F);
+    public ValidatedFloat potionParticleAlphaNearPlayer = new ValidatedFloat(0.2F, 1, 0);
     @ConfigGroup.Pop
-    public boolean forceWhiteEnchantmentParticles = true;
+    public boolean replaceSpellParticleRenderType = true;
 
     public boolean mobSkullShaders = true;
     public ValidatedFloat fireHeight = new ValidatedFloat(-0.15F, 0.4F, -0.5F);
+    public boolean fireResistanceDisablesFireRendering = true;
     public boolean nightVisionFading = true;
     public ValidatedInt nightVisionFadingTime = new ValidatedInt(100, 200, 10);
     public boolean enableEasterEggs = true;

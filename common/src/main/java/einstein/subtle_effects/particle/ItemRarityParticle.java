@@ -4,9 +4,8 @@ import einstein.subtle_effects.particle.option.IntegerParticleOptions;
 import einstein.subtle_effects.util.Util;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
-import org.jetbrains.annotations.Nullable;
 
-import static einstein.subtle_effects.init.ModConfigs.ENTITIES;
+import static einstein.subtle_effects.init.ModConfigs.ITEMS;
 
 public class ItemRarityParticle extends TextureSheetParticle {
 
@@ -19,11 +18,11 @@ public class ItemRarityParticle extends TextureSheetParticle {
         gCol = ((color >> 8) & 255) / 255F;
         bCol = (color & 255) / 255F;
         pickSprite(sprites);
-        maxY = y + ENTITIES.itemRarity.particleMaxHeight.get();
+        maxY = y + ITEMS.itemRarity.particleMaxHeight.get();
         gravity = -0.1F;
         lifetime = 1;
         xd = 0;
-        yd *= ENTITIES.itemRarity.particleMaxSpeed.get();
+        yd *= ITEMS.itemRarity.particleMaxSpeed.get();
         zd = 0;
     }
 

@@ -23,7 +23,7 @@ import static einstein.subtle_effects.init.ModConfigs.BLOCKS;
 public class EndRemasteredCompat {
 
     public static void init() {
-        ModBlockTickers.REGISTERED.put(BuiltInRegistries.BLOCK.get(CompatHelper.endRemLoc("ancient_portal_frame")), (state, level, pos, random) -> {
+        ModBlockTickers.REGISTERED_SPECIAL.put(state -> state.is(BuiltInRegistries.BLOCK.get(CompatHelper.endRemLoc("ancient_portal_frame"))), (state, level, pos, random) -> {
             if (BLOCKS.endPortalFrameParticlesDisplayType == ModBlockConfigs.EndPortalFrameParticlesDisplayType.OFF) {
                 return;
             }

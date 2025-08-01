@@ -1,6 +1,5 @@
 package einstein.subtle_effects.mixin.client.entity;
 
-import einstein.subtle_effects.client.model.entity.EinsteinSolarSystemModel;
 import einstein.subtle_effects.client.renderer.entity.EinsteinSolarSystemLayer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.HumanoidModel;
@@ -30,7 +29,7 @@ public abstract class HumanoidModelMixin<T extends LivingEntity> {
         if (entity instanceof AbstractClientPlayer player) {
             if (EinsteinSolarSystemLayer.shouldRender(player)) {
                 float partialTicks = Minecraft.getInstance().getFrameTime();
-                float spin = EinsteinSolarSystemModel.getSpin(partialTicks, player, 0.5F);
+                float spin = EinsteinSolarSystemLayer.getSpin(partialTicks, player, 0.5F);
 
                 head.yRot = spin;
                 hat.yRot = spin;

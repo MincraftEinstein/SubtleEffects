@@ -1,5 +1,6 @@
 package einstein.subtle_effects.mixin.client;
 
+import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
@@ -10,15 +11,18 @@ import einstein.subtle_effects.configs.ModBlockConfigs;
 import einstein.subtle_effects.configs.ReplacedParticlesDisplayType;
 import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.init.ModParticles;
-import einstein.subtle_effects.particle.SparkParticle;
-import einstein.subtle_effects.tickers.TickerManager;
-import einstein.subtle_effects.util.*;
+import einstein.subtle_effects.ticking.tickers.TickerManager;
+import einstein.subtle_effects.util.FrustumGetter;
+import einstein.subtle_effects.util.ParticleAccessor;
+import einstein.subtle_effects.util.ParticleSpawnUtil;
+import einstein.subtle_effects.util.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ColorParticleOption;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.particles.SimpleParticleType;
@@ -28,6 +32,7 @@ import net.minecraft.util.valueproviders.IntProvider;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LevelEvent;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
@@ -38,15 +43,14 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.Slice;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import static einstein.subtle_effects.init.ModConfigs.ENVIRONMENT;
-import static einstein.subtle_effects.init.ModConfigs.BLOCKS;
+import static einstein.subtle_effects.init.ModConfigs.*;
 import static einstein.subtle_effects.util.MathUtil.nextNonAbsDouble;
-import static net.minecraft.util.Mth.nextFloat;
 
 @Mixin(LevelRenderer.class)
-public class LevelRendererMixin implements FrustumGetter {
+public abstract class LevelRendererMixin implements FrustumGetter {
 
     @Shadow
     @Nullable
@@ -74,6 +78,20 @@ public class LevelRendererMixin implements FrustumGetter {
             return instance.color((waterColor >> 16) / 255F, (waterColor >> 8) / 255F, waterColor / 255F, alpha);
         }
         return original.call(instance, red, green, blue, alpha);
+    }
+
+    @ModifyExpressionValue(method = "tickRain", at = @At(value = "FIELD", target = "Lnet/minecraft/core/particles/ParticleTypes;SMOKE:Lnet/minecraft/core/particles/SimpleParticleType;"))
+    private SimpleParticleType replaceRainEvaporationParticle(SimpleParticleType original) {
+        if (BLOCKS.steam.replaceRainEvaporationSteam) {
+            return ModParticles.STEAM.get();
+        }
+        return original;
+    }
+
+    // 'original' does not capture the '!', so the returned expression must be written inverted
+    @ModifyExpressionValue(method = "tickRain", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/state/BlockState;is(Lnet/minecraft/world/level/block/Block;)Z"))
+    private boolean modifyRainEvaporationBlocks(boolean original, @Local BlockState state) {
+        return original || (BLOCKS.steam.lavaCauldronsEvaporateRain && state.is(Blocks.LAVA_CAULDRON));
     }
 
     @Inject(method = "levelEvent", at = @At("TAIL"))
@@ -118,6 +136,46 @@ public class LevelRendererMixin implements FrustumGetter {
                 break;
             }
         }
+    }
+
+    @WrapOperation(method = "levelEvent",
+            slice = @Slice(
+                    to = @At(value = "FIELD", target = "Lnet/minecraft/sounds/SoundEvents;SPLASH_POTION_BREAK:Lnet/minecraft/sounds/SoundEvent;"),
+                    from = @At(value = "FIELD", target = "Lnet/minecraft/core/particles/ParticleTypes;EFFECT:Lnet/minecraft/core/particles/SimpleParticleType;")
+            ),
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/client/renderer/LevelRenderer;addParticleInternal(Lnet/minecraft/core/particles/ParticleOptions;ZDDDDDD)Lnet/minecraft/client/particle/Particle;"
+            )
+    )
+    private Particle replaceSplashPotionParticles(LevelRenderer levelRenderer, ParticleOptions options, boolean force, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, Operation<Particle> original, @Local(ordinal = 0) float red, @Local(ordinal = 1) float green, @Local(ordinal = 2) float blue) {
+        if (ITEMS.splashPotionClouds && level != null) {
+            RandomSource random = level.getRandom();
+
+            if (random.nextInt(5) == 0) {
+                double powerModifier = random.nextDouble() * 4;
+                // equivalent of particle.setPower, but since this is done before initial particle velocity is set the outcome is different
+                xSpeed *= powerModifier;
+                ySpeed = (ySpeed - 0.1) * powerModifier + 0.1;
+                zSpeed *= powerModifier;
+
+                if (random.nextInt(3) == 0) {
+                    original.call(levelRenderer,
+                            ColorParticleOption.create(ModParticles.POTION_POOF_CLOUD.get(), red, green, blue),
+                            false, x, y, z, xSpeed, ySpeed, zSpeed
+                    );
+                }
+
+                Particle particle = original.call(levelRenderer, options, force, x, y, z, xSpeed, ySpeed, zSpeed);
+                if (particle != null) {
+                    particle.setColor(red, green, blue);
+                }
+            }
+
+            // always returning null to prevent calling particle.setPower
+            return null;
+        }
+        return original.call(levelRenderer, options, force, x, y, z, xSpeed, ySpeed, zSpeed);
     }
 
     @WrapOperation(method = "levelEvent", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/ParticleUtils;spawnParticlesOnBlockFaces(Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;Lnet/minecraft/core/particles/ParticleOptions;Lnet/minecraft/util/valueproviders/IntProvider;)V"))

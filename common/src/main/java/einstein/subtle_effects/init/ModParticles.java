@@ -30,9 +30,10 @@ public class ModParticles {
     public static final Supplier<ParticleType<BooleanParticleOptions>> VEX_MAGIC = register("vex_magic", BooleanParticleOptions.DESERIALIZER, BooleanParticleOptions::codec);
     public static final Supplier<SimpleParticleType> SMALL_DUST_CLOUD = register("small_dust_cloud");
     public static final Supplier<SimpleParticleType> LARGE_DUST_CLOUD = register("large_dust_cloud");
-    public static final Supplier<ParticleType<ColorParticleOptions>> SHEEP_FLUFF = register("sheep_fluff", ColorParticleOptions.DESERIALIZER, ColorParticleOptions::codec);
+    public static final Supplier<ParticleType<SheepFluffParticleOptions>> SHEEP_FLUFF = register("sheep_fluff", SheepFluffParticleOptions.DESERIALIZER, type -> SheepFluffParticleOptions.CODEC);
     public static final Supplier<SimpleParticleType> MUSHROOM_SPORE = register("mushroom_spore");
     public static final Supplier<SimpleParticleType> FIREFLY = register("firefly");
+    public static final Supplier<SimpleParticleType> VANILLA_FIREFLY = register("vanilla_firefly");
     public static final Supplier<SimpleParticleType> FIREFLY_EMITTER = register("firefly_emitter");
     public static final Supplier<SimpleParticleType> SMOKE = register("smoke");
     public static final Supplier<SimpleParticleType> POLLEN = register("pollen");
@@ -62,8 +63,11 @@ public class ModParticles {
     public static final Supplier<ParticleType<ColorParticleOptions>> ENDER_EYE_PLACED_RING = register("ender_eye_placed_ring", ColorParticleOptions.DESERIALIZER, ColorParticleOptions::codec);
     public static final Supplier<ParticleType<BlockParticleOption>> BLOCK_NO_MOMENTUM = register("block_no_momentum", BlockParticleOption.DESERIALIZER, BlockParticleOption::codec);
     public static final Supplier<SimpleParticleType> LAVA_SPLASH = register("lava_splash");
-    public static final Supplier<ParticleType<IntegerParticleOptions>> GEYSER_HOLE = register("geyser_spout", IntegerParticleOptions.DESERIALIZER, IntegerParticleOptions::codec);
+    public static final Supplier<ParticleType<GeyserSpoutParticleOptions>> GEYSER_SPOUT = register("geyser_spout", GeyserSpoutParticleOptions.DESERIALIZER, type -> GeyserSpoutParticleOptions.CODEC);
     public static final Supplier<SimpleParticleType> SNEEZE = register("sneeze");
+    public static final Supplier<SimpleParticleType> GEYSER_SMOKE = register("geyser_smoke");
+    public static final Supplier<ParticleType<ColorParticleOptions>> POTION_CLOUD = register("potion_cloud", ColorParticleOptions.DESERIALIZER, ColorParticleOptions::codec);
+    public static final Supplier<ParticleType<ColorParticleOptions>> POTION_POOF_CLOUD = register("potion_poof_cloud", ColorParticleOptions.DESERIALIZER, ColorParticleOptions::codec);
 
     public static void init() {
     }

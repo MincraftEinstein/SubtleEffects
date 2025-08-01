@@ -57,7 +57,7 @@ public class SubtleEffectsForgeClient {
                 EntityRenderer<?> renderer = event.getSkin(skinName);
 
                 if (renderer instanceof PlayerRenderer playerRenderer) {
-                    playerRenderer.addLayer(new EinsteinSolarSystemLayer(playerRenderer, event.getContext()));
+                    playerRenderer.addLayer(new EinsteinSolarSystemLayer<>(playerRenderer, event.getContext()));
                 }
             }
         });

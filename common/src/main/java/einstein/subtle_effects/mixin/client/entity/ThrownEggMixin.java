@@ -38,7 +38,7 @@ public abstract class ThrownEggMixin {
         if (id == 3) {
             Level level = subtleEffects$me.level();
             RandomSource random = subtleEffects$me.level().getRandom();
-            float volume = ModConfigs.ENTITIES.eggSmashSoundVolume.get();
+            float volume = ModConfigs.ITEMS.projectiles.eggSmashSoundVolume.get();
 
             if (volume > 0) {
                 level.playSound(
@@ -53,7 +53,7 @@ public abstract class ThrownEggMixin {
                 );
             }
 
-            if (ModConfigs.ENTITIES.eggSplatParticles) {
+            if (ModConfigs.ITEMS.projectiles.eggSplatParticles) {
                 List<Entity> spawnedEntities = level.getEntities((Entity) null, subtleEffects$me.getBoundingBox(), (Entity entity) -> {
                     if (entity instanceof AgeableMob ageableMob) {
                         return ageableMob.isBaby();
