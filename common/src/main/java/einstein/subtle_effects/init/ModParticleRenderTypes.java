@@ -18,7 +18,7 @@ import java.util.List;
 public class ModParticleRenderTypes {
 
     private static final BlendFunction ALPHA_BLEND = new BlendFunction(SourceFactor.SRC_ALPHA, DestFactor.ONE_MINUS_SRC_ALPHA);
-    private static final RenderPipeline BLENDED_PIPELINE = RenderPipelines.register(
+    public static final RenderPipeline BLENDED_PIPELINE = RenderPipelines.register(
             RenderPipeline.builder(RenderPipelines.PARTICLE_SNIPPET)
                     .withLocation("pipeline/subtle_effects_fog")
                     .withBlend(ALPHA_BLEND)

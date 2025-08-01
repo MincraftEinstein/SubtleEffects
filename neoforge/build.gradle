@@ -58,4 +58,6 @@ dependencies {
     compileOnly("maven.modrinth:prism-lib:${neoforge_prism_version}")
     compileOnly("maven.modrinth:item-borders:${neoforge_item_borders_version}")
     compileOnly("maven.modrinth:endrem:${neoforge_endrem_version}")
+    compileOnly("maven.modrinth:sodium:${neoforge_sodium_version}")
+    compileOnly("maven.modrinth:iris:${neoforge_iris_version}")
 }

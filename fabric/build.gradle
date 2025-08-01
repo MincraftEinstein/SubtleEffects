@@ -27,6 +27,8 @@ dependencies {
     modCompileOnly "maven.modrinth:prism-lib:${fabric_prism_version}"
     modCompileOnly "maven.modrinth:item-borders:${fabric_item_borders_version}"
     modCompileOnly "maven.modrinth:endrem:${fabric_endrem_version}"
+    modCompileOnly "maven.modrinth:sodium:${fabric_sodium_version}"
+    modCompileOnly "maven.modrinth:iris:${fabric_iris_version}"
 }
 
 loom {

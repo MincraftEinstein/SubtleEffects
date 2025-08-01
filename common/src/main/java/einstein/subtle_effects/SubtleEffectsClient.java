@@ -5,6 +5,7 @@ import com.mojang.brigadier.arguments.BoolArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import com.mojang.brigadier.tree.LiteralCommandNode;
+import einstein.subtle_effects.compat.CompatHelper;
 import einstein.subtle_effects.init.*;
 import einstein.subtle_effects.ticking.biome_particles.BiomeParticleManager;
 import einstein.subtle_effects.ticking.tickers.TickerManager;
@@ -32,6 +33,7 @@ public class SubtleEffectsClient {
         ModDamageListeners.init();
         ModParticles.init();
         ModAnimalFedEffectSettings.init();
+        CompatHelper.init();
     }
 
     public static void clientTick(Minecraft minecraft, Level level) {
