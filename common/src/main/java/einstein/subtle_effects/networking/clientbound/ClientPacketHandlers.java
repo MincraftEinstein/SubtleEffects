@@ -15,7 +15,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
-import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.particles.*;
 import net.minecraft.sounds.SoundEvent;
@@ -30,6 +29,7 @@ import net.minecraft.world.entity.animal.MushroomCow;
 import net.minecraft.world.entity.animal.Parrot;
 import net.minecraft.world.entity.animal.frog.Tadpole;
 import net.minecraft.world.entity.animal.horse.AbstractHorse;
+import net.minecraft.world.entity.item.FallingBlockEntity;
 import net.minecraft.world.entity.monster.Ravager;
 import net.minecraft.world.entity.monster.Strider;
 import net.minecraft.world.entity.npc.Villager;
@@ -44,7 +44,6 @@ import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.Vec3;
-import org.joml.Vector3f;
 
 import java.util.List;
 import java.util.function.Supplier;
@@ -177,6 +176,13 @@ public class ClientPacketHandlers {
                     );
                 }
             }
+        }
+    }
+
+    public static void handle(ClientLevel level, ClientBoundFallingBlockTickPayload payload) {
+        Entity entity = level.getEntity(payload.entityId());
+        if (entity instanceof FallingBlockEntity) {
+            entity.fallDistance = payload.fallDistance();
         }
     }
 
