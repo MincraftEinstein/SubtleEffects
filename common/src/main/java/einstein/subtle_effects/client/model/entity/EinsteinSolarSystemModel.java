@@ -21,8 +21,8 @@ public class EinsteinSolarSystemModel<T extends PlayerRenderState> extends Human
         PartDefinition partDefinition = meshDefinition.getRoot();
 
         // Replaces head parts so that the pivot point is centered on the head
-        partDefinition.addOrReplaceChild("head", CubeListBuilder.create().texOffs(0, 0).addBox(-4, -4, -4, 8, 8, 8), PartPose.ZERO);
-        partDefinition.addOrReplaceChild("hat", CubeListBuilder.create().texOffs(32, 0).addBox(-4, -4, -4, 8, 8, 8, new CubeDeformation(0.5F)), PartPose.ZERO);
+        PartDefinition headDefinition = partDefinition.addOrReplaceChild("head", CubeListBuilder.create().texOffs(0, 0).addBox(-4, -4, -4, 8, 8, 8), PartPose.ZERO);
+        headDefinition.addOrReplaceChild("hat", CubeListBuilder.create().texOffs(32, 0).addBox(-4, -4, -4, 8, 8, 8, new CubeDeformation(0.5F)), PartPose.ZERO);
         return LayerDefinition.create(meshDefinition, 64, 64);
     }
 
