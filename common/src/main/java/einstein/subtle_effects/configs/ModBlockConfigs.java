@@ -197,16 +197,6 @@ public class ModBlockConfigs extends Config {
         }
     }
 
-    public enum VegetationFirefliesSpawnType implements EnumTranslatable {
-        GRASS_AND_FLOWERS,
-        FLOWERS_ONLY;
-
-        @Override
-        public @NotNull String prefix() {
-            return BASE_KEY + "blocks.vegetationFirefliesSpawnType";
-        }
-    }
-
     public enum BeaconParticlesDisplayType implements EnumTranslatable {
         OFF,
         ON,
