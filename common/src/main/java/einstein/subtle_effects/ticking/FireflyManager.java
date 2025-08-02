@@ -30,6 +30,15 @@ public class FireflyManager {
             return;
         }
 
+        // did you know that light level hasn't been loaded by the time this starts ticking?
+        // so because the light isn't loaded, the light level checks pass and fireflies will spawn...
+        // whether it's day or not...
+        // so to fix it this prevents fireflies from spawning for 10 seconds, to make sure the light level has been loaded
+        Minecraft minecraft = Minecraft.getInstance();
+        if (minecraft.player == null || minecraft.player.tickCount < 200) {
+            return;
+        }
+
         Optional<ResourceKey<DimensionType>> dimensionKey = level.dimensionTypeRegistration().unwrapKey();
         if (dimensionKey.isEmpty() || ENVIRONMENT.fireflies.dimensionBlocklist.contains(dimensionKey.get().location())) {
             return;
