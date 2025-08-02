@@ -12,7 +12,6 @@ import einstein.subtle_effects.util.MathUtil;
 import einstein.subtle_effects.util.ParticleSpawnUtil;
 import einstein.subtle_effects.util.Util;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.*;
 import net.minecraft.sounds.SoundEvent;
@@ -336,7 +335,12 @@ public class ClientPacketHandlers {
         }
     }
 
-    public static void handle(ClientLevel level, ClientBoundMooshroomShearedPayload payload) {
+    public static void handle(ClientBoundMooshroomShearedPacket payload) {
+        Level level = Minecraft.getInstance().level;
+        if (level == null) {
+            return;
+        }
+
         Entity entity = level.getEntity(payload.entityId());
         if (entity instanceof MushroomCow mooshroom) {
             if (!ENTITIES.improvedMooshroomShearingEffects) {
@@ -365,7 +369,12 @@ public class ClientPacketHandlers {
         }
     }
 
-    public static void handle(ClientLevel level, ClientBoundAnimalFedPayload payload) {
+    public static void handle(ClientBoundAnimalFedPacket payload) {
+        Level level = Minecraft.getInstance().level;
+        if (level == null) {
+            return;
+        }
+
         Entity entity = level.getEntity(payload.animalId());
         ItemStack stack = payload.stack();
 

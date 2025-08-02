@@ -23,9 +23,6 @@ import static einstein.subtle_effects.init.ModConfigs.GENERAL;
 @Mixin(SpellParticle.class)
 public abstract class SpellParticleMixin extends TextureSheetParticle {
 
-    @Shadow
-    private float originalAlpha;
-
     @Unique
     private boolean subtleEffects$isFirstFrame = true;
 
@@ -56,7 +53,7 @@ public abstract class SpellParticleMixin extends TextureSheetParticle {
                 return;
             }
 
-            alpha = Mth.lerp(0.05F, alpha, originalAlpha);
+            alpha = Mth.lerp(0.05F, alpha, 1F);
         }
     }
 

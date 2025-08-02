@@ -13,13 +13,13 @@ import static einstein.subtle_effects.init.ModConfigs.BASE_KEY;
 
 public enum SmokeType implements EnumTranslatable {
     OFF(null),
-    DEFAULT(() -> ParticleTypes.SMOKE),
-    UPDATED(ModParticles.SMOKE);
+    DEFAULT(() -> () -> ParticleTypes.SMOKE),
+    UPDATED(() -> ModParticles.SMOKE);
 
     @Nullable
-    private final Supplier<? extends ParticleOptions> particle;
+    private final Supplier<Supplier<? extends ParticleOptions>> particle;
 
-    SmokeType(@Nullable Supplier<? extends ParticleOptions> particle) {
+    SmokeType(@Nullable Supplier<Supplier<? extends ParticleOptions>> particle) {
         this.particle = particle;
     }
 
@@ -35,6 +35,6 @@ public enum SmokeType implements EnumTranslatable {
 
     @Nullable
     public Supplier<? extends ParticleOptions> getParticle() {
-        return particle;
+        return particle.get();
     }
 }

@@ -51,7 +51,6 @@ public class ModAnimalFedEffectSettings {
         register(EntityType.DONKEY, 0, 0.2);
         register(EntityType.HORSE, 0.2, 0.4);
         register(EntityType.STRIDER, 0, -0.6);
-        register(EntityType.ARMADILLO, 0, -0.4);
         register(EntityType.WOLF, 0, -0.3);
         register(EntityType.TURTLE, ModSounds.TURTLE_EAT);
         register(EntityType.HOGLIN, ModSounds.HOGLIN_EAT);

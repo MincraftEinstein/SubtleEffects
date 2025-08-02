@@ -2,13 +2,11 @@ package einstein.subtle_effects.particle;
 
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import einstein.subtle_effects.particle.option.SheepFluffParticleOptions;
-import einstein.subtle_effects.util.Util;
 import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.client.particle.SpriteSet;
-import net.minecraft.util.FastColor;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.animal.Sheep;
 import net.minecraft.world.item.DyeColor;
@@ -27,7 +25,8 @@ public class SheepFluffParticle extends FeatherParticle {
         gravity = 0.5F;
 
         if (!isJeb) {
-            Util.setColorFromHex(this, Sheep.getColor(options.color()));
+            float[] color = Sheep.getColorArray(options.color());
+            setColor(color[0], color[1], color[2]);
         }
     }
 
@@ -39,9 +38,13 @@ public class SheepFluffParticle extends FeatherParticle {
             int i = tickCount / speed + sheepId;
             int length = DyeColor.values().length;
             float delta = ((float) (tickCount % speed) + partialTicks) / speed;
-            int startColor = Sheep.getColor(DyeColor.byId(i % length));
-            int endColor = Sheep.getColor(DyeColor.byId((i + 1) % length));
-            Util.setColorFromHex(this, FastColor.ARGB32.lerp(delta, startColor, endColor));
+            float[] startColor = Sheep.getColorArray(DyeColor.byId(i % length));
+            float[] endColor = Sheep.getColorArray(DyeColor.byId((i + 1) % length));
+            setColor(
+                    startColor[0] * (1 - delta) + endColor[0] * delta,
+                    startColor[1] * (1 - delta) + endColor[1] * delta,
+                    startColor[2] * (1 - delta) + endColor[2] * delta
+            );
         }
         super.render(buffer, renderInfo, partialTicks);
     }

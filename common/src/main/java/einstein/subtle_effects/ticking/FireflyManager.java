@@ -4,6 +4,7 @@ import einstein.subtle_effects.compat.CompatHelper;
 import einstein.subtle_effects.compat.SereneSeasonsCompat;
 import einstein.subtle_effects.configs.environment.FireflyConfigs;
 import einstein.subtle_effects.init.ModSounds;
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceKey;

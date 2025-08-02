@@ -16,5 +16,7 @@ public class ModPackets {
         NETWORK.registerToClient(ClientBoundCompostItemPayload.ID, ClientBoundCompostItemPayload.class, ClientBoundCompostItemPayload::decode);
         NETWORK.registerToClient(ClientBoundStonecutterUsedPayload.ID, ClientBoundStonecutterUsedPayload.class, ClientBoundStonecutterUsedPayload::decode);
         NETWORK.registerToClient(ClientBoundVillagerWorkPacket.ID, ClientBoundVillagerWorkPacket.class, ClientBoundVillagerWorkPacket::decode);
+        NETWORK.registerToClient(ClientBoundAnimalFedPacket.ID, ClientBoundAnimalFedPacket.class, ClientBoundAnimalFedPacket::decode);
+        NETWORK.registerToClient(ClientBoundMooshroomShearedPacket.ID, ClientBoundMooshroomShearedPacket.class, ClientBoundMooshroomShearedPacket::decode);
     }
 }

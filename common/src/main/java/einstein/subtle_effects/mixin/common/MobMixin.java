@@ -2,7 +2,7 @@ package einstein.subtle_effects.mixin.common;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
-import einstein.subtle_effects.networking.clientbound.ClientBoundAnimalFedPayload;
+import einstein.subtle_effects.networking.clientbound.ClientBoundAnimalFedPacket;
 import einstein.subtle_effects.platform.Services;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.ItemTags;
@@ -13,6 +13,7 @@ import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.Dolphin;
 import net.minecraft.world.entity.animal.Parrot;
 import net.minecraft.world.entity.animal.Wolf;
+import net.minecraft.world.entity.animal.frog.Frog;
 import net.minecraft.world.entity.animal.frog.Tadpole;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -43,9 +44,9 @@ public class MobMixin {
                 stack.shrink(1);
 
                 if (!stackCopy.isEmpty()) {
-                    if ((ItemStack.isSameItemSameComponents(stack, handStack) && stack.getCount() == handStack.getCount())
+                    if ((ItemStack.isSameItemSameTags(stack, handStack) && stack.getCount() == handStack.getCount())
                             || player.isCreative()) {
-                        Services.NETWORK.sendToClientsTracking(serverLevel, mob.blockPosition(), new ClientBoundAnimalFedPayload(mob.getId(), stack.isEmpty() ? stackCopy : stack));
+                        Services.NETWORK.sendToClientsTracking(serverLevel, mob.blockPosition(), new ClientBoundAnimalFedPacket(mob.getId(), stack.isEmpty() ? stackCopy : stack));
                     }
                 }
             }
@@ -58,13 +59,13 @@ public class MobMixin {
         if (mob instanceof Animal animal) {
             return animal.isFood(stack)
                     || (animal instanceof Wolf && stack.is(Items.BONE))
-                    || (animal instanceof Parrot && (stack.is(ItemTags.PARROT_FOOD) || stack.is(ItemTags.PARROT_POISONOUS_FOOD)));
+                    || (animal instanceof Parrot && (stack.is(Items.COOKIE) || Parrot.TAME_FOOD.contains(stack.getItem())));
         }
         else if (mob instanceof Dolphin) {
             return stack.is(ItemTags.FISHES);
         }
         else if (mob instanceof Tadpole) {
-            return stack.is(ItemTags.FROG_FOOD);
+            return Frog.TEMPTATION_ITEM.test(stack);
         }
         return false;
     }

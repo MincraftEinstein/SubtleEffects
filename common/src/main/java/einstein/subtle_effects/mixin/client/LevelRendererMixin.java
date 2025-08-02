@@ -11,6 +11,7 @@ import einstein.subtle_effects.configs.ModBlockConfigs;
 import einstein.subtle_effects.configs.ReplacedParticlesDisplayType;
 import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.init.ModParticles;
+import einstein.subtle_effects.particle.option.ColorParticleOptions;
 import einstein.subtle_effects.ticking.tickers.TickerManager;
 import einstein.subtle_effects.util.FrustumGetter;
 import einstein.subtle_effects.util.ParticleAccessor;
@@ -22,7 +23,6 @@ import net.minecraft.client.particle.Particle;
 import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.particles.ColorParticleOption;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.particles.SimpleParticleType;
@@ -37,6 +37,7 @@ import net.minecraft.world.level.block.LevelEvent;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
+import org.joml.Vector3f;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -141,7 +142,7 @@ public abstract class LevelRendererMixin implements FrustumGetter {
     @WrapOperation(method = "levelEvent",
             slice = @Slice(
                     to = @At(value = "FIELD", target = "Lnet/minecraft/sounds/SoundEvents;SPLASH_POTION_BREAK:Lnet/minecraft/sounds/SoundEvent;"),
-                    from = @At(value = "FIELD", target = "Lnet/minecraft/core/particles/ParticleTypes;EFFECT:Lnet/minecraft/core/particles/SimpleParticleType;")
+                    from = @At(value = "FIELD", target = "Lnet/minecraft/world/item/Items;SPLASH_POTION:Lnet/minecraft/world/item/Item;")
             ),
             at = @At(
                     value = "INVOKE",
@@ -161,7 +162,7 @@ public abstract class LevelRendererMixin implements FrustumGetter {
 
                 if (random.nextInt(3) == 0) {
                     original.call(levelRenderer,
-                            ColorParticleOption.create(ModParticles.POTION_POOF_CLOUD.get(), red, green, blue),
+                            new ColorParticleOptions(ModParticles.POTION_POOF_CLOUD.get(), new Vector3f(red, green, blue)),
                             false, x, y, z, xSpeed, ySpeed, zSpeed
                     );
                 }

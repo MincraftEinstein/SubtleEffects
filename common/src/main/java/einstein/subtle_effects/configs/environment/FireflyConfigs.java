@@ -30,7 +30,7 @@ import static einstein.subtle_effects.init.ModConfigs.biomeList;
 public class FireflyConfigs extends ConfigSection {
 
     private static final List<Block> DEFAULT_SPAWNABLE_BLOCKS = Util.make(new ArrayList<>(), blocks -> {
-        blocks.add(Blocks.SHORT_GRASS);
+        blocks.add(Blocks.GRASS);
         blocks.add(Blocks.TALL_GRASS);
         blocks.add(Blocks.POPPY);
         blocks.add(Blocks.DANDELION);
@@ -52,7 +52,7 @@ public class FireflyConfigs extends ConfigSection {
         blocks.add(Blocks.FLOWERING_AZALEA);
     });
     private static final List<ResourceLocation> DEFAULT_BLOCKED_DIMENSIONS = Util.make(new ArrayList<>(), dimensions -> {
-        dimensions.add(ResourceLocation.fromNamespaceAndPath("twilightforest", "twilight_forest_type"));
+        dimensions.add(new ResourceLocation("twilightforest", "twilight_forest_type"));
     });
 
     public boolean firefliesEnabled = true;
@@ -71,17 +71,17 @@ public class FireflyConfigs extends ConfigSection {
     public ValidatedInt habitatBiomeDensity = new ValidatedInt(3, 10, 1);
 
     public enum FireflyType implements EnumTranslatable {
-        ORIGINAL(ModParticles.FIREFLY),
-        VANILLA(ModParticles.VANILLA_FIREFLY);
+        ORIGINAL(() -> ModParticles.FIREFLY),
+        VANILLA(() -> ModParticles.VANILLA_FIREFLY);
 
-        private final Supplier<SimpleParticleType> particle;
+        private final Supplier<Supplier<SimpleParticleType>> particle;
 
-        FireflyType(Supplier<SimpleParticleType> particle) {
+        FireflyType(Supplier<Supplier<SimpleParticleType>> particle) {
             this.particle = particle;
         }
 
         public Supplier<SimpleParticleType> getParticle() {
-            return particle;
+            return particle.get();
         }
 
         @Override

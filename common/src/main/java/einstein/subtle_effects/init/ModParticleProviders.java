@@ -39,9 +39,10 @@ public class ModParticleProviders {
         register(VEX_MAGIC, AllayMagicParticle.VexProvider::new);
         register(SMALL_DUST_CLOUD, DustCloudParticle.SmallProvider::new);
         register(LARGE_DUST_CLOUD, DustCloudParticle.LargeProvider::new);
-        register(SHEEP_FLUFF, FeatherParticle.SheepFluffProvider::new);
+        register(SHEEP_FLUFF, SheepFluffParticle.Provider::new);
         register(MUSHROOM_SPORE, MushroomSporeProvider::new);
         register(FIREFLY, FireflyParticle.Provider::new);
+        register(VANILLA_FIREFLY, VanillaFireflyParticle.FireflyProvider::new);
         register(FIREFLY_EMITTER, sprites -> new FireFlyEmitter.Provider());
         register(SMOKE, SmokeParticleProvider::new);
         register(POLLEN, PollenProvider::new);
@@ -71,8 +72,11 @@ public class ModParticleProviders {
         register(ENDER_EYE_PLACED_RING, EnderEyePlacedRingParticle.Provider::new);
         register(BLOCK_NO_MOMENTUM, sprites -> new TerrainNoMomentumParticleProvider());
         register(LAVA_SPLASH, LavaSplashParticle.Provider::new);
-        register(GEYSER_HOLE, GeyserSpoutParticle.Provider::new);
+        register(GEYSER_SPOUT, GeyserSpoutParticle.Provider::new);
         register(SNEEZE, SneezeParticle.Provider::new);
+        register(GEYSER_SMOKE, GeyserSmokeParticleProvider::new);
+        register(POTION_CLOUD, PotionCloudParticle.Provider::new);
+        register(POTION_POOF_CLOUD, PotionPoofCloudProvider::new);
         SubtleEffects.LOGGER.info("Forge please do the world a favor and STOP EXISTING!!");
     }
 

@@ -11,6 +11,7 @@
     "client.particle.ForgeParticleEngineMixin"
   ],
   "mixins": [
+    "common.ForgeCommonMooshroomMixin",
     "common.ForgeStonecutter$2Menu"
   ],
   "injectors": {

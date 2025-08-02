@@ -2,11 +2,8 @@ package einstein.subtle_effects.ticking.tickers.geyser;
 
 import com.mojang.serialization.Codec;
 import einstein.subtle_effects.ticking.GeyserManager;
-import io.netty.buffer.ByteBuf;
 import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedInt;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.codec.ByteBufCodecs;
-import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.level.Level;
@@ -28,7 +25,6 @@ public enum GeyserType implements StringRepresentable {
     BUBBLE("bubble", false, 3, BubbleGeyserTicker::new, Fluids.WATER, () -> GeyserManager.BUBBLE_GEYSER_BLOCKS, ENVIRONMENT.geysers.bubbleGeyserSpawnChance, ENVIRONMENT.geysers.bubbleGeyserActiveTime, ENVIRONMENT.geysers.bubbleGeyserInactiveTime);
 
     public static final Codec<GeyserType> CODEC = StringRepresentable.fromEnum(GeyserType::values);
-    public static final StreamCodec<ByteBuf, GeyserType> STREAM_CODEC = ByteBufCodecs.fromCodec(CODEC);
 
     private final String name;
     public final boolean isNetherOnly;
