@@ -24,7 +24,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.PlayerModelPart;
 import org.joml.Vector3f;
 
-public class EinsteinSolarSystemLayer<T extends AbstractClientPlayer, V extends PlayerModel<T>> extends RenderLayer<T, V> implements RenderLayerParent<T, EinsteinSolarSystemModel<T>> {
+public class EinsteinSolarSystemLayer<T extends AbstractClientPlayer, V extends PlayerModel<T>> extends RenderLayer<T, V> {
 
     private static final String UUID = "d71e4b41-9315-499f-a934-ca925421fb38";
     private static final Vector3f[] HEAD_ROTATIONS = {
@@ -32,6 +32,7 @@ public class EinsteinSolarSystemLayer<T extends AbstractClientPlayer, V extends 
             new Vector3f(2.5F, 8.6F, -13.8F),
             new Vector3f(-64.7F, 48.2F, -41.9F)
     };
+    private final EinsteinSolarSystemRenderLayerParentImpl<T, V> renderLayerParent;
     private final EinsteinSolarSystemModel<T> model;
     private final CustomHeadLayer<T, EinsteinSolarSystemModel<T>> headLayer;
     private final HumanoidArmorLayer<T, EinsteinSolarSystemModel<T>, HumanoidModel<T>> armorLayer;
@@ -40,8 +41,9 @@ public class EinsteinSolarSystemLayer<T extends AbstractClientPlayer, V extends 
     public EinsteinSolarSystemLayer(RenderLayerParent<?, ?> renderer, EntityRendererProvider.Context context) {
         super((RenderLayerParent<T, V>) renderer);
         model = new EinsteinSolarSystemModel<>(context.bakeLayer(EinsteinSolarSystemModel.MODEL_LAYER));
-        headLayer = new CustomHeadLayer<>(this, context.getModelSet(), context.getItemInHandRenderer());
-        armorLayer = new HumanoidArmorLayer<>(this,
+        renderLayerParent = new EinsteinSolarSystemRenderLayerParentImpl<>(this);
+        headLayer = new CustomHeadLayer<>(renderLayerParent, context.getModelSet(), context.getItemInHandRenderer());
+        armorLayer = new HumanoidArmorLayer<>(renderLayerParent,
                 new HumanoidArmorModel<>(context.bakeLayer(ModelLayers.PLAYER_INNER_ARMOR)),
                 new HumanoidArmorModel<>(context.bakeLayer(ModelLayers.PLAYER_OUTER_ARMOR)),
                 context.getModelManager()
@@ -87,13 +89,16 @@ public class EinsteinSolarSystemLayer<T extends AbstractClientPlayer, V extends 
     }
 
     @Override
+    public ResourceLocation getTextureLocation(T player) {
+        return super.getTextureLocation(player);
+    }
+
     public EinsteinSolarSystemModel<T> getModel() {
         return model;
     }
 
-    @Override
-    public ResourceLocation getTextureLocation(T player) {
-        return super.getTextureLocation(player);
+    public EinsteinSolarSystemRenderLayerParentImpl<T, V> getRenderLayerParent() {
+        return renderLayerParent;
     }
 
     public static boolean shouldRender(AbstractClientPlayer player) {
