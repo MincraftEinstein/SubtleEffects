@@ -47,14 +47,21 @@ public class FireflyManager {
         ResourceLocation biomeId = biomeKey.get().location();
         if (!ENVIRONMENT.fireflies.biomesBlocklist.contains(biomeId)) {
             boolean isHabitatBiome = ENVIRONMENT.fireflies.habitatBiomes.contains(biomeId);
-            if (!isHabitatBiome && (ENVIRONMENT.fireflies.onlyAllowInHabitatBiomes || !ENVIRONMENT.fireflies.spawnableBlocks.contains(state.getBlock()))) {
+            boolean isSpawnable = ENVIRONMENT.fireflies.spawnableBlocks.contains(state.getBlock());
+            if (!isHabitatBiome && (ENVIRONMENT.fireflies.onlyAllowInHabitatBiomes || !isSpawnable)) {
                 return;
             }
 
-            int surfaceLevel = level.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING, pos).getY();
             boolean canSeeSky = level.canSeeSky(pos);
-            if (isHabitatBiome && canSeeSky && surfaceLevel + 10 < pos.getY()) {
-                return;
+            int surfaceLevel = level.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING, pos).getY();
+            if (isHabitatBiome) {
+                if (!canSeeSky && !isSpawnable) {
+                    return;
+                }
+
+                if (canSeeSky && surfaceLevel + 10 < pos.getY()) {
+                    return;
+                }
             }
 
             if (biome.value().warmEnoughToRain(pos) || ENVIRONMENT.fireflies.biomesAllowlist.contains(biomeId)) {
