@@ -41,7 +41,7 @@ import static einstein.subtle_effects.init.ModConfigs.BLOCKS;
 import static einstein.subtle_effects.init.ModConfigs.ITEMS;
 import static einstein.subtle_effects.util.MathUtil.nextNonAbsDouble;
 
-@Mixin(LevelEventHandler.class)
+@Mixin(value = LevelEventHandler.class, priority = 999)
 public class LevelEventHandlerMixin {
 
     @Shadow
