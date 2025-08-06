@@ -19,8 +19,10 @@ public class ModGeneralConfigs extends Config {
     public ConfigGroup particleRenderingGroup = new ConfigGroup("particle_rendering");
     public boolean enableParticleCulling = true;
     public ValidatedInt particleRenderDistance = new ValidatedInt(5, 32, 1);
-    @ConfigGroup.Pop
     public boolean cullParticlesInUnloadedChunks = true;
+    public boolean allowUsingBlendedRenderType = true;
+    @ConfigGroup.Pop
+    public boolean spellParticlesUseBlendedRenderType = true;
 
     public ConfigGroup particlesGroup = new ConfigGroup("particles");
 
@@ -43,9 +45,8 @@ public class ModGeneralConfigs extends Config {
     @ConfigGroup.Pop
     public boolean disableRandomizedShading = true;
     public ValidatedFloat potionParticleAlpha = new ValidatedFloat(0.7F, 1, 0.3F);
-    public ValidatedFloat potionParticleAlphaNearPlayer = new ValidatedFloat(0.2F, 1, 0);
     @ConfigGroup.Pop
-    public boolean replaceSpellParticleRenderType = true;
+    public ValidatedFloat potionParticleAlphaNearPlayer = new ValidatedFloat(0.2F, 1, 0);
 
     public boolean mobSkullShaders = true;
     public ValidatedFloat fireHeight = new ValidatedFloat(-0.15F, 0.4F, -0.5F);
