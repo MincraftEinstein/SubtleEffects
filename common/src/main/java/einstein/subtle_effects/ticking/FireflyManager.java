@@ -4,6 +4,7 @@ import einstein.subtle_effects.compat.CompatHelper;
 import einstein.subtle_effects.compat.SereneSeasonsCompat;
 import einstein.subtle_effects.configs.environment.FireflyConfigs;
 import einstein.subtle_effects.init.ModSounds;
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceKey;
@@ -26,6 +27,11 @@ public class FireflyManager {
 
     public static void tick(Level level, BlockPos pos, BlockState state, RandomSource random) {
         if (!ENVIRONMENT.fireflies.firefliesEnabled) {
+            return;
+        }
+
+        Minecraft minecraft = Minecraft.getInstance();
+        if (minecraft.player == null || minecraft.player.tickCount < 200) {
             return;
         }
 
