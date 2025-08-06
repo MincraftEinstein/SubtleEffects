@@ -90,7 +90,7 @@ public abstract class GeyserTicker extends Ticker {
         if (Util.isChunkLoaded(level, pos.getX(), pos.getZ())) {
             if (checkLocation(type, level, pos, 0)) {
                 if (age == 1) {
-                    level.addParticle(new GeyserSpoutParticleOptions(type, lifeTime),
+                    level.addParticle(new GeyserSpoutParticleOptions(type.ordinal(), lifeTime),
                             pos.getX() + 0.5,
                             pos.getY() + 1.001,
                             pos.getZ() + 0.5,

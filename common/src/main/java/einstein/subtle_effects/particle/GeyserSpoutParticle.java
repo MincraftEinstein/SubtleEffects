@@ -22,7 +22,7 @@ public class GeyserSpoutParticle extends FlatPlaneParticle {
     protected GeyserSpoutParticle(ClientLevel level, double x, double y, double z, SpriteSet sprites, GeyserSpoutParticleOptions options) {
         super(level, x, y, z);
         geyserLifeTime = options.lifeTime();
-        type = options.type();
+        type = GeyserType.values()[options.type()];
         rotation.rotateY(90 * random.nextInt(3) * Mth.DEG_TO_RAD).rotateX(90 * Mth.DEG_TO_RAD);
         lifetime = geyserLifeTime + FADE_TIME;
         hasPhysics = false;
