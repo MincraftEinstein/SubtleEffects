@@ -62,8 +62,8 @@ public abstract class SpellParticleMixin extends TextureSheetParticle {
 
     @ModifyReturnValue(method = "getRenderType", at = @At("RETURN"))
     private ParticleRenderType replaceRenderType(ParticleRenderType original) {
-        if (GENERAL.replaceSpellParticleRenderType) {
-            return ModParticleRenderTypes.BLENDED;
+        if (GENERAL.spellParticlesUseBlendedRenderType) {
+            return ModParticleRenderTypes.getBlendedOrTransparent();
         }
         return original;
     }

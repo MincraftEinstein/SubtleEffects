@@ -4,6 +4,7 @@ import einstein.subtle_effects.compat.CompatHelper;
 import einstein.subtle_effects.compat.SereneSeasonsCompat;
 import einstein.subtle_effects.configs.environment.FireflyConfigs;
 import einstein.subtle_effects.init.ModSounds;
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceKey;
@@ -29,6 +30,11 @@ public class FireflyManager {
             return;
         }
 
+        Minecraft minecraft = Minecraft.getInstance();
+        if (minecraft.player == null || minecraft.player.tickCount < 200) {
+            return;
+        }
+
         Optional<ResourceKey<DimensionType>> dimensionKey = level.dimensionTypeRegistration().unwrapKey();
         if (dimensionKey.isEmpty() || ENVIRONMENT.fireflies.dimensionBlocklist.contains(dimensionKey.get().location())) {
             return;
@@ -47,14 +53,21 @@ public class FireflyManager {
         ResourceLocation biomeId = biomeKey.get().location();
         if (!ENVIRONMENT.fireflies.biomesBlocklist.contains(biomeId)) {
             boolean isHabitatBiome = ENVIRONMENT.fireflies.habitatBiomes.contains(biomeId);
-            if (!isHabitatBiome && (ENVIRONMENT.fireflies.onlyAllowInHabitatBiomes || !ENVIRONMENT.fireflies.spawnableBlocks.contains(state.getBlock()))) {
+            boolean isSpawnable = ENVIRONMENT.fireflies.spawnableBlocks.contains(state.getBlock());
+            if (!isHabitatBiome && (ENVIRONMENT.fireflies.onlyAllowInHabitatBiomes || !isSpawnable)) {
                 return;
             }
 
-            int surfaceLevel = level.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING, pos).getY();
             boolean canSeeSky = level.canSeeSky(pos);
-            if (isHabitatBiome && canSeeSky && surfaceLevel + 10 < pos.getY()) {
-                return;
+            int surfaceLevel = level.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING, pos).getY();
+            if (isHabitatBiome) {
+                if (!canSeeSky && !isSpawnable) {
+                    return;
+                }
+
+                if (canSeeSky && surfaceLevel + 10 < pos.getY()) {
+                    return;
+                }
             }
 
             if (biome.value().warmEnoughToRain(pos, level.getSeaLevel()) || ENVIRONMENT.fireflies.biomesAllowlist.contains(biomeId)) {
