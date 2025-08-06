@@ -30,10 +30,6 @@ public class FireflyManager {
             return;
         }
 
-        // did you know that light level hasn't been loaded by the time this starts ticking?
-        // so because the light isn't loaded, the light level checks pass and fireflies will spawn...
-        // whether it's day or not...
-        // so to fix it this prevents fireflies from spawning for 10 seconds, to make sure the light level has been loaded
         Minecraft minecraft = Minecraft.getInstance();
         if (minecraft.player == null || minecraft.player.tickCount < 200) {
             return;
@@ -57,14 +53,21 @@ public class FireflyManager {
         ResourceLocation biomeId = biomeKey.get().location();
         if (!ENVIRONMENT.fireflies.biomesBlocklist.contains(biomeId)) {
             boolean isHabitatBiome = ENVIRONMENT.fireflies.habitatBiomes.contains(biomeId);
-            if (!isHabitatBiome && (ENVIRONMENT.fireflies.onlyAllowInHabitatBiomes || !ENVIRONMENT.fireflies.spawnableBlocks.contains(state.getBlock()))) {
+            boolean isSpawnable = ENVIRONMENT.fireflies.spawnableBlocks.contains(state.getBlock());
+            if (!isHabitatBiome && (ENVIRONMENT.fireflies.onlyAllowInHabitatBiomes || !isSpawnable)) {
                 return;
             }
 
-            int surfaceLevel = level.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING, pos).getY();
             boolean canSeeSky = level.canSeeSky(pos);
-            if (isHabitatBiome && canSeeSky && surfaceLevel + 10 < pos.getY()) {
-                return;
+            int surfaceLevel = level.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING, pos).getY();
+            if (isHabitatBiome) {
+                if (!canSeeSky && !isSpawnable) {
+                    return;
+                }
+
+                if (canSeeSky && surfaceLevel + 10 < pos.getY()) {
+                    return;
+                }
             }
 
             if (biome.value().warmEnoughToRain(pos) || ENVIRONMENT.fireflies.biomesAllowlist.contains(biomeId)) {

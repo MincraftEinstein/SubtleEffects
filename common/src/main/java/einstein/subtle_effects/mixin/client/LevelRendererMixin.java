@@ -50,7 +50,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import static einstein.subtle_effects.init.ModConfigs.*;
 import static einstein.subtle_effects.util.MathUtil.nextNonAbsDouble;
 
-@Mixin(LevelRenderer.class)
+@Mixin(value = LevelRenderer.class, priority = 999)
 public abstract class LevelRendererMixin implements FrustumGetter {
 
     @Shadow
