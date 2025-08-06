@@ -41,7 +41,7 @@ public class PotionCloudParticle extends FlatPlaneParticle {
 
     @Override
     public ParticleRenderType getRenderType() {
-        return ModParticleRenderTypes.BLENDED;
+        return ModParticleRenderTypes.getBlendedOrTransparent();
     }
 
     public record Provider(SpriteSet sprites) implements ParticleProvider<ColorParticleOptions> {

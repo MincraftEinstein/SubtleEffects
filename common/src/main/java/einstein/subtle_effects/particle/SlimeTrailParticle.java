@@ -27,7 +27,7 @@ public class SlimeTrailParticle extends FlatPlaneParticle {
 
     @Override
     public ParticleRenderType getRenderType() {
-        return ModParticleRenderTypes.BLENDED;
+        return ModParticleRenderTypes.getBlendedOrTransparent();
     }
 
     @Override

@@ -36,4 +36,11 @@ public class ModParticleRenderTypes {
         renderTypes.add(BLENDED);
         ParticleEngineAccessor.setRenderOrder(List.copyOf(renderTypes));
     }
+
+    public static ParticleRenderType getBlendedOrTransparent() {
+        if (ModConfigs.GENERAL.allowUsingBlendedRenderType) {
+            return BLENDED;
+        }
+        return ParticleRenderType.PARTICLE_SHEET_TRANSLUCENT;
+    }
 }
