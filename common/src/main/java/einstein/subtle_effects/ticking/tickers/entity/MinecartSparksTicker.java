@@ -6,6 +6,7 @@ import einstein.subtle_effects.particle.SparkParticle;
 import einstein.subtle_effects.util.SparkType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.level.block.BaseRailBlock;
 import net.minecraft.world.phys.Vec3;
@@ -35,7 +36,10 @@ public class MinecartSparksTicker extends EntityTicker<AbstractMinecart> {
     @Override
     public void entityTick() {
         Vec3 currentDeltaMovement = entity.getDeltaMovement();
-        if (currentDeltaMovement.x() == 0 && currentDeltaMovement.z() == 0) {
+        double xVelocity = Math.abs(currentDeltaMovement.x());
+        double zVelocity = Math.abs(currentDeltaMovement.z());
+
+        if (xVelocity < 0.1 && zVelocity < 0.1) {
             return;
         }
 
