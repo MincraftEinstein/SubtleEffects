@@ -509,6 +509,8 @@
   "config.subtle_effects.general.particleRenderDistance.desc": "The maximum number of chunks away from the player a particle will render.\nThis does not affect particles spawning/existing in the world only rendering.\nThis affects most particles in the game including particles from other mods, some particles however ignore this value e.g. campfire smoke.",
   "config.subtle_effects.general.cullParticlesInUnloadedChunks": "Cull Particles In Unloaded Chunks",
   "config.subtle_effects.general.cullParticlesInUnloadedChunks.desc": "Prevents rendering particles in unloaded chunk. This usually doesn't affect anything, unless the server is running slowing",
+  "config.subtle_effects.general.allowUsingBlendedRenderType": "Allow Using Blended Render Type",
+  "config.subtle_effects.general.allowUsingBlendedRenderType.desc": "Some particles use a custom render type to blend transparency. This can cause visual issues with other mods. This config allows you to disable the custom render type and use the default transparency render type instead.",
   "config.subtle_effects.general.particlesGroup": "Particles",
   "config.subtle_effects.general.dripParticlesGroup": "Drip Particles",
   "config.subtle_effects.general.glowingLavaDrops": "Glowing Lava Drops",

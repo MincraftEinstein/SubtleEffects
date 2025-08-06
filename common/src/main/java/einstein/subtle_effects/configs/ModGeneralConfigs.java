@@ -18,8 +18,9 @@ public class ModGeneralConfigs extends Config {
     public ConfigGroup particleRenderingGroup = new ConfigGroup("particle_rendering");
     public boolean enableParticleCulling = true;
     public ValidatedInt particleRenderDistance = new ValidatedInt(5, 32, 1);
-    @ConfigGroup.Pop
     public boolean cullParticlesInUnloadedChunks = true;
+    @ConfigGroup.Pop
+    public boolean allowUsingBlendedRenderType = true;
 
     public ConfigGroup particlesGroup = new ConfigGroup("particles");
 

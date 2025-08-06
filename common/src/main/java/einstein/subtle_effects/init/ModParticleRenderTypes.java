@@ -5,8 +5,6 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import einstein.subtle_effects.mixin.client.particle.ParticleEngineAccessor;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.particle.ParticleEngine;
 import net.minecraft.client.particle.ParticleRenderType;
 
 import java.util.ArrayList;
@@ -25,5 +23,12 @@ public class ModParticleRenderTypes {
         List<ParticleRenderType> renderTypes = new ArrayList<>(ParticleEngineAccessor.getRenderOrder());
         renderTypes.add(BLENDED);
         ParticleEngineAccessor.setRenderOrder(List.copyOf(renderTypes));
+    }
+
+    public static ParticleRenderType getBlendedOrTransparent() {
+        if (ModConfigs.GENERAL.allowUsingBlendedRenderType) {
+            return BLENDED;
+        }
+        return ParticleRenderType.PARTICLE_SHEET_TRANSLUCENT;
     }
 }
