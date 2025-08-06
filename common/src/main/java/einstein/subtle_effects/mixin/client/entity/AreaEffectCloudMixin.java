@@ -48,7 +48,7 @@ public abstract class AreaEffectCloudMixin {
         }
     }
 
-    @WrapOperation(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/Level;addAlwaysVisibleParticle(Lnet/minecraft/core/particles/ParticleOptions;DDDDDD)V", ordinal = 0))
+    @WrapOperation(method = "clientTick", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/Level;addAlwaysVisibleParticle(Lnet/minecraft/core/particles/ParticleOptions;DDDDDD)V", ordinal = 0))
     private void replaceWaitingParticles(Level level, ParticleOptions options, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, Operation<Void> original) {
         if (ModConfigs.ITEMS.lingeringPotionClouds) {
             if (subtleEffects$waitedTime < 10) {
@@ -60,7 +60,7 @@ public abstract class AreaEffectCloudMixin {
         original.call(level, options, x, y, z, xSpeed, ySpeed, zSpeed);
     }
 
-    @WrapOperation(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/Level;addAlwaysVisibleParticle(Lnet/minecraft/core/particles/ParticleOptions;DDDDDD)V", ordinal = 1))
+    @WrapOperation(method = "clientTick", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/Level;addAlwaysVisibleParticle(Lnet/minecraft/core/particles/ParticleOptions;DDDDDD)V", ordinal = 1))
     private void replaceEffectParticles(Level level, ParticleOptions options, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, Operation<Void> original) {
         if (ModConfigs.ITEMS.lingeringPotionClouds) {
             ColorParticleOption colorOptions = (ColorParticleOption) options;
@@ -72,7 +72,7 @@ public abstract class AreaEffectCloudMixin {
         original.call(level, options, x, y, z, xSpeed, ySpeed, zSpeed);
     }
 
-    @WrapOperation(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/Level;addAlwaysVisibleParticle(Lnet/minecraft/core/particles/ParticleOptions;DDDDDD)V", ordinal = 2))
+    @WrapOperation(method = "clientTick", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/Level;addAlwaysVisibleParticle(Lnet/minecraft/core/particles/ParticleOptions;DDDDDD)V", ordinal = 2))
     private void replaceNonEffectWaitingParticles(Level level, ParticleOptions options, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, Operation<Void> original) {
         if (ModConfigs.ITEMS.lingeringPotionClouds) {
             if (CompatHelper.IS_PARTICLE_EFFECTS_LOADED.get()) {
@@ -88,7 +88,7 @@ public abstract class AreaEffectCloudMixin {
         original.call(level, options, x, y, z, xSpeed, ySpeed, zSpeed);
     }
 
-    @WrapOperation(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/Level;addAlwaysVisibleParticle(Lnet/minecraft/core/particles/ParticleOptions;DDDDDD)V", ordinal = 3))
+    @WrapOperation(method = "clientTick", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/Level;addAlwaysVisibleParticle(Lnet/minecraft/core/particles/ParticleOptions;DDDDDD)V", ordinal = 3))
     private void replaceNonEffectParticles(Level level, ParticleOptions options, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, Operation<Void> original) {
         if (ModConfigs.ENTITIES.dragonsBreathClouds) {
             if (options.getType() == ParticleTypes.DRAGON_BREATH) {
