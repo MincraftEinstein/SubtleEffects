@@ -213,6 +213,8 @@
   "config.subtle_effects.blocks.replaceOminousVaultConnection": "Replace Ominous Vault Connection",
   "config.subtle_effects.blocks.replaceOminousVaultConnection.desc": "Replaces the vanilla orange connection particles when near a ominous vault with blue particles",
   "config.subtle_effects.blocks.cobwebMovementSounds": "Cobweb Movement Sounds",
+  "config.subtle_effects.blocks.cakeEatParticles": "Cake Eat Particles",
+  "config.subtle_effects.blocks.cakeEatSounds": "Cake Eat Sounds",
   "config.subtle_effects.entities.sleeping": "Sleeping",
   "config.subtle_effects.entities.sleeping.playerSnoreChance": "Player Snore Chance",
   "config.subtle_effects.entities.sleeping.playerSnoreChance.desc": "A percentage based chance for a player to snore. This is UUID based so it doesn't change every night.\n0 to disable",

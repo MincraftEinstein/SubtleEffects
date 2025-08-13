@@ -136,6 +136,8 @@ public class ModBlockConfigs extends Config {
 
     public boolean replaceOminousVaultConnection = true;
     public boolean cobwebMovementSounds = true;
+    public boolean cakeEatParticles = true;
+    public boolean cakeEatSounds = true;
 
     private static ValidatedIdentifier getEyeHandler() {
         List<ResourceLocation> eyes = CompatHelper.IS_END_REMASTERED_LOADED.get()

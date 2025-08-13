@@ -20,6 +20,7 @@
     "client.block.AmethystClusterBlockAccessor",
     "client.block.BaseFireBlockMixin",
     "client.block.BeehiveBlockMixin",
+    "client.block.BlockStateBaseMixin",
     "client.block.CampfireBlockMixin",
     "client.block.ClientComposterBlockMixin",
     "client.block.EndPortalBlockMixin",
