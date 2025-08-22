@@ -1,4 +1,4 @@
-package einstein.subtle_effects.mixin.common;
+package einstein.subtle_effects.mixin.common.entity;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import einstein.subtle_effects.networking.clientbound.ClientBoundEntityFellPayload;

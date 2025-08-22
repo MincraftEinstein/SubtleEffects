@@ -1,4 +1,4 @@
-package einstein.subtle_effects.mixin.common;
+package einstein.subtle_effects.mixin.common.entity;
 
 import einstein.subtle_effects.networking.clientbound.ClientBoundVillagerWorkPayload;
 import einstein.subtle_effects.platform.Services;
