@@ -2,13 +2,12 @@ package einstein.subtle_effects.mixin.client.particle;
 
 import einstein.subtle_effects.init.ModParticles;
 import einstein.subtle_effects.init.ModSounds;
+import einstein.subtle_effects.util.MathUtil;
 import einstein.subtle_effects.util.Util;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.DripParticle;
 import net.minecraft.client.particle.TextureSheetParticle;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.particles.ParticleOptions;
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -65,7 +64,7 @@ public abstract class DripParticleMixin extends TextureSheetParticle {
         BlockState state = level.getBlockState(pos);
         FluidState fluidState = level.getFluidState(pos);
         double fluidHeight = Math.max(Util.getCauldronFillHeight(state), fluidState.getHeight(level, pos));
-        double fluidSurface = pos.getY() + fluidHeight;
+        double fluidSurface = pos.getY() + fluidHeight + 0.01;
 
         if (fluidHeight > 0 && y <= fluidSurface) {
             Fluid fluid = fluidState.isEmpty() ? Util.getCauldronFluid(state) : fluidState.getType();
@@ -103,8 +102,12 @@ public abstract class DripParticleMixin extends TextureSheetParticle {
                 }
 
                 if (GENERAL.dropLandInFluidSplashes) {
-                    ParticleOptions splashParticle = subtleEffects$isLava ? ModParticles.LAVA_SPLASH.get() : ParticleTypes.SPLASH;
-                    level.addParticle(splashParticle, x, fluidSurface, z, 0, 0, 0);
+                    level.addParticle(subtleEffects$isLava ? ModParticles.LAVA_RIPPLE.get() : ModParticles.WATER_RIPPLE.get(),
+                            x + MathUtil.nextNonAbsDouble(random, 0.07),
+                            fluidSurface,
+                            z + MathUtil.nextNonAbsDouble(random, 0.07),
+                            0, 0, 0
+                    );
                 }
                 subtleEffects$dripIntoFluidEffectsPlayed = true;
             }
