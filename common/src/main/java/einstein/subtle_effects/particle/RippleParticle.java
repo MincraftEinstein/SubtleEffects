@@ -18,12 +18,13 @@ public class RippleParticle extends FlatPlaneParticle {
         super(level, x, y, z);
         this.sprites = sprites;
         this.translucent = translucent;
-        rotation.rotateX(-90 * Mth.DEG_TO_RAD);
+        rotation.rotateX(90 * Mth.DEG_TO_RAD);
+        renderBackFace = false;
         setSpriteFromAge(sprites);
-        lifetime = 10;
+        lifetime = 5;
 
         if (translucent) {
-            alpha = 0.5F;
+            alpha = 0.2F;
         }
     }
 
