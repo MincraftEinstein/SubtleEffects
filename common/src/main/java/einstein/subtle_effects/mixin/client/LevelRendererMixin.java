@@ -27,6 +27,7 @@ import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.valueproviders.IntProvider;
 import net.minecraft.world.entity.player.Player;
@@ -35,6 +36,7 @@ import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LevelEvent;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Final;
@@ -47,6 +49,7 @@ import org.spongepowered.asm.mixin.injection.Slice;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import static einstein.subtle_effects.init.ModConfigs.*;
+import static einstein.subtle_effects.util.MathUtil.nextDouble;
 import static einstein.subtle_effects.util.MathUtil.nextNonAbsDouble;
 
 @Mixin(value = LevelRenderer.class, priority = 999)
@@ -92,6 +95,30 @@ public abstract class LevelRendererMixin implements FrustumGetter {
     @ModifyExpressionValue(method = "tickRain", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/state/BlockState;is(Lnet/minecraft/world/level/block/Block;)Z"))
     private boolean modifyRainEvaporationBlocks(boolean original, @Local BlockState state) {
         return original || (BLOCKS.steam.lavaCauldronsEvaporateRain && state.is(Blocks.LAVA_CAULDRON));
+    }
+
+    @ModifyExpressionValue(method = "tickRain", at = @At(value = "FIELD", target = "Lnet/minecraft/core/particles/ParticleTypes;RAIN:Lnet/minecraft/core/particles/SimpleParticleType;"))
+    private SimpleParticleType replaceRainParticle(SimpleParticleType original, @Local FluidState fluidState, @Local BlockState state) {
+        if (BLOCKS.rainWaterRipples && (fluidState.is(FluidTags.WATER) || state.is(Blocks.WATER_CAULDRON))) {
+            return ModParticles.WATER_RIPPLE.get();
+        }
+        return original;
+    }
+
+    @WrapOperation(method = "tickRain", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/multiplayer/ClientLevel;addParticle(Lnet/minecraft/core/particles/ParticleOptions;DDDDDD)V"))
+    private void modifyCauldronRippleParticlePos(ClientLevel level, ParticleOptions options, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, Operation<Void> original, @Local BlockState state, @Local RandomSource random, @Local(ordinal = 1) BlockPos pos) {
+        if (BLOCKS.rainWaterRipples) {
+            if (random.nextDouble() > BLOCKS.rainWaterRipplesDensity.get()) {
+                return;
+            }
+
+            if (options.getType().equals(ModParticles.WATER_RIPPLE.get()) && state.is(Blocks.WATER_CAULDRON)) {
+                x = pos.getX() + 0.1875 + nextDouble(random, 0.625);
+                y = pos.getY() + Util.getCauldronFillHeight(state) + 0.01;
+                z = pos.getZ() + 0.1875 + nextDouble(random, 0.625);
+            }
+        }
+        original.call(level, options, x, y, z, xSpeed, ySpeed, zSpeed);
     }
 
     @Inject(method = "levelEvent", at = @At("TAIL"))
