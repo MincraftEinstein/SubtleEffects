@@ -29,7 +29,7 @@ public class ModGeneralConfigs extends Config {
     public boolean glowingLavaDrops = true;
     public boolean fluidDropsEvaporate = true;
     public ValidatedFloat fluidDropsEvaporationVolume = new ValidatedFloat(0.25F, 1, 0);
-    public boolean dropLandInFluidSplashes = true;
+    public boolean dropLandInFluidRipples = true;
     @ConfigGroup.Pop
     public ValidatedFloat dropLandSoundVolume = new ValidatedFloat(1, 2, 0);
 

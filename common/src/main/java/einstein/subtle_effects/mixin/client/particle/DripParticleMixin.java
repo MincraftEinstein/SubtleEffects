@@ -101,7 +101,7 @@ public abstract class DripParticleMixin extends TextureSheetParticle {
                     );
                 }
 
-                if (GENERAL.dropLandInFluidSplashes) {
+                if (GENERAL.dropLandInFluidRipples) {
                     level.addParticle(subtleEffects$isLava ? ModParticles.LAVA_RIPPLE.get() : ModParticles.WATER_RIPPLE.get(),
                             x + MathUtil.nextNonAbsDouble(random, 0.07),
                             fluidSurface,
