@@ -81,6 +81,9 @@ public class ModParticles {
     public static final Supplier<ParticleType<ColorParticleOption>> POTION_POOF_CLOUD = register("potion_poof_cloud", ColorParticleOption::codec, ColorParticleOption::streamCodec, PotionPoofCloudProvider::new);
     public static final Supplier<SimpleParticleType> WATER_RIPPLE = register("water_ripple", RippleParticle.Provider::new);
     public static final Supplier<SimpleParticleType> LAVA_RIPPLE = register("lava_ripple", RippleParticle.LavaProvider::new);
+    public static final Supplier<ParticleType<SplashParticleOptions>> WATER_SPLASH = register("water_splash", SplashParticleOptions::codec, SplashParticleOptions::streamCodec, SplashParticle.Provider::new);
+    // TODO temporary name until other lava splash particle is removed
+    public static final Supplier<ParticleType<SplashParticleOptions>> ENTITY_LAVA_SPLASH = register("entity_lava_splash", SplashParticleOptions::codec, SplashParticleOptions::streamCodec, SplashParticle.LavaProvider::new);
 
     public static void init() {
     }

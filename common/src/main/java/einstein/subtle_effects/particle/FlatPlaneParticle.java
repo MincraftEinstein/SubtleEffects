@@ -11,7 +11,7 @@ import org.joml.Vector3f;
 
 public abstract class FlatPlaneParticle extends TextureSheetParticle {
 
-    // Note: rotation is in radiens
+    // Note: rotation is in radians
     protected Quaternionf rotation = new Quaternionf();
     protected boolean renderBackFace = true;
 

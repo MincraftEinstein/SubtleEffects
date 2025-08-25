@@ -1,7 +1,9 @@
 package einstein.subtle_effects.mixin.client.entity;
 
+import einstein.subtle_effects.SubtleEffectsClient;
 import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.init.ModParticles;
+import einstein.subtle_effects.particle.option.SplashParticleOptions;
 import einstein.subtle_effects.ticking.tickers.entity.EntityTicker;
 import einstein.subtle_effects.util.EntityTickersGetter;
 import einstein.subtle_effects.util.Util;
@@ -93,6 +95,25 @@ public abstract class ClientEntityMixin implements EntityTickersGetter {
                         Util.playClientSound(subtleEffects$me, soundType.getStepSound(), subtleEffects$me.getSoundSource(), soundType.getVolume() * 0.15F, soundType.getPitch());
                     }
                 }
+            }
+        }
+    }
+
+    // if lava is under a sign with water above, it is sometimes possible to create the water splash over the lava
+    // splashes should probably be taller for entities with passengers
+    @Inject(method = "doWaterSplashEffect", at = @At("TAIL"))
+    private void waterSplash(CallbackInfo ci) {
+        Level level = subtleEffects$me.level();
+        if (level.isClientSide) {
+            float velocity = Mth.abs((float) subtleEffects$me.getDeltaMovement().y);
+            if (velocity > 0.3F) { // lower should just spawn droplets?
+                float yScale = velocity * subtleEffects$me.getBbHeight() * subtleEffects$me.getBbWidth() * 2;
+                level.addAlwaysVisibleParticle(new SplashParticleOptions(ModParticles.WATER_SPLASH.get(), subtleEffects$me.getBbWidth() + 0.5F, yScale),
+                        subtleEffects$me.getX(),
+                        Mth.floor(subtleEffects$me.getY()) + 1,
+                        subtleEffects$me.getZ(),
+                        0, 0, 0
+                );
             }
         }
     }
