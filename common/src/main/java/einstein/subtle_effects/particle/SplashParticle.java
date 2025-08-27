@@ -38,7 +38,7 @@ public class SplashParticle extends FlatPlaneParticle {
         super(level, x, y, z);
         this.sprites = sprites;
         this.translucent = translucent;
-        lifetime = 18;
+        lifetime = 15; // should scale by entity size?
         xScale /= 2; // Divided by 2 because it is used as the distance from the center
         yScale /= 2;
         this.xScale = xScale;
