@@ -61,19 +61,19 @@ public class SplashEmitter extends NoRenderParticle {
         super.tick();
 
         if (firstSplash) {
-            firstSplash = false;
             spawnSplashParticles(xScale, yScale, (yScale * 0.75F) / entityWidth, 0/*1 + (entityWidth * entityHeight) * 0.75F*/);
+            firstSplash = false;
             return;
         }
 
         if (age >= 8 && secondSplash) { // half the splash lifetime
-            secondSplash = false;
             spawnSplashParticles(xScale / 2, yScale * 1.5F, yScale / entityWidth, 0);
+            secondSplash = false;
         }
     }
 
     private void spawnSplashParticles(float xScale, float yScale, float dropletYSpeed, float dropletScale) {
-        level.addAlwaysVisibleParticle(new SplashParticleOptions(splashParticle, xScale, yScale),
+        level.addAlwaysVisibleParticle(new SplashParticleOptions(splashParticle, xScale, yScale, firstSplash),
                 true, x, y, z, 0, 0, 0
         );
 

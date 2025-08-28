@@ -99,9 +99,11 @@ public abstract class ClientEntityMixin implements EntityTickersGetter {
         }
     }
 
-    // if lava is under a sign with water above, it is sometimes possible to create the water splash over the lava
+    // when entering water from underneath its will sometimes play the effects
     // splashes should probably be taller for entities with passengers
     // needs to change spawn height with water height
+    // need to figure out what to do about flowing water. should it still spawn the effects? or just ignore flowing water?
+    // should probably cancel vanilla effects
     @Inject(method = "doWaterSplashEffect", at = @At("TAIL"))
     private void waterSplash(CallbackInfo ci) {
         Level level = subtleEffects$me.level();
