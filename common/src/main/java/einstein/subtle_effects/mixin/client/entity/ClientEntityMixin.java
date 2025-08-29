@@ -3,13 +3,13 @@ package einstein.subtle_effects.mixin.client.entity;
 import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.init.ModParticles;
 import einstein.subtle_effects.particle.option.IntegerParticleOptions;
-import einstein.subtle_effects.particle.option.SplashParticleOptions;
 import einstein.subtle_effects.ticking.tickers.entity.EntityTicker;
 import einstein.subtle_effects.util.EntityTickersGetter;
 import einstein.subtle_effects.util.Util;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.minecraft.core.BlockPos;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
@@ -99,23 +99,20 @@ public abstract class ClientEntityMixin implements EntityTickersGetter {
         }
     }
 
-    // when entering water from underneath its will sometimes play the effects
-    // splashes should probably be taller for entities with passengers
-    // needs to change spawn height with water height
     // need to figure out what to do about flowing water. should it still spawn the effects? or just ignore flowing water?
-    // should probably cancel vanilla effects
-    @Inject(method = "doWaterSplashEffect", at = @At("TAIL"))
+    @Inject(method = "doWaterSplashEffect", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/Mth;floor(D)I"), cancellable = true)
     private void waterSplash(CallbackInfo ci) {
         Level level = subtleEffects$me.level();
         if (level.isClientSide) {
-            float velocity = Mth.abs((float) subtleEffects$me.getDeltaMovement().y);
-            if (velocity > 0.3F) { // lower should just spawn droplets?
+            float velocity = (float) subtleEffects$me.getDeltaMovement().y;
+            if (velocity < -0.3F) { // lower should just spawn droplets?
                 level.addAlwaysVisibleParticle(new IntegerParticleOptions(ModParticles.WATER_SPLASH_EMITTER.get(), subtleEffects$me.getId()), true,
                         subtleEffects$me.getX(),
-                        Mth.floor(subtleEffects$me.getY()) + 1,
+                        subtleEffects$me.getY() + subtleEffects$me.getFluidHeight(FluidTags.WATER) + 0.01,
                         subtleEffects$me.getZ(),
                         0, 0, 0
                 );
+                ci.cancel();
             }
         }
     }

@@ -17,8 +17,8 @@ import static einstein.subtle_effects.util.MathUtil.*;
 public class SplashEmitter extends NoRenderParticle {
 
     private final float velocity;
-    private final float entityWidth;
-    private final float entityHeight;
+    private float entityWidth;
+    private float entityHeight;
     private final float xScale;
     private final float yScale;
     private final ParticleType<SplashParticleOptions> splashParticle;
@@ -37,6 +37,13 @@ public class SplashEmitter extends NoRenderParticle {
             velocity = Mth.abs((float) entity.getDeltaMovement().y);
             entityWidth = entity.getBbWidth();
             entityHeight = entity.getBbHeight();
+
+            Entity passenger = entity.getFirstPassenger();
+            if (passenger != null) {
+                entityWidth = Math.max(entityWidth, passenger.getBbWidth());
+                entityHeight += (passenger.getBbHeight() / 2);
+            }
+
             xScale = entityWidth + 0.5F;
             yScale = velocity * entityHeight * entityWidth * 2;
             return;
