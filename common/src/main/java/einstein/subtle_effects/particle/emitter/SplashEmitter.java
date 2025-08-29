@@ -4,12 +4,10 @@ import einstein.subtle_effects.init.ModParticles;
 import einstein.subtle_effects.particle.option.FloatParticleOptions;
 import einstein.subtle_effects.particle.option.IntegerParticleOptions;
 import einstein.subtle_effects.particle.option.SplashParticleOptions;
-import einstein.subtle_effects.util.MathUtil;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.NoRenderParticle;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleProvider;
-import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
@@ -61,18 +59,18 @@ public class SplashEmitter extends NoRenderParticle {
         super.tick();
 
         if (firstSplash) {
-            spawnSplashParticles(xScale, yScale, (yScale * 0.75F) / entityWidth, 0/*1 + (entityWidth * entityHeight) * 0.75F*/);
+            spawnSplashParticles(xScale, yScale, (yScale * 0.5F) / entityWidth);
             firstSplash = false;
             return;
         }
 
         if (age >= 8 && secondSplash) { // half the splash lifetime
-            spawnSplashParticles(xScale / 2, yScale * 1.5F, yScale / entityWidth, 0);
+            spawnSplashParticles(xScale / 2, yScale * 1.5F, (yScale * 0.75F) / entityWidth);
             secondSplash = false;
         }
     }
 
-    private void spawnSplashParticles(float xScale, float yScale, float dropletYSpeed, float dropletScale) {
+    private void spawnSplashParticles(float xScale, float yScale, float dropletYSpeed) {
         level.addAlwaysVisibleParticle(new SplashParticleOptions(splashParticle, xScale, yScale, firstSplash),
                 true, x, y, z, 0, 0, 0
         );
@@ -92,7 +90,7 @@ public class SplashEmitter extends NoRenderParticle {
 
             level.addParticle(options,
                     x + nextDouble(random, xScale) * xSign,
-                    y + nextDouble(random, 0.6),
+                    y + (nextDouble(random, 0.6) * yScale),
                     z + nextDouble(random, xScale) * zSign,
                     Mth.nextDouble(random, 0.01, 0.1) * xSign,
                     dropletYSpeed,
