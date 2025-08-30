@@ -1,15 +1,18 @@
 package einstein.subtle_effects.mixin.client.entity;
 
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.init.ModParticles;
-import einstein.subtle_effects.particle.option.IntegerParticleOptions;
 import einstein.subtle_effects.ticking.tickers.entity.EntityTicker;
 import einstein.subtle_effects.util.EntityTickersGetter;
+import einstein.subtle_effects.util.ParticleSpawnUtil;
 import einstein.subtle_effects.util.Util;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.tags.FluidTags;
+import net.minecraft.tags.TagKey;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
@@ -17,11 +20,13 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -32,6 +37,8 @@ import static einstein.subtle_effects.util.MathUtil.nextDouble;
 @Mixin(Entity.class)
 public abstract class ClientEntityMixin implements EntityTickersGetter {
 
+    @Shadow
+    protected boolean firstTick;
     @Unique
     private final Entity subtleEffects$me = (Entity) (Object) this;
 
@@ -43,6 +50,9 @@ public abstract class ClientEntityMixin implements EntityTickersGetter {
 
     @Unique
     private Vec3 subtleEffects$lastPos = Vec3.ZERO;
+
+    @Unique
+    private boolean subtleEffects$wasTouchingLava = false;
 
     @Inject(method = "playEntityOnFireExtinguishedSound", at = @At("TAIL"))
     private void addExtinguishParticles(CallbackInfo ci) {
@@ -99,19 +109,27 @@ public abstract class ClientEntityMixin implements EntityTickersGetter {
         }
     }
 
+    @WrapOperation(method = "updateInWaterStateAndDoFluidPushing", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;updateFluidHeightAndDoFluidPushing(Lnet/minecraft/tags/TagKey;D)Z"))
+    private boolean updateInWaterStateAndDoFluidPushing(Entity entity, TagKey<Fluid> fluidTag, double motionScale, Operation<Boolean> original) {
+        boolean result = original.call(entity, fluidTag, motionScale);
+        Level level = entity.level();
+
+        if (level.isClientSide && result) {
+            if (!subtleEffects$wasTouchingLava && !firstTick) {
+                ParticleSpawnUtil.spawnSplashEffects(subtleEffects$me, level, ModParticles.LAVA_SPLASH_EMITTER.get(), FluidTags.LAVA);
+            }
+        }
+
+        subtleEffects$wasTouchingLava = result;
+        return result;
+    }
+
     // need to figure out what to do about flowing water. should it still spawn the effects? or just ignore flowing water?
     @Inject(method = "doWaterSplashEffect", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/Mth;floor(D)I"), cancellable = true)
     private void waterSplash(CallbackInfo ci) {
         Level level = subtleEffects$me.level();
         if (level.isClientSide) {
-            float velocity = (float) subtleEffects$me.getDeltaMovement().y;
-            if (velocity < -0.3F) { // lower should just spawn droplets?
-                level.addAlwaysVisibleParticle(new IntegerParticleOptions(ModParticles.WATER_SPLASH_EMITTER.get(), subtleEffects$me.getId()), true,
-                        subtleEffects$me.getX(),
-                        subtleEffects$me.getY() + subtleEffects$me.getFluidHeight(FluidTags.WATER) + 0.01,
-                        subtleEffects$me.getZ(),
-                        0, 0, 0
-                );
+            if (ParticleSpawnUtil.spawnSplashEffects(subtleEffects$me, level, ModParticles.WATER_SPLASH_EMITTER.get(), FluidTags.WATER)) {
                 ci.cancel();
             }
         }

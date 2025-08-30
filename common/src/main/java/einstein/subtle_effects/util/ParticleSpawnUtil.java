@@ -8,20 +8,20 @@ import einstein.subtle_effects.networking.clientbound.ClientBoundEntityFellPaylo
 import einstein.subtle_effects.particle.EnderEyePlacedRingParticle;
 import einstein.subtle_effects.particle.SparkParticle;
 import einstein.subtle_effects.particle.option.DirectionParticleOptions;
+import einstein.subtle_effects.particle.option.IntegerParticleOptions;
 import einstein.subtle_effects.platform.Services;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.particles.ColorParticleOption;
-import net.minecraft.core.particles.ItemParticleOption;
-import net.minecraft.core.particles.ParticleOptions;
-import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.particles.*;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.tags.FluidTags;
+import net.minecraft.tags.TagKey;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.animal.camel.Camel;
 import net.minecraft.world.entity.animal.horse.AbstractHorse;
@@ -468,5 +468,19 @@ public class ParticleSpawnUtil {
                 );
             }
         }
+    }
+
+    public static boolean spawnSplashEffects(Entity entity, Level level, ParticleType<IntegerParticleOptions> splashParticle, TagKey<Fluid> fluidTag) {
+        float velocity = (float) entity.getDeltaMovement().y;
+        if (velocity < -0.3F) {
+            level.addAlwaysVisibleParticle(new IntegerParticleOptions(splashParticle, entity.getId()), true,
+                    entity.getX(),
+                    entity.getY() + entity.getFluidHeight(fluidTag) + 0.01,
+                    entity.getZ(),
+                    0, 0, 0
+            );
+            return true;
+        }
+        return false;
     }
 }

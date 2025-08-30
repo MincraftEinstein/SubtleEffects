@@ -18,7 +18,7 @@ public record DropletParticleProvider(SpriteSet sprites) implements ParticleProv
         particle.pickSprite(sprites);
         particle.setColor(1, 1, 1);
         particle.setParticleSpeed(xSpeed, ySpeed, zSpeed);
-        particle.scale(options.f());
+        particle.scale(options.f() * 1.5F);
         ((ParticleAccessor) particle).setGravity(0.06F * options.f());
     }
 

@@ -12,6 +12,7 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.Nullable;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
@@ -23,9 +24,11 @@ public class SplashParticle extends FlatPlaneParticle {
     private final boolean translucent;
     private final boolean glowing;
     private final SpriteSet mainSprites;
+    @Nullable
     private final SpriteSet overlaySprites;
     private final SpriteSet bottomSprites;
     private final boolean hasRipple;
+    private final boolean hasOverlay;
     private float xScale;
     private final float yScale;
     private TextureAtlasSprite overlaySprite;
@@ -37,13 +40,14 @@ public class SplashParticle extends FlatPlaneParticle {
 
     // TODO
     //  - lava variant textures
-    protected SplashParticle(ClientLevel level, double x, double y, double z, boolean translucent, boolean glowing, SpriteSet mainSprites, SpriteSet overlaySprites, SpriteSet bottomSprites, SplashParticleOptions options) {
+    protected SplashParticle(ClientLevel level, double x, double y, double z, boolean translucent, boolean glowing, SpriteSet mainSprites, @Nullable SpriteSet overlaySprites, SpriteSet bottomSprites, SplashParticleOptions options) {
         super(level, x, y, z);
         this.translucent = translucent;
         this.glowing = glowing;
         this.mainSprites = mainSprites;
         this.overlaySprites = overlaySprites;
         this.bottomSprites = bottomSprites;
+        hasOverlay = overlaySprites != null;
         lifetime = 15; // should scale by entity size?
         hasRipple = options.hasRipple();
         xScale = options.xScale() / 2; // Divided by 2 because it is used as the distance from the center
@@ -94,7 +98,10 @@ public class SplashParticle extends FlatPlaneParticle {
 
     private void setSpriteFromAge() {
         sprite = mainSprites.get(age, lifetime);
-        overlaySprite = overlaySprites.get(age, lifetime);
+
+        if (hasOverlay) {
+            overlaySprite = overlaySprites.get(age, lifetime);
+        }
     }
 
     private void setBottomSpriteFromAge() {
@@ -115,7 +122,10 @@ public class SplashParticle extends FlatPlaneParticle {
 
         if (!isRipplePhase) {
             renderBox(consumer, partialTicks, x, y, z, getU0(), getV0(), getU1(), getV1(), rCol, gCol, bCol, alpha);
-            renderBox(consumer, partialTicks, x, y, z, overlaySprite.getU0(), overlaySprite.getV0(), overlaySprite.getU1(), overlaySprite.getV1(), overlayRCol, overlayGCol, overlayBCol, overlayAlpha);
+
+            if (hasOverlay) {
+                renderBox(consumer, partialTicks, x, y, z, overlaySprite.getU0(), overlaySprite.getV0(), overlaySprite.getU1(), overlaySprite.getV1(), overlayRCol, overlayGCol, overlayBCol, overlayAlpha);
+            }
         }
     }
 
@@ -171,7 +181,7 @@ public class SplashParticle extends FlatPlaneParticle {
 
         @Override
         public Particle createParticle(SplashParticleOptions options, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
-            return new SplashParticle(level, x, y, z, false, true, sprites, LAVA_SPLASH_OVERLAY, LAVA_SPLASH_BOTTOM, options);
+            return new SplashParticle(level, x, y, z, false, true, sprites, null, LAVA_SPLASH_BOTTOM, options);
         }
     }
 }
