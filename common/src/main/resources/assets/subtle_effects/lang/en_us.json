@@ -329,6 +329,8 @@
   "config.subtle_effects.entities.splashes.splashRipples": "Splash Ripples",
   "config.subtle_effects.entities.splashes.splashRipples.desc": "Should a ripple effect be played after a splash",
   "config.subtle_effects.entities.splashes.splashDroplets": "Splash Droplets",
+  "config.subtle_effects.entities.splashes.splashBubbles": "Splash Bubbles",
+  "config.subtle_effects.entities.splashes.splashBubbles.desc": "Should an eruption of bubbles be spawned underwater",
   "config.subtle_effects.entities.splashes.splashOverlayTint": "Splash Overlay Tint",
   "config.subtle_effects.entities.splashes.splashOverlayTint.desc": "The tint strength of the splash overlay. See 'Splash Overlay Alpha' for explanation of what this config affects",
   "config.subtle_effects.entities.splashes.splashOverlayAlpha": "Splash Overlay Alpha",

@@ -9,6 +9,7 @@ import net.minecraft.client.particle.NoRenderParticle;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.core.particles.ParticleType;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 
@@ -17,7 +18,9 @@ import static einstein.subtle_effects.util.MathUtil.*;
 
 public class SplashEmitter extends NoRenderParticle {
 
+    private final Entity entity;
     private final float velocity;
+    private final float absVelocity;
     private final boolean isLava;
     private float entityWidth;
     private float entityHeight;
@@ -30,7 +33,7 @@ public class SplashEmitter extends NoRenderParticle {
 
     protected SplashEmitter(ClientLevel level, double x, double y, double z, ParticleType<SplashParticleOptions> splashParticle, ParticleType<FloatParticleOptions> dropletParticle, boolean isLava, int entityId) {
         super(level, x, y, z);
-        Entity entity = level.getEntity(entityId);
+        entity = level.getEntity(entityId);
         lifetime = 8;
         this.isLava = isLava;
         this.splashParticle = splashParticle;
@@ -38,6 +41,7 @@ public class SplashEmitter extends NoRenderParticle {
 
         if (entity != null) {
             velocity = (float) entity.getDeltaMovement().y;
+            absVelocity = Mth.abs(velocity);
             entityWidth = entity.getBbWidth();
             entityHeight = entity.getBbHeight();
 
@@ -47,13 +51,13 @@ public class SplashEmitter extends NoRenderParticle {
                 entityHeight += (passenger.getBbHeight() / 2);
             }
 
-            float absVelocity = Mth.abs(velocity);
             xScale = entityWidth + 0.5F;
             yScale = absVelocity * entityHeight * entityWidth * 2;
             return;
         }
 
         velocity = 0;
+        absVelocity = 0;
         entityWidth = 0;
         entityHeight = 0;
         xScale = 0;
@@ -72,6 +76,22 @@ public class SplashEmitter extends NoRenderParticle {
         if (firstSplash) {
             spawnSplashParticles(xScale, yScale, (yScale * 0.5F) / entityWidth);
             firstSplash = false;
+
+            if (ENTITIES.splashes.splashBubbles) {
+                for (int i = 0; i < 8 * (entityWidth * 5); i++) {
+                    int xSign = nextSign(random);
+                    int zSign = nextSign(random);
+
+                    level.addParticle(ParticleTypes.BUBBLE_COLUMN_UP,
+                            x + nextDouble(random, 0.1) * xSign,
+                            random.nextInt(3) == 0 ? Mth.nextDouble(random, entity.getY() + entityHeight, y) : entity.getRandomY(),
+                            z + nextDouble(random, 0.1) * zSign,
+                            nextNonAbsDouble(random, xScale),
+                            -absVelocity * 2 * Mth.nextDouble(random, 0.5, 2),
+                            nextNonAbsDouble(random, xScale)
+                    );
+                }
+            }
 
             if (!ENTITIES.splashes.secondarySplash || velocity > -ENTITIES.splashes.secondarySplashVelocityThreshold.get()) {
                 remove();
