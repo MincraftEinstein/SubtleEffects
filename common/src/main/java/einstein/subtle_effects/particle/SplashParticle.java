@@ -16,6 +16,7 @@ import org.jetbrains.annotations.Nullable;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
+import static einstein.subtle_effects.init.ModConfigs.ENTITIES;
 import static einstein.subtle_effects.init.ModSpriteSets.*;
 import static net.minecraft.util.Mth.DEG_TO_RAD;
 
@@ -38,8 +39,6 @@ public class SplashParticle extends FlatPlaneParticle {
     private float overlayGCol = 1;
     private float overlayBCol = 1;
 
-    // TODO
-    //  - lava variant textures
     protected SplashParticle(ClientLevel level, double x, double y, double z, boolean translucent, boolean glowing, SpriteSet mainSprites, @Nullable SpriteSet overlaySprites, SpriteSet bottomSprites, SplashParticleOptions options) {
         super(level, x, y, z);
         this.translucent = translucent;
@@ -47,8 +46,8 @@ public class SplashParticle extends FlatPlaneParticle {
         this.mainSprites = mainSprites;
         this.overlaySprites = overlaySprites;
         this.bottomSprites = bottomSprites;
-        hasOverlay = overlaySprites != null;
-        lifetime = 15; // should scale by entity size?
+        hasOverlay = overlaySprites != null && ENTITIES.splashes.splashOverlayAlpha.get() > 0;
+        lifetime = 15;
         hasRipple = options.hasRipple();
         xScale = options.xScale() / 2; // Divided by 2 because it is used as the distance from the center
         yScale = options.yScale() / 2;
@@ -114,7 +113,7 @@ public class SplashParticle extends FlatPlaneParticle {
         float x = (float) (Mth.lerp(partialTicks, xo, this.x) - cameraPos.x());
         float y = (float) (Mth.lerp(partialTicks, yo, this.y) - cameraPos.y());
         float z = (float) (Mth.lerp(partialTicks, zo, this.z) - cameraPos.z());
-        float overlayAlpha = 0.8F;
+        float overlayAlpha = ENTITIES.splashes.splashOverlayAlpha.get();
 
         if (hasRipple) {
             renderQuad(consumer, new Quaternionf().rotateX(90 * DEG_TO_RAD), partialTicks, x, y, z, false, bottomSprite.getU0(), bottomSprite.getV0(), bottomSprite.getU1(), bottomSprite.getV1(), xScale, xScale, overlayRCol, overlayGCol, overlayBCol, overlayAlpha);
@@ -163,15 +162,19 @@ public class SplashParticle extends FlatPlaneParticle {
         public Particle createParticle(SplashParticleOptions options, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
             SplashParticle particle = new SplashParticle(level, x, y, z, true, false, sprites, WATER_SPLASH_OVERLAY, WATER_SPLASH_BOTTOM, options);
             int waterColor = level.getBiome(BlockPos.containing(x, y, z)).value().getWaterColor();
-            float colorIntensity = 0.20F;
-            float whiteIntensity = 1 - colorIntensity;
+            float colorIntensity = ENTITIES.splashes.splashOverlayTint.get();
             float red = (waterColor >> 16 & 255) / 255F;
             float green = (waterColor >> 8 & 255) / 255F;
             float blue = (waterColor & 255) / 255F;
 
-            particle.overlayRCol = whiteIntensity + (colorIntensity * red);
-            particle.overlayGCol = whiteIntensity + (colorIntensity * green);
-            particle.overlayBCol = whiteIntensity + (colorIntensity * blue);
+            if (colorIntensity > 0) {
+                float whiteIntensity = 1 - colorIntensity;
+
+                particle.overlayRCol = whiteIntensity + (colorIntensity * red);
+                particle.overlayGCol = whiteIntensity + (colorIntensity * green);
+                particle.overlayBCol = whiteIntensity + (colorIntensity * blue);
+            }
+
             particle.setColor(red, green, blue);
             return particle;
         }

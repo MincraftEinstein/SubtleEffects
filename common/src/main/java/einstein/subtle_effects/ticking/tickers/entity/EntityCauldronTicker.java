@@ -1,5 +1,6 @@
 package einstein.subtle_effects.ticking.tickers.entity;
 
+import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.init.ModParticles;
 import einstein.subtle_effects.mixin.client.block.AbstractCauldronBlockAccessor;
 import einstein.subtle_effects.mixin.client.entity.EntityAccessor;
@@ -38,7 +39,7 @@ public class EntityCauldronTicker extends EntityTicker<Entity> {
                     wasInWaterCauldron = true;
                     ((EntityAccessor) entity).doWaterSplashingEffects();
                 }
-                else if (state.is(Blocks.LAVA_CAULDRON) && !wasInLavaCauldron) {
+                else if (state.is(Blocks.LAVA_CAULDRON) && !wasInLavaCauldron && ModConfigs.ENTITIES.splashes.lavaSplashes) {
                     wasInLavaCauldron = true;
                     ParticleSpawnUtil.spawnSplashEffects(entity, level, ModParticles.LAVA_SPLASH_EMITTER.get(), FluidTags.LAVA);
                 }

@@ -114,7 +114,7 @@ public abstract class ClientEntityMixin implements EntityTickersGetter {
         boolean result = original.call(entity, fluidTag, motionScale);
         Level level = entity.level();
 
-        if (level.isClientSide && result) {
+        if (level.isClientSide && result && ModConfigs.ENTITIES.splashes.lavaSplashes) {
             if (!subtleEffects$wasTouchingLava && !firstTick) {
                 ParticleSpawnUtil.spawnSplashEffects(subtleEffects$me, level, ModParticles.LAVA_SPLASH_EMITTER.get(), FluidTags.LAVA);
             }
@@ -124,7 +124,6 @@ public abstract class ClientEntityMixin implements EntityTickersGetter {
         return result;
     }
 
-    // need to figure out what to do about flowing water. should it still spawn the effects? or just ignore flowing water?
     @Inject(method = "doWaterSplashEffect", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/Mth;floor(D)I"), cancellable = true)
     private void waterSplash(CallbackInfo ci) {
         Level level = subtleEffects$me.level();

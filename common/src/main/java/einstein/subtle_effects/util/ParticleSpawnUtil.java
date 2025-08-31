@@ -471,8 +471,16 @@ public class ParticleSpawnUtil {
     }
 
     public static boolean spawnSplashEffects(Entity entity, Level level, ParticleType<IntegerParticleOptions> splashParticle, TagKey<Fluid> fluidTag) {
+        if (!ENTITIES.splashes.splashEffects) {
+            return false;
+        }
+
+        if (ENTITIES.splashes.entityBlocklist.contains(entity.getType())) {
+            return false;
+        }
+
         float velocity = (float) entity.getDeltaMovement().y;
-        if (velocity < -0.3F) {
+        if (velocity <= -ENTITIES.splashes.splashVelocityThreshold.get()) {
             level.addAlwaysVisibleParticle(new IntegerParticleOptions(splashParticle, entity.getId()), true,
                     entity.getX(),
                     entity.getY() + entity.getFluidHeight(fluidTag) + 0.01,

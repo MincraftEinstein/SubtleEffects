@@ -12,11 +12,13 @@ import net.minecraft.core.particles.ParticleType;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 
+import static einstein.subtle_effects.init.ModConfigs.ENTITIES;
 import static einstein.subtle_effects.util.MathUtil.*;
 
 public class SplashEmitter extends NoRenderParticle {
 
     private final float velocity;
+    private final boolean isLava;
     private float entityWidth;
     private float entityHeight;
     private final float xScale;
@@ -26,15 +28,16 @@ public class SplashEmitter extends NoRenderParticle {
     private boolean firstSplash = true;
     private boolean secondSplash = true;
 
-    protected SplashEmitter(ClientLevel level, double x, double y, double z, ParticleType<SplashParticleOptions> splashParticle, ParticleType<FloatParticleOptions> dropletParticle, int entityId) {
+    protected SplashEmitter(ClientLevel level, double x, double y, double z, ParticleType<SplashParticleOptions> splashParticle, ParticleType<FloatParticleOptions> dropletParticle, boolean isLava, int entityId) {
         super(level, x, y, z);
         Entity entity = level.getEntity(entityId);
         lifetime = 8;
+        this.isLava = isLava;
         this.splashParticle = splashParticle;
         this.dropletParticle = dropletParticle;
 
         if (entity != null) {
-            velocity = Mth.abs((float) entity.getDeltaMovement().y);
+            velocity = (float) entity.getDeltaMovement().y;
             entityWidth = entity.getBbWidth();
             entityHeight = entity.getBbHeight();
 
@@ -44,8 +47,9 @@ public class SplashEmitter extends NoRenderParticle {
                 entityHeight += (passenger.getBbHeight() / 2);
             }
 
+            float absVelocity = Mth.abs(velocity);
             xScale = entityWidth + 0.5F;
-            yScale = velocity * entityHeight * entityWidth * 2;
+            yScale = absVelocity * entityHeight * entityWidth * 2;
             return;
         }
 
@@ -68,6 +72,10 @@ public class SplashEmitter extends NoRenderParticle {
         if (firstSplash) {
             spawnSplashParticles(xScale, yScale, (yScale * 0.5F) / entityWidth);
             firstSplash = false;
+
+            if (!ENTITIES.splashes.secondarySplash || velocity > -ENTITIES.splashes.secondarySplashVelocityThreshold.get()) {
+                remove();
+            }
             return;
         }
 
@@ -78,9 +86,13 @@ public class SplashEmitter extends NoRenderParticle {
     }
 
     private void spawnSplashParticles(float xScale, float yScale, float dropletYSpeed) {
-        level.addAlwaysVisibleParticle(new SplashParticleOptions(splashParticle, xScale, yScale, firstSplash),
+        level.addAlwaysVisibleParticle(new SplashParticleOptions(splashParticle, xScale, yScale, hasRipple()),
                 true, x, y, z, 0, 0, 0
         );
+
+        if (!ENTITIES.splashes.splashDroplets) {
+            return;
+        }
 
         dropletYSpeed = (dropletYSpeed / 2);
         FloatParticleOptions options = new FloatParticleOptions(dropletParticle, 1);
@@ -106,11 +118,21 @@ public class SplashEmitter extends NoRenderParticle {
         }
     }
 
+    private boolean hasRipple() {
+        if (ENTITIES.splashes.splashRipples) {
+            if (!ENTITIES.splashes.lavaSplashRipples && isLava) {
+                return false;
+            }
+            return firstSplash || (secondSplash && ENTITIES.splashes.secondarySplashRipples);
+        }
+        return false;
+    }
+
     public record Provider() implements ParticleProvider<IntegerParticleOptions> {
 
         @Override
         public Particle createParticle(IntegerParticleOptions options, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
-            return new SplashEmitter(level, x, y, z, ModParticles.WATER_SPLASH.get(), ModParticles.WATER_DROPLET.get(), options.integer());
+            return new SplashEmitter(level, x, y, z, ModParticles.WATER_SPLASH.get(), ModParticles.WATER_DROPLET.get(), false, options.integer());
         }
     }
 
@@ -118,7 +140,7 @@ public class SplashEmitter extends NoRenderParticle {
 
         @Override
         public Particle createParticle(IntegerParticleOptions options, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
-            return new SplashEmitter(level, x, y, z, ModParticles.ENTITY_LAVA_SPLASH.get(), ModParticles.LAVA_DROPLET.get(), options.integer());
+            return new SplashEmitter(level, x, y, z, ModParticles.ENTITY_LAVA_SPLASH.get(), ModParticles.LAVA_DROPLET.get(), true, options.integer());
         }
     }
 }

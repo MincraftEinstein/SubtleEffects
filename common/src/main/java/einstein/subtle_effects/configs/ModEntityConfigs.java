@@ -22,6 +22,7 @@ public class ModEntityConfigs extends Config {
     public DustCloudsConfig dustClouds = new DustCloudsConfig();
     public BurningEntityConfigs burning = new BurningEntityConfigs();
     public ExplosivesConfigs explosives = new ExplosivesConfigs();
+    public SplashConfigs splashes = new SplashConfigs();
 
     public ConfigGroup attackedGroup = new ConfigGroup("attacked");
     public boolean chickenFeathers = true;
