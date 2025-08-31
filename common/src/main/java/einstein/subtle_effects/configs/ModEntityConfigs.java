@@ -56,6 +56,7 @@ public class ModEntityConfigs extends Config {
     public boolean replaceBlazeSmoke = true;
     public boolean animalFeedingParticles = true;
     public ValidatedFloat animalFeedingSoundVolume = new ValidatedFloat(1, 1, 0);
+    public boolean underwaterEntityPoofBubbles = true;
 
     public ModEntityConfigs() {
         super(SubtleEffects.loc("entities"));

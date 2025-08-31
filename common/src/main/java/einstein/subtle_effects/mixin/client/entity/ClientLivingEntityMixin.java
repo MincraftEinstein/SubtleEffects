@@ -11,6 +11,7 @@ import einstein.subtle_effects.util.MathUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
@@ -74,6 +75,16 @@ public abstract class ClientLivingEntityMixin<T extends Entity> extends Entity {
                     );
                 }
             }
+        }
+    }
+
+    @Inject(method = "makePoofParticles", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/Level;addParticle(Lnet/minecraft/core/particles/ParticleOptions;DDDDDD)V"))
+    private void makePoofParticles(CallbackInfo ci) {
+        if (isEyeInFluid(FluidTags.WATER) && ENTITIES.underwaterEntityPoofBubbles) {
+            level().addParticle(ParticleTypes.BUBBLE_COLUMN_UP,
+                    getRandomX(1), getRandomY(), getRandomZ(1),
+                    0, 0, 0
+            );
         }
     }
 

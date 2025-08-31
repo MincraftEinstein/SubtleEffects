@@ -410,6 +410,8 @@
   "config.subtle_effects.entities.animalFeedingParticles.desc": "When feeding an animal, e.g. breeding a cow, taming a wolf, item destroy particles will appear around the mouth area",
   "config.subtle_effects.entities.animalFeedingSoundVolume": "Animal Feeding Sound Volume",
   "config.subtle_effects.entities.animalFeedingSoundVolume.desc": "Volume of the eat sounds played when feeding an animal, e.g. breeding a cow, taming a wolf. Note: This will not affect the volume of vanilla animal eating sounds",
+  "config.subtle_effects.entities.underwaterEntityPoofBubbles": "Underwater Entity Poof Bubbles",
+  "config.subtle_effects.entities.underwaterEntityPoofBubbles.desc": "When an entity is spawned or dies underwater, should the poof effect have bubbles",
   "config.subtle_effects.environment": "Environment",
   "config.subtle_effects.environment.biomeColorRain": "Biome Color Rain",
   "config.subtle_effects.environment.biomes": "Biomes",
