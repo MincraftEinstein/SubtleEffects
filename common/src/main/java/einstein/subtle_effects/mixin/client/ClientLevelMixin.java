@@ -1,10 +1,11 @@
 package einstein.subtle_effects.mixin.client;
 
-import einstein.subtle_effects.ticking.FireflyManager;
-import einstein.subtle_effects.ticking.SparkProviderManager;
 import einstein.subtle_effects.init.ModBlockTickers;
-import einstein.subtle_effects.ticking.tickers.entity.EntityTickerManager;
+import einstein.subtle_effects.ticking.FireflyManager;
 import einstein.subtle_effects.ticking.GeyserManager;
+import einstein.subtle_effects.ticking.SparkProviderManager;
+import einstein.subtle_effects.ticking.WaterfallManager;
+import einstein.subtle_effects.ticking.tickers.entity.EntityTickerManager;
 import einstein.subtle_effects.util.BlockTickerProvider;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
@@ -18,6 +19,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.dimension.DimensionType;
+import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.storage.WritableLevelData;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -59,6 +61,11 @@ public abstract class ClientLevelMixin extends Level {
             }
 
             GeyserManager.tick(this, state, pos);
+
+            FluidState fluidState = getFluidState(pos);
+            if (!fluidState.isEmpty()) {
+                WaterfallManager.tick(this, fluidState, pos);
+            }
 
             ModBlockTickers.REGISTERED_SPECIAL.forEach((predicate, provider) -> {
                 if (predicate.test(state)) {

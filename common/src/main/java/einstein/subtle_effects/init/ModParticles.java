@@ -89,6 +89,7 @@ public class ModParticles {
     public static final Supplier<ParticleType<FloatParticleOptions>> LAVA_DROPLET = register("lava_droplet", FloatParticleOptions::codec, FloatParticleOptions::streamCodec, DropletParticleProvider.LavaProvider::new);
     public static final Supplier<ParticleType<IntegerParticleOptions>> WATER_SPLASH_EMITTER = register("water_splash_emitter", IntegerParticleOptions::codec, IntegerParticleOptions::streamCodec, sprites -> new SplashEmitter.Provider());
     public static final Supplier<ParticleType<IntegerParticleOptions>> LAVA_SPLASH_EMITTER = register("lava_splash_emitter", IntegerParticleOptions::codec, IntegerParticleOptions::streamCodec, sprites -> new SplashEmitter.LavaProvider());
+    public static final Supplier<SimpleParticleType> CASCADE = register("cascade", CascadeParticle.Provider::new);
 
     public static void init() {
     }

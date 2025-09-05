@@ -1,7 +1,8 @@
 package einstein.subtle_effects.ticking.tickers;
 
-import einstein.subtle_effects.ticking.tickers.entity.EntityTickerManager;
 import einstein.subtle_effects.ticking.GeyserManager;
+import einstein.subtle_effects.ticking.WaterfallManager;
+import einstein.subtle_effects.ticking.tickers.entity.EntityTickerManager;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 
@@ -50,5 +51,6 @@ public class TickerManager {
         EntityTickerManager.clear(level);
         GeyserManager.ACTIVE_GEYSERS.clear();
         GeyserManager.INACTIVE_GEYSERS.clear();
+        WaterfallManager.WATERFALLS.clear();
     }
 }
