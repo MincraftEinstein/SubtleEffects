@@ -152,7 +152,7 @@ public class SplashEmitter extends NoRenderParticle {
 
         @Override
         public Particle createParticle(IntegerParticleOptions options, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
-            return new SplashEmitter(level, x, y, z, ModParticles.WATER_SPLASH.get(), ModParticles.WATER_DROPLET.get(), false, options.integer());
+            return new SplashEmitter(level, x, y, z, ModParticles.WATER_SPLASH.get(), ModParticles.WATER_SPLASH_DROPLET.get(), false, options.integer());
         }
     }
 
@@ -160,7 +160,7 @@ public class SplashEmitter extends NoRenderParticle {
 
         @Override
         public Particle createParticle(IntegerParticleOptions options, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
-            return new SplashEmitter(level, x, y, z, ModParticles.ENTITY_LAVA_SPLASH.get(), ModParticles.LAVA_DROPLET.get(), true, options.integer());
+            return new SplashEmitter(level, x, y, z, ModParticles.ENTITY_LAVA_SPLASH.get(), ModParticles.LAVA_SPLASH_DROPLET.get(), true, options.integer());
         }
     }
 }
