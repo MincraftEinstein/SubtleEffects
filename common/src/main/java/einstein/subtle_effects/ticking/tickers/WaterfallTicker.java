@@ -5,6 +5,7 @@ import einstein.subtle_effects.util.MathUtil;
 import einstein.subtle_effects.util.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
@@ -13,15 +14,17 @@ import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.Vec3;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-import static einstein.subtle_effects.ticking.WaterfallManager.WATERFALLS;
 import static einstein.subtle_effects.ticking.tickers.WaterfallTicker.WaterfallData.EMPTY_WATERFALL_DATA;
 import static net.minecraft.util.Mth.nextDouble;
 
 public class WaterfallTicker extends Ticker {
 
     private static final int MAX_UPDATE_TICKS = 6;
+    public static final Map<BlockPos, WaterfallTicker> WATERFALLS = new HashMap<>();
     private final Level level;
     private final BlockPos pos;
     private final BlockPos waterfallPos;
@@ -36,17 +39,19 @@ public class WaterfallTicker extends Ticker {
         this.data = data;
     }
 
-    public static void trySpawn(Level level, BlockPos pos) {
-        if (!WATERFALLS.containsKey(pos)) {
-            BlockPos waterfallPos = pos.above();
-            FluidState waterfallState = level.getFluidState(waterfallPos);
-            WaterfallData data = getWaterfallIntensity(level, pos, waterfallPos, waterfallState);
+    public static void trySpawn(Level level, FluidState fluidState, BlockPos pos) {
+        if (fluidState.is(FluidTags.WATER) && fluidState.isSource()) {
+            if (!WATERFALLS.containsKey(pos)) {
+                BlockPos waterfallPos = pos.above();
+                FluidState waterfallState = level.getFluidState(waterfallPos);
+                WaterfallData data = getWaterfallIntensity(level, pos, waterfallPos, waterfallState);
 
-            if (!data.equals(EMPTY_WATERFALL_DATA)) {
-                WaterfallTicker ticker = new WaterfallTicker(level, pos, waterfallPos, data);
+                if (!data.equals(EMPTY_WATERFALL_DATA)) {
+                    WaterfallTicker ticker = new WaterfallTicker(level, pos, waterfallPos, data);
 
-                WATERFALLS.put(pos, ticker);
-                TickerManager.add(ticker);
+                    WATERFALLS.put(pos, ticker);
+                    TickerManager.add(ticker);
+                }
             }
         }
     }

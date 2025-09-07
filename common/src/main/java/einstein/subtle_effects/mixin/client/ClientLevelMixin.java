@@ -4,7 +4,7 @@ import einstein.subtle_effects.init.ModBlockTickers;
 import einstein.subtle_effects.ticking.FireflyManager;
 import einstein.subtle_effects.ticking.GeyserManager;
 import einstein.subtle_effects.ticking.SparkProviderManager;
-import einstein.subtle_effects.ticking.WaterfallManager;
+import einstein.subtle_effects.ticking.tickers.WaterfallTicker;
 import einstein.subtle_effects.ticking.tickers.entity.EntityTickerManager;
 import einstein.subtle_effects.util.BlockTickerProvider;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -64,7 +64,7 @@ public abstract class ClientLevelMixin extends Level {
 
             FluidState fluidState = getFluidState(pos);
             if (!fluidState.isEmpty()) {
-                WaterfallManager.tick(this, fluidState, pos);
+                WaterfallTicker.trySpawn(this, fluidState, pos);
             }
 
             ModBlockTickers.REGISTERED_SPECIAL.forEach((predicate, provider) -> {
