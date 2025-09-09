@@ -6,6 +6,7 @@ import einstein.subtle_effects.util.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.tags.FluidTags;
+import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
@@ -43,8 +44,7 @@ public class WaterfallTicker extends Ticker {
         if (fluidState.is(FluidTags.WATER) && fluidState.isSource()) {
             if (!WATERFALLS.containsKey(pos)) {
                 BlockPos waterfallPos = pos.above();
-                FluidState waterfallState = level.getFluidState(waterfallPos);
-                WaterfallData data = getWaterfallIntensity(level, pos, waterfallPos, waterfallState);
+                WaterfallData data = evaluateWaterfall(level, pos, waterfallPos);
 
                 if (!data.equals(EMPTY_WATERFALL_DATA)) {
                     WaterfallTicker ticker = new WaterfallTicker(level, pos, waterfallPos, data);
@@ -58,68 +58,72 @@ public class WaterfallTicker extends Ticker {
 
     @Override
     public void tick() {
-        FluidState fluidState = level.getFluidState(waterfallPos);
-        Vec3 flow = fluidState.getFlow(level, waterfallPos);
+        Vec3 flow = data.flow();
 
-        if (flow.equals(Vec3.ZERO)) {
-            for (Direction openSide : data.openSides()) {
-                flow.add(openSide.getStepX(), 0, openSide.getStepZ());
-            }
-        }
+        WaterfallType type = data.type();
+        int x = waterfallPos.getX();
+        int y = waterfallPos.getY();
+        int z = waterfallPos.getZ();
 
         for (Direction direction : data.openSides()) {
             Direction.Axis axis = direction.getAxis();
-            double xOffset = axis == Direction.Axis.X ? 0.5 + (0.7 * direction.getStepX()) : random.nextFloat();
-            double zOffset = axis == Direction.Axis.Z ? 0.5 + (0.7 * direction.getStepZ()) : random.nextFloat();
+            boolean isX = axis == Direction.Axis.X;
+            boolean isZ = axis == Direction.Axis.Z;
+            double xOffset = isX ? 0.5 + (0.7 * direction.getStepX()) : random.nextFloat();
+            double zOffset = isZ ? 0.5 + (0.7 * direction.getStepZ()) : random.nextFloat();
+            double xFlow = isX ? flow.x() : 0;
+            double zFlow = isZ ? flow.z() : 0;
 
-            WaterfallType type = data.type();
             if (type == WaterfallType.NORMAL) {
                 level.addParticle(ModParticles.CASCADE.get(),
-                        waterfallPos.getX() + xOffset + MathUtil.nextDouble(random, 0.2),
-                        waterfallPos.getY() + 0.2F,
-                        waterfallPos.getZ() + zOffset + MathUtil.nextDouble(random, 0.2),
-                        nextDouble(random, 0.5, 1) * flow.x(),
+                        x + xOffset + MathUtil.nextDouble(random, 0.2),
+                        y + 0.2F,
+                        z + zOffset + MathUtil.nextDouble(random, 0.2),
+                        nextDouble(random, 0.5, 1) * xFlow,
                         0,
-                        nextDouble(random, 0.5, 1) * flow.z()
+                        nextDouble(random, 0.5, 1) * zFlow
                 );
             }
             else if (type == WaterfallType.SMALL) {
-                level.addParticle(ModParticles.LARGE_CASCADE_DROPLET.get(),
-                        waterfallPos.getX() + xOffset,
-                        waterfallPos.getY() + 0.2F,
-                        waterfallPos.getZ() + zOffset,
-                        nextDouble(random, 0.1, 0.3) * flow.x(),
-                        0,
-                        nextDouble(random, 0.1, 0.3) * flow.z()
-                );
+                if (xFlow == 0 && zFlow != 0 || xFlow != 0) {
+                    level.addParticle(ModParticles.WATERFALL_DROPLET.get(),
+                            x + xOffset - (isX ? (0.2 * direction.getStepX()) : 0),
+                            y,
+                            z + zOffset - (isZ ? (0.2 * direction.getStepZ()) : 0),
+                            nextDouble(random, 0.05, 0.15) * (xFlow == 0 ? 0.01 : (xFlow < 0 ? -1 : 1)),
+                            Mth.nextDouble(random, 0.05, 0.1),
+                            nextDouble(random, 0.05, 0.15) * (zFlow == 0 ? 0.01 : (zFlow < 0 ? -1 : 1))
+                    );
+                }
             }
             else if (type == WaterfallType.LARGE) {
+                // TODO config for if large waterfalls particles should be force spawned
                 for (int i = 0; i < 6; i++) {
-                    level.addParticle(ModParticles.CASCADE.get(),
-                            waterfallPos.getX() + xOffset + (MathUtil.nextDouble(random, 0.3) * direction.getStepX()),
-                            waterfallPos.getY() + MathUtil.nextDouble(random, 2) + 0.2F,
-                            waterfallPos.getZ() + zOffset + (MathUtil.nextDouble(random, 0.2) * direction.getStepZ()),
-                            nextDouble(random, 0.5, 1) * flow.x(),
+                    level.addAlwaysVisibleParticle(ModParticles.CASCADE.get(), true,
+                            x + xOffset + (MathUtil.nextDouble(random, 0.3) * direction.getStepX()),
+                            y + MathUtil.nextDouble(random, 2) + 0.2F,
+                            z + zOffset + (MathUtil.nextDouble(random, 0.2) * direction.getStepZ()),
+                            nextDouble(random, 0.5, 1) * xFlow,
                             0,
-                            nextDouble(random, 0.5, 1) * flow.z()
+                            nextDouble(random, 0.5, 1) * zFlow
                     );
                 }
 
                 if (random.nextInt(3) == 0) {
-                    level.addParticle(ModParticles.WATERFALL_MIST.get(),
-                            waterfallPos.getX() + xOffset,
-                            waterfallPos.getY() + 1,
-                            waterfallPos.getZ() + zOffset,
-                            nextDouble(random, 0.5, 1) * (flow.x() * 0.5),
+                    level.addAlwaysVisibleParticle(ModParticles.WATERFALL_MIST.get(), true,
+                            x + xOffset,
+                            y + 1,
+                            z + zOffset,
+                            nextDouble(random, 0.5, 1) * (xFlow * 0.5),
                             nextDouble(random, 0.3, 0.7),
-                            nextDouble(random, 0.5, 1) * (flow.z() * 0.5)
+                            nextDouble(random, 0.5, 1) * (zFlow * 0.5)
                     );
                 }
             }
         }
 
         if (updateTicks++ >= MAX_UPDATE_TICKS) {
-            WaterfallData newData = getWaterfallIntensity(level, pos, waterfallPos, fluidState);
+            WaterfallData newData = evaluateWaterfall(level, pos, waterfallPos);
             if (newData.equals(EMPTY_WATERFALL_DATA)) {
                 remove();
                 return;
@@ -136,14 +140,16 @@ public class WaterfallTicker extends Ticker {
         WATERFALLS.remove(pos);
     }
 
-    private static WaterfallData getWaterfallIntensity(Level level, BlockPos lakePos, BlockPos waterfallPos, FluidState waterfallState) {
+    private static WaterfallData evaluateWaterfall(Level level, BlockPos lakePos, BlockPos waterfallPos) {
         if (!Util.isChunkLoaded(level, waterfallPos.getX(), waterfallPos.getZ())) {
             return EMPTY_WATERFALL_DATA;
         }
 
-        Fluid fluid = waterfallState.getType();
+        FluidState waterfallState = level.getFluidState(waterfallPos);
+        Fluid waterfallFluid = waterfallState.getType();
         FluidState lakeFluidState = level.getFluidState(lakePos);
-        if (fluid.isSame(lakeFluidState.getType()) && lakeFluidState.isSource() && !level.getBlockState(waterfallPos).is(Blocks.BUBBLE_COLUMN)) {
+
+        if (waterfallFluid.isSame(lakeFluidState.getType()) && lakeFluidState.isSource() && !level.getBlockState(waterfallPos).is(Blocks.BUBBLE_COLUMN)) {
             List<Direction> openSides = new ArrayList<>();
 
             for (Direction direction : Direction.Plane.HORIZONTAL) {
@@ -161,7 +167,7 @@ public class WaterfallTicker extends Ticker {
                             continue;
                         }
 
-                        if (fluid.isSame(level.getFluidState(lakePos.offset(x, 0, z)).getType())) {
+                        if (waterfallFluid.isSame(level.getFluidState(lakePos.offset(x, 0, z)).getType())) {
                             surroundedByWater = true;
                         }
                     }
@@ -170,11 +176,11 @@ public class WaterfallTicker extends Ticker {
                 if (surroundedByWater) {
                     int distance = 0;
 
-                    for (int i = 19; i > -1; i--) { // 'i' offset by 1 so it doesn't count the bottom waterfall block
-                        BlockPos pos1 = waterfallPos.above(20 - i);
-                        FluidState fluidState1 = level.getFluidState(pos1);
+                    for (int i = 19; i > -1; i--) { // 'i' offset by 1 so it doesn't recheck the bottom waterfall block
+                        BlockPos abovePos = waterfallPos.above(20 - i);
+                        FluidState aboveFluidState = level.getFluidState(abovePos);
 
-                        if (fluid.isSame(fluidState1.getType()) && !fluidState1.isSource()) {
+                        if (waterfallFluid.isSame(aboveFluidState.getType())) {
                             distance++;
                         }
                     }
@@ -182,10 +188,15 @@ public class WaterfallTicker extends Ticker {
                     boolean canBeLarge = false;
                     WaterfallType type = WaterfallType.NORMAL;
 
-                    if (distance >= 0 && distance <= 5) {
+                    // the actual water fall height is 2 blocks higher,
+                    // 1 for the fluid source and 1 for the bottom block where the ticker is located.
+                    // SMALL is 6
+                    // LARGE is 10
+
+                    if (distance >= 0 && distance <= 4) {
                         type = WaterfallType.SMALL;
                     }
-                    else if (distance > 10) {
+                    else if (distance > 8) {
                         int size = 0;
                         canBeLarge = true;
 
@@ -210,7 +221,14 @@ public class WaterfallTicker extends Ticker {
                         }
                     }
 
-                    return new WaterfallData(type, canBeLarge, openSides);
+                    Vec3 flow = waterfallState.getFlow(level, waterfallPos);
+                    if (flow.equals(Vec3.ZERO)) {
+                        for (Direction openSide : openSides) {
+                            flow = flow.add(openSide.getStepX(), 0, openSide.getStepZ());
+                        }
+                    }
+
+                    return new WaterfallData(type, canBeLarge, openSides, flow);
                 }
             }
         }
@@ -218,9 +236,9 @@ public class WaterfallTicker extends Ticker {
         return EMPTY_WATERFALL_DATA;
     }
 
-    public record WaterfallData(WaterfallType type, boolean canBeLarge, List<Direction> openSides) {
+    public record WaterfallData(WaterfallType type, boolean canBeLarge, List<Direction> openSides, Vec3 flow) {
 
-        public static final WaterfallData EMPTY_WATERFALL_DATA = new WaterfallData(WaterfallType.NORMAL, false, new ArrayList<>());
+        public static final WaterfallData EMPTY_WATERFALL_DATA = new WaterfallData(WaterfallType.NORMAL, false, new ArrayList<>(), Vec3.ZERO);
     }
 
     public enum WaterfallType {
