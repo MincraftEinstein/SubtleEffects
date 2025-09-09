@@ -75,7 +75,7 @@ public class WaterfallTicker extends Ticker {
             double zFlow = isZ ? flow.z() : 0;
 
             if (type == WaterfallType.NORMAL) {
-                level.addParticle(ModParticles.CASCADE.get(),
+                level.addParticle(ModParticles.WATERFALL_CLOUD.get(),
                         x + xOffset + MathUtil.nextDouble(random, 0.2),
                         y + 0.2F,
                         z + zOffset + MathUtil.nextDouble(random, 0.2),
@@ -99,7 +99,7 @@ public class WaterfallTicker extends Ticker {
             else if (type == WaterfallType.LARGE) {
                 // TODO config for if large waterfalls particles should be force spawned
                 for (int i = 0; i < 6; i++) {
-                    level.addAlwaysVisibleParticle(ModParticles.CASCADE.get(), true,
+                    level.addAlwaysVisibleParticle(ModParticles.WATERFALL_CLOUD.get(), true,
                             x + xOffset + (MathUtil.nextDouble(random, 0.3) * direction.getStepX()),
                             y + MathUtil.nextDouble(random, 2) + 0.2F,
                             z + zOffset + (MathUtil.nextDouble(random, 0.2) * direction.getStepZ()),
