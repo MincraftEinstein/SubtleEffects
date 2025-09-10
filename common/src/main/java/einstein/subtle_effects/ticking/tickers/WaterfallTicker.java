@@ -200,15 +200,15 @@ public class WaterfallTicker extends BlockPosTicker {
                     boolean canBeLarge = false;
                     WaterfallType type = WaterfallType.NORMAL;
 
-                    // the actual water fall height is 2 blocks higher,
+                    // the actual water fall height is 2 blocks lower than the threshold config,
                     // 1 for the fluid source and 1 for the bottom block where the ticker is located.
-                    // SMALL is 6
-                    // LARGE is 10
+                    // SMALL is 4
+                    // LARGE is 8
 
-                    if (distance >= 0 && distance < ENVIRONMENT.waterfalls.mediumWaterfallHeightThreshold.get() - 1) {
+                    if (distance >= 0 && distance <= ENVIRONMENT.waterfalls.mediumWaterfallHeightThreshold.get() - 2) {
                         type = ENVIRONMENT.waterfalls.smallWaterfallsEnabled ? WaterfallType.SMALL : null;
                     }
-                    else if (ENVIRONMENT.waterfalls.largeWaterfallsEnabled && distance > ENVIRONMENT.waterfalls.largeWaterfallHeightThreshold.get()) {
+                    else if (ENVIRONMENT.waterfalls.largeWaterfallsEnabled && distance > ENVIRONMENT.waterfalls.largeWaterfallHeightThreshold.get() - 2) {
                         int size = 0;
                         canBeLarge = true;
 
