@@ -73,8 +73,10 @@ public class WaterfallTicker extends Ticker {
             Direction.Axis axis = direction.getAxis();
             boolean isX = axis == Direction.Axis.X;
             boolean isZ = axis == Direction.Axis.Z;
-            double xOffset = isX ? 0.5 + (0.7 * direction.getStepX()) : random.nextFloat();
-            double zOffset = isZ ? 0.5 + (0.7 * direction.getStepZ()) : random.nextFloat();
+            int stepX = direction.getStepX();
+            int stepZ = direction.getStepZ();
+            double xOffset = isX ? 0.5 + (0.7 * stepX) : random.nextFloat();
+            double zOffset = isZ ? 0.5 + (0.7 * stepZ) : random.nextFloat();
             double xFlow = isX ? flow.x() : 0;
             double zFlow = isZ ? flow.z() : 0;
 
@@ -91,25 +93,23 @@ public class WaterfallTicker extends Ticker {
                 }
             }
             else if (type == WaterfallType.SMALL) {
-                if (xFlow == 0 && zFlow != 0 || xFlow != 0) {
-                    level.addParticle(ModParticles.WATERFALL_DROPLET.get(),
-                            x + xOffset - (isX ? (0.2 * direction.getStepX()) : 0),
-                            y,
-                            z + zOffset - (isZ ? (0.2 * direction.getStepZ()) : 0),
-                            nextDouble(random, 0.05, 0.15) * (xFlow == 0 ? 0.01 : (xFlow < 0 ? -1 : 1)),
-                            Mth.nextDouble(random, 0.05, 0.1),
-                            nextDouble(random, 0.05, 0.15) * (zFlow == 0 ? 0.01 : (zFlow < 0 ? -1 : 1))
-                    );
-                }
+                level.addParticle(ModParticles.WATERFALL_DROPLET.get(),
+                        x + xOffset - (isX ? (0.2 * stepX) : 0),
+                        y,
+                        z + zOffset - (isZ ? (0.2 * stepZ) : 0),
+                        nextDouble(random, 0.05, 0.15) * (xFlow == 0 ? (0.5 * stepX) : (xFlow < 0 ? -1 : 1)),
+                        Mth.nextDouble(random, 0.05, 0.1),
+                        nextDouble(random, 0.05, 0.15) * (zFlow == 0 ? (0.5 * stepZ) : (zFlow < 0 ? -1 : 1))
+                );
             }
             else if (type == WaterfallType.LARGE) {
                 boolean forceSpawn = ENVIRONMENT.waterfalls.forceSpawnLargeWaterfallParticles;
                 for (int i = 0; i < 6; i++) {
                     if (random.nextDouble() < ENVIRONMENT.waterfalls.largeWaterfallParticleDensity.get()) {
                         level.addAlwaysVisibleParticle(ModParticles.WATERFALL_CLOUD.get(), forceSpawn,
-                                x + xOffset + (MathUtil.nextDouble(random, 0.3) * direction.getStepX()),
+                                x + xOffset + (MathUtil.nextDouble(random, 0.3) * stepX),
                                 y + MathUtil.nextDouble(random, 2) + 0.2F,
-                                z + zOffset + (MathUtil.nextDouble(random, 0.2) * direction.getStepZ()),
+                                z + zOffset + (MathUtil.nextDouble(random, 0.2) * stepZ),
                                 nextDouble(random, 0.5, 1) * xFlow,
                                 0,
                                 nextDouble(random, 0.5, 1) * zFlow
