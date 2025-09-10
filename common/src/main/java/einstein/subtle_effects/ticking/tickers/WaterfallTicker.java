@@ -7,7 +7,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.material.Fluid;
@@ -23,19 +22,15 @@ import static einstein.subtle_effects.init.ModConfigs.ENVIRONMENT;
 import static einstein.subtle_effects.ticking.tickers.WaterfallTicker.WaterfallData.EMPTY_WATERFALL_DATA;
 import static net.minecraft.util.Mth.nextDouble;
 
-public class WaterfallTicker extends Ticker {
+public class WaterfallTicker extends BlockPosTicker {
 
     public static final Map<BlockPos, WaterfallTicker> WATERFALLS = new HashMap<>();
-    private final Level level;
-    private final BlockPos pos;
     private final BlockPos waterfallPos;
-    private final RandomSource random = RandomSource.create();
     private WaterfallData data;
     private int updateTicks;
 
     public WaterfallTicker(Level level, BlockPos pos, BlockPos waterfallPos, WaterfallData data) {
-        this.level = level;
-        this.pos = pos;
+        super(level, pos);
         this.waterfallPos = waterfallPos;
         this.data = data;
     }
@@ -61,7 +56,7 @@ public class WaterfallTicker extends Ticker {
     }
 
     @Override
-    public void tick() {
+    public void positionedTick() {
         Vec3 flow = data.flow();
 
         WaterfallType type = data.type();
@@ -146,6 +141,15 @@ public class WaterfallTicker extends Ticker {
     public void remove() {
         super.remove();
         WATERFALLS.remove(pos);
+    }
+
+    @Override
+    protected boolean shouldCheckDistance() {
+        WaterfallType type = data.type();
+        if (type == WaterfallType.NORMAL && ENVIRONMENT.waterfalls.forceSpawnMediumWaterfallParticles) {
+            return false;
+        }
+        return !(type == WaterfallType.LARGE && ENVIRONMENT.waterfalls.forceSpawnLargeWaterfallParticles);
     }
 
     private static WaterfallData evaluateWaterfall(Level level, BlockPos lakePos, BlockPos waterfallPos) {

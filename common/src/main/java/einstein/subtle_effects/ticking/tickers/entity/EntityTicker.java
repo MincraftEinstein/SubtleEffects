@@ -1,22 +1,18 @@
 package einstein.subtle_effects.ticking.tickers.entity;
 
-import einstein.subtle_effects.ticking.tickers.Ticker;
+import einstein.subtle_effects.ticking.tickers.LevelTicker;
 import einstein.subtle_effects.util.EntityTickersGetter;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.level.Level;
 
-public abstract class EntityTicker<T extends Entity> extends Ticker {
+public abstract class EntityTicker<T extends Entity> extends LevelTicker {
 
     protected final T entity;
-    protected final Level level;
-    protected final RandomSource random = RandomSource.create();
     private int id;
     private final boolean checkVisibility;
 
     public EntityTicker(T entity, boolean checkVisibility) {
+        super(entity.level());
         this.entity = entity;
-        level = entity.level();
         this.checkVisibility = checkVisibility;
     }
 
