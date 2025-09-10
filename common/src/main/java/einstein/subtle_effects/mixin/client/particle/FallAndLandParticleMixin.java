@@ -18,7 +18,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.function.Supplier;
 
-@Mixin(targets = "net.minecraft.client.particle.DripParticle.FallAndLandParticle")
+@Mixin(DripParticle.FallAndLandParticle.class)
 public abstract class FallAndLandParticleMixin extends Particle {
 
     @Unique

@@ -11,6 +11,8 @@ accessible method net/minecraft/client/particle/BubblePopParticle <init> (Lnet/m
 accessible method net/minecraft/client/particle/SplashParticle <init> (Lnet/minecraft/client/multiplayer/ClientLevel;DDDDDD)V
 accessible method net/minecraft/client/particle/FlyTowardsPositionParticle <init> (Lnet/minecraft/client/multiplayer/ClientLevel;DDDDDD)V
 accessible method net/minecraft/client/particle/ParticleEngine$MutableSpriteSet <init> ()V
+accessible method net/minecraft/client/particle/DripParticle$FallAndLandParticle <init> (Lnet/minecraft/client/multiplayer/ClientLevel;DDDLnet/minecraft/world/level/material/Fluid;Lnet/minecraft/core/particles/ParticleOptions;)V
 
 accessible class net/minecraft/client/particle/ParticleEngine$MutableSpriteSet
 accessible class net/minecraft/client/particle/ParticleEngine$SpriteParticleRegistration
+accessible class net/minecraft/client/particle/DripParticle$FallAndLandParticle
