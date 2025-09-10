@@ -13,8 +13,6 @@ public class WaterfallCloud extends BaseWaterfallParticle {
     protected WaterfallCloud(ClientLevel level, double x, double y, double z, double xSpeed, double zSpeed, SpriteSet sprites) {
         super(level, x, y, z, xSpeed, 0, zSpeed, new LifetimeAlpha(0.7F, 0, 0.5F, 1));
         this.sprites = sprites;
-//        roll = random.nextInt(); TODO should be a toggle config
-//        oRoll = roll;
         gravity = 0.3F;
         speedUpWhenYMotionIsBlocked = true;
         scale(3);

@@ -1,6 +1,7 @@
 package einstein.subtle_effects.configs;
 
 import einstein.subtle_effects.SubtleEffects;
+import einstein.subtle_effects.configs.environment.WaterfallConfigs;
 import einstein.subtle_effects.ticking.biome_particles.BiomeParticleManager;
 import einstein.subtle_effects.configs.environment.BiomeConfigs;
 import einstein.subtle_effects.configs.environment.FireflyConfigs;
@@ -19,6 +20,7 @@ public class ModEnvironmentConfigs extends Config {
     public BiomeConfigs biomes = new BiomeConfigs();
     public GeyserConfigs geysers = new GeyserConfigs();
     public FireflyConfigs fireflies = new FireflyConfigs();
+    public WaterfallConfigs waterfalls = new WaterfallConfigs();
 
     public ModEnvironmentConfigs() {
         super(SubtleEffects.loc("environment"));

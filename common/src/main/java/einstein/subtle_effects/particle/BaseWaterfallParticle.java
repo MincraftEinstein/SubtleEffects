@@ -1,6 +1,7 @@
 package einstein.subtle_effects.particle;
 
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.init.ModParticleRenderTypes;
 import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -18,6 +19,11 @@ public abstract class BaseWaterfallParticle extends TextureSheetParticle {
         this.lifetimeAlpha = lifetimeAlpha;
         alpha = lifetimeAlpha.startAlpha();
         pos = BlockPos.containing(x, y, z).mutable();
+
+        if (ModConfigs.ENVIRONMENT.waterfalls.randomizeWaterfallParticleRotation) {
+            roll = random.nextInt();
+            oRoll = roll;
+        }
     }
 
     @Override

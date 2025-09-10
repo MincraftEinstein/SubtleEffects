@@ -19,12 +19,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static einstein.subtle_effects.init.ModConfigs.ENVIRONMENT;
 import static einstein.subtle_effects.ticking.tickers.WaterfallTicker.WaterfallData.EMPTY_WATERFALL_DATA;
 import static net.minecraft.util.Mth.nextDouble;
 
 public class WaterfallTicker extends Ticker {
 
-    private static final int MAX_UPDATE_TICKS = 6;
     public static final Map<BlockPos, WaterfallTicker> WATERFALLS = new HashMap<>();
     private final Level level;
     private final BlockPos pos;
@@ -41,6 +41,10 @@ public class WaterfallTicker extends Ticker {
     }
 
     public static void trySpawn(Level level, FluidState fluidState, BlockPos pos) {
+        if (!ENVIRONMENT.waterfalls.waterfallsEnabled) {
+            return;
+        }
+
         if (fluidState.is(FluidTags.WATER) && fluidState.isSource()) {
             if (!WATERFALLS.containsKey(pos)) {
                 BlockPos waterfallPos = pos.above();
@@ -75,14 +79,16 @@ public class WaterfallTicker extends Ticker {
             double zFlow = isZ ? flow.z() : 0;
 
             if (type == WaterfallType.NORMAL) {
-                level.addParticle(ModParticles.WATERFALL_CLOUD.get(),
-                        x + xOffset + MathUtil.nextDouble(random, 0.2),
-                        y + 0.2F,
-                        z + zOffset + MathUtil.nextDouble(random, 0.2),
-                        nextDouble(random, 0.5, 1) * xFlow,
-                        0,
-                        nextDouble(random, 0.5, 1) * zFlow
-                );
+                if (random.nextDouble() < ENVIRONMENT.waterfalls.mediumWaterfallParticleDensity.get()) {
+                    level.addAlwaysVisibleParticle(ModParticles.WATERFALL_CLOUD.get(), ENVIRONMENT.waterfalls.forceSpawnMediumWaterfallParticles,
+                            x + xOffset + MathUtil.nextDouble(random, 0.2),
+                            y + 0.2F,
+                            z + zOffset + MathUtil.nextDouble(random, 0.2),
+                            nextDouble(random, 0.5, 1) * xFlow,
+                            0,
+                            nextDouble(random, 0.5, 1) * zFlow
+                    );
+                }
             }
             else if (type == WaterfallType.SMALL) {
                 if (xFlow == 0 && zFlow != 0 || xFlow != 0) {
@@ -97,20 +103,22 @@ public class WaterfallTicker extends Ticker {
                 }
             }
             else if (type == WaterfallType.LARGE) {
-                // TODO config for if large waterfalls particles should be force spawned
+                boolean forceSpawn = ENVIRONMENT.waterfalls.forceSpawnLargeWaterfallParticles;
                 for (int i = 0; i < 6; i++) {
-                    level.addAlwaysVisibleParticle(ModParticles.WATERFALL_CLOUD.get(), true,
-                            x + xOffset + (MathUtil.nextDouble(random, 0.3) * direction.getStepX()),
-                            y + MathUtil.nextDouble(random, 2) + 0.2F,
-                            z + zOffset + (MathUtil.nextDouble(random, 0.2) * direction.getStepZ()),
-                            nextDouble(random, 0.5, 1) * xFlow,
-                            0,
-                            nextDouble(random, 0.5, 1) * zFlow
-                    );
+                    if (random.nextDouble() < ENVIRONMENT.waterfalls.largeWaterfallParticleDensity.get()) {
+                        level.addAlwaysVisibleParticle(ModParticles.WATERFALL_CLOUD.get(), forceSpawn,
+                                x + xOffset + (MathUtil.nextDouble(random, 0.3) * direction.getStepX()),
+                                y + MathUtil.nextDouble(random, 2) + 0.2F,
+                                z + zOffset + (MathUtil.nextDouble(random, 0.2) * direction.getStepZ()),
+                                nextDouble(random, 0.5, 1) * xFlow,
+                                0,
+                                nextDouble(random, 0.5, 1) * zFlow
+                        );
+                    }
                 }
 
-                if (random.nextInt(3) == 0) {
-                    level.addAlwaysVisibleParticle(ModParticles.WATERFALL_MIST.get(), true,
+                if (random.nextInt(3) == 0 && random.nextDouble() < ENVIRONMENT.waterfalls.largeWaterfallParticleDensity.get()) {
+                    level.addAlwaysVisibleParticle(ModParticles.WATERFALL_MIST.get(), forceSpawn,
                             x + xOffset,
                             y + 1,
                             z + zOffset,
@@ -122,7 +130,7 @@ public class WaterfallTicker extends Ticker {
             }
         }
 
-        if (updateTicks++ >= MAX_UPDATE_TICKS) {
+        if (updateTicks++ >= ENVIRONMENT.waterfalls.waterfallUpdateFrequency.get()) {
             WaterfallData newData = evaluateWaterfall(level, pos, waterfallPos);
             if (newData.equals(EMPTY_WATERFALL_DATA)) {
                 remove();
@@ -141,7 +149,7 @@ public class WaterfallTicker extends Ticker {
     }
 
     private static WaterfallData evaluateWaterfall(Level level, BlockPos lakePos, BlockPos waterfallPos) {
-        if (!Util.isChunkLoaded(level, waterfallPos.getX(), waterfallPos.getZ())) {
+        if (!ENVIRONMENT.waterfalls.waterfallsEnabled || !Util.isChunkLoaded(level, waterfallPos.getX(), waterfallPos.getZ())) {
             return EMPTY_WATERFALL_DATA;
         }
 
@@ -193,10 +201,10 @@ public class WaterfallTicker extends Ticker {
                     // SMALL is 6
                     // LARGE is 10
 
-                    if (distance >= 0 && distance <= 4) {
-                        type = WaterfallType.SMALL;
+                    if (distance >= 0 && distance < ENVIRONMENT.waterfalls.mediumWaterfallHeightThreshold.get() - 1) {
+                        type = ENVIRONMENT.waterfalls.smallWaterfallsEnabled ? WaterfallType.SMALL : null;
                     }
-                    else if (distance > 8) {
+                    else if (ENVIRONMENT.waterfalls.largeWaterfallsEnabled && distance > ENVIRONMENT.waterfalls.largeWaterfallHeightThreshold.get()) {
                         int size = 0;
                         canBeLarge = true;
 
@@ -219,6 +227,10 @@ public class WaterfallTicker extends Ticker {
                         if (size >= 2) {
                             type = WaterfallType.LARGE;
                         }
+                    }
+
+                    if (type == null) {
+                        return EMPTY_WATERFALL_DATA;
                     }
 
                     Vec3 flow = waterfallState.getFlow(level, waterfallPos);
