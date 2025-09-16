@@ -55,6 +55,7 @@
     "client.item.BucketItemMixin",
     "client.item.FlintAndSteelItemMixin",
     "client.item.SolidBucketItemMixin",
+    "client.particle.CherryParticleMixin",
     "client.particle.DripParticleMixin",
     "client.particle.FallAndLandParticleMixin",
     "client.particle.FlyTowardsPositionParticleAccessor",

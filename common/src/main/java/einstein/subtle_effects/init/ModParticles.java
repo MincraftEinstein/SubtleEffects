@@ -92,6 +92,7 @@ public class ModParticles {
     public static final Supplier<SimpleParticleType> WATERFALL_CLOUD = register("waterfall_cloud", WaterfallCloud.Provider::new);
     public static final Supplier<SimpleParticleType> WATERFALL_DROPLET = register("waterfall_droplet", WaterfallDroplet.Provider::new);
     public static final Supplier<SimpleParticleType> WATERFALL_MIST = register("waterfall_mist", WaterfallMistParticle.Provider::new);
+    public static final Supplier<ParticleType<FallenLeafParticleOptions>> FALLEN_LEAF = register("fallen_leaf", type -> FallenLeafParticleOptions.CODEC, type -> FallenLeafParticleOptions.STREAM_CODEC, sprites -> new FallenLeafParticle.Provider());
 
     public static void init() {
     }
