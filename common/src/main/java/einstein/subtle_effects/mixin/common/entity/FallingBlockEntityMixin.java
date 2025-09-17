@@ -1,24 +1,41 @@
 package einstein.subtle_effects.mixin.common.entity;
 
-import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
-import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import com.llamalad7.mixinextras.sugar.Local;
 import einstein.subtle_effects.networking.clientbound.ClientBoundFallingBlockLandPayload;
 import einstein.subtle_effects.platform.Services;
+import einstein.subtle_effects.util.FallingBlockAccessor;
+import einstein.subtle_effects.util.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.world.entity.item.FallingBlockEntity;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Fallable;
-import net.minecraft.world.level.block.state.BlockState;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(FallingBlockEntity.class)
-public class FallingBlockEntityMixin {
+public class FallingBlockEntityMixin implements FallingBlockAccessor {
 
-    @WrapOperation(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/Fallable;onLand(Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/entity/item/FallingBlockEntity;)V"))
-    private void onLand(Fallable block, Level level, BlockPos pos, BlockState state, BlockState replaceableState, FallingBlockEntity fallingBlock, Operation<Void> original) {
-        Services.NETWORK.sendToClientsTracking((ServerLevel) level, pos, new ClientBoundFallingBlockLandPayload(state, pos));
-        original.call(block, level, pos, state, replaceableState, fallingBlock);
+    @Unique
+    private final FallingBlockEntity subtleEffects$me = (FallingBlockEntity) (Object) this;
+
+    @Unique
+    private boolean subtleEffects$isInWater;
+
+    @Inject(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/item/FallingBlockEntity;handlePortal()V"))
+    private void tick(CallbackInfo ci) {
+        subtleEffects$isInWater = Util.isEntityInFluid(subtleEffects$me, FluidTags.WATER);
+    }
+
+    @Inject(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/Fallable;onLand(Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/entity/item/FallingBlockEntity;)V"))
+    private void onLand(CallbackInfo ci, @Local BlockPos pos) {
+        Services.NETWORK.sendToClientsTracking((ServerLevel) subtleEffects$me.level(), pos, new ClientBoundFallingBlockLandPayload(subtleEffects$me.getBlockState(), pos, subtleEffects$isInWater));
+    }
+
+    @Override
+    public boolean subtleEffects$isInWater() {
+        return subtleEffects$isInWater;
     }
 }

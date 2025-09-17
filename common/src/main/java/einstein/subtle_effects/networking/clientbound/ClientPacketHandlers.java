@@ -1,8 +1,8 @@
 package einstein.subtle_effects.networking.clientbound;
 
 import einstein.subtle_effects.configs.ReplacedParticlesDisplayType;
-import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.init.ModAnimalFedEffectSettings;
+import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.init.ModParticles;
 import einstein.subtle_effects.mixin.client.entity.AbstractHorseAccessor;
 import einstein.subtle_effects.particle.option.FloatParticleOptions;
@@ -156,21 +156,22 @@ public class ClientPacketHandlers {
 
         if (BLOCKS.fallingBlocks.onLandDust) {
             if (BLOCKS.fallingBlocks.dustyBlocks.contains(block)) {
+                boolean isInWater = payload.isInWater() && BLOCKS.fallingBlocks.replaceDustWithBubblesUnderwater;
                 RandomSource random = level.getRandom();
-                ParticleOptions options = getParticleForFallingBlock(level, pos, state);
+                ParticleOptions options = isInWater ? ParticleTypes.BUBBLE : getParticleForFallingBlock(level, pos, state);
 
                 for (int i = 0; i < 25; i++) {
-                    boolean b = random.nextBoolean();
+                    boolean bool = random.nextBoolean();
                     int xSign = nextSign(random);
                     int zSign = nextSign(random);
 
                     level.addParticle(options,
-                            pos.getX() + 0.5 + (b ? 0.55 * xSign : nextNonAbsDouble(random, 0.55)),
+                            pos.getX() + 0.5 + (bool ? 0.55 * xSign : nextNonAbsDouble(random, 0.55)),
                             pos.getY() + nextDouble(random, 0.3),
-                            pos.getZ() + 0.5 + (!b ? 0.55 * zSign : nextNonAbsDouble(random, 0.55)),
-                            b ? 50 * xSign : 0, // 50 because dust velocity gets multiplied by 0.1
+                            pos.getZ() + 0.5 + (!bool ? 0.55 * zSign : nextNonAbsDouble(random, 0.55)),
+                            bool ? (isInWater ? nextDouble(random, 0.5) : 50) * xSign : 0, // 50 because dust velocity gets multiplied by 0.1
                             0.3,
-                            !b ? 50 * zSign : 0
+                            !bool ? (isInWater ? nextDouble(random, 0.5) : 50) * zSign : 0
                     );
                 }
             }

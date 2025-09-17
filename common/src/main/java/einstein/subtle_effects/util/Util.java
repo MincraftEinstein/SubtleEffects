@@ -25,6 +25,8 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.tags.TagKey;
+import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.ItemStack;
@@ -33,7 +35,9 @@ import net.minecraft.world.level.block.AbstractCauldronBlock;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
@@ -174,5 +178,32 @@ public class Util {
             return ModParticles.SNOW.get();
         }
         return null;
+    }
+
+    public static boolean isEntityInFluid(Entity entity, TagKey<Fluid> fluidTag) {
+        if (entity.touchingUnloadedChunk()) {
+            return false;
+        }
+
+        Level level = entity.level();
+        AABB aabb = entity.getBoundingBox();
+        BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
+
+        for (int x = Mth.floor(aabb.minX); x < Mth.ceil(aabb.maxX); x++) {
+            for (int y = Mth.floor(aabb.minY); y < Mth.ceil(aabb.maxY); y++) {
+                for (int z = Mth.floor(aabb.minZ); z < Mth.ceil(aabb.maxZ); z++) {
+                    pos.set(x, y, z);
+                    FluidState fluidState = level.getFluidState(pos);
+
+                    if (fluidState.is(fluidTag)) {
+                        double fluidHeight = y + fluidState.getHeight(level, pos);
+                        if (fluidHeight >= aabb.minY) {
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+        return false;
     }
 }
