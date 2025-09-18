@@ -140,6 +140,7 @@ public class ModBlockConfigs extends Config {
     public boolean cakeEatSounds = true;
     public boolean rainWaterRipples = true;
     public ValidatedFloat rainWaterRipplesDensity = new ValidatedFloat(0.35F, 1, 0);
+    public boolean underwaterBlockBreakBubbles = true;
 
     private static ValidatedIdentifier getEyeHandler() {
         List<ResourceLocation> eyes = CompatHelper.IS_END_REMASTERED_LOADED.get()
