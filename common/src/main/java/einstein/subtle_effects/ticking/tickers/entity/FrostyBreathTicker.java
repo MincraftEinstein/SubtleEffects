@@ -4,6 +4,7 @@ import einstein.subtle_effects.compat.CompatHelper;
 import einstein.subtle_effects.compat.SereneSeasonsCompat;
 import einstein.subtle_effects.init.ModParticles;
 import einstein.subtle_effects.util.ParticleSpawnUtil;
+import einstein.subtle_effects.util.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
@@ -67,8 +68,7 @@ public class FrostyBreathTicker extends EntityTicker<LivingEntity> {
             if (breatheTimer >= ENTITIES.humanoids.frostyBreath.waitTime.get()) {
                 ParticleSpawnUtil.spawnEntityFaceParticle(ModParticles.FROSTY_BREATH.get(),
                         entity, level, random, new Vec3(0, -0.1, 0),
-                        new Vec3(0, 0, Mth.nextDouble(random, 0.005, 0.01)),
-                        minecraft.getTimer().getGameTimeDeltaPartialTick(false)
+                        new Vec3(0, 0, Mth.nextDouble(random, 0.005, 0.01)), Util.getPartialTicks()
                 );
 
                 if (breatheOutTimer >= 7) {

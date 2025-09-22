@@ -333,8 +333,7 @@ public class ClientPacketHandlers {
                 for (int i = 0; i < 16; i++) {
                     ParticleSpawnUtil.spawnEntityFaceParticle(
                             new ItemParticleOption(ParticleTypes.ITEM, settings.stackReplacer().apply(stack)),
-                            livingEntity, level, random, settings.offset(),
-                            Minecraft.getInstance().getTimer().getGameTimeDeltaPartialTick(false)
+                            livingEntity, level, random, settings.offset(), Util.getPartialTicks()
                     );
                 }
             }

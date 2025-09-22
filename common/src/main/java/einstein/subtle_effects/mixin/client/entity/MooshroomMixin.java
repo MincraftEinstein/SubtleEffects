@@ -5,7 +5,7 @@ import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
 import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.util.ParticleSpawnUtil;
-import net.minecraft.client.Minecraft;
+import einstein.subtle_effects.util.Util;
 import net.minecraft.core.particles.ColorParticleOption;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleOptions;
@@ -52,8 +52,7 @@ public class MooshroomMixin {
         if (ModConfigs.ENTITIES.animalFeedingParticles) {
             for (int i = 0; i < 4; i++) {
                 ParticleSpawnUtil.spawnEntityFaceParticle(new ItemParticleOption(ParticleTypes.ITEM, heldStack),
-                        subtleEffects$me, level, random, new Vec3(0, 0.3, -0.2),
-                        Minecraft.getInstance().getTimer().getGameTimeDeltaPartialTick(false)
+                        subtleEffects$me, level, random, new Vec3(0, 0.3, -0.2), Util.getPartialTicks()
                 );
             }
         }

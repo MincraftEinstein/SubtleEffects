@@ -70,7 +70,7 @@ public class BlockStateBaseMixin {
                     RandomSource random = player.getRandom();
 
                     if (!stack.isEmpty() && ModConfigs.BLOCKS.cakeEatParticles) {
-                        float partialTick = Minecraft.getInstance().getTimer().getGameTimeDeltaPartialTick(false);
+                        float partialTick = Util.getPartialTicks();
                         ItemParticleOption options = new ItemParticleOption(ParticleTypes.ITEM, stack);
 
                         for (int i = 0; i < 16; i++) {
