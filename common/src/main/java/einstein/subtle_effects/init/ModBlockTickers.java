@@ -290,6 +290,17 @@ public class ModBlockTickers {
                 );
             }
         });
+        register(Blocks.DECORATED_POT, () -> BLOCKS.decoratedPotsSpawnBubbles, (state, level, pos, random) -> {
+            for (int i = 0; i < random.nextInt(2); i++) {
+                level.addParticle(
+                        ParticleTypes.BUBBLE_COLUMN_UP,
+                        pos.getX() + 0.5 + nextNonAbsDouble(random, 0.125),
+                        pos.getY() + 1 + nextNonAbsDouble(random, 0.25),
+                        pos.getZ() + 0.5 + nextNonAbsDouble(random, 0.125),
+                        0, 0, 0
+                );
+            }
+        });
     }
 
     private static void register(Block block, Supplier<Boolean> isEnabled, BlockTickerProvider provider) {

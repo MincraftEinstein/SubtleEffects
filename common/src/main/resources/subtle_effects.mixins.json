@@ -19,6 +19,7 @@
     "client.block.AbstractCauldronBlockAccessor",
     "client.block.AbstractCauldronBlockMixin",
     "client.block.AmethystClusterBlockAccessor",
+    "client.block.BarrelBlockMixin",
     "client.block.BaseFireBlockMixin",
     "client.block.BeehiveBlockMixin",
     "client.block.BlockStateBaseMixin",

@@ -22,7 +22,6 @@ import me.fzzyhmstrs.fzzy_config.validation.collection.ValidatedList;
 import me.fzzyhmstrs.fzzy_config.validation.collection.ValidatedMap;
 import me.fzzyhmstrs.fzzy_config.validation.minecraft.ValidatedIdentifier;
 import me.fzzyhmstrs.fzzy_config.validation.minecraft.ValidatedRegistryType;
-import me.fzzyhmstrs.fzzy_config.validation.misc.ValidatedBoolean;
 import me.fzzyhmstrs.fzzy_config.validation.misc.ValidatedColor;
 import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedDouble;
 import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedFloat;
@@ -141,7 +140,9 @@ public class ModBlockConfigs extends Config {
     public boolean rainWaterRipples = true;
     public ValidatedFloat rainWaterRipplesDensity = new ValidatedFloat(0.35F, 1, 0);
     public boolean underwaterBlockBreakBubbles = true;
-    public ConfigGroup underwaterChestBubblingGroup = new ConfigGroup("underwater_chest_bubbling");
+    public ConfigGroup underwaterContainerBubblingGroup = new ConfigGroup("underwater_container_bubbling");
+    public boolean decoratedPotsSpawnBubbles = true;
+    public boolean openingBarrelsSpawnsBubbles = true;
     public boolean openingChestsSpawnsBubbles = true;
     public boolean chestsOpenRandomlyUnderwater = true;
     @ConfigGroup.Pop
