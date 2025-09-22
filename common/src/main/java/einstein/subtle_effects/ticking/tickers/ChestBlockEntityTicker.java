@@ -14,6 +14,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.BubbleColumnBlock;
 import net.minecraft.world.level.block.ChestBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.ChestLidController;
@@ -23,12 +24,13 @@ import net.minecraft.world.level.block.state.properties.ChestType;
 import java.util.HashMap;
 import java.util.Map;
 
+import static einstein.subtle_effects.init.ModConfigs.BLOCKS;
 import static net.minecraft.world.level.block.ChestBlock.TYPE;
 
 public class ChestBlockEntityTicker extends BlockPosTicker {
 
     private static final int MAX_TICKS_SINCE_LAST_ANIMATION = 100;
-    public static final Map<BlockPos, ChestBlockEntityTicker> CHEST_TICKERS = new HashMap<>();
+    private static final Map<BlockPos, ChestBlockEntityTicker> CHEST_TICKERS = new HashMap<>();
     private int ticksSinceLastAnimation;
     private int animationTicks;
     private float oldOpenness;
@@ -40,6 +42,10 @@ public class ChestBlockEntityTicker extends BlockPosTicker {
     }
 
     public static void trySpawn(Level level, BlockPos pos) {
+        if (!BLOCKS.chestsOpenRandomlyUnderwater && !BLOCKS.openingChestsSpawnsBubbles) {
+            return;
+        }
+
         BlockEntity blockEntity = level.getBlockEntity(pos);
         if (blockEntity == null || CHEST_TICKERS.containsKey(pos)) {
             return;
@@ -51,6 +57,11 @@ public class ChestBlockEntityTicker extends BlockPosTicker {
             CHEST_TICKERS.put(pos, ticker);
             TickerManager.add(ticker);
         }
+    }
+
+    public static void clear() {
+        CHEST_TICKERS.values().forEach(ticker -> ticker.lidController.shouldBeOpen(false));
+        CHEST_TICKERS.clear();
     }
 
     @Override
@@ -76,13 +87,19 @@ public class ChestBlockEntityTicker extends BlockPosTicker {
             return;
         }
 
+        if (BLOCKS.randomChestOpeningNeedsSoulSand) {
+            if (!isUpwardsBubbleColumn(pos) || (isDoubleChest && !isUpwardsBubbleColumn(oppositePos))) {
+                return;
+            }
+        }
+
         if (!(isUnderwater(pos) && (!isDoubleChest || isUnderwater(oppositePos)))) {
             return;
         }
 
         RandomSource random = level.getRandom();
         float openness = lidController.getOpenness(Util.getPartialTicks());
-        if (openness > 0) {
+        if (openness > 0 && BLOCKS.openingChestsSpawnsBubbles) {
             boolean isClosing = openness <= 0.5 && openness < oldOpenness;
             if (isClosing || random.nextInt(isDoubleChest ? 2 : 4) == 0) {
                 double xOffset = 0;
@@ -121,13 +138,17 @@ public class ChestBlockEntityTicker extends BlockPosTicker {
         }
         oldOpenness = openness;
 
+        if (isDownwardsBubbleColumn(pos) || (isDoubleChest && isDownwardsBubbleColumn(oppositePos))) {
+            return;
+        }
+
         if (ticksSinceLastAnimation < MAX_TICKS_SINCE_LAST_ANIMATION) {
             ticksSinceLastAnimation++;
             return;
         }
 
         boolean isEnderChest = state.is(Blocks.ENDER_CHEST);
-        if (random.nextInt(100) == 0 && openness == 0) {
+        if (BLOCKS.chestsOpenRandomlyUnderwater && random.nextInt(100) == 0 && openness == 0) {
             lidController.shouldBeOpen(true);
             playSound(connectedDirection, type, isEnderChest ? SoundEvents.ENDER_CHEST_OPEN : SoundEvents.CHEST_OPEN);
             animationTicks = Mth.nextInt(random, 50, 200);
@@ -143,6 +164,16 @@ public class ChestBlockEntityTicker extends BlockPosTicker {
                 ticksSinceLastAnimation = 0;
             }
         }
+    }
+
+    private boolean isUpwardsBubbleColumn(BlockPos pos) {
+        BlockState belowState = level.getBlockState(pos.below());
+        return belowState.is(Blocks.SOUL_SAND) || (belowState.is(Blocks.BUBBLE_COLUMN) && !belowState.getValue(BubbleColumnBlock.DRAG_DOWN));
+    }
+
+    private boolean isDownwardsBubbleColumn(BlockPos pos) {
+        BlockState belowState = level.getBlockState(pos.below());
+        return belowState.is(Blocks.MAGMA_BLOCK) || (belowState.is(Blocks.BUBBLE_COLUMN) && belowState.getValue(BubbleColumnBlock.DRAG_DOWN));
     }
 
     @Override
