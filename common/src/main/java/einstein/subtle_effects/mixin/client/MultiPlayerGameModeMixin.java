@@ -13,6 +13,7 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.Vec3;
@@ -32,6 +33,9 @@ public class MultiPlayerGameModeMixin {
                 BlockPos relativePos = pos.relative(direction);
                 FluidState relativeFluidState = level.getFluidState(relativePos);
                 BlockState relativeState = level.getBlockState(pos);
+                if (direction == Direction.UP && level.getBlockState(relativePos).isAir()) {
+                    break;
+                }
 
                 if (relativeFluidState.is(FluidTags.WATER) && relativeFluidState.getAmount() >= 7 && !Block.isFaceFull(relativeState.getCollisionShape(level, pos), direction.getOpposite())) {
                     nearWater = true;
