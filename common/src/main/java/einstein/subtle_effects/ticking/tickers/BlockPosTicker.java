@@ -8,7 +8,7 @@ import net.minecraft.world.level.Level;
 
 public abstract class BlockPosTicker extends LevelTicker {
 
-    public static final int INT = 16 * 3; // 16 blocks per chunk * 3 chunks
+    public static final int DISTANCE = 16 * 3; // 16 blocks per chunk * 3 chunks
     protected final BlockPos pos;
     protected final Minecraft minecraft = Minecraft.getInstance();
 
@@ -25,7 +25,7 @@ public abstract class BlockPosTicker extends LevelTicker {
     @Override
     public final void tick() {
         if (Util.isChunkLoaded(level, pos.getX(), pos.getZ())) {
-            if (!shouldCheckDistance() || (minecraft.player != null && pos.distToCenterSqr(minecraft.player.position()) < INT * INT)) {
+            if (!shouldCheckDistance() || (minecraft.player != null && pos.distToCenterSqr(minecraft.player.position()) < DISTANCE * DISTANCE)) {
                 positionedTick();
             }
         }

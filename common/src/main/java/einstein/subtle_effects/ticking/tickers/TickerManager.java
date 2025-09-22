@@ -51,5 +51,6 @@ public class TickerManager {
         GeyserManager.ACTIVE_GEYSERS.clear();
         GeyserManager.INACTIVE_GEYSERS.clear();
         WaterfallTicker.WATERFALLS.clear();
+        ChestBlockEntityTicker.CHEST_TICKERS.clear();
     }
 }

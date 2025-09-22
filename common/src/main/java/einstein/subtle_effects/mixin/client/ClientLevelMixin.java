@@ -4,6 +4,7 @@ import einstein.subtle_effects.init.ModBlockTickers;
 import einstein.subtle_effects.ticking.FireflyManager;
 import einstein.subtle_effects.ticking.GeyserManager;
 import einstein.subtle_effects.ticking.SparkProviderManager;
+import einstein.subtle_effects.ticking.tickers.ChestBlockEntityTicker;
 import einstein.subtle_effects.ticking.tickers.WaterfallTicker;
 import einstein.subtle_effects.ticking.tickers.entity.EntityTickerManager;
 import einstein.subtle_effects.util.BlockTickerProvider;
@@ -61,6 +62,7 @@ public abstract class ClientLevelMixin extends Level {
             }
 
             GeyserManager.tick(this, state, pos);
+            ChestBlockEntityTicker.trySpawn(this, pos);
 
             FluidState fluidState = getFluidState(pos);
             if (!fluidState.isEmpty()) {
