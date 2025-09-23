@@ -57,7 +57,7 @@ public class ModEntityConfigs extends Config {
     public boolean animalFeedingParticles = true;
     public ValidatedFloat animalFeedingSoundVolume = new ValidatedFloat(1, 1, 0);
     public boolean underwaterEntityPoofBubbles = true;
-    public boolean improveWetWolfShakeEffects = true;
+    public boolean improvedWetWolfShakeEffects = true;
     public boolean improvedVillagerSweatingEffects = true;
 
     public ModEntityConfigs() {

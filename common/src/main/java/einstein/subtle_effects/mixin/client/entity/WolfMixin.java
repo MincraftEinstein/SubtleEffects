@@ -28,7 +28,7 @@ public class WolfMixin {
 
     @WrapOperation(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/Level;addParticle(Lnet/minecraft/core/particles/ParticleOptions;DDDDDD)V"))
     private void replaceSplashParticles(Level level, ParticleOptions options, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, Operation<Void> original) {
-        if (ModConfigs.ENTITIES.improveWetWolfShakeEffects && options.getType() == ParticleTypes.SPLASH && level.isClientSide) {
+        if (ModConfigs.ENTITIES.improvedWetWolfShakeEffects && options.getType() == ParticleTypes.SPLASH && level.isClientSide) {
             RandomSource random = subtleEffects$me.getRandom();
             if (random.nextInt(2) != 0) {
                 return;
