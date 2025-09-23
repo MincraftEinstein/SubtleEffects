@@ -3,6 +3,7 @@ package einstein.subtle_effects.particle.emitter;
 import einstein.subtle_effects.init.ModParticles;
 import einstein.subtle_effects.particle.option.FloatParticleOptions;
 import einstein.subtle_effects.particle.option.IntegerParticleOptions;
+import einstein.subtle_effects.particle.option.SplashDropletParticleOptions;
 import einstein.subtle_effects.particle.option.SplashParticleOptions;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.NoRenderParticle;
@@ -32,12 +33,12 @@ public class SplashEmitter extends NoRenderParticle {
     private final float xScale;
     private final float yScale;
     private final ParticleType<SplashParticleOptions> splashParticle;
-    private final ParticleType<FloatParticleOptions> dropletParticle;
+    private final ParticleType<SplashDropletParticleOptions> dropletParticle;
     private final BlockPos.MutableBlockPos pos;
     private boolean firstSplash = true;
     private boolean secondSplash = true;
 
-    protected SplashEmitter(ClientLevel level, double x, double y, double z, TagKey<Fluid> fluidTag, ParticleType<SplashParticleOptions> splashParticle, ParticleType<FloatParticleOptions> dropletParticle, boolean isLava, int entityId) {
+    protected SplashEmitter(ClientLevel level, double x, double y, double z, TagKey<Fluid> fluidTag, ParticleType<SplashParticleOptions> splashParticle, ParticleType<SplashDropletParticleOptions> dropletParticle, boolean isLava, int entityId) {
         super(level, x, y, z);
         this.fluidTag = fluidTag;
         entity = level.getEntity(entityId);
@@ -132,7 +133,7 @@ public class SplashEmitter extends NoRenderParticle {
         }
 
         dropletYSpeed = (dropletYSpeed / 2);
-        FloatParticleOptions options = new FloatParticleOptions(dropletParticle, Math.min(this.xScale, 2));
+        SplashDropletParticleOptions options = new SplashDropletParticleOptions(dropletParticle, Math.min(this.xScale, 2), isLava ? 1 : ENTITIES.splashes.splashOverlayTint.get());
         for (int i = 0; i < 8 * entityWidth; i++) { // count needs to scale with splash size
             level.addParticle(options,
                     x + nextNonAbsDouble(random, xScale),

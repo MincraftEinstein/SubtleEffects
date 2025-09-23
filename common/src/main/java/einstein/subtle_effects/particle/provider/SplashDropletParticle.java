@@ -1,7 +1,6 @@
 package einstein.subtle_effects.particle.provider;
 
-import einstein.subtle_effects.init.ModConfigs;
-import einstein.subtle_effects.particle.option.FloatParticleOptions;
+import einstein.subtle_effects.particle.option.SplashDropletParticleOptions;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
 import net.minecraft.core.BlockPos;
@@ -45,13 +44,13 @@ public class SplashDropletParticle extends DripParticle.FallAndLandParticle {
         return ParticleRenderType.PARTICLE_SHEET_OPAQUE;
     }
 
-    public record Provider(SpriteSet sprites) implements ParticleProvider<FloatParticleOptions> {
+    public record Provider(SpriteSet sprites) implements ParticleProvider<SplashDropletParticleOptions> {
 
         @Override
-        public Particle createParticle(FloatParticleOptions options, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
-            TextureSheetParticle particle = new SplashDropletParticle(level, x, y, z, xSpeed, ySpeed, zSpeed, options.f(), sprites, false, Fluids.WATER, ParticleTypes.SPLASH);
+        public Particle createParticle(SplashDropletParticleOptions options, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+            TextureSheetParticle particle = new SplashDropletParticle(level, x, y, z, xSpeed, ySpeed, zSpeed, options.scale(), sprites, false, Fluids.WATER, ParticleTypes.SPLASH);
             int waterColor = level.getBiome(BlockPos.containing(x, y, z)).value().getWaterColor();
-            float colorIntensity = ModConfigs.ENTITIES.splashes.splashOverlayTint.get();
+            float colorIntensity = options.colorIntensity();
             float whiteIntensity = 1 - colorIntensity;
             float red = (waterColor >> 16 & 255) / 255F;
             float green = (waterColor >> 8 & 255) / 255F;
@@ -66,11 +65,11 @@ public class SplashDropletParticle extends DripParticle.FallAndLandParticle {
         }
     }
 
-    public record LavaProvider(SpriteSet sprites) implements ParticleProvider<FloatParticleOptions> {
+    public record LavaProvider(SpriteSet sprites) implements ParticleProvider<SplashDropletParticleOptions> {
 
         @Override
-        public Particle createParticle(FloatParticleOptions options, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
-            return new SplashDropletParticle(level, x, y, z, xSpeed, ySpeed, zSpeed, options.f(), sprites, true, Fluids.LAVA, ParticleTypes.LANDING_LAVA);
+        public Particle createParticle(SplashDropletParticleOptions options, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+            return new SplashDropletParticle(level, x, y, z, xSpeed, ySpeed, zSpeed, options.scale(), sprites, true, Fluids.LAVA, ParticleTypes.LANDING_LAVA);
         }
     }
 }

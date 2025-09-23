@@ -419,11 +419,16 @@ public class ParticleSpawnUtil {
             double fluidHeight = fluidState.getHeight(level, pos);
 
             for (int i = 0; i < 16; i++) {
+                int xSign = nextSign(random);
+                int zSign = nextSign(random);
+
                 level.addParticle(particle,
-                        pos.getX() + 0.5 + nextNonAbsDouble(random),
+                        pos.getX() + 0.5 + (nextDouble(random, 0.5) * xSign),
                         pos.getY() + (fluidHeight == 0 ? random.nextDouble() : fluidHeight),
-                        pos.getZ() + 0.5 + nextNonAbsDouble(random),
-                        0, 0, 0
+                        pos.getZ() + 0.5 + (nextDouble(random, 0.5) * zSign),
+                        nextDouble(random, 0.15F) * xSign,
+                        nextDouble(random, 0.35F),
+                        nextDouble(random, 0.15F) * zSign
                 );
             }
         }
