@@ -52,6 +52,7 @@
     "client.entity.SnowballMixin",
     "client.entity.SpellCasterIllagerMixin",
     "client.entity.ThrownEggMixin",
+    "client.entity.WolfMixin",
     "client.item.AxeItemMixin",
     "client.item.BoneMealItemMixin",
     "client.item.BucketItemAccessor",
