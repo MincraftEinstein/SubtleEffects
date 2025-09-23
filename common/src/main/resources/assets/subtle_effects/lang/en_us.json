@@ -425,6 +425,8 @@
   "config.subtle_effects.entities.underwaterEntityPoofBubbles.desc": "When an entity is spawned or dies underwater, should the poof effect have bubbles",
   "config.subtle_effects.entities.improveWetWolfShakeEffects": "Improve Wet Wolf Shake Effects",
   "config.subtle_effects.entities.improveWetWolfShakeEffects.desc": "Improve the water effects of a wolf shaking water off",
+  "config.subtle_effects.entities.improvedVillagerSweatingEffects": "Improved Villager Sweating Effects",
+  "config.subtle_effects.entities.improvedVillagerSweatingEffects.desc": "Improves the sweating effects of villagers during raids",
   "config.subtle_effects.environment": "Environment",
   "config.subtle_effects.environment.biomeColorRain": "Biome Color Rain",
   "config.subtle_effects.environment.biomes": "Biomes",
