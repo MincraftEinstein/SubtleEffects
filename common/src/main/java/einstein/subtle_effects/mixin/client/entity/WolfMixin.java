@@ -55,7 +55,7 @@ public class WolfMixin {
                 y -= 0.3F;
             }
 
-            level.addParticle(new SplashDropletParticleOptions(ModParticles.WATER_SPLASH_DROPLET.get(), 0.75F),
+            level.addParticle(new SplashDropletParticleOptions(ModParticles.WATER_SPLASH_DROPLET.get(), 0.75F, 1, true),
                     pos.x(), y, pos.z(), speed.x(), speed.y(), speed.z()
             );
             return;

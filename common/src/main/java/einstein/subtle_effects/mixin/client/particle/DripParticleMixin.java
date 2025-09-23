@@ -2,6 +2,7 @@ package einstein.subtle_effects.mixin.client.particle;
 
 import einstein.subtle_effects.init.ModParticles;
 import einstein.subtle_effects.init.ModSounds;
+import einstein.subtle_effects.util.DripParticleAccessor;
 import einstein.subtle_effects.util.MathUtil;
 import einstein.subtle_effects.util.Util;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -30,7 +31,7 @@ import static einstein.subtle_effects.init.ModConfigs.GENERAL;
 
 @SuppressWarnings("deprecation")
 @Mixin(DripParticle.class)
-public abstract class DripParticleMixin extends TextureSheetParticle {
+public abstract class DripParticleMixin extends TextureSheetParticle implements DripParticleAccessor {
 
     @Shadow
     protected boolean isGlowing;
@@ -44,6 +45,9 @@ public abstract class DripParticleMixin extends TextureSheetParticle {
 
     @Unique
     private boolean subtleEffects$isLava;
+
+    @Unique
+    private boolean subtleEffects$isSilent = false;
 
     protected DripParticleMixin(ClientLevel level, double x, double y, double z) {
         super(level, x, y, z);
@@ -73,7 +77,7 @@ public abstract class DripParticleMixin extends TextureSheetParticle {
                 if ((fluid.is(FluidTags.LAVA) && !subtleEffects$isLava) || (fluid.is(FluidTags.WATER) && subtleEffects$isLava)) {
                     level.addParticle(ModParticles.STEAM.get(), x, fluidSurface, z, 0, 0, 0);
 
-                    if (GENERAL.fluidDropsEvaporationVolume.get() > 0) {
+                    if (GENERAL.fluidDropsEvaporationVolume.get() > 0 && !subtleEffects$isSilent) {
                         level.playLocalSound(x, y, z,
                                 SoundEvents.LAVA_EXTINGUISH,
                                 SoundSource.BLOCKS,
@@ -89,7 +93,7 @@ public abstract class DripParticleMixin extends TextureSheetParticle {
             }
 
             if (!subtleEffects$dripIntoFluidEffectsPlayed) {
-                if (GENERAL.dropLandSoundVolume.get() > 0) {
+                if (GENERAL.dropLandSoundVolume.get() > 0 && !subtleEffects$isSilent) {
                     Supplier<SoundEvent> sound = subtleEffects$isLava ? ModSounds.DRIP_LAVA_INTO_FLUID : ModSounds.DRIP_WATER_INTO_FLUID;
 
                     level.playLocalSound(x, y, z,
@@ -112,5 +116,15 @@ public abstract class DripParticleMixin extends TextureSheetParticle {
                 subtleEffects$dripIntoFluidEffectsPlayed = true;
             }
         }
+    }
+
+    @Override
+    public void subtleEffects$setSilent() {
+        subtleEffects$isSilent = true;
+    }
+
+    @Override
+    public boolean subtleEffects$isSilent() {
+        return subtleEffects$isSilent;
     }
 }

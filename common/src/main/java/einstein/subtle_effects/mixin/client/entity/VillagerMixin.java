@@ -29,7 +29,7 @@ public class VillagerMixin {
                 int xSign = nextSign(random);
                 int zSign = nextSign(random);
 
-                level.addParticle(new SplashDropletParticleOptions(ModParticles.WATER_SPLASH_DROPLET.get(), 1),
+                level.addParticle(new SplashDropletParticleOptions(ModParticles.WATER_SPLASH_DROPLET.get(), 1, 1, true),
                         pos.x() + nextDouble(random, 0.2) * xSign,
                         pos.y() + villager.getEyeHeight() + nextNonAbsDouble(random, 0.3),
                         pos.z() + nextDouble(random, 0.2) * zSign,

@@ -1,6 +1,7 @@
 package einstein.subtle_effects.particle.provider;
 
 import einstein.subtle_effects.particle.option.SplashDropletParticleOptions;
+import einstein.subtle_effects.util.DripParticleAccessor;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
 import net.minecraft.core.BlockPos;
@@ -9,17 +10,21 @@ import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
 
-public class SplashDropletParticle extends DripParticle.FallAndLandParticle {
+public class SplashDropletParticle extends DripParticle.FallAndLandParticle implements DripParticleAccessor {
 
     private final boolean glowing;
 
-    protected SplashDropletParticle(ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, float scale, SpriteSet sprites, boolean glowing, Fluid fluid, SimpleParticleType landParticle) {
+    protected SplashDropletParticle(ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, float scale, SpriteSet sprites, boolean glowing, Fluid fluid, SimpleParticleType landParticle, boolean isSilent) {
         super(level, x, y, z, fluid, landParticle);
         this.glowing = glowing;
         setParticleSpeed(xSpeed, ySpeed, zSpeed);
         pickSprite(sprites);
         scale(scale * 1.5F);
         gravity = 0.06F;
+
+        if (isSilent) {
+            subtleEffects$setSilent();
+        }
     }
 
     @Override
@@ -48,7 +53,7 @@ public class SplashDropletParticle extends DripParticle.FallAndLandParticle {
 
         @Override
         public Particle createParticle(SplashDropletParticleOptions options, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
-            TextureSheetParticle particle = new SplashDropletParticle(level, x, y, z, xSpeed, ySpeed, zSpeed, options.scale(), sprites, false, Fluids.WATER, ParticleTypes.SPLASH);
+            TextureSheetParticle particle = new SplashDropletParticle(level, x, y, z, xSpeed, ySpeed, zSpeed, options.scale(), sprites, false, Fluids.WATER, ParticleTypes.SPLASH, options.isSilent());
             int waterColor = level.getBiome(BlockPos.containing(x, y, z)).value().getWaterColor();
             float colorIntensity = options.colorIntensity();
             float whiteIntensity = 1 - colorIntensity;
@@ -69,7 +74,7 @@ public class SplashDropletParticle extends DripParticle.FallAndLandParticle {
 
         @Override
         public Particle createParticle(SplashDropletParticleOptions options, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
-            return new SplashDropletParticle(level, x, y, z, xSpeed, ySpeed, zSpeed, options.scale(), sprites, true, Fluids.LAVA, ParticleTypes.LANDING_LAVA);
+            return new SplashDropletParticle(level, x, y, z, xSpeed, ySpeed, zSpeed, options.scale(), sprites, true, Fluids.LAVA, ParticleTypes.LANDING_LAVA, options.isSilent());
         }
     }
 }
