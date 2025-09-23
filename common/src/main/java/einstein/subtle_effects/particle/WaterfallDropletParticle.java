@@ -11,11 +11,11 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.util.Mth;
 
-public class WaterfallDroplet extends BaseWaterfallParticle {
+public class WaterfallDropletParticle extends BaseWaterfallParticle {
 
     private final LifetimeAlpha lifetimeAlpha = new LifetimeAlpha(0.7F, 0, 0.5F, 0.8F);
 
-    protected WaterfallDroplet(ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, SpriteSet sprites) {
+    protected WaterfallDropletParticle(ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, SpriteSet sprites) {
         super(level, x, y, z, 0, 0, 0, LifetimeAlpha.ALWAYS_OPAQUE);
         xd = xSpeed;
         yd = ySpeed;
@@ -56,7 +56,7 @@ public class WaterfallDroplet extends BaseWaterfallParticle {
 
         @Override
         public Particle createParticle(SimpleParticleType type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
-            return new WaterfallDroplet(level, x, y, z, xSpeed, ySpeed, zSpeed, sprites);
+            return new WaterfallDropletParticle(level, x, y, z, xSpeed, ySpeed, zSpeed, sprites);
         }
     }
 }
