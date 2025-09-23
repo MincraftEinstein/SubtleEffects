@@ -12,7 +12,6 @@
     "client.LavaFluidMixin",
     "client.LevelRendererMixin",
     "client.MinecraftMixin",
-    "client.MultiPlayerGameModeMixin",
     "client.ScreenEffectRendererMixin",
     "client.WaterFluidMixin",
     "client.block.AbstractCandleBlockMixin",

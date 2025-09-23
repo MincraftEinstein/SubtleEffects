@@ -6,7 +6,8 @@
   "compatibilityLevel": "JAVA_17",
   "client": [
     "client.FluidTypeMixin",
-    "client.NeoForgeClientEntityMixin"
+    "client.NeoForgeClientEntityMixin",
+    "client.NeoForgeMultiPlayerGameModeMixin"
   ],
   "mixins": [
     "common.NeoForgeStonecutterMenu$2Mixin"

@@ -10,6 +10,7 @@ import einstein.subtle_effects.particle.SparkParticle;
 import einstein.subtle_effects.particle.option.DirectionParticleOptions;
 import einstein.subtle_effects.particle.option.IntegerParticleOptions;
 import einstein.subtle_effects.platform.Services;
+import einstein.subtle_effects.ticking.tickers.TickerManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -29,10 +30,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LightLayer;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.ComposterBlock;
-import net.minecraft.world.level.block.GrindstoneBlock;
-import net.minecraft.world.level.block.StonecutterBlock;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.AttachFace;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
@@ -504,5 +502,39 @@ public class ParticleSpawnUtil {
             }
         }
         return false;
+    }
+
+    public static void spawnUnderwaterBlockBreakBubbles(Level level, BlockPos pos, BlockState state, boolean success) {
+        if (success && BLOCKS.underwaterBlockBreakBubbles) {
+            boolean nearWater = false;
+            for (Direction direction : Direction.values()) {
+                BlockPos relativePos = pos.relative(direction);
+                FluidState relativeFluidState = level.getFluidState(relativePos);
+                BlockState relativeState = level.getBlockState(pos);
+                if (direction == Direction.UP && level.getBlockState(relativePos).isAir()) {
+                    break;
+                }
+
+                if (relativeFluidState.is(FluidTags.WATER) && relativeFluidState.getAmount() >= 7 && !Block.isFaceFull(relativeState.getCollisionShape(level, pos), direction.getOpposite())) {
+                    nearWater = true;
+                    break;
+                }
+            }
+
+            if (nearWater) {
+                TickerManager.schedule(7, () -> {
+                    FluidState newFluidState = level.getFluidState(pos);
+                    if (newFluidState.is(FluidTags.WATER) && newFluidState.getAmount() >= 7) {
+                        spawnParticlesAroundShape(ParticleTypes.BUBBLE, level, pos, state,
+                                direction -> {
+                                    BlockPos relativePos = pos.relative(direction);
+                                    return Block.isFaceFull(level.getBlockState(relativePos).getCollisionShape(level, relativePos), direction.getOpposite());
+                                },
+                                3, () -> new Vec3(0, 0, 0), 0
+                        );
+                    }
+                });
+            }
+        }
     }
 }
