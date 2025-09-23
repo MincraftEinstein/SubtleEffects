@@ -82,8 +82,7 @@ public class ModParticles {
     public static final Supplier<SimpleParticleType> WATER_RIPPLE = register("water_ripple", RippleParticle.Provider::new);
     public static final Supplier<SimpleParticleType> LAVA_RIPPLE = register("lava_ripple", RippleParticle.LavaProvider::new);
     public static final Supplier<ParticleType<SplashParticleOptions>> WATER_SPLASH = register("water_splash", SplashParticleOptions::codec, SplashParticleOptions::streamCodec, SplashParticle.Provider::new);
-    // TODO temporary name until other lava splash particle is removed
-    public static final Supplier<ParticleType<SplashParticleOptions>> ENTITY_LAVA_SPLASH = register("entity_lava_splash", SplashParticleOptions::codec, SplashParticleOptions::streamCodec, SplashParticle.LavaProvider::new);
+    public static final Supplier<ParticleType<SplashParticleOptions>> LAVA_SPLASH = register("lava_splash", SplashParticleOptions::codec, SplashParticleOptions::streamCodec, SplashParticle.LavaProvider::new);
     public static final Supplier<ParticleType<SplashDropletParticleOptions>> WATER_SPLASH_DROPLET = register("water_splash_droplet", SplashDropletParticleOptions::codec, SplashDropletParticleOptions::streamCodec, SplashDropletParticle.Provider::new);
     public static final Supplier<ParticleType<SplashDropletParticleOptions>> LAVA_SPLASH_DROPLET = register("lava_splash_droplet", SplashDropletParticleOptions::codec, SplashDropletParticleOptions::streamCodec, SplashDropletParticle.LavaProvider::new);
     public static final Supplier<ParticleType<IntegerParticleOptions>> WATER_SPLASH_EMITTER = register("water_splash_emitter", IntegerParticleOptions::codec, IntegerParticleOptions::streamCodec, sprites -> new SplashEmitter.Provider());

@@ -1,7 +1,6 @@
 package einstein.subtle_effects.particle.emitter;
 
 import einstein.subtle_effects.init.ModParticles;
-import einstein.subtle_effects.particle.option.FloatParticleOptions;
 import einstein.subtle_effects.particle.option.IntegerParticleOptions;
 import einstein.subtle_effects.particle.option.SplashDropletParticleOptions;
 import einstein.subtle_effects.particle.option.SplashParticleOptions;
@@ -178,7 +177,7 @@ public class SplashEmitter extends NoRenderParticle {
 
         @Override
         public Particle createParticle(IntegerParticleOptions options, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
-            return new SplashEmitter(level, x, y, z, FluidTags.LAVA, ModParticles.ENTITY_LAVA_SPLASH.get(), ModParticles.LAVA_SPLASH_DROPLET.get(), true, options.integer());
+            return new SplashEmitter(level, x, y, z, FluidTags.LAVA, ModParticles.LAVA_SPLASH.get(), ModParticles.LAVA_SPLASH_DROPLET.get(), true, options.integer());
         }
     }
 }
