@@ -470,7 +470,17 @@ public class ParticleSpawnUtil {
         }
     }
 
-    public static boolean spawnSplashEffects(Entity entity, Level level, ParticleType<IntegerParticleOptions> splashParticle, TagKey<Fluid> fluidTag) {
+    public static void spawnLavaSplash(Entity entity, boolean isInLava, boolean firstTick, boolean wasTouchingLava, Vec3 deltaMovement) {
+        Level level = entity.level();
+
+        if (level.isClientSide && isInLava && ENTITIES.splashes.lavaSplashes) {
+            if (!wasTouchingLava && !firstTick) {
+                spawnSplashEffects(entity, level, ModParticles.LAVA_SPLASH_EMITTER.get(), FluidTags.LAVA, deltaMovement);
+            }
+        }
+    }
+
+    public static boolean spawnSplashEffects(Entity entity, Level level, ParticleType<IntegerParticleOptions> splashParticle, TagKey<Fluid> fluidTag, Vec3 deltaMovement) {
         if (!ENTITIES.splashes.splashEffects) {
             return false;
         }
@@ -479,15 +489,19 @@ public class ParticleSpawnUtil {
             return false;
         }
 
-        float velocity = (float) entity.getDeltaMovement().y;
+        float velocity = (float) deltaMovement.y;
         if (velocity <= -ENTITIES.splashes.splashVelocityThreshold.get()) {
-            level.addAlwaysVisibleParticle(new IntegerParticleOptions(splashParticle, entity.getId()), true,
-                    entity.getX(),
-                    entity.getY() + entity.getFluidHeight(fluidTag) + 0.01,
-                    entity.getZ(),
-                    0, 0, 0
-            );
-            return true;
+            double entityY = entity.getY();
+            double y = entityY + entity.getFluidHeight(fluidTag) + 0.01;
+            if (y <= entityY + entity.getBbHeight()) {
+                level.addAlwaysVisibleParticle(new IntegerParticleOptions(splashParticle, entity.getId()), true,
+                        entity.getX(),
+                        y,
+                        entity.getZ(),
+                        0, 0, 0
+                );
+                return true;
+            }
         }
         return false;
     }

@@ -1,7 +1,7 @@
 package einstein.subtle_effects.ticking.tickers.entity;
 
 import einstein.subtle_effects.ticking.tickers.LevelTicker;
-import einstein.subtle_effects.util.EntityTickersGetter;
+import einstein.subtle_effects.util.EntityAccessor;
 import net.minecraft.world.entity.Entity;
 
 public abstract class EntityTicker<T extends Entity> extends LevelTicker {
@@ -41,7 +41,7 @@ public abstract class EntityTicker<T extends Entity> extends LevelTicker {
     @Override
     public void remove() {
         super.remove();
-        ((EntityTickersGetter) entity).subtleEffects$getTickers().remove(id);
+        ((EntityAccessor) entity).subtleEffects$getTickers().remove(id);
     }
 
     public final int getId() {

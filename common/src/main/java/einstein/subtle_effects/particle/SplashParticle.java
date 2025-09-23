@@ -10,7 +10,10 @@ import net.minecraft.client.particle.ParticleRenderType;
 import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.BlockPos;
+import net.minecraft.tags.FluidTags;
+import net.minecraft.tags.TagKey;
 import net.minecraft.util.Mth;
+import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Quaternionf;
@@ -24,12 +27,14 @@ public class SplashParticle extends FlatPlaneParticle {
 
     private final boolean translucent;
     private final boolean glowing;
+    private final TagKey<Fluid> fluidTag;
     private final SpriteSet mainSprites;
     @Nullable
     private final SpriteSet overlaySprites;
     private final SpriteSet bottomSprites;
     private final boolean hasRipple;
     private final boolean hasOverlay;
+    private final BlockPos.MutableBlockPos pos;
     private float xScale;
     private final float yScale;
     private TextureAtlasSprite overlaySprite;
@@ -39,13 +44,15 @@ public class SplashParticle extends FlatPlaneParticle {
     private float overlayGCol = 1;
     private float overlayBCol = 1;
 
-    protected SplashParticle(ClientLevel level, double x, double y, double z, boolean translucent, boolean glowing, SpriteSet mainSprites, @Nullable SpriteSet overlaySprites, SpriteSet bottomSprites, SplashParticleOptions options) {
+    protected SplashParticle(ClientLevel level, double x, double y, double z, boolean translucent, boolean glowing, TagKey<Fluid> fluidTag, SpriteSet mainSprites, @Nullable SpriteSet overlaySprites, SpriteSet bottomSprites, SplashParticleOptions options) {
         super(level, x, y, z);
         this.translucent = translucent;
         this.glowing = glowing;
+        this.fluidTag = fluidTag;
         this.mainSprites = mainSprites;
         this.overlaySprites = overlaySprites;
         this.bottomSprites = bottomSprites;
+        pos = BlockPos.containing(x, y, z).mutable();
         hasOverlay = overlaySprites != null && ENTITIES.splashes.splashOverlayAlpha.get() > 0;
         lifetime = 15;
         hasRipple = options.hasRipple();
@@ -75,6 +82,12 @@ public class SplashParticle extends FlatPlaneParticle {
 
     @Override
     public void tick() {
+        pos.set(x, y, z);
+        if (!level.getFluidState(pos).is(fluidTag)) {
+            remove();
+            return;
+        }
+
         if (age++ >= lifetime) {
             if (!hasRipple || isRipplePhase) {
                 remove();
@@ -160,7 +173,7 @@ public class SplashParticle extends FlatPlaneParticle {
 
         @Override
         public Particle createParticle(SplashParticleOptions options, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
-            SplashParticle particle = new SplashParticle(level, x, y, z, true, false, sprites, WATER_SPLASH_OVERLAY, WATER_SPLASH_BOTTOM, options);
+            SplashParticle particle = new SplashParticle(level, x, y, z, true, false, FluidTags.WATER, sprites, WATER_SPLASH_OVERLAY, WATER_SPLASH_BOTTOM, options);
             int waterColor = level.getBiome(BlockPos.containing(x, y, z)).value().getWaterColor();
             float colorIntensity = ENTITIES.splashes.splashOverlayTint.get();
             float red = (waterColor >> 16 & 255) / 255F;
@@ -184,7 +197,7 @@ public class SplashParticle extends FlatPlaneParticle {
 
         @Override
         public Particle createParticle(SplashParticleOptions options, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
-            return new SplashParticle(level, x, y, z, false, true, sprites, null, LAVA_SPLASH_BOTTOM, options);
+            return new SplashParticle(level, x, y, z, false, true, FluidTags.LAVA, sprites, null, LAVA_SPLASH_BOTTOM, options);
         }
     }
 }

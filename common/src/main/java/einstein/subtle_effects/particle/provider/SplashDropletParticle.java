@@ -12,12 +12,23 @@ import net.minecraft.world.level.material.Fluids;
 
 public class SplashDropletParticle extends DripParticle.FallAndLandParticle {
 
-    protected SplashDropletParticle(ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, float scale, SpriteSet sprites, Fluid fluid, SimpleParticleType landParticle) {
+    private final boolean glowing;
+
+    protected SplashDropletParticle(ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, float scale, SpriteSet sprites, boolean glowing, Fluid fluid, SimpleParticleType landParticle) {
         super(level, x, y, z, fluid, landParticle);
+        this.glowing = glowing;
         setParticleSpeed(xSpeed, ySpeed, zSpeed);
         pickSprite(sprites);
         scale(scale * 1.5F);
-        gravity = 0.06F * scale;
+        gravity = 0.06F;
+    }
+
+    @Override
+    public int getLightColor(float partialTick) {
+        if (glowing) {
+            return 240;
+        }
+        return super.getLightColor(partialTick);
     }
 
     @Override
@@ -38,7 +49,7 @@ public class SplashDropletParticle extends DripParticle.FallAndLandParticle {
 
         @Override
         public Particle createParticle(FloatParticleOptions options, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
-            TextureSheetParticle particle = new SplashDropletParticle(level, x, y, z, xSpeed, ySpeed, zSpeed, options.f(), sprites, Fluids.WATER, ParticleTypes.SPLASH);
+            TextureSheetParticle particle = new SplashDropletParticle(level, x, y, z, xSpeed, ySpeed, zSpeed, options.f(), sprites, false, Fluids.WATER, ParticleTypes.SPLASH);
             int waterColor = level.getBiome(BlockPos.containing(x, y, z)).value().getWaterColor();
             float colorIntensity = ModConfigs.ENTITIES.splashes.splashOverlayTint.get();
             float whiteIntensity = 1 - colorIntensity;
@@ -59,7 +70,7 @@ public class SplashDropletParticle extends DripParticle.FallAndLandParticle {
 
         @Override
         public Particle createParticle(FloatParticleOptions options, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
-            return new SplashDropletParticle(level, x, y, z, xSpeed, ySpeed, zSpeed, options.f(), sprites, Fluids.LAVA, ParticleTypes.LANDING_LAVA);
+            return new SplashDropletParticle(level, x, y, z, xSpeed, ySpeed, zSpeed, options.f(), sprites, true, Fluids.LAVA, ParticleTypes.LANDING_LAVA);
         }
     }
 }

@@ -21,7 +21,7 @@ public class SplashConfigs extends ConfigSection {
     public boolean splashBubbles = true;
     public ValidatedFloat splashOverlayTint = new ValidatedFloat(0.2F, 1, 0);
     public ValidatedFloat splashOverlayAlpha = new ValidatedFloat(0.8F, 1, 0);
-    public ValidatedFloat splashVelocityThreshold = new ValidatedFloat(0.3F, 1, 0);
+    public ValidatedFloat splashVelocityThreshold = new ValidatedFloat(0.35F, 1, 0);
     public ValidatedList<EntityType<?>> entityBlocklist = new ValidatedList<>(List.of(), ValidatedRegistryType.of(BuiltInRegistries.ENTITY_TYPE));
     public ConfigGroup secondarySplashesGroup = new ConfigGroup("secondary_splashes");
     public boolean secondarySplash = true;
