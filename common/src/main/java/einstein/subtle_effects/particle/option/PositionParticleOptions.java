@@ -8,7 +8,7 @@ import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.network.codec.StreamCodec;
 
-public record PositionParticleOptions(ParticleType<?> type, BlockPos pos) implements ParticleOptions {
+public record PositionParticleOptions(ParticleType<PositionParticleOptions> type, BlockPos pos) implements ParticleOptions {
 
     public static MapCodec<PositionParticleOptions> codec(ParticleType<PositionParticleOptions> type) {
         return RecordCodecBuilder.mapCodec(instance -> instance.group(

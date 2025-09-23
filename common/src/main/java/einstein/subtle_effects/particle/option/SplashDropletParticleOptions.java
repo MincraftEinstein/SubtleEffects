@@ -9,10 +9,10 @@ import net.minecraft.core.particles.ParticleType;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 
-public record SplashDropletParticleOptions(ParticleType<?> type, float scale,
+public record SplashDropletParticleOptions(ParticleType<SplashDropletParticleOptions> type, float scale,
                                            float colorIntensity) implements ParticleOptions {
 
-    public SplashDropletParticleOptions(ParticleType<?> type, float scale) {
+    public SplashDropletParticleOptions(ParticleType<SplashDropletParticleOptions> type, float scale) {
         this(type, scale, 1);
     }
 

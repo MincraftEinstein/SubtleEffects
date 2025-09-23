@@ -11,6 +11,7 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
 
+// This is very cursed I know
 public record FallenLeafParticleOptions(@Nullable TextureAtlasSprite sprite, float quadSize,
                                         float bbWidth, float bbHeight, boolean onGround,
                                         Vector3f color, float alpha) implements ParticleOptions {

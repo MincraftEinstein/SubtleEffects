@@ -9,7 +9,7 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 
-public record SplashParticleOptions(ParticleType<?> type, float xScale, float yScale,
+public record SplashParticleOptions(ParticleType<SplashParticleOptions> type, float xScale, float yScale,
                                     boolean hasRipple) implements ParticleOptions {
 
     public static MapCodec<SplashParticleOptions> codec(ParticleType<SplashParticleOptions> type) {

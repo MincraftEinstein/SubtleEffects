@@ -8,7 +8,7 @@ import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.network.codec.StreamCodec;
 
-public record DirectionParticleOptions(ParticleType<?> type, Direction direction) implements ParticleOptions {
+public record DirectionParticleOptions(ParticleType<DirectionParticleOptions> type, Direction direction) implements ParticleOptions {
 
     public static MapCodec<DirectionParticleOptions> codec(ParticleType<DirectionParticleOptions> type) {
         return RecordCodecBuilder.mapCodec(instance -> instance.group(

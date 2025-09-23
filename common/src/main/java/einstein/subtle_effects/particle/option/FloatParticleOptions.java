@@ -9,7 +9,7 @@ import net.minecraft.core.particles.ParticleType;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 
-public record FloatParticleOptions(ParticleType<?> type, float f) implements ParticleOptions {
+public record FloatParticleOptions(ParticleType<FloatParticleOptions> type, float f) implements ParticleOptions {
 
     public static MapCodec<FloatParticleOptions> codec(ParticleType<FloatParticleOptions> type) {
         return RecordCodecBuilder.mapCodec(instance -> instance.group(

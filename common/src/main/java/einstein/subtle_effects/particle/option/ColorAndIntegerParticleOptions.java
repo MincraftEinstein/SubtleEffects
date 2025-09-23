@@ -10,7 +10,7 @@ import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.util.ExtraCodecs;
 
-public record ColorAndIntegerParticleOptions(ParticleType<?> type, int color, int integer) implements ParticleOptions {
+public record ColorAndIntegerParticleOptions(ParticleType<ColorAndIntegerParticleOptions> type, int color, int integer) implements ParticleOptions {
 
     public static MapCodec<ColorAndIntegerParticleOptions> codec(ParticleType<ColorAndIntegerParticleOptions> type) {
         return RecordCodecBuilder.mapCodec(instance -> instance.group(
