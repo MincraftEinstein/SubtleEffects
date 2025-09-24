@@ -31,6 +31,10 @@ public class DrowningTicker extends EntityTicker<LivingEntity> {
             if (player.isCreative() && !ENTITIES.humanoids.player.enableBreathingEffectsInCreative) {
                 return;
             }
+
+            if (player.isScoping() && minecraft.options.getCameraType().isFirstPerson()) {
+                return;
+            }
         }
 
         if (random.nextInt(30) < ENTITIES.humanoids.drowningBubblesDensity.get()) {

@@ -46,6 +46,10 @@ public class FrostyBreathTicker extends EntityTicker<LivingEntity> {
             if (player.isCreative() && !ENTITIES.humanoids.player.enableBreathingEffectsInCreative) {
                 return;
             }
+
+            if (player.isScoping() && minecraft.options.getCameraType().isFirstPerson()) {
+                return;
+            }
         }
 
         if (level.getBrightness(LightLayer.BLOCK, entity.blockPosition()) >= 10) {
