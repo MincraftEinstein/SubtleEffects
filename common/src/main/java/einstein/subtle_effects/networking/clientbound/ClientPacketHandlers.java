@@ -345,6 +345,14 @@ public class ClientPacketHandlers {
         }
     }
 
+    public static void handle(ClientLevel level, ClientBoundDrankPotionPayload payload) {
+        Entity entity = level.getEntity(payload.entityId());
+
+        if (entity instanceof LivingEntity livingEntity && livingEntity.isAlive()) {
+            ParticleSpawnUtil.spawnPotionRings(livingEntity);
+        }
+    }
+
     private static SoundEvent getEatSound(LivingEntity entity, ItemStack stack, ModAnimalFedEffectSettings.Settings settings) {
         Supplier<SoundEvent> overrideSound = settings.sound();
         if (overrideSound != null) {

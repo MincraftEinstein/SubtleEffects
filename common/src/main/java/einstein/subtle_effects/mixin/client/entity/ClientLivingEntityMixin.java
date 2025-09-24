@@ -4,12 +4,8 @@ import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.init.ModDamageListeners;
-import einstein.subtle_effects.init.ModParticles;
-import einstein.subtle_effects.particle.option.ColorAndIntegerParticleOptions;
 import einstein.subtle_effects.util.EntityProvider;
 import einstein.subtle_effects.util.MathUtil;
-import net.minecraft.client.Minecraft;
-import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
@@ -17,13 +13,10 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.alchemy.PotionContents;
 import net.minecraft.world.level.Level;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -39,9 +32,6 @@ public abstract class ClientLivingEntityMixin<T extends Entity> extends Entity {
 
     @Shadow
     public int deathTime;
-
-    @Unique
-    private final LivingEntity subtleEffects$me = (LivingEntity) (Object) this;
 
     public ClientLivingEntityMixin(EntityType<T> type, Level level) {
         super(type, level);
@@ -85,39 +75,6 @@ public abstract class ClientLivingEntityMixin<T extends Entity> extends Entity {
                     getRandomX(1), getRandomY(), getRandomZ(1),
                     0, 0, 0
             );
-        }
-    }
-
-    @Inject(method = "completeUsingItem", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;triggerItemUseEffects(Lnet/minecraft/world/item/ItemStack;I)V"))
-    private void spawnPotionParticles(CallbackInfo ci) {
-        if (level().isClientSide) {
-            Minecraft minecraft = Minecraft.getInstance();
-            if (subtleEffects$me instanceof Player player) {
-                if (player.equals(minecraft.player) && !ENTITIES.humanoids.potionRingsDisplayType.test(minecraft)) {
-                    return;
-                }
-            }
-
-            if (subtleEffects$me.isInvisible()) {
-                return;
-            }
-
-            ItemStack useItem = subtleEffects$me.getUseItem();
-            if (useItem.has(DataComponents.POTION_CONTENTS)) {
-                Level level = subtleEffects$me.level();
-                PotionContents contents = useItem.get(DataComponents.POTION_CONTENTS);
-
-                // noinspection all
-                if (contents.hasEffects()) {
-                    int color = contents.getColor();
-                    level.addParticle(new ColorAndIntegerParticleOptions(ModParticles.POTION_EMITTER.get(), color, subtleEffects$me.getId()),
-                            subtleEffects$me.getX(),
-                            subtleEffects$me.getY(),
-                            subtleEffects$me.getZ(),
-                            0, 0, 0
-                    );
-                }
-            }
         }
     }
 

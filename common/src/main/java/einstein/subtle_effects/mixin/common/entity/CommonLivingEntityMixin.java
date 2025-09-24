@@ -5,6 +5,7 @@ import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import einstein.subtle_effects.init.ModConfigs;
+import einstein.subtle_effects.networking.clientbound.ClientBoundDrankPotionPayload;
 import einstein.subtle_effects.networking.clientbound.ClientBoundEntityFellPayload;
 import einstein.subtle_effects.networking.clientbound.ClientBoundEntitySpawnSprintingDustCloudsPayload;
 import einstein.subtle_effects.platform.Services;
@@ -13,6 +14,7 @@ import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
@@ -138,5 +140,20 @@ public abstract class CommonLivingEntityMixin extends Entity {
             }
             original.call(level, options, x, y, z, xSpeed, ySpeed, zSpeed);
         }
+    }
+
+    @Inject(method = "completeUsingItem", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;triggerItemUseEffects(Lnet/minecraft/world/item/ItemStack;I)V"))
+    private void spawnPotionParticles(CallbackInfo ci) {
+        if (subtleEffects$me.isInvisible()) {
+            return;
+        }
+
+        if (subtleEffects$me.level() instanceof ServerLevel level) {
+            Services.NETWORK.sendToClientsTracking(subtleEffects$me instanceof ServerPlayer player ? player : null,
+                    level, subtleEffects$me.blockPosition(), new ClientBoundDrankPotionPayload(subtleEffects$me.getId())
+            );
+            return;
+        }
+        ParticleSpawnUtil.spawnPotionRings(subtleEffects$me);
     }
 }

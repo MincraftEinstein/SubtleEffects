@@ -7,6 +7,7 @@ import einstein.subtle_effects.mixin.client.item.BucketItemAccessor;
 import einstein.subtle_effects.networking.clientbound.ClientBoundEntityFellPayload;
 import einstein.subtle_effects.particle.EnderEyePlacedRingParticle;
 import einstein.subtle_effects.particle.SparkParticle;
+import einstein.subtle_effects.particle.option.ColorAndIntegerParticleOptions;
 import einstein.subtle_effects.particle.option.DirectionParticleOptions;
 import einstein.subtle_effects.particle.option.IntegerParticleOptions;
 import einstein.subtle_effects.platform.Services;
@@ -14,6 +15,7 @@ import einstein.subtle_effects.ticking.tickers.TickerManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.particles.*;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -26,8 +28,10 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.animal.camel.Camel;
 import net.minecraft.world.entity.animal.horse.AbstractHorse;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.alchemy.PotionContents;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.block.*;
@@ -539,6 +543,32 @@ public class ParticleSpawnUtil {
                         );
                     }
                 });
+            }
+        }
+    }
+
+    public static void spawnPotionRings(LivingEntity entity) {
+        Minecraft minecraft = Minecraft.getInstance();
+        if (entity instanceof Player player) {
+            if (player.equals(minecraft.player) && !ENTITIES.humanoids.potionRingsDisplayType.test(minecraft)) {
+                return;
+            }
+        }
+
+        ItemStack useItem = entity.getUseItem();
+        if (useItem.has(DataComponents.POTION_CONTENTS)) {
+            Level level = entity.level();
+            PotionContents contents = useItem.get(DataComponents.POTION_CONTENTS);
+
+            // noinspection all
+            if (contents.hasEffects()) {
+                int color = contents.getColor();
+                level.addParticle(new ColorAndIntegerParticleOptions(ModParticles.POTION_EMITTER.get(), color, entity.getId()),
+                        entity.getX(),
+                        entity.getY(),
+                        entity.getZ(),
+                        0, 0, 0
+                );
             }
         }
     }
