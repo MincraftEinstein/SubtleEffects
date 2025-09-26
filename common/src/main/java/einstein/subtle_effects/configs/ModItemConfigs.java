@@ -4,6 +4,8 @@ import einstein.subtle_effects.SubtleEffects;
 import einstein.subtle_effects.configs.items.ItemRarityConfigs;
 import einstein.subtle_effects.configs.items.ProjectileConfigs;
 import einstein.subtle_effects.init.ModConfigs;
+import me.fzzyhmstrs.fzzy_config.annotations.Action;
+import me.fzzyhmstrs.fzzy_config.annotations.RequiresAction;
 import me.fzzyhmstrs.fzzy_config.annotations.Translation;
 import me.fzzyhmstrs.fzzy_config.config.Config;
 import me.fzzyhmstrs.fzzy_config.config.ConfigGroup;
@@ -31,6 +33,8 @@ public class ModItemConfigs extends Config {
     public boolean powderSnowBucketUseParticles = true;
     public boolean lingeringPotionClouds = true;
     public boolean splashPotionClouds = true;
+    @RequiresAction(action = Action.RESTART)
+    public boolean structureVoidItemMarker = true;
 
     public ModItemConfigs() {
         super(SubtleEffects.loc("items"));
