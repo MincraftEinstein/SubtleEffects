@@ -398,6 +398,7 @@ public class ParticleSpawnUtil {
 
     public static void spawnBucketParticles(Level level, BlockPos pos, ItemStack stack) {
         if (level.isClientSide) {
+            RandomSource random = level.getRandom();
             if (stack.getItem() instanceof BucketItemAccessor bucket) {
                 Fluid content = bucket.getContent();
                 boolean isWater = content.isSame(Fluids.WATER);
@@ -407,28 +408,25 @@ public class ParticleSpawnUtil {
                         return;
                     }
 
-                    spawnBucketParticles(level, pos, Util.getParticleForFluid(content));
+                    float fluidHeight = level.getFluidState(pos).getHeight(level, pos);
+                    spawnBucketParticles(level, random, pos, Util.getParticleForFluid(content), fluidHeight == 0 ? 1 : fluidHeight);
                 }
             }
             else if (stack.is(Items.POWDER_SNOW_BUCKET) && ModConfigs.ITEMS.powderSnowBucketUseParticles) {
-                spawnBucketParticles(level, pos, ModParticles.SNOW.get());
+                spawnBucketParticles(level, random, pos, ModParticles.SNOW.get(), random.nextDouble());
             }
         }
     }
 
-    public static void spawnBucketParticles(Level level, BlockPos pos, ParticleOptions particle) {
+    public static void spawnBucketParticles(Level level, RandomSource random, BlockPos pos, ParticleOptions particle, double height) {
         if (particle != null) {
-            RandomSource random = level.getRandom();
-            FluidState fluidState = level.getFluidState(pos);
-            double fluidHeight = fluidState.getHeight(level, pos);
-
             for (int i = 0; i < 16; i++) {
                 int xSign = nextSign(random);
                 int zSign = nextSign(random);
 
                 level.addParticle(particle,
                         pos.getX() + 0.5 + (nextDouble(random, 0.5) * xSign),
-                        pos.getY() + (fluidHeight == 0 ? random.nextDouble() : fluidHeight),
+                        pos.getY() + height,
                         pos.getZ() + 0.5 + (nextDouble(random, 0.5) * zSign),
                         nextDouble(random, 0.15F) * xSign,
                         nextDouble(random, 0.35F),

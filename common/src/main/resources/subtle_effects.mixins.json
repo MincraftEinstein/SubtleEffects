@@ -79,6 +79,8 @@
     "client.particle.bubbles.WaterCurrentDownParticleProviderMixin"
   ],
   "mixins": [
+    "common.EmptyBucketDispenseItemBehaviorMixin",
+    "common.FilledBucketDispenseItemBehaviorMixin",
     "common.FoodOnAStickItemMixin",
     "common.MaceItemMixin",
     "common.StonecutterMenuAccessor",

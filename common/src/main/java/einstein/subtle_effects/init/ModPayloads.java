@@ -19,6 +19,7 @@ public class ModPayloads {
         NETWORK.registerToClient(ClientBoundMooshroomShearedPayload.TYPE, ClientBoundMooshroomShearedPayload.STREAM_CODEC);
         NETWORK.registerToClient(ClientBoundAnimalFedPayload.TYPE, ClientBoundAnimalFedPayload.STREAM_CODEC);
         NETWORK.registerToClient(ClientBoundDrankPotionPayload.TYPE, ClientBoundDrankPotionPayload.STREAM_CODEC);
+        NETWORK.registerToClient(ClientBoundDispenseBucketPayload.TYPE, ClientBoundDispenseBucketPayload.STREAM_CODEC);
     }
 
     public static void initClientHandlers() {
@@ -34,5 +35,6 @@ public class ModPayloads {
         NETWORK.registerClientHandler(ClientBoundMooshroomShearedPayload.TYPE, ClientPacketHandlers::handle);
         NETWORK.registerClientHandler(ClientBoundAnimalFedPayload.TYPE, ClientPacketHandlers::handle);
         NETWORK.registerClientHandler(ClientBoundDrankPotionPayload.TYPE, ClientPacketHandlers::handle);
+        NETWORK.registerClientHandler(ClientBoundDispenseBucketPayload.TYPE, ClientPacketHandlers::handle);
     }
 }

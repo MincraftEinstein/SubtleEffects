@@ -14,6 +14,7 @@ import einstein.subtle_effects.util.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.particles.*;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -350,6 +351,16 @@ public class ClientPacketHandlers {
 
         if (entity instanceof LivingEntity livingEntity && livingEntity.isAlive()) {
             ParticleSpawnUtil.spawnPotionRings(livingEntity);
+        }
+    }
+
+    public static void handle(ClientLevel level, ClientBoundDispenseBucketPayload payload) {
+        BlockPos pos = payload.pos();
+        BlockState state = level.getBlockState(pos);
+
+        if (state.hasProperty(BlockStateProperties.FACING)) {
+            Direction direction = state.getValue(BlockStateProperties.FACING);
+            ParticleSpawnUtil.spawnBucketParticles(level, pos.relative(direction), payload.stack());
         }
     }
 
