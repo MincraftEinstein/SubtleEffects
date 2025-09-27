@@ -33,6 +33,10 @@ public class AbstractCauldronBlockMixin {
             if (BLOCKS.cauldronUseParticles || BLOCKS.cauldronCleanItemSounds) {
                 TickerManager.schedule(2, () -> {
                     if (BLOCKS.cauldronUseParticles) {
+                        if (level.getFluidState(pos.above()).getAmount() >= 5) {
+                            return;
+                        }
+
                         BlockState newState = level.getBlockState(pos);
                         boolean isEmpty = newState.is(Blocks.CAULDRON);
                         double fluidHeight = Util.getCauldronFillHeight(isEmpty ? state : newState);

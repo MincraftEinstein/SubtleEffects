@@ -410,6 +410,10 @@ public class ParticleSpawnUtil {
                         return;
                     }
 
+                    if (level.getFluidState(pos.above()).getAmount() >= 5) {
+                        return;
+                    }
+
                     float fluidHeight = level.getFluidState(pos).getHeight(level, pos);
                     spawnBucketParticles(level, random, pos, Util.getParticleForFluid(content), fluidHeight == 0 ? 1 : fluidHeight);
                 }
