@@ -51,7 +51,7 @@ public abstract class CherryParticleMixin extends TextureSheetParticle {
 
         if ((fluidHeight > 0 && y <= surface && GENERAL.leavesLandOnWater) || (onGround && !state.is(Blocks.WATER) && GENERAL.leavesLandOnGround)) {
             level.addParticle(
-                    new FallenLeafParticleOptions(sprite, quadSize, bbWidth, bbHeight, onGround, new Vector3f(rCol, gCol, bCol), alpha),
+                    new FallenLeafParticleOptions(sprite, quadSize, bbWidth, bbHeight, onGround, new Vector3f(rCol, gCol, bCol), alpha, roll),
                     x, surface + Mth.nextFloat(random, 0.001F, 0.005F), z,
                     xd, 0, zd
             );

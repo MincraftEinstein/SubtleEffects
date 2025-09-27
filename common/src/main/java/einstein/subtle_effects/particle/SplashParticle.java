@@ -121,7 +121,7 @@ public class SplashParticle extends FlatPlaneParticle {
     }
 
     @Override
-    protected void renderQuad(VertexConsumer consumer, Camera camera, float partialTicks) {
+    protected void renderQuad(VertexConsumer consumer, Camera camera, float partialTicks, Quaternionf rotation) {
         Vec3 cameraPos = camera.getPosition();
         float x = (float) (Mth.lerp(partialTicks, xo, this.x) - cameraPos.x());
         float y = (float) (Mth.lerp(partialTicks, yo, this.y) - cameraPos.y());

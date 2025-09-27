@@ -32,6 +32,8 @@ public class FallenLeafParticle extends FlatPlaneParticle {
 
         // noinspection all
         sprite = options.sprite();
+        roll = options.rotation();
+        oRoll = roll;
         quadSize = options.quadSize();
         setSize(options.bbWidth(), options.bbHeight());
         Vector3f color = options.color();
