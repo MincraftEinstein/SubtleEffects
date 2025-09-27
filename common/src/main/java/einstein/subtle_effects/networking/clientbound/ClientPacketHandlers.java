@@ -360,8 +360,10 @@ public class ClientPacketHandlers {
 
         if (state.hasProperty(BlockStateProperties.FACING)) {
             Direction direction = state.getValue(BlockStateProperties.FACING);
-            ParticleSpawnUtil.spawnBucketParticles(level, pos.relative(direction), payload.stack());
+            pos = pos.relative(direction);
         }
+
+        ParticleSpawnUtil.spawnBucketParticles(level, pos, payload.stack());
     }
 
     private static SoundEvent getEatSound(LivingEntity entity, ItemStack stack, ModAnimalFedEffectSettings.Settings settings) {
