@@ -1,4 +1,4 @@
-package einstein.subtle_effects.mixin.common;
+package einstein.subtle_effects.mixin.common.block.dispenser;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;

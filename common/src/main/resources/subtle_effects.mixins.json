@@ -80,19 +80,16 @@
     "client.particle.bubbles.WaterCurrentDownParticleProviderMixin"
   ],
   "mixins": [
-    "common.EmptyBucketDispenseItemBehaviorMixin",
-    "common.FilledBucketDispenseItemBehaviorMixin",
-    "common.FoodOnAStickItemMixin",
-    "common.GlassBottleDispenseItemBehaviorMixin",
-    "common.MaceItemMixin",
-    "common.PotionDispenseItemBehaviorMixin",
-    "common.PotionItemMixin",
     "common.StonecutterMenuAccessor",
     "common.block.BeehiveBlockEntityMixin",
     "common.block.CommonComposterMixin",
     "common.block.CommonComposterMixin$InputContainerMixin",
     "common.block.FarmBlockMixin",
     "common.block.LeavesBlockMixin",
+    "common.block.dispenser.EmptyBucketDispenseItemBehaviorMixin",
+    "common.block.dispenser.FilledBucketDispenseItemBehaviorMixin",
+    "common.block.dispenser.GlassBottleDispenseItemBehaviorMixin",
+    "common.block.dispenser.PotionDispenseItemBehaviorMixin",
     "common.entity.AbstractHorseMixin",
     "common.entity.AnimalMixin",
     "common.entity.CommonLivingEntityMixin",
@@ -102,7 +99,10 @@
     "common.entity.MobMixin",
     "common.entity.ThrownExperienceBottleMixin",
     "common.entity.WorkAtComposterMixin",
-    "common.entity.WorkAtPoiMixin"
+    "common.entity.WorkAtPoiMixin",
+    "common.item.FoodOnAStickItemMixin",
+    "common.item.MaceItemMixin",
+    "common.item.PotionItemMixin"
   ],
   "injectors": {
     "defaultRequire": 1

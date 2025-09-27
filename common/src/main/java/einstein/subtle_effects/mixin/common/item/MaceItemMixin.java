@@ -1,4 +1,4 @@
-package einstein.subtle_effects.mixin.common;
+package einstein.subtle_effects.mixin.common.item;
 
 import einstein.subtle_effects.networking.clientbound.ClientBoundEntityFellPayload;
 import einstein.subtle_effects.util.ParticleSpawnUtil;

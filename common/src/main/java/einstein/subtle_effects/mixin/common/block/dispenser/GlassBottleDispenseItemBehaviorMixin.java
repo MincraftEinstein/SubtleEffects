@@ -1,4 +1,4 @@
-package einstein.subtle_effects.mixin.common;
+package einstein.subtle_effects.mixin.common.block.dispenser;
 
 import einstein.subtle_effects.networking.clientbound.ClientBoundDispenseBucketPayload;
 import einstein.subtle_effects.platform.Services;

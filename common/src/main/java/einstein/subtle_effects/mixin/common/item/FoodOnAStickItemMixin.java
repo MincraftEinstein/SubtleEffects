@@ -1,4 +1,4 @@
-package einstein.subtle_effects.mixin.common;
+package einstein.subtle_effects.mixin.common.item;
 
 import com.llamalad7.mixinextras.sugar.Local;
 import einstein.subtle_effects.networking.clientbound.ClientBoundAnimalFedPayload;
