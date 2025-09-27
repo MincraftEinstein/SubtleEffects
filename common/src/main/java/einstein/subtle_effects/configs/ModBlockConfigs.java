@@ -145,8 +145,9 @@ public class ModBlockConfigs extends Config {
     public boolean openingBarrelsSpawnsBubbles = true;
     public boolean openingChestsSpawnsBubbles = true;
     public boolean chestsOpenRandomlyUnderwater = true;
-    @ConfigGroup.Pop
     public boolean randomChestOpeningNeedsSoulSand = false;
+    @ConfigGroup.Pop
+    public boolean dispenseItemBubbles = true;
 
     private static ValidatedIdentifier getEyeHandler() {
         List<ResourceLocation> eyes = CompatHelper.IS_END_REMASTERED_LOADED.get()

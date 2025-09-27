@@ -229,6 +229,8 @@
   "config.subtle_effects.blocks.chestsOpenRandomlyUnderwater": "Chests Open Randomly Underwater",
   "config.subtle_effects.blocks.chestsOpenRandomlyUnderwater.desc": "Should chests open randomly underwater",
   "config.subtle_effects.blocks.randomChestOpeningNeedsSoulSand": "Random Chest Opening Needs Soul Sand",
+  "config.subtle_effects.blocks.dispenseItemBubbles": "Dispense Item Bubbles",
+  "config.subtle_effects.blocks.dispenseItemBubbles.desc": "Should bubbles be spawned when items are dispensed underwater from dispensers/droppers/crafters",
   "config.subtle_effects.entities.sleeping": "Sleeping",
   "config.subtle_effects.entities.sleeping.playerSnoreChance": "Player Snore Chance",
   "config.subtle_effects.entities.sleeping.playerSnoreChance.desc": "A percentage based chance for a player to snore. This is UUID based so it doesn't change every night.\n0 to disable",

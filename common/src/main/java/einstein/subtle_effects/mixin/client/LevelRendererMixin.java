@@ -22,6 +22,7 @@ import net.minecraft.client.particle.Particle;
 import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ColorParticleOption;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
@@ -269,6 +270,33 @@ public abstract class LevelRendererMixin implements FrustumGetter {
             ((ParticleAccessor) particle).subtleEffects$force();
         }
         return particle;
+    }
+
+    @Inject(method = "shootParticles", at = @At("TAIL"))
+    private void addBubbles(int data, BlockPos pos, RandomSource random, SimpleParticleType type, CallbackInfo ci, @Local Direction direction, @Local(ordinal = 0) double xOffset, @Local(ordinal = 1) double yOffset, @Local(ordinal = 2) double zOffset) {
+        if (!BLOCKS.dispenseItemBubbles) {
+            return;
+        }
+
+        // noinspection all
+        FluidState fluidState = level.getFluidState(pos.relative(direction));
+        if (fluidState.is(FluidTags.WATER)) {
+            int stepX = direction.getStepX();
+            int stepY = direction.getStepY();
+            int stepZ = direction.getStepZ();
+
+            for (int i = 0; i < 10; ++i) {
+                double speedModifier = random.nextDouble() * 0.2 + 0.01;
+                double x = xOffset + stepX * 0.01 + (random.nextDouble() - 0.5) * stepZ * 0.5;
+                double y = yOffset + stepY * 0.01 + (random.nextDouble() - 0.5) * stepY * 0.5;
+                double z = zOffset + stepZ * 0.01 + (random.nextDouble() - 0.5) * stepX * 0.5;
+                double xSpeed = stepX * speedModifier + random.nextGaussian() * 0.01;
+                double ySpeed = stepY * speedModifier + random.nextGaussian() * 0.01;
+                double zSpeed = stepZ * speedModifier + random.nextGaussian() * 0.01;
+
+                level.addParticle(ParticleTypes.BUBBLE, x, y, z, xSpeed, ySpeed, zSpeed);
+            }
+        }
     }
 
     @Override
