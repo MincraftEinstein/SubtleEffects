@@ -10,6 +10,7 @@
     "client.NeoForgeMultiPlayerGameModeMixin"
   ],
   "mixins": [
+    "common.NeoForgeShearsDispenseItemBehaviorMixin",
     "common.NeoForgeStonecutterMenu$2Mixin"
   ],
   "injectors": {

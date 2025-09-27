@@ -10,6 +10,7 @@ import einstein.subtle_effects.particle.SparkParticle;
 import einstein.subtle_effects.particle.option.ColorAndIntegerParticleOptions;
 import einstein.subtle_effects.particle.option.DirectionParticleOptions;
 import einstein.subtle_effects.particle.option.IntegerParticleOptions;
+import einstein.subtle_effects.particle.option.SheepFluffParticleOptions;
 import einstein.subtle_effects.platform.Services;
 import einstein.subtle_effects.ticking.tickers.TickerManager;
 import net.minecraft.client.Minecraft;
@@ -26,6 +27,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.animal.Sheep;
 import net.minecraft.world.entity.animal.camel.Camel;
 import net.minecraft.world.entity.animal.horse.AbstractHorse;
 import net.minecraft.world.entity.player.Player;
@@ -568,6 +570,22 @@ public class ParticleSpawnUtil {
                         0, 0, 0
                 );
             }
+        }
+    }
+
+    public static void sheep(Sheep sheep) {
+        RandomSource random = sheep.getRandom();
+        SheepFluffParticleOptions particle = new SheepFluffParticleOptions(sheep.getColor(), sheep.getId(), sheep.hasCustomName() && sheep.getName().getString().equals("jeb_"));
+
+        for (int i = 0; i < 7; i++) {
+            sheep.level().addParticle(particle,
+                    sheep.getRandomX(0.5),
+                    sheep.getY(0.5),
+                    sheep.getRandomZ(0.5),
+                    nextNonAbsDouble(random),
+                    random.nextDouble(),
+                    nextNonAbsDouble(random)
+            );
         }
     }
 }

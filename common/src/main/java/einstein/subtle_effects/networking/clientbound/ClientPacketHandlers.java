@@ -22,10 +22,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.animal.Animal;
-import net.minecraft.world.entity.animal.Dolphin;
-import net.minecraft.world.entity.animal.MushroomCow;
-import net.minecraft.world.entity.animal.Parrot;
+import net.minecraft.world.entity.animal.*;
 import net.minecraft.world.entity.animal.frog.Tadpole;
 import net.minecraft.world.entity.animal.horse.AbstractHorse;
 import net.minecraft.world.entity.monster.Ravager;
@@ -364,6 +361,13 @@ public class ClientPacketHandlers {
         }
 
         ParticleSpawnUtil.spawnBucketParticles(level, pos, payload.stack());
+    }
+
+    public static void handle(ClientLevel level, ClientBoundSheepShearPayload payload) {
+        Entity entity = level.getEntity(payload.entityId());
+        if (entity instanceof Sheep sheep && ENTITIES.sheepShearFluff) {
+            ParticleSpawnUtil.sheep(sheep);
+        }
     }
 
     private static SoundEvent getEatSound(LivingEntity entity, ItemStack stack, ModAnimalFedEffectSettings.Settings settings) {

@@ -9,7 +9,8 @@
     "client.FabricMultiPlayerGameModeMixin"
   ],
   "mixins": [
-    "common.FabricStonecutterMenu$2Mixin"
+    "common.FabricStonecutterMenu$2Mixin",
+    "common.block.dispenser.FabricShearsDispenseItemBehaviorMixin"
   ],
   "injectors": {
     "defaultRequire": 1
