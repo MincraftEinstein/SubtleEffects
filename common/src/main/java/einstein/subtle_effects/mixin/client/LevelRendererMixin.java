@@ -11,6 +11,7 @@ import einstein.subtle_effects.configs.ModBlockConfigs;
 import einstein.subtle_effects.configs.ReplacedParticlesDisplayType;
 import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.init.ModParticles;
+import einstein.subtle_effects.particle.option.FloatParticleOptions;
 import einstein.subtle_effects.ticking.tickers.TickerManager;
 import einstein.subtle_effects.util.FrustumGetter;
 import einstein.subtle_effects.util.ParticleAccessor;
@@ -98,25 +99,23 @@ public abstract class LevelRendererMixin implements FrustumGetter {
         return original || (BLOCKS.steam.lavaCauldronsEvaporateRain && state.is(Blocks.LAVA_CAULDRON));
     }
 
-    @ModifyExpressionValue(method = "tickRain", at = @At(value = "FIELD", target = "Lnet/minecraft/core/particles/ParticleTypes;RAIN:Lnet/minecraft/core/particles/SimpleParticleType;"))
-    private SimpleParticleType replaceRainParticle(SimpleParticleType original, @Local FluidState fluidState, @Local BlockState state) {
-        if (BLOCKS.rainWaterRipples && (fluidState.is(FluidTags.WATER) || state.is(Blocks.WATER_CAULDRON))) {
-            return ModParticles.WATER_RIPPLE.get();
-        }
-        return original;
-    }
-
     @WrapOperation(method = "tickRain", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/multiplayer/ClientLevel;addParticle(Lnet/minecraft/core/particles/ParticleOptions;DDDDDD)V"))
-    private void modifyCauldronRippleParticlePos(ClientLevel level, ParticleOptions options, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, Operation<Void> original, @Local BlockState state, @Local RandomSource random, @Local(ordinal = 1) BlockPos pos) {
+    private void modifyCauldronRippleParticlePos(ClientLevel level, ParticleOptions options, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, Operation<Void> original, @Local BlockState state, @Local FluidState fluidState, @Local RandomSource random, @Local(ordinal = 1) BlockPos pos) {
         if (BLOCKS.rainWaterRipples) {
-            if (random.nextDouble() > BLOCKS.rainWaterRipplesDensity.get()) {
-                return;
-            }
+            boolean isCauldron = state.is(Blocks.WATER_CAULDRON);
 
-            if (options.getType().equals(ModParticles.WATER_RIPPLE.get()) && state.is(Blocks.WATER_CAULDRON)) {
-                x = pos.getX() + 0.1875 + nextDouble(random, 0.625);
-                y = pos.getY() + Util.getCauldronFillHeight(state) + 0.01;
-                z = pos.getZ() + 0.1875 + nextDouble(random, 0.625);
+            if ((fluidState.is(FluidTags.WATER) || isCauldron)) {
+                if (random.nextDouble() > BLOCKS.rainWaterRipplesDensity.get()) {
+                    return;
+                }
+
+                options = new FloatParticleOptions(ModParticles.WATER_RIPPLE.get(), 1);
+
+                if (isCauldron) {
+                    x = pos.getX() + 0.1875 + nextDouble(random, 0.625);
+                    y = pos.getY() + Util.getCauldronFillHeight(state) + 0.01;
+                    z = pos.getZ() + 0.1875 + nextDouble(random, 0.625);
+                }
             }
         }
         original.call(level, options, x, y, z, xSpeed, ySpeed, zSpeed);

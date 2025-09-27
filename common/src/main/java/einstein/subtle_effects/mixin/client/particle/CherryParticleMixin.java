@@ -2,6 +2,7 @@ package einstein.subtle_effects.mixin.client.particle;
 
 import einstein.subtle_effects.init.ModParticles;
 import einstein.subtle_effects.particle.option.FallenLeafParticleOptions;
+import einstein.subtle_effects.particle.option.FloatParticleOptions;
 import einstein.subtle_effects.util.Util;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.CherryParticle;
@@ -56,7 +57,12 @@ public abstract class CherryParticleMixin extends TextureSheetParticle {
             );
 
             if (!onGround && GENERAL.leavesLandingOnWaterRipples) {
-                level.addParticle(ModParticles.WATER_RIPPLE.get(), x, surface, z, 0, 0, 0);
+                double halfSize = quadSize / 2;
+
+                level.addParticle(new FloatParticleOptions(ModParticles.WATER_RIPPLE.get(), Math.max(quadSize, Math.max(bbWidth, bbHeight)) + 0.3F * 3),
+                        x + halfSize, surface, z + halfSize,
+                        0, 0, 0
+                );
             }
 
             remove();

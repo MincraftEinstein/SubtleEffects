@@ -2,6 +2,7 @@ package einstein.subtle_effects.mixin.client.particle;
 
 import einstein.subtle_effects.init.ModParticles;
 import einstein.subtle_effects.init.ModSounds;
+import einstein.subtle_effects.particle.option.FloatParticleOptions;
 import einstein.subtle_effects.util.DripParticleAccessor;
 import einstein.subtle_effects.util.MathUtil;
 import einstein.subtle_effects.util.Util;
@@ -106,7 +107,7 @@ public abstract class DripParticleMixin extends TextureSheetParticle implements 
                 }
 
                 if (GENERAL.dropLandInFluidRipples) {
-                    level.addParticle(subtleEffects$isLava ? ModParticles.LAVA_RIPPLE.get() : ModParticles.WATER_RIPPLE.get(),
+                    level.addParticle(new FloatParticleOptions(subtleEffects$isLava ? ModParticles.LAVA_RIPPLE.get() : ModParticles.WATER_RIPPLE.get(), Math.max(quadSize, Math.max(bbWidth, bbHeight)) + 0.3F * 3),
                             x + MathUtil.nextNonAbsDouble(random, 0.07),
                             fluidSurface,
                             z + MathUtil.nextNonAbsDouble(random, 0.07),

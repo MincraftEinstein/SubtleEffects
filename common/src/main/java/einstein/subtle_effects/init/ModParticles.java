@@ -79,8 +79,8 @@ public class ModParticles {
     public static final Supplier<SimpleParticleType> GEYSER_SMOKE = register("geyser_smoke", GeyserSmokeParticleProvider::new);
     public static final Supplier<ParticleType<ColorParticleOption>> POTION_CLOUD = register("potion_cloud", ColorParticleOption::codec, ColorParticleOption::streamCodec, PotionCloudParticle.Provider::new);
     public static final Supplier<ParticleType<ColorParticleOption>> POTION_POOF_CLOUD = register("potion_poof_cloud", ColorParticleOption::codec, ColorParticleOption::streamCodec, PotionPoofCloudProvider::new);
-    public static final Supplier<SimpleParticleType> WATER_RIPPLE = register("water_ripple", RippleParticle.Provider::new);
-    public static final Supplier<SimpleParticleType> LAVA_RIPPLE = register("lava_ripple", RippleParticle.LavaProvider::new);
+    public static final Supplier<ParticleType<FloatParticleOptions>> WATER_RIPPLE = register("water_ripple", FloatParticleOptions::codec, FloatParticleOptions::streamCodec, RippleParticle.Provider::new);
+    public static final Supplier<ParticleType<FloatParticleOptions>> LAVA_RIPPLE = register("lava_ripple", FloatParticleOptions::codec, FloatParticleOptions::streamCodec, RippleParticle.LavaProvider::new);
     public static final Supplier<ParticleType<SplashParticleOptions>> WATER_SPLASH = register("water_splash", SplashParticleOptions::codec, SplashParticleOptions::streamCodec, SplashParticle.Provider::new);
     public static final Supplier<ParticleType<SplashParticleOptions>> LAVA_SPLASH = register("lava_splash", SplashParticleOptions::codec, SplashParticleOptions::streamCodec, SplashParticle.LavaProvider::new);
     public static final Supplier<ParticleType<SplashDropletParticleOptions>> WATER_SPLASH_DROPLET = register("water_splash_droplet", SplashDropletParticleOptions::codec, SplashDropletParticleOptions::streamCodec, SplashDropletParticle.Provider::new);
