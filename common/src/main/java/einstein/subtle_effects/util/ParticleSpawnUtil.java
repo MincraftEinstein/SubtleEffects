@@ -7,33 +7,36 @@ import einstein.subtle_effects.mixin.client.item.BucketItemAccessor;
 import einstein.subtle_effects.networking.clientbound.ClientBoundEntityFellPayload;
 import einstein.subtle_effects.particle.EnderEyePlacedRingParticle;
 import einstein.subtle_effects.particle.SparkParticle;
+import einstein.subtle_effects.particle.option.ColorAndIntegerParticleOptions;
 import einstein.subtle_effects.particle.option.DirectionParticleOptions;
+import einstein.subtle_effects.particle.option.IntegerParticleOptions;
+import einstein.subtle_effects.particle.option.SheepFluffParticleOptions;
 import einstein.subtle_effects.platform.Services;
+import einstein.subtle_effects.ticking.tickers.TickerManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.particles.ColorParticleOption;
-import net.minecraft.core.particles.ItemParticleOption;
-import net.minecraft.core.particles.ParticleOptions;
-import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.core.particles.*;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.tags.FluidTags;
+import net.minecraft.tags.TagKey;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.animal.Sheep;
 import net.minecraft.world.entity.animal.camel.Camel;
 import net.minecraft.world.entity.animal.horse.AbstractHorse;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.alchemy.PotionContents;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LightLayer;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.ComposterBlock;
-import net.minecraft.world.level.block.GrindstoneBlock;
-import net.minecraft.world.level.block.StonecutterBlock;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.AttachFace;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
@@ -397,6 +400,7 @@ public class ParticleSpawnUtil {
 
     public static void spawnBucketParticles(Level level, BlockPos pos, ItemStack stack) {
         if (level.isClientSide) {
+            RandomSource random = level.getRandom();
             if (stack.getItem() instanceof BucketItemAccessor bucket) {
                 Fluid content = bucket.getContent();
                 boolean isWater = content.isSame(Fluids.WATER);
@@ -406,27 +410,33 @@ public class ParticleSpawnUtil {
                         return;
                     }
 
-                    spawnBucketParticles(level, pos, Util.getParticleForFluid(content));
+                    if (level.getFluidState(pos.above()).getAmount() >= 5) {
+                        return;
+                    }
+
+                    float fluidHeight = level.getFluidState(pos).getHeight(level, pos);
+                    spawnBucketParticles(level, random, pos, Util.getParticleForFluid(content), fluidHeight == 0 ? 1 : fluidHeight);
                 }
             }
             else if (stack.is(Items.POWDER_SNOW_BUCKET) && ModConfigs.ITEMS.powderSnowBucketUseParticles) {
-                spawnBucketParticles(level, pos, ModParticles.SNOW.get());
+                spawnBucketParticles(level, random, pos, ModParticles.SNOW.get(), random.nextDouble());
             }
         }
     }
 
-    public static void spawnBucketParticles(Level level, BlockPos pos, ParticleOptions particle) {
+    public static void spawnBucketParticles(Level level, RandomSource random, BlockPos pos, ParticleOptions particle, double height) {
         if (particle != null) {
-            RandomSource random = level.getRandom();
-            FluidState fluidState = level.getFluidState(pos);
-            double fluidHeight = fluidState.getHeight(level, pos);
-
             for (int i = 0; i < 16; i++) {
+                int xSign = nextSign(random);
+                int zSign = nextSign(random);
+
                 level.addParticle(particle,
-                        pos.getX() + 0.5 + nextNonAbsDouble(random),
-                        pos.getY() + (fluidHeight == 0 ? random.nextDouble() : fluidHeight),
-                        pos.getZ() + 0.5 + nextNonAbsDouble(random),
-                        0, 0, 0
+                        pos.getX() + 0.5 + (nextDouble(random, 0.5) * xSign),
+                        pos.getY() + height,
+                        pos.getZ() + 0.5 + (nextDouble(random, 0.5) * zSign),
+                        nextDouble(random, 0.15F) * xSign,
+                        nextDouble(random, 0.35F),
+                        nextDouble(random, 0.15F) * zSign
                 );
             }
         }
@@ -468,6 +478,118 @@ public class ParticleSpawnUtil {
                         nextFloat(random, 0.1F, 0.2F) * (direction.getStepZ() * 1.5)
                 );
             }
+        }
+    }
+
+    public static void spawnLavaSplash(Entity entity, boolean isInLava, boolean firstTick, boolean wasTouchingLava, Vec3 deltaMovement) {
+        Level level = entity.level();
+
+        if (level.isClientSide && isInLava && ENTITIES.splashes.lavaSplashes) {
+            if (!wasTouchingLava && !firstTick) {
+                spawnSplashEffects(entity, level, ModParticles.LAVA_SPLASH_EMITTER.get(), FluidTags.LAVA, deltaMovement);
+            }
+        }
+    }
+
+    public static boolean spawnSplashEffects(Entity entity, Level level, ParticleType<IntegerParticleOptions> splashParticle, TagKey<Fluid> fluidTag, Vec3 deltaMovement) {
+        if (!ENTITIES.splashes.splashEffects) {
+            return false;
+        }
+
+        if (ENTITIES.splashes.entityBlocklist.contains(entity.getType())) {
+            return false;
+        }
+
+        float velocity = (float) deltaMovement.y;
+        if (velocity <= -ENTITIES.splashes.splashVelocityThreshold.get()) {
+            double entityY = entity.getY();
+            double y = entityY + entity.getFluidHeight(fluidTag) + 0.01;
+            if (y <= entityY + entity.getBbHeight()) {
+                level.addAlwaysVisibleParticle(new IntegerParticleOptions(splashParticle, entity.getId()), true,
+                        entity.getX(),
+                        y,
+                        entity.getZ(),
+                        0, 0, 0
+                );
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static void spawnUnderwaterBlockBreakBubbles(Level level, BlockPos pos, BlockState state, boolean success) {
+        if (success && BLOCKS.underwaterBlockBreakBubbles) {
+            boolean nearWater = false;
+            for (Direction direction : Direction.values()) {
+                BlockPos relativePos = pos.relative(direction);
+                FluidState relativeFluidState = level.getFluidState(relativePos);
+                BlockState relativeState = level.getBlockState(pos);
+                if (direction == Direction.UP && level.getBlockState(relativePos).isAir()) {
+                    break;
+                }
+
+                if (relativeFluidState.is(FluidTags.WATER) && relativeFluidState.getAmount() >= 7 && !Block.isFaceFull(relativeState.getCollisionShape(level, pos), direction.getOpposite())) {
+                    nearWater = true;
+                    break;
+                }
+            }
+
+            if (nearWater) {
+                TickerManager.schedule(7, () -> {
+                    FluidState newFluidState = level.getFluidState(pos);
+                    if (newFluidState.is(FluidTags.WATER) && newFluidState.getAmount() >= 7) {
+                        spawnParticlesAroundShape(ParticleTypes.BUBBLE, level, pos, state,
+                                direction -> {
+                                    BlockPos relativePos = pos.relative(direction);
+                                    return Block.isFaceFull(level.getBlockState(relativePos).getCollisionShape(level, relativePos), direction.getOpposite());
+                                },
+                                3, () -> new Vec3(0, 0, 0), 0
+                        );
+                    }
+                });
+            }
+        }
+    }
+
+    public static void spawnPotionRings(LivingEntity entity) {
+        Minecraft minecraft = Minecraft.getInstance();
+        if (entity instanceof Player player) {
+            if (player.equals(minecraft.player) && !ENTITIES.humanoids.potionRingsDisplayType.test(minecraft)) {
+                return;
+            }
+        }
+
+        ItemStack useItem = entity.getUseItem();
+        if (useItem.has(DataComponents.POTION_CONTENTS)) {
+            Level level = entity.level();
+            PotionContents contents = useItem.get(DataComponents.POTION_CONTENTS);
+
+            // noinspection all
+            if (contents.hasEffects()) {
+                int color = contents.getColor();
+                level.addParticle(new ColorAndIntegerParticleOptions(ModParticles.POTION_EMITTER.get(), color, entity.getId()),
+                        entity.getX(),
+                        entity.getY(),
+                        entity.getZ(),
+                        0, 0, 0
+                );
+            }
+        }
+    }
+
+    public static void sheep(Sheep sheep) {
+        RandomSource random = sheep.getRandom();
+        SheepFluffParticleOptions particle = new SheepFluffParticleOptions(sheep.getColor(), sheep.getId(), sheep.hasCustomName() && sheep.getName().getString().equals("jeb_"));
+
+        for (int i = 0; i < 7; i++) {
+            sheep.level().addParticle(particle,
+                    sheep.getRandomX(0.5),
+                    sheep.getY(0.5),
+                    sheep.getRandomZ(0.5),
+                    nextNonAbsDouble(random),
+                    random.nextDouble(),
+                    nextNonAbsDouble(random)
+            );
         }
     }
 }

@@ -9,7 +9,7 @@ import net.minecraft.core.particles.ParticleType;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 
-public record BooleanParticleOptions(ParticleType<?> type, boolean bool) implements ParticleOptions {
+public record BooleanParticleOptions(ParticleType<BooleanParticleOptions> type, boolean bool) implements ParticleOptions {
 
     public static MapCodec<BooleanParticleOptions> codec(ParticleType<BooleanParticleOptions> type) {
         return RecordCodecBuilder.mapCodec(instance -> instance.group(

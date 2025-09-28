@@ -115,6 +115,10 @@ public class ModBlockTickers {
             }
         });
         register(Blocks.LAVA_CAULDRON, () -> BLOCKS.lavaCauldronEffects, (state, level, pos, random) -> {
+            if (!level.getFluidState(pos.above()).isEmpty()) {
+                return;
+            }
+
             ((LavaFluid.Source) Fluids.LAVA).animateTick(level, pos, Fluids.LAVA.defaultFluidState().setValue(BlockStateProperties.FALLING, false), random);
         });
         register(Blocks.BEACON, () -> BLOCKS.beaconParticlesDisplayType != ModBlockConfigs.BeaconParticlesDisplayType.OFF,
@@ -322,6 +326,17 @@ public class ModBlockTickers {
                         SparkParticle.create(SparkType.SHORT_LIFE, random, SparkParticle.BLAZE_COLORS),
                         pos.getX() + 0.5 + nextNonAbsDouble(random, 0.125),
                         pos.getY() + random.nextDouble(),
+                        pos.getZ() + 0.5 + nextNonAbsDouble(random, 0.125),
+                        0, 0, 0
+                );
+            }
+        });
+        register(Blocks.DECORATED_POT, () -> BLOCKS.decoratedPotsSpawnBubbles, (state, level, pos, random) -> {
+            for (int i = 0; i < random.nextInt(2); i++) {
+                level.addParticle(
+                        ParticleTypes.BUBBLE_COLUMN_UP,
+                        pos.getX() + 0.5 + nextNonAbsDouble(random, 0.125),
+                        pos.getY() + 1 + nextNonAbsDouble(random, 0.25),
                         pos.getZ() + 0.5 + nextNonAbsDouble(random, 0.125),
                         0, 0, 0
                 );

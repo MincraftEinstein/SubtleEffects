@@ -22,6 +22,7 @@ public class ModEntityConfigs extends Config {
     public DustCloudsConfig dustClouds = new DustCloudsConfig();
     public BurningEntityConfigs burning = new BurningEntityConfigs();
     public ExplosivesConfigs explosives = new ExplosivesConfigs();
+    public SplashConfigs splashes = new SplashConfigs();
 
     public ConfigGroup attackedGroup = new ConfigGroup("attacked");
     public boolean chickenFeathers = true;
@@ -55,6 +56,9 @@ public class ModEntityConfigs extends Config {
     public boolean replaceBlazeSmoke = true;
     public boolean animalFeedingParticles = true;
     public ValidatedFloat animalFeedingSoundVolume = new ValidatedFloat(1, 1, 0);
+    public boolean underwaterEntityPoofBubbles = true;
+    public boolean improvedWetWolfShakeEffects = true;
+    public boolean improvedVillagerSweatingEffects = true;
 
     public ModEntityConfigs() {
         super(SubtleEffects.loc("entities"));

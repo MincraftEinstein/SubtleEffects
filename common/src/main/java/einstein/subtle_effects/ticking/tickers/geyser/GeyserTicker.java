@@ -1,7 +1,7 @@
 package einstein.subtle_effects.ticking.tickers.geyser;
 
 import einstein.subtle_effects.particle.option.GeyserSpoutParticleOptions;
-import einstein.subtle_effects.ticking.tickers.Ticker;
+import einstein.subtle_effects.ticking.tickers.BlockPosTicker;
 import einstein.subtle_effects.ticking.tickers.TickerManager;
 import einstein.subtle_effects.util.Util;
 import net.minecraft.core.BlockPos;
@@ -21,20 +21,15 @@ import java.util.function.Consumer;
 import static einstein.subtle_effects.ticking.GeyserManager.ACTIVE_GEYSERS;
 import static einstein.subtle_effects.ticking.GeyserManager.INACTIVE_GEYSERS;
 
-public abstract class GeyserTicker extends Ticker {
+public abstract class GeyserTicker extends BlockPosTicker {
 
     protected final GeyserType type;
-    protected final Level level;
-    protected final BlockPos pos;
-    protected final RandomSource random;
     protected final int lifeTime;
     protected int age;
 
     public GeyserTicker(GeyserType type, Level level, BlockPos pos, RandomSource random) {
+        super(level, random, pos);
         this.type = type;
-        this.level = level;
-        this.pos = pos;
-        this.random = random;
         lifeTime = getTickDelay(type.activeTime.get());
         updateGeyserPositions(ACTIVE_GEYSERS, list -> list.add(pos));
     }
@@ -79,7 +74,7 @@ public abstract class GeyserTicker extends Ticker {
     }
 
     @Override
-    public void tick() {
+    public void positionedTick() {
         age++;
 
         if (age >= lifeTime) {

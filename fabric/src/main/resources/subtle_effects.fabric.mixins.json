@@ -4,9 +4,14 @@
   "package": "einstein.subtle_effects.mixin",
   "refmap": "subtle_effects.refmap.json",
   "compatibilityLevel": "JAVA_17",
+  "client": [
+    "client.FabricClientEntityMixin",
+    "client.FabricMultiPlayerGameModeMixin"
+  ],
   "mixins": [
-    "common.FabricCommonMooshroomMixin",
-    "common.FabricStonecutterMenu$2Mixin"
+    "common.FabricStonecutterMenu$2Mixin",
+    "common.block.dispenser.FabricShearsDispenseItemBehaviorMixin",
+    "common.entity.FabricCommonMooshroomMixin"
   ],
   "injectors": {
     "defaultRequire": 1

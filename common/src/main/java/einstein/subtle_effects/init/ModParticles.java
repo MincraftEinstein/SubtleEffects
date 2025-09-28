@@ -4,6 +4,7 @@ import com.mojang.serialization.MapCodec;
 import einstein.subtle_effects.particle.*;
 import einstein.subtle_effects.particle.emitter.FireFlyEmitter;
 import einstein.subtle_effects.particle.emitter.PotionEmitter;
+import einstein.subtle_effects.particle.emitter.SplashEmitter;
 import einstein.subtle_effects.particle.option.*;
 import einstein.subtle_effects.particle.provider.*;
 import net.minecraft.client.particle.FlyTowardsPositionParticle;
@@ -76,7 +77,6 @@ public class ModParticles {
     public static final Supplier<ParticleType<DirectionParticleOptions>> EGG_SPLAT = register("egg_splat", DirectionParticleOptions::codec, DirectionParticleOptions::streamCodec, EggSplatParticle.Provider::new);
     public static final Supplier<ParticleType<ColorParticleOption>> ENDER_EYE_PLACED_RING = register("ender_eye_placed_ring", ColorParticleOption::codec, ColorParticleOption::streamCodec, EnderEyePlacedRingParticle.Provider::new);
     public static final Supplier<ParticleType<BlockParticleOption>> BLOCK_NO_MOMENTUM = register("block_no_momentum", BlockParticleOption::codec, BlockParticleOption::streamCodec, sprites -> new TerrainNoMomentumParticleProvider());
-    public static final Supplier<SimpleParticleType> LAVA_SPLASH = register("lava_splash", LavaSplashParticle.Provider::new);
     public static final Supplier<SimpleParticleType> OMINOUS_VAULT_CONNECTION = register("ominous_vault_connection", FlyTowardsPositionParticle.VaultConnectionProvider::new);
     public static final Supplier<ParticleType<GeyserSpoutParticleOptions>> GEYSER_SPOUT = register("geyser_spout", type -> GeyserSpoutParticleOptions.CODEC, type -> GeyserSpoutParticleOptions.STREAM_CODEC, GeyserSpoutParticle.Provider::new);
     public static final Supplier<SimpleParticleType> SNEEZE = register("sneeze", SneezeParticle.Provider::new);
@@ -84,6 +84,18 @@ public class ModParticles {
     public static final Supplier<SimpleParticleType> GEYSER_SMOKE = register("geyser_smoke", GeyserSmokeParticleProvider::new);
     public static final Supplier<ParticleType<ColorParticleOption>> POTION_CLOUD = register("potion_cloud", ColorParticleOption::codec, ColorParticleOption::streamCodec, PotionCloudParticle.Provider::new);
     public static final Supplier<ParticleType<ColorParticleOption>> POTION_POOF_CLOUD = register("potion_poof_cloud", ColorParticleOption::codec, ColorParticleOption::streamCodec, PotionPoofCloudProvider::new);
+    public static final Supplier<ParticleType<FloatParticleOptions>> WATER_RIPPLE = register("water_ripple", FloatParticleOptions::codec, FloatParticleOptions::streamCodec, RippleParticle.Provider::new);
+    public static final Supplier<ParticleType<FloatParticleOptions>> LAVA_RIPPLE = register("lava_ripple", FloatParticleOptions::codec, FloatParticleOptions::streamCodec, RippleParticle.LavaProvider::new);
+    public static final Supplier<ParticleType<SplashParticleOptions>> WATER_SPLASH = register("water_splash", SplashParticleOptions::codec, SplashParticleOptions::streamCodec, SplashParticle.Provider::new);
+    public static final Supplier<ParticleType<SplashParticleOptions>> LAVA_SPLASH = register("lava_splash", SplashParticleOptions::codec, SplashParticleOptions::streamCodec, SplashParticle.LavaProvider::new);
+    public static final Supplier<ParticleType<SplashDropletParticleOptions>> WATER_SPLASH_DROPLET = register("water_splash_droplet", SplashDropletParticleOptions::codec, SplashDropletParticleOptions::streamCodec, SplashDropletParticle.Provider::new);
+    public static final Supplier<ParticleType<SplashDropletParticleOptions>> LAVA_SPLASH_DROPLET = register("lava_splash_droplet", SplashDropletParticleOptions::codec, SplashDropletParticleOptions::streamCodec, SplashDropletParticle.LavaProvider::new);
+    public static final Supplier<ParticleType<IntegerParticleOptions>> WATER_SPLASH_EMITTER = register("water_splash_emitter", IntegerParticleOptions::codec, IntegerParticleOptions::streamCodec, sprites -> new SplashEmitter.Provider());
+    public static final Supplier<ParticleType<IntegerParticleOptions>> LAVA_SPLASH_EMITTER = register("lava_splash_emitter", IntegerParticleOptions::codec, IntegerParticleOptions::streamCodec, sprites -> new SplashEmitter.LavaProvider());
+    public static final Supplier<SimpleParticleType> WATERFALL_CLOUD = register("waterfall_cloud", WaterfallCloud.Provider::new);
+    public static final Supplier<SimpleParticleType> WATERFALL_DROPLET = register("waterfall_droplet", WaterfallDropletParticle.Provider::new);
+    public static final Supplier<SimpleParticleType> WATERFALL_MIST = register("waterfall_mist", WaterfallMistParticle.Provider::new);
+    public static final Supplier<ParticleType<FallenLeafParticleOptions>> FALLEN_LEAF = register("fallen_leaf", type -> FallenLeafParticleOptions.CODEC, type -> FallenLeafParticleOptions.STREAM_CODEC, sprites -> new FallenLeafParticle.Provider());
 
     public static void init() {
     }

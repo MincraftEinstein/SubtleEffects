@@ -5,6 +5,7 @@ import einstein.subtle_effects.platform.Services;
 import einstein.subtle_effects.util.Util;
 import me.fzzyhmstrs.fzzy_config.validation.misc.ValidatedColor;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.block.state.properties.IntegerProperty;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -21,6 +22,9 @@ public class CompatHelper {
     public static final Supplier<Boolean> IS_END_REMASTERED_LOADED = isLoaded("endrem");
     public static final Supplier<Boolean> IS_IRIS_LOADED = isLoaded("iris");
     public static final Supplier<Boolean> IS_PARTICLE_EFFECTS_LOADED = isLoaded(PARTICLE_EFFECTS_MOD_ID);
+    public static final IntegerProperty FD_PIE_BITES = IntegerProperty.create("bites", 0, 3);
+    public static final IntegerProperty JMC_TWO_TIERED_CAKE_BITES = IntegerProperty.create("bites", 0, 10);
+    public static final IntegerProperty JMC_THREE_TIERED_CAKE_BITES = IntegerProperty.create("bites", 0, 15);
 
     public static void init() {
         if (IS_IRIS_LOADED.get()) {

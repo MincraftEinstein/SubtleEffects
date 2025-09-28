@@ -38,4 +38,5 @@ public class FallingBlocksConfigs extends ConfigSection {
     public boolean onLandSound = true;
     public boolean weakSupportDust = true;
     public ValidatedInt weakSupportDustDensity = new ValidatedInt(1, 16, 1);
+    public boolean replaceDustWithBubblesUnderwater = true;
 }

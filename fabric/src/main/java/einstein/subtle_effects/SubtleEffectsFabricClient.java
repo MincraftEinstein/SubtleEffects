@@ -2,6 +2,7 @@ package einstein.subtle_effects;
 
 import einstein.subtle_effects.client.model.entity.EinsteinSolarSystemModel;
 import einstein.subtle_effects.client.renderer.entity.EinsteinSolarSystemLayer;
+import einstein.subtle_effects.client.renderer.entity.AnniversaryHatLayer;
 import einstein.subtle_effects.data.*;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
@@ -31,6 +32,10 @@ public class SubtleEffectsFabricClient implements ClientModInitializer {
         LivingEntityFeatureRendererRegistrationCallback.EVENT.register((type, renderer, registrationHelper, context) -> {
             if (type.equals(EntityType.PLAYER)) {
                 registrationHelper.register(new EinsteinSolarSystemLayer<>(renderer, context));
+
+                if (AnniversaryHatLayer.isModAnniversary()) {
+                    registrationHelper.register(new AnniversaryHatLayer<>(renderer, context));
+                }
             }
         });
     }

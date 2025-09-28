@@ -5,6 +5,7 @@ import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.util.MathUtil;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -16,6 +17,8 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
+import static einstein.subtle_effects.init.ModConfigs.ENTITIES;
 
 @Mixin(LivingEntity.class)
 public abstract class ClientLivingEntityMixin<T extends Entity> extends Entity {
@@ -42,7 +45,7 @@ public abstract class ClientLivingEntityMixin<T extends Entity> extends Entity {
             return;
         }
 
-        if (ModConfigs.ENTITIES.wardenDeathSoulParticles && getType().equals(EntityType.WARDEN)) {
+        if (ENTITIES.wardenDeathSoulParticles && getType().equals(EntityType.WARDEN)) {
             if (deathTime == 1 && !isRemoved()) {
                 for (int i = 0; i < random.nextIntBetweenInclusive(3, 5); i++) {
                     level().addParticle(ParticleTypes.SCULK_SOUL,
@@ -55,6 +58,16 @@ public abstract class ClientLivingEntityMixin<T extends Entity> extends Entity {
                     );
                 }
             }
+        }
+    }
+
+    @Inject(method = "makePoofParticles", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/Level;addParticle(Lnet/minecraft/core/particles/ParticleOptions;DDDDDD)V"))
+    private void makePoofParticles(CallbackInfo ci) {
+        if (isEyeInFluid(FluidTags.WATER) && ENTITIES.underwaterEntityPoofBubbles) {
+            level().addParticle(ParticleTypes.BUBBLE_COLUMN_UP,
+                    getRandomX(1), getRandomY(), getRandomZ(1),
+                    0, 0, 0
+            );
         }
     }
 }

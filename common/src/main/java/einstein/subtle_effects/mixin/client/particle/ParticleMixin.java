@@ -44,6 +44,18 @@ public abstract class ParticleMixin implements ParticleAccessor {
     public abstract void setHasPhysics(boolean hasPhysics);
 
     @Override
+    @Accessor("bbWidth")
+    public abstract float getWidth();
+
+    @Override
+    @Accessor("bbHeight")
+    public abstract float getHeight();
+
+    @Override
+    @Invoker("setSize")
+    public abstract void setSizes(float width, float height);
+
+    @Override
     public boolean subtleEffects$wasForced() {
         return subtleEffects$forced;
     }

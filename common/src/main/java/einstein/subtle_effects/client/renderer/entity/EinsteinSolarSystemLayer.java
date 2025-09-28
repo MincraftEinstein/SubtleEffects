@@ -9,7 +9,6 @@ import einstein.subtle_effects.platform.Services;
 import einstein.subtle_effects.util.EntityRenderStateAccessor;
 import net.minecraft.client.model.HumanoidArmorModel;
 import net.minecraft.client.model.HumanoidModel;
-import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -18,13 +17,12 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.CustomHeadLayer;
-import net.minecraft.client.renderer.entity.layers.HumanoidArmorLayer;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.entity.state.PlayerRenderState;
 import net.minecraft.util.Mth;
 import org.joml.Vector3f;
 
-public class EinsteinSolarSystemLayer<T extends PlayerRenderState, V extends PlayerModel> extends RenderLayer<T, V> implements RenderLayerParent<T, EinsteinSolarSystemModel<T>> {
+public class EinsteinSolarSystemLayer<T extends PlayerRenderState, V extends HumanoidModel<T>> extends RenderLayer<T, V> implements RenderLayerParent<T, EinsteinSolarSystemModel<T>> {
 
     private static final String UUID = "d71e4b41-9315-499f-a934-ca925421fb38";
     private static final Vector3f[] HEAD_ROTATIONS = {
@@ -34,7 +32,8 @@ public class EinsteinSolarSystemLayer<T extends PlayerRenderState, V extends Pla
     };
     private final EinsteinSolarSystemModel<T> model;
     private final CustomHeadLayer<T, EinsteinSolarSystemModel<T>> headLayer;
-    private final HumanoidArmorLayer<T, EinsteinSolarSystemModel<T>, HumanoidModel<T>> armorLayer;
+    private final EinsteinSolarSystemArmorLayer<T, EinsteinSolarSystemModel<T>, HumanoidModel<T>> armorLayer;
+    private final AnniversaryHatLayer<T, V> anniversaryHatLayer;
 
     @SuppressWarnings("unchecked")
     public EinsteinSolarSystemLayer(RenderLayerParent<?, ?> renderer, EntityRendererProvider.Context context) {
@@ -46,6 +45,12 @@ public class EinsteinSolarSystemLayer<T extends PlayerRenderState, V extends Pla
                 new HumanoidArmorModel<>(context.bakeLayer(ModelLayers.PLAYER_OUTER_ARMOR)),
                 context.getEquipmentRenderer()
         );
+
+        if (AnniversaryHatLayer.isModAnniversary()) {
+            anniversaryHatLayer = new AnniversaryHatLayer<>(this, context);
+            return;
+        }
+        anniversaryHatLayer = null;
     }
 
     @Override
@@ -80,8 +85,12 @@ public class EinsteinSolarSystemLayer<T extends PlayerRenderState, V extends Pla
                 model.renderToBuffer(poseStack, consumer, packedLight, packedOverlay, -1);
 
                 poseStack.translate(0, 0.25, 0); // Adjusts the renders to align with the lower head model
-                headLayer.render(poseStack, bufferSource, packedLight, renderState, xRot, yRot);
-                armorLayer.render(poseStack, bufferSource, packedLight, renderState, xRot, yRot);
+                headLayer.render(poseStack, bufferSource, packedLight, renderState, yRot, xRot);
+                armorLayer.render(poseStack, bufferSource, packedLight, renderState, yRot, xRot);
+
+                if (anniversaryHatLayer != null) {
+                    anniversaryHatLayer.render(poseStack, bufferSource, packedLight, renderState, yRot, xRot);
+                }
 
                 poseStack.popPose();
                 poseStack.popPose();

@@ -2,6 +2,7 @@ package einstein.subtle_effects.ticking.tickers.entity;
 
 import einstein.subtle_effects.init.ModParticles;
 import einstein.subtle_effects.util.ParticleSpawnUtil;
+import einstein.subtle_effects.util.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -30,12 +31,15 @@ public class DrowningTicker extends EntityTicker<LivingEntity> {
             if (player.isCreative() && !ENTITIES.humanoids.player.enableBreathingEffectsInCreative) {
                 return;
             }
+
+            if (player.isScoping() && minecraft.options.getCameraType().isFirstPerson()) {
+                return;
+            }
         }
 
         if (random.nextInt(30) < ENTITIES.humanoids.drowningBubblesDensity.get()) {
             ParticleSpawnUtil.spawnEntityFaceParticle(ModParticles.DROWNING_BUBBLE.get(),
-                    entity, level, new Vec3(0, -0.1, 0), Vec3.ZERO,
-                    minecraft.getDeltaTracker().getGameTimeDeltaPartialTick(false)
+                    entity, level, new Vec3(0, -0.1, 0), Vec3.ZERO, Util.getPartialTicks()
             );
         }
     }

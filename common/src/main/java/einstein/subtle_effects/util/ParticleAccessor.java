@@ -16,6 +16,12 @@ public interface ParticleAccessor {
 
     void setHasPhysics(boolean hasPhysics);
 
+    float getWidth();
+
+    float getHeight();
+
+    void setSizes(float width, float height);
+
     boolean subtleEffects$wasForced();
 
     void subtleEffects$force();

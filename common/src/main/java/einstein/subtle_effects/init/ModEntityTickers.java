@@ -7,10 +7,7 @@ import einstein.subtle_effects.particle.SparkParticle;
 import einstein.subtle_effects.particle.option.BooleanParticleOptions;
 import einstein.subtle_effects.ticking.tickers.entity.*;
 import einstein.subtle_effects.ticking.tickers.entity.sleeping.*;
-import einstein.subtle_effects.util.MathUtil;
-import einstein.subtle_effects.util.ParticleSpawnUtil;
-import einstein.subtle_effects.util.SparkType;
-import einstein.subtle_effects.util.Util;
+import einstein.subtle_effects.util.*;
 import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedDouble;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.particles.BlockParticleOption;
@@ -35,7 +32,10 @@ import net.minecraft.world.entity.npc.AbstractVillager;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.BaseFireBlock;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.BrushableBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 
@@ -97,9 +97,10 @@ public class ModEntityTickers {
             FallingBlockEntity fallingBlock = (FallingBlockEntity) entity;
 
             int startDistance = BLOCKS.fallingBlocks.whileFallingDustStartDistance.get();
-            double fallDistance = fallingBlock.fallDistance;
+            float fallDistance = fallingBlock.fallDistance;
+            boolean isInWater = ((FallingBlockAccessor) fallingBlock).subtleEffects$isInWater() && BLOCKS.fallingBlocks.replaceDustWithBubblesUnderwater;
 
-            if (fallDistance <= startDistance) {
+            if (fallDistance <= startDistance && !isInWater) {
                 return;
             }
 
@@ -111,10 +112,10 @@ public class ModEntityTickers {
                     double size = startDistance > 0 ? fallDistance <= startDistance + ((startDistance / 3F) * 2) ? 0.5 : 1 : 1;
 
                     for (int i = 0; i < (size == 1 ? 2 : 1); i++) {
-                        level.addParticle(
-                                new BlockParticleOption(ParticleTypes.FALLING_DUST,
-                                        block instanceof BrushableBlock brushableBlock ?
-                                                brushableBlock.getTurnsInto().defaultBlockState() : state),
+                        level.addParticle(isInWater ? ParticleTypes.BUBBLE :
+                                        new BlockParticleOption(ParticleTypes.FALLING_DUST,
+                                                block instanceof BrushableBlock brushableBlock ?
+                                                        brushableBlock.getTurnsInto().defaultBlockState() : state),
                                 entity.getRandomX(size),
                                 entity.getY() + 0.05,
                                 entity.getRandomZ(size),

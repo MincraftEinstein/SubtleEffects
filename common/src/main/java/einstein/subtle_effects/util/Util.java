@@ -11,6 +11,7 @@ import einstein.subtle_effects.init.ModParticles;
 import einstein.subtle_effects.mixin.client.GameRendererAccessor;
 import einstein.subtle_effects.mixin.client.block.AbstractCauldronBlockAccessor;
 import einstein.subtle_effects.particle.EnderEyePlacedRingParticle;
+import einstein.subtle_effects.particle.option.SplashDropletParticleOptions;
 import me.fzzyhmstrs.fzzy_config.validation.misc.ValidatedColor;
 import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
@@ -20,10 +21,11 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.SectionPos;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.core.particles.ParticleOptions;
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.tags.TagKey;
+import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.ItemStack;
@@ -32,7 +34,9 @@ import net.minecraft.world.level.block.AbstractCauldronBlock;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.phys.AABB;
 import org.jetbrains.annotations.Nullable;
 
 import static einstein.subtle_effects.init.ModConfigs.BLOCKS;
@@ -120,10 +124,10 @@ public class Util {
     @Nullable
     public static ParticleOptions getParticleForFluid(Fluid fluid) {
         if (fluid.isSame(Fluids.WATER)) {
-            return ParticleTypes.SPLASH;
+            return new SplashDropletParticleOptions(ModParticles.WATER_SPLASH_DROPLET.get(), 1);
         }
         else if (fluid.isSame(Fluids.LAVA)) {
-            return ModParticles.LAVA_SPLASH.get();
+            return new SplashDropletParticleOptions(ModParticles.LAVA_SPLASH_DROPLET.get(), 1);
         }
         return null;
     }
@@ -172,5 +176,40 @@ public class Util {
             return ModParticles.SNOW.get();
         }
         return null;
+    }
+
+    public static boolean isEntityInFluid(Entity entity, TagKey<Fluid> fluidTag) {
+        if (entity.touchingUnloadedChunk()) {
+            return false;
+        }
+
+        Level level = entity.level();
+        AABB aabb = entity.getBoundingBox();
+        BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
+
+        for (int x = Mth.floor(aabb.minX); x < Mth.ceil(aabb.maxX); x++) {
+            for (int y = Mth.floor(aabb.minY); y < Mth.ceil(aabb.maxY); y++) {
+                for (int z = Mth.floor(aabb.minZ); z < Mth.ceil(aabb.maxZ); z++) {
+                    pos.set(x, y, z);
+                    FluidState fluidState = level.getFluidState(pos);
+
+                    if (fluidState.is(fluidTag)) {
+                        double fluidHeight = y + fluidState.getHeight(level, pos);
+                        if (fluidHeight >= aabb.minY) {
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    public static float getPartialTicks() {
+        return getPartialTicks(false);
+    }
+
+    public static float getPartialTicks(boolean runsNormally) {
+        return Minecraft.getInstance().getDeltaTracker().getGameTimeDeltaPartialTick(runsNormally);
     }
 }

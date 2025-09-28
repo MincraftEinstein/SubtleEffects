@@ -14,6 +14,7 @@ import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.SharedSuggestionProvider;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 
@@ -32,6 +33,7 @@ public class SubtleEffectsClient {
         BiomeParticleManager.init();
         ModDamageListeners.init();
         ModParticles.init();
+        ModSpriteSets.init();
         ModAnimalFedEffectSettings.init();
         CompatHelper.init();
     }
@@ -57,9 +59,19 @@ public class SubtleEffectsClient {
             player.displayClientMessage(Component.translatable("ui.subtle_effects.hud.particle_count", minecraft.particleEngine.countParticles()), true);
         }
 
+        ProfilerFiller profiler = minecraft.getProfiler();
+        profiler.push("subtle_effects");
+
+        profiler.push("biome_particles");
         BiomeParticleManager.tickBiomeParticles(level, player);
+        profiler.pop();
+
+        profiler.push("tickers");
         TickerManager.tick();
+        profiler.pop();
+
         HAS_CLEARED = false;
+        profiler.pop();
     }
 
     public static <T extends SharedSuggestionProvider> void registerClientCommands(CommandDispatcher<T> dispatcher, CommandBuildContext buildContext) {

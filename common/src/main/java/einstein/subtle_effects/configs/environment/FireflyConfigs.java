@@ -69,6 +69,7 @@ public class FireflyConfigs extends ConfigSection {
     public ConfigGroup habitatBiomesGroup = new ConfigGroup("habitat_biomes");
     public boolean onlyAllowInHabitatBiomes = false;
     public ValidatedList<ResourceLocation> habitatBiomes = biomeList("swamp", "mangrove_swamp");
+    @ConfigGroup.Pop
     public ValidatedInt habitatBiomeDensity = new ValidatedInt(3, 10, 1);
 
     public enum FireflyType implements EnumTranslatable {
