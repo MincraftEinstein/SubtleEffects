@@ -35,7 +35,7 @@ public class EinsteinSolarSystemLayer<T extends AbstractClientPlayer, V extends 
     private final EinsteinSolarSystemRenderLayerParentImpl<T, V> renderLayerParent;
     private final EinsteinSolarSystemModel<T> model;
     private final CustomHeadLayer<T, EinsteinSolarSystemModel<T>> headLayer;
-    private final HumanoidArmorLayer<T, EinsteinSolarSystemModel<T>, HumanoidModel<T>> armorLayer;
+    private final EinsteinSolarSystemArmorLayer<T, EinsteinSolarSystemModel<T>, HumanoidModel<T>> armorLayer;
     private final AnniversaryHatLayer<T, V> anniversaryHatLayer;
 
     @SuppressWarnings("unchecked")
@@ -44,7 +44,7 @@ public class EinsteinSolarSystemLayer<T extends AbstractClientPlayer, V extends 
         model = new EinsteinSolarSystemModel<>(context.bakeLayer(EinsteinSolarSystemModel.MODEL_LAYER));
         renderLayerParent = new EinsteinSolarSystemRenderLayerParentImpl<>(this);
         headLayer = new CustomHeadLayer<>(renderLayerParent, context.getModelSet(), context.getItemInHandRenderer());
-        armorLayer = new HumanoidArmorLayer<>(renderLayerParent,
+        armorLayer = new EinsteinSolarSystemArmorLayer<>(renderLayerParent,
                 new HumanoidArmorModel<>(context.bakeLayer(ModelLayers.PLAYER_INNER_ARMOR)),
                 new HumanoidArmorModel<>(context.bakeLayer(ModelLayers.PLAYER_OUTER_ARMOR)),
                 context.getModelManager()

@@ -6,13 +6,8 @@ import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.resources.ResourceLocation;
 
-public class EinsteinSolarSystemRenderLayerParentImpl<T extends AbstractClientPlayer, V extends PlayerModel<T>> implements RenderLayerParent<T, EinsteinSolarSystemModel<T>> {
-
-    private final EinsteinSolarSystemLayer<T, V> renderLayer;
-
-    public EinsteinSolarSystemRenderLayerParentImpl(EinsteinSolarSystemLayer<T, V> renderLayer) {
-        this.renderLayer = renderLayer;
-    }
+public record EinsteinSolarSystemRenderLayerParentImpl<T extends AbstractClientPlayer, V extends PlayerModel<T>>(
+        EinsteinSolarSystemLayer<T, V> renderLayer) implements RenderLayerParent<T, EinsteinSolarSystemModel<T>> {
 
     @Override
     public EinsteinSolarSystemModel<T> getModel() {
