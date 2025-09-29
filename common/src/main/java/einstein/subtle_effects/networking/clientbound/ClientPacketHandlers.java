@@ -4,7 +4,6 @@ import einstein.subtle_effects.configs.ReplacedParticlesDisplayType;
 import einstein.subtle_effects.init.ModAnimalFedEffectSettings;
 import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.init.ModParticles;
-import einstein.subtle_effects.mixin.client.entity.AbstractHorseAccessor;
 import einstein.subtle_effects.particle.option.FloatParticleOptions;
 import einstein.subtle_effects.particle.option.SheepFluffParticleOptions;
 import einstein.subtle_effects.ticking.tickers.TickerManager;
@@ -16,7 +15,6 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
-import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.particles.*;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -27,13 +25,10 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.Dolphin;
 import net.minecraft.world.entity.animal.MushroomCow;
-import net.minecraft.world.entity.animal.Parrot;
 import net.minecraft.world.entity.animal.frog.Tadpole;
-import net.minecraft.world.entity.animal.horse.AbstractHorse;
 import net.minecraft.world.entity.animal.sheep.Sheep;
 import net.minecraft.world.entity.item.FallingBlockEntity;
 import net.minecraft.world.entity.monster.Ravager;
-import net.minecraft.world.entity.monster.Strider;
 import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.npc.VillagerData;
 import net.minecraft.world.entity.npc.VillagerProfession;
@@ -41,7 +36,6 @@ import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.PotionContents;
-import net.minecraft.world.item.component.Consumable;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -388,34 +382,7 @@ public class ClientPacketHandlers {
         if (overrideSound != null) {
             return overrideSound.get();
         }
-        else if (entity instanceof AbstractHorse horse) {
-            SoundEvent horseEatSound = ((AbstractHorseAccessor) horse).getEatSound();
-            if (horseEatSound != null && !horseEatSound.equals(SoundEvents.GENERIC_EAT.value())) {
-                return horseEatSound;
-            }
-        }
-
-        SoundEvent eatSound = null;
-        if (entity instanceof Consumable.OverrideConsumeSound soundOverride) {
-            eatSound = soundOverride.getConsumeSound(stack);
-        }
-
-        SoundEvent stackEatSound = null;
-        if (stack.has(DataComponents.CONSUMABLE)) {
-            // noinspection all
-            stackEatSound = stack.get(DataComponents.CONSUMABLE).sound().value();
-        }
-
-        if ((eatSound != null && !SoundEvents.GENERIC_EAT.value().equals(eatSound)) && !eatSound.equals(stackEatSound)) {
-            return eatSound;
-        }
-        else if (entity instanceof Strider) {
-            return SoundEvents.STRIDER_EAT;
-        }
-        else if (entity instanceof Parrot) {
-            return SoundEvents.PARROT_EAT;
-        }
-        return stackEatSound != null ? stackEatSound : SoundEvents.GENERIC_EAT.value();
+        return Util.getEntityEatSound(entity, stack);
     }
 
     private static DyeColor getColorForShepherdWoolFluff(int professionLevel, RandomSource random) {

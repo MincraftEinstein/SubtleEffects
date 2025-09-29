@@ -17,6 +17,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.Consumable;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -66,7 +67,7 @@ public class BlockStateBaseMixin {
                 }
 
                 if (bites > oldBites) {
-                    ItemStack stack = block.getCloneItemStack(level, pos, state);
+                    ItemStack stack = state.getCloneItemStack(level, pos, false);
                     RandomSource random = player.getRandom();
 
                     if (!stack.isEmpty() && ModConfigs.BLOCKS.cakeEatParticles) {
@@ -91,7 +92,7 @@ public class BlockStateBaseMixin {
 
                         if (!bitesData.getFirst().equals(FD_PIE_BITES)) { // FD already plays its own sound
                             Util.playClientSound(player,
-                                    player.getEatingSound(stack),
+                                    Util.getEntityEatSound(player, stack),
                                     soundSource,
                                     0.5F + 0.5F * random.nextInt(2),
                                     (random.nextFloat() - random.nextFloat()) * 0.2F + 1

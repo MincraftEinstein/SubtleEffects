@@ -16,10 +16,12 @@ import net.minecraft.client.particle.Particle;
 import net.minecraft.client.renderer.LevelEventHandler;
 import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ColorParticleOption;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.particles.SimpleParticleType;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.valueproviders.IntProvider;
 import net.minecraft.world.entity.player.Player;
@@ -27,6 +29,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LevelEvent;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.Vec3;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -194,5 +197,32 @@ public class LevelEventHandlerMixin {
             return ModParticles.STEAM.get();
         }
         return original.call();
+    }
+
+    @Inject(method = "shootParticles", at = @At("TAIL"))
+    private void addBubbles(int data, BlockPos pos, RandomSource random, SimpleParticleType type, CallbackInfo ci, @Local Direction direction) {
+        if (!BLOCKS.dispenseItemBubbles) {
+            return;
+        }
+
+        // noinspection all
+        FluidState fluidState = level.getFluidState(pos.relative(direction));
+        if (fluidState.is(FluidTags.WATER)) {
+            int stepX = direction.getStepX();
+            int stepY = direction.getStepY();
+            int stepZ = direction.getStepZ();
+
+            for (int i = 0; i < 10; ++i) {
+                double speedModifier = random.nextDouble() * 0.2 + 0.01;
+                double x = pos.getX() + stepX * 0.6 + 0.5 + stepX * 0.01 + (random.nextDouble() - 0.5) * stepZ * 0.5;
+                double y = pos.getY() + stepY * 0.6 + 0.5 + stepY * 0.01 + (random.nextDouble() - 0.5) * stepY * 0.5;
+                double z = pos.getZ() + stepZ * 0.6 + 0.5 + stepZ * 0.01 + (random.nextDouble() - 0.5) * stepX * 0.5;
+                double xSpeed = stepX * speedModifier + random.nextGaussian() * 0.01;
+                double ySpeed = stepY * speedModifier + random.nextGaussian() * 0.01;
+                double zSpeed = stepZ * speedModifier + random.nextGaussian() * 0.01;
+
+                level.addParticle(ParticleTypes.BUBBLE, x, y, z, xSpeed, ySpeed, zSpeed);
+            }
+        }
     }
 }

@@ -56,7 +56,7 @@ public class EinsteinSolarSystemLayer<T extends PlayerRenderState, V extends Hum
     @Override
     public void render(PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, T renderState, float xRot, float yRot) {
         EntityRenderStateAccessor accessor = (EntityRenderStateAccessor) renderState;
-        if (accessor.shouldRenderSolarSystem()) {
+        if (accessor.subtleEffects$shouldRenderSolarSystem()) {
             int headCount = HEAD_ROTATIONS.length;
             model.hat.visible = renderState.showHat;
 
@@ -110,6 +110,6 @@ public class EinsteinSolarSystemLayer<T extends PlayerRenderState, V extends Hum
     }
 
     public static float getSpin(EntityRenderStateAccessor accessor, float speed) {
-        return accessor.getSolarSystemSpin() + (Mth.PI * speed);
+        return accessor.subtleEffects$getSolarSystemSpin() + (Mth.PI * speed);
     }
 }

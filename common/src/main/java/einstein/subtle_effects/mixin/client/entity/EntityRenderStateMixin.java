@@ -17,33 +17,46 @@ public class EntityRenderStateMixin implements EntityRenderStateAccessor {
     @Unique
     private boolean subtleEffects$shouldRenderSolarSystem;
 
+    @Unique
+    private boolean subtleEffects$shouldRenderAnniversaryHat;
+
     @Override
-    public boolean isSleeping() {
+    public boolean subtleEffects$isSleeping() {
         return subtleEffects$isSleeping;
     }
 
     @Override
-    public void setSleeping(boolean sleeping) {
+    public void subtleEffects$setSleeping(boolean sleeping) {
         subtleEffects$isSleeping = sleeping;
     }
 
     @Override
-    public float getSolarSystemSpin() {
+    public float subtleEffects$getSolarSystemSpin() {
         return subtleEffects$solarSystemSpin;
     }
 
     @Override
-    public void setSolarSystemSpin(float solarSystemSpin) {
+    public void subtleEffects$setSolarSystemSpin(float solarSystemSpin) {
         subtleEffects$solarSystemSpin = solarSystemSpin;
     }
 
     @Override
-    public boolean shouldRenderSolarSystem() {
+    public boolean subtleEffects$shouldRenderSolarSystem() {
         return subtleEffects$shouldRenderSolarSystem;
     }
 
     @Override
-    public void setShouldRenderSolarSystem(boolean shouldRenderSolarSystem) {
+    public void subtleEffects$setShouldRenderSolarSystem(boolean shouldRenderSolarSystem) {
         subtleEffects$shouldRenderSolarSystem = shouldRenderSolarSystem;
+    }
+
+    @Override
+    public boolean subtleEffects$shouldRenderAnniversaryHat() {
+        return subtleEffects$shouldRenderAnniversaryHat;
+    }
+
+    @Override
+    public void subtleEffects$setShouldRenderAnniversaryHat(boolean shouldRenderAnniversaryHat) {
+        subtleEffects$shouldRenderAnniversaryHat = shouldRenderAnniversaryHat;
     }
 }

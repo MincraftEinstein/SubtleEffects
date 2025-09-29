@@ -5,7 +5,7 @@ import einstein.subtle_effects.particle.option.FallenLeafParticleOptions;
 import einstein.subtle_effects.particle.option.FloatParticleOptions;
 import einstein.subtle_effects.util.Util;
 import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.client.particle.CherryParticle;
+import net.minecraft.client.particle.FallingLeavesParticle;
 import net.minecraft.client.particle.TextureSheetParticle;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -23,13 +23,13 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import static einstein.subtle_effects.init.ModConfigs.GENERAL;
 
-@Mixin(CherryParticle.class)
-public abstract class CherryParticleMixin extends TextureSheetParticle {
+@Mixin(FallingLeavesParticle.class)
+public abstract class FallingLeavesParticleMixin extends TextureSheetParticle {
 
     @Unique
     private final BlockPos.MutableBlockPos subtleEffects$pos = new BlockPos.MutableBlockPos();
 
-    protected CherryParticleMixin(ClientLevel level, double x, double y, double z) {
+    protected FallingLeavesParticleMixin(ClientLevel level, double x, double y, double z) {
         super(level, x, y, z);
     }
 

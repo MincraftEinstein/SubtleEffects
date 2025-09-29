@@ -1,9 +1,11 @@
 package einstein.subtle_effects.mixin.client.entity;
 
 import einstein.subtle_effects.init.ModConfigs;
+import einstein.subtle_effects.init.ModDamageListeners;
 import einstein.subtle_effects.init.ModParticles;
 import einstein.subtle_effects.ticking.tickers.entity.EntityTicker;
 import einstein.subtle_effects.util.EntityAccessor;
+import einstein.subtle_effects.util.EntityProvider;
 import einstein.subtle_effects.util.ParticleSpawnUtil;
 import einstein.subtle_effects.util.Util;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
@@ -12,7 +14,10 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SoundType;
@@ -22,10 +27,12 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import static einstein.subtle_effects.util.MathUtil.nextDouble;
 
@@ -46,6 +53,9 @@ public abstract class ClientEntityMixin implements EntityAccessor {
 
     @Unique
     private boolean subtleEffects$wasTouchingLava = false;
+
+    @Shadow
+    protected abstract boolean isInvulnerableToBase(DamageSource damageSource);
 
     @Inject(method = "playEntityOnFireExtinguishedSound", at = @At("TAIL"))
     private void addExtinguishParticles(CallbackInfo ci) {
@@ -97,6 +107,19 @@ public abstract class ClientEntityMixin implements EntityAccessor {
                         SoundType soundType = state.getSoundType();
                         Util.playClientSound(subtleEffects$me, soundType.getStepSound(), subtleEffects$me.getSoundSource(), soundType.getVolume() * 0.15F, soundType.getPitch());
                     }
+                }
+            }
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    @Inject(method = "hurtOrSimulate", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;hurtClient(Lnet/minecraft/world/damagesource/DamageSource;)Z"))
+    public <T extends Entity> void hurtClient(DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
+        if (subtleEffects$me instanceof LivingEntity entity && !isInvulnerableToBase(source)) {
+            if (source.getEntity() instanceof LivingEntity && entity.isAlive() && entity.hurtTime == 0) {
+                EntityType<T> type = (EntityType<T>) entity.getType();
+                if (ModDamageListeners.REGISTERED.containsKey(type)) {
+                    ((EntityProvider<T>) ModDamageListeners.REGISTERED.get(type)).apply((T) (Object) this, entity.level(), entity.getRandom());
                 }
             }
         }

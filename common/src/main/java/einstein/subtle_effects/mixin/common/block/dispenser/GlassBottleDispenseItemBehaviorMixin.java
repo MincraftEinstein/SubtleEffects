@@ -11,7 +11,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(targets = "net.minecraft.core.dispenser.DispenseItemBehavior$14")
+@Mixin(targets = "net.minecraft.core.dispenser.DispenseItemBehavior$11")
 public class GlassBottleDispenseItemBehaviorMixin {
 
     @Inject(method = "execute", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/alchemy/PotionContents;createItemStack(Lnet/minecraft/world/item/Item;Lnet/minecraft/core/Holder;)Lnet/minecraft/world/item/ItemStack;"))

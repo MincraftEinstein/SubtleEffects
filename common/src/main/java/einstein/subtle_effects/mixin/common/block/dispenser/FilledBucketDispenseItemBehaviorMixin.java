@@ -10,10 +10,10 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(targets = "net.minecraft.core.dispenser.DispenseItemBehavior$6")
+@Mixin(targets = "net.minecraft.core.dispenser.DispenseItemBehavior$4")
 public class FilledBucketDispenseItemBehaviorMixin {
 
-    @Inject(method = "execute", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/DispensibleContainerItem;checkExtraContent(Lnet/minecraft/world/entity/player/Player;Lnet/minecraft/world/level/Level;Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/core/BlockPos;)V"))
+    @Inject(method = "execute", at = @At(value = "INVOKE", target = "Lnet/minecraft/core/dispenser/DispenseItemBehavior$4;consumeWithRemainder(Lnet/minecraft/core/dispenser/BlockSource;Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/item/ItemStack;)Lnet/minecraft/world/item/ItemStack;"))
     private void execute(BlockSource source, ItemStack stack, CallbackInfoReturnable<ItemStack> cir) {
         ItemStack stackCopy = stack.copy();
         if (!stackCopy.isEmpty()) {

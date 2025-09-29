@@ -12,10 +12,10 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(targets = "net.minecraft.core.dispenser.DispenseItemBehavior$7")
+@Mixin(targets = "net.minecraft.core.dispenser.DispenseItemBehavior$5")
 public class EmptyBucketDispenseItemBehaviorMixin {
 
-    @Inject(method = "execute", at = @At(value = "INVOKE", target = "Lnet/minecraft/core/dispenser/DispenseItemBehavior$7;consumeWithRemainder(Lnet/minecraft/core/dispenser/BlockSource;Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/item/ItemStack;)Lnet/minecraft/world/item/ItemStack;"))
+    @Inject(method = "execute", at = @At(value = "INVOKE", target = "Lnet/minecraft/core/dispenser/DispenseItemBehavior$5;consumeWithRemainder(Lnet/minecraft/core/dispenser/BlockSource;Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/item/ItemStack;)Lnet/minecraft/world/item/ItemStack;"))
     private void execute(BlockSource source, ItemStack stack, CallbackInfoReturnable<ItemStack> cir, @Local(ordinal = 0) Item pickupItem) {
         ItemStack pickupStack = new ItemStack(pickupItem);
         if (!pickupStack.isEmpty()) {

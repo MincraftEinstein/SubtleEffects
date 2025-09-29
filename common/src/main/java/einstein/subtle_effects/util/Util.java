@@ -10,6 +10,7 @@ import einstein.subtle_effects.data.MobSkullShaderReloadListener;
 import einstein.subtle_effects.init.ModParticles;
 import einstein.subtle_effects.mixin.client.GameRendererAccessor;
 import einstein.subtle_effects.mixin.client.block.AbstractCauldronBlockAccessor;
+import einstein.subtle_effects.mixin.client.entity.AbstractHorseAccessor;
 import einstein.subtle_effects.particle.EnderEyePlacedRingParticle;
 import einstein.subtle_effects.particle.option.SplashDropletParticleOptions;
 import me.fzzyhmstrs.fzzy_config.validation.misc.ValidatedColor;
@@ -19,16 +20,23 @@ import net.minecraft.client.particle.Particle;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.SectionPos;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.animal.Parrot;
+import net.minecraft.world.entity.animal.horse.AbstractHorse;
+import net.minecraft.world.entity.monster.Strider;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.Consumable;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.AbstractCauldronBlock;
 import net.minecraft.world.level.block.Blocks;
@@ -211,5 +219,36 @@ public class Util {
 
     public static float getPartialTicks(boolean runsNormally) {
         return Minecraft.getInstance().getDeltaTracker().getGameTimeDeltaPartialTick(runsNormally);
+    }
+
+    public static SoundEvent getEntityEatSound(LivingEntity entity, ItemStack stack) {
+        if (entity instanceof AbstractHorse horse) {
+            SoundEvent horseEatSound = ((AbstractHorseAccessor) horse).getEatSound();
+            if (horseEatSound != null && !horseEatSound.equals(SoundEvents.GENERIC_EAT.value())) {
+                return horseEatSound;
+            }
+        }
+
+        SoundEvent eatSound = null;
+        if (entity instanceof Consumable.OverrideConsumeSound soundOverride) {
+            eatSound = soundOverride.getConsumeSound(stack);
+        }
+
+        SoundEvent stackEatSound = null;
+        if (stack.has(DataComponents.CONSUMABLE)) {
+            // noinspection all
+            stackEatSound = stack.get(DataComponents.CONSUMABLE).sound().value();
+        }
+
+        if ((eatSound != null && !SoundEvents.GENERIC_EAT.value().equals(eatSound)) && !eatSound.equals(stackEatSound)) {
+            return eatSound;
+        }
+        else if (entity instanceof Strider) {
+            return SoundEvents.STRIDER_EAT;
+        }
+        else if (entity instanceof Parrot) {
+            return SoundEvents.PARROT_EAT;
+        }
+        return stackEatSound != null ? stackEatSound : SoundEvents.GENERIC_EAT.value();
     }
 }

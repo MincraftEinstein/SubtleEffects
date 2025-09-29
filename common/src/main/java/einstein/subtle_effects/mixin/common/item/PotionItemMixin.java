@@ -38,7 +38,7 @@ public class PotionItemMixin {
                 RandomSource random = level.getRandom();
 
                 for (int i = 0; i < 5; i++) {
-                    serverLevel.sendParticles(serverPlayer, ParticleTypes.SPLASH, false, pos.getX() + random.nextDouble(), pos.getY() + 1, pos.getZ() + random.nextDouble(), 1, 0, 0, 0, 1);
+                    serverLevel.sendParticles(serverPlayer, ParticleTypes.SPLASH, false, false, pos.getX() + random.nextDouble(), pos.getY() + 1, pos.getZ() + random.nextDouble(), 1, 0, 0, 0, 1);
                 }
             });
         }

@@ -19,7 +19,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(targets = "net.minecraft.core.dispenser.DispenseItemBehavior$18")
+@Mixin(targets = "net.minecraft.core.dispenser.DispenseItemBehavior$15")
 public class PotionDispenseItemBehaviorMixin {
 
     @WrapOperation(method = "execute", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/level/ServerLevel;sendParticles(Lnet/minecraft/core/particles/ParticleOptions;DDDIDDDD)I"))
@@ -37,7 +37,7 @@ public class PotionDispenseItemBehaviorMixin {
             RandomSource random = level.getRandom();
 
             for (int i = 0; i < 5; i++) {
-                level.sendParticles(serverPlayer, ParticleTypes.SPLASH, false, pos.getX() + random.nextDouble(), pos.getY() + 1, pos.getZ() + random.nextDouble(), 1, 0, 0, 0, 1);
+                level.sendParticles(serverPlayer, ParticleTypes.SPLASH, false, false, pos.getX() + random.nextDouble(), pos.getY() + 1, pos.getZ() + random.nextDouble(), 1, 0, 0, 0, 1);
             }
         });
     }

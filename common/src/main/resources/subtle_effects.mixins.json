@@ -45,7 +45,6 @@
     "client.entity.ClientEntityMixin",
     "client.entity.ClientLivingEntityMixin",
     "client.entity.EntityAccessor",
-    "client.entity.EntityMixin",
     "client.entity.EntityRendererMixin",
     "client.entity.EntityRenderStateMixin",
     "client.entity.HumanoidModelMixin",
@@ -67,10 +66,9 @@
     "client.item.BucketItemMixin",
     "client.item.FlintAndSteelItemMixin",
     "client.item.SolidBucketItemMixin",
-    "client.item.component.ConsumableMixin",
-    "client.particle.CherryParticleMixin",
     "client.particle.DripParticleMixin",
     "client.particle.FallAndLandParticleMixin",
+    "client.particle.FallingLeavesParticleMixin",
     "client.particle.FlyTowardsPositionParticleAccessor",
     "client.particle.FlyTowardsPositionParticleAccessor$EnchantProviderMixin",
     "client.particle.HeartParticleMixin",
@@ -108,7 +106,8 @@
     "common.entity.WorkAtPoiMixin",
     "common.item.FoodOnAStickItemMixin",
     "common.item.MaceItemMixin",
-    "common.item.PotionItemMixin"
+    "common.item.PotionItemMixin",
+    "common.item.component.ConsumableMixin"
   ],
   "injectors": {
     "defaultRequire": 1

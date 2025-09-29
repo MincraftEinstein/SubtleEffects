@@ -23,7 +23,7 @@ public abstract class HumanoidModelMixin<T extends HumanoidRenderState> {
     private void spinHead(T renderState, CallbackInfo ci) {
         EntityRenderStateAccessor accessor = (EntityRenderStateAccessor) renderState;
 
-        if (accessor.shouldRenderSolarSystem()) {
+        if (accessor.subtleEffects$shouldRenderSolarSystem()) {
             head.yRot = EinsteinSolarSystemLayer.getSpin(accessor, 0.5F);
         }
     }

@@ -22,7 +22,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(BarrelBlock.class)
 public class BarrelBlockMixin {
 
-    @Inject(method = "useWithoutItem", at = @At(value = "FIELD", target = "Lnet/minecraft/world/InteractionResult;SUCCESS:Lnet/minecraft/world/InteractionResult;"))
+    @Inject(method = "useWithoutItem", at = @At(value = "FIELD", target = "Lnet/minecraft/world/InteractionResult;SUCCESS:Lnet/minecraft/world/InteractionResult$Success;"))
     private void useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult, CallbackInfoReturnable<InteractionResult> cir) {
         if (!ModConfigs.BLOCKS.openingBarrelsSpawnsBubbles) {
             return;
@@ -31,7 +31,7 @@ public class BarrelBlockMixin {
         Direction direction = state.getValue(BarrelBlock.FACING);
         BlockPos relativePos = pos.relative(direction);
 
-        if (direction != Direction.DOWN && level.getFluidState(relativePos).is(FluidTags.WATER) && !level.getBlockState(relativePos).isSolidRender(level, relativePos)) {
+        if (direction != Direction.DOWN && level.getFluidState(relativePos).is(FluidTags.WATER) && !level.getBlockState(relativePos).isSolidRender()) {
             RandomSource random = level.getRandom();
 
             for (int i = 0; i < 10; i++) {
