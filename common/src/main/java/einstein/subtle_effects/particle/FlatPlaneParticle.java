@@ -11,7 +11,7 @@ import org.joml.Vector3f;
 
 public abstract class FlatPlaneParticle extends TextureSheetParticle {
 
-    // Note: rotation is in radiens
+    // Note: rotation is in radians
     protected Quaternionf rotation = new Quaternionf();
     protected boolean renderBackFace = true;
 
@@ -25,14 +25,15 @@ public abstract class FlatPlaneParticle extends TextureSheetParticle {
 
     @Override
     public void render(VertexConsumer consumer, Camera camera, float partialTicks) {
+        Quaternionf rotation = new Quaternionf(this.rotation);
         if (roll != 0) {
             rotation.rotateZ(Mth.lerp(partialTicks, oRoll, roll));
         }
 
-        renderQuad(consumer, camera, partialTicks);
+        renderQuad(consumer, camera, partialTicks, rotation);
     }
 
-    protected void renderQuad(VertexConsumer consumer, Camera camera, float partialTicks) {
+    protected void renderQuad(VertexConsumer consumer, Camera camera, float partialTicks, Quaternionf rotation) {
         Vec3 vec3 = camera.getPosition();
         float x = (float) (Mth.lerp(partialTicks, xo, this.x) - vec3.x());
         float y = (float) (Mth.lerp(partialTicks, yo, this.y) - vec3.y());

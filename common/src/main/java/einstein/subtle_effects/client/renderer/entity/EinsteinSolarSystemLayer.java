@@ -35,7 +35,8 @@ public class EinsteinSolarSystemLayer<T extends AbstractClientPlayer, V extends 
     private final EinsteinSolarSystemRenderLayerParentImpl<T, V> renderLayerParent;
     private final EinsteinSolarSystemModel<T> model;
     private final CustomHeadLayer<T, EinsteinSolarSystemModel<T>> headLayer;
-    private final HumanoidArmorLayer<T, EinsteinSolarSystemModel<T>, HumanoidModel<T>> armorLayer;
+    private final EinsteinSolarSystemArmorLayer<T, EinsteinSolarSystemModel<T>, HumanoidModel<T>> armorLayer;
+    private final AnniversaryHatLayer<T, V> anniversaryHatLayer;
 
     @SuppressWarnings("unchecked")
     public EinsteinSolarSystemLayer(RenderLayerParent<?, ?> renderer, EntityRendererProvider.Context context) {
@@ -43,11 +44,17 @@ public class EinsteinSolarSystemLayer<T extends AbstractClientPlayer, V extends 
         model = new EinsteinSolarSystemModel<>(context.bakeLayer(EinsteinSolarSystemModel.MODEL_LAYER));
         renderLayerParent = new EinsteinSolarSystemRenderLayerParentImpl<>(this);
         headLayer = new CustomHeadLayer<>(renderLayerParent, context.getModelSet(), context.getItemInHandRenderer());
-        armorLayer = new HumanoidArmorLayer<>(renderLayerParent,
+        armorLayer = new EinsteinSolarSystemArmorLayer<>(renderLayerParent,
                 new HumanoidArmorModel<>(context.bakeLayer(ModelLayers.PLAYER_INNER_ARMOR)),
                 new HumanoidArmorModel<>(context.bakeLayer(ModelLayers.PLAYER_OUTER_ARMOR)),
                 context.getModelManager()
         );
+
+        if (AnniversaryHatLayer.isModAnniversary()) {
+            anniversaryHatLayer = new AnniversaryHatLayer<>(renderLayerParent, context);
+            return;
+        }
+        anniversaryHatLayer = null;
     }
 
     @Override
@@ -81,6 +88,10 @@ public class EinsteinSolarSystemLayer<T extends AbstractClientPlayer, V extends 
                 poseStack.translate(0, 0.25, 0); // Adjusts the renders to align with the lower head model
                 headLayer.render(poseStack, bufferSource, packedLight, player, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch);
                 armorLayer.render(poseStack, bufferSource, packedLight, player, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch);
+
+                if (anniversaryHatLayer != null) {
+                    anniversaryHatLayer.render(poseStack, bufferSource, packedLight, player, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch);
+                }
 
                 poseStack.popPose();
                 poseStack.popPose();

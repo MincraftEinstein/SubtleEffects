@@ -8,6 +8,7 @@ import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import einstein.subtle_effects.mixin.client.particle.ParticleEngineAccessor;
 import net.minecraft.client.particle.ParticleRenderType;
+import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureManager;
 
 import java.util.ArrayList;
@@ -20,6 +21,9 @@ public class ModParticleRenderTypes {
         @Override
         public void begin(BufferBuilder builder, TextureManager textureManager) {
             RenderSystem.depthMask(false);
+
+            // noinspection deprecation
+            RenderSystem.setShaderTexture(0, TextureAtlas.LOCATION_PARTICLES);
             RenderSystem.enableBlend();
             RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
             builder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.PARTICLE);

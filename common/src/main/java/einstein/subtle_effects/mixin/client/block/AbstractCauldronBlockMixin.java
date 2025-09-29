@@ -19,6 +19,8 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 
 import static einstein.subtle_effects.init.ModConfigs.BLOCKS;
+import static einstein.subtle_effects.util.MathUtil.nextDouble;
+import static einstein.subtle_effects.util.MathUtil.nextSign;
 
 @Mixin(AbstractCauldronBlock.class)
 public class AbstractCauldronBlockMixin {
@@ -31,6 +33,10 @@ public class AbstractCauldronBlockMixin {
             if (BLOCKS.cauldronUseParticles || BLOCKS.cauldronCleanItemSounds) {
                 TickerManager.schedule(2, () -> {
                     if (BLOCKS.cauldronUseParticles) {
+                        if (level.getFluidState(pos.above()).getAmount() >= 5) {
+                            return;
+                        }
+
                         BlockState newState = level.getBlockState(pos);
                         boolean isEmpty = newState.is(Blocks.CAULDRON);
                         double fluidHeight = Util.getCauldronFillHeight(isEmpty ? state : newState);
@@ -38,12 +44,17 @@ public class AbstractCauldronBlockMixin {
 
                         if (fluidHeight > 0 && particle != null) {
                             for (int i = 0; i < 16; i++) {
+                                int xSign = nextSign(random);
+                                int zSign = nextSign(random);
+
                                 level.addParticle(
                                         particle,
-                                        pos.getX() + random.nextDouble(),
+                                        pos.getX() + 0.5 + nextDouble(random, 0.5) * xSign,
                                         pos.getY() + fluidHeight,
-                                        pos.getZ() + random.nextDouble(),
-                                        0, 0, 0
+                                        pos.getZ() + 0.5 + nextDouble(random, 0.5) * xSign,
+                                        nextDouble(random, 0.15F) * xSign,
+                                        nextDouble(random, 0.35F),
+                                        nextDouble(random, 0.15F) * zSign
                                 );
                             }
                         }

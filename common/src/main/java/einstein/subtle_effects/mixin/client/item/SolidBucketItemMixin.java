@@ -5,6 +5,7 @@ import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.init.ModParticles;
 import einstein.subtle_effects.util.ParticleSpawnUtil;
 import net.minecraft.core.BlockPos;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -29,7 +30,8 @@ public class SolidBucketItemMixin {
             ItemStack stack = blockContext.getItemInHand();
 
             if (stack.is(Items.POWDER_SNOW_BUCKET) && ModConfigs.ITEMS.powderSnowBucketUseParticles) {
-                ParticleSpawnUtil.spawnBucketParticles(level, pos, ModParticles.SNOW.get());
+                RandomSource random = level.getRandom();
+                ParticleSpawnUtil.spawnBucketParticles(level, random, pos, ModParticles.SNOW.get(), random.nextDouble());
             }
         }
     }

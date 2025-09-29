@@ -2,6 +2,7 @@ package einstein.subtle_effects.mixin.client.particle;
 
 import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.init.ModSounds;
+import einstein.subtle_effects.util.DripParticleAccessor;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.DripParticle;
 import net.minecraft.client.particle.Particle;
@@ -18,8 +19,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.function.Supplier;
 
-@Mixin(targets = "net.minecraft.client.particle.DripParticle.FallAndLandParticle")
-public abstract class FallAndLandParticleMixin extends Particle {
+@Mixin(DripParticle.FallAndLandParticle.class)
+public abstract class FallAndLandParticleMixin extends Particle implements DripParticleAccessor {
 
     @Unique
     private final Fluid subtleEffects$fluid = ((DripParticle) (Object) this).getType();
@@ -31,7 +32,7 @@ public abstract class FallAndLandParticleMixin extends Particle {
     @SuppressWarnings("deprecation")
     @Inject(method = "postMoveUpdate", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/particle/DripParticle$FallAndLandParticle;remove()V"))
     private void onRemove(CallbackInfo ci) {
-        if (ModConfigs.GENERAL.dropLandSoundVolume.get() > 0) {
+        if (ModConfigs.GENERAL.dropLandSoundVolume.get() > 0 && !subtleEffects$isSilent()) {
             Supplier<SoundEvent> sound = subtleEffects$fluid.is(FluidTags.LAVA) ? ModSounds.DRIP_LAVA : ModSounds.DRIP_WATER;
             level.playLocalSound(x, y, z,
                     sound.get(),

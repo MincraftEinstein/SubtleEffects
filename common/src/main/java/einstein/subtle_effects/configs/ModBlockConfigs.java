@@ -136,6 +136,19 @@ public class ModBlockConfigs extends Config {
 
     public boolean replaceOminousVaultConnection = true;
     public boolean cobwebMovementSounds = true;
+    public boolean cakeEatParticles = true;
+    public boolean cakeEatSounds = true;
+    public boolean rainWaterRipples = true;
+    public ValidatedFloat rainWaterRipplesDensity = new ValidatedFloat(0.35F, 1, 0);
+    public boolean underwaterBlockBreakBubbles = true;
+    public ConfigGroup underwaterContainerBubblingGroup = new ConfigGroup("underwater_container_bubbling");
+    public boolean decoratedPotsSpawnBubbles = true;
+    public boolean openingBarrelsSpawnsBubbles = true;
+    public boolean openingChestsSpawnsBubbles = true;
+    public boolean chestsOpenRandomlyUnderwater = true;
+    public boolean randomChestOpeningNeedsSoulSand = false;
+    @ConfigGroup.Pop
+    public boolean dispenseItemBubbles = true;
 
     private static ValidatedIdentifier getEyeHandler() {
         List<ResourceLocation> eyes = CompatHelper.IS_END_REMASTERED_LOADED.get()

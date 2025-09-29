@@ -12,7 +12,7 @@ import net.minecraft.network.FriendlyByteBuf;
 import java.util.Locale;
 
 @SuppressWarnings("deprecation")
-public record FloatParticleOptions(ParticleType<?> type, float f) implements ParticleOptions {
+public record FloatParticleOptions(ParticleType<FloatParticleOptions> type, float f) implements ParticleOptions {
 
     public static final Deserializer<FloatParticleOptions> DESERIALIZER = new Deserializer<>() {
 

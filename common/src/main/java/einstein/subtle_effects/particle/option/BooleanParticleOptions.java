@@ -12,7 +12,7 @@ import net.minecraft.network.FriendlyByteBuf;
 import java.util.Locale;
 
 @SuppressWarnings("deprecation")
-public record BooleanParticleOptions(ParticleType<?> type, boolean bool) implements ParticleOptions {
+public record BooleanParticleOptions(ParticleType<BooleanParticleOptions> type, boolean bool) implements ParticleOptions {
 
     public static final Deserializer<BooleanParticleOptions> DESERIALIZER = new Deserializer<>() {
 

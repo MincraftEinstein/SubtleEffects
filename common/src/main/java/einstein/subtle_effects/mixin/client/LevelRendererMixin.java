@@ -12,6 +12,7 @@ import einstein.subtle_effects.configs.ReplacedParticlesDisplayType;
 import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.init.ModParticles;
 import einstein.subtle_effects.particle.option.ColorParticleOptions;
+import einstein.subtle_effects.particle.option.FloatParticleOptions;
 import einstein.subtle_effects.ticking.tickers.TickerManager;
 import einstein.subtle_effects.util.FrustumGetter;
 import einstein.subtle_effects.util.ParticleAccessor;
@@ -23,10 +24,12 @@ import net.minecraft.client.particle.Particle;
 import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.valueproviders.IntProvider;
 import net.minecraft.world.entity.player.Player;
@@ -35,6 +38,7 @@ import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LevelEvent;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
@@ -48,6 +52,7 @@ import org.spongepowered.asm.mixin.injection.Slice;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import static einstein.subtle_effects.init.ModConfigs.*;
+import static einstein.subtle_effects.util.MathUtil.nextDouble;
 import static einstein.subtle_effects.util.MathUtil.nextNonAbsDouble;
 
 @Mixin(value = LevelRenderer.class, priority = 999)
@@ -93,6 +98,28 @@ public abstract class LevelRendererMixin implements FrustumGetter {
     @ModifyExpressionValue(method = "tickRain", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/state/BlockState;is(Lnet/minecraft/world/level/block/Block;)Z"))
     private boolean modifyRainEvaporationBlocks(boolean original, @Local BlockState state) {
         return original || (BLOCKS.steam.lavaCauldronsEvaporateRain && state.is(Blocks.LAVA_CAULDRON));
+    }
+
+    @WrapOperation(method = "tickRain", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/multiplayer/ClientLevel;addParticle(Lnet/minecraft/core/particles/ParticleOptions;DDDDDD)V"))
+    private void modifyCauldronRippleParticlePos(ClientLevel level, ParticleOptions options, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, Operation<Void> original, @Local BlockState state, @Local FluidState fluidState, @Local RandomSource random, @Local(ordinal = 1) BlockPos pos) {
+        if (BLOCKS.rainWaterRipples) {
+            boolean isCauldron = state.is(Blocks.WATER_CAULDRON);
+
+            if ((fluidState.is(FluidTags.WATER) || isCauldron)) {
+                if (random.nextDouble() > BLOCKS.rainWaterRipplesDensity.get()) {
+                    return;
+                }
+
+                options = new FloatParticleOptions(ModParticles.WATER_RIPPLE.get(), 1);
+
+                if (isCauldron) {
+                    x = pos.getX() + 0.1875 + nextDouble(random, 0.625);
+                    y = pos.getY() + Util.getCauldronFillHeight(state) + 0.01;
+                    z = pos.getZ() + 0.1875 + nextDouble(random, 0.625);
+                }
+            }
+        }
+        original.call(level, options, x, y, z, xSpeed, ySpeed, zSpeed);
     }
 
     @Inject(method = "levelEvent", at = @At("TAIL"))
@@ -243,6 +270,33 @@ public abstract class LevelRendererMixin implements FrustumGetter {
             ((ParticleAccessor) particle).subtleEffects$force();
         }
         return particle;
+    }
+
+    @Inject(method = "shootParticles", at = @At("TAIL"))
+    private void addBubbles(int data, BlockPos pos, RandomSource random, SimpleParticleType type, CallbackInfo ci, @Local Direction direction, @Local(ordinal = 0) double xOffset, @Local(ordinal = 1) double yOffset, @Local(ordinal = 2) double zOffset) {
+        if (!BLOCKS.dispenseItemBubbles) {
+            return;
+        }
+
+        // noinspection all
+        FluidState fluidState = level.getFluidState(pos.relative(direction));
+        if (fluidState.is(FluidTags.WATER)) {
+            int stepX = direction.getStepX();
+            int stepY = direction.getStepY();
+            int stepZ = direction.getStepZ();
+
+            for (int i = 0; i < 10; ++i) {
+                double speedModifier = random.nextDouble() * 0.2 + 0.01;
+                double x = xOffset + stepX * 0.01 + (random.nextDouble() - 0.5) * stepZ * 0.5;
+                double y = yOffset + stepY * 0.01 + (random.nextDouble() - 0.5) * stepY * 0.5;
+                double z = zOffset + stepZ * 0.01 + (random.nextDouble() - 0.5) * stepX * 0.5;
+                double xSpeed = stepX * speedModifier + random.nextGaussian() * 0.01;
+                double ySpeed = stepY * speedModifier + random.nextGaussian() * 0.01;
+                double zSpeed = stepZ * speedModifier + random.nextGaussian() * 0.01;
+
+                level.addParticle(ParticleTypes.BUBBLE, x, y, z, xSpeed, ySpeed, zSpeed);
+            }
+        }
     }
 
     @Override

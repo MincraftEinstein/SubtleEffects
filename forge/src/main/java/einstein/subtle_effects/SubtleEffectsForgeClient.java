@@ -1,6 +1,7 @@
 package einstein.subtle_effects;
 
 import einstein.subtle_effects.client.model.entity.EinsteinSolarSystemModel;
+import einstein.subtle_effects.client.renderer.entity.AnniversaryHatLayer;
 import einstein.subtle_effects.client.renderer.entity.EinsteinSolarSystemLayer;
 import einstein.subtle_effects.data.BCWPPackManager;
 import einstein.subtle_effects.data.MobSkullShaderReloadListener;
@@ -10,6 +11,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.client.renderer.entity.EntityRenderer;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
@@ -57,7 +59,12 @@ public class SubtleEffectsForgeClient {
                 EntityRenderer<?> renderer = event.getSkin(skinName);
 
                 if (renderer instanceof PlayerRenderer playerRenderer) {
-                    playerRenderer.addLayer(new EinsteinSolarSystemLayer<>(playerRenderer, event.getContext()));
+                    EntityRendererProvider.Context context = event.getContext();
+                    playerRenderer.addLayer(new EinsteinSolarSystemLayer<>(playerRenderer, context));
+
+                    if (AnniversaryHatLayer.isModAnniversary()) {
+                        playerRenderer.addLayer(new AnniversaryHatLayer<>(playerRenderer, context));
+                    }
                 }
             }
         });

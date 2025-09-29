@@ -29,7 +29,7 @@ public class ModGeneralConfigs extends Config {
     public boolean glowingLavaDrops = true;
     public boolean fluidDropsEvaporate = true;
     public ValidatedFloat fluidDropsEvaporationVolume = new ValidatedFloat(0.25F, 1, 0);
-    public boolean dropLandInFluidSplashes = true;
+    public boolean dropLandInFluidRipples = true;
     @ConfigGroup.Pop
     public ValidatedFloat dropLandSoundVolume = new ValidatedFloat(1, 2, 0);
 
@@ -44,8 +44,14 @@ public class ModGeneralConfigs extends Config {
     @ConfigGroup.Pop
     public boolean disableRandomizedShading = true;
     public ValidatedFloat potionParticleAlpha = new ValidatedFloat(0.7F, 1, 0.3F);
-    @ConfigGroup.Pop
     public ValidatedFloat potionParticleAlphaNearPlayer = new ValidatedFloat(0.2F, 1, 0);
+    public ConfigGroup leavesGroup = new ConfigGroup("leaves");
+    public boolean leavesLandOnGround = true;
+    public boolean leavesLandOnWater = true;
+    public boolean leavesLandingOnWaterRipples = true;
+    @ConfigGroup.Pop
+    @ConfigGroup.Pop
+    public boolean leavesLandingOnWaterKeepMomentum = true;
 
     public boolean mobSkullShaders = true;
     public ValidatedFloat fireHeight = new ValidatedFloat(-0.15F, 0.4F, -0.5F);

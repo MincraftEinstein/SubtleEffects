@@ -15,7 +15,8 @@ import net.minecraft.network.chat.Component;
 import java.util.Locale;
 
 @SuppressWarnings("deprecation")
-public record DirectionParticleOptions(ParticleType<DirectionParticleOptions> type, Direction direction) implements ParticleOptions {
+public record DirectionParticleOptions(ParticleType<DirectionParticleOptions> type,
+                                       Direction direction) implements ParticleOptions {
 
     public static Codec<DirectionParticleOptions> codec(ParticleType<DirectionParticleOptions> type) {
         return RecordCodecBuilder.create(instance -> instance.group(

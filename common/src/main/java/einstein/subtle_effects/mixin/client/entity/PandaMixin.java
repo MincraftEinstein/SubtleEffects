@@ -10,7 +10,6 @@ import einstein.subtle_effects.ticking.tickers.TickerManager;
 import einstein.subtle_effects.util.MathUtil;
 import einstein.subtle_effects.util.ParticleSpawnUtil;
 import einstein.subtle_effects.util.Util;
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvents;
@@ -111,7 +110,7 @@ public abstract class PandaMixin extends Animal {
             ParticleSpawnUtil.spawnEntityFaceParticle(ModParticles.SNEEZE.get(),
                     subtleEffects$panda, level, random, offset,
                     new Vec3(MathUtil.nextNonAbsDouble(random, 0.02), 0, Mth.nextDouble(random, 0.03, 0.08)),
-                    Minecraft.getInstance().getFrameTime()
+                    Util.getPartialTicks()
             );
         }
     }

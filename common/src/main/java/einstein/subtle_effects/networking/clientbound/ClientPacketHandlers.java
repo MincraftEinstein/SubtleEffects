@@ -13,6 +13,7 @@ import einstein.subtle_effects.util.ParticleSpawnUtil;
 import einstein.subtle_effects.util.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.particles.*;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -20,10 +21,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.animal.Animal;
-import net.minecraft.world.entity.animal.Dolphin;
-import net.minecraft.world.entity.animal.MushroomCow;
-import net.minecraft.world.entity.animal.Parrot;
+import net.minecraft.world.entity.animal.*;
 import net.minecraft.world.entity.animal.frog.Tadpole;
 import net.minecraft.world.entity.animal.horse.AbstractHorse;
 import net.minecraft.world.entity.monster.Ravager;
@@ -186,21 +184,22 @@ public class ClientPacketHandlers {
 
         if (BLOCKS.fallingBlocks.onLandDust) {
             if (BLOCKS.fallingBlocks.dustyBlocks.contains(block)) {
+                boolean isInWater = payload.isInWater() && BLOCKS.fallingBlocks.replaceDustWithBubblesUnderwater;
                 RandomSource random = level.getRandom();
-                ParticleOptions options = getParticleForFallingBlock(level, pos, state);
+                ParticleOptions options = isInWater ? ParticleTypes.BUBBLE : getParticleForFallingBlock(level, pos, state);
 
                 for (int i = 0; i < 25; i++) {
-                    boolean b = random.nextBoolean();
+                    boolean bool = random.nextBoolean();
                     int xSign = nextSign(random);
                     int zSign = nextSign(random);
 
                     level.addParticle(options,
-                            pos.getX() + 0.5 + (b ? 0.55 * xSign : nextNonAbsDouble(random, 0.55)),
+                            pos.getX() + 0.5 + (bool ? 0.55 * xSign : nextNonAbsDouble(random, 0.55)),
                             pos.getY() + nextDouble(random, 0.3),
-                            pos.getZ() + 0.5 + (!b ? 0.55 * zSign : nextNonAbsDouble(random, 0.55)),
-                            b ? 50 * xSign : 0, // 50 because dust velocity gets multiplied by 0.1
+                            pos.getZ() + 0.5 + (!bool ? 0.55 * zSign : nextNonAbsDouble(random, 0.55)),
+                            bool ? (isInWater ? nextDouble(random, 0.5) : 50) * xSign : 0, // 50 because dust velocity gets multiplied by 0.1
                             0.3,
-                            !b ? 50 * zSign : 0
+                            !bool ? (isInWater ? nextDouble(random, 0.5) : 50) * zSign : 0
                     );
                 }
             }
@@ -387,8 +386,7 @@ public class ClientPacketHandlers {
                 for (int i = 0; i < 16; i++) {
                     ParticleSpawnUtil.spawnEntityFaceParticle(
                             new ItemParticleOption(ParticleTypes.ITEM, settings.stackReplacer().apply(stack)),
-                            livingEntity, level, random, settings.offset(),
-                            Minecraft.getInstance().getFrameTime()
+                            livingEntity, level, random, settings.offset(), Util.getPartialTicks()
                     );
                 }
             }
@@ -397,6 +395,48 @@ public class ClientPacketHandlers {
             if (volume > 0 && !entity.isSilent()) {
                 Util.playClientSound(entity, getEatSound(livingEntity, stack, settings), entity.getSoundSource(), volume, livingEntity.getVoicePitch());
             }
+        }
+    }
+
+    public static void handle(ClientBoundDrankPotionPayload payload) {
+        Level level = Minecraft.getInstance().level;
+        if (level == null) {
+            return;
+        }
+
+        Entity entity = level.getEntity(payload.entityId());
+
+        if (entity instanceof LivingEntity livingEntity && livingEntity.isAlive()) {
+            ParticleSpawnUtil.spawnPotionRings(livingEntity);
+        }
+    }
+
+    public static void handle(ClientBoundDispenseBucketPayload payload) {
+        Level level = Minecraft.getInstance().level;
+        if (level == null) {
+            return;
+        }
+
+        BlockPos pos = payload.pos();
+        BlockState state = level.getBlockState(pos);
+
+        if (state.hasProperty(BlockStateProperties.FACING)) {
+            Direction direction = state.getValue(BlockStateProperties.FACING);
+            pos = pos.relative(direction);
+        }
+
+        ParticleSpawnUtil.spawnBucketParticles(level, pos, payload.stack());
+    }
+
+    public static void handle(ClientBoundSheepShearPayload payload) {
+        Level level = Minecraft.getInstance().level;
+        if (level == null) {
+            return;
+        }
+
+        Entity entity = level.getEntity(payload.entityId());
+        if (entity instanceof Sheep sheep && ENTITIES.sheepShearFluff) {
+            ParticleSpawnUtil.sheep(sheep);
         }
     }
 

@@ -1,8 +1,15 @@
 {
   "textures": [
+    "subtle_effects:lava_splash_4",
     "subtle_effects:lava_splash_0",
     "subtle_effects:lava_splash_1",
     "subtle_effects:lava_splash_2",
-    "subtle_effects:lava_splash_3"
+    "subtle_effects:lava_splash_3",
+    "subtle_effects:lava_splash_4",
+    "subtle_effects:lava_splash_5",
+    "subtle_effects:lava_splash_6",
+    "subtle_effects:lava_splash_7",
+    "subtle_effects:lava_splash_8",
+    "subtle_effects:lava_splash_9"
   ]
 }

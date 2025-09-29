@@ -14,7 +14,7 @@ import net.minecraft.network.FriendlyByteBuf;
 import java.util.Locale;
 
 @SuppressWarnings("deprecation")
-public record PositionParticleOptions(ParticleType<?> type, BlockPos pos) implements ParticleOptions {
+public record PositionParticleOptions(ParticleType<PositionParticleOptions> type, BlockPos pos) implements ParticleOptions {
 
     public static final Deserializer<PositionParticleOptions> DESERIALIZER = new Deserializer<>() {
 
