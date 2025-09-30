@@ -31,7 +31,6 @@ public class SubtleEffectsClient {
         BiomeParticleManager.init();
         ModDamageListeners.init();
         ModParticleProviders.init();
-        ModParticles.init();
         ModSpriteSets.init();
         ModAnimalFedEffectSettings.init();
     }
