@@ -6,8 +6,8 @@
   "compatibilityLevel": "JAVA_17",
   "client": [
     "client.FluidTypeMixin",
-    "client.NeoForgeClientEntityMixin",
-    "client.NeoForgeMultiPlayerGameModeMixin",
+    "client.ForgeClientEntityMixin",
+    "client.ForgeMultiPlayerGameModeMixin",
     "client.item.ForgeBucketItemAccessor",
     "client.item.ForgeBucketItemMixin",
     "client.particle.ForgeParticleEngineMixin"
@@ -15,7 +15,7 @@
   "mixins": [
     "common.entity.ForgeCommonMooshroomMixin",
     "common.ForgeStonecutter$2Menu",
-    "common.NeoForgeShearsDispenseItemBehaviorMixin"
+    "common.ForgeShearsDispenseItemBehaviorMixin"
   ],
   "injectors": {
     "defaultRequire": 1

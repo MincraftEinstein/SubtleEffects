@@ -16,7 +16,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(ShearsDispenseItemBehavior.class)
 public class FabricShearsDispenseItemBehaviorMixin {
 
-    @Inject(method = "tryShearLivingEntity", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/level/ServerLevel;gameEvent(Lnet/minecraft/world/entity/Entity;Lnet/minecraft/core/Holder;Lnet/minecraft/core/BlockPos;)V"))
+    @Inject(method = "tryShearLivingEntity", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/level/ServerLevel;gameEvent(Lnet/minecraft/world/entity/Entity;Lnet/minecraft/world/level/gameevent/GameEvent;Lnet/minecraft/core/BlockPos;)V"))
     private static void spawnShearParticles(ServerLevel level, BlockPos pos, CallbackInfoReturnable<Boolean> cir, @Local LivingEntity entity) {
         if (entity instanceof Sheep sheep) {
             Services.NETWORK.sendToClientsTracking(level, pos, new ClientBoundSheepShearPayload(sheep.getId()));

@@ -535,7 +535,7 @@ public class ParticleSpawnUtil {
             }
 
             if (nearWater) {
-                TickerManager.schedule(7, () -> {
+                TickerManager.schedule(10, () -> {
                     FluidState newFluidState = level.getFluidState(pos);
                     if (newFluidState.is(FluidTags.WATER) && newFluidState.getAmount() >= 7) {
                         spawnParticlesAroundShape(ParticleTypes.BUBBLE, level, pos, state,

@@ -1,5 +1,6 @@
 package einstein.subtle_effects.particle;
 
+import einstein.subtle_effects.util.LifetimeAlpha;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleProvider;

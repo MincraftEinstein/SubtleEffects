@@ -4,6 +4,7 @@ import einstein.subtle_effects.SubtleEffects;
 import einstein.subtle_effects.particle.*;
 import einstein.subtle_effects.particle.emitter.FireFlyEmitter;
 import einstein.subtle_effects.particle.emitter.PotionEmitter;
+import einstein.subtle_effects.particle.emitter.SplashEmitter;
 import einstein.subtle_effects.particle.provider.*;
 import einstein.subtle_effects.platform.Services;
 import net.minecraft.client.particle.ParticleProvider;
@@ -71,12 +72,23 @@ public class ModParticleProviders {
         register(EGG_SPLAT, EggSplatParticle.Provider::new);
         register(ENDER_EYE_PLACED_RING, EnderEyePlacedRingParticle.Provider::new);
         register(BLOCK_NO_MOMENTUM, sprites -> new TerrainNoMomentumParticleProvider());
-        register(LAVA_SPLASH, LavaSplashParticle.Provider::new);
         register(GEYSER_SPOUT, GeyserSpoutParticle.Provider::new);
         register(SNEEZE, SneezeParticle.Provider::new);
         register(GEYSER_SMOKE, GeyserSmokeParticleProvider::new);
         register(POTION_CLOUD, PotionCloudParticle.Provider::new);
         register(POTION_POOF_CLOUD, PotionPoofCloudProvider::new);
+        register(WATER_RIPPLE, RippleParticle.Provider::new);
+        register(LAVA_RIPPLE, RippleParticle.LavaProvider::new);
+        register(WATER_SPLASH, SplashParticle.Provider::new);
+        register(LAVA_SPLASH, SplashParticle.LavaProvider::new);
+        register(WATER_SPLASH_DROPLET, SplashDropletParticle.Provider::new);
+        register(LAVA_SPLASH_DROPLET, SplashDropletParticle.LavaProvider::new);
+        register(WATER_SPLASH_EMITTER, sprites -> new SplashEmitter.Provider());
+        register(LAVA_SPLASH_EMITTER, sprites -> new SplashEmitter.LavaProvider());
+        register(WATERFALL_CLOUD, WaterfallCloud.Provider::new);
+        register(WATERFALL_DROPLET, WaterfallDropletParticle.Provider::new);
+        register(WATERFALL_MIST, WaterfallMistParticle.Provider::new);
+        register(FALLEN_LEAF, sprites -> new FallenLeafParticle.Provider());
         SubtleEffects.LOGGER.info("Forge please do the world a favor and STOP EXISTING!!");
     }
 

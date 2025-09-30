@@ -208,10 +208,6 @@ public class Util {
     }
 
     public static float getPartialTicks() {
-        return getPartialTicks(false);
-    }
-
-    public static float getPartialTicks(boolean runsNormally) {
-        return Minecraft.getInstance().getTimer().getGameTimeDeltaPartialTick(runsNormally);
+        return Minecraft.getInstance().getFrameTime();
     }
 }

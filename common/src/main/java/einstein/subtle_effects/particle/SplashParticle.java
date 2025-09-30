@@ -166,7 +166,7 @@ public class SplashParticle extends FlatPlaneParticle {
 
     protected void renderVertex(VertexConsumer buffer, Quaternionf rotation, float x, float y, float z, float xOffset, float yOffset, float quadWidthSize, float quadHeightSize, float u, float v, int packedLight, float red, float green, float blue, float alpha) {
         Vector3f vector3f = new Vector3f(xOffset, yOffset, 0).rotate(rotation).mul(quadWidthSize, quadHeightSize, quadWidthSize).add(x, y, z);
-        buffer.addVertex(vector3f.x(), vector3f.y(), vector3f.z()).setUv(u, v).setColor(red, green, blue, alpha).setLight(packedLight);
+        buffer.vertex(vector3f.x(), vector3f.y(), vector3f.z()).uv(u, v).color(red, green, blue, alpha).uv2(packedLight).endVertex();
     }
 
     public record Provider(SpriteSet sprites) implements ParticleProvider<SplashParticleOptions> {

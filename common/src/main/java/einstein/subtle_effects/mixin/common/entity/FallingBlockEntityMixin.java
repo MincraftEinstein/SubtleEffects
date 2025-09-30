@@ -24,7 +24,7 @@ public class FallingBlockEntityMixin implements FallingBlockAccessor {
     @Unique
     private boolean subtleEffects$isInWater;
 
-    @Inject(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/item/FallingBlockEntity;handlePortal()V"))
+    @Inject(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/item/FallingBlockEntity;move(Lnet/minecraft/world/entity/MoverType;Lnet/minecraft/world/phys/Vec3;)V"))
     private void tick(CallbackInfo ci) {
         subtleEffects$isInWater = Util.isEntityInFluid(subtleEffects$me, FluidTags.WATER);
     }

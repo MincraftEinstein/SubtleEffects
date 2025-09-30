@@ -24,6 +24,7 @@ public record ClientBoundFallingBlockLandPayload(int stateId, BlockPos pos,
     public void encode(FriendlyByteBuf buf) {
         buf.writeInt(stateId);
         buf.writeBlockPos(pos);
+        buf.writeBoolean(isInWater);
     }
 
     public static ClientBoundFallingBlockLandPayload decode(FriendlyByteBuf buf) {

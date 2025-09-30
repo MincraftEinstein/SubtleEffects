@@ -1,21 +1,32 @@
 package einstein.subtle_effects.networking.clientbound;
 
 import einstein.subtle_effects.SubtleEffects;
+import einstein.subtle_effects.networking.Packet;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.network.codec.ByteBufCodecs;
-import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
+import org.jetbrains.annotations.Nullable;
 
-public record ClientBoundSheepShearPayload(int entityId) implements CustomPacketPayload {
+public record ClientBoundSheepShearPayload(int entityId) implements Packet {
 
-    public static final Type<ClientBoundSheepShearPayload> TYPE = new Type<>(SubtleEffects.loc("sheep_shear"));
-    public static final StreamCodec<FriendlyByteBuf, ClientBoundSheepShearPayload> STREAM_CODEC = StreamCodec.composite(
-            ByteBufCodecs.INT, ClientBoundSheepShearPayload::entityId,
-            ClientBoundSheepShearPayload::new
-    );
+    public static final ResourceLocation ID = SubtleEffects.loc("sheep_shear");
 
     @Override
-    public Type<? extends CustomPacketPayload> type() {
-        return TYPE;
+    public void encode(FriendlyByteBuf buf) {
+        buf.writeInt(entityId);
+    }
+
+    public static ClientBoundSheepShearPayload decode(FriendlyByteBuf buf) {
+        return new ClientBoundSheepShearPayload(buf.readInt());
+    }
+
+    @Override
+    public void handle(@Nullable ServerPlayer player) {
+        ClientPacketHandlers.handle(this);
+    }
+
+    @Override
+    public ResourceLocation id() {
+        return ID;
     }
 }

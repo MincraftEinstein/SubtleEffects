@@ -36,7 +36,7 @@ public class WolfMixin {
 
             int xSign = nextSign(random);
             int zSign = nextSign(random);
-            float rotation = -subtleEffects$me.getPreciseBodyRotation(Util.getPartialTicks()) * Mth.DEG_TO_RAD;
+            float rotation = -Mth.lerp(Util.getPartialTicks(), subtleEffects$me.yBodyRotO, subtleEffects$me.yBodyRot) * Mth.DEG_TO_RAD;
             boolean isSitting = subtleEffects$me.isInSittingPose();
             boolean isBaby = subtleEffects$me.isBaby();
 

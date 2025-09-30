@@ -98,7 +98,6 @@
     "common.entity.WorkAtComposterMixin",
     "common.entity.WorkAtPoiMixin",
     "common.item.FoodOnAStickItemMixin",
-    "common.item.MaceItemMixin",
     "common.item.PotionItemMixin"
   ],
   "injectors": {

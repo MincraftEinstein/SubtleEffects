@@ -18,5 +18,8 @@ public class ModPackets {
         NETWORK.registerToClient(ClientBoundVillagerWorkPacket.ID, ClientBoundVillagerWorkPacket.class, ClientBoundVillagerWorkPacket::decode);
         NETWORK.registerToClient(ClientBoundAnimalFedPacket.ID, ClientBoundAnimalFedPacket.class, ClientBoundAnimalFedPacket::decode);
         NETWORK.registerToClient(ClientBoundMooshroomShearedPacket.ID, ClientBoundMooshroomShearedPacket.class, ClientBoundMooshroomShearedPacket::decode);
+        NETWORK.registerToClient(ClientBoundSheepShearPayload.ID, ClientBoundSheepShearPayload.class, ClientBoundSheepShearPayload::decode);
+        NETWORK.registerToClient(ClientBoundDrankPotionPayload.ID, ClientBoundDrankPotionPayload.class, ClientBoundDrankPotionPayload::decode);
+        NETWORK.registerToClient(ClientBoundDispenseBucketPayload.ID, ClientBoundDispenseBucketPayload.class, ClientBoundDispenseBucketPayload::decode);
     }
 }

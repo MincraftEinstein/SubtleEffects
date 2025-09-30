@@ -3,6 +3,7 @@ package einstein.subtle_effects.particle;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.particle.option.FallenLeafParticleOptions;
+import einstein.subtle_effects.util.LifetimeAlpha;
 import einstein.subtle_effects.util.MathUtil;
 import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;

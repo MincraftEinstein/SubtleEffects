@@ -14,6 +14,7 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -35,13 +36,13 @@ import static net.minecraft.world.level.block.state.properties.BlockStatePropert
 @Mixin(BlockBehaviour.BlockStateBase.class)
 public class BlockStateBaseMixin {
 
-    @WrapOperation(method = "useWithoutItem", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/Block;useWithoutItem(Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/entity/player/Player;Lnet/minecraft/world/phys/BlockHitResult;)Lnet/minecraft/world/InteractionResult;"))
-    private InteractionResult use(Block block, BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult, Operation<InteractionResult> original) {
+    @WrapOperation(method = "use", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/Block;use(Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/entity/player/Player;Lnet/minecraft/world/InteractionHand;Lnet/minecraft/world/phys/BlockHitResult;)Lnet/minecraft/world/InteractionResult;"))
+    private InteractionResult use(Block block, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult, Operation<InteractionResult> original) {
         if (level.isClientSide && (ModConfigs.BLOCKS.cakeEatParticles || ModConfigs.BLOCKS.cakeEatSounds)) {
             Pair<IntegerProperty, Integer> bitesData = subtleEffects$getBitesData(state);
             boolean hadBites = bitesData != null;
             int oldBites = hadBites ? state.getValue(bitesData.getFirst()) : 0;
-            InteractionResult result = original.call(block, state, level, pos, player, hitResult);
+            InteractionResult result = original.call(block, state, level, pos, player, hand, hitResult);
 
             if (result == InteractionResult.SUCCESS) {
                 BlockState newState = level.getBlockState(pos);
@@ -102,7 +103,7 @@ public class BlockStateBaseMixin {
             }
             return result;
         }
-        return original.call(block, state, level, pos, player, hitResult);
+        return original.call(block, state, level, pos, player, hand, hitResult);
     }
 
     @Unique

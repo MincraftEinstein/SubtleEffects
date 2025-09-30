@@ -13,7 +13,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 
 @Mixin(MultiPlayerGameMode.class)
-public class NeoForgeMultiPlayerGameModeMixin {
+public class ForgeMultiPlayerGameModeMixin {
 
     @WrapOperation(method = "destroyBlock", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/state/BlockState;onDestroyedByPlayer(Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/entity/player/Player;ZLnet/minecraft/world/level/material/FluidState;)Z"))
     private boolean destroyBlock(BlockState state, Level level, BlockPos pos, Player player, boolean willHarvest, FluidState fluidState, Operation<Boolean> original) {

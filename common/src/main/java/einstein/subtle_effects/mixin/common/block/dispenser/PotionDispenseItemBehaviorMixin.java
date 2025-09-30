@@ -5,7 +5,7 @@ import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import einstein.subtle_effects.networking.clientbound.ClientBoundDispenseBucketPayload;
 import einstein.subtle_effects.platform.Services;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.dispenser.BlockSource;
+import net.minecraft.core.BlockSource;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
@@ -19,7 +19,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(targets = "net.minecraft.core.dispenser.DispenseItemBehavior$18")
+@Mixin(targets = "net.minecraft.core.dispenser.DispenseItemBehavior$27")
 public class PotionDispenseItemBehaviorMixin {
 
     @WrapOperation(method = "execute", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/level/ServerLevel;sendParticles(Lnet/minecraft/core/particles/ParticleOptions;DDDIDDDD)I"))
@@ -27,10 +27,10 @@ public class PotionDispenseItemBehaviorMixin {
         return -1;
     }
 
-    @Inject(method = "execute", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/level/ServerLevel;gameEvent(Lnet/minecraft/world/entity/Entity;Lnet/minecraft/core/Holder;Lnet/minecraft/core/BlockPos;)V"))
+    @Inject(method = "execute", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/level/ServerLevel;gameEvent(Lnet/minecraft/world/entity/Entity;Lnet/minecraft/world/level/gameevent/GameEvent;Lnet/minecraft/core/BlockPos;)V"))
     private void execute(BlockSource source, ItemStack stack, CallbackInfoReturnable<ItemStack> cir) {
-        ServerLevel level = source.level();
-        BlockPos pos = source.pos();
+        ServerLevel level = source.getLevel();
+        BlockPos pos = source.getPos();
 
         level.playSound(null, pos, SoundEvents.GENERIC_SPLASH, SoundSource.BLOCKS); // Fixes inconsistency with Item.useOn behavior vs dispenser behavior. (there's probably a bug report for this, but I'm too lazy to find it)
         Services.NETWORK.sendToClientsTracking(null, level, pos, new ClientBoundDispenseBucketPayload(new ItemStack(Items.WATER_BUCKET), pos), (serverPlayer) -> {

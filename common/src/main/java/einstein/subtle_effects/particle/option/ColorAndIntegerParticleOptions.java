@@ -14,7 +14,7 @@ import java.util.Locale;
 @SuppressWarnings("deprecation")
 public record ColorAndIntegerParticleOptions(ParticleType<ColorAndIntegerParticleOptions> type, int color, int integer) implements ParticleOptions {
 
-    public static final Deserializer<ColorAndIntegerParticleOptions> DESERIALIZER = new Deserializer<ColorAndIntegerParticleOptions>() {
+    public static final Deserializer<ColorAndIntegerParticleOptions> DESERIALIZER = new Deserializer<>() {
 
         @Override
         public ColorAndIntegerParticleOptions fromCommand(ParticleType<ColorAndIntegerParticleOptions> type, StringReader reader) throws CommandSyntaxException {
