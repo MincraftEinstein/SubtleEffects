@@ -23,7 +23,7 @@ import java.util.List;
 import static einstein.subtle_effects.SubtleEffects.loc;
 import static einstein.subtle_effects.init.ModConfigs.GENERAL;
 
-public class AnniversaryHatLayer<T extends AbstractClientPlayer, V extends HumanoidModel<T>> extends RenderLayer<T, V> {
+public class PartyHatLayer<T extends AbstractClientPlayer, V extends HumanoidModel<T>> extends RenderLayer<T, V> {
 
     private static final List<ResourceLocation> TEXTURES = Util.make(new ArrayList<>(), textures -> {
         addTexture(textures, "blue");
@@ -32,7 +32,7 @@ public class AnniversaryHatLayer<T extends AbstractClientPlayer, V extends Human
     private final PartyHatModel<T> model;
 
     @SuppressWarnings("unchecked")
-    public AnniversaryHatLayer(RenderLayerParent<?, ?> renderer, EntityRendererProvider.Context context) {
+    public PartyHatLayer(RenderLayerParent<?, ?> renderer, EntityRendererProvider.Context context) {
         super((RenderLayerParent<T, V>) renderer);
         model = new PartyHatModel<>(context.bakeLayer(PartyHatModel.MODEL_LAYER));
     }

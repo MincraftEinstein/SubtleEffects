@@ -17,7 +17,6 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.CustomHeadLayer;
-import net.minecraft.client.renderer.entity.layers.HumanoidArmorLayer;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
@@ -36,7 +35,7 @@ public class EinsteinSolarSystemLayer<T extends AbstractClientPlayer, V extends 
     private final EinsteinSolarSystemModel<T> model;
     private final CustomHeadLayer<T, EinsteinSolarSystemModel<T>> headLayer;
     private final EinsteinSolarSystemArmorLayer<T, EinsteinSolarSystemModel<T>, HumanoidModel<T>> armorLayer;
-    private final AnniversaryHatLayer<T, V> anniversaryHatLayer;
+    private final PartyHatLayer<T, V> partyHatLayer;
 
     @SuppressWarnings("unchecked")
     public EinsteinSolarSystemLayer(RenderLayerParent<?, ?> renderer, EntityRendererProvider.Context context) {
@@ -50,11 +49,11 @@ public class EinsteinSolarSystemLayer<T extends AbstractClientPlayer, V extends 
                 context.getModelManager()
         );
 
-        if (AnniversaryHatLayer.isModAnniversary()) {
-            anniversaryHatLayer = new AnniversaryHatLayer<>(renderLayerParent, context);
+        if (PartyHatLayer.isModAnniversary()) {
+            partyHatLayer = new PartyHatLayer<>(renderLayerParent, context);
             return;
         }
-        anniversaryHatLayer = null;
+        partyHatLayer = null;
     }
 
     @Override
@@ -89,8 +88,8 @@ public class EinsteinSolarSystemLayer<T extends AbstractClientPlayer, V extends 
                 headLayer.render(poseStack, bufferSource, packedLight, player, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch);
                 armorLayer.render(poseStack, bufferSource, packedLight, player, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch);
 
-                if (anniversaryHatLayer != null) {
-                    anniversaryHatLayer.render(poseStack, bufferSource, packedLight, player, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch);
+                if (partyHatLayer != null) {
+                    partyHatLayer.render(poseStack, bufferSource, packedLight, player, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch);
                 }
 
                 poseStack.popPose();
