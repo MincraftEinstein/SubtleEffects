@@ -1,69 +1,70 @@
 package einstein.subtle_effects.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import einstein.subtle_effects.client.model.entity.PartyHatModel;
 import einstein.subtle_effects.platform.Services;
+import net.minecraft.Util;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 import static einstein.subtle_effects.SubtleEffects.loc;
 import static einstein.subtle_effects.init.ModConfigs.GENERAL;
-import static java.lang.Math.sin;
 
 public class AnniversaryHatLayer<T extends AbstractClientPlayer, V extends HumanoidModel<T>> extends RenderLayer<T, V> {
 
-    EntityRenderDispatcher dispatcher;
+    private static final List<ResourceLocation> TEXTURES = Util.make(new ArrayList<>(), textures -> {
+        addTexture(textures, "blue");
+        addTexture(textures, "red");
+    });
     private final PartyHatModel<T> model;
 
     @SuppressWarnings("unchecked")
     public AnniversaryHatLayer(RenderLayerParent<?, ?> renderer, EntityRendererProvider.Context context) {
         super((RenderLayerParent<T, V>) renderer);
-        dispatcher = context.getEntityRenderDispatcher();
         model = new PartyHatModel<>(context.bakeLayer(PartyHatModel.MODEL_LAYER));
+    }
+
+    private static void addTexture(List<ResourceLocation> textures, String name) {
+        textures.add(loc("textures/entity/party_hat/" + name + "_party_hat.png"));
     }
 
     @Override
     public void render(PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, T player, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
         if (shouldRender(player)) {
             poseStack.pushPose();
+
             getParentModel().getHead().translateAndRotate(poseStack);
 
-            poseStack.translate(0f, -8f * PIXEL, 0f);
-            var id = (float) sin(player.getStringUUID().hashCode());
+            float id = (float) Math.sin(player.getStringUUID().hashCode());
+            poseStack.translate(0, -0.5, 0);
+            poseStack.rotateAround(Axis.ZP.rotationDegrees(id * 22.5F), 0, 0.25F, 0);
 
-            poseStack.rotateAround(Axis.ZP.rotationDegrees(id * 22.5f), 0f, 4f * PIXEL, 0f);
+            VertexConsumer consumer = bufferSource.getBuffer(model.renderType(getHatTexture(id)));
+            model.renderToBuffer(poseStack, consumer, packedLight, OverlayTexture.NO_OVERLAY, -1);
 
-            var buffer = bufferSource.getBuffer(model.renderType(getHatTexture(id + 0.5f)));
-            model.renderToBuffer(poseStack, buffer, packedLight, OverlayTexture.NO_OVERLAY, 0xffffff);
             poseStack.popPose();
         }
     }
 
-    public static float PIXEL = 1f / 16f;
-
-    public ResourceLocation getHatTexture(float id) {
-        var tex = (id > 0.5) ? "red" : "blue";
-        return loc("textures/misc/party_hat/%s.png".formatted(tex));
+    private static ResourceLocation getHatTexture(float id) {
+        return TEXTURES.get((int) (Mth.abs(id) * TEXTURES.size()));
     }
-
 
     public static boolean shouldRender(AbstractClientPlayer player) {
-        return (GENERAL.enableEasterEggs) && !player.isInvisible();
-    }
-
-    @Override
-    protected ResourceLocation getTextureLocation(T entity) {
-        return super.getTextureLocation(entity);
+        return GENERAL.enableEasterEggs && !player.isInvisible();
     }
 
     public static boolean isModAnniversary() {
