@@ -1,25 +1,15 @@
 package einstein.subtle_effects.mixin.client;
 
+import einstein.subtle_effects.util.CommonUtil;
 import einstein.subtle_effects.util.EntityAccessor;
 import einstein.subtle_effects.util.ParticleSpawnUtil;
-import einstein.subtle_effects.util.Util;
-import net.minecraft.core.BlockPos;
 import net.minecraft.tags.FluidTags;
-import net.minecraft.tags.TagKey;
-import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.material.Fluid;
-import net.minecraft.world.level.material.FluidState;
-import net.minecraft.world.phys.AABB;
-import net.minecraft.world.phys.Vec3;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(Entity.class)
@@ -33,7 +23,7 @@ public class NeoForgeClientEntityMixin {
 
     @Inject(method = "updateInWaterStateAndDoFluidPushing", at = @At("TAIL"))
     private void updateInWaterStateAndDoFluidPushing(CallbackInfoReturnable<Boolean> cir) {
-        boolean isInLava = Util.isEntityInFluid(subtleEffectsNeoForge$me, FluidTags.LAVA);
+        boolean isInLava = CommonUtil.isEntityInFluid(subtleEffectsNeoForge$me, FluidTags.LAVA);
         EntityAccessor accessor = (EntityAccessor) subtleEffectsNeoForge$me;
         ParticleSpawnUtil.spawnLavaSplash(subtleEffectsNeoForge$me, isInLava, firstTick, accessor.subtleEffects$wasTouchingLava(), subtleEffectsNeoForge$me.getDeltaMovement());
         accessor.subtleEffects$setTouchingLava(isInLava);
