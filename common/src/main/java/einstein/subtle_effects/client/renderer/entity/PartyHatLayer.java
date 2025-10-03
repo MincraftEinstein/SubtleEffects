@@ -25,9 +25,17 @@ import static einstein.subtle_effects.init.ModConfigs.GENERAL;
 
 public class PartyHatLayer<T extends AbstractClientPlayer, V extends HumanoidModel<T>> extends RenderLayer<T, V> {
 
-    private static final List<ResourceLocation> TEXTURES = Util.make(new ArrayList<>(), textures -> {
-        addTexture(textures, "blue");
-        addTexture(textures, "red");
+    public static final List<ResourceLocation> TEXTURES = Util.make(new ArrayList<>(), textures -> {
+        addTexture(textures, "big_fuzz_0");
+        addTexture(textures, "big_fuzz_1");
+        addTexture(textures, "big_fuzz_2");
+        addTexture(textures, "big_fuzz_3");
+        addTexture(textures, "big_fuzz_4");
+        addTexture(textures, "small_fuzz_0");
+        addTexture(textures, "small_fuzz_1");
+        addTexture(textures, "small_fuzz_2");
+        addTexture(textures, "small_fuzz_3");
+        addTexture(textures, "small_fuzz_4");
     });
     private final PartyHatModel<T> model;
 
@@ -37,8 +45,8 @@ public class PartyHatLayer<T extends AbstractClientPlayer, V extends HumanoidMod
         model = new PartyHatModel<>(context.bakeLayer(PartyHatModel.MODEL_LAYER));
     }
 
-    private static void addTexture(List<ResourceLocation> textures, String name) {
-        textures.add(loc("textures/entity/party_hat/" + name + "_party_hat.png"));
+    public static void addTexture(List<ResourceLocation> textures, String name) {
+        textures.add(loc("textures/entity/party_hat/" + name + ".png"));
     }
 
     @Override
