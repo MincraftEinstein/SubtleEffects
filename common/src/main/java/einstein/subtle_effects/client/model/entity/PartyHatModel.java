@@ -16,7 +16,7 @@ public class PartyHatModel<T extends AbstractClientPlayer> extends EntityModel<T
     private final ModelPart hat;
 
     public PartyHatModel(ModelPart rootPart) {
-        hat = rootPart.getChild("hat");
+        hat = rootPart.getChild("hat_1");
     }
 
     public static LayerDefinition createLayer() {
@@ -24,9 +24,9 @@ public class PartyHatModel<T extends AbstractClientPlayer> extends EntityModel<T
         PartDefinition partDefinition = meshDefinition.getRoot();
 
         PartDefinition hat = partDefinition.addOrReplaceChild("hat_1", CubeListBuilder.create().texOffs(0, 4).addBox(-6, -8, -1, 7, 8, 0, CubeDeformation.NONE), PartPose.offset(2.5F, 0, 1));
+        hat.addOrReplaceChild("hat_2", CubeListBuilder.create().texOffs(0, 4).addBox(-3.5F, -4, 0, 7, 8, 0, CubeDeformation.NONE), PartPose.offsetAndRotation(-2.5F, -4, -1, 0, -1.5708F, 0));
         hat.addOrReplaceChild("fuzz_1", CubeListBuilder.create().texOffs(0, 0).addBox(-2, -2, 0, 4, 4, 0, CubeDeformation.NONE), PartPose.offsetAndRotation(-2.5F, -10, -1, 0, 0.7854F, 0));
         hat.addOrReplaceChild("fuzz_2", CubeListBuilder.create().texOffs(0, 0).addBox(-2, -2, 0, 4, 4, 0, CubeDeformation.NONE), PartPose.offsetAndRotation(-2.5F, -10, -1, 0, -0.7854F, 0));
-        hat.addOrReplaceChild("hat_2", CubeListBuilder.create().texOffs(0, 4).addBox(-3.5F, -4, 0, 7, 8, 0, CubeDeformation.NONE), PartPose.offsetAndRotation(-2.5F, -4, -1, 0, -1.5708F, 0));
         return LayerDefinition.create(meshDefinition, 16, 16);
     }
 

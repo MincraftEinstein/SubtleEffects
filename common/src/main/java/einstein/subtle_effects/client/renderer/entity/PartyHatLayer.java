@@ -60,7 +60,8 @@ public class PartyHatLayer<T extends AbstractClientPlayer, V extends HumanoidMod
     }
 
     private static ResourceLocation getHatTexture(float id) {
-        return TEXTURES.get((int) (Mth.abs(id) * TEXTURES.size()));
+        int index = (int) (Mth.abs(id) * TEXTURES.size());
+        return TEXTURES.get(index >= TEXTURES.size() ? TEXTURES.size() - 1 : index);
     }
 
     public static boolean shouldRender(AbstractClientPlayer player) {
