@@ -1,8 +1,8 @@
 package einstein.subtle_effects.mixin.client;
 
+import einstein.subtle_effects.util.CommonUtil;
 import einstein.subtle_effects.util.EntityAccessor;
 import einstein.subtle_effects.util.ParticleSpawnUtil;
-import einstein.subtle_effects.util.Util;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.entity.Entity;
 import org.spongepowered.asm.mixin.Mixin;
@@ -23,7 +23,7 @@ public class ForgeClientEntityMixin {
 
     @Inject(method = "updateInWaterStateAndDoFluidPushing", at = @At("TAIL"))
     private void updateInWaterStateAndDoFluidPushing(CallbackInfoReturnable<Boolean> cir) {
-        boolean isInLava = Util.isEntityInFluid(subtleEffectsNeoForge$me, FluidTags.LAVA);
+        boolean isInLava = CommonUtil.isEntityInFluid(subtleEffectsNeoForge$me, FluidTags.LAVA);
         EntityAccessor accessor = (EntityAccessor) subtleEffectsNeoForge$me;
         ParticleSpawnUtil.spawnLavaSplash(subtleEffectsNeoForge$me, isInLava, firstTick, accessor.subtleEffects$wasTouchingLava(), subtleEffectsNeoForge$me.getDeltaMovement());
         accessor.subtleEffects$setTouchingLava(isInLava);

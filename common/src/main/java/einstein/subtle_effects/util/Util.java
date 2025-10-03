@@ -16,6 +16,7 @@ import me.fzzyhmstrs.fzzy_config.validation.misc.ValidatedColor;
 import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.Particle;
+import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.PostChain;
 import net.minecraft.core.BlockPos;
@@ -25,8 +26,6 @@ import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.tags.TagKey;
-import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.ItemStack;
@@ -35,9 +34,7 @@ import net.minecraft.world.level.block.AbstractCauldronBlock;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
-import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
@@ -53,6 +50,7 @@ public class Util {
     public static final ResourceLocation COLORLESS_RAIN_TEXTURE = SubtleEffects.loc("textures/environment/colorless_rain.png");
     public static final Gson GSON = new GsonBuilder().create();
     public static final ResourceLocation VANILLA_EYE = new ResourceLocation("ender_eye");
+    private static final String UUID = "d71e4b41-9315-499f-a934-ca925421fb38";
 
     public static void playClientSound(Entity entity, SoundEvent sound, SoundSource source, float volume, float pitch) {
         Minecraft minecraft = Minecraft.getInstance();
@@ -180,34 +178,11 @@ public class Util {
         return null;
     }
 
-    public static boolean isEntityInFluid(Entity entity, TagKey<Fluid> fluidTag) {
-        if (entity.touchingUnloadedChunk()) {
-            return false;
-        }
-
-        Level level = entity.level();
-        AABB aabb = entity.getBoundingBox();
-        BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
-
-        for (int x = Mth.floor(aabb.minX); x < Mth.ceil(aabb.maxX); x++) {
-            for (int y = Mth.floor(aabb.minY); y < Mth.ceil(aabb.maxY); y++) {
-                for (int z = Mth.floor(aabb.minZ); z < Mth.ceil(aabb.maxZ); z++) {
-                    pos.set(x, y, z);
-                    FluidState fluidState = level.getFluidState(pos);
-
-                    if (fluidState.is(fluidTag)) {
-                        double fluidHeight = y + fluidState.getHeight(level, pos);
-                        if (fluidHeight >= aabb.minY) {
-                            return true;
-                        }
-                    }
-                }
-            }
-        }
-        return false;
-    }
-
     public static float getPartialTicks() {
         return Minecraft.getInstance().getFrameTime();
+    }
+
+    public static boolean isMincraftEinstein(AbstractClientPlayer player) {
+        return player.getStringUUID().equals(UUID);
     }
 }

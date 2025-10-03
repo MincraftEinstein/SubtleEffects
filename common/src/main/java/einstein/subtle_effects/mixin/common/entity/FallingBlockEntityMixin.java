@@ -3,6 +3,7 @@ package einstein.subtle_effects.mixin.common.entity;
 import com.llamalad7.mixinextras.sugar.Local;
 import einstein.subtle_effects.networking.clientbound.ClientBoundFallingBlockLandPayload;
 import einstein.subtle_effects.platform.Services;
+import einstein.subtle_effects.util.CommonUtil;
 import einstein.subtle_effects.util.FallingBlockAccessor;
 import einstein.subtle_effects.util.Util;
 import net.minecraft.core.BlockPos;
@@ -26,7 +27,7 @@ public class FallingBlockEntityMixin implements FallingBlockAccessor {
 
     @Inject(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/item/FallingBlockEntity;move(Lnet/minecraft/world/entity/MoverType;Lnet/minecraft/world/phys/Vec3;)V"))
     private void tick(CallbackInfo ci) {
-        subtleEffects$isInWater = Util.isEntityInFluid(subtleEffects$me, FluidTags.WATER);
+        subtleEffects$isInWater = CommonUtil.isEntityInFluid(subtleEffects$me, FluidTags.WATER);
     }
 
     @Inject(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/Fallable;onLand(Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/entity/item/FallingBlockEntity;)V"))

@@ -1,8 +1,8 @@
 package einstein.subtle_effects;
 
 import einstein.subtle_effects.client.model.entity.EinsteinSolarSystemModel;
-import einstein.subtle_effects.client.renderer.entity.AnniversaryHatLayer;
 import einstein.subtle_effects.client.renderer.entity.EinsteinSolarSystemLayer;
+import einstein.subtle_effects.client.renderer.entity.PartyHatLayer;
 import einstein.subtle_effects.data.BCWPPackManager;
 import einstein.subtle_effects.data.MobSkullShaderReloadListener;
 import einstein.subtle_effects.data.SparkProviderReloadListener;
@@ -62,8 +62,8 @@ public class SubtleEffectsForgeClient {
                     EntityRendererProvider.Context context = event.getContext();
                     playerRenderer.addLayer(new EinsteinSolarSystemLayer<>(playerRenderer, context));
 
-                    if (AnniversaryHatLayer.isModAnniversary()) {
-                        playerRenderer.addLayer(new AnniversaryHatLayer<>(playerRenderer, context));
+                    if (PartyHatLayer.isModAnniversary()) {
+                        playerRenderer.addLayer(new PartyHatLayer<>(playerRenderer, context));
                     }
                 }
             }
