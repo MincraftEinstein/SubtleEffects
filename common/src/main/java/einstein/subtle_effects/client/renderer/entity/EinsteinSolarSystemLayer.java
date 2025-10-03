@@ -6,6 +6,7 @@ import com.mojang.math.Axis;
 import einstein.subtle_effects.client.model.entity.EinsteinSolarSystemModel;
 import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.platform.Services;
+import einstein.subtle_effects.util.Util;
 import net.minecraft.client.model.HumanoidArmorModel;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.PlayerModel;
@@ -17,7 +18,6 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.CustomHeadLayer;
-import net.minecraft.client.renderer.entity.layers.HumanoidArmorLayer;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
@@ -26,7 +26,6 @@ import org.joml.Vector3f;
 
 public class EinsteinSolarSystemLayer<T extends AbstractClientPlayer, V extends PlayerModel<T>> extends RenderLayer<T, V> {
 
-    private static final String UUID = "d71e4b41-9315-499f-a934-ca925421fb38";
     private static final Vector3f[] HEAD_ROTATIONS = {
             new Vector3f(27.6F, 61F, -9.7F),
             new Vector3f(2.5F, 8.6F, -13.8F),
@@ -36,7 +35,7 @@ public class EinsteinSolarSystemLayer<T extends AbstractClientPlayer, V extends 
     private final EinsteinSolarSystemModel<T> model;
     private final CustomHeadLayer<T, EinsteinSolarSystemModel<T>> headLayer;
     private final EinsteinSolarSystemArmorLayer<T, EinsteinSolarSystemModel<T>, HumanoidModel<T>> armorLayer;
-    private final AnniversaryHatLayer<T, V> anniversaryHatLayer;
+    private final PartyHatLayer<T, V> partyHatLayer;
 
     @SuppressWarnings("unchecked")
     public EinsteinSolarSystemLayer(RenderLayerParent<?, ?> renderer, EntityRendererProvider.Context context) {
@@ -50,11 +49,11 @@ public class EinsteinSolarSystemLayer<T extends AbstractClientPlayer, V extends 
                 context.getModelManager()
         );
 
-        if (AnniversaryHatLayer.isModAnniversary()) {
-            anniversaryHatLayer = new AnniversaryHatLayer<>(renderLayerParent, context);
+        if (PartyHatLayer.isModAnniversary()) {
+            partyHatLayer = new PartyHatLayer<>(renderLayerParent, context);
             return;
         }
-        anniversaryHatLayer = null;
+        partyHatLayer = null;
     }
 
     @Override
@@ -89,8 +88,8 @@ public class EinsteinSolarSystemLayer<T extends AbstractClientPlayer, V extends 
                 headLayer.render(poseStack, bufferSource, packedLight, player, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch);
                 armorLayer.render(poseStack, bufferSource, packedLight, player, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch);
 
-                if (anniversaryHatLayer != null) {
-                    anniversaryHatLayer.render(poseStack, bufferSource, packedLight, player, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch);
+                if (partyHatLayer != null) {
+                    partyHatLayer.render(poseStack, bufferSource, packedLight, player, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch);
                 }
 
                 poseStack.popPose();
@@ -114,7 +113,7 @@ public class EinsteinSolarSystemLayer<T extends AbstractClientPlayer, V extends 
 
     public static boolean shouldRender(AbstractClientPlayer player) {
         return ModConfigs.GENERAL.enableEasterEggs
-                && (player.getStringUUID().equals(UUID) || Services.PLATFORM.isDevelopmentEnvironment())
+                && (Util.isMincraftEinstein(player) || Services.PLATFORM.isDevelopmentEnvironment())
                 && !player.isInvisible();
     }
 
