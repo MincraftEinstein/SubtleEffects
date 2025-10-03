@@ -16,6 +16,7 @@ import me.fzzyhmstrs.fzzy_config.validation.misc.ValidatedColor;
 import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.Particle;
+import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.PostChain;
 import net.minecraft.core.BlockPos;
@@ -53,6 +54,7 @@ public class Util {
     public static final ResourceLocation COLORLESS_RAIN_TEXTURE = SubtleEffects.loc("textures/environment/colorless_rain.png");
     public static final Gson GSON = new GsonBuilder().create();
     public static final ResourceLocation VANILLA_EYE = ResourceLocation.withDefaultNamespace("ender_eye");
+    private static final String UUID = "d71e4b41-9315-499f-a934-ca925421fb38";
 
     public static void playClientSound(Entity entity, SoundEvent sound, SoundSource source, float volume, float pitch) {
         Minecraft minecraft = Minecraft.getInstance();
@@ -213,5 +215,9 @@ public class Util {
 
     public static float getPartialTicks(boolean runsNormally) {
         return Minecraft.getInstance().getTimer().getGameTimeDeltaPartialTick(runsNormally);
+    }
+
+    public static boolean isMincraftEinstein(AbstractClientPlayer player) {
+        return player.getStringUUID().equals(UUID);
     }
 }

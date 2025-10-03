@@ -6,6 +6,7 @@ import com.mojang.math.Axis;
 import einstein.subtle_effects.client.model.entity.EinsteinSolarSystemModel;
 import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.platform.Services;
+import einstein.subtle_effects.util.Util;
 import net.minecraft.client.model.HumanoidArmorModel;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.PlayerModel;
@@ -25,7 +26,6 @@ import org.joml.Vector3f;
 
 public class EinsteinSolarSystemLayer<T extends AbstractClientPlayer, V extends PlayerModel<T>> extends RenderLayer<T, V> {
 
-    private static final String UUID = "d71e4b41-9315-499f-a934-ca925421fb38";
     private static final Vector3f[] HEAD_ROTATIONS = {
             new Vector3f(27.6F, 61F, -9.7F),
             new Vector3f(2.5F, 8.6F, -13.8F),
@@ -113,7 +113,7 @@ public class EinsteinSolarSystemLayer<T extends AbstractClientPlayer, V extends 
 
     public static boolean shouldRender(AbstractClientPlayer player) {
         return ModConfigs.GENERAL.enableEasterEggs
-                && (player.getStringUUID().equals(UUID) || Services.PLATFORM.isDevelopmentEnvironment())
+                && (Util.isMincraftEinstein(player) || Services.PLATFORM.isDevelopmentEnvironment())
                 && !player.isInvisible();
     }
 

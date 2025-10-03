@@ -5,7 +5,7 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import einstein.subtle_effects.client.model.entity.PartyHatModel;
 import einstein.subtle_effects.platform.Services;
-import net.minecraft.Util;
+import einstein.subtle_effects.util.Util;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -25,7 +25,7 @@ import static einstein.subtle_effects.init.ModConfigs.GENERAL;
 
 public class PartyHatLayer<T extends AbstractClientPlayer, V extends HumanoidModel<T>> extends RenderLayer<T, V> {
 
-    public static final List<ResourceLocation> TEXTURES = Util.make(new ArrayList<>(), textures -> {
+    public static final List<ResourceLocation> TEXTURES = net.minecraft.Util.make(new ArrayList<>(), textures -> {
         addTexture(textures, "big_fuzz_0");
         addTexture(textures, "big_fuzz_1");
         addTexture(textures, "big_fuzz_2");
@@ -60,14 +60,18 @@ public class PartyHatLayer<T extends AbstractClientPlayer, V extends HumanoidMod
             poseStack.translate(0, -0.5, 0);
             poseStack.rotateAround(Axis.ZP.rotationDegrees(id * 22.5F), 0, 0.25F, 0);
 
-            VertexConsumer consumer = bufferSource.getBuffer(model.renderType(getHatTexture(id)));
+            VertexConsumer consumer = bufferSource.getBuffer(model.renderType(getHatTexture(id, player)));
             model.renderToBuffer(poseStack, consumer, packedLight, OverlayTexture.NO_OVERLAY, -1);
 
             poseStack.popPose();
         }
     }
 
-    private static ResourceLocation getHatTexture(float id) {
+    private static ResourceLocation getHatTexture(float id, AbstractClientPlayer player) {
+        if (Util.isMincraftEinstein(player)) {
+            return TEXTURES.getFirst();
+        }
+
         int index = (int) (Mth.abs(id) * TEXTURES.size());
         return TEXTURES.get(index >= TEXTURES.size() ? TEXTURES.size() - 1 : index);
     }
