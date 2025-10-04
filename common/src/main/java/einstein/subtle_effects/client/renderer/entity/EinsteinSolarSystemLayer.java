@@ -54,7 +54,7 @@ public class EinsteinSolarSystemLayer<T extends PlayerRenderState, V extends Hum
     }
 
     @Override
-    public void render(PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, T renderState, float xRot, float yRot) {
+    public void render(PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, T renderState, float yRot, float xRot) {
         EntityRenderStateAccessor accessor = (EntityRenderStateAccessor) renderState;
         if (accessor.subtleEffects$shouldRenderSolarSystem()) {
             int headCount = HEAD_ROTATIONS.length;
@@ -105,7 +105,7 @@ public class EinsteinSolarSystemLayer<T extends PlayerRenderState, V extends Hum
 
     public static boolean shouldRender(AbstractClientPlayer player) {
         return ModConfigs.GENERAL.enableEasterEggs
-                && (Util.isMincraftEinstein(player) || Services.PLATFORM.isDevelopmentEnvironment())
+                && (Util.isMincraftEinstein(player.getStringUUID()) || Services.PLATFORM.isDevelopmentEnvironment())
                 && !player.isInvisible();
     }
 

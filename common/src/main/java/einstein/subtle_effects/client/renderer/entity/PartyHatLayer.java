@@ -5,6 +5,7 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import einstein.subtle_effects.client.model.entity.PartyHatModel;
 import einstein.subtle_effects.platform.Services;
+import einstein.subtle_effects.util.EntityRenderStateAccessor;
 import einstein.subtle_effects.util.Util;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.player.AbstractClientPlayer;
@@ -12,6 +13,7 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
+import net.minecraft.client.renderer.entity.state.PlayerRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
@@ -23,7 +25,7 @@ import java.util.List;
 import static einstein.subtle_effects.SubtleEffects.loc;
 import static einstein.subtle_effects.init.ModConfigs.GENERAL;
 
-public class PartyHatLayer<T extends AbstractClientPlayer, V extends HumanoidModel<T>> extends RenderLayer<T, V> {
+public class PartyHatLayer<T extends PlayerRenderState, V extends HumanoidModel<T>> extends RenderLayer<T, V> {
 
     public static final List<ResourceLocation> TEXTURES = net.minecraft.Util.make(new ArrayList<>(), textures -> {
         addTexture(textures, "big_fuzz_0");
@@ -50,25 +52,27 @@ public class PartyHatLayer<T extends AbstractClientPlayer, V extends HumanoidMod
     }
 
     @Override
-    public void render(PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, T player, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
-        if (shouldRender(player)) {
+    public void render(PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, T renderState, float yRot, float xRot) {
+        EntityRenderStateAccessor accessor = (EntityRenderStateAccessor) renderState;
+        if (accessor.subtleEffects$shouldRenderPartyHat()) {
             poseStack.pushPose();
 
             getParentModel().getHead().translateAndRotate(poseStack);
 
-            float id = (float) Math.sin(player.getStringUUID().hashCode());
+            String uuid = accessor.subtleEffects$getStringUUID();
+            float id = (float) Math.sin(uuid.hashCode());
             poseStack.translate(0, -0.5, 0);
             poseStack.rotateAround(Axis.ZP.rotationDegrees(id * 22.5F), 0, 0.25F, 0);
 
-            VertexConsumer consumer = bufferSource.getBuffer(model.renderType(getHatTexture(id, player)));
+            VertexConsumer consumer = bufferSource.getBuffer(model.renderType(getHatTexture(id, uuid)));
             model.renderToBuffer(poseStack, consumer, packedLight, OverlayTexture.NO_OVERLAY, -1);
 
             poseStack.popPose();
         }
     }
 
-    private static ResourceLocation getHatTexture(float id, AbstractClientPlayer player) {
-        if (Util.isMincraftEinstein(player)) {
+    private static ResourceLocation getHatTexture(float id, String uuid) {
+        if (Util.isMincraftEinstein(uuid)) {
             return TEXTURES.getFirst();
         }
 

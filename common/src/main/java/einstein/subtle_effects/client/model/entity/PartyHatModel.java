@@ -1,21 +1,20 @@
 package einstein.subtle_effects.client.model.entity;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import einstein.subtle_effects.SubtleEffects;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
-import net.minecraft.client.player.AbstractClientPlayer;
+import net.minecraft.client.renderer.entity.state.PlayerRenderState;
 
-public class PartyHatModel<T extends AbstractClientPlayer> extends EntityModel<T> {
+public class PartyHatModel<T extends PlayerRenderState> extends EntityModel<T> {
 
     public static final ModelLayerLocation MODEL_LAYER = new ModelLayerLocation(SubtleEffects.loc("party_hat"), "main");
-    private final ModelPart hat;
+    public final ModelPart hat;
 
     public PartyHatModel(ModelPart rootPart) {
+        super(rootPart);
         hat = rootPart.getChild("hat_1");
     }
 
@@ -31,11 +30,6 @@ public class PartyHatModel<T extends AbstractClientPlayer> extends EntityModel<T
     }
 
     @Override
-    public void setupAnim(T player, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-    }
-
-    @Override
-    public void renderToBuffer(PoseStack poseStack, VertexConsumer consumer, int packedLight, int packedOverlay, int color) {
-        hat.render(poseStack, consumer, packedLight, packedOverlay);
+    public void setupAnim(T renderState) {
     }
 }

@@ -18,7 +18,10 @@ public class EntityRenderStateMixin implements EntityRenderStateAccessor {
     private boolean subtleEffects$shouldRenderSolarSystem;
 
     @Unique
-    private boolean subtleEffects$shouldRenderAnniversaryHat;
+    private boolean subtleEffects$shouldRenderPartyHat;
+
+    @Unique
+    private String subtleEffects$stringUUID;
 
     @Override
     public boolean subtleEffects$isSleeping() {
@@ -51,12 +54,22 @@ public class EntityRenderStateMixin implements EntityRenderStateAccessor {
     }
 
     @Override
-    public boolean subtleEffects$shouldRenderAnniversaryHat() {
-        return subtleEffects$shouldRenderAnniversaryHat;
+    public boolean subtleEffects$shouldRenderPartyHat() {
+        return subtleEffects$shouldRenderPartyHat;
     }
 
     @Override
-    public void subtleEffects$setShouldRenderAnniversaryHat(boolean shouldRenderAnniversaryHat) {
-        subtleEffects$shouldRenderAnniversaryHat = shouldRenderAnniversaryHat;
+    public void subtleEffects$setShouldRenderPartyHat(boolean shouldRenderPartyHat) {
+        subtleEffects$shouldRenderPartyHat = shouldRenderPartyHat;
+    }
+
+    @Override
+    public String subtleEffects$getStringUUID() {
+        return subtleEffects$stringUUID;
+    }
+
+    @Override
+    public void subtleEffects$setStringUUID(String stringUUID) {
+        subtleEffects$stringUUID = stringUUID;
     }
 }

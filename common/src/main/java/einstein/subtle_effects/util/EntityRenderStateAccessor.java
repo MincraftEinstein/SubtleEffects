@@ -14,7 +14,11 @@ public interface EntityRenderStateAccessor {
 
     void subtleEffects$setShouldRenderSolarSystem(boolean shouldRenderSolarSystem);
 
-    boolean subtleEffects$shouldRenderAnniversaryHat();
+    boolean subtleEffects$shouldRenderPartyHat();
 
-    void subtleEffects$setShouldRenderAnniversaryHat(boolean shouldRenderAnniversaryHat);
+    void subtleEffects$setShouldRenderPartyHat(boolean shouldRenderAnniversaryHat);
+
+    String subtleEffects$getStringUUID();
+
+    void subtleEffects$setStringUUID(String stringUUID);
 }

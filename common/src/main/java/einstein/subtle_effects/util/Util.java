@@ -17,7 +17,6 @@ import me.fzzyhmstrs.fzzy_config.validation.misc.ValidatedColor;
 import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.Particle;
-import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.SectionPos;
@@ -223,7 +222,7 @@ public class Util {
         return stackEatSound != null ? stackEatSound : SoundEvents.GENERIC_EAT.value();
     }
 
-    public static boolean isMincraftEinstein(AbstractClientPlayer player) {
-        return player.getStringUUID().equals(UUID);
+    public static boolean isMincraftEinstein(String uuid) {
+        return uuid.equals(UUID);
     }
 }
