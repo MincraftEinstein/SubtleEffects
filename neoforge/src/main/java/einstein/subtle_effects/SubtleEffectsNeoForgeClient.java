@@ -1,8 +1,9 @@
 package einstein.subtle_effects;
 
 import einstein.subtle_effects.client.model.entity.EinsteinSolarSystemModel;
-import einstein.subtle_effects.client.renderer.entity.AnniversaryHatLayer;
+import einstein.subtle_effects.client.model.entity.PartyHatModel;
 import einstein.subtle_effects.client.renderer.entity.EinsteinSolarSystemLayer;
+import einstein.subtle_effects.client.renderer.entity.PartyHatLayer;
 import einstein.subtle_effects.data.BCWPPackManager;
 import einstein.subtle_effects.data.MobSkullShaderReloadListener;
 import einstein.subtle_effects.data.NamedReloadListener;
@@ -48,8 +49,10 @@ public class SubtleEffectsNeoForgeClient {
             addReloadListener(event, new MobSkullShaderReloadListener());
             addReloadListener(event, new BCWPPackManager());
         });
-        modEventBus.addListener((EntityRenderersEvent.RegisterLayerDefinitions event) ->
-                event.registerLayerDefinition(EinsteinSolarSystemModel.MODEL_LAYER, EinsteinSolarSystemModel::createLayer));
+        modEventBus.addListener((EntityRenderersEvent.RegisterLayerDefinitions event) -> {
+            event.registerLayerDefinition(EinsteinSolarSystemModel.MODEL_LAYER, EinsteinSolarSystemModel::createLayer);
+            event.registerLayerDefinition(PartyHatModel.MODEL_LAYER, PartyHatModel::createLayer);
+        });
         modEventBus.addListener((EntityRenderersEvent.AddLayers event) -> {
             for (PlayerSkin.Model model : event.getSkins()) {
                 EntityRenderer<? extends Player, ?> renderer = event.getSkin(model);
@@ -58,8 +61,8 @@ public class SubtleEffectsNeoForgeClient {
                     EntityRendererProvider.Context context = event.getContext();
                     playerRenderer.addLayer(new EinsteinSolarSystemLayer<>(playerRenderer, context));
 
-                    if (AnniversaryHatLayer.isModAnniversary()) {
-                        playerRenderer.addLayer(new AnniversaryHatLayer<>(playerRenderer, context));
+                    if (PartyHatLayer.isModAnniversary()) {
+                        playerRenderer.addLayer(new PartyHatLayer<>(playerRenderer, context));
                     }
                 }
             }

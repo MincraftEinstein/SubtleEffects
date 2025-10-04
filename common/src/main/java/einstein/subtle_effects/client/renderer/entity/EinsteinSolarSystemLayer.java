@@ -7,6 +7,7 @@ import einstein.subtle_effects.client.model.entity.EinsteinSolarSystemModel;
 import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.platform.Services;
 import einstein.subtle_effects.util.EntityRenderStateAccessor;
+import einstein.subtle_effects.util.Util;
 import net.minecraft.client.model.HumanoidArmorModel;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelLayers;
@@ -24,7 +25,6 @@ import org.joml.Vector3f;
 
 public class EinsteinSolarSystemLayer<T extends PlayerRenderState, V extends HumanoidModel<T>> extends RenderLayer<T, V> implements RenderLayerParent<T, EinsteinSolarSystemModel<T>> {
 
-    private static final String UUID = "d71e4b41-9315-499f-a934-ca925421fb38";
     private static final Vector3f[] HEAD_ROTATIONS = {
             new Vector3f(27.6F, 61F, -9.7F),
             new Vector3f(2.5F, 8.6F, -13.8F),
@@ -33,7 +33,7 @@ public class EinsteinSolarSystemLayer<T extends PlayerRenderState, V extends Hum
     private final EinsteinSolarSystemModel<T> model;
     private final CustomHeadLayer<T, EinsteinSolarSystemModel<T>> headLayer;
     private final EinsteinSolarSystemArmorLayer<T, EinsteinSolarSystemModel<T>, HumanoidModel<T>> armorLayer;
-    private final AnniversaryHatLayer<T, V> anniversaryHatLayer;
+    private final PartyHatLayer<T, V> partyHatLayer;
 
     @SuppressWarnings("unchecked")
     public EinsteinSolarSystemLayer(RenderLayerParent<?, ?> renderer, EntityRendererProvider.Context context) {
@@ -46,11 +46,11 @@ public class EinsteinSolarSystemLayer<T extends PlayerRenderState, V extends Hum
                 context.getEquipmentRenderer()
         );
 
-        if (AnniversaryHatLayer.isModAnniversary()) {
-            anniversaryHatLayer = new AnniversaryHatLayer<>(this, context);
+        if (PartyHatLayer.isModAnniversary()) {
+            partyHatLayer = new PartyHatLayer<>(this, context);
             return;
         }
-        anniversaryHatLayer = null;
+        partyHatLayer = null;
     }
 
     @Override
@@ -88,8 +88,8 @@ public class EinsteinSolarSystemLayer<T extends PlayerRenderState, V extends Hum
                 headLayer.render(poseStack, bufferSource, packedLight, renderState, yRot, xRot);
                 armorLayer.render(poseStack, bufferSource, packedLight, renderState, yRot, xRot);
 
-                if (anniversaryHatLayer != null) {
-                    anniversaryHatLayer.render(poseStack, bufferSource, packedLight, renderState, yRot, xRot);
+                if (partyHatLayer != null) {
+                    partyHatLayer.render(poseStack, bufferSource, packedLight, renderState, yRot, xRot);
                 }
 
                 poseStack.popPose();
@@ -105,7 +105,7 @@ public class EinsteinSolarSystemLayer<T extends PlayerRenderState, V extends Hum
 
     public static boolean shouldRender(AbstractClientPlayer player) {
         return ModConfigs.GENERAL.enableEasterEggs
-                && (player.getStringUUID().equals(UUID) || Services.PLATFORM.isDevelopmentEnvironment())
+                && (Util.isMincraftEinstein(player) || Services.PLATFORM.isDevelopmentEnvironment())
                 && !player.isInvisible();
     }
 
