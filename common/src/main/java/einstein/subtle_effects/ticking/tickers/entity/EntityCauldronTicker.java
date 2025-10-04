@@ -41,7 +41,7 @@ public class EntityCauldronTicker extends EntityTicker<Entity> {
                 }
                 else if (state.is(Blocks.LAVA_CAULDRON) && !wasInLavaCauldron && ModConfigs.ENTITIES.splashes.lavaSplashes) {
                     wasInLavaCauldron = true;
-                    ParticleSpawnUtil.spawnSplashEffects(entity, level, ModParticles.LAVA_SPLASH_EMITTER.get(), FluidTags.LAVA, entity.getDeltaMovement());
+                    ParticleSpawnUtil.spawnSplashEffects(entity, level, ModParticles.LAVA_SPLASH_EMITTER.get(), FluidTags.LAVA);
                 }
                 return;
             }

@@ -25,7 +25,7 @@ public class NeoForgeClientEntityMixin {
     private void updateInWaterStateAndDoFluidPushing(CallbackInfoReturnable<Boolean> cir) {
         boolean isInLava = CommonUtil.isEntityInFluid(subtleEffectsNeoForge$me, FluidTags.LAVA);
         EntityAccessor accessor = (EntityAccessor) subtleEffectsNeoForge$me;
-        ParticleSpawnUtil.spawnLavaSplash(subtleEffectsNeoForge$me, isInLava, firstTick, accessor.subtleEffects$wasTouchingLava(), subtleEffectsNeoForge$me.getDeltaMovement());
+        ParticleSpawnUtil.spawnLavaSplash(subtleEffectsNeoForge$me, isInLava, firstTick, accessor.subtleEffects$wasTouchingLava());
         accessor.subtleEffects$setTouchingLava(isInLava);
     }
 }

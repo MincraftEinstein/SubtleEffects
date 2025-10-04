@@ -4,12 +4,10 @@ import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.init.ModParticles;
 import einstein.subtle_effects.ticking.tickers.entity.EntityTicker;
 import einstein.subtle_effects.util.EntityAccessor;
-import einstein.subtle_effects.util.ParticleSpawnUtil;
 import einstein.subtle_effects.util.Util;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.minecraft.core.BlockPos;
-import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
@@ -98,16 +96,6 @@ public abstract class ClientEntityMixin implements EntityAccessor {
                         Util.playClientSound(subtleEffects$me, soundType.getStepSound(), subtleEffects$me.getSoundSource(), soundType.getVolume() * 0.15F, soundType.getPitch());
                     }
                 }
-            }
-        }
-    }
-
-    @Inject(method = "doWaterSplashEffect", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/Mth;floor(D)I"), cancellable = true)
-    private void doWaterSplash(CallbackInfo ci) {
-        Level level = subtleEffects$me.level();
-        if (level.isClientSide) {
-            if (ParticleSpawnUtil.spawnSplashEffects(subtleEffects$me, level, ModParticles.WATER_SPLASH_EMITTER.get(), FluidTags.WATER, subtleEffects$me.getDeltaMovement())) {
-                ci.cancel();
             }
         }
     }

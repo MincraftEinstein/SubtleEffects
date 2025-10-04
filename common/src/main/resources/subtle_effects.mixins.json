@@ -92,6 +92,7 @@
     "common.block.dispenser.PotionDispenseItemBehaviorMixin",
     "common.entity.AbstractHorseMixin",
     "common.entity.AnimalMixin",
+    "common.entity.CommonEntityMixin",
     "common.entity.CommonLivingEntityMixin",
     "common.entity.CommonMooshroomMixin",
     "common.entity.FallingBlockEntityMixin",

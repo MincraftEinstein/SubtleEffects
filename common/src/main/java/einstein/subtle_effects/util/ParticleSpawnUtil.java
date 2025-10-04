@@ -5,11 +5,12 @@ import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.init.ModParticles;
 import einstein.subtle_effects.mixin.client.item.BucketItemAccessor;
 import einstein.subtle_effects.networking.clientbound.ClientBoundEntityFellPayload;
+import einstein.subtle_effects.networking.clientbound.ClientBoundEntityLandInFluidPayload;
 import einstein.subtle_effects.particle.EnderEyePlacedRingParticle;
 import einstein.subtle_effects.particle.SparkParticle;
 import einstein.subtle_effects.particle.option.ColorAndIntegerParticleOptions;
 import einstein.subtle_effects.particle.option.DirectionParticleOptions;
-import einstein.subtle_effects.particle.option.IntegerParticleOptions;
+import einstein.subtle_effects.particle.option.FloatAndIntegerParticleOptions;
 import einstein.subtle_effects.particle.option.SheepFluffParticleOptions;
 import einstein.subtle_effects.platform.Services;
 import einstein.subtle_effects.ticking.tickers.TickerManager;
@@ -481,17 +482,28 @@ public class ParticleSpawnUtil {
         }
     }
 
-    public static void spawnLavaSplash(Entity entity, boolean isInLava, boolean firstTick, boolean wasTouchingLava, Vec3 deltaMovement) {
+    public static void spawnLavaSplash(Entity entity, boolean isInLava, boolean firstTick, boolean wasTouchingLava) {
         Level level = entity.level();
 
-        if (level.isClientSide && isInLava && ENTITIES.splashes.lavaSplashes) {
+        if (isInLava && ENTITIES.splashes.lavaSplashes) {
             if (!wasTouchingLava && !firstTick) {
-                spawnSplashEffects(entity, level, ModParticles.LAVA_SPLASH_EMITTER.get(), FluidTags.LAVA, deltaMovement);
+                double yVelocity = entity.getDeltaMovement().y();
+                if (level instanceof ServerLevel serverLevel) {
+                    Services.NETWORK.sendToClientsTracking(entity instanceof ServerPlayer player ? player : null, serverLevel,
+                            entity.blockPosition(), new ClientBoundEntityLandInFluidPayload(entity.getId(), entity.getY() + entity.getFluidHeight(FluidTags.LAVA), yVelocity, true)
+                    );
+                    return;
+                }
+                spawnSplashEffects(entity, level, ModParticles.LAVA_SPLASH_EMITTER.get(), FluidTags.LAVA);
             }
         }
     }
 
-    public static boolean spawnSplashEffects(Entity entity, Level level, ParticleType<IntegerParticleOptions> splashParticle, TagKey<Fluid> fluidTag, Vec3 deltaMovement) {
+    public static boolean spawnSplashEffects(Entity entity, Level level, ParticleType<FloatAndIntegerParticleOptions> splashParticle, TagKey<Fluid> fluidTag) {
+        return spawnSplashEffects(entity, level, splashParticle, entity.getY() + entity.getFluidHeight(fluidTag), entity.getDeltaMovement().y());
+    }
+
+    public static boolean spawnSplashEffects(Entity entity, Level level, ParticleType<FloatAndIntegerParticleOptions> splashParticle, double y, double yVelocity) {
         if (!ENTITIES.splashes.splashEffects) {
             return false;
         }
@@ -500,14 +512,12 @@ public class ParticleSpawnUtil {
             return false;
         }
 
-        float velocity = (float) deltaMovement.y;
-        if (velocity <= -ENTITIES.splashes.splashVelocityThreshold.get()) {
-            double entityY = entity.getY();
-            double y = entityY + entity.getFluidHeight(fluidTag) + 0.01;
-            if (y <= entityY + entity.getBbHeight()) {
-                level.addAlwaysVisibleParticle(new IntegerParticleOptions(splashParticle, entity.getId()), true,
+        if (yVelocity <= -ENTITIES.splashes.splashVelocityThreshold.get()) {
+            double offset = y + 0.01;
+            if (offset <= y + entity.getBbHeight()) {
+                level.addAlwaysVisibleParticle(new FloatAndIntegerParticleOptions(splashParticle, (float) yVelocity, entity.getId()), true,
                         entity.getX(),
-                        y,
+                        offset,
                         entity.getZ(),
                         0, 0, 0
                 );

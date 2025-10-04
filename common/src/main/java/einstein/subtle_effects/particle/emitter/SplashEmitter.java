@@ -1,7 +1,7 @@
 package einstein.subtle_effects.particle.emitter;
 
 import einstein.subtle_effects.init.ModParticles;
-import einstein.subtle_effects.particle.option.IntegerParticleOptions;
+import einstein.subtle_effects.particle.option.FloatAndIntegerParticleOptions;
 import einstein.subtle_effects.particle.option.SplashDropletParticleOptions;
 import einstein.subtle_effects.particle.option.SplashParticleOptions;
 import einstein.subtle_effects.util.Util;
@@ -38,10 +38,10 @@ public class SplashEmitter extends NoRenderParticle {
     private boolean firstSplash = true;
     private boolean secondSplash = true;
 
-    protected SplashEmitter(ClientLevel level, double x, double y, double z, TagKey<Fluid> fluidTag, ParticleType<SplashParticleOptions> splashParticle, ParticleType<SplashDropletParticleOptions> dropletParticle, boolean isLava, int entityId) {
+    protected SplashEmitter(ClientLevel level, double x, double y, double z, TagKey<Fluid> fluidTag, ParticleType<SplashParticleOptions> splashParticle, ParticleType<SplashDropletParticleOptions> dropletParticle, boolean isLava, FloatAndIntegerParticleOptions options) {
         super(level, x, y, z);
         this.fluidTag = fluidTag;
-        entity = level.getEntity(entityId);
+        entity = level.getEntity(options.integer());
         lifetime = 8;
         this.isLava = isLava;
         this.splashParticle = splashParticle;
@@ -49,7 +49,7 @@ public class SplashEmitter extends NoRenderParticle {
         pos = BlockPos.containing(x, y, z).mutable();
 
         if (entity != null) {
-            velocity = (float) entity.getDeltaMovement().y;
+            velocity = options.f();
             absVelocity = Mth.abs(velocity);
             entityWidth = entity.getBbWidth();
             entityHeight = entity.getBbHeight();
@@ -166,19 +166,19 @@ public class SplashEmitter extends NoRenderParticle {
         return false;
     }
 
-    public record Provider() implements ParticleProvider<IntegerParticleOptions> {
+    public record Provider() implements ParticleProvider<FloatAndIntegerParticleOptions> {
 
         @Override
-        public Particle createParticle(IntegerParticleOptions options, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
-            return new SplashEmitter(level, x, y, z, FluidTags.WATER, ModParticles.WATER_SPLASH.get(), ModParticles.WATER_SPLASH_DROPLET.get(), false, options.integer());
+        public Particle createParticle(FloatAndIntegerParticleOptions options, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+            return new SplashEmitter(level, x, y, z, FluidTags.WATER, ModParticles.WATER_SPLASH.get(), ModParticles.WATER_SPLASH_DROPLET.get(), false, options);
         }
     }
 
-    public record LavaProvider() implements ParticleProvider<IntegerParticleOptions> {
+    public record LavaProvider() implements ParticleProvider<FloatAndIntegerParticleOptions> {
 
         @Override
-        public Particle createParticle(IntegerParticleOptions options, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
-            return new SplashEmitter(level, x, y, z, FluidTags.LAVA, ModParticles.LAVA_SPLASH.get(), ModParticles.LAVA_SPLASH_DROPLET.get(), true, options.integer());
+        public Particle createParticle(FloatAndIntegerParticleOptions options, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+            return new SplashEmitter(level, x, y, z, FluidTags.LAVA, ModParticles.LAVA_SPLASH.get(), ModParticles.LAVA_SPLASH_DROPLET.get(), true, options);
         }
     }
 }
