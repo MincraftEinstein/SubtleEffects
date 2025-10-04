@@ -4,6 +4,7 @@ import einstein.subtle_effects.init.ModParticles;
 import einstein.subtle_effects.particle.option.IntegerParticleOptions;
 import einstein.subtle_effects.particle.option.SplashDropletParticleOptions;
 import einstein.subtle_effects.particle.option.SplashParticleOptions;
+import einstein.subtle_effects.util.Util;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.NoRenderParticle;
 import net.minecraft.client.particle.Particle;
@@ -82,7 +83,7 @@ public class SplashEmitter extends NoRenderParticle {
         super.tick();
         pos.set(x, y, z);
 
-        boolean isInFluid = level.getFluidState(pos).is(fluidTag);
+        boolean isInFluid = level.getFluidState(pos).is(fluidTag) || Util.getCauldronFluid(level.getBlockState(pos)).is(fluidTag);
         if (!isInFluid || onGround) {
             remove();
             return;
