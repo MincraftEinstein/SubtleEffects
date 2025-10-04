@@ -95,7 +95,7 @@ public class ChestBlockEntityTicker extends BlockPosTicker {
         }
 
         if (BLOCKS.randomChestOpeningNeedsSoulSand) {
-            if (!isUpwardsBubbleColumn(pos) || (isDoubleChest && !isUpwardsBubbleColumn(oppositePos))) {
+            if (isNotUpwardsBubbleColumn(pos) || (isDoubleChest && isNotUpwardsBubbleColumn(oppositePos))) {
                 return;
             }
         }
@@ -174,9 +174,9 @@ public class ChestBlockEntityTicker extends BlockPosTicker {
         }
     }
 
-    private boolean isUpwardsBubbleColumn(BlockPos pos) {
+    private boolean isNotUpwardsBubbleColumn(BlockPos pos) {
         BlockState belowState = level.getBlockState(pos.below());
-        return belowState.is(Blocks.SOUL_SAND) || (belowState.is(Blocks.BUBBLE_COLUMN) && !belowState.getValue(BubbleColumnBlock.DRAG_DOWN));
+        return !belowState.is(Blocks.SOUL_SAND) && (!belowState.is(Blocks.BUBBLE_COLUMN) || belowState.getValue(BubbleColumnBlock.DRAG_DOWN));
     }
 
     private boolean isDownwardsBubbleColumn(BlockPos pos) {
