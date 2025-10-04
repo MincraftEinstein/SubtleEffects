@@ -13,6 +13,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.AbstractChestBlock;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.BubbleColumnBlock;
 import net.minecraft.world.level.block.ChestBlock;
@@ -67,7 +68,7 @@ public class ChestBlockEntityTicker extends BlockPosTicker {
     @Override
     protected void positionedTick() {
         BlockState state = level.getBlockState(pos);
-        if (!state.is(Blocks.CHEST) && !state.is(Blocks.TRAPPED_CHEST) && !state.is(Blocks.ENDER_CHEST)) {
+        if (!(state.getBlock() instanceof AbstractChestBlock)) {
             remove();
             return;
         }
