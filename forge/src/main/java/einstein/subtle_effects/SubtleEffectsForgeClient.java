@@ -1,6 +1,7 @@
 package einstein.subtle_effects;
 
 import einstein.subtle_effects.client.model.entity.EinsteinSolarSystemModel;
+import einstein.subtle_effects.client.model.entity.PartyHatModel;
 import einstein.subtle_effects.client.renderer.entity.EinsteinSolarSystemLayer;
 import einstein.subtle_effects.client.renderer.entity.PartyHatLayer;
 import einstein.subtle_effects.data.BCWPPackManager;
@@ -52,8 +53,10 @@ public class SubtleEffectsForgeClient {
             event.registerReloadListener(new MobSkullShaderReloadListener());
             event.registerReloadListener(new BCWPPackManager());
         });
-        modEventBus.addListener((EntityRenderersEvent.RegisterLayerDefinitions event) ->
-                event.registerLayerDefinition(EinsteinSolarSystemModel.MODEL_LAYER, EinsteinSolarSystemModel::createLayer));
+        modEventBus.addListener((EntityRenderersEvent.RegisterLayerDefinitions event) -> {
+            event.registerLayerDefinition(EinsteinSolarSystemModel.MODEL_LAYER, EinsteinSolarSystemModel::createLayer);
+            event.registerLayerDefinition(PartyHatModel.MODEL_LAYER, PartyHatModel::createLayer);
+        });
         modEventBus.addListener((EntityRenderersEvent.AddLayers event) -> {
             for (String skinName : event.getSkins()) {
                 EntityRenderer<?> renderer = event.getSkin(skinName);

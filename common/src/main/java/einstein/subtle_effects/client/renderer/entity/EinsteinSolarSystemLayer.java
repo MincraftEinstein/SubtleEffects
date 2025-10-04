@@ -82,7 +82,7 @@ public class EinsteinSolarSystemLayer<T extends AbstractClientPlayer, V extends 
                 poseStack.mulPose(Axis.YP.rotation(spin)); // Spins the head itself
 
                 VertexConsumer consumer = bufferSource.getBuffer(RenderType.entityCutout(getTextureLocation(player)));
-                model.renderToBuffer(poseStack, consumer, packedLight, LivingEntityRenderer.getOverlayCoords(player, 0), -1, 0, 0, 0);
+                model.renderToBuffer(poseStack, consumer, packedLight, LivingEntityRenderer.getOverlayCoords(player, 0), 0, 0, 0, 0);
 
                 poseStack.translate(0, 0.25, 0); // Adjusts the renders to align with the lower head model
                 headLayer.render(poseStack, bufferSource, packedLight, player, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch);

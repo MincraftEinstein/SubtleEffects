@@ -35,7 +35,7 @@ public class PartyHatModel<T extends AbstractClientPlayer> extends EntityModel<T
     }
 
     @Override
-    public void renderToBuffer(PoseStack poseStack, VertexConsumer consumer, int packedLight, int packedOverlay, int color) {
+    public void renderToBuffer(PoseStack poseStack, VertexConsumer consumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
         hat.render(poseStack, consumer, packedLight, packedOverlay);
     }
 }

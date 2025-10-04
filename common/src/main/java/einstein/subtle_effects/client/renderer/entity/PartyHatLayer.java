@@ -61,7 +61,7 @@ public class PartyHatLayer<T extends AbstractClientPlayer, V extends HumanoidMod
             poseStack.rotateAround(Axis.ZP.rotationDegrees(id * 22.5F), 0, 0.25F, 0);
 
             VertexConsumer consumer = bufferSource.getBuffer(model.renderType(getHatTexture(id, player)));
-            model.renderToBuffer(poseStack, consumer, packedLight, OverlayTexture.NO_OVERLAY, -1);
+            model.renderToBuffer(poseStack, consumer, packedLight, OverlayTexture.NO_OVERLAY, 0, 0, 0, 0);
 
             poseStack.popPose();
         }
@@ -69,7 +69,7 @@ public class PartyHatLayer<T extends AbstractClientPlayer, V extends HumanoidMod
 
     private static ResourceLocation getHatTexture(float id, AbstractClientPlayer player) {
         if (Util.isMincraftEinstein(player)) {
-            return TEXTURES.getFirst();
+            return TEXTURES.get(0);
         }
 
         int index = (int) (Mth.abs(id) * TEXTURES.size());
