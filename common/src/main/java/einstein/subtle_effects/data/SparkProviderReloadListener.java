@@ -29,60 +29,55 @@ public class SparkProviderReloadListener extends SimpleJsonResourceReloadListene
 
     @Override
     protected void apply(Map<ResourceLocation, JsonElement> resources, ResourceManager manager, ProfilerFiller filler) {
-        Map<ResourceLocation, SparkProviderData> dataMap = new HashMap<>();
         PROVIDERS.clear();
 
         resources.forEach((id, element) ->
                 SparkProviderData.CODEC.parse(JsonOps.INSTANCE, element)
                         .resultOrPartial(error -> SubtleEffects.LOGGER.error("Failed to decode spark provider with ID {} - Error: {}", id, error))
-                        .ifPresent(provider -> provider.options().ifPresent(options -> dataMap.put(id, provider)))
+                        .ifPresent(provider -> provider.options().ifPresent(options -> load(id, provider)))
         );
-
-        load(dataMap);
     }
 
-    private static void load(Map<ResourceLocation, SparkProviderData> dataMap) {
-        dataMap.forEach((location, providerData) -> {
-            Optional<SparkProviderData.Options> providerOptions = providerData.options();
-            if (providerOptions.isEmpty()) {
+    private static void load(ResourceLocation location, SparkProviderData providerData) {
+        Optional<SparkProviderData.Options> providerOptions = providerData.options();
+        if (providerOptions.isEmpty()) {
+            return;
+        }
+
+        SparkProviderData.Options options = providerOptions.get();
+        providerData.states().forEach(providerEntry -> {
+            ResourceLocation blockId = providerEntry.id();
+            boolean isRequired = providerEntry.required();
+            boolean isRegistered = BuiltInRegistries.BLOCK.containsKey(blockId);
+
+            if (isRequired && !isRegistered) {
+                SubtleEffects.LOGGER.warn("Could not find required block for states '{}' in Spark Provider: '{}'", blockId, location);
                 return;
             }
 
-            SparkProviderData.Options options = providerOptions.get();
-            providerData.states().forEach(providerEntry -> {
-                ResourceLocation blockId = providerEntry.id();
-                boolean isRequired = providerEntry.required();
-                boolean isRegistered = BuiltInRegistries.BLOCK.containsKey(blockId);
+            if (isRequired || isRegistered) {
+                Block block = BuiltInRegistries.BLOCK.get(blockId);
+                if (block.defaultBlockState().isAir()) {
+                    SubtleEffects.LOGGER.error("Block in Spark Provider '{}' can not be air", location);
+                }
 
-                if (isRequired && !isRegistered) {
-                    SubtleEffects.LOGGER.warn("Could not find required block for states '{}' in Spark Provider: '{}'", blockId, location);
+                StateDefinition<Block, BlockState> definition = block.getStateDefinition();
+                BlockStateHolder stateHolder = new BlockStateHolder(block, isRequired, providerEntry.properties()
+                        .entrySet().stream()
+                        .map(entry -> convertToProperties(entry, definition.getProperty(entry.getKey())))
+                        .filter(Objects::nonNull)
+                        .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (c1, c2) -> c1))
+                );
+
+                if (PROVIDERS.containsKey(block)) {
+                    PROVIDERS.get(block).add(new SparkProvider(stateHolder, options));
                     return;
                 }
 
-                if (isRequired || isRegistered) {
-                    Block block = BuiltInRegistries.BLOCK.get(blockId);
-                    if (block.defaultBlockState().isAir()) {
-                        SubtleEffects.LOGGER.error("Block in Spark Provider '{}' can not be air", location);
-                    }
-
-                    StateDefinition<Block, BlockState> definition = block.getStateDefinition();
-                    BlockStateHolder stateHolder = new BlockStateHolder(block, isRequired, providerEntry.properties()
-                            .entrySet().stream()
-                            .map(entry -> convertToProperties(entry, definition.getProperty(entry.getKey())))
-                            .filter(Objects::nonNull)
-                            .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (c1, c2) -> c1))
-                    );
-
-                    if (PROVIDERS.containsKey(block)) {
-                        PROVIDERS.get(block).add(new SparkProvider(stateHolder, options));
-                        return;
-                    }
-
-                    List<SparkProvider> providers = new ArrayList<>();
-                    providers.add(new SparkProvider(stateHolder, options));
-                    PROVIDERS.put(block, providers);
-                }
-            });
+                List<SparkProvider> providers = new ArrayList<>();
+                providers.add(new SparkProvider(stateHolder, options));
+                PROVIDERS.put(block, providers);
+            }
         });
     }
 
