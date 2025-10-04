@@ -2,6 +2,7 @@ package einstein.subtle_effects.mixin.client.entity;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.init.ModParticles;
 import einstein.subtle_effects.particle.option.SplashDropletParticleOptions;
 import net.minecraft.core.particles.ParticleOptions;
@@ -20,7 +21,7 @@ public class VillagerMixin {
 
     @WrapOperation(method = "handleEntityEvent", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/npc/Villager;addParticlesAroundSelf(Lnet/minecraft/core/particles/ParticleOptions;)V"))
     private void replaceSplashParticles(Villager villager, ParticleOptions options, Operation<Void> original) {
-        if (true && options.getType() == ParticleTypes.SPLASH) {
+        if (ModConfigs.ENTITIES.improvedVillagerSweatingEffects && options.getType() == ParticleTypes.SPLASH) {
             RandomSource random = villager.getRandom();
             Level level = villager.level();
             Vec3 pos = villager.position();
