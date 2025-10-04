@@ -39,9 +39,8 @@ public class PartyHatLayer<T extends AbstractClientPlayer, V extends HumanoidMod
     });
     private final PartyHatModel<T> model;
 
-    @SuppressWarnings("unchecked")
-    public PartyHatLayer(RenderLayerParent<?, ?> renderer, EntityRendererProvider.Context context) {
-        super((RenderLayerParent<T, V>) renderer);
+    public PartyHatLayer(RenderLayerParent<T, V> renderer, EntityRendererProvider.Context context) {
+        super(renderer);
         model = new PartyHatModel<>(context.bakeLayer(PartyHatModel.MODEL_LAYER));
     }
 

@@ -5,10 +5,21 @@ import com.mojang.brigadier.arguments.BoolArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import com.mojang.brigadier.tree.LiteralCommandNode;
+import einstein.subtle_effects.client.model.entity.EinsteinSolarSystemModel;
+import einstein.subtle_effects.client.model.entity.PartyHatModel;
+import einstein.subtle_effects.client.renderer.entity.EinsteinSolarSystemLayer;
+import einstein.subtle_effects.client.renderer.entity.PartyHatLayer;
 import einstein.subtle_effects.init.*;
 import einstein.subtle_effects.ticking.biome_particles.BiomeParticleManager;
 import einstein.subtle_effects.ticking.tickers.TickerManager;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.model.PlayerModel;
+import net.minecraft.client.model.geom.ModelLayerLocation;
+import net.minecraft.client.model.geom.builders.LayerDefinition;
+import net.minecraft.client.player.AbstractClientPlayer;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.entity.layers.RenderLayer;
+import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.SharedSuggestionProvider;
 import net.minecraft.network.chat.Component;
@@ -16,6 +27,12 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.function.Supplier;
 
 public class SubtleEffectsClient {
 
@@ -70,6 +87,23 @@ public class SubtleEffectsClient {
 
         HAS_CLEARED = false;
         profiler.pop();
+    }
+
+    public static Map<ModelLayerLocation, Supplier<LayerDefinition>> registerModelLayers() {
+        Map<ModelLayerLocation, Supplier<LayerDefinition>> layers = new HashMap<>();
+        layers.put(EinsteinSolarSystemModel.MODEL_LAYER, EinsteinSolarSystemModel::createLayer);
+        layers.put(PartyHatModel.MODEL_LAYER, PartyHatModel::createLayer);
+        return layers;
+    }
+
+    public static List<RenderLayer<AbstractClientPlayer, PlayerModel<AbstractClientPlayer>>> registerPlayerRenderLayers(PlayerRenderer renderer, EntityRendererProvider.Context context) {
+        List<RenderLayer<AbstractClientPlayer, PlayerModel<AbstractClientPlayer>>> renderLayers = new ArrayList<>();
+        renderLayers.add(new EinsteinSolarSystemLayer<>(renderer, context));
+
+        if (PartyHatLayer.isModAnniversary()) {
+            renderLayers.add(new PartyHatLayer<>(renderer, context));
+        }
+        return renderLayers;
     }
 
     public static <T extends SharedSuggestionProvider> void registerClientCommands(CommandDispatcher<T> dispatcher, CommandBuildContext buildContext) {
