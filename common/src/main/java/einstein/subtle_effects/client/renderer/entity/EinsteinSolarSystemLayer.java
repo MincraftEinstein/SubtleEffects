@@ -48,7 +48,7 @@ public class EinsteinSolarSystemLayer<T extends AbstractClientPlayer, V extends 
                 context.getModelManager()
         );
 
-        if (PartyHatLayer.isModAnniversary()) {
+        if (PartyHatLayer.isModBirthday(false)) {
             partyHatLayer = new PartyHatLayer<>(renderLayerParent, context);
             return;
         }

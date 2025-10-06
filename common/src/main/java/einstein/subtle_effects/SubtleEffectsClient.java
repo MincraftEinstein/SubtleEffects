@@ -12,6 +12,8 @@ import einstein.subtle_effects.client.renderer.entity.PartyHatLayer;
 import einstein.subtle_effects.init.*;
 import einstein.subtle_effects.ticking.biome_particles.BiomeParticleManager;
 import einstein.subtle_effects.ticking.tickers.TickerManager;
+import einstein.subtle_effects.util.Util;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.model.geom.ModelLayerLocation;
@@ -22,12 +24,16 @@ import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.SharedSuggestionProvider;
+import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 
+import java.time.LocalDate;
+import java.time.Month;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -38,6 +44,7 @@ public class SubtleEffectsClient {
 
     private static boolean HAS_CLEARED = false;
     private static boolean DISPLAY_PARTICLE_COUNT = false;
+    private static boolean HAS_DISPLAYED_BIRTHDAY_NOTIFICATION = false;
     private static Level LEVEL;
 
     public static void clientSetup() {
@@ -70,6 +77,17 @@ public class SubtleEffectsClient {
             return;
         }
 
+        if (!HAS_DISPLAYED_BIRTHDAY_NOTIFICATION && ModConfigs.GENERAL.enableEasterEggs && PartyHatLayer.isModBirthday(true)) {
+            // Day before the actual birthday so it doesn't return a negative number when the party hat is enabled the day before
+            long years = ChronoUnit.YEARS.between(LocalDate.of(2024, Month.OCTOBER, 3), LocalDate.now());
+            sendSystemMsg(player, Component.empty()
+                    .append(Component.translatable("chat.subtle_effects.prefix").withStyle(style -> style.withColor(ChatFormatting.BLUE)))
+                    .append(CommonComponents.SPACE)
+                    .append(Component.translatable("chat.subtle_effects.anniversary.message", Util.getOrdinal(years)))
+            );
+            HAS_DISPLAYED_BIRTHDAY_NOTIFICATION = true;
+        }
+
         if (DISPLAY_PARTICLE_COUNT) {
             player.displayClientMessage(Component.translatable("ui.subtle_effects.hud.particle_count", minecraft.particleEngine.countParticles()), true);
         }
@@ -100,7 +118,7 @@ public class SubtleEffectsClient {
         List<RenderLayer<AbstractClientPlayer, PlayerModel<AbstractClientPlayer>>> renderLayers = new ArrayList<>();
         renderLayers.add(new EinsteinSolarSystemLayer<>(renderer, context));
 
-        if (PartyHatLayer.isModAnniversary()) {
+        if (PartyHatLayer.isModBirthday(false)) {
             renderLayers.add(new PartyHatLayer<>(renderer, context));
         }
         return renderLayers;

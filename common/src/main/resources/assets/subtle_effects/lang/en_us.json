@@ -31,6 +31,8 @@
   "resourcePack.subtle_effects.biome_water_color_particles.name": "Biome Water Color Particles",
   "resourcePack.subtle_effects.biome_water_color_particles.description": "Water particles match biome water color",
   "ui.subtle_effects.hud.particle_count": "Particles: %s",
+  "chat.subtle_effects.prefix": "[Subtle Effects]:",
+  "chat.subtle_effects.anniversary.message": "It's the mod's %s birthday! In celebration, players will have party hats! To disable party hats, set the 'Enable Easter Eggs' config option to false in the 'General' config category.'",
   "config.subtle_effects.smokeType.OFF": "Off",
   "config.subtle_effects.smokeType.DEFAULT": "Default",
   "config.subtle_effects.smokeType.UPDATED": "Updated",

@@ -189,4 +189,8 @@ public class Util {
     public static boolean isMincraftEinstein(AbstractClientPlayer player) {
         return player.getStringUUID().equals(UUID);
     }
+
+    public static String getOrdinal(long number) {
+        return number + (number == 1 ? "st" : number == 2 ? "nd" : number == 3 ? "rd" : "th");
+    }
 }
