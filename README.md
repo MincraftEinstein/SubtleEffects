@@ -9,7 +9,7 @@
 [![Discord Invite](https://img.shields.io/badge/Discord-Einstein%27s%20Lab-blue?style=for-the-badge&logo=discord)](https://discord.gg/gSsaFAvrBM)
 
 ### **📘 Description**
-Adding many new subtle details through particles and a few sounds. All of which can be toggled and some can be further customized. The mod also comes with built-in particle culling and a particle render distance. This mod was designed to be mainly client-sided, but there are a few features that require server access to work, see FAQ for more details.
+Adding many new subtle details through particles and a few sounds. All of which can be toggled, and some can be further customized. The mod also comes with built-in particle culling and a particle render distance. This mod was designed to be mainly client-sided, but there are a few features that require server access to work, see the FAQ for more details.
 
 **✨ Some Key Features**
 - Particle culling
@@ -47,10 +47,10 @@ You may
 
 You may not
 ❌ Reupload/publish this mod to any website without explicit permission from me and one or more links to any of the project pages*
-❌ Redistibute edited or unedited assets** from this mod without permission from me and credit
+❌ Redistribute edited or unedited assets** from this mod without permission from me and credit
 
 * Project pages include CurseForge, Modrinth, Planet Minecraft, GitHub
-** Assets include logos, banners, textures, models etc
+** Assets include logos, banners, textures, models, etc
 ```
 </details>
 
