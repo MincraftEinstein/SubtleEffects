@@ -49,9 +49,10 @@ public class ModGeneralConfigs extends Config {
     public boolean leavesLandOnGround = true;
     public boolean leavesLandOnWater = true;
     public boolean leavesLandingOnWaterRipples = true;
-    @ConfigGroup.Pop
-    @ConfigGroup.Pop
     public boolean leavesLandingOnWaterKeepMomentum = true;
+    @ConfigGroup.Pop
+    @ConfigGroup.Pop
+    public ValidatedInt fallenLeavesLifeTime = new ValidatedInt(40, 100, 20);
 
     public boolean mobSkullShaders = true;
     public ValidatedFloat fireHeight = new ValidatedFloat(-0.15F, 0.4F, -0.5F);
