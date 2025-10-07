@@ -165,7 +165,8 @@ public class WaterfallTicker extends BlockPosTicker {
             List<Direction> openSides = new ArrayList<>();
 
             for (Direction direction : Direction.Plane.HORIZONTAL) {
-                if (!Util.isSolidOrNotEmpty(level, waterfallPos.relative(direction))) {
+                BlockPos relativePos = waterfallPos.relative(direction);
+                if (level.getBlockState(relativePos).getCollisionShape(level, relativePos).getFaceShape(direction.getOpposite()).isEmpty() && level.getFluidState(relativePos).isEmpty()) {
                     openSides.add(direction);
                 }
             }
