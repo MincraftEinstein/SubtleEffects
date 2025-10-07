@@ -215,13 +215,27 @@ public class WaterfallTicker extends BlockPosTicker {
                         for (Direction direction : Direction.Plane.HORIZONTAL) {
                             BlockPos relativePos = lakePos.relative(direction);
                             WaterfallTicker relativeTicker = WATERFALLS.get(relativePos);
+                            if (relativeTicker == null) {
+                                relativePos = relativePos.relative(direction.getClockWise());
+                                relativeTicker = WATERFALLS.get(relativePos);
+                            }
 
                             if (relativeTicker != null && relativeTicker.data.canBeLarge()) {
+                                if (relativeTicker.data.type() == WaterfallType.LARGE) {
+                                    type = WaterfallType.LARGE;
+                                    break;
+                                }
+
                                 size++;
 
-                                BlockPos nextPos = relativePos.relative(direction);
-                                WaterfallTicker nextTicker = WATERFALLS.get(nextPos);
-                                if (nextTicker != null && nextTicker.data.canBeLarge()) {
+                                BlockPos neighborPos = relativePos.relative(direction);
+                                WaterfallTicker neighborTicker = WATERFALLS.get(neighborPos);
+                                if (neighborTicker == null) {
+                                    neighborPos = neighborPos.relative(direction.getClockWise());
+                                    neighborTicker = WATERFALLS.get(neighborPos);
+                                }
+
+                                if (neighborTicker != null && neighborTicker.data.canBeLarge()) {
                                     size++;
                                     break;
                                 }
