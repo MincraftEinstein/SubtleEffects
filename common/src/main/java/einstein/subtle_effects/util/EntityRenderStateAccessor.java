@@ -2,23 +2,11 @@ package einstein.subtle_effects.util;
 
 public interface EntityRenderStateAccessor {
 
-    boolean subtleEffects$isSleeping();
+    <T> T subtleEffects$get(Key<T> key);
 
-    void subtleEffects$setSleeping(boolean sleeping);
+    <T> void subtleEffects$set(Key<T> key, T value);
 
-    float subtleEffects$getSolarSystemSpin();
+    record Key<T>(String key) {
 
-    void subtleEffects$setSolarSystemSpin(float solarSystemSpin);
-
-    boolean subtleEffects$shouldRenderSolarSystem();
-
-    void subtleEffects$setShouldRenderSolarSystem(boolean shouldRenderSolarSystem);
-
-    boolean subtleEffects$shouldRenderPartyHat();
-
-    void subtleEffects$setShouldRenderPartyHat(boolean shouldRenderAnniversaryHat);
-
-    String subtleEffects$getStringUUID();
-
-    void subtleEffects$setStringUUID(String stringUUID);
+    }
 }

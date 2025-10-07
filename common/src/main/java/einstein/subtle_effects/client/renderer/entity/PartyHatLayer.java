@@ -8,7 +8,6 @@ import einstein.subtle_effects.platform.Services;
 import einstein.subtle_effects.util.EntityRenderStateAccessor;
 import einstein.subtle_effects.util.Util;
 import net.minecraft.client.model.HumanoidModel;
-import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
@@ -24,6 +23,8 @@ import java.util.List;
 
 import static einstein.subtle_effects.SubtleEffects.loc;
 import static einstein.subtle_effects.init.ModConfigs.GENERAL;
+import static einstein.subtle_effects.init.ModRenderStateKeys.IS_INVISIBLE;
+import static einstein.subtle_effects.init.ModRenderStateKeys.STRING_UUID;
 
 public class PartyHatLayer<T extends PlayerRenderState, V extends HumanoidModel<T>> extends RenderLayer<T, V> {
 
@@ -54,12 +55,12 @@ public class PartyHatLayer<T extends PlayerRenderState, V extends HumanoidModel<
     @Override
     public void render(PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, T renderState, float yRot, float xRot) {
         EntityRenderStateAccessor accessor = (EntityRenderStateAccessor) renderState;
-        if (accessor.subtleEffects$shouldRenderPartyHat()) {
+        if (shouldRender(accessor)) {
             poseStack.pushPose();
 
             getParentModel().getHead().translateAndRotate(poseStack);
 
-            String uuid = accessor.subtleEffects$getStringUUID();
+            String uuid = accessor.subtleEffects$get(STRING_UUID);
             float id = (float) Math.sin(uuid.hashCode());
             poseStack.translate(0, -0.5, 0);
             poseStack.rotateAround(Axis.ZP.rotationDegrees(id * 22.5F), 0, 0.25F, 0);
@@ -80,8 +81,8 @@ public class PartyHatLayer<T extends PlayerRenderState, V extends HumanoidModel<
         return TEXTURES.get(index >= TEXTURES.size() ? TEXTURES.size() - 1 : index);
     }
 
-    public static boolean shouldRender(AbstractClientPlayer player) {
-        return GENERAL.enableEasterEggs && !player.isInvisible();
+    public static boolean shouldRender(EntityRenderStateAccessor accessor) {
+        return GENERAL.enableEasterEggs && !accessor.subtleEffects$get(IS_INVISIBLE);
     }
 
     public static boolean isModAnniversary() {

@@ -11,7 +11,6 @@ import einstein.subtle_effects.util.Util;
 import net.minecraft.client.model.HumanoidArmorModel;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelLayers;
-import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
@@ -22,6 +21,8 @@ import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.entity.state.PlayerRenderState;
 import net.minecraft.util.Mth;
 import org.joml.Vector3f;
+
+import static einstein.subtle_effects.init.ModRenderStateKeys.*;
 
 public class EinsteinSolarSystemLayer<T extends PlayerRenderState, V extends HumanoidModel<T>> extends RenderLayer<T, V> implements RenderLayerParent<T, EinsteinSolarSystemModel<T>> {
 
@@ -56,7 +57,7 @@ public class EinsteinSolarSystemLayer<T extends PlayerRenderState, V extends Hum
     @Override
     public void render(PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, T renderState, float yRot, float xRot) {
         EntityRenderStateAccessor accessor = (EntityRenderStateAccessor) renderState;
-        if (accessor.subtleEffects$shouldRenderSolarSystem()) {
+        if (shouldRender(accessor)) {
             int headCount = HEAD_ROTATIONS.length;
             model.hat.visible = renderState.showHat;
 
@@ -103,13 +104,13 @@ public class EinsteinSolarSystemLayer<T extends PlayerRenderState, V extends Hum
         return model;
     }
 
-    public static boolean shouldRender(AbstractClientPlayer player) {
+    public static boolean shouldRender(EntityRenderStateAccessor accessor) {
         return ModConfigs.GENERAL.enableEasterEggs
-                && (Util.isMincraftEinstein(player.getStringUUID()) || Services.PLATFORM.isDevelopmentEnvironment())
-                && !player.isInvisible();
+                && (Util.isMincraftEinstein(accessor.subtleEffects$get(STRING_UUID)) || Services.PLATFORM.isDevelopmentEnvironment())
+                && !accessor.subtleEffects$get(IS_INVISIBLE);
     }
 
     public static float getSpin(EntityRenderStateAccessor accessor, float speed) {
-        return accessor.subtleEffects$getSolarSystemSpin() + (Mth.PI * speed);
+        return accessor.subtleEffects$get(SOLAR_SYSTEM_SPIN) + (Mth.PI * speed);
     }
 }

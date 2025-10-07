@@ -22,8 +22,7 @@ public abstract class HumanoidModelMixin<T extends HumanoidRenderState> {
     @Inject(method = "setupAnim(Lnet/minecraft/client/renderer/entity/state/HumanoidRenderState;)V", at = @At("TAIL"))
     private void spinHead(T renderState, CallbackInfo ci) {
         EntityRenderStateAccessor accessor = (EntityRenderStateAccessor) renderState;
-
-        if (accessor.subtleEffects$shouldRenderSolarSystem()) {
+        if (EinsteinSolarSystemLayer.shouldRender(accessor)) {
             head.yRot = EinsteinSolarSystemLayer.getSpin(accessor, 0.5F);
         }
     }
