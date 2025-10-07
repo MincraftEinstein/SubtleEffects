@@ -1,12 +1,10 @@
 package einstein.subtle_effects.ticking.tickers;
 
 import einstein.subtle_effects.init.ModParticles;
-import einstein.subtle_effects.util.MathUtil;
 import einstein.subtle_effects.util.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.tags.FluidTags;
-import net.minecraft.util.Mth;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.material.Fluid;
@@ -20,6 +18,8 @@ import java.util.Map;
 
 import static einstein.subtle_effects.init.ModConfigs.ENVIRONMENT;
 import static einstein.subtle_effects.ticking.tickers.WaterfallTicker.WaterfallData.EMPTY_WATERFALL_DATA;
+import static einstein.subtle_effects.util.MathUtil.nextDouble;
+import static einstein.subtle_effects.util.MathUtil.nextSign;
 import static net.minecraft.util.Mth.nextDouble;
 
 public class WaterfallTicker extends BlockPosTicker {
@@ -70,17 +70,18 @@ public class WaterfallTicker extends BlockPosTicker {
             boolean isZ = axis == Direction.Axis.Z;
             int stepX = direction.getStepX();
             int stepZ = direction.getStepZ();
-            double xOffset = isX ? 0.5 + (0.7 * stepX) : random.nextFloat();
-            double zOffset = isZ ? 0.5 + (0.7 * stepZ) : random.nextFloat();
+            boolean isLarge = type == WaterfallType.LARGE;
+            double xOffset = isX ? 0.5 + (0.7 * stepX) : random.nextFloat() + (isLarge ? 0.5 * nextSign(random) : 0);
+            double zOffset = isZ ? 0.5 + (0.7 * stepZ) : random.nextFloat() + (isLarge ? 0.5 * nextSign(random) : 0);
             double xFlow = isX ? flow.x() : 0;
             double zFlow = isZ ? flow.z() : 0;
 
             if (type == WaterfallType.NORMAL) {
                 if (random.nextDouble() < ENVIRONMENT.waterfalls.mediumWaterfallParticleDensity.get()) {
                     level.addAlwaysVisibleParticle(ModParticles.WATERFALL_CLOUD.get(), ENVIRONMENT.waterfalls.forceSpawnMediumWaterfallParticles,
-                            x + xOffset + MathUtil.nextDouble(random, 0.2),
+                            x + xOffset + nextDouble(random, 0.2),
                             y + 0.2F,
-                            z + zOffset + MathUtil.nextDouble(random, 0.2),
+                            z + zOffset + nextDouble(random, 0.2),
                             nextDouble(random, 0.5, 1) * xFlow,
                             0,
                             nextDouble(random, 0.5, 1) * zFlow
@@ -93,18 +94,18 @@ public class WaterfallTicker extends BlockPosTicker {
                         y,
                         z + zOffset - (isZ ? (0.2 * stepZ) : 0),
                         nextDouble(random, 0.05, 0.15) * (xFlow == 0 ? (0.5 * stepX) : (xFlow < 0 ? -1 : 1)),
-                        Mth.nextDouble(random, 0.05, 0.1),
+                        nextDouble(random, 0.05, 0.1),
                         nextDouble(random, 0.05, 0.15) * (zFlow == 0 ? (0.5 * stepZ) : (zFlow < 0 ? -1 : 1))
                 );
             }
-            else if (type == WaterfallType.LARGE) {
+            else if (isLarge) {
                 boolean forceSpawn = ENVIRONMENT.waterfalls.forceSpawnLargeWaterfallParticles;
                 for (int i = 0; i < 6; i++) {
                     if (random.nextDouble() < ENVIRONMENT.waterfalls.largeWaterfallParticleDensity.get()) {
                         level.addAlwaysVisibleParticle(ModParticles.WATERFALL_CLOUD.get(), forceSpawn,
-                                x + xOffset + (MathUtil.nextDouble(random, 0.3) * stepX),
-                                y + MathUtil.nextDouble(random, 2) + 0.2F,
-                                z + zOffset + (MathUtil.nextDouble(random, 0.2) * stepZ),
+                                x + xOffset + (nextDouble(random, 0.3) * stepX),
+                                y + nextDouble(random, 2) + 0.2F,
+                                z + zOffset + (nextDouble(random, 0.3) * stepZ),
                                 nextDouble(random, 0.5, 1) * xFlow,
                                 0,
                                 nextDouble(random, 0.5, 1) * zFlow
