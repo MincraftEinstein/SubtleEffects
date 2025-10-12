@@ -165,10 +165,26 @@ public class WaterfallTicker extends BlockPosTicker {
         if (waterfallFluid.isSame(lakeFluidState.getType()) && lakeFluidState.isSource() && !level.getBlockState(waterfallPos).is(Blocks.BUBBLE_COLUMN)) {
             List<Direction> openSides = new ArrayList<>();
 
-            for (Direction direction : Direction.Plane.HORIZONTAL) {
-                BlockPos relativePos = waterfallPos.relative(direction);
-                if (level.getBlockState(relativePos).getCollisionShape(level, relativePos).getFaceShape(direction.getOpposite()).isEmpty() && level.getFluidState(relativePos).isEmpty()) {
-                    openSides.add(direction);
+            for (Direction waterfallDirection : Direction.Plane.HORIZONTAL) {
+                BlockPos openSidePos = waterfallPos.relative(waterfallDirection);
+
+                if (!level.getFluidState(openSidePos).isEmpty()) {
+                    continue;
+                }
+
+                if (level.getBlockState(openSidePos).getCollisionShape(level, openSidePos).getFaceShape(waterfallDirection.getOpposite()).isEmpty() && level.getFluidState(openSidePos).isEmpty()) {
+                    boolean notSurrounded = false;
+                    for (Direction relativeDirection : Direction.Plane.HORIZONTAL) {
+                        BlockPos relativePos = openSidePos.relative(relativeDirection);
+                        if (!Util.isSolidOrNotEmpty(level, relativePos)) {
+                            notSurrounded = true;
+                            break;
+                        }
+                    }
+
+                    if (notSurrounded) {
+                        openSides.add(waterfallDirection);
+                    }
                 }
             }
 
