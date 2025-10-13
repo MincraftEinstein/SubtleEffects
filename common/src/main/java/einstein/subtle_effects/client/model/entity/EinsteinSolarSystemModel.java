@@ -6,9 +6,9 @@ import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
-import net.minecraft.client.renderer.entity.state.PlayerRenderState;
+import net.minecraft.client.renderer.entity.state.AvatarRenderState;
 
-public class EinsteinSolarSystemModel<T extends PlayerRenderState> extends HumanoidModel<T> {
+public class EinsteinSolarSystemModel<T extends AvatarRenderState> extends HumanoidModel<T> {
 
     public static final ModelLayerLocation MODEL_LAYER = new ModelLayerLocation(SubtleEffects.loc("einstein_solar_system"), "main");
 

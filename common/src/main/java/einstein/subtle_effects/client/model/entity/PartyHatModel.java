@@ -6,9 +6,9 @@ import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
-import net.minecraft.client.renderer.entity.state.PlayerRenderState;
+import net.minecraft.client.renderer.entity.state.AvatarRenderState;
 
-public class PartyHatModel<T extends PlayerRenderState> extends EntityModel<T> {
+public class PartyHatModel<T extends AvatarRenderState> extends EntityModel<T> {
 
     public static final ModelLayerLocation MODEL_LAYER = new ModelLayerLocation(SubtleEffects.loc("party_hat"), "main");
     public final ModelPart hat;

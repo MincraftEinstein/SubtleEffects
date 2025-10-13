@@ -12,7 +12,7 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
-import net.minecraft.client.renderer.entity.state.PlayerRenderState;
+import net.minecraft.client.renderer.entity.state.AvatarRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
@@ -26,7 +26,7 @@ import static einstein.subtle_effects.init.ModConfigs.GENERAL;
 import static einstein.subtle_effects.init.ModRenderStateKeys.IS_INVISIBLE;
 import static einstein.subtle_effects.init.ModRenderStateKeys.STRING_UUID;
 
-public class PartyHatLayer<T extends PlayerRenderState, V extends HumanoidModel<T>> extends RenderLayer<T, V> {
+public class PartyHatLayer<T extends AvatarRenderState, V extends HumanoidModel<T>> extends RenderLayer<T, V> {
 
     public static final List<ResourceLocation> TEXTURES = net.minecraft.Util.make(new ArrayList<>(), textures -> {
         addTexture(textures, "big_fuzz_0");
