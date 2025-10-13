@@ -1,18 +1,17 @@
 package einstein.subtle_effects.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import einstein.subtle_effects.client.model.entity.EinsteinSolarSystemModel;
 import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.platform.Services;
 import einstein.subtle_effects.util.EntityRenderStateAccessor;
 import einstein.subtle_effects.util.Util;
-import net.minecraft.client.model.HumanoidArmorModel;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelLayers;
-import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.SubmitNodeCollector;
+import net.minecraft.client.renderer.entity.ArmorModelSet;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
@@ -40,10 +39,9 @@ public class EinsteinSolarSystemLayer<T extends AvatarRenderState, V extends Hum
     public EinsteinSolarSystemLayer(RenderLayerParent<?, ?> renderer, EntityRendererProvider.Context context) {
         super((RenderLayerParent<T, V>) renderer);
         model = new EinsteinSolarSystemModel<>(context.bakeLayer(EinsteinSolarSystemModel.MODEL_LAYER));
-        headLayer = new CustomHeadLayer<>(this, context.getModelSet());
+        headLayer = new CustomHeadLayer<>(this, context.getModelSet(), context.getPlayerSkinRenderCache());
         armorLayer = new EinsteinSolarSystemArmorLayer<>(this,
-                new HumanoidArmorModel<>(context.bakeLayer(ModelLayers.PLAYER_INNER_ARMOR)),
-                new HumanoidArmorModel<>(context.bakeLayer(ModelLayers.PLAYER_OUTER_ARMOR)),
+                ArmorModelSet.bake(ModelLayers.PLAYER_ARMOR, context.getModelSet(), EinsteinSolarSystemModel::new),
                 context.getEquipmentRenderer()
         );
 
@@ -55,7 +53,7 @@ public class EinsteinSolarSystemLayer<T extends AvatarRenderState, V extends Hum
     }
 
     @Override
-    public void render(PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, T renderState, float yRot, float xRot) {
+    public void submit(PoseStack poseStack, SubmitNodeCollector nodeCollector, int packedLight, T renderState, float yRot, float xRot) {
         EntityRenderStateAccessor accessor = (EntityRenderStateAccessor) renderState;
         if (shouldRender(accessor)) {
             int headCount = HEAD_ROTATIONS.length;
@@ -80,17 +78,17 @@ public class EinsteinSolarSystemLayer<T extends AvatarRenderState, V extends Hum
 
                 poseStack.mulPose(Axis.YP.rotation(spin)); // Spins the head itself
 
-                VertexConsumer consumer = bufferSource.getBuffer(RenderType.entityCutout(renderState.skin.texture()));
+                var renderType = RenderType.entityCutout(renderState.skin.body().texturePath());
                 int packedOverlay = LivingEntityRenderer.getOverlayCoords(renderState, 0);
                 model.setAllVisible(true);
-                model.renderToBuffer(poseStack, consumer, packedLight, packedOverlay, -1);
+                nodeCollector.submitModel(model, renderState, poseStack, renderType, packedLight, packedOverlay, -1, null);
 
                 poseStack.translate(0, 0.25, 0); // Adjusts the renders to align with the lower head model
-                headLayer.render(poseStack, bufferSource, packedLight, renderState, yRot, xRot);
-                armorLayer.render(poseStack, bufferSource, packedLight, renderState, yRot, xRot);
+                headLayer.submit(poseStack, nodeCollector, packedLight, renderState, yRot, xRot);
+                armorLayer.submit(poseStack, nodeCollector, packedLight, renderState, yRot, xRot);
 
                 if (partyHatLayer != null) {
-                    partyHatLayer.render(poseStack, bufferSource, packedLight, renderState, yRot, xRot);
+                    partyHatLayer.submit(poseStack, nodeCollector, packedLight, renderState, yRot, xRot);
                 }
 
                 poseStack.popPose();
