@@ -4,6 +4,7 @@ import einstein.subtle_effects.util.Util;
 import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
+import net.minecraft.client.renderer.state.QuadParticleRenderState;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.util.RandomSource;
 
@@ -29,9 +30,9 @@ public class SneezeParticle extends SingleQuadParticle {
     }
 
     @Override
-    public void render(VertexConsumer consumer, Camera camera, float partialTicks) {
+    public void extract(QuadParticleRenderState state, Camera camera, float partialTicks) {
         alpha = lifetimeAlpha.currentAlphaForAge(age, lifetime, partialTicks);
-        super.render(consumer, camera, partialTicks);
+        super.extract(state, camera, partialTicks);
     }
 
     @Override

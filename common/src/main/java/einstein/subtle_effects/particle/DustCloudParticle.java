@@ -4,6 +4,7 @@ import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
+import net.minecraft.client.renderer.state.QuadParticleRenderState;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.util.RandomSource;
 
@@ -34,11 +35,11 @@ public class DustCloudParticle extends SingleQuadParticle {
     }
 
     @Override
-    public void render(VertexConsumer consumer, Camera camera, float partialTicks) {
+    public void extract(QuadParticleRenderState state, Camera camera, float partialTicks) {
         if (ENTITIES.dustClouds.lessViewBlocking && minecraft.options.getCameraType().isFirstPerson() && camera.getEntity().distanceToSqr(x, y, z) < 4) {
             return;
         }
-        super.render(consumer, camera, partialTicks);
+        super.extract(state, camera, partialTicks);
     }
 
     @Override

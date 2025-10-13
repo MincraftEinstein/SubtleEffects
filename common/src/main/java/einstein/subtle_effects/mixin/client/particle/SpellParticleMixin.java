@@ -7,7 +7,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.SingleQuadParticle;
 import net.minecraft.client.particle.SpellParticle;
-import net.minecraft.client.particle.TextureSheetParticle;
+import net.minecraft.client.renderer.state.QuadParticleRenderState;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
 import org.spongepowered.asm.mixin.Mixin;
@@ -33,7 +34,7 @@ public abstract class SpellParticleMixin extends SingleQuadParticle {
     }
 
     @Override
-    public void render(VertexConsumer consumer, Camera camera, float partialTick) {
+    public void extract(QuadParticleRenderState state, Camera camera, float partialTick) {
         if (subtleEffects$isFirstFrame) {
             subtleEffects$isFirstFrame = false;
 
@@ -44,7 +45,7 @@ public abstract class SpellParticleMixin extends SingleQuadParticle {
                 setAlpha(GENERAL.potionParticleAlpha.get());
             }
         }
-        super.render(consumer, camera, partialTick);
+        super.extract(state, camera, partialTick);
     }
 
     @Inject(method = "tick", at = @At("TAIL"))

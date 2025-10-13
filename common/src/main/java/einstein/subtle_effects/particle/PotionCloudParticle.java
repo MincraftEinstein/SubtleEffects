@@ -6,7 +6,8 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.client.particle.SingleQuadParticle;
 import net.minecraft.client.particle.SpriteSet;
-import net.minecraft.client.particle.TextureSheetParticle;
+import net.minecraft.client.renderer.state.QuadParticleRenderState;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.particles.ColorParticleOption;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
@@ -31,9 +32,9 @@ public class PotionCloudParticle extends FlatPlaneParticle {
     }
 
     @Override
-    public void render(VertexConsumer consumer, Camera camera, float partialTicks) {
-        super.render(consumer, camera, partialTicks);
+    public void extract(QuadParticleRenderState state, Camera camera, float partialTicks) {
         alpha = lifetimeAlpha.currentAlphaForAge(age, lifetime, partialTicks);
+        super.extract(state, camera, partialTicks);
     }
 
     @Override

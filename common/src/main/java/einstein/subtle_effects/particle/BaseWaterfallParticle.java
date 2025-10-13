@@ -27,9 +27,9 @@ public abstract class BaseWaterfallParticle extends SingleQuadParticle {
     }
 
     @Override
-    public void render(VertexConsumer buffer, Camera renderInfo, float partialTicks) {
-        super.render(buffer, renderInfo, partialTicks);
+    public void extract(QuadParticleRenderState state, Camera renderInfo, float partialTicks) {
         alpha = lifetimeAlpha.currentAlphaForAge(age, lifetime, partialTicks);
+        super.extract(state, renderInfo, partialTicks);
     }
 
     @Override

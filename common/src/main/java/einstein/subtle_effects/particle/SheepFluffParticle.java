@@ -1,6 +1,5 @@
 package einstein.subtle_effects.particle;
 
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import einstein.subtle_effects.particle.option.SheepFluffParticleOptions;
 import einstein.subtle_effects.util.Util;
 import net.minecraft.client.Camera;
@@ -9,6 +8,7 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.client.particle.SpriteSet;
+import net.minecraft.client.renderer.state.QuadParticleRenderState;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 
@@ -30,11 +30,11 @@ public class SheepFluffParticle extends FeatherParticle {
     }
 
     @Override
-    public void render(VertexConsumer buffer, Camera renderInfo, float partialTicks) {
+    public void extract(QuadParticleRenderState reusedState, Camera renderInfo, float partialTicks) {
         if (isJeb) {
             Util.setColorFromHex(this, ColorLerper.getLerpedColor(ColorLerper.Type.SHEEP, sheep.tickCount));
         }
-        super.render(buffer, renderInfo, partialTicks);
+        super.extract(reusedState, renderInfo, partialTicks);
     }
 
     public record Provider(SpriteSet sprites) implements ParticleProvider<SheepFluffParticleOptions> {

@@ -29,12 +29,12 @@ public class ExperienceParticle extends SingleQuadParticle {
     }
 
     @Override
-    public void render(VertexConsumer buffer, Camera camera, float partialTicks) {
+    public void extract(QuadParticleRenderState state, Camera camera, float partialTicks) {
         float f = (age + partialTicks) / 2;
         rCol = (Mth.sin(f + 0) + 1) * 0.5F;
         gCol = 1;
         bCol = (Mth.sin(f + 4.1887903F) + 1) * 0.1F;
-        super.render(buffer, camera, partialTicks);
+        super.extract(state, camera, partialTicks);
     }
 
     @Override

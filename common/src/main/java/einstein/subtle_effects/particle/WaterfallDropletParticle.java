@@ -1,11 +1,12 @@
 package einstein.subtle_effects.particle;
 
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.client.particle.SpriteSet;
+import net.minecraft.client.renderer.state.QuadParticleRenderState;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.util.Mth;
@@ -42,9 +43,9 @@ public class WaterfallDropletParticle extends BaseWaterfallParticle {
     }
 
     @Override
-    public void render(VertexConsumer buffer, Camera renderInfo, float partialTicks) {
-        super.render(buffer, renderInfo, partialTicks);
+    public void extract(QuadParticleRenderState state, Camera renderInfo, float partialTicks) {
         alpha = lifetimeAlpha.currentAlphaForAge(age, lifetime, partialTicks);
+        super.extract(state, renderInfo, partialTicks);
     }
 
     @Override
