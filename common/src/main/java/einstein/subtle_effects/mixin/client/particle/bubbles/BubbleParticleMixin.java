@@ -26,7 +26,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.util.List;
 
 @Mixin({BubbleParticle.class, BubbleColumnUpParticle.class, WaterCurrentDownParticle.class})
-public abstract class BubbleParticleMixin extends TextureSheetParticle implements BubbleSetter {
+public abstract class BubbleParticleMixin extends SingleQuadParticle implements BubbleSetter {
 
     @Unique
     private TextureAtlasSprite subtleEffects$overlaySprite;
@@ -59,7 +59,7 @@ public abstract class BubbleParticleMixin extends TextureSheetParticle implement
             }
 
             if (ModConfigs.GENERAL.poppingBubbles) {
-                if (((TextureSheetParticle) this) instanceof DrowningBubbleParticle) {
+                if (((SingleQuadParticle) this) instanceof DrowningBubbleParticle) {
                     level.addParticle(ModParticles.DROWNING_BUBBLE_POP.get(), x, y, z, xd, yd, zd);
                     return;
                 }

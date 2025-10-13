@@ -1,10 +1,10 @@
 package einstein.subtle_effects.particle;
 
 import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.client.particle.ParticleRenderType;
-import net.minecraft.client.particle.TextureSheetParticle;
+import net.minecraft.client.particle.SingleQuadParticle;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 
-public class BaseAnimatedParticle extends TextureSheetParticle {
+public class BaseAnimatedParticle extends SingleQuadParticle {
 
     private final ParticleAnimation animation;
 

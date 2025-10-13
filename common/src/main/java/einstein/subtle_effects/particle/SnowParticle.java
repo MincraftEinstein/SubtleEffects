@@ -7,7 +7,7 @@ import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.material.Fluids;
 
-public class SnowParticle extends TextureSheetParticle {
+public class SnowParticle extends SingleQuadParticle {
 
     private final BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
 

@@ -9,7 +9,7 @@ import net.minecraft.util.RandomSource;
 
 import static einstein.subtle_effects.init.ModConfigs.ENTITIES;
 
-public class DustCloudParticle extends TextureSheetParticle {
+public class DustCloudParticle extends SingleQuadParticle {
 
     private final SpriteSet sprites;
     private final double ySpeed;

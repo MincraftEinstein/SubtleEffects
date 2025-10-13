@@ -6,7 +6,7 @@ import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 
-public class HeartPopParticle extends TextureSheetParticle {
+public class HeartPopParticle extends SingleQuadParticle {
 
     private final SpriteSet sprites;
 

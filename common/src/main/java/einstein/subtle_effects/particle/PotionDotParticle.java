@@ -9,7 +9,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import org.jetbrains.annotations.Nullable;
 
-public class PotionDotParticle extends TextureSheetParticle {
+public class PotionDotParticle extends SingleQuadParticle {
 
     @Nullable
     private final Entity entity;

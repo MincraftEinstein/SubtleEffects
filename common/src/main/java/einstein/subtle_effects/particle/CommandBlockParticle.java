@@ -8,7 +8,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 
-public class CommandBlockParticle extends TextureSheetParticle {
+public class CommandBlockParticle extends SingleQuadParticle {
 
     private final double xStart;
     private final double yStart;

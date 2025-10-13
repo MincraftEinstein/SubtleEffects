@@ -3,13 +3,16 @@ package einstein.subtle_effects.particle;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.client.particle.TextureSheetParticle;
+import net.minecraft.client.particle.SingleQuadParticle;
+import net.minecraft.client.renderer.state.QuadParticleRenderState;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.util.ARGB;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
-public abstract class FlatPlaneParticle extends TextureSheetParticle {
+public abstract class FlatPlaneParticle extends SingleQuadParticle {
 
     // Note: rotation is in radians
     protected Quaternionf rotation = new Quaternionf();

@@ -4,11 +4,12 @@ import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.init.ModParticleLayers;
 import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.client.particle.ParticleRenderType;
-import net.minecraft.client.particle.TextureSheetParticle;
+import net.minecraft.client.particle.SingleQuadParticle;
+import net.minecraft.client.renderer.state.QuadParticleRenderState;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.BlockPos;
 
-public abstract class BaseWaterfallParticle extends TextureSheetParticle {
+public abstract class BaseWaterfallParticle extends SingleQuadParticle {
 
     private final BlockPos.MutableBlockPos pos;
     private final LifetimeAlpha lifetimeAlpha;

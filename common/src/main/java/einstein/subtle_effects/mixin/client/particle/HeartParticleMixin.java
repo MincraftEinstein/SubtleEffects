@@ -8,7 +8,8 @@ import einstein.subtle_effects.util.HeartParticleAccessor;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.HeartParticle;
 import net.minecraft.client.particle.Particle;
-import net.minecraft.client.particle.TextureSheetParticle;
+import net.minecraft.client.particle.SingleQuadParticle;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.particles.SimpleParticleType;
 import org.spongepowered.asm.mixin.Mixin;
@@ -18,7 +19,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(HeartParticle.class)
-public abstract class HeartParticleMixin extends TextureSheetParticle implements HeartParticleAccessor {
+public abstract class HeartParticleMixin extends SingleQuadParticle implements HeartParticleAccessor {
 
     @Unique
     private boolean subtleEffects$isHeart;

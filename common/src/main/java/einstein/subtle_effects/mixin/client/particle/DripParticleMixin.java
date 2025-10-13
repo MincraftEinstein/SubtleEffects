@@ -8,7 +8,8 @@ import einstein.subtle_effects.util.MathUtil;
 import einstein.subtle_effects.util.Util;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.DripParticle;
-import net.minecraft.client.particle.TextureSheetParticle;
+import net.minecraft.client.particle.SingleQuadParticle;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -32,7 +33,7 @@ import static einstein.subtle_effects.init.ModConfigs.GENERAL;
 
 @SuppressWarnings("deprecation")
 @Mixin(DripParticle.class)
-public abstract class DripParticleMixin extends TextureSheetParticle implements DripParticleAccessor {
+public abstract class DripParticleMixin extends SingleQuadParticle implements DripParticleAccessor {
 
     @Shadow
     protected boolean isGlowing;

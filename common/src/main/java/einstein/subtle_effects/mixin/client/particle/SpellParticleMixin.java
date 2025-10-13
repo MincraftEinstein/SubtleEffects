@@ -5,7 +5,7 @@ import einstein.subtle_effects.init.ModParticleLayers;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.client.particle.ParticleRenderType;
+import net.minecraft.client.particle.SingleQuadParticle;
 import net.minecraft.client.particle.SpellParticle;
 import net.minecraft.client.particle.TextureSheetParticle;
 import net.minecraft.util.Mth;
@@ -20,7 +20,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import static einstein.subtle_effects.init.ModConfigs.GENERAL;
 
 @Mixin(SpellParticle.class)
-public abstract class SpellParticleMixin extends TextureSheetParticle {
+public abstract class SpellParticleMixin extends SingleQuadParticle {
 
     @Shadow
     private float originalAlpha;

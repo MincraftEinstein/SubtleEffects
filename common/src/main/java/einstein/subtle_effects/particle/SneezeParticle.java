@@ -1,6 +1,5 @@
 package einstein.subtle_effects.particle;
 
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import einstein.subtle_effects.util.Util;
 import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -8,7 +7,7 @@ import net.minecraft.client.particle.*;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.util.RandomSource;
 
-public class SneezeParticle extends TextureSheetParticle {
+public class SneezeParticle extends SingleQuadParticle {
 
     private final LifetimeAlpha lifetimeAlpha = new LifetimeAlpha(0.4F, 0, 0.5F, 1);
     private final SpriteSet sprites;

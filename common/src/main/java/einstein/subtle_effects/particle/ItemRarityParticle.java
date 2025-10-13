@@ -8,7 +8,7 @@ import net.minecraft.util.RandomSource;
 
 import static einstein.subtle_effects.init.ModConfigs.ITEMS;
 
-public class ItemRarityParticle extends TextureSheetParticle {
+public class ItemRarityParticle extends SingleQuadParticle {
 
     private final double maxY;
 

@@ -10,7 +10,7 @@ import net.minecraft.util.RandomSource;
 
 import static einstein.subtle_effects.util.Util.setRandomizedColor;
 
-public class AllayMagicParticle extends TextureSheetParticle {
+public class AllayMagicParticle extends SingleQuadParticle {
 
     private final SpriteSet sprites;
 

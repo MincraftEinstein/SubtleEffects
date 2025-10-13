@@ -11,7 +11,7 @@ import net.minecraft.util.RandomSource;
 
 import java.util.List;
 
-public class SparkParticle extends TextureSheetParticle {
+public class SparkParticle extends SingleQuadParticle {
 
     public static final List<Integer> DEFAULT_COLORS = List.of(0xFFD800, 0xFF6A00);
     public static final List<Integer> SOUL_COLORS = List.of(0x60F5FA, 0x01A7AC);
