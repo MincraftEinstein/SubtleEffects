@@ -4,6 +4,7 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.SimpleParticleType;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.material.Fluids;
 
 public class SnowParticle extends TextureSheetParticle {
@@ -37,8 +38,8 @@ public class SnowParticle extends TextureSheetParticle {
     public record Provider(SpriteSet sprites) implements ParticleProvider<SimpleParticleType> {
 
         @Override
-        public Particle createParticle(SimpleParticleType type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
-            SnowParticle particle = new SnowParticle(level, sprites, x, y, z, xSpeed, ySpeed, zSpeed);
+        public Particle createParticle(SimpleParticleType type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, RandomSource random) {
+            SnowParticle particle = new SnowParticle(level, x, y, z, xSpeed, ySpeed, zSpeed, sprites.get(random));
             particle.gravity = 1;
             return particle;
         }
@@ -49,8 +50,8 @@ public class SnowParticle extends TextureSheetParticle {
         private static final float GRAVITY = 0.1F;
 
         @Override
-        public Particle createParticle(SimpleParticleType type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
-            SnowParticle particle = new SnowParticle(level, sprites, x, y, z, 0, 0, 0);
+        public Particle createParticle(SimpleParticleType type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, RandomSource random) {
+            SnowParticle particle = new SnowParticle(level, x, y, z, 0, 0, 0, sprites.get(random));
             particle.gravity = GRAVITY;
             particle.xd = 0;
             particle.yd = -GRAVITY;
@@ -62,8 +63,8 @@ public class SnowParticle extends TextureSheetParticle {
     public record FreezingProvider(SpriteSet sprites) implements ParticleProvider<SimpleParticleType> {
 
         @Override
-        public Particle createParticle(SimpleParticleType type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
-            SnowParticle particle = new SnowParticle(level, sprites, x, y, z, 0, 0, 0);
+        public Particle createParticle(SimpleParticleType type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, RandomSource random) {
+            SnowParticle particle = new SnowParticle(level, x, y, z, 0, 0, 0, sprites.get(random));
             particle.gravity = 0.05F;
             particle.xd = 0;
             particle.yd = -0.05F;

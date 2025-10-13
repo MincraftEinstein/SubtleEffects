@@ -24,7 +24,7 @@ public interface FlyTowardsPositionParticleAccessor {
     @Mixin(FlyTowardsPositionParticle.EnchantProvider.class)
     class EnchantProviderMixin {
 
-        @ModifyReturnValue(method = "createParticle(Lnet/minecraft/core/particles/SimpleParticleType;Lnet/minecraft/client/multiplayer/ClientLevel;DDDDDD)Lnet/minecraft/client/particle/Particle;", at = @At("RETURN"))
+        @ModifyReturnValue(method = "createParticle(Lnet/minecraft/core/particles/SimpleParticleType;Lnet/minecraft/client/multiplayer/ClientLevel;DDDDDDLnet/minecraft/util/RandomSource;)Lnet/minecraft/client/particle/Particle;", at = @At("RETURN"))
         private Particle init(Particle particle) {
             FlyTowardsPositionParticleAccessor accessor = (FlyTowardsPositionParticleAccessor) particle;
             if (ModConfigs.GENERAL.glowingEnchantmentParticles) {

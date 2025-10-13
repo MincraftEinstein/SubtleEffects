@@ -6,6 +6,7 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 
 import static einstein.subtle_effects.util.Util.setRandomizedColor;
 
@@ -54,7 +55,7 @@ public class AllayMagicParticle extends TextureSheetParticle {
     public record Provider(SpriteSet sprites) implements ParticleProvider<SimpleParticleType> {
 
         @Override
-        public Particle createParticle(SimpleParticleType type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+        public Particle createParticle(SimpleParticleType type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, RandomSource random) {
             return new AllayMagicParticle(level, x, y, z, xSpeed, ySpeed, zSpeed, sprites);
         }
     }
@@ -62,13 +63,13 @@ public class AllayMagicParticle extends TextureSheetParticle {
     public record VexProvider(SpriteSet sprites) implements ParticleProvider<BooleanParticleOptions> {
 
         @Override
-        public Particle createParticle(BooleanParticleOptions type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+        public Particle createParticle(BooleanParticleOptions type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, RandomSource random) {
             AllayMagicParticle particle = new AllayMagicParticle(level, x, y, z, xSpeed, ySpeed, zSpeed, sprites);
             if (type.bool()) {
-                setRandomizedColor(particle, particle.random, 0.859F, 0.478F, 0.588F);
+                setRandomizedColor(particle, random, 0.859F, 0.478F, 0.588F);
                 return particle;
             }
-            setRandomizedColor(particle, particle.random, 0.635F, 0.737F, 0.835F);
+            setRandomizedColor(particle, random, 0.635F, 0.737F, 0.835F);
             return particle;
         }
     }

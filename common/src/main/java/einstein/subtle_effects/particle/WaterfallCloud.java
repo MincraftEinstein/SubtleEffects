@@ -5,13 +5,14 @@ import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.core.particles.SimpleParticleType;
+import net.minecraft.util.RandomSource;
 
 public class WaterfallCloud extends BaseWaterfallParticle {
 
     private final SpriteSet sprites;
 
     protected WaterfallCloud(ClientLevel level, double x, double y, double z, double xSpeed, double zSpeed, SpriteSet sprites) {
-        super(level, x, y, z, xSpeed, 0, zSpeed, new LifetimeAlpha(0.7F, 0, 0.5F, 1));
+        super(level, x, y, z, xSpeed, 0, zSpeed, new LifetimeAlpha(0.7F, 0, 0.5F, 1), sprites.first());
         this.sprites = sprites;
         gravity = 0.3F;
         speedUpWhenYMotionIsBlocked = true;
@@ -28,7 +29,7 @@ public class WaterfallCloud extends BaseWaterfallParticle {
     public record Provider(SpriteSet sprites) implements ParticleProvider<SimpleParticleType> {
 
         @Override
-        public Particle createParticle(SimpleParticleType type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+        public Particle createParticle(SimpleParticleType type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, RandomSource random) {
             return new WaterfallCloud(level, x, y, z, xSpeed, zSpeed, sprites);
         }
     }

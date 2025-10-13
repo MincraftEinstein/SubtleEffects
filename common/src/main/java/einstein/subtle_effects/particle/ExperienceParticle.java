@@ -5,6 +5,7 @@ import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 
 public class ExperienceParticle extends TextureSheetParticle {
 
@@ -42,8 +43,8 @@ public class ExperienceParticle extends TextureSheetParticle {
     public record Provider(SpriteSet sprites) implements ParticleProvider<FloatParticleOptions> {
 
         @Override
-        public Particle createParticle(FloatParticleOptions options, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
-            ExperienceParticle particle = new ExperienceParticle(level, x, y, z, xSpeed, ySpeed, zSpeed, sprites);
+        public Particle createParticle(FloatParticleOptions options, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, RandomSource random) {
+            ExperienceParticle particle = new ExperienceParticle(level, x, y, z, xSpeed, ySpeed, zSpeed, sprites.get(random));
             particle.setPower(options.f());
             return particle;
         }

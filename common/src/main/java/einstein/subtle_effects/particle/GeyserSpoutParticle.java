@@ -9,6 +9,7 @@ import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 
 public class GeyserSpoutParticle extends FlatPlaneParticle {
 
@@ -56,7 +57,7 @@ public class GeyserSpoutParticle extends FlatPlaneParticle {
     public record Provider(SpriteSet sprites) implements ParticleProvider<GeyserSpoutParticleOptions> {
 
         @Override
-        public Particle createParticle(GeyserSpoutParticleOptions options, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+        public Particle createParticle(GeyserSpoutParticleOptions options, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, RandomSource random) {
             return new GeyserSpoutParticle(level, x, y, z, sprites, options);
         }
     }

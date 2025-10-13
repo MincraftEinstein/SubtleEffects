@@ -5,6 +5,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
 import net.minecraft.core.particles.SimpleParticleType;
+import net.minecraft.util.RandomSource;
 
 import static einstein.subtle_effects.init.ModConfigs.ENTITIES;
 
@@ -58,7 +59,7 @@ public class DustCloudParticle extends TextureSheetParticle {
     public record SmallProvider(SpriteSet sprites) implements ParticleProvider<SimpleParticleType> {
 
         @Override
-        public Particle createParticle(SimpleParticleType type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+        public Particle createParticle(SimpleParticleType type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, RandomSource randomSource) {
             return new DustCloudParticle(level, x, y, z, xSpeed, ySpeed, zSpeed, 25, sprites);
         }
     }
@@ -66,7 +67,7 @@ public class DustCloudParticle extends TextureSheetParticle {
     public record LargeProvider(SpriteSet sprites) implements ParticleProvider<SimpleParticleType> {
 
         @Override
-        public Particle createParticle(SimpleParticleType type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+        public Particle createParticle(SimpleParticleType type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, RandomSource randomSource) {
             return new DustCloudParticle(level, x, y, z, xSpeed, ySpeed, zSpeed, 35, sprites);
         }
     }

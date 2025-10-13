@@ -6,6 +6,7 @@ import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 
 public class WaterfallMistParticle extends BaseWaterfallParticle {
 
@@ -25,8 +26,8 @@ public class WaterfallMistParticle extends BaseWaterfallParticle {
     public record Provider(SpriteSet sprites) implements ParticleProvider<SimpleParticleType> {
 
         @Override
-        public Particle createParticle(SimpleParticleType type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
-            return new WaterfallMistParticle(level, x, y, z, xSpeed, ySpeed, zSpeed, sprites);
+        public Particle createParticle(SimpleParticleType type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, RandomSource random) {
+            return new WaterfallMistParticle(level, x, y, z, xSpeed, ySpeed, zSpeed, sprites.get(random));
         }
     }
 }

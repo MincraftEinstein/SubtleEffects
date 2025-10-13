@@ -12,6 +12,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
@@ -171,7 +172,7 @@ public class SplashParticle extends FlatPlaneParticle {
     public record Provider(SpriteSet sprites) implements ParticleProvider<SplashParticleOptions> {
 
         @Override
-        public Particle createParticle(SplashParticleOptions options, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+        public Particle createParticle(SplashParticleOptions options, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, RandomSource random) {
             SplashParticle particle = new SplashParticle(level, x, y, z, true, false, FluidTags.WATER, sprites, WATER_SPLASH_OVERLAY, WATER_SPLASH_BOTTOM, options);
             int waterColor = level.getBiome(BlockPos.containing(x, y, z)).value().getWaterColor();
             float colorIntensity = ENTITIES.splashes.splashOverlayTint.get();
@@ -195,7 +196,7 @@ public class SplashParticle extends FlatPlaneParticle {
     public record LavaProvider(SpriteSet sprites) implements ParticleProvider<SplashParticleOptions> {
 
         @Override
-        public Particle createParticle(SplashParticleOptions options, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+        public Particle createParticle(SplashParticleOptions options, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, RandomSource random) {
             return new SplashParticle(level, x, y, z, false, true, FluidTags.LAVA, sprites, null, LAVA_SPLASH_BOTTOM, options);
         }
     }

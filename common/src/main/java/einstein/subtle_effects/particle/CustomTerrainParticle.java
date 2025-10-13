@@ -6,6 +6,7 @@ import net.minecraft.client.particle.*;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.Blocks;
 
 public class CustomTerrainParticle extends TerrainParticle {
@@ -28,8 +29,8 @@ public class CustomTerrainParticle extends TerrainParticle {
 
         @SuppressWarnings("deprecation")
         @Override
-        public Particle createParticle(SimpleParticleType type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
-            CustomTerrainParticle particle = new CustomTerrainParticle(level, x, y, z, xSpeed, ySpeed, zSpeed, ParticleRenderType.TERRAIN_SHEET);
+        public Particle createParticle(SimpleParticleType type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, RandomSource random) {
+            CustomTerrainParticle particle = new CustomTerrainParticle(level, x, y, z, xSpeed, ySpeed, zSpeed, Layer.TERRAIN);
             particle.setSprite(Minecraft.getInstance().getTextureAtlas(TextureAtlas.LOCATION_BLOCKS).apply(COMPOST_TEXTURE));
             return particle;
         }
@@ -38,8 +39,8 @@ public class CustomTerrainParticle extends TerrainParticle {
     public record IronGolemProvider(SpriteSet sprites) implements ParticleProvider<SimpleParticleType> {
 
         @Override
-        public Particle createParticle(SimpleParticleType type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
-            CustomTerrainParticle particle = new CustomTerrainParticle(level, x, y, z, xSpeed, ySpeed, zSpeed, ParticleRenderType.PARTICLE_SHEET_OPAQUE);
+        public Particle createParticle(SimpleParticleType type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, RandomSource random) {
+            CustomTerrainParticle particle = new CustomTerrainParticle(level, x, y, z, xSpeed, ySpeed, zSpeed, Layer.OPAQUE);
             particle.pickSprite(sprites);
             return particle;
         }

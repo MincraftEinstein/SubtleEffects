@@ -6,11 +6,11 @@ import einstein.subtle_effects.util.Util;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleProvider;
-import net.minecraft.client.particle.ParticleRenderType;
 import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
@@ -72,7 +72,7 @@ public class EggSplatParticle extends FlatPlaneParticle {
     public record Provider(SpriteSet sprites) implements ParticleProvider<DirectionParticleOptions> {
 
         @Override
-        public Particle createParticle(DirectionParticleOptions options, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+        public Particle createParticle(DirectionParticleOptions options, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, RandomSource random) {
             return new EggSplatParticle(level, x, y, z, sprites, options.direction());
         }
     }

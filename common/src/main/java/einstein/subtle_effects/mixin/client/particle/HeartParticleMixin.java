@@ -51,7 +51,7 @@ public abstract class HeartParticleMixin extends TextureSheetParticle implements
     @Mixin(HeartParticle.Provider.class)
     public static class ProviderMixin {
 
-        @ModifyReturnValue(method = "createParticle(Lnet/minecraft/core/particles/SimpleParticleType;Lnet/minecraft/client/multiplayer/ClientLevel;DDDDDD)Lnet/minecraft/client/particle/Particle;", at = @At("RETURN"))
+        @ModifyReturnValue(method = "createParticle(Lnet/minecraft/core/particles/SimpleParticleType;Lnet/minecraft/client/multiplayer/ClientLevel;DDDDDDLnet/minecraft/util/RandomSource;)Lnet/minecraft/client/particle/Particle;", at = @At("RETURN"))
         private Particle setAsHeart(Particle original, @Local(argsOnly = true) SimpleParticleType type) {
             if (type.equals(ParticleTypes.HEART)) {
                 ((HeartParticleAccessor) original).subtleEffects$setHeart();

@@ -7,6 +7,7 @@ import net.minecraft.client.particle.*;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.particles.SimpleParticleType;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
 
@@ -52,8 +53,8 @@ public class SplashDropletParticle extends DripParticle.FallAndLandParticle impl
     public record Provider(SpriteSet sprites) implements ParticleProvider<SplashDropletParticleOptions> {
 
         @Override
-        public Particle createParticle(SplashDropletParticleOptions options, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
-            TextureSheetParticle particle = new SplashDropletParticle(level, x, y, z, xSpeed, ySpeed, zSpeed, options.scale(), sprites, false, Fluids.WATER, ParticleTypes.SPLASH, options.isSilent());
+        public Particle createParticle(SplashDropletParticleOptions options, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, RandomSource random) {
+            SingleQuadParticle particle = new SplashDropletParticle(level, x, y, z, xSpeed, ySpeed, zSpeed, options.scale(), sprites.get(random), false, Fluids.WATER, ParticleTypes.SPLASH, options.isSilent());
             int waterColor = level.getBiome(BlockPos.containing(x, y, z)).value().getWaterColor();
             float colorIntensity = options.colorIntensity();
             float whiteIntensity = 1 - colorIntensity;
@@ -73,8 +74,8 @@ public class SplashDropletParticle extends DripParticle.FallAndLandParticle impl
     public record LavaProvider(SpriteSet sprites) implements ParticleProvider<SplashDropletParticleOptions> {
 
         @Override
-        public Particle createParticle(SplashDropletParticleOptions options, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
-            return new SplashDropletParticle(level, x, y, z, xSpeed, ySpeed, zSpeed, options.scale(), sprites, true, Fluids.LAVA, ParticleTypes.LANDING_LAVA, options.isSilent());
+        public Particle createParticle(SplashDropletParticleOptions options, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, RandomSource random) {
+            return new SplashDropletParticle(level, x, y, z, xSpeed, ySpeed, zSpeed, options.scale(), sprites.get(random), true, Fluids.LAVA, ParticleTypes.LANDING_LAVA, options.isSilent());
         }
     }
 }

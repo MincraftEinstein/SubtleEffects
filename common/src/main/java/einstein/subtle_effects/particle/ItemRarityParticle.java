@@ -4,6 +4,7 @@ import einstein.subtle_effects.particle.option.IntegerParticleOptions;
 import einstein.subtle_effects.util.Util;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
+import net.minecraft.util.RandomSource;
 
 import static einstein.subtle_effects.init.ModConfigs.ITEMS;
 
@@ -51,8 +52,8 @@ public class ItemRarityParticle extends TextureSheetParticle {
     public record Provider(SpriteSet sprites) implements ParticleProvider<IntegerParticleOptions> {
 
         @Override
-        public Particle createParticle(IntegerParticleOptions options, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
-            return new ItemRarityParticle(level, sprites, x, y, z, xSpeed, ySpeed, zSpeed, options.integer());
+        public Particle createParticle(IntegerParticleOptions options, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, RandomSource random) {
+            return new ItemRarityParticle(level, x, y, z, xSpeed, ySpeed, zSpeed, options.integer(), sprites.get(random));
         }
     }
 }

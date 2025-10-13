@@ -5,6 +5,7 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import org.jetbrains.annotations.NotNull;
 
 public class SteamParticle extends SmokeParticle {
@@ -32,7 +33,7 @@ public class SteamParticle extends SmokeParticle {
     public record Provider(SpriteSet sprites) implements ParticleProvider<SimpleParticleType> {
 
         @Override
-        public Particle createParticle(SimpleParticleType type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+        public Particle createParticle(SimpleParticleType type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, RandomSource random) {
             return new SteamParticle(level, x, y, z, xSpeed, ySpeed, zSpeed, sprites);
         }
     }
@@ -40,7 +41,7 @@ public class SteamParticle extends SmokeParticle {
     public record FrostyBreathProvider(SpriteSet sprites) implements ParticleProvider<SimpleParticleType> {
 
         @Override
-        public @NotNull Particle createParticle(SimpleParticleType type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+        public @NotNull Particle createParticle(SimpleParticleType type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, RandomSource random) {
             SteamParticle particle = new SteamParticle(level, x, y, z, xSpeed, ySpeed, zSpeed, sprites);
             particle.alpha = ModConfigs.ENTITIES.humanoids.frostyBreath.alpha.get();
             particle.gravity = 0;

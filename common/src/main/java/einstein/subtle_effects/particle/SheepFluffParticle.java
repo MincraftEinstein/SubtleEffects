@@ -9,6 +9,7 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.client.particle.SpriteSet;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 
 public class SheepFluffParticle extends FeatherParticle {
@@ -39,7 +40,7 @@ public class SheepFluffParticle extends FeatherParticle {
     public record Provider(SpriteSet sprites) implements ParticleProvider<SheepFluffParticleOptions> {
 
         @Override
-        public Particle createParticle(SheepFluffParticleOptions options, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+        public Particle createParticle(SheepFluffParticleOptions options, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, RandomSource random) {
             return new SheepFluffParticle(level, x, y, z, xSpeed, ySpeed, zSpeed, sprites, options);
         }
     }

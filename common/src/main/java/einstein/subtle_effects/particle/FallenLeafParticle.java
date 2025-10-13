@@ -9,6 +9,7 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
 
@@ -53,7 +54,7 @@ public class FallenLeafParticle extends FlatPlaneParticle {
     public record Provider() implements ParticleProvider<FallenLeafParticleOptions> {
 
         @Override
-        public @Nullable Particle createParticle(FallenLeafParticleOptions options, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+        public @Nullable Particle createParticle(FallenLeafParticleOptions options, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, RandomSource random) {
             return options == FallenLeafParticleOptions.EMPTY ? null : new FallenLeafParticle(level, x, y, z, xSpeed, zSpeed, options);
         }
     }

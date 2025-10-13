@@ -6,6 +6,7 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
 import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 
 public class CommandBlockParticle extends TextureSheetParticle {
 
@@ -75,8 +76,8 @@ public class CommandBlockParticle extends TextureSheetParticle {
     public record Provider(SpriteSet sprites) implements ParticleProvider<DirectionParticleOptions> {
 
         @Override
-        public Particle createParticle(DirectionParticleOptions type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
-            return new CommandBlockParticle(level, sprites, x, y, z, xSpeed, ySpeed, zSpeed, type.direction());
+        public Particle createParticle(DirectionParticleOptions type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, RandomSource random) {
+            return new CommandBlockParticle(level, x, y, z, xSpeed, ySpeed, zSpeed, type.direction(), sprites.get(random));
         }
     }
 }

@@ -9,6 +9,7 @@ import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.client.particle.TextureSheetParticle;
 import net.minecraft.core.particles.ColorParticleOption;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 
 import static einstein.subtle_effects.util.MathUtil.nextNonAbsDouble;
 
@@ -43,8 +44,8 @@ public class PotionCloudParticle extends FlatPlaneParticle {
     public record Provider(SpriteSet sprites) implements ParticleProvider<ColorParticleOption> {
 
         @Override
-        public TextureSheetParticle createParticle(ColorParticleOption option, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
-            return new PotionCloudParticle(level, x, y, z, sprites, option);
+        public SingleQuadParticle createParticle(ColorParticleOption option, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, RandomSource random) {
+            return new PotionCloudParticle(level, x, y, z, option, sprites.get(random));
         }
     }
 }

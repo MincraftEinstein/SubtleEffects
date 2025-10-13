@@ -5,6 +5,7 @@ import einstein.subtle_effects.util.BubbleSetter;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
 import net.minecraft.core.particles.SimpleParticleType;
+import net.minecraft.util.RandomSource;
 
 import static einstein.subtle_effects.init.ModConfigs.ENTITIES;
 
@@ -30,7 +31,7 @@ public class DrowningBubbleParticle extends BubbleParticle {
     public record Provider(SpriteSet sprites) implements ParticleProvider<SimpleParticleType> {
 
         @Override
-        public Particle createParticle(SimpleParticleType type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+        public Particle createParticle(SimpleParticleType type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, RandomSource random) {
             DrowningBubbleParticle particle = new DrowningBubbleParticle(level, x, y, z, xSpeed, ySpeed, zSpeed);
             particle.pickSprite(sprites);
 

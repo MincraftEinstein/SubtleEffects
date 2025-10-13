@@ -7,6 +7,7 @@ import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import org.jetbrains.annotations.Nullable;
 
@@ -73,7 +74,7 @@ public class PotionRingParticle extends FlatPlaneParticle {
     public record Provider(SpriteSet sprites) implements ParticleProvider<ColorAndIntegerParticleOptions> {
 
         @Override
-        public Particle createParticle(ColorAndIntegerParticleOptions options, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+        public Particle createParticle(ColorAndIntegerParticleOptions options, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, RandomSource random) {
             PotionRingParticle particle = new PotionRingParticle(level, x, y, z, level.getEntity(options.integer()), sprites);
             Util.setColorFromHex(particle, options.color());
             return particle;

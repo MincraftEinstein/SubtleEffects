@@ -5,6 +5,7 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
 import net.minecraft.util.ARGB;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import org.jetbrains.annotations.Nullable;
 
@@ -78,8 +79,8 @@ public class PotionDotParticle extends TextureSheetParticle {
     public record PotionDotProvider(SpriteSet sprites) implements ParticleProvider<ColorAndIntegerParticleOptions> {
 
         @Override
-        public Particle createParticle(ColorAndIntegerParticleOptions options, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
-            return new PotionDotParticle(level, x, y, z, options.color(), level.getEntity(options.integer()), sprites);
+        public Particle createParticle(ColorAndIntegerParticleOptions options, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, RandomSource random) {
+            return new PotionDotParticle(level, x, y, z, options.color(), level.getEntity(options.integer()), sprites.get(random));
         }
     }
 }

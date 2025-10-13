@@ -10,6 +10,7 @@ import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.core.particles.ColorParticleOption;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.phys.Vec3;
 import org.joml.Quaternionf;
 
@@ -59,7 +60,7 @@ public class EnderEyePlacedRingParticle extends FlatPlaneParticle {
     public record Provider(SpriteSet sprites) implements ParticleProvider<ColorParticleOption> {
 
         @Override
-        public Particle createParticle(ColorParticleOption options, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+        public Particle createParticle(ColorParticleOption options, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, RandomSource random) {
             EnderEyePlacedRingParticle particle = new EnderEyePlacedRingParticle(level, x, y, z);
             particle.pickSprite(sprites);
             particle.setColor(options.getRed(), options.getGreen(), options.getBlue());

@@ -16,7 +16,7 @@ public class BubbleParticleProviderMixin {
     @Final
     private SpriteSet sprite;
 
-    @ModifyReturnValue(method = "createParticle(Lnet/minecraft/core/particles/SimpleParticleType;Lnet/minecraft/client/multiplayer/ClientLevel;DDDDDD)Lnet/minecraft/client/particle/Particle;", at = @At("RETURN"))
+    @ModifyReturnValue(method = "createParticle(Lnet/minecraft/core/particles/SimpleParticleType;Lnet/minecraft/client/multiplayer/ClientLevel;DDDDDDLnet/minecraft/util/RandomSource;)Lnet/minecraft/client/particle/Particle;", at = @At("RETURN"))
     private Particle createParticle(Particle particle) {
         if (particle != null && BCWPPackManager.isPackLoaded()) {
             ((BubbleSetter) particle).subtleEffects$setupBubble(sprite, true);

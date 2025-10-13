@@ -14,6 +14,7 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.material.Fluid;
 
@@ -168,7 +169,7 @@ public class SplashEmitter extends NoRenderParticle {
     public record Provider() implements ParticleProvider<IntegerParticleOptions> {
 
         @Override
-        public Particle createParticle(IntegerParticleOptions options, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+        public Particle createParticle(IntegerParticleOptions options, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, RandomSource random) {
             return new SplashEmitter(level, x, y, z, FluidTags.WATER, ModParticles.WATER_SPLASH.get(), ModParticles.WATER_SPLASH_DROPLET.get(), false, options.integer());
         }
     }
@@ -176,7 +177,7 @@ public class SplashEmitter extends NoRenderParticle {
     public record LavaProvider() implements ParticleProvider<IntegerParticleOptions> {
 
         @Override
-        public Particle createParticle(IntegerParticleOptions options, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+        public Particle createParticle(IntegerParticleOptions options, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, RandomSource random) {
             return new SplashEmitter(level, x, y, z, FluidTags.LAVA, ModParticles.LAVA_SPLASH.get(), ModParticles.LAVA_SPLASH_DROPLET.get(), true, options.integer());
         }
     }

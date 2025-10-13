@@ -8,6 +8,7 @@ import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 
 public class SlimeTrailParticle extends FlatPlaneParticle {
 
@@ -52,7 +53,7 @@ public class SlimeTrailParticle extends FlatPlaneParticle {
     public record Provider(SpriteSet sprites) implements ParticleProvider<FloatParticleOptions> {
 
         @Override
-        public Particle createParticle(FloatParticleOptions options, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+        public Particle createParticle(FloatParticleOptions options, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, RandomSource random) {
             return new SlimeTrailParticle(level, sprites, x, y, z, Math.min(options.f(), 64));
         }
     }

@@ -6,6 +6,7 @@ import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.TerrainParticle;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.Blocks;
 import org.jetbrains.annotations.Nullable;
 
@@ -13,8 +14,8 @@ public class TerrainNoMomentumParticleProvider extends TerrainParticle.Provider 
 
     @Nullable
     @Override
-    public Particle createParticle(BlockParticleOption options, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
-        Particle particle = super.createParticle(options, level, x, y, z, xSpeed, ySpeed, zSpeed);
+    public Particle createParticle(BlockParticleOption options, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, RandomSource random) {
+        Particle particle = super.createParticle(options, level, x, y, z, xSpeed, ySpeed, zSpeed, random);
         if (particle != null) {
             particle.setParticleSpeed(0, 0, 0);
 

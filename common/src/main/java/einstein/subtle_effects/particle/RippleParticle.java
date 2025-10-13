@@ -6,6 +6,7 @@ import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 
 public class RippleParticle extends FlatPlaneParticle {
 
@@ -44,7 +45,7 @@ public class RippleParticle extends FlatPlaneParticle {
     public record Provider(SpriteSet sprites) implements ParticleProvider<FloatParticleOptions> {
 
         @Override
-        public Particle createParticle(FloatParticleOptions options, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+        public Particle createParticle(FloatParticleOptions options, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, RandomSource random) {
             return new RippleParticle(level, x, y, z, sprites, true, options.f());
         }
     }
@@ -52,7 +53,7 @@ public class RippleParticle extends FlatPlaneParticle {
     public record LavaProvider(SpriteSet sprites) implements ParticleProvider<FloatParticleOptions> {
 
         @Override
-        public Particle createParticle(FloatParticleOptions options, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+        public Particle createParticle(FloatParticleOptions options, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, RandomSource random) {
             Particle particle = new RippleParticle(level, x, y, z, sprites, false, options.f());
             particle.setColor(0.871F, 0.478F, 0.133F);
             return particle;

@@ -6,7 +6,7 @@ import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.client.particle.SmokeParticle;
 import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.core.particles.SimpleParticleType;
-import org.jetbrains.annotations.Nullable;
+import net.minecraft.util.RandomSource;
 
 public class SnoringParticle extends SmokeParticle {
 
@@ -19,7 +19,7 @@ public class SnoringParticle extends SmokeParticle {
     public record Provider(SpriteSet sprites) implements ParticleProvider<SimpleParticleType> {
 
         @Override
-        public Particle createParticle(SimpleParticleType type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+        public Particle createParticle(SimpleParticleType type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, RandomSource random) {
             return new SnoringParticle(level, x, y, z, xSpeed, ySpeed, zSpeed, sprites);
         }
     }
@@ -27,7 +27,7 @@ public class SnoringParticle extends SmokeParticle {
     public record FallingProvider(SpriteSet sprites) implements ParticleProvider<SimpleParticleType> {
 
         @Override
-        public Particle createParticle(SimpleParticleType type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+        public Particle createParticle(SimpleParticleType type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, RandomSource random) {
             SnoringParticle particle = new SnoringParticle(level, x, y, z, xSpeed, ySpeed, zSpeed, sprites);
             particle.gravity = 0.1F;
             return particle;
