@@ -4,16 +4,14 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
 import net.minecraft.client.renderer.texture.TextureAtlas;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.level.block.Blocks;
 
 public class CustomTerrainParticle extends TerrainParticle {
 
     public static final ResourceLocation COMPOST_TEXTURE = ResourceLocation.tryParse("minecraft:block/composter_compost");
-    private final ParticleRenderType renderType;
+    private final Layer renderType;
 
     public CustomTerrainParticle(ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, ParticleRenderType renderType) {
         super(level, x, y, z, xSpeed, ySpeed, zSpeed, Blocks.AIR.defaultBlockState());
@@ -22,7 +20,7 @@ public class CustomTerrainParticle extends TerrainParticle {
     }
 
     @Override
-    public ParticleRenderType getRenderType() {
+    public Layer getLayer() {
         return renderType;
     }
 

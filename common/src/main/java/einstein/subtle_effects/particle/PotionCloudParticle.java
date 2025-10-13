@@ -1,7 +1,6 @@
 package einstein.subtle_effects.particle;
 
-import com.mojang.blaze3d.vertex.VertexConsumer;
-import einstein.subtle_effects.init.ModParticleRenderTypes;
+import einstein.subtle_effects.init.ModParticleLayers;
 import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.ParticleProvider;
@@ -37,8 +36,8 @@ public class PotionCloudParticle extends FlatPlaneParticle {
     }
 
     @Override
-    public ParticleRenderType getRenderType() {
-        return ModParticleRenderTypes.getBlendedOrTransparent();
+    protected Layer getLayer() {
+        return ModParticleLayers.getBlendedOrTransparent();
     }
 
     public record Provider(SpriteSet sprites) implements ParticleProvider<ColorParticleOption> {

@@ -45,8 +45,8 @@ public class SplashDropletParticle extends DripParticle.FallAndLandParticle impl
     }
 
     @Override
-    public ParticleRenderType getRenderType() {
-        return ParticleRenderType.PARTICLE_SHEET_OPAQUE;
+    public Layer getLayer() {
+        return Layer.OPAQUE;
     }
 
     public record Provider(SpriteSet sprites) implements ParticleProvider<SplashDropletParticleOptions> {

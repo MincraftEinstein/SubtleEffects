@@ -6,7 +6,6 @@ import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleProvider;
-import net.minecraft.client.particle.ParticleRenderType;
 import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.BlockPos;
@@ -65,11 +64,11 @@ public class SplashParticle extends FlatPlaneParticle {
     }
 
     @Override
-    public ParticleRenderType getRenderType() {
+    protected Layer getLayer() {
         if (translucent) {
-            return ParticleRenderType.PARTICLE_SHEET_TRANSLUCENT;
+            return Layer.TRANSLUCENT;
         }
-        return ParticleRenderType.PARTICLE_SHEET_OPAQUE;
+        return Layer.OPAQUE;
     }
 
     @Override

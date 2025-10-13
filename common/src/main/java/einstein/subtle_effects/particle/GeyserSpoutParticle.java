@@ -6,7 +6,6 @@ import einstein.subtle_effects.ticking.tickers.geyser.GeyserType;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleProvider;
-import net.minecraft.client.particle.ParticleRenderType;
 import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
@@ -50,8 +49,8 @@ public class GeyserSpoutParticle extends FlatPlaneParticle {
     }
 
     @Override
-    public ParticleRenderType getRenderType() {
-        return ParticleRenderType.PARTICLE_SHEET_TRANSLUCENT;
+    protected Layer getLayer() {
+        return Layer.TRANSLUCENT;
     }
 
     public record Provider(SpriteSet sprites) implements ParticleProvider<GeyserSpoutParticleOptions> {

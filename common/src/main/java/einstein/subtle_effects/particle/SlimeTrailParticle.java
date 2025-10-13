@@ -1,11 +1,10 @@
 package einstein.subtle_effects.particle;
 
-import einstein.subtle_effects.init.ModParticleRenderTypes;
+import einstein.subtle_effects.init.ModParticleLayers;
 import einstein.subtle_effects.particle.option.FloatParticleOptions;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleProvider;
-import net.minecraft.client.particle.ParticleRenderType;
 import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
@@ -26,8 +25,8 @@ public class SlimeTrailParticle extends FlatPlaneParticle {
     }
 
     @Override
-    public ParticleRenderType getRenderType() {
-        return ModParticleRenderTypes.getBlendedOrTransparent();
+    protected Layer getLayer() {
+        return ModParticleLayers.getBlendedOrTransparent();
     }
 
     @Override

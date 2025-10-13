@@ -1,8 +1,7 @@
 package einstein.subtle_effects.particle;
 
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import einstein.subtle_effects.init.ModConfigs;
-import einstein.subtle_effects.init.ModParticleRenderTypes;
+import einstein.subtle_effects.init.ModParticleLayers;
 import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.ParticleRenderType;
@@ -48,7 +47,7 @@ public abstract class BaseWaterfallParticle extends TextureSheetParticle {
     }
 
     @Override
-    public ParticleRenderType getRenderType() {
-        return ModParticleRenderTypes.getBlendedOrTransparent();
+    protected Layer getLayer() {
+        return ModParticleLayers.getBlendedOrTransparent();
     }
 }

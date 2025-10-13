@@ -4,7 +4,6 @@ import einstein.subtle_effects.init.ModConfigs;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
 import net.minecraft.core.particles.SimpleParticleType;
-import org.jetbrains.annotations.Nullable;
 
 public class DrowningBubblePopParticle extends BubblePopParticle {
 
@@ -14,8 +13,8 @@ public class DrowningBubblePopParticle extends BubblePopParticle {
     }
 
     @Override
-    public ParticleRenderType getRenderType() {
-        return ParticleRenderType.PARTICLE_SHEET_TRANSLUCENT;
+    public Layer getLayer() {
+        return Layer.TRANSLUCENT;
     }
 
     public record Provider(SpriteSet sprites) implements ParticleProvider<SimpleParticleType> {
