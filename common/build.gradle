@@ -8,10 +8,10 @@ neoForge {
 
     accessTransformers.from('src/main/resources/META-INF/accesstransformer.cfg')
 
-   /* parchment {
+    parchment {
         minecraftVersion = parchment_minecraft_version
         mappingsVersion = parchment_version
-    }*/
+    }
 }
 
 dependencies {
