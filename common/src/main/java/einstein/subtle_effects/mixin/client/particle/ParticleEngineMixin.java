@@ -20,15 +20,6 @@ public class ParticleEngineMixin {
     @Shadow
     protected ClientLevel level;
 
-    @Shadow
-    @Final
-    private Map<ResourceLocation, ParticleEngine.MutableSpriteSet> spriteSets;
-
-    @Inject(method = "registerProviders", at = @At("TAIL"))
-    private void registerProviders(CallbackInfo ci) {
-        spriteSets.putAll(ModSpriteSets.REGISTERED);
-    }
-
     @Inject(method = "createParticle", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/particle/ParticleEngine;add(Lnet/minecraft/client/particle/Particle;)V"))
     private void modifyColor(ParticleOptions options, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, CallbackInfoReturnable<Particle> cir, @Local Particle particle) {
         if (BCWPPackManager.isPackLoaded() && BCWPPackManager.BIOME_COLORED_PARTICLES.contains(options.getType())) {
