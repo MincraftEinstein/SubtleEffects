@@ -29,7 +29,7 @@ public class AxeItemMixin {
 
     @WrapOperation(method = "evaluateNewBlockState", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/Level;playSound(Lnet/minecraft/world/entity/Entity;Lnet/minecraft/core/BlockPos;Lnet/minecraft/sounds/SoundEvent;Lnet/minecraft/sounds/SoundSource;FF)V"))
     private void evaluateNewBlockState(Level level, Entity entity, BlockPos pos, SoundEvent sound, SoundSource source, float volume, float pitch, Operation<Void> original, @Local(argsOnly = true) BlockState state) {
-        if (level.isClientSide) {
+        if (level.isClientSide()) {
             if (sound.equals(SoundEvents.AXE_STRIP)) {
                 if (ITEMS.axeStripParticles) {
                     level.addDestroyBlockEffect(pos, state);

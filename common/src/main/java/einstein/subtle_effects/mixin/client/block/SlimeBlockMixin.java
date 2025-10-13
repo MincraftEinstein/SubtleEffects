@@ -18,7 +18,7 @@ public class SlimeBlockMixin {
 
     @Inject(method = "fallOn", at = @At("HEAD"))
     private void bounceUp(Level level, BlockState state, BlockPos pos, Entity entity, double distance, CallbackInfo ci) {
-        if (entity.level().isClientSide && ModConfigs.BLOCKS.slimeBlockBounceSounds) {
+        if (entity.level().isClientSide() && ModConfigs.BLOCKS.slimeBlockBounceSounds) {
             if (distance > 1) {
                 if (distance < 4) {
                     Util.playClientSound(entity, SoundEvents.SLIME_SQUISH_SMALL, entity.getSoundSource(), 0.5F, 1);

@@ -61,7 +61,7 @@ public class Util {
         Minecraft minecraft = Minecraft.getInstance();
         Level level = minecraft.level;
 
-        if (level != null && level.isClientSide) {
+        if (level != null && level.isClientSide()) {
             level.playSound(minecraft.player, entity, sound, source, volume, pitch);
         }
     }
@@ -70,7 +70,7 @@ public class Util {
         Minecraft minecraft = Minecraft.getInstance();
         Level level = minecraft.level;
 
-        if (level != null && level.isClientSide) {
+        if (level != null && level.isClientSide()) {
             level.playSound(minecraft.player, pos.getX(), pos.getY(), pos.getZ(), sound, source, volume, pitch);
         }
     }

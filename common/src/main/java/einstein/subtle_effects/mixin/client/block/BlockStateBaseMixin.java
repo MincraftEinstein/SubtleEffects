@@ -38,7 +38,7 @@ public class BlockStateBaseMixin {
 
     @WrapOperation(method = "useWithoutItem", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/Block;useWithoutItem(Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/entity/player/Player;Lnet/minecraft/world/phys/BlockHitResult;)Lnet/minecraft/world/InteractionResult;"))
     private InteractionResult use(Block block, BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult, Operation<InteractionResult> original) {
-        if (level.isClientSide && (ModConfigs.BLOCKS.cakeEatParticles || ModConfigs.BLOCKS.cakeEatSounds)) {
+        if (level.isClientSide() && (ModConfigs.BLOCKS.cakeEatParticles || ModConfigs.BLOCKS.cakeEatSounds)) {
             Pair<IntegerProperty, Integer> bitesData = subtleEffects$getBitesData(state);
             boolean hadBites = bitesData != null;
             int oldBites = hadBites ? state.getValue(bitesData.getFirst()) : 0;

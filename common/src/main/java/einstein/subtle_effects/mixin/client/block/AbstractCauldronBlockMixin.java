@@ -31,7 +31,7 @@ public class AbstractCauldronBlockMixin {
 
     @ModifyReturnValue(method = "useItemOn", at = @At("RETURN"))
     private InteractionResult spawnInteractionParticles(InteractionResult result, @Local(argsOnly = true) BlockState state, @Local(argsOnly = true) Level level, @Local(argsOnly = true) BlockPos pos, @Local(argsOnly = true) ItemStack stack) {
-        if (level.isClientSide && result == InteractionResult.SUCCESS) {
+        if (level.isClientSide() && result == InteractionResult.SUCCESS) {
             RandomSource random = level.getRandom();
 
             if (BLOCKS.cauldronUseParticles || BLOCKS.cauldronCleanItemSounds) {

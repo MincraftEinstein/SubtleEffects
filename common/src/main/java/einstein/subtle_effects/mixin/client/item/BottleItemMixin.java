@@ -20,7 +20,7 @@ public class BottleItemMixin {
 
     @Inject(method = "use", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/Level;gameEvent(Lnet/minecraft/world/entity/Entity;Lnet/minecraft/core/Holder;Lnet/minecraft/core/BlockPos;)V"))
     private void use(Level level, Player player, InteractionHand hand, CallbackInfoReturnable<InteractionResult> cir, @Local BlockPos pos) {
-        if (level.isClientSide) {
+        if (level.isClientSide()) {
             ParticleSpawnUtil.spawnBucketParticles(level, pos, new ItemStack(Items.WATER_BUCKET));
         }
     }

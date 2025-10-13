@@ -28,7 +28,7 @@ public class FabricStonecutterMenu$2Mixin {
 
     @Inject(method = "onTake", at = @At("HEAD"))
     private void onTake(Player player, ItemStack stack, CallbackInfo ci) {
-        if (!player.level().isClientSide) {
+        if (!player.level().isClientSide()) {
             subtleEffects$inputStack = ((StonecutterMenuAccessor) field_17639).getInputSlot().getItem().copy();
         }
     }

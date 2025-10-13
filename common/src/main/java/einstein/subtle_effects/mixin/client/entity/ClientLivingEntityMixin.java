@@ -41,7 +41,7 @@ public abstract class ClientLivingEntityMixin<T extends Entity> extends Entity {
 
     @Inject(method = "tickDeath", at = @At(value = "FIELD", target = "Lnet/minecraft/world/entity/LivingEntity;deathTime:I", ordinal = 0))
     private void deathTick(CallbackInfo ci) {
-        if (!level().isClientSide) {
+        if (!level().isClientSide()) {
             return;
         }
 

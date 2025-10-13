@@ -23,7 +23,7 @@ public class SolidBucketItemMixin {
     @Inject(method = "useOn", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Player;setItemInHand(Lnet/minecraft/world/InteractionHand;Lnet/minecraft/world/item/ItemStack;)V"))
     private void spawnPlaceEffects(UseOnContext context, CallbackInfoReturnable<InteractionResult> cir) {
         Level level = context.getLevel();
-        if (level.isClientSide) {
+        if (level.isClientSide()) {
             BlockPlaceContext blockContext = new BlockPlaceContext(context);
             BlockPos pos = blockContext.getClickedPos();
             ItemStack stack = blockContext.getItemInHand();

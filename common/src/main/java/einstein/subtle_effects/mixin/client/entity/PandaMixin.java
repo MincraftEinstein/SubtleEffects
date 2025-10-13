@@ -97,7 +97,7 @@ public abstract class PandaMixin extends Animal {
 
     @WrapOperation(method = "afterSneeze", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/Level;addParticle(Lnet/minecraft/core/particles/ParticleOptions;DDDDDD)V"))
     private void replaceSneezeParticles(Level level, ParticleOptions particle, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, Operation<Void> original) {
-        if (level.isClientSide && ModConfigs.ENTITIES.improvedPandaSneezes) {
+        if (level.isClientSide() && ModConfigs.ENTITIES.improvedPandaSneezes) {
             subtleEffects$spawnSneezeParticles(level, subtleEffects$panda.isBaby());
             return;
         }

@@ -74,7 +74,7 @@ public abstract class CommonLivingEntityMixin extends Entity {
 
     @Inject(method = "tick", at = @At("TAIL"))
     private void tick(CallbackInfo ci) {
-        if (!level().isClientSide) {
+        if (!level().isClientSide()) {
             if (subtleEffects$me.isInvisible()) {
                 return;
             }
@@ -113,7 +113,7 @@ public abstract class CommonLivingEntityMixin extends Entity {
 
     @WrapWithCondition(method = "handleFallFlyingCollisions", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;playSound(Lnet/minecraft/sounds/SoundEvent;FF)V"))
     private boolean cancelFlyIntoWallClientSound(LivingEntity entity, SoundEvent sound, float volume, float pitch) {
-        return !level().isClientSide;
+        return !level().isClientSide();
     }
 
     @WrapWithCondition(method = "handleFallFlyingCollisions", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;hurt(Lnet/minecraft/world/damagesource/DamageSource;F)V"))
@@ -123,12 +123,12 @@ public abstract class CommonLivingEntityMixin extends Entity {
                 ParticleSpawnUtil.spawnFallDustClouds(entity, 10, 10, ClientBoundEntityFellPayload.TypeConfig.ELYTRA);
             }
         }
-        return !level().isClientSide;
+        return !level().isClientSide();
     }
 
     @WrapOperation(method = "tickEffects", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/Level;addParticle(Lnet/minecraft/core/particles/ParticleOptions;DDDDDD)V"))
     private void replaceSlimeEffect(Level level, ParticleOptions options, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, Operation<Void> original) {
-        if (level.isClientSide) {
+        if (level.isClientSide()) {
             if (ModConfigs.ENTITIES.replaceOozingEffectParticles && options.getType().equals(ParticleTypes.ITEM_SLIME)) {
                 level.addParticle(
                         new BlockParticleOption(ParticleTypes.BLOCK, Blocks.SLIME_BLOCK.defaultBlockState()),

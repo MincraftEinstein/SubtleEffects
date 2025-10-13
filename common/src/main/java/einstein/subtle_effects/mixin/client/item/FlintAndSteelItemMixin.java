@@ -23,7 +23,7 @@ public class FlintAndSteelItemMixin {
     @Inject(method = "useOn", at = @At(value = "FIELD", target = "Lnet/minecraft/world/level/gameevent/GameEvent;BLOCK_CHANGE:Lnet/minecraft/core/Holder$Reference;"))
     private void useOn(UseOnContext context, CallbackInfoReturnable<InteractionResult> cir) {
         Level level = context.getLevel();
-        if (level.isClientSide) {
+        if (level.isClientSide()) {
             if (!ModConfigs.ITEMS.flintAndSteelParticles) {
                 return;
             }

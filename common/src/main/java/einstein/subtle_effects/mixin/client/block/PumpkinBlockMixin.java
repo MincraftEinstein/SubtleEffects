@@ -21,7 +21,7 @@ public class PumpkinBlockMixin {
     @Inject(method = "useItemOn", at = @At("RETURN"))
     private void use(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult, CallbackInfoReturnable<InteractionResult> cir) {
         if (ModConfigs.BLOCKS.pumpkinCarvedParticles) {
-            if (level.isClientSide && cir.getReturnValue().consumesAction()) {
+            if (level.isClientSide() && cir.getReturnValue().consumesAction()) {
                 level.addDestroyBlockEffect(pos, state);
             }
         }

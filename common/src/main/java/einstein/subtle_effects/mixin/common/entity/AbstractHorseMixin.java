@@ -37,7 +37,7 @@ public abstract class AbstractHorseMixin extends Animal {
 
     @Inject(method = "tickRidden", at = @At("TAIL"))
     private void tickRidden(Player player, Vec3 travelVector, CallbackInfo ci) {
-        if (level().isClientSide && ModConfigs.ENTITIES.dustClouds.mobRunning) {
+        if (level().isClientSide() && ModConfigs.ENTITIES.dustClouds.mobRunning) {
             if (subtleEffects$me.isInvisible()) {
                 return;
             }

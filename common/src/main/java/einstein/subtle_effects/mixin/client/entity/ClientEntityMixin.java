@@ -97,7 +97,7 @@ public abstract class ClientEntityMixin implements EntityAccessor {
 
     @Inject(method = "onInsideBlock", at = @At("HEAD"))
     private void inside(BlockState state, CallbackInfo ci) {
-        if (subtleEffects$me.level().isClientSide) {
+        if (subtleEffects$me.level().isClientSide()) {
             if (ModConfigs.BLOCKS.cobwebMovementSounds) {
                 if (subtleEffects$me.flyDist > subtleEffects$nextCobwebSound && state.is(Blocks.COBWEB)) {
                     if (subtleEffects$lastPos.distanceToSqr(subtleEffects$me.position()) > 0.5) {
@@ -128,7 +128,7 @@ public abstract class ClientEntityMixin implements EntityAccessor {
     @Inject(method = "doWaterSplashEffect", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/Mth;floor(D)I"), cancellable = true)
     private void doWaterSplash(CallbackInfo ci) {
         Level level = subtleEffects$me.level();
-        if (level.isClientSide) {
+        if (level.isClientSide()) {
             if (ParticleSpawnUtil.spawnSplashEffects(subtleEffects$me, level, ModParticles.WATER_SPLASH_EMITTER.get(), FluidTags.WATER, subtleEffects$me.getDeltaMovement())) {
                 ci.cancel();
             }

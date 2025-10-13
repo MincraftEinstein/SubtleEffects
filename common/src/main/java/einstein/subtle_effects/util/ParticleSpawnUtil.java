@@ -106,7 +106,7 @@ public class ParticleSpawnUtil {
 
     public static void spawnFallDustClouds(Entity entity, float distance, int fallDamage, ClientBoundEntityFellPayload.TypeConfig config) {
         Level level = entity.level();
-        if (level.isClientSide && entity.equals(Minecraft.getInstance().player)) {
+        if (level.isClientSide() && entity.equals(Minecraft.getInstance().player)) {
             spawnEntityFellParticles((LivingEntity) entity, entity.getY(), distance, fallDamage, ENTITIES.dustClouds.playerFell);
         }
         else if (level instanceof ServerLevel serverLevel) {
@@ -399,7 +399,7 @@ public class ParticleSpawnUtil {
     }
 
     public static void spawnBucketParticles(Level level, BlockPos pos, ItemStack stack) {
-        if (level.isClientSide) {
+        if (level.isClientSide()) {
             RandomSource random = level.getRandom();
             if (stack.getItem() instanceof BucketItemAccessor bucket) {
                 Fluid content = bucket.getContent();
@@ -484,7 +484,7 @@ public class ParticleSpawnUtil {
     public static void spawnLavaSplash(Entity entity, boolean isInLava, boolean firstTick, boolean wasTouchingLava, Vec3 deltaMovement) {
         Level level = entity.level();
 
-        if (level.isClientSide && isInLava && ENTITIES.splashes.lavaSplashes) {
+        if (level.isClientSide() && isInLava && ENTITIES.splashes.lavaSplashes) {
             if (!wasTouchingLava && !firstTick) {
                 spawnSplashEffects(entity, level, ModParticles.LAVA_SPLASH_EMITTER.get(), FluidTags.LAVA, deltaMovement);
             }
