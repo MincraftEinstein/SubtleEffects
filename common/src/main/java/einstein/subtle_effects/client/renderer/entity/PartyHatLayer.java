@@ -1,14 +1,13 @@
 package einstein.subtle_effects.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import einstein.subtle_effects.client.model.entity.PartyHatModel;
 import einstein.subtle_effects.platform.Services;
 import einstein.subtle_effects.util.EntityRenderStateAccessor;
 import einstein.subtle_effects.util.Util;
 import net.minecraft.client.model.HumanoidModel;
-import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
@@ -53,7 +52,7 @@ public class PartyHatLayer<T extends AvatarRenderState, V extends HumanoidModel<
     }
 
     @Override
-    public void render(PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, T renderState, float yRot, float xRot) {
+    public void submit(PoseStack poseStack, SubmitNodeCollector collector, int packedLight, T renderState, float yRot, float xRot) {
         EntityRenderStateAccessor accessor = (EntityRenderStateAccessor) renderState;
         if (shouldRender(accessor)) {
             poseStack.pushPose();
@@ -65,8 +64,8 @@ public class PartyHatLayer<T extends AvatarRenderState, V extends HumanoidModel<
             poseStack.translate(0, -0.5, 0);
             poseStack.rotateAround(Axis.ZP.rotationDegrees(id * 22.5F), 0, 0.25F, 0);
 
-            VertexConsumer consumer = bufferSource.getBuffer(model.renderType(getHatTexture(id, uuid)));
-            model.renderToBuffer(poseStack, consumer, packedLight, OverlayTexture.NO_OVERLAY, -1);
+            var renderType = model.renderType(getHatTexture(id, uuid));
+            collector.submitModel(model, renderState, poseStack, renderType, packedLight, OverlayTexture.NO_OVERLAY, -1, null);
 
             poseStack.popPose();
         }
