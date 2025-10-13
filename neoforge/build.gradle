@@ -14,10 +14,10 @@ neoForge {
 
     accessTransformers.from(project(":common").file('src/main/resources/META-INF/accesstransformer.cfg'))
 
-    parchment {
-        minecraftVersion = parchment_minecraft_version
-        mappingsVersion = parchment_version
-    }
+//    parchment {
+//        minecraftVersion = parchment_minecraft_version
+//        mappingsVersion = parchment_version
+//    }
 
     runs {
         configureEach {
