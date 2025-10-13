@@ -16,7 +16,7 @@ import einstein.subtle_effects.particle.option.SplashDropletParticleOptions;
 import me.fzzyhmstrs.fzzy_config.validation.misc.ValidatedColor;
 import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.particle.Particle;
+import net.minecraft.client.particle.SingleQuadParticle;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.SectionPos;
@@ -101,7 +101,7 @@ public class Util {
         }
     }
 
-    public static void setColorFromHex(Particle particle, int hexColor) {
+    public static void setColorFromHex(SingleQuadParticle particle, int hexColor) {
         particle.setColor((hexColor >> 16) / 255F, (hexColor >> 8) / 255F, hexColor / 255F);
     }
 
@@ -162,7 +162,7 @@ public class Util {
         return (random.nextFloat() * 0.2F + 0.8F) * color * multiplier;
     }
 
-    public static void setRandomizedColor(Particle particle, RandomSource random, float r, float g, float b) {
+    public static void setRandomizedColor(SingleQuadParticle particle, RandomSource random, float r, float g, float b) {
         float multiplier = random.nextFloat() * 0.4F + 0.6F;
         particle.setColor(
                 randomizeColor(random, r, multiplier),

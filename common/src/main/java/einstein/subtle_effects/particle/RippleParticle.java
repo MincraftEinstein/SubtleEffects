@@ -54,7 +54,7 @@ public class RippleParticle extends FlatPlaneParticle {
 
         @Override
         public Particle createParticle(FloatParticleOptions options, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, RandomSource random) {
-            Particle particle = new RippleParticle(level, x, y, z, sprites, false, options.f());
+            RippleParticle particle = new RippleParticle(level, x, y, z, sprites, false, options.f());
             particle.setColor(0.871F, 0.478F, 0.133F);
             return particle;
         }

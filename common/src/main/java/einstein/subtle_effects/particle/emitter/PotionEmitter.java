@@ -5,7 +5,6 @@ import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.init.ModParticles;
 import einstein.subtle_effects.particle.option.ColorAndIntegerParticleOptions;
 import einstein.subtle_effects.util.MathUtil;
-import einstein.subtle_effects.util.Util;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.NoRenderParticle;
 import net.minecraft.client.particle.Particle;
@@ -25,7 +24,6 @@ public class PotionEmitter extends NoRenderParticle {
         super(level, x, y, z);
         this.color = color;
         this.entityId = entityId;
-        Util.setColorFromHex(this, color);
         entity = level.getEntity(entityId);
         lifetime = 1;
     }

@@ -9,7 +9,6 @@ public record MushroomSporeProvider(SpriteSet sprites) implements ParticleProvid
 
     @Override
     public Particle createParticle(SimpleParticleType type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, RandomSource random) {
-        RandomSource random = level.getRandom();
         xSpeed = random.nextGaussian() * 1.0E-6F;
         ySpeed = random.nextGaussian() * 1.0E-4F;
         zSpeed = random.nextGaussian() * 1.0E-6F;

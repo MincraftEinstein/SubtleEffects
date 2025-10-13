@@ -5,6 +5,7 @@ import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.util.ParticleAccessor;
 import net.minecraft.client.particle.FlyTowardsPositionParticle;
 import net.minecraft.client.particle.Particle;
+import net.minecraft.client.particle.SingleQuadParticle;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Mutable;
 import org.spongepowered.asm.mixin.gen.Accessor;
@@ -37,7 +38,9 @@ public interface FlyTowardsPositionParticleAccessor {
             }
 
             if (ModConfigs.GENERAL.disableRandomizedShading) {
-                particle.setColor(1, 1, 1);
+                if (particle instanceof SingleQuadParticle sqParticle) {
+                    sqParticle.setColor(1, 1, 1);
+                }
             }
             return particle;
         }

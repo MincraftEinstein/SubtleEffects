@@ -13,6 +13,7 @@ import einstein.subtle_effects.util.ParticleSpawnUtil;
 import einstein.subtle_effects.util.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.Particle;
+import net.minecraft.client.particle.SingleQuadParticle;
 import net.minecraft.client.renderer.LevelEventHandler;
 import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.core.BlockPos;
@@ -130,8 +131,8 @@ public class LevelEventHandlerMixin {
                 }
 
                 Particle particle = original.call(levelRenderer, options, force, x, y, z, xSpeed, ySpeed, zSpeed);
-                if (particle != null) {
-                    particle.setColor(red, green, blue);
+                if (particle instanceof SingleQuadParticle sqParticle) {
+                    sqParticle.setColor(red, green, blue);
                 }
             }
 
