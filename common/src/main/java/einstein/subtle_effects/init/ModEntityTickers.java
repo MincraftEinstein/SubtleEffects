@@ -12,6 +12,7 @@ import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedDouble;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.particles.PowerParticleOption;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
@@ -178,7 +179,7 @@ public class ModEntityTickers {
         });
         registerSimple(EntityType.DRAGON_FIREBALL, false, () -> ENTITIES.improvedDragonFireballTrail, (entity, level, random) -> {
             for (int i = 0; i < 10; i++) {
-                level.addParticle(ParticleTypes.DRAGON_BREATH,
+                level.addParticle(PowerParticleOption.create(ParticleTypes.DRAGON_BREATH, 1f),
                         entity.getRandomX(2),
                         entity.getRandomY(),
                         entity.getRandomZ(2),
