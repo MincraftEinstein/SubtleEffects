@@ -3,7 +3,6 @@ package einstein.subtle_effects.data;
 import net.fabricmc.fabric.api.resource.IdentifiableResourceReloadListener;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.PreparableReloadListener;
-import net.minecraft.server.packs.resources.ResourceManager;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
@@ -22,8 +21,8 @@ public class FabricReloadListenerWrapper<T extends PreparableReloadListener & Na
     }
 
     @Override
-    public CompletableFuture<Void> reload(PreparationBarrier preparationBarrier, ResourceManager resourceManager, Executor backgroundExecutor, Executor gameExecutor) {
-        return listener.reload(preparationBarrier, resourceManager, backgroundExecutor, gameExecutor);
+    public CompletableFuture<Void> reload(SharedState sharedState, Executor exectutor, PreparationBarrier barrier, Executor applyExectutor) {
+        return listener.reload(sharedState, exectutor, barrier, applyExectutor);
     }
 
     @Override
