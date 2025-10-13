@@ -6,6 +6,7 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.client.particle.SpriteSet;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
@@ -23,8 +24,8 @@ public class BeaconParticle extends SparkParticle {
     private final BlockPos beaconPos;
     private final List<BeaconBeamOwner.Section> beamSections = new ArrayList<>();
 
-    protected BeaconParticle(ClientLevel level, double x, double y, double z, SpriteSet sprites, BlockPos beaconPos) {
-        super(level, x, y, z, 0, 0, 0, 0, sprites);
+    protected BeaconParticle(ClientLevel level, double x, double y, double z, BlockPos beaconPos, TextureAtlasSprite sprite) {
+        super(level, x, y, z, 0, 0, 0, 0, sprite);
         this.beaconPos = beaconPos;
         xd = 0;
         yd = 0;
@@ -100,7 +101,7 @@ public class BeaconParticle extends SparkParticle {
 
         @Override
         public Particle createParticle(PositionParticleOptions type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, RandomSource random) {
-            return new BeaconParticle(level, x, y, z, sprites, type.pos());
+            return new BeaconParticle(level, x, y, z, type.pos(), sprites.get(random));
         }
     }
 }

@@ -7,6 +7,7 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.client.particle.SpriteSet;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
@@ -18,11 +19,10 @@ public class EggSplatParticle extends FlatPlaneParticle {
 
     private final Direction direction;
 
-    protected EggSplatParticle(ClientLevel level, double x, double y, double z, SpriteSet sprites, Direction direction) {
-        super(level, x, y, z);
+    protected EggSplatParticle(ClientLevel level, double x, double y, double z, Direction direction, TextureAtlasSprite sprite) {
+        super(level, x, y, z, sprite);
         this.direction = direction;
         rotation = direction.getRotation().rotateX(180 * Mth.DEG_TO_RAD);
-        pickSprite(sprites);
         lifetime = 120;
         quadSize = 0.2F;
 
@@ -73,7 +73,7 @@ public class EggSplatParticle extends FlatPlaneParticle {
 
         @Override
         public Particle createParticle(DirectionParticleOptions options, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, RandomSource random) {
-            return new EggSplatParticle(level, x, y, z, sprites, options.direction());
+            return new EggSplatParticle(level, x, y, z, options.direction(), sprites.get(random));
         }
     }
 }

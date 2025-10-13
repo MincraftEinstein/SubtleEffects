@@ -4,6 +4,7 @@ import einstein.subtle_effects.particle.option.DirectionParticleOptions;
 import einstein.subtle_effects.util.Util;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
@@ -15,8 +16,8 @@ public class CommandBlockParticle extends SingleQuadParticle {
     private final double zStart;
     private final Direction direction;
 
-    public CommandBlockParticle(ClientLevel level, SpriteSet sprites, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, Direction direction) {
-        super(level, x, y, z, xSpeed, ySpeed, zSpeed);
+    public CommandBlockParticle(ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, Direction direction, TextureAtlasSprite sprite) {
+        super(level, x, y, z, xSpeed, ySpeed, zSpeed, sprite);
         xd = xSpeed;
         yd = ySpeed;
         zd = zSpeed;
@@ -35,7 +36,6 @@ public class CommandBlockParticle extends SingleQuadParticle {
         lifetime = 50;
         float shade = Mth.clamp(level.random.nextFloat(), 0.6F, 1);
         setColor(shade, shade, shade);
-        pickSprite(sprites);
     }
 
     @Override

@@ -13,12 +13,14 @@ import net.minecraft.util.RandomSource;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
 
+import java.util.Objects;
+
 public class FallenLeafParticle extends FlatPlaneParticle {
 
     private final LifetimeAlpha lifetimeAlpha;
 
     protected FallenLeafParticle(ClientLevel level, double x, double y, double z, double xSpeed, double zSpeed, FallenLeafParticleOptions options) {
-        super(level, x, y, z);
+        super(level, x, y, z, Objects.requireNonNull(options.sprite()));
         if (!options.onGround() && ModConfigs.GENERAL.leavesLandingOnWaterKeepMomentum) {
             xd = MathUtil.nextDouble(random, (xSpeed / 4) * 3);
             zd = MathUtil.nextDouble(random, (zSpeed / 4) * 3);

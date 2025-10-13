@@ -17,7 +17,7 @@ public class DustCloudParticle extends SingleQuadParticle {
     private final Minecraft minecraft = Minecraft.getInstance();
 
     protected DustCloudParticle(ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, int maxLifeTime, SpriteSet sprites) {
-        super(level, x, y, z, xSpeed, 0, zSpeed);
+        super(level, x, y, z, xSpeed, 0, zSpeed, sprites.first());
         this.sprites = sprites;
         this.ySpeed = ySpeed;
         gravity = 0.1F;

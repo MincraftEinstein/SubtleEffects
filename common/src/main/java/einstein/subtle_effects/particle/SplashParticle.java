@@ -45,7 +45,7 @@ public class SplashParticle extends FlatPlaneParticle {
     private float overlayBCol = 1;
 
     protected SplashParticle(ClientLevel level, double x, double y, double z, boolean translucent, boolean glowing, TagKey<Fluid> fluidTag, SpriteSet mainSprites, @Nullable SpriteSet overlaySprites, SpriteSet bottomSprites, SplashParticleOptions options) {
-        super(level, x, y, z);
+        super(level, x, y, z, mainSprites.first());
         this.translucent = translucent;
         this.glowing = glowing;
         this.fluidTag = fluidTag;

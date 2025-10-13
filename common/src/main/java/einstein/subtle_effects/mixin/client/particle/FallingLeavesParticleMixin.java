@@ -30,8 +30,8 @@ public abstract class FallingLeavesParticleMixin extends SingleQuadParticle {
     @Unique
     private final BlockPos.MutableBlockPos subtleEffects$pos = new BlockPos.MutableBlockPos();
 
-    protected FallingLeavesParticleMixin(ClientLevel level, double x, double y, double z) {
-        super(level, x, y, z);
+    protected FallingLeavesParticleMixin(ClientLevel level, double x, double y, double z, TextureAtlasSprite sprite) {
+        super(level, x, y, z, sprite);
     }
 
     @Inject(method = "tick", at = @At("RETURN"))

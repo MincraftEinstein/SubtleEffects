@@ -18,8 +18,8 @@ public class PotionCloudParticle extends FlatPlaneParticle {
 
     private final LifetimeAlpha lifetimeAlpha = new LifetimeAlpha(0.5F, 0, 0.5F, 1);
 
-    protected PotionCloudParticle(ClientLevel level, double x, double y, double z, SpriteSet sprites, ColorParticleOption option) {
-        super(level, x, y, z);
+    protected PotionCloudParticle(ClientLevel level, double x, double y, double z, ColorParticleOption option, TextureAtlasSprite sprite) {
+        super(level, x, y, z, sprite);
         xd = nextNonAbsDouble(random, 0, 0.03);
         zd = nextNonAbsDouble(random, 0, 0.03);
         lifetime = Mth.nextInt(random, 25, 30);
@@ -28,7 +28,6 @@ public class PotionCloudParticle extends FlatPlaneParticle {
         quadSize = 1;
         setSize(2, 0.1F);
         setColor(option.getRed(), option.getGreen(), option.getBlue());
-        pickSprite(sprites);
     }
 
     @Override

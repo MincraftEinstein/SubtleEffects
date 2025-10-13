@@ -14,7 +14,7 @@ public class RippleParticle extends FlatPlaneParticle {
     private final boolean translucent;
 
     protected RippleParticle(ClientLevel level, double x, double y, double z, SpriteSet sprites, boolean translucent, float scale) {
-        super(level, x, y, z);
+        super(level, x, y, z, sprites.first());
         this.sprites = sprites;
         this.translucent = translucent;
         rotation.rotateX(90 * Mth.DEG_TO_RAD);

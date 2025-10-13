@@ -9,6 +9,7 @@ import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.client.renderer.state.QuadParticleRenderState;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 
@@ -17,8 +18,8 @@ public class SheepFluffParticle extends FeatherParticle {
     private final boolean isJeb;
     private final Entity sheep;
 
-    protected SheepFluffParticle(ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, SpriteSet sprites, SheepFluffParticleOptions options) {
-        super(level, x, y, z, xSpeed, ySpeed, zSpeed, sprites);
+    protected SheepFluffParticle(ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, SheepFluffParticleOptions options, TextureAtlasSprite sprite) {
+        super(level, x, y, z, xSpeed, ySpeed, zSpeed, sprite);
         int sheepId = options.sheepId();
         isJeb = options.isJeb();
         sheep = isJeb ? level.getEntity(sheepId) : null;
@@ -41,7 +42,7 @@ public class SheepFluffParticle extends FeatherParticle {
 
         @Override
         public Particle createParticle(SheepFluffParticleOptions options, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, RandomSource random) {
-            return new SheepFluffParticle(level, x, y, z, xSpeed, ySpeed, zSpeed, sprites, options);
+            return new SheepFluffParticle(level, x, y, z, xSpeed, ySpeed, zSpeed, options, sprites.get(random));
         }
     }
 }

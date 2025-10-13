@@ -16,8 +16,8 @@ public class WaterfallDropletParticle extends BaseWaterfallParticle {
 
     private final LifetimeAlpha lifetimeAlpha = new LifetimeAlpha(0.7F, 0, 0.5F, 0.8F);
 
-    protected WaterfallDropletParticle(ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, SpriteSet sprites) {
-        super(level, x, y, z, 0, 0, 0, LifetimeAlpha.ALWAYS_OPAQUE);
+    protected WaterfallDropletParticle(ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, TextureAtlasSprite sprite) {
+        super(level, x, y, z, 0, 0, 0, LifetimeAlpha.ALWAYS_OPAQUE, sprite);
         xd = xSpeed;
         yd = ySpeed;
         zd = zSpeed;
@@ -26,7 +26,6 @@ public class WaterfallDropletParticle extends BaseWaterfallParticle {
         alpha = lifetimeAlpha.startAlpha();
         quadSize = Mth.nextFloat(random, 0.0625F, 0.125F);
         setSize(quadSize, quadSize);
-        pickSprite(sprites);
 
         int waterColor = level.getBiome(BlockPos.containing(x, y, z)).value().getWaterColor();
         float colorIntensity = Mth.nextFloat(random, 0.2F, 0.5F);

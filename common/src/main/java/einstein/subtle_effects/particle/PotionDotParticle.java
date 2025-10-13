@@ -3,6 +3,7 @@ package einstein.subtle_effects.particle;
 import einstein.subtle_effects.particle.option.ColorAndIntegerParticleOptions;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.util.ARGB;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
@@ -18,12 +19,11 @@ public class PotionDotParticle extends SingleQuadParticle {
     private double yDistance = 0;
     private double zDistance = 0;
 
-    protected PotionDotParticle(ClientLevel level, double x, double y, double z, int color, @Nullable Entity entity, SpriteSet sprites) {
-        super(level, x, y, z);
+    protected PotionDotParticle(ClientLevel level, double x, double y, double z, int color, @Nullable Entity entity, TextureAtlasSprite sprite) {
+        super(level, x, y, z, sprite);
         this.entity = entity;
         yd = 0.20;
         lifetime = Mth.nextInt(random, 8, 12);
-        pickSprite(sprites);
         scale(1.3F);
         hasEntity = entity != null;
 

@@ -15,7 +15,7 @@ public class AllayMagicParticle extends SingleQuadParticle {
     private final SpriteSet sprites;
 
     public AllayMagicParticle(ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, SpriteSet sprites) {
-        super(level, x, y, z, xSpeed, ySpeed, zSpeed);
+        super(level, x, y, z, xSpeed, ySpeed, zSpeed, sprites.first());
         this.sprites = sprites;
         friction = 0.96F;
         gravity = -0.1F;

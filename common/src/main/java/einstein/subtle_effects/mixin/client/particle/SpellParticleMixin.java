@@ -29,8 +29,8 @@ public abstract class SpellParticleMixin extends SingleQuadParticle {
     @Unique
     private boolean subtleEffects$isFirstFrame = true;
 
-    public SpellParticleMixin(ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
-        super(level, x, y, z, xSpeed, ySpeed, zSpeed);
+    public SpellParticleMixin(ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, TextureAtlasSprite sprite) {
+        super(level, x, y, z, xSpeed, ySpeed, zSpeed, sprite);
     }
 
     @Override

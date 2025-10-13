@@ -6,6 +6,7 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.client.particle.SpriteSet;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
@@ -18,8 +19,8 @@ public class PotionRingParticle extends FlatPlaneParticle {
     private final boolean hasEntity;
     private double yDistance;
 
-    protected PotionRingParticle(ClientLevel level, double x, double y, double z, @Nullable Entity entity, SpriteSet sprites) {
-        super(level, x, y, z);
+    protected PotionRingParticle(ClientLevel level, double x, double y, double z, @Nullable Entity entity, TextureAtlasSprite sprite) {
+        super(level, x, y, z, sprite);
         this.entity = entity;
         hasEntity = entity != null;
         yDistance = hasEntity ? y - entity.getY() : 0;
@@ -27,7 +28,6 @@ public class PotionRingParticle extends FlatPlaneParticle {
         alpha = 0;
         quadSize = 0.2F;
         rotation.rotateX(-90 * Mth.DEG_TO_RAD);
-        pickSprite(sprites);
         scale(3);
     }
 
@@ -75,7 +75,7 @@ public class PotionRingParticle extends FlatPlaneParticle {
 
         @Override
         public Particle createParticle(ColorAndIntegerParticleOptions options, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, RandomSource random) {
-            PotionRingParticle particle = new PotionRingParticle(level, x, y, z, level.getEntity(options.integer()), sprites);
+            PotionRingParticle particle = new PotionRingParticle(level, x, y, z, level.getEntity(options.integer()), sprites.get(random));
             Util.setColorFromHex(particle, options.color());
             return particle;
         }

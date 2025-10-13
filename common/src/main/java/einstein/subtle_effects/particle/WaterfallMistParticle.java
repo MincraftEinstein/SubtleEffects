@@ -4,18 +4,18 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.client.particle.SpriteSet;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 
 public class WaterfallMistParticle extends BaseWaterfallParticle {
 
-    protected WaterfallMistParticle(ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, SpriteSet sprites) {
-        super(level, x, y, z, xSpeed, ySpeed, zSpeed, new LifetimeAlpha(0.45F, 0, 0.8F, 1));
+    protected WaterfallMistParticle(ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, TextureAtlasSprite sprite) {
+        super(level, x, y, z, xSpeed, ySpeed, zSpeed, new LifetimeAlpha(0.45F, 0, 0.8F, 1), sprite);
         friction = 0.90F;
         gravity = 0.1F;
         scale(20);
-        pickSprite(sprites);
 
         if (random.nextBoolean()) {
             roll = 180 * Mth.DEG_TO_RAD;

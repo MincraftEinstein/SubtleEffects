@@ -14,8 +14,8 @@ public abstract class BaseWaterfallParticle extends SingleQuadParticle {
     private final BlockPos.MutableBlockPos pos;
     private final LifetimeAlpha lifetimeAlpha;
 
-    protected BaseWaterfallParticle(ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, LifetimeAlpha lifetimeAlpha) {
-        super(level, x, y, z, xSpeed, ySpeed, zSpeed);
+    protected BaseWaterfallParticle(ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, LifetimeAlpha lifetimeAlpha, TextureAtlasSprite sprite) {
+        super(level, x, y, z, xSpeed, ySpeed, zSpeed, sprite);
         this.lifetimeAlpha = lifetimeAlpha;
         alpha = lifetimeAlpha.startAlpha();
         pos = BlockPos.containing(x, y, z).mutable();

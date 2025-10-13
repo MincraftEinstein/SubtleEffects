@@ -24,12 +24,12 @@ public abstract class HeartParticleMixin extends SingleQuadParticle implements H
     @Unique
     private boolean subtleEffects$isHeart;
 
-    protected HeartParticleMixin(ClientLevel level, double x, double y, double z) {
-        super(level, x, y, z);
+    protected HeartParticleMixin(ClientLevel level, double x, double y, double z, TextureAtlasSprite sprite) {
+        super(level, x, y, z, sprite);
     }
 
     @Inject(method = "<init>", at = @At("TAIL"))
-    private void init(ClientLevel level, double x, double y, double z, CallbackInfo ci) {
+    private void init(ClientLevel level, double x, double y, double z, TextureAtlasSprite sprite, CallbackInfo ci) {
         lifetime = random.nextIntBetweenInclusive(16, 25);
     }
 

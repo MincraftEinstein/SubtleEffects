@@ -37,8 +37,8 @@ public abstract class BubbleParticleMixin extends SingleQuadParticle implements 
     @Unique
     private int subtleEffects$waterColor;
 
-    protected BubbleParticleMixin(ClientLevel level, double x, double y, double z) {
-        super(level, x, y, z);
+    protected BubbleParticleMixin(ClientLevel level, double x, double y, double z, TextureAtlasSprite sprite) {
+        super(level, x, y, z, sprite);
     }
 
     @Inject(method = "tick", at = @At("RETURN"))

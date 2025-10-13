@@ -11,7 +11,7 @@ public class HeartPopParticle extends SingleQuadParticle {
     private final SpriteSet sprites;
 
     public HeartPopParticle(ClientLevel level, double x, double y, double z, double ySpeed, SpriteSet sprites) {
-        super(level, x, y, z);
+        super(level, x, y, z, sprites.first());
         this.sprites = sprites;
         xd = 0;
         yd = ySpeed;

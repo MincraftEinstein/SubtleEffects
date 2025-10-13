@@ -19,8 +19,8 @@ public class ResinDripParticleProviders {
 
         @Override
         public Particle createParticle(SimpleParticleType type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, RandomSource random) {
-            DripParticle.DripHangParticle particle = new DripParticle.DripHangParticle(level, x, y, z, Fluids.EMPTY, ModParticles.FALLING_RESIN.get());
-            setProperties(particle, sprites, ((ParticleAccessor) particle).getGravity() * 0.01F, 100);
+            DripParticle.DripHangParticle particle = new DripParticle.DripHangParticle(level, x, y, z, Fluids.EMPTY, ModParticles.FALLING_RESIN.get(), sprites.get(random));
+            setProperties(particle, ((ParticleAccessor) particle).getGravity() * 0.01F, 100);
             return particle;
         }
     }
@@ -29,8 +29,8 @@ public class ResinDripParticleProviders {
 
         @Override
         public Particle createParticle(SimpleParticleType type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, RandomSource random) {
-            DripParticle particle = new DripParticle.FallAndLandParticle(level, x, y, z, Fluids.EMPTY, ModParticles.LANDING_RESIN.get());
-            setProperties(particle, sprites, 0.01F, null);
+            DripParticle particle = new DripParticle.FallAndLandParticle(level, x, y, z, Fluids.EMPTY, ModParticles.LANDING_RESIN.get(), sprites.get(random));
+            setProperties(particle, 0.01F, null);
             return particle;
         }
     }
@@ -39,13 +39,13 @@ public class ResinDripParticleProviders {
 
         @Override
         public Particle createParticle(SimpleParticleType type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, RandomSource random) {
-            DripParticle particle = new DripParticle.DripLandParticle(level, x, y, z, Fluids.EMPTY);
-            setProperties(particle, sprites, null, (int) (28 / (Math.random() * 0.8 + 0.2)));
+            DripParticle particle = new DripParticle.DripLandParticle(level, x, y, z, Fluids.EMPTY, sprites.get(random));
+            setProperties(particle, null, (int) (28 / (Math.random() * 0.8 + 0.2)));
             return particle;
         }
     }
 
-    private static void setProperties(DripParticle particle, SpriteSet sprites, @Nullable Float gravity, @Nullable Integer lifeTime) {
+    private static void setProperties(DripParticle particle, @Nullable Float gravity, @Nullable Integer lifeTime) {
         if (gravity != null) {
             ((ParticleAccessor) particle).setGravity(gravity);
         }
@@ -54,7 +54,6 @@ public class ResinDripParticleProviders {
             particle.setLifetime(lifeTime);
         }
 
-        particle.pickSprite(sprites);
         particle.setColor(0.925F, 0.447F, 0.078F);
     }
 }

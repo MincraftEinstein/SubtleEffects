@@ -11,9 +11,8 @@ import net.minecraft.util.RandomSource;
 
 public class ExperienceParticle extends SingleQuadParticle {
 
-    protected ExperienceParticle(ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, SpriteSet sprites) {
-        super(level, x, y, z, xSpeed, ySpeed, zSpeed);
-        pickSprite(sprites);
+    protected ExperienceParticle(ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, TextureAtlasSprite sprite) {
+        super(level, x, y, z, xSpeed, ySpeed, zSpeed, sprite);
         yd *= 0.2F;
 
         if (xSpeed == 0 && zSpeed == 0) {

@@ -51,12 +51,12 @@ public abstract class DripParticleMixin extends SingleQuadParticle implements Dr
     @Unique
     private boolean subtleEffects$isSilent = false;
 
-    protected DripParticleMixin(ClientLevel level, double x, double y, double z) {
-        super(level, x, y, z);
+    protected DripParticleMixin(ClientLevel level, double x, double y, double z, TextureAtlasSprite sprite) {
+        super(level, x, y, z, sprite);
     }
 
     @Inject(method = "<init>", at = @At("TAIL"))
-    private void init(ClientLevel level, double x, double y, double z, Fluid fluid, CallbackInfo ci) {
+    private void init(ClientLevel level, double x, double y, double z, Fluid fluid, TextureAtlasSprite sprite, CallbackInfo ci) {
         subtleEffects$isLava = type.is(FluidTags.LAVA);
 
         if (GENERAL.glowingLavaDrops && subtleEffects$isLava) {

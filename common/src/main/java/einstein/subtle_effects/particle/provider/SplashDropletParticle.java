@@ -4,6 +4,7 @@ import einstein.subtle_effects.particle.option.SplashDropletParticleOptions;
 import einstein.subtle_effects.util.DripParticleAccessor;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.particles.SimpleParticleType;
@@ -15,11 +16,10 @@ public class SplashDropletParticle extends DripParticle.FallAndLandParticle impl
 
     private final boolean glowing;
 
-    protected SplashDropletParticle(ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, float scale, SpriteSet sprites, boolean glowing, Fluid fluid, SimpleParticleType landParticle, boolean isSilent) {
-        super(level, x, y, z, fluid, landParticle);
+    protected SplashDropletParticle(ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, float scale, TextureAtlasSprite sprite, boolean glowing, Fluid fluid, SimpleParticleType landParticle, boolean isSilent) {
+        super(level, x, y, z, fluid, landParticle, sprite );
         this.glowing = glowing;
         setParticleSpeed(xSpeed, ySpeed, zSpeed);
-        pickSprite(sprites);
         scale(scale * 1.5F);
         gravity = 0.06F;
 

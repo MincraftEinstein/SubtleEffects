@@ -8,6 +8,7 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.client.particle.SpriteSet;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.particles.ColorParticleOption;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
@@ -20,8 +21,8 @@ public class EnderEyePlacedRingParticle extends FlatPlaneParticle {
     public static final float SIZE = 0.2501F;
     private final LifetimeAlpha lifetimeAlpha = new LifetimeAlpha(1, 0, 0, 1);
 
-    protected EnderEyePlacedRingParticle(ClientLevel level, double x, double y, double z) {
-        super(level, x, y, z);
+    protected EnderEyePlacedRingParticle(ClientLevel level, double x, double y, double z, TextureAtlasSprite sprite) {
+        super(level, x, y, z, sprite);
         lifetime = ModConfigs.BLOCKS.enderEyePlacedRingsDuration.get();
         quadSize = SIZE;
         setSize(SIZE, SIZE);
@@ -61,8 +62,7 @@ public class EnderEyePlacedRingParticle extends FlatPlaneParticle {
 
         @Override
         public Particle createParticle(ColorParticleOption options, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, RandomSource random) {
-            EnderEyePlacedRingParticle particle = new EnderEyePlacedRingParticle(level, x, y, z);
-            particle.pickSprite(sprites);
+            EnderEyePlacedRingParticle particle = new EnderEyePlacedRingParticle(level, x, y, z, sprites.get(random));
             particle.setColor(options.getRed(), options.getGreen(), options.getBlue());
             return particle;
         }

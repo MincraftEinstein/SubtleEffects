@@ -7,6 +7,7 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.client.particle.SpriteSet;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
@@ -19,8 +20,8 @@ public class GeyserSpoutParticle extends FlatPlaneParticle {
     private final GeyserType type;
     private final BlockPos pos = BlockPos.containing(x, y, z);
 
-    protected GeyserSpoutParticle(ClientLevel level, double x, double y, double z, SpriteSet sprites, GeyserSpoutParticleOptions options) {
-        super(level, x, y, z);
+    protected GeyserSpoutParticle(ClientLevel level, double x, double y, double z, GeyserSpoutParticleOptions options, TextureAtlasSprite sprite) {
+        super(level, x, y, z, sprite);
         geyserLifeTime = options.lifeTime();
         type = options.type();
         rotation.rotateY(90 * random.nextInt(3) * Mth.DEG_TO_RAD).rotateX(90 * Mth.DEG_TO_RAD);
@@ -30,7 +31,6 @@ public class GeyserSpoutParticle extends FlatPlaneParticle {
         alpha = START_ALPHA;
         quadSize = 0.5F;
         setSize(1.5F, 0.1F);
-        pickSprite(sprites);
     }
 
     @Override
@@ -58,7 +58,7 @@ public class GeyserSpoutParticle extends FlatPlaneParticle {
 
         @Override
         public Particle createParticle(GeyserSpoutParticleOptions options, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, RandomSource random) {
-            return new GeyserSpoutParticle(level, x, y, z, sprites, options);
+            return new GeyserSpoutParticle(level, x, y, z, options, sprites.get(random));
         }
     }
 }

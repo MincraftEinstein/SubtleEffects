@@ -8,13 +8,12 @@ import net.minecraft.util.RandomSource;
 
 public class FeatherParticle extends SingleQuadParticle {
 
-    protected FeatherParticle(ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, SpriteSet sprites) {
-        super(level, x, y, z, xSpeed, ySpeed, zSpeed);
+    protected FeatherParticle(ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, TextureAtlasSprite sprite) {
+        super(level, x, y, z, xSpeed, ySpeed, zSpeed, sprite);
         quadSize = 0.1F;
         gravity = 0.35F;
         lifetime = 30;
         setSize(0.1F, 0.1F);
-        pickSprite(sprites);
     }
 
     @Override

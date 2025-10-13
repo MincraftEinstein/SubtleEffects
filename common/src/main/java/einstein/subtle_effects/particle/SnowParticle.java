@@ -2,6 +2,7 @@ package einstein.subtle_effects.particle;
 
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.util.RandomSource;
@@ -11,10 +12,9 @@ public class SnowParticle extends SingleQuadParticle {
 
     private final BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
 
-    protected SnowParticle(ClientLevel level, SpriteSet sprites, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
-        super(level, x, y, z, xSpeed, ySpeed, zSpeed);
+    protected SnowParticle(ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, TextureAtlasSprite sprite) {
+        super(level, x, y, z, xSpeed, ySpeed, zSpeed, sprite);
         lifetime = 20;
-        pickSprite(sprites);
     }
 
     @Override

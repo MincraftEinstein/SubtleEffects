@@ -12,7 +12,7 @@ public record MushroomSporeProvider(SpriteSet sprites) implements ParticleProvid
         xSpeed = random.nextGaussian() * 1.0E-6F;
         ySpeed = random.nextGaussian() * 1.0E-4F;
         zSpeed = random.nextGaussian() * 1.0E-6F;
-        SuspendedParticle particle = new SuspendedParticle(level, sprites, x, y, z, xSpeed, ySpeed, zSpeed);
+        SuspendedParticle particle = new SuspendedParticle(level, x, y, z, xSpeed, ySpeed, zSpeed, sprites.get(random));
         float color = random.nextFloat() * 0.1F + 0.2F;
         particle.setColor(color, color, color);
         return particle;

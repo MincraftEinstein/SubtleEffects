@@ -18,12 +18,12 @@ public abstract class FlatPlaneParticle extends SingleQuadParticle {
     protected Quaternionf rotation = new Quaternionf();
     protected boolean renderBackFace = true;
 
-    protected FlatPlaneParticle(ClientLevel level, double x, double y, double z) {
-        super(level, x, y, z);
+    protected FlatPlaneParticle(ClientLevel level, double x, double y, double z, TextureAtlasSprite sprite) {
+        super(level, x, y, z, sprite);
     }
 
-    protected FlatPlaneParticle(ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
-        super(level, x, y, z, xSpeed, ySpeed, zSpeed);
+    protected FlatPlaneParticle(ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, TextureAtlasSprite sprite) {
+        super(level, x, y, z, xSpeed, ySpeed, zSpeed, sprite);
     }
 
     @Override
