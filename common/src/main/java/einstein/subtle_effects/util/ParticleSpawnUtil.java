@@ -8,10 +8,11 @@ import einstein.subtle_effects.networking.clientbound.ClientBoundEntityFellPaylo
 import einstein.subtle_effects.networking.clientbound.ClientBoundEntityLandInFluidPayload;
 import einstein.subtle_effects.particle.EnderEyePlacedRingParticle;
 import einstein.subtle_effects.particle.SparkParticle;
+import einstein.subtle_effects.particle.emitter.SplashEmitter;
 import einstein.subtle_effects.particle.option.ColorAndIntegerParticleOptions;
 import einstein.subtle_effects.particle.option.DirectionParticleOptions;
-import einstein.subtle_effects.particle.option.FloatAndIntegerParticleOptions;
 import einstein.subtle_effects.particle.option.SheepFluffParticleOptions;
+import einstein.subtle_effects.particle.option.SplashEmitterParticleOptions;
 import einstein.subtle_effects.platform.Services;
 import einstein.subtle_effects.ticking.tickers.TickerManager;
 import net.minecraft.client.Minecraft;
@@ -499,11 +500,11 @@ public class ParticleSpawnUtil {
         }
     }
 
-    public static boolean spawnSplashEffects(Entity entity, Level level, ParticleType<FloatAndIntegerParticleOptions> splashParticle, TagKey<Fluid> fluidTag) {
+    public static boolean spawnSplashEffects(Entity entity, Level level, ParticleType<SplashEmitterParticleOptions> splashParticle, TagKey<Fluid> fluidTag) {
         return spawnSplashEffects(entity, level, splashParticle, entity.getY() + entity.getFluidHeight(fluidTag), entity.getDeltaMovement().y());
     }
 
-    public static boolean spawnSplashEffects(Entity entity, Level level, ParticleType<FloatAndIntegerParticleOptions> splashParticle, double y, double yVelocity) {
+    public static boolean spawnSplashEffects(Entity entity, Level level, ParticleType<SplashEmitterParticleOptions> splashParticle, double y, double yVelocity) {
         if (!ENTITIES.splashes.splashEffects) {
             return false;
         }
@@ -515,7 +516,7 @@ public class ParticleSpawnUtil {
         if (yVelocity <= -ENTITIES.splashes.splashVelocityThreshold.get()) {
             double offset = y + 0.01;
             if (offset <= y + entity.getBbHeight()) {
-                level.addAlwaysVisibleParticle(new FloatAndIntegerParticleOptions(splashParticle, (float) yVelocity, entity.getId()), true,
+                level.addAlwaysVisibleParticle(SplashEmitter.createForEntity(entity, splashParticle, yVelocity), true,
                         entity.getX(),
                         offset,
                         entity.getZ(),

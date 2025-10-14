@@ -5,7 +5,7 @@ import einstein.subtle_effects.init.ModAnimalFedEffectSettings;
 import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.init.ModParticles;
 import einstein.subtle_effects.mixin.client.entity.AbstractHorseAccessor;
-import einstein.subtle_effects.particle.option.FloatAndIntegerParticleOptions;
+import einstein.subtle_effects.particle.option.SplashEmitterParticleOptions;
 import einstein.subtle_effects.particle.option.FloatParticleOptions;
 import einstein.subtle_effects.particle.option.SheepFluffParticleOptions;
 import einstein.subtle_effects.ticking.tickers.TickerManager;
@@ -373,9 +373,11 @@ public class ClientPacketHandlers {
 
     public static void handle(ClientLevel level, ClientBoundEntityLandInFluidPayload payload) {
         Entity entity = level.getEntity(payload.entityId());
-        ParticleType<FloatAndIntegerParticleOptions> particleType = payload.isLava() ? ModParticles.LAVA_SPLASH_EMITTER.get() : ModParticles.WATER_SPLASH_EMITTER.get();
 
-        ParticleSpawnUtil.spawnSplashEffects(entity, level, particleType, payload.y(), payload.yVelocity());
+        if (entity != null) {
+            ParticleType<SplashEmitterParticleOptions> particleType = payload.isLava() ? ModParticles.LAVA_SPLASH_EMITTER.get() : ModParticles.WATER_SPLASH_EMITTER.get();
+            ParticleSpawnUtil.spawnSplashEffects(entity, level, particleType, payload.y(), payload.yVelocity());
+        }
     }
 
     private static SoundEvent getEatSound(LivingEntity entity, ItemStack stack, ModAnimalFedEffectSettings.Settings settings) {
