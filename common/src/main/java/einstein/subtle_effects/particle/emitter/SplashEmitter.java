@@ -46,7 +46,7 @@ public class SplashEmitter extends NoRenderParticle {
         this.isLava = isLava;
         this.splashParticle = splashParticle;
         this.dropletParticle = dropletParticle;
-        lifetime = 8;
+        lifetime = 8; // half the splash lifetime
         pos = BlockPos.containing(x, y, z).mutable();
         velocity = options.velocity();
         absVelocity = Mth.abs(velocity);
@@ -91,7 +91,7 @@ public class SplashEmitter extends NoRenderParticle {
         }
 
         if (firstSplash) {
-            spawnSplashParticles(xScale, yScale, (yScale * 0.5F) / widthModifier);
+            spawnSplashParticles(xScale, yScale, ((yScale * 0.5F) / widthModifier) * 0.3F, xScale);
             firstSplash = false;
 
             if (ENTITIES.splashes.splashBubbles && entity != null) {
@@ -118,13 +118,13 @@ public class SplashEmitter extends NoRenderParticle {
             return;
         }
 
-        if (age >= 8 && secondSplash) { // half the splash lifetime
-            spawnSplashParticles(xScale / 2, yScale * 1.5F, (yScale * 0.65F) / widthModifier);
+        if (age >= lifetime && secondSplash) {
+            spawnSplashParticles(xScale / 2, yScale * 1.5F, ((yScale * 0.85F) / widthModifier) * 0.3F, xScale * 0.8F);
             secondSplash = false;
         }
     }
 
-    private void spawnSplashParticles(float xScale, float yScale, float dropletYSpeed) {
+    private void spawnSplashParticles(float xScale, float yScale, float dropletYSpeed, float dropletXSpeed) {
         level.addAlwaysVisibleParticle(new SplashParticleOptions(splashParticle, xScale, yScale, hasRipple()),
                 true, x, y, z, 0, 0, 0
         );
@@ -133,26 +133,27 @@ public class SplashEmitter extends NoRenderParticle {
             return;
         }
 
-        dropletYSpeed = (dropletYSpeed / 2);
-        SplashDropletParticleOptions options = new SplashDropletParticleOptions(dropletParticle, Math.min(this.xScale, 2), isLava ? 1 : ENTITIES.splashes.splashOverlayTint.get());
-        for (int i = 0; i < 8 * widthModifier; i++) { // count needs to scale with splash size
-            level.addParticle(options,
+        SplashDropletParticleOptions dropletOptions = new SplashDropletParticleOptions(dropletParticle, Math.min(this.xScale, 2), isLava ? 1 : ENTITIES.splashes.splashOverlayTint.get());
+        for (int i = 0; i < 4 * widthModifier; i++) {
+            level.addParticle(dropletOptions,
                     x + nextNonAbsDouble(random, xScale),
-                    y + nextDouble(random, 0.3),
+                    y + (nextDouble(random, 0.6) * yScale),
                     z + nextNonAbsDouble(random, xScale),
                     0, dropletYSpeed, 0
             );
+        }
 
+        for (int i = 0; i < 8 * widthModifier; i++) {
             int xSign = nextSign(random);
             int zSign = nextSign(random);
 
-            level.addParticle(options,
+            level.addParticle(dropletOptions,
                     x + nextDouble(random, xScale) * xSign,
                     y + (nextDouble(random, 0.6) * yScale),
                     z + nextDouble(random, xScale) * zSign,
-                    Mth.nextDouble(random, 0.01, 0.1) * xSign,
+                    Mth.nextDouble(random, 0.01, 0.1) * dropletXSpeed * xSign,
                     dropletYSpeed,
-                    Mth.nextDouble(random, 0.01, 0.1) * zSign
+                    Mth.nextDouble(random, 0.01, 0.1) * dropletXSpeed * zSign
             );
         }
     }
