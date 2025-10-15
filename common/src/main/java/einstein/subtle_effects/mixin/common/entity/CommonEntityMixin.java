@@ -27,9 +27,8 @@ public class CommonEntityMixin {
         double yVelocity = subtleEffects$me.getDeltaMovement().y();
         double y = subtleEffects$me.getY();
 
-        if (level instanceof ServerLevel serverLevel) {
-            Services.NETWORK.sendToClientsTracking(subtleEffects$me instanceof ServerPlayer player ? player : null, serverLevel,
-                    subtleEffects$me.blockPosition(),
+        if (subtleEffects$me instanceof ServerPlayer player) {
+            Services.NETWORK.sendToClientsTracking(player, (ServerLevel) level, subtleEffects$me.blockPosition(),
                     new ClientBoundEntityLandInFluidPayload(subtleEffects$me.getId(), y + subtleEffects$me.getFluidHeight(FluidTags.WATER), yVelocity, false)
             );
             return;

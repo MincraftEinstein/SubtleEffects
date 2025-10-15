@@ -489,9 +489,9 @@ public class ParticleSpawnUtil {
         if (isInLava && ENTITIES.splashes.lavaSplashes) {
             if (!wasTouchingLava && !firstTick) {
                 double yVelocity = entity.getDeltaMovement().y();
-                if (level instanceof ServerLevel serverLevel) {
-                    Services.NETWORK.sendToClientsTracking(entity instanceof ServerPlayer player ? player : null, serverLevel,
-                            entity.blockPosition(), new ClientBoundEntityLandInFluidPayload(entity.getId(), entity.getY() + entity.getFluidHeight(FluidTags.LAVA), yVelocity, true)
+                if (entity instanceof ServerPlayer player) {
+                    Services.NETWORK.sendToClientsTracking(player, (ServerLevel) level, entity.blockPosition(),
+                            new ClientBoundEntityLandInFluidPayload(entity.getId(), entity.getY() + entity.getFluidHeight(FluidTags.LAVA), yVelocity, true)
                     );
                     return;
                 }
