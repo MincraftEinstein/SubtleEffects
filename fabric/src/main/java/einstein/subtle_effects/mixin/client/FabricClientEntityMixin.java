@@ -7,6 +7,7 @@ import einstein.subtle_effects.util.ParticleSpawnUtil;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.item.PrimedTnt;
 import net.minecraft.world.level.material.Fluid;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -23,7 +24,7 @@ public class FabricClientEntityMixin {
         boolean result = original.call(entity, fluidTag, motionScale);
         boolean isInLava = result && fluidTag == FluidTags.LAVA; // Just in case someone decides to do their own fluid pushing here
         EntityAccessor accessor = (EntityAccessor) entity;
-        ParticleSpawnUtil.spawnLavaSplash(entity, isInLava, firstTick, accessor.subtleEffects$wasTouchingLava());
+        ParticleSpawnUtil.spawnLavaSplash(entity, isInLava, firstTick && !(entity instanceof PrimedTnt), accessor.subtleEffects$wasTouchingLava());
         accessor.subtleEffects$setTouchingLava(isInLava);
         return result;
     }
