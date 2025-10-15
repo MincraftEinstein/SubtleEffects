@@ -3,7 +3,7 @@ package einstein.subtle_effects.mixin.client.entity;
 import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.init.ModParticles;
 import einstein.subtle_effects.ticking.tickers.entity.EntityTicker;
-import einstein.subtle_effects.util.EntityAccessor;
+import einstein.subtle_effects.util.EntityMixinAccessor;
 import einstein.subtle_effects.util.Util;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
@@ -28,7 +28,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import static einstein.subtle_effects.util.MathUtil.nextDouble;
 
 @Mixin(Entity.class)
-public abstract class ClientEntityMixin implements EntityAccessor {
+public abstract class ClientEntityMixin implements EntityMixinAccessor {
 
     @Unique
     private final Entity subtleEffects$me = (Entity) (Object) this;

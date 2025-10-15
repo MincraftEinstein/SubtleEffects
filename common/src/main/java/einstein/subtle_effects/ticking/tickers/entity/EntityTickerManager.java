@@ -2,7 +2,7 @@ package einstein.subtle_effects.ticking.tickers.entity;
 
 import einstein.subtle_effects.ticking.tickers.TickerManager;
 import einstein.subtle_effects.util.EntityProvider;
-import einstein.subtle_effects.util.EntityAccessor;
+import einstein.subtle_effects.util.EntityMixinAccessor;
 import einstein.subtle_effects.util.Util;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.IntArrayList;
@@ -44,7 +44,7 @@ public class EntityTickerManager {
     @SuppressWarnings("unchecked")
     public static <T extends Entity> void createTickersForEntity(T entity) {
         if (isEntityInRange(entity, INNER_RANGE)) {
-            Int2ObjectMap<EntityTicker<?>> tickers = ((EntityAccessor) entity).subtleEffects$getTickers();
+            Int2ObjectMap<EntityTicker<?>> tickers = ((EntityMixinAccessor) entity).subtleEffects$getTickers();
 
             REGISTERED.forEach(provider -> {
                 int id = provider.id();
@@ -81,7 +81,7 @@ public class EntityTickerManager {
                 Entity entity = level.getEntity(id);
 
                 if (entity != null) {
-                    ((EntityAccessor) entity).subtleEffects$getTickers().clear();
+                    ((EntityMixinAccessor) entity).subtleEffects$getTickers().clear();
                 }
             });
         }

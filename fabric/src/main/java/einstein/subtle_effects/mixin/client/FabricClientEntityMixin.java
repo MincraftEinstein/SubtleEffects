@@ -2,7 +2,7 @@ package einstein.subtle_effects.mixin.client;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
-import einstein.subtle_effects.util.EntityAccessor;
+import einstein.subtle_effects.util.EntityMixinAccessor;
 import einstein.subtle_effects.util.ParticleSpawnUtil;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.tags.TagKey;
@@ -23,7 +23,7 @@ public class FabricClientEntityMixin {
     private boolean doLavaSplash(Entity entity, TagKey<Fluid> fluidTag, double motionScale, Operation<Boolean> original) {
         boolean result = original.call(entity, fluidTag, motionScale);
         boolean isInLava = result && fluidTag == FluidTags.LAVA; // Just in case someone decides to do their own fluid pushing here
-        EntityAccessor accessor = (EntityAccessor) entity;
+        EntityMixinAccessor accessor = (EntityMixinAccessor) entity;
         ParticleSpawnUtil.spawnLavaSplash(entity, isInLava, firstTick && !(entity instanceof PrimedTnt), accessor.subtleEffects$wasTouchingLava());
         accessor.subtleEffects$setTouchingLava(isInLava);
         return result;
