@@ -24,7 +24,7 @@ public class FabricClientEntityMixin {
         boolean result = original.call(entity, fluidTag, motionScale);
         boolean isInLava = result && fluidTag == FluidTags.LAVA; // Just in case someone decides to do their own fluid pushing here
         EntityMixinAccessor accessor = (EntityMixinAccessor) entity;
-        ParticleSpawnUtil.spawnLavaSplash(entity, isInLava, firstTick && !(entity instanceof PrimedTnt), accessor.subtleEffects$wasTouchingLava());
+        ParticleSpawnUtil.spawnLavaSplash(entity, isInLava, firstTick, accessor.subtleEffects$wasTouchingLava());
         accessor.subtleEffects$setTouchingLava(isInLava);
         return result;
     }
