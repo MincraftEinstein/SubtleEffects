@@ -7,7 +7,6 @@ import einstein.subtle_effects.particle.SparkParticle;
 import einstein.subtle_effects.particle.option.BooleanParticleOptions;
 import einstein.subtle_effects.ticking.tickers.entity.*;
 import einstein.subtle_effects.ticking.tickers.entity.sleeping.*;
-import einstein.subtle_effects.util.FallingBlockAccessor;
 import einstein.subtle_effects.util.ParticleSpawnUtil;
 import einstein.subtle_effects.util.SparkType;
 import einstein.subtle_effects.util.Util;
@@ -101,7 +100,7 @@ public class ModEntityTickers {
 
             int startDistance = BLOCKS.fallingBlocks.whileFallingDustStartDistance.get();
             float fallDistance = fallingBlock.fallDistance;
-            boolean isInWater = ((FallingBlockAccessor) fallingBlock).subtleEffects$isInWater() && BLOCKS.fallingBlocks.replaceDustWithBubblesUnderwater;
+            boolean isInWater = fallingBlock.isInWater() && BLOCKS.fallingBlocks.replaceDustWithBubblesUnderwater;
 
             if (fallDistance <= startDistance && !isInWater) {
                 return;
