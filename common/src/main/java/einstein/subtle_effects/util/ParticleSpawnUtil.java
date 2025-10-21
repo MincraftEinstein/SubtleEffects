@@ -3,7 +3,6 @@ package einstein.subtle_effects.util;
 import einstein.subtle_effects.configs.ModBlockConfigs;
 import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.init.ModParticles;
-import einstein.subtle_effects.mixin.client.item.BucketItemAccessor;
 import einstein.subtle_effects.networking.clientbound.ClientBoundEntityFellPacket;
 import einstein.subtle_effects.networking.clientbound.ClientBoundEntityLandInFluidPayload;
 import einstein.subtle_effects.particle.EnderEyePlacedRingParticle;

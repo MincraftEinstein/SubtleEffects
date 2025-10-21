@@ -66,7 +66,7 @@ public class ModParticleProviders {
         register(POTION_RING, PotionRingParticle.Provider::new);
         register(POTION_DOT, PotionDotParticle.PotionDotProvider::new);
         register(POTION_EMITTER, sprites -> new PotionEmitter.Provider());
-        register(IRON_GOLEM, CustomTerrainParticle.IronGolemProvider::new);
+        register(IRON_GOLEM, CustomTerrainParticle.Provider::new);
         register(DROWNING_BUBBLE, DrowningBubbleParticle.Provider::new);
         register(DROWNING_BUBBLE_POP, DrowningBubblePopParticle.Provider::new);
         register(EGG_SPLAT, EggSplatParticle.Provider::new);

@@ -5,9 +5,9 @@ import einstein.subtle_effects.init.ModAnimalFedEffectSettings;
 import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.init.ModParticles;
 import einstein.subtle_effects.mixin.client.entity.AbstractHorseAccessor;
-import einstein.subtle_effects.particle.option.SplashEmitterParticleOptions;
 import einstein.subtle_effects.particle.option.FloatParticleOptions;
 import einstein.subtle_effects.particle.option.SheepFluffParticleOptions;
+import einstein.subtle_effects.particle.option.SplashEmitterParticleOptions;
 import einstein.subtle_effects.ticking.tickers.TickerManager;
 import einstein.subtle_effects.util.MathUtil;
 import einstein.subtle_effects.util.ParticleSpawnUtil;
@@ -441,7 +441,12 @@ public class ClientPacketHandlers {
         }
     }
 
-    public static void handle(ClientLevel level, ClientBoundEntityLandInFluidPayload payload) {
+    public static void handle(ClientBoundEntityLandInFluidPayload payload) {
+        Level level = Minecraft.getInstance().level;
+        if (level == null) {
+            return;
+        }
+
         Entity entity = level.getEntity(payload.entityId());
 
         if (entity != null) {

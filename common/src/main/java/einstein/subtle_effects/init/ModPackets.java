@@ -21,5 +21,6 @@ public class ModPackets {
         NETWORK.registerToClient(ClientBoundSheepShearPayload.ID, ClientBoundSheepShearPayload.class, ClientBoundSheepShearPayload::decode);
         NETWORK.registerToClient(ClientBoundDrankPotionPayload.ID, ClientBoundDrankPotionPayload.class, ClientBoundDrankPotionPayload::decode);
         NETWORK.registerToClient(ClientBoundDispenseBucketPayload.ID, ClientBoundDispenseBucketPayload.class, ClientBoundDispenseBucketPayload::decode);
+        NETWORK.registerToClient(ClientBoundEntityLandInFluidPayload.ID, ClientBoundEntityLandInFluidPayload.class, ClientBoundEntityLandInFluidPayload::decode);
     }
 }

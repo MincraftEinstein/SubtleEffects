@@ -76,13 +76,12 @@ public class ModParticles {
     public static final Supplier<ParticleType<SplashParticleOptions>> LAVA_SPLASH = register("lava_splash", SplashParticleOptions.DESERIALIZER, SplashParticleOptions::codec);
     public static final Supplier<ParticleType<SplashDropletParticleOptions>> WATER_SPLASH_DROPLET = register("water_splash_droplet", SplashDropletParticleOptions.DESERIALIZER, SplashDropletParticleOptions::codec);
     public static final Supplier<ParticleType<SplashDropletParticleOptions>> LAVA_SPLASH_DROPLET = register("lava_splash_droplet", SplashDropletParticleOptions.DESERIALIZER, SplashDropletParticleOptions::codec);
-    public static final Supplier<ParticleType<IntegerParticleOptions>> WATER_SPLASH_EMITTER = register("water_splash_emitter", IntegerParticleOptions.DESERIALIZER, IntegerParticleOptions::codec);
-    public static final Supplier<ParticleType<IntegerParticleOptions>> LAVA_SPLASH_EMITTER = register("lava_splash_emitter", IntegerParticleOptions.DESERIALIZER, IntegerParticleOptions::codec);
+    public static final Supplier<ParticleType<SplashEmitterParticleOptions>> WATER_SPLASH_EMITTER = register("water_splash_emitter", SplashEmitterParticleOptions.DESERIALIZER, SplashEmitterParticleOptions::codec);
+    public static final Supplier<ParticleType<SplashEmitterParticleOptions>> LAVA_SPLASH_EMITTER = register("lava_splash_emitter", SplashEmitterParticleOptions.DESERIALIZER, SplashEmitterParticleOptions::codec);
     public static final Supplier<SimpleParticleType> WATERFALL_CLOUD = register("waterfall_cloud");
     public static final Supplier<SimpleParticleType> WATERFALL_DROPLET = register("waterfall_droplet");
     public static final Supplier<SimpleParticleType> WATERFALL_MIST = register("waterfall_mist");
     public static final Supplier<ParticleType<FallenLeafParticleOptions>> FALLEN_LEAF = register("fallen_leaf", FallenLeafParticleOptions.DESERIALIZER, type -> FallenLeafParticleOptions.CODEC);
-    public static final Supplier<SimpleParticleType> ARMADILLO = register("armadillo");
 
     public static void init() {
     }

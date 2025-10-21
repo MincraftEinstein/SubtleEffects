@@ -1,25 +1,36 @@
 package einstein.subtle_effects.networking.clientbound;
 
 import einstein.subtle_effects.SubtleEffects;
+import einstein.subtle_effects.networking.Packet;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.network.codec.ByteBufCodecs;
-import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
+import org.jetbrains.annotations.Nullable;
 
 public record ClientBoundEntityLandInFluidPayload(int entityId, double y, double yVelocity,
-                                                  boolean isLava) implements CustomPacketPayload {
+                                                  boolean isLava) implements Packet {
 
-    public static final Type<ClientBoundEntityLandInFluidPayload> TYPE = new Type<>(SubtleEffects.loc("entity_land_in_fluid"));
-    public static final StreamCodec<FriendlyByteBuf, ClientBoundEntityLandInFluidPayload> STREAM_CODEC = StreamCodec.composite(
-            ByteBufCodecs.INT, ClientBoundEntityLandInFluidPayload::entityId,
-            ByteBufCodecs.DOUBLE, ClientBoundEntityLandInFluidPayload::y,
-            ByteBufCodecs.DOUBLE, ClientBoundEntityLandInFluidPayload::yVelocity,
-            ByteBufCodecs.BOOL, ClientBoundEntityLandInFluidPayload::isLava,
-            ClientBoundEntityLandInFluidPayload::new
-    );
+    public static final ResourceLocation ID = SubtleEffects.loc("entity_land_in_fluid");
 
     @Override
-    public Type<? extends CustomPacketPayload> type() {
-        return TYPE;
+    public void encode(FriendlyByteBuf buf) {
+        buf.writeInt(entityId);
+        buf.writeDouble(y);
+        buf.writeDouble(yVelocity);
+        buf.writeBoolean(isLava);
+    }
+
+    public static ClientBoundEntityLandInFluidPayload decode(FriendlyByteBuf buf) {
+        return new ClientBoundEntityLandInFluidPayload(buf.readInt(), buf.readDouble(), buf.readDouble(), buf.readBoolean());
+    }
+
+    @Override
+    public void handle(@Nullable ServerPlayer player) {
+        ClientPacketHandlers.handle(this);
+    }
+
+    @Override
+    public ResourceLocation id() {
+        return ID;
     }
 }

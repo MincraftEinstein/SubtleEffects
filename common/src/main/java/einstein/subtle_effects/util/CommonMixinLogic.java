@@ -30,11 +30,14 @@ public class CommonMixinLogic {
             return true;
         }
 
+        ParticleAccessor accessor = ((ParticleAccessor) particle);
+        if (accessor.subtleEffects$shouldIgnoreCulling()) {
+            return true;
+        }
+
         Minecraft minecraft = Minecraft.getInstance();
         Frustum frustum = ((FrustumGetter) minecraft.levelRenderer).subtleEffects$getCullingFrustum();
         if (frustum != null && frustum.isVisible(particle.getBoundingBox())) {
-            ParticleAccessor accessor = ((ParticleAccessor) particle);
-
             if (GENERAL.cullParticlesInUnloadedChunks && !Util.isChunkLoaded(minecraft.level, accessor.getX(), accessor.getZ())) {
                 return false;
             }
