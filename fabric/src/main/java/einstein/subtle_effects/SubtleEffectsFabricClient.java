@@ -1,9 +1,5 @@
 package einstein.subtle_effects;
 
-import einstein.subtle_effects.client.model.entity.EinsteinSolarSystemModel;
-import einstein.subtle_effects.client.model.entity.PartyHatModel;
-import einstein.subtle_effects.client.renderer.entity.EinsteinSolarSystemLayer;
-import einstein.subtle_effects.client.renderer.entity.PartyHatLayer;
 import einstein.subtle_effects.data.*;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
@@ -13,9 +9,9 @@ import net.fabricmc.fabric.api.client.rendering.v1.LivingEntityFeatureRendererRe
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.fabricmc.fabric.api.resource.ResourcePackActivationType;
 import net.fabricmc.loader.api.FabricLoader;
+import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.resources.PreparableReloadListener;
-import net.minecraft.world.entity.EntityType;
 
 public class SubtleEffectsFabricClient implements ClientModInitializer {
 
@@ -29,15 +25,12 @@ public class SubtleEffectsFabricClient implements ClientModInitializer {
         addReloadListener(helper, new SparkProviderReloadListener());
         addReloadListener(helper, new MobSkullShaderReloadListener());
         addReloadListener(helper, new BCWPPackManager());
-        EntityModelLayerRegistry.registerModelLayer(EinsteinSolarSystemModel.MODEL_LAYER, EinsteinSolarSystemModel::createLayer);
-        EntityModelLayerRegistry.registerModelLayer(PartyHatModel.MODEL_LAYER, PartyHatModel::createLayer);
+        SubtleEffectsClient.registerModelLayers().forEach((modelLayerLocation, layerDefinitionSupplier) ->
+                EntityModelLayerRegistry.registerModelLayer(modelLayerLocation, layerDefinitionSupplier::get)
+        );
         LivingEntityFeatureRendererRegistrationCallback.EVENT.register((type, renderer, registrationHelper, context) -> {
-            if (type.equals(EntityType.PLAYER)) {
-                registrationHelper.register(new EinsteinSolarSystemLayer<>(renderer, context));
-
-                if (PartyHatLayer.isModAnniversary()) {
-                    registrationHelper.register(new PartyHatLayer<>(renderer, context));
-                }
+            if (renderer instanceof PlayerRenderer playerRenderer) {
+                SubtleEffectsClient.registerPlayerRenderLayers(playerRenderer, context).forEach(registrationHelper::register);
             }
         });
     }

@@ -37,7 +37,7 @@ public class CustomTerrainParticle extends TerrainParticle {
         }
     }
 
-    public record IronGolemProvider(SpriteSet sprites) implements ParticleProvider<SimpleParticleType> {
+    public record Provider(SpriteSet sprites) implements ParticleProvider<SimpleParticleType> {
 
         @Override
         public Particle createParticle(SimpleParticleType type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {

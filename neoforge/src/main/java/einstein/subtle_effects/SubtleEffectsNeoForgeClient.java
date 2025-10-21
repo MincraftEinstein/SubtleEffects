@@ -1,9 +1,5 @@
 package einstein.subtle_effects;
 
-import einstein.subtle_effects.client.model.entity.EinsteinSolarSystemModel;
-import einstein.subtle_effects.client.model.entity.PartyHatModel;
-import einstein.subtle_effects.client.renderer.entity.EinsteinSolarSystemLayer;
-import einstein.subtle_effects.client.renderer.entity.PartyHatLayer;
 import einstein.subtle_effects.data.BCWPPackManager;
 import einstein.subtle_effects.data.MobSkullShaderReloadListener;
 import einstein.subtle_effects.data.NamedReloadListener;
@@ -13,7 +9,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.client.renderer.entity.EntityRenderer;
-import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.client.resources.PlayerSkin;
 import net.minecraft.core.particles.ParticleOptions;
@@ -49,21 +44,16 @@ public class SubtleEffectsNeoForgeClient {
             addReloadListener(event, new MobSkullShaderReloadListener());
             addReloadListener(event, new BCWPPackManager());
         });
-        modEventBus.addListener((EntityRenderersEvent.RegisterLayerDefinitions event) -> {
-            event.registerLayerDefinition(EinsteinSolarSystemModel.MODEL_LAYER, EinsteinSolarSystemModel::createLayer);
-            event.registerLayerDefinition(PartyHatModel.MODEL_LAYER, PartyHatModel::createLayer);
-        });
+        modEventBus.addListener((EntityRenderersEvent.RegisterLayerDefinitions event) ->
+                SubtleEffectsClient.registerModelLayers().forEach(event::registerLayerDefinition)
+        );
         modEventBus.addListener((EntityRenderersEvent.AddLayers event) -> {
             for (PlayerSkin.Model model : event.getSkins()) {
                 EntityRenderer<? extends Player, ?> renderer = event.getSkin(model);
 
                 if (renderer instanceof PlayerRenderer playerRenderer) {
-                    EntityRendererProvider.Context context = event.getContext();
-                    playerRenderer.addLayer(new EinsteinSolarSystemLayer<>(playerRenderer, context));
-
-                    if (PartyHatLayer.isModAnniversary()) {
-                        playerRenderer.addLayer(new PartyHatLayer<>(playerRenderer, context));
-                    }
+                    SubtleEffectsClient.registerPlayerRenderLayers(playerRenderer, event.getContext())
+                            .forEach(playerRenderer::addLayer);
                 }
             }
         });

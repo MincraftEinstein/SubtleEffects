@@ -56,11 +56,12 @@ public class PotionEmitter extends NoRenderParticle {
         }
 
         if (ModConfigs.ENTITIES.humanoids.potionRingsParticleType == HumanoidConfigs.PotionRingsParticleType.BOTH || ModConfigs.ENTITIES.humanoids.potionRingsParticleType == HumanoidConfigs.PotionRingsParticleType.DOTS_ONLY) {
+            float scale = ModConfigs.ENTITIES.humanoids.potionRingsScale.get();
             for (int i = 0; i < 20; i++) {
                 level.addParticle(new ColorAndIntegerParticleOptions(ModParticles.POTION_DOT.get(), color, entityId),
-                        x + MathUtil.nextNonAbsDouble(random, 0.75),
+                        x + MathUtil.nextNonAbsDouble(random, 0.75 * scale),
                         y + random.nextDouble() - 0.5,
-                        z + MathUtil.nextNonAbsDouble(random, 0.75),
+                        z + MathUtil.nextNonAbsDouble(random, 0.75 * scale),
                         0, 0, 0
                 );
             }

@@ -19,6 +19,7 @@ public class SplashConfigs extends ConfigSection {
     public boolean splashRipples = true;
     public boolean splashDroplets = true;
     public boolean splashBubbles = true;
+    public boolean explosionsCauseSplashes = true;
     public ValidatedFloat splashOverlayTint = new ValidatedFloat(0.2F, 1, 0);
     public ValidatedFloat splashOverlayAlpha = new ValidatedFloat(0.8F, 1, 0);
     public ValidatedFloat splashVelocityThreshold = new ValidatedFloat(0.35F, 1, 0);

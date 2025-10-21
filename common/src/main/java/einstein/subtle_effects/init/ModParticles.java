@@ -71,7 +71,7 @@ public class ModParticles {
     public static final Supplier<ParticleType<ColorAndIntegerParticleOptions>> POTION_RING = register("potion_ring", ColorAndIntegerParticleOptions::codec, ColorAndIntegerParticleOptions::streamCodec, PotionRingParticle.Provider::new);
     public static final Supplier<ParticleType<ColorAndIntegerParticleOptions>> POTION_DOT = register("potion_dot", ColorAndIntegerParticleOptions::codec, ColorAndIntegerParticleOptions::streamCodec, PotionDotParticle.PotionDotProvider::new);
     public static final Supplier<ParticleType<ColorAndIntegerParticleOptions>> POTION_EMITTER = register("potion_emitter", ColorAndIntegerParticleOptions::codec, ColorAndIntegerParticleOptions::streamCodec, sprites -> new PotionEmitter.Provider());
-    public static final Supplier<SimpleParticleType> IRON_GOLEM = register("iron_golem", CustomTerrainParticle.IronGolemProvider::new);
+    public static final Supplier<SimpleParticleType> IRON_GOLEM = register("iron_golem", CustomTerrainParticle.Provider::new);
     public static final Supplier<SimpleParticleType> DROWNING_BUBBLE = register("drowning_bubble", DrowningBubbleParticle.Provider::new);
     public static final Supplier<SimpleParticleType> DROWNING_BUBBLE_POP = register("drowning_bubble_pop", DrowningBubblePopParticle.Provider::new);
     public static final Supplier<ParticleType<DirectionParticleOptions>> EGG_SPLAT = register("egg_splat", DirectionParticleOptions::codec, DirectionParticleOptions::streamCodec, EggSplatParticle.Provider::new);
@@ -90,12 +90,13 @@ public class ModParticles {
     public static final Supplier<ParticleType<SplashParticleOptions>> LAVA_SPLASH = register("lava_splash", SplashParticleOptions::codec, SplashParticleOptions::streamCodec, SplashParticle.LavaProvider::new);
     public static final Supplier<ParticleType<SplashDropletParticleOptions>> WATER_SPLASH_DROPLET = register("water_splash_droplet", SplashDropletParticleOptions::codec, SplashDropletParticleOptions::streamCodec, SplashDropletParticle.Provider::new);
     public static final Supplier<ParticleType<SplashDropletParticleOptions>> LAVA_SPLASH_DROPLET = register("lava_splash_droplet", SplashDropletParticleOptions::codec, SplashDropletParticleOptions::streamCodec, SplashDropletParticle.LavaProvider::new);
-    public static final Supplier<ParticleType<IntegerParticleOptions>> WATER_SPLASH_EMITTER = register("water_splash_emitter", IntegerParticleOptions::codec, IntegerParticleOptions::streamCodec, sprites -> new SplashEmitter.Provider());
-    public static final Supplier<ParticleType<IntegerParticleOptions>> LAVA_SPLASH_EMITTER = register("lava_splash_emitter", IntegerParticleOptions::codec, IntegerParticleOptions::streamCodec, sprites -> new SplashEmitter.LavaProvider());
+    public static final Supplier<ParticleType<SplashEmitterParticleOptions>> WATER_SPLASH_EMITTER = register("water_splash_emitter", SplashEmitterParticleOptions::codec, SplashEmitterParticleOptions::streamCodec, sprites -> new SplashEmitter.Provider());
+    public static final Supplier<ParticleType<SplashEmitterParticleOptions>> LAVA_SPLASH_EMITTER = register("lava_splash_emitter", SplashEmitterParticleOptions::codec, SplashEmitterParticleOptions::streamCodec, sprites -> new SplashEmitter.LavaProvider());
     public static final Supplier<SimpleParticleType> WATERFALL_CLOUD = register("waterfall_cloud", WaterfallCloud.Provider::new);
     public static final Supplier<SimpleParticleType> WATERFALL_DROPLET = register("waterfall_droplet", WaterfallDropletParticle.Provider::new);
     public static final Supplier<SimpleParticleType> WATERFALL_MIST = register("waterfall_mist", WaterfallMistParticle.Provider::new);
     public static final Supplier<ParticleType<FallenLeafParticleOptions>> FALLEN_LEAF = register("fallen_leaf", type -> FallenLeafParticleOptions.CODEC, type -> FallenLeafParticleOptions.STREAM_CODEC, sprites -> new FallenLeafParticle.Provider());
+    public static final Supplier<SimpleParticleType> ARMADILLO = register("armadillo", CustomTerrainParticle.Provider::new);
 
     public static void init() {
     }

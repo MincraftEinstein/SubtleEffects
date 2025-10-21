@@ -1,4 +1,4 @@
-package einstein.subtle_effects.particle.provider;
+package einstein.subtle_effects.particle;
 
 import einstein.subtle_effects.particle.option.SplashDropletParticleOptions;
 import einstein.subtle_effects.util.DripParticleAccessor;

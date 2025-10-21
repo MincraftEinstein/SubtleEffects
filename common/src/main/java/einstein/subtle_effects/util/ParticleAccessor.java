@@ -27,4 +27,8 @@ public interface ParticleAccessor {
     void subtleEffects$force();
 
     float getGravity();
+
+    boolean subtleEffects$shouldIgnoreCulling();
+
+    void subtleEffects$ignoresCulling();
 }

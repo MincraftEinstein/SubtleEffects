@@ -38,7 +38,8 @@ public class ModParticleRenderTypes {
 
     public static void init() {
         List<ParticleRenderType> renderTypes = new ArrayList<>(ParticleEngineAccessor.getRenderOrder());
-        renderTypes.add(BLENDED);
+        int i = renderTypes.indexOf(ParticleRenderType.PARTICLE_SHEET_TRANSLUCENT);
+        renderTypes.add(++i, BLENDED);
         ParticleEngineAccessor.setRenderOrder(List.copyOf(renderTypes));
     }
 

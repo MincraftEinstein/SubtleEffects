@@ -13,9 +13,11 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleEngine;
+import net.minecraft.client.particle.ParticleRenderType;
 import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.core.particles.ParticleType;
 import net.minecraft.resources.ResourceLocation;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -46,8 +48,13 @@ public class ParticleEngineMixin {
     }
 
     @Inject(method = "createParticle", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/particle/ParticleEngine;add(Lnet/minecraft/client/particle/Particle;)V"))
-    private void modifyColor(ParticleOptions options, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, CallbackInfoReturnable<Particle> cir, @Local Particle particle) {
-        if (BCWPPackManager.isPackLoaded() && BCWPPackManager.BIOME_COLORED_PARTICLES.contains(options.getType())) {
+    private void modifyParticle(ParticleOptions options, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, CallbackInfoReturnable<Particle> cir, @Local Particle particle) {
+        ParticleType<?> type = options.getType();
+        if (GENERAL.particleCullingBlocklist.contains(type)) {
+            ((ParticleAccessor) particle).subtleEffects$ignoresCulling();
+        }
+
+        if (BCWPPackManager.isPackLoaded() && BCWPPackManager.BIOME_COLORED_PARTICLES.contains(type)) {
             Util.setColorFromHex(particle, level.getBiome(BlockPos.containing(x, y, z)).value().getWaterColor());
         }
     }
@@ -63,10 +70,18 @@ public class ParticleEngineMixin {
             return true;
         }
 
+        if (particle.getRenderType() == ParticleRenderType.CUSTOM) {
+            return true;
+        }
+
+        ParticleAccessor accessor = ((ParticleAccessor) particle);
+        if (accessor.subtleEffects$shouldIgnoreCulling()) {
+            return true;
+        }
+
         Minecraft minecraft = Minecraft.getInstance();
         Frustum frustum = ((FrustumGetter) minecraft.levelRenderer).subtleEffects$getCullingFrustum();
         if (frustum != null && frustum.isVisible(particle.getBoundingBox())) {
-            ParticleAccessor accessor = ((ParticleAccessor) particle);
 
             if (GENERAL.cullParticlesInUnloadedChunks && !Util.isChunkLoaded(minecraft.level, accessor.getX(), accessor.getZ())) {
                 return false;

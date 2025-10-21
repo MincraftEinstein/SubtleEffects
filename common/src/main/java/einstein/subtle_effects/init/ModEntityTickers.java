@@ -7,7 +7,10 @@ import einstein.subtle_effects.particle.SparkParticle;
 import einstein.subtle_effects.particle.option.BooleanParticleOptions;
 import einstein.subtle_effects.ticking.tickers.entity.*;
 import einstein.subtle_effects.ticking.tickers.entity.sleeping.*;
-import einstein.subtle_effects.util.*;
+import einstein.subtle_effects.util.MathUtil;
+import einstein.subtle_effects.util.ParticleSpawnUtil;
+import einstein.subtle_effects.util.SparkType;
+import einstein.subtle_effects.util.Util;
 import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedDouble;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.particles.BlockParticleOption;
@@ -32,7 +35,10 @@ import net.minecraft.world.entity.npc.AbstractVillager;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.BaseFireBlock;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.BrushableBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 
@@ -46,6 +52,7 @@ import static einstein.subtle_effects.util.MathUtil.nextNonAbsDouble;
 public class ModEntityTickers {
 
     private static final Predicate<Entity> LOCAL_PLAYER = entity -> entity.equals(Minecraft.getInstance().player);
+
 
     public static void init() {
         register(entity -> true, EntityCauldronTicker::new);
@@ -73,7 +80,7 @@ public class ModEntityTickers {
 
                     Player player = (Player) entity;
 
-                    if (ENTITIES.dustClouds.playerRunningRequiresSpeed && !player.hasEffect(MobEffects.SPEED)) {
+                    if (ENTITIES.dustClouds.playerRunningRequiresSpeed && !player.hasEffect(MobEffects.MOVEMENT_SPEED)) {
                         return;
                     }
 
@@ -95,7 +102,7 @@ public class ModEntityTickers {
 
             int startDistance = BLOCKS.fallingBlocks.whileFallingDustStartDistance.get();
             double fallDistance = fallingBlock.fallDistance;
-            boolean isInWater = ((FallingBlockAccessor) fallingBlock).subtleEffects$isInWater() && BLOCKS.fallingBlocks.replaceDustWithBubblesUnderwater;
+            boolean isInWater = fallingBlock.isInWater() && BLOCKS.fallingBlocks.replaceDustWithBubblesUnderwater;
 
             if (fallDistance <= startDistance && !isInWater) {
                 return;

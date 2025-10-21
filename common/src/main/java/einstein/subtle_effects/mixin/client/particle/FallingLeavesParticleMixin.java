@@ -1,5 +1,6 @@
 package einstein.subtle_effects.mixin.client.particle;
 
+import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import einstein.subtle_effects.init.ModParticles;
 import einstein.subtle_effects.particle.option.FallenLeafParticleOptions;
 import einstein.subtle_effects.particle.option.FloatParticleOptions;
@@ -31,6 +32,14 @@ public abstract class FallingLeavesParticleMixin extends TextureSheetParticle {
 
     protected FallingLeavesParticleMixin(ClientLevel level, double x, double y, double z) {
         super(level, x, y, z);
+    }
+
+    @ModifyExpressionValue(method = "tick", at = @At(value = "CONSTANT", args = "doubleValue=2.0"))
+    private double replaceGravity(double original) {
+        if (GENERAL.rainIncreasesLeavesMovementSpeed && Util.isRainingAt(level, BlockPos.containing(x, y, z))) {
+            return 6;
+        }
+        return original;
     }
 
     @Inject(method = "tick", at = @At("RETURN"))

@@ -5,24 +5,53 @@ import com.mojang.brigadier.arguments.BoolArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import com.mojang.brigadier.tree.LiteralCommandNode;
+import einstein.subtle_effects.client.model.entity.EinsteinSolarSystemModel;
+import einstein.subtle_effects.client.model.entity.PartyHatModel;
+import einstein.subtle_effects.client.renderer.entity.EinsteinSolarSystemLayer;
+import einstein.subtle_effects.client.renderer.entity.PartyHatLayer;
 import einstein.subtle_effects.compat.CompatHelper;
 import einstein.subtle_effects.init.*;
+import einstein.subtle_effects.ticking.GeyserManager;
 import einstein.subtle_effects.ticking.biome_particles.BiomeParticleManager;
+import einstein.subtle_effects.ticking.tickers.ChestBlockEntityTicker;
 import einstein.subtle_effects.ticking.tickers.TickerManager;
+import einstein.subtle_effects.ticking.tickers.WaterfallTicker;
+import einstein.subtle_effects.ticking.tickers.entity.EntityTickerManager;
+import einstein.subtle_effects.util.Util;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.model.PlayerModel;
+import net.minecraft.client.model.geom.ModelLayerLocation;
+import net.minecraft.client.model.geom.builders.LayerDefinition;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.entity.layers.RenderLayer;
+import net.minecraft.client.renderer.entity.player.PlayerRenderer;
+import net.minecraft.client.renderer.entity.state.PlayerRenderState;
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.SharedSuggestionProvider;
+import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.util.profiling.Profiler;
 import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.Nullable;
+
+import java.time.LocalDate;
+import java.time.Month;
+import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.function.Supplier;
 
 public class SubtleEffectsClient {
 
     private static boolean HAS_CLEARED = false;
     private static boolean DISPLAY_PARTICLE_COUNT = false;
+    private static boolean HAS_DISPLAYED_BIRTHDAY_NOTIFICATION = false;
     private static Level LEVEL;
 
     public static void clientSetup() {
@@ -45,7 +74,7 @@ public class SubtleEffectsClient {
             LEVEL = level;
 
             if (!HAS_CLEARED) {
-                TickerManager.clear(level);
+                clear(level);
                 BiomeParticleManager.clear();
                 HAS_CLEARED = true;
             }
@@ -54,6 +83,17 @@ public class SubtleEffectsClient {
 
         if (minecraft.isPaused() || level.tickRateManager().isFrozen()) {
             return;
+        }
+
+        if (!HAS_DISPLAYED_BIRTHDAY_NOTIFICATION && ModConfigs.GENERAL.enableEasterEggs && PartyHatLayer.isModBirthday(true)) {
+            // Day before the actual birthday so it doesn't return a negative number when the party hat is enabled the day before
+            long years = ChronoUnit.YEARS.between(LocalDate.of(2024, Month.OCTOBER, 3), LocalDate.now());
+            sendSystemMsg(minecraft, Component.empty()
+                    .append(Component.translatable("chat.subtle_effects.prefix").withStyle(style -> style.withColor(ChatFormatting.BLUE)))
+                    .append(CommonComponents.SPACE)
+                    .append(Component.translatable("chat.subtle_effects.anniversary.message", Util.getOrdinal(years)))
+            );
+            HAS_DISPLAYED_BIRTHDAY_NOTIFICATION = true;
         }
 
         if (DISPLAY_PARTICLE_COUNT) {
@@ -73,6 +113,23 @@ public class SubtleEffectsClient {
 
         HAS_CLEARED = false;
         profiler.pop();
+    }
+
+    public static Map<ModelLayerLocation, Supplier<LayerDefinition>> registerModelLayers() {
+        Map<ModelLayerLocation, Supplier<LayerDefinition>> layers = new HashMap<>();
+        layers.put(EinsteinSolarSystemModel.MODEL_LAYER, EinsteinSolarSystemModel::createLayer);
+        layers.put(PartyHatModel.MODEL_LAYER, PartyHatModel::createLayer);
+        return layers;
+    }
+
+    public static List<RenderLayer<PlayerRenderState, PlayerModel>> registerPlayerRenderLayers(PlayerRenderer renderer, EntityRendererProvider.Context context) {
+        List<RenderLayer<PlayerRenderState, PlayerModel>> renderLayers = new ArrayList<>();
+        renderLayers.add(new EinsteinSolarSystemLayer<>(renderer, context));
+
+        if (PartyHatLayer.isModBirthday(false)) {
+            renderLayers.add(new PartyHatLayer<>(renderer, context));
+        }
+        return renderLayers;
     }
 
     public static <T extends SharedSuggestionProvider> void registerClientCommands(CommandDispatcher<T> dispatcher, CommandBuildContext buildContext) {
@@ -100,7 +157,7 @@ public class SubtleEffectsClient {
         // Ticker Args
         LiteralArgumentBuilder<T> tickersClear = LiteralArgumentBuilder.<T>literal("clear")
                 .executes(context -> {
-                    TickerManager.clear(minecraft.level);
+                    clear(minecraft.level);
                     sendSystemMsg(minecraft, getMsgTranslation("subtle_effects.tickers.clear.success"));
                     return 1;
                 });
@@ -130,5 +187,14 @@ public class SubtleEffectsClient {
 
     private static void sendSystemMsg(Minecraft minecraft, Component component) {
         minecraft.gui.getChat().addMessage(component);
+    }
+
+    public static void clear(@Nullable Level level) {
+        TickerManager.clear();
+        EntityTickerManager.clear(level);
+        GeyserManager.ACTIVE_GEYSERS.clear();
+        GeyserManager.INACTIVE_GEYSERS.clear();
+        WaterfallTicker.WATERFALLS.clear();
+        ChestBlockEntityTicker.clear();
     }
 }
