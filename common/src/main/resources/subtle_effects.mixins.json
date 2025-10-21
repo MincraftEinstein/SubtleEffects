@@ -24,6 +24,7 @@
     "client.block.BeehiveBlockMixin",
     "client.block.BlockStateBaseMixin",
     "client.block.CampfireBlockMixin",
+    "client.block.CherryLeavesBlockMixin",
     "client.block.ClientComposterBlockMixin",
     "client.block.EndPortalBlockMixin",
     "client.block.FurnaceBlockMixin",
