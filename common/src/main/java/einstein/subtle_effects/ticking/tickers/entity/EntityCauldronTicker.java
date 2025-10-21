@@ -3,7 +3,7 @@ package einstein.subtle_effects.ticking.tickers.entity;
 import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.init.ModParticles;
 import einstein.subtle_effects.mixin.client.block.AbstractCauldronBlockAccessor;
-import einstein.subtle_effects.mixin.client.entity.EntityAccessor;
+import einstein.subtle_effects.mixin.common.entity.EntityAccessor;
 import einstein.subtle_effects.util.ParticleSpawnUtil;
 import einstein.subtle_effects.util.Util;
 import net.minecraft.core.BlockPos;

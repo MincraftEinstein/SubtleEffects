@@ -1,4 +1,4 @@
-package einstein.subtle_effects.mixin.client.entity;
+package einstein.subtle_effects.mixin.common.entity;
 
 import net.minecraft.world.entity.Entity;
 import org.spongepowered.asm.mixin.Mixin;

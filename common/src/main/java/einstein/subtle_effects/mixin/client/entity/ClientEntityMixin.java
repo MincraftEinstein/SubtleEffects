@@ -3,7 +3,7 @@ package einstein.subtle_effects.mixin.client.entity;
 import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.init.ModParticles;
 import einstein.subtle_effects.ticking.tickers.entity.EntityTicker;
-import einstein.subtle_effects.util.EntityMixinAccessor;
+import einstein.subtle_effects.util.EntityTickerAccessor;
 import einstein.subtle_effects.util.ParticleSpawnUtil;
 import einstein.subtle_effects.util.Util;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
@@ -30,7 +30,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import static einstein.subtle_effects.util.MathUtil.nextDouble;
 
 @Mixin(Entity.class)
-public abstract class ClientEntityMixin implements EntityMixinAccessor {
+public abstract class ClientEntityMixin implements EntityTickerAccessor {
 
     @Unique
     private final Entity subtleEffects$me = (Entity) (Object) this;
@@ -43,9 +43,6 @@ public abstract class ClientEntityMixin implements EntityMixinAccessor {
 
     @Unique
     private Vec3 subtleEffects$lastPos = Vec3.ZERO;
-
-    @Unique
-    private boolean subtleEffects$wasTouchingLava = false;
 
     @Inject(method = "playEntityOnFireExtinguishedSound", at = @At("TAIL"))
     private void addExtinguishParticles(CallbackInfo ci) {
@@ -112,15 +109,5 @@ public abstract class ClientEntityMixin implements EntityMixinAccessor {
     @Override
     public Int2ObjectMap<EntityTicker<?>> subtleEffects$getTickers() {
         return subtleEffects$tickers;
-    }
-
-    @Override
-    public boolean subtleEffects$wasTouchingLava() {
-        return subtleEffects$wasTouchingLava;
-    }
-
-    @Override
-    public void subtleEffects$setTouchingLava(boolean touchingLava) {
-        subtleEffects$wasTouchingLava = touchingLava;
     }
 }

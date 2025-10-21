@@ -1,11 +1,10 @@
 package einstein.subtle_effects.mixin.common.entity;
 
 import com.llamalad7.mixinextras.sugar.Local;
-import einstein.subtle_effects.mixin.client.entity.EntityAccessor;
 import einstein.subtle_effects.networking.clientbound.ClientBoundFallingBlockLandPayload;
 import einstein.subtle_effects.platform.Services;
+import einstein.subtle_effects.util.CommonEntityAccessor;
 import einstein.subtle_effects.util.CommonUtil;
-import einstein.subtle_effects.util.EntityMixinAccessor;
 import einstein.subtle_effects.util.ParticleSpawnUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
@@ -26,7 +25,7 @@ public class FallingBlockEntityMixin {
     @Inject(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/item/FallingBlockEntity;handlePortal()V"))
     private void tick(CallbackInfo ci) {
         EntityAccessor accessor = (EntityAccessor) subtleEffects$me;
-        EntityMixinAccessor entityAccessor = (EntityMixinAccessor) subtleEffects$me;
+        CommonEntityAccessor entityAccessor = (CommonEntityAccessor) subtleEffects$me;
         boolean isInWater = CommonUtil.isEntityInFluid(subtleEffects$me, FluidTags.WATER);
         boolean isInLava = CommonUtil.isEntityInFluid(subtleEffects$me, FluidTags.LAVA);
 
@@ -37,6 +36,7 @@ public class FallingBlockEntityMixin {
 
             ParticleSpawnUtil.spawnLavaSplash(subtleEffects$me, isInLava, false, entityAccessor.subtleEffects$wasTouchingLava());
         }
+
         accessor.subtleEffects$setTouchingWater(isInWater);
         entityAccessor.subtleEffects$setTouchingLava(isInLava);
     }
