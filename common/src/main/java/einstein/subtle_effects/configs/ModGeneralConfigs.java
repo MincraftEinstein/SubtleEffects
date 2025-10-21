@@ -1,23 +1,44 @@
 package einstein.subtle_effects.configs;
 
 import einstein.subtle_effects.SubtleEffects;
+import einstein.subtle_effects.SubtleEffectsClient;
+import einstein.subtle_effects.compat.CompatHelper;
 import einstein.subtle_effects.init.ModConfigs;
-import einstein.subtle_effects.ticking.tickers.TickerManager;
 import einstein.subtle_effects.util.Util;
 import me.fzzyhmstrs.fzzy_config.annotations.Translation;
 import me.fzzyhmstrs.fzzy_config.config.Config;
 import me.fzzyhmstrs.fzzy_config.config.ConfigGroup;
+import me.fzzyhmstrs.fzzy_config.validation.collection.ValidatedList;
+import me.fzzyhmstrs.fzzy_config.validation.minecraft.ValidatedRegistryType;
 import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedFloat;
 import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedInt;
 import net.minecraft.client.Minecraft;
+import net.minecraft.core.particles.ParticleType;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Translation(prefix = ModConfigs.BASE_KEY + "general")
 public class ModGeneralConfigs extends Config {
 
+    private static final List<ParticleType<?>> DEFAULT_CULLING_BLOCKLIST = net.minecraft.Util.make(new ArrayList<>(), list -> {
+        if (CompatHelper.IS_PARTICLE_RAIN_LOADED.get()) {
+            ParticleType<?> mistType = BuiltInRegistries.PARTICLE_TYPE.get(ResourceLocation.fromNamespaceAndPath(CompatHelper.PARTICLE_RAIN_MOD_ID, "mist"));
+
+            if (mistType != null) {
+                list.add(mistType);
+            }
+        }
+    });
+
     public ConfigGroup particleRenderingGroup = new ConfigGroup("particle_rendering");
     public boolean enableParticleCulling = true;
     public ValidatedInt particleRenderDistance = new ValidatedInt(5, 32, 1);
+    public ValidatedList<ParticleType<?>> particleCullingBlocklist = new ValidatedList<>(DEFAULT_CULLING_BLOCKLIST, ValidatedRegistryType.of(ParticleTypes.FLAME, BuiltInRegistries.PARTICLE_TYPE));
     public boolean cullParticlesInUnloadedChunks = true;
     public boolean allowUsingBlendedRenderType = true;
     @ConfigGroup.Pop
@@ -49,9 +70,11 @@ public class ModGeneralConfigs extends Config {
     public boolean leavesLandOnGround = true;
     public boolean leavesLandOnWater = true;
     public boolean leavesLandingOnWaterRipples = true;
-    @ConfigGroup.Pop
-    @ConfigGroup.Pop
     public boolean leavesLandingOnWaterKeepMomentum = true;
+    public ValidatedInt fallenLeavesLifeTime = new ValidatedInt(40, 100, 20);
+    @ConfigGroup.Pop
+    @ConfigGroup.Pop
+    public boolean rainIncreasesLeavesMovementSpeed = true;
 
     public boolean mobSkullShaders = true;
     public ValidatedFloat fireHeight = new ValidatedFloat(-0.15F, 0.4F, -0.5F);
@@ -67,7 +90,7 @@ public class ModGeneralConfigs extends Config {
     @Override
     public void onUpdateClient() {
         Minecraft minecraft = Minecraft.getInstance();
-        TickerManager.clear(Minecraft.getInstance().level);
+        SubtleEffectsClient.clear(minecraft.level);
 
         if (minecraft.level != null && minecraft.options.getCameraType().isFirstPerson()) {
             if (!mobSkullShaders) {

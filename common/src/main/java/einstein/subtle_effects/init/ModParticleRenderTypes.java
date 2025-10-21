@@ -10,6 +10,7 @@ import einstein.subtle_effects.mixin.client.particle.ParticleEngineAccessor;
 import net.minecraft.client.particle.ParticleRenderType;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureManager;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +20,7 @@ public class ModParticleRenderTypes {
     public static final ParticleRenderType BLENDED = new ParticleRenderType() {
 
         @Override
-        public void begin(BufferBuilder builder, TextureManager textureManager) {
+        public void begin(BufferBuilder builder, @NotNull TextureManager textureManager) {
             RenderSystem.depthMask(false);
 
             // noinspection deprecation
@@ -33,11 +34,17 @@ public class ModParticleRenderTypes {
         public void end(Tesselator tesselator) {
             tesselator.end();
         }
+
+        @Override
+        public String toString() {
+            return "subtle_effects:blended";
+        }
     };
 
     public static void init() {
         List<ParticleRenderType> renderTypes = new ArrayList<>(ParticleEngineAccessor.getRenderOrder());
-        renderTypes.add(BLENDED);
+        int i = renderTypes.indexOf(ParticleRenderType.PARTICLE_SHEET_TRANSLUCENT);
+        renderTypes.add(++i, BLENDED);
         ParticleEngineAccessor.setRenderOrder(List.copyOf(renderTypes));
     }
 

@@ -25,4 +25,8 @@ public interface ParticleAccessor {
     boolean subtleEffects$wasForced();
 
     void subtleEffects$force();
+
+    boolean subtleEffects$shouldIgnoreCulling();
+
+    void subtleEffects$ignoresCulling();
 }

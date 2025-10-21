@@ -35,11 +35,10 @@ public class EinsteinSolarSystemLayer<T extends AbstractClientPlayer, V extends 
     private final EinsteinSolarSystemModel<T> model;
     private final CustomHeadLayer<T, EinsteinSolarSystemModel<T>> headLayer;
     private final EinsteinSolarSystemArmorLayer<T, EinsteinSolarSystemModel<T>, HumanoidModel<T>> armorLayer;
-    private final PartyHatLayer<T, V> partyHatLayer;
+    private final PartyHatLayer<T, EinsteinSolarSystemModel<T>> partyHatLayer;
 
-    @SuppressWarnings("unchecked")
-    public EinsteinSolarSystemLayer(RenderLayerParent<?, ?> renderer, EntityRendererProvider.Context context) {
-        super((RenderLayerParent<T, V>) renderer);
+    public EinsteinSolarSystemLayer(RenderLayerParent<T, V> renderer, EntityRendererProvider.Context context) {
+        super(renderer);
         model = new EinsteinSolarSystemModel<>(context.bakeLayer(EinsteinSolarSystemModel.MODEL_LAYER));
         renderLayerParent = new EinsteinSolarSystemRenderLayerParentImpl<>(this);
         headLayer = new CustomHeadLayer<>(renderLayerParent, context.getModelSet(), context.getItemInHandRenderer());
@@ -49,7 +48,7 @@ public class EinsteinSolarSystemLayer<T extends AbstractClientPlayer, V extends 
                 context.getModelManager()
         );
 
-        if (PartyHatLayer.isModAnniversary()) {
+        if (PartyHatLayer.isModBirthday(false)) {
             partyHatLayer = new PartyHatLayer<>(renderLayerParent, context);
             return;
         }

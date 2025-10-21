@@ -14,6 +14,7 @@ import java.util.function.Supplier;
 public class CompatHelper {
 
     public static final String PARTICLE_EFFECTS_MOD_ID = "particle-effects";
+    public static final String PARTICLE_RAIN_MOD_ID = "particlerain";
 
     public static final Supplier<Boolean> IS_SERENE_SEANSONS_LOADED = isLoaded("sereneseasons");
     public static final Supplier<Boolean> IS_SOUL_FIRED_LOADED = isLoaded("soul_fire_d");
@@ -21,6 +22,7 @@ public class CompatHelper {
     public static final Supplier<Boolean> IS_LEGENDARY_TOOLTIPS_LOADED = isLoaded("legendarytooltips");
     public static final Supplier<Boolean> IS_END_REMASTERED_LOADED = isLoaded("endrem");
     public static final Supplier<Boolean> IS_PARTICLE_EFFECTS_LOADED = isLoaded(PARTICLE_EFFECTS_MOD_ID);
+    public static final Supplier<Boolean> IS_PARTICLE_RAIN_LOADED = isLoaded(PARTICLE_RAIN_MOD_ID);
 
     public static final IntegerProperty FD_PIE_BITES = IntegerProperty.create("bites", 0, 3);
     public static final IntegerProperty JMC_TWO_TIERED_CAKE_BITES = IntegerProperty.create("bites", 0, 10);

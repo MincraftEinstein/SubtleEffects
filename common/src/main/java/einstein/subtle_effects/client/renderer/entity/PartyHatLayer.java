@@ -16,8 +16,9 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 
+import java.time.LocalDate;
+import java.time.Month;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 import static einstein.subtle_effects.SubtleEffects.loc;
@@ -39,9 +40,8 @@ public class PartyHatLayer<T extends AbstractClientPlayer, V extends HumanoidMod
     });
     private final PartyHatModel<T> model;
 
-    @SuppressWarnings("unchecked")
-    public PartyHatLayer(RenderLayerParent<?, ?> renderer, EntityRendererProvider.Context context) {
-        super((RenderLayerParent<T, V>) renderer);
+    public PartyHatLayer(RenderLayerParent<T, V> renderer, EntityRendererProvider.Context context) {
+        super(renderer);
         model = new PartyHatModel<>(context.bakeLayer(PartyHatModel.MODEL_LAYER));
     }
 
@@ -80,14 +80,14 @@ public class PartyHatLayer<T extends AbstractClientPlayer, V extends HumanoidMod
         return GENERAL.enableEasterEggs && !player.isInvisible();
     }
 
-    public static boolean isModAnniversary() {
-        if (Services.PLATFORM.isDevelopmentEnvironment()) {
+    public static boolean isModBirthday(boolean ignoreInDev) {
+        if (!ignoreInDev && Services.PLATFORM.isDevelopmentEnvironment()) {
             return true;
         }
 
-        Calendar calendar = Calendar.getInstance();
-        int month = calendar.get(Calendar.MONTH);
-        int date = calendar.get(Calendar.DATE);
-        return month == Calendar.OCTOBER && date >= 3 && date <= 5;
+        LocalDate date = LocalDate.now();
+        Month month = date.getMonth();
+        int dayOfMonth = date.getDayOfMonth();
+        return month == Month.OCTOBER && dayOfMonth >= 3 && dayOfMonth <= 5;
     }
 }

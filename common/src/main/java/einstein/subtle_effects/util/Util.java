@@ -30,9 +30,11 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.AbstractCauldronBlock;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.Vec3;
@@ -184,5 +186,16 @@ public class Util {
 
     public static boolean isMincraftEinstein(AbstractClientPlayer player) {
         return player.getStringUUID().equals(UUID);
+    }
+
+    public static String getOrdinal(long number) {
+        return number + (number == 1 ? "st" : number == 2 ? "nd" : number == 3 ? "rd" : "th");
+    }
+
+    public static boolean isRainingAt(Level level, BlockPos pos) {
+        if (level.isRaining() && level.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, pos.getX(), pos.getZ()) <= pos.getY()) {
+            return level.getBiome(pos).value().getPrecipitationAt(pos) == Biome.Precipitation.RAIN;
+        }
+        return false;
     }
 }

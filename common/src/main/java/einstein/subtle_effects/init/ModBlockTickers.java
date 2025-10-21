@@ -227,7 +227,7 @@ public class ModBlockTickers {
                     }
                 });
         register(Blocks.FLOWERING_AZALEA_LEAVES, () -> BLOCKS.floweringAzaleaPetals, (state, level, pos, random) -> {
-            if (random.nextInt(10) == 0) {
+            if (random.nextInt(BLOCKS.rainIncreasesLeavesSpawningParticles && Util.isRainingAt(level, pos) ? 5 : 10) == 0) {
                 BlockPos belowPos = pos.below();
                 BlockState belowState = level.getBlockState(belowPos);
 

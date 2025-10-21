@@ -9,7 +9,7 @@
 [![Discord Invite](https://img.shields.io/badge/Discord-Einstein%27s%20Lab-blue?style=for-the-badge&logo=discord)](https://discord.gg/gSsaFAvrBM)
 
 ### **📘 Description**
-Adding many new subtle details through particles and a few sounds. All of which can be toggled and some can be further customized. The mod also comes with built-in particle culling and a particle render distance. This mod was designed to be mainly client-sided, but there are a few features that require server access to work, see FAQ for more details.
+Adding many new subtle details through particles and a few sounds. All of which can be toggled, and some can be further customized. The mod also comes with built-in particle culling and a particle render distance. This mod was designed to be mainly client-sided, but there are a few features that require server access to work, see the FAQ for more details.
 
 **✨ Some Key Features**
 - Particle culling
@@ -47,10 +47,10 @@ You may
 
 You may not
 ❌ Reupload/publish this mod to any website without explicit permission from me and one or more links to any of the project pages*
-❌ Redistibute edited or unedited assets** from this mod without permission from me and credit
+❌ Redistribute edited or unedited assets** from this mod without permission from me and credit
 
 * Project pages include CurseForge, Modrinth, Planet Minecraft, GitHub
-** Assets include logos, banners, textures, models etc
+** Assets include logos, banners, textures, models, etc
 ```
 </details>
 
@@ -60,9 +60,9 @@ You may not
 
 ### 📚 F.A.Q
 
-**Q:** Can XYZ feature be disabled?
+**Q:** Can *{XYZ}* feature be disabled?
 <br>
-**A:** Yes, all features can be disabled in the config menu. If you find that a feature/change cannot be disabled please report it as a bug
+**A:** Yes, all features can be disabled in the config menu. If you find that a feature/change cannot be disabled, please report it as a bug
 
 **Q:** How to disable Dust Clouds?
 <br>
@@ -70,7 +70,7 @@ You may not
 
 **Q:** How to disable dropped item particles?
 <br>
-**A:** The configs for dropped item particles are located in the `Entities/Item Rarity` config section and can be disabled by changing `Particle Display Type` to `OFF`
+**A:** The configs for dropped item particles are located in the `Items/Item Rarity` config section and can be disabled by changing `Particle Display Type` to `OFF`
 
 **Q:** Will you support Forge?
 <br>
@@ -78,28 +78,24 @@ You may not
 
 **Q:** What game environment does the mod run in?
 <br>
-**A:** The mod was designed to run client side, however, there are some extra features and details that only work if the mod is also installed on the server. If installed on the server all clients will need the mod installed to join, including LAN servers. For a list of features that require server access visit the [wiki](https://github.com/MincraftEinstein/SubtleEffects/wiki).
-<br>
+**A:** The mod was designed to run client side, however, some extra features and details only work if the mod is also installed on the server. If installed on the server, all clients, including those running on LAN servers, will need the mod installed to join. For a list of features that require server access, visit the [wiki](<https://github.com/MincraftEinstein/SubtleEffects/wiki>).
 Note: Forge 1.20.1 does NOT support the mod running client side only.
 
-**Q:** Does this mod work with Fancy Block Particles, Particle Core, Visuality, or Particular?
+**Q:** Does this mod work with Fancy Block Particles, Particle Core, Visuality, Effective, Effectual, or Particular?
 <br>
 **A:** Yes
 
-**Q:** Particular's leaves aren't showing, how do I fix them?
-<br>
-**A:** Disable the 'Cull Particles With No Alpha' config inside the 'General' config section
-
 **Q:** Do you take suggestions/feature requests?
 <br>
-**A:** Yes, suggestions and feedback in general are much appreciated.
-You can provide feedback/suggestions in a GitHub issue, the CurseForge comments, or on my Discord Server.
-Please keep your suggestions somewhat Minecraft-y, e.g. no blood.
-Please also try not to suggest things that multiple other mods implement, such as rain ripples.
+**A:** Yes, suggestions and feedback in general are much appreciated. You can provide feedback/suggestions in a GitHub issue, the CurseForge comments, or on my Discord Server. Please keep your suggestions somewhat Minecraft-y, e.g.
 
 **Q:** The mod isn't working/no particles are appearing.
 <br>
-**A:** Check your Video Settings to make sure that the Particles setting is not set to minimal
+**A:** Check your `Video Settings` to make sure that the Particles setting is not set to minimal
+
+**Q:** Will you support Forge beyond 1.20.1?
+<br>
+**A:** Absolutely not
 
 ---
 

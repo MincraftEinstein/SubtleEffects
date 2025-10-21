@@ -82,6 +82,7 @@ public class ModParticles {
     public static final Supplier<SimpleParticleType> WATERFALL_DROPLET = register("waterfall_droplet");
     public static final Supplier<SimpleParticleType> WATERFALL_MIST = register("waterfall_mist");
     public static final Supplier<ParticleType<FallenLeafParticleOptions>> FALLEN_LEAF = register("fallen_leaf", FallenLeafParticleOptions.DESERIALIZER, type -> FallenLeafParticleOptions.CODEC);
+    public static final Supplier<SimpleParticleType> ARMADILLO = register("armadillo");
 
     public static void init() {
     }

@@ -1,7 +1,7 @@
 package einstein.subtle_effects.particle;
 
 import einstein.subtle_effects.particle.option.GeyserSpoutParticleOptions;
-import einstein.subtle_effects.ticking.tickers.geyser.FlameGeyserTicker;
+import einstein.subtle_effects.ticking.tickers.geyser.GeyserTicker;
 import einstein.subtle_effects.ticking.tickers.geyser.GeyserType;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
@@ -10,6 +10,7 @@ import net.minecraft.client.particle.ParticleRenderType;
 import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
+import net.minecraft.world.level.block.SupportType;
 
 public class GeyserSpoutParticle extends FlatPlaneParticle {
 
@@ -35,7 +36,7 @@ public class GeyserSpoutParticle extends FlatPlaneParticle {
 
     @Override
     public void tick() {
-        if (!FlameGeyserTicker.isNotFaceSturdyOrFluidEmpty(type, level, pos) || !type.getSpawnableBlocks().contains(level.getBlockState(pos.below()).getBlock())) {
+        if (!GeyserTicker.isSpawnableBlock(type, level, pos.below(), SupportType.RIGID)) {
             remove();
             return;
         }

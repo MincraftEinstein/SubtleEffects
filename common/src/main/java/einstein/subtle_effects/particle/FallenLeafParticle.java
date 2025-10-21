@@ -25,7 +25,8 @@ public class FallenLeafParticle extends FlatPlaneParticle {
             zd = MathUtil.nextDouble(random, (zSpeed / 4) * 3);
         }
 
-        lifetime = Mth.nextInt(random, 30, 50);
+        int baseLifetime = ModConfigs.GENERAL.fallenLeavesLifeTime.get();
+        lifetime = baseLifetime + (random.nextInt(10) * MathUtil.nextSign(random));
         lifetimeAlpha = new LifetimeAlpha(options.alpha(), 0, 0.5F, 1);
         alpha = lifetimeAlpha.startAlpha();
         rotation = rotation.rotateX(90 * Mth.DEG_TO_RAD);
