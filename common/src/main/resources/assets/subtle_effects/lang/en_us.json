@@ -595,6 +595,8 @@
   "config.subtle_effects.general.enableParticleCulling": "Enable Particle Culling",
   "config.subtle_effects.general.particleRenderDistance": "Particle Render Distance",
   "config.subtle_effects.general.particleRenderDistance.desc": "The maximum number of chunks away from the player a particle will render.\nThis does not affect particles spawning/existing in the world only rendering.\nThis affects most particles in the game including particles from other mods, some particles however ignore this value e.g. campfire smoke.",
+  "config.subtle_effects.general.particleCullingBlocklist": "Particle Culling Blocklist",
+  "config.subtle_effects.general.particleCullingBlocklist.desc": "List of particles that will not be culled by the particle culling system. \nThis list should be kept at a minimum and used mainly for particles that break when culled.\nParticles already spawned in a world will not be affected by changes to this config",
   "config.subtle_effects.general.cullParticlesInUnloadedChunks": "Cull Particles In Unloaded Chunks",
   "config.subtle_effects.general.cullParticlesInUnloadedChunks.desc": "Prevents rendering particles in unloaded chunk. This usually doesn't affect anything, unless the server is running slowing",
   "config.subtle_effects.general.allowUsingBlendedRenderType": "Allow Using Blended Render Type",
