@@ -1,14 +1,14 @@
 package einstein.subtle_effects.configs;
 
 import einstein.subtle_effects.SubtleEffects;
-import einstein.subtle_effects.configs.environment.WaterfallConfigs;
-import einstein.subtle_effects.ticking.biome_particles.BiomeParticleManager;
+import einstein.subtle_effects.SubtleEffectsClient;
 import einstein.subtle_effects.configs.environment.BiomeConfigs;
 import einstein.subtle_effects.configs.environment.FireflyConfigs;
 import einstein.subtle_effects.configs.environment.GeyserConfigs;
+import einstein.subtle_effects.configs.environment.WaterfallConfigs;
 import einstein.subtle_effects.init.ModBlockTickers;
 import einstein.subtle_effects.init.ModConfigs;
-import einstein.subtle_effects.ticking.tickers.TickerManager;
+import einstein.subtle_effects.ticking.biome_particles.BiomeParticleManager;
 import me.fzzyhmstrs.fzzy_config.annotations.Translation;
 import me.fzzyhmstrs.fzzy_config.config.Config;
 import net.minecraft.client.Minecraft;
@@ -30,6 +30,6 @@ public class ModEnvironmentConfigs extends Config {
     public void onUpdateClient() {
         BiomeParticleManager.clear();
         ModBlockTickers.init();
-        TickerManager.clear(Minecraft.getInstance().level);
+        SubtleEffectsClient.clear(Minecraft.getInstance().level);
     }
 }

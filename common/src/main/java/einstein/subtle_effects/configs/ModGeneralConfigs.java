@@ -1,8 +1,8 @@
 package einstein.subtle_effects.configs;
 
 import einstein.subtle_effects.SubtleEffects;
+import einstein.subtle_effects.SubtleEffectsClient;
 import einstein.subtle_effects.init.ModConfigs;
-import einstein.subtle_effects.ticking.tickers.TickerManager;
 import einstein.subtle_effects.util.Util;
 import me.fzzyhmstrs.fzzy_config.annotations.Translation;
 import me.fzzyhmstrs.fzzy_config.config.Config;
@@ -68,7 +68,7 @@ public class ModGeneralConfigs extends Config {
     @Override
     public void onUpdateClient() {
         Minecraft minecraft = Minecraft.getInstance();
-        TickerManager.clear(Minecraft.getInstance().level);
+        SubtleEffectsClient.clear(minecraft.level);
 
         if (minecraft.level != null && minecraft.options.getCameraType().isFirstPerson()) {
             if (!mobSkullShaders) {

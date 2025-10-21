@@ -1,6 +1,7 @@
 package einstein.subtle_effects.configs;
 
 import einstein.subtle_effects.SubtleEffects;
+import einstein.subtle_effects.SubtleEffectsClient;
 import einstein.subtle_effects.compat.CompatHelper;
 import einstein.subtle_effects.compat.EndRemasteredCompat;
 import einstein.subtle_effects.configs.blocks.FallingBlocksConfigs;
@@ -11,7 +12,6 @@ import einstein.subtle_effects.init.ModBlockTickers;
 import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.init.ModParticles;
 import einstein.subtle_effects.particle.EnderEyePlacedRingParticle;
-import einstein.subtle_effects.ticking.tickers.TickerManager;
 import einstein.subtle_effects.util.Util;
 import me.fzzyhmstrs.fzzy_config.annotations.Translation;
 import me.fzzyhmstrs.fzzy_config.config.Config;
@@ -168,7 +168,7 @@ public class ModBlockConfigs extends Config {
 
     @Override
     public void onUpdateClient() {
-        TickerManager.clear(Minecraft.getInstance().level);
+        SubtleEffectsClient.clear(Minecraft.getInstance().level);
         ModBlockTickers.init();
     }
 

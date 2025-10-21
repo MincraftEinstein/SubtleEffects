@@ -1,10 +1,5 @@
 package einstein.subtle_effects.ticking.tickers;
 
-import einstein.subtle_effects.ticking.GeyserManager;
-import einstein.subtle_effects.ticking.tickers.entity.EntityTickerManager;
-import net.minecraft.world.level.Level;
-import org.jetbrains.annotations.Nullable;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,14 +38,9 @@ public class TickerManager {
         REMOVE_QUEUE.clear();
     }
 
-    public static void clear(@Nullable Level level) {
+    public static void clear() {
         ADD_QUEUE.clear();
         TICKERS.clear();
         REMOVE_QUEUE.clear();
-        EntityTickerManager.clear(level);
-        GeyserManager.ACTIVE_GEYSERS.clear();
-        GeyserManager.INACTIVE_GEYSERS.clear();
-        WaterfallTicker.WATERFALLS.clear();
-        ChestBlockEntityTicker.clear();
     }
 }

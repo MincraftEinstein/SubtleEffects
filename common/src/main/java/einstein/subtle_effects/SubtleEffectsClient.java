@@ -10,8 +10,12 @@ import einstein.subtle_effects.client.model.entity.PartyHatModel;
 import einstein.subtle_effects.client.renderer.entity.EinsteinSolarSystemLayer;
 import einstein.subtle_effects.client.renderer.entity.PartyHatLayer;
 import einstein.subtle_effects.init.*;
+import einstein.subtle_effects.ticking.GeyserManager;
 import einstein.subtle_effects.ticking.biome_particles.BiomeParticleManager;
+import einstein.subtle_effects.ticking.tickers.ChestBlockEntityTicker;
 import einstein.subtle_effects.ticking.tickers.TickerManager;
+import einstein.subtle_effects.ticking.tickers.WaterfallTicker;
+import einstein.subtle_effects.ticking.tickers.entity.EntityTickerManager;
 import einstein.subtle_effects.util.Util;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
@@ -30,6 +34,7 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.Nullable;
 
 import java.time.LocalDate;
 import java.time.Month;
@@ -66,7 +71,7 @@ public class SubtleEffectsClient {
             LEVEL = level;
 
             if (!HAS_CLEARED) {
-                TickerManager.clear(level);
+                clear(level);
                 BiomeParticleManager.clear();
                 HAS_CLEARED = true;
             }
@@ -150,7 +155,7 @@ public class SubtleEffectsClient {
         // Ticker Args
         LiteralArgumentBuilder<T> tickersClear = LiteralArgumentBuilder.<T>literal("clear")
                 .executes(context -> {
-                    TickerManager.clear(player.level());
+                    clear(minecraft.level);
                     sendSystemMsg(player, getMsgTranslation("subtle_effects.tickers.clear.success"));
                     return 1;
                 });
@@ -182,5 +187,14 @@ public class SubtleEffectsClient {
         if (player != null) {
             player.sendSystemMessage(component);
         }
+    }
+
+    public static void clear(@Nullable Level level) {
+        TickerManager.clear();
+        EntityTickerManager.clear(level);
+        GeyserManager.ACTIVE_GEYSERS.clear();
+        GeyserManager.INACTIVE_GEYSERS.clear();
+        WaterfallTicker.WATERFALLS.clear();
+        ChestBlockEntityTicker.clear();
     }
 }
