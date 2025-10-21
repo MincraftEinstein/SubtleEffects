@@ -4,10 +4,12 @@ import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.init.ModParticles;
 import einstein.subtle_effects.ticking.tickers.entity.EntityTicker;
 import einstein.subtle_effects.util.EntityMixinAccessor;
+import einstein.subtle_effects.util.ParticleSpawnUtil;
 import einstein.subtle_effects.util.Util;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.minecraft.core.BlockPos;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
@@ -97,6 +99,13 @@ public abstract class ClientEntityMixin implements EntityMixinAccessor {
                     }
                 }
             }
+        }
+    }
+
+    @Inject(method = "doWaterSplashEffect", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/Mth;floor(D)I"), cancellable = true)
+    private void doClientWaterSplash(CallbackInfo ci) {
+        if (ParticleSpawnUtil.spawnSplashEffects(subtleEffects$me, subtleEffects$me.level(), ModParticles.WATER_SPLASH_EMITTER.get(), FluidTags.WATER)) {
+            ci.cancel();
         }
     }
 
