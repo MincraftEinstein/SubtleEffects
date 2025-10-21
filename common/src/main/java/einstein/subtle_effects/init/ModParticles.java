@@ -67,7 +67,7 @@ public class ModParticles {
     public static final Supplier<ParticleType<ColorAndIntegerParticleOptions>> POTION_RING = register("potion_ring", ColorAndIntegerParticleOptions::codec, ColorAndIntegerParticleOptions::streamCodec, PotionRingParticle.Provider::new);
     public static final Supplier<ParticleType<ColorAndIntegerParticleOptions>> POTION_DOT = register("potion_dot", ColorAndIntegerParticleOptions::codec, ColorAndIntegerParticleOptions::streamCodec, PotionDotParticle.PotionDotProvider::new);
     public static final Supplier<ParticleType<ColorAndIntegerParticleOptions>> POTION_EMITTER = register("potion_emitter", ColorAndIntegerParticleOptions::codec, ColorAndIntegerParticleOptions::streamCodec, sprites -> new PotionEmitter.Provider());
-    public static final Supplier<SimpleParticleType> IRON_GOLEM = register("iron_golem", CustomTerrainParticle.IronGolemProvider::new);
+    public static final Supplier<SimpleParticleType> IRON_GOLEM = register("iron_golem", CustomTerrainParticle.Provider::new);
     public static final Supplier<SimpleParticleType> DROWNING_BUBBLE = register("drowning_bubble", DrowningBubbleParticle.Provider::new);
     public static final Supplier<SimpleParticleType> DROWNING_BUBBLE_POP = register("drowning_bubble_pop", DrowningBubblePopParticle.Provider::new);
     public static final Supplier<ParticleType<DirectionParticleOptions>> EGG_SPLAT = register("egg_splat", DirectionParticleOptions::codec, DirectionParticleOptions::streamCodec, EggSplatParticle.Provider::new);
@@ -91,6 +91,7 @@ public class ModParticles {
     public static final Supplier<SimpleParticleType> WATERFALL_DROPLET = register("waterfall_droplet", WaterfallDropletParticle.Provider::new);
     public static final Supplier<SimpleParticleType> WATERFALL_MIST = register("waterfall_mist", WaterfallMistParticle.Provider::new);
     public static final Supplier<ParticleType<FallenLeafParticleOptions>> FALLEN_LEAF = register("fallen_leaf", type -> FallenLeafParticleOptions.CODEC, type -> FallenLeafParticleOptions.STREAM_CODEC, sprites -> new FallenLeafParticle.Provider());
+    public static final Supplier<SimpleParticleType> ARMADILLO = register("armadillo", CustomTerrainParticle.Provider::new);
 
     public static void init() {
     }

@@ -35,6 +35,7 @@ public class ModItemConfigs extends Config {
     public boolean splashPotionClouds = true;
     @RequiresAction(action = Action.RESTART)
     public boolean structureVoidItemMarker = true;
+    public boolean armadilloBrushParticles = true;
 
     public ModItemConfigs() {
         super(SubtleEffects.loc("items"));

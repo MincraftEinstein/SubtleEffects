@@ -588,6 +588,8 @@
   "config.subtle_effects.items.splashPotionClouds.desc": "Replaces the vanilla bubble swirl particles with poofy clouds",
   "config.subtle_effects.items.structureVoidItemMarker": "Structure Void Item Marker",
   "config.subtle_effects.items.structureVoidItemMarker.desc": "Makes placed structure voids display similar to placed barriers, where if the player is holding a structure void item other structure voids in the world will be visible",
+  "config.subtle_effects.items.armadilloBrushParticles": "Armadillo Brush Particles",
+  "config.subtle_effects.items.armadilloBrushParticles.desc": "Should brushing an armadillo spawn particles",
   "config.subtle_effects.general": "General",
   "config.subtle_effects.general.particleRenderingGroup": "Particle Rendering",
   "config.subtle_effects.general.enableParticleCulling": "Enable Particle Culling",
