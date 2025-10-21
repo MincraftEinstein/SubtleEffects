@@ -1,7 +1,5 @@
 package einstein.subtle_effects;
 
-import einstein.subtle_effects.client.model.entity.EinsteinSolarSystemModel;
-import einstein.subtle_effects.client.model.entity.PartyHatModel;
 import einstein.subtle_effects.data.BCWPPackManager;
 import einstein.subtle_effects.data.MobSkullShaderReloadListener;
 import einstein.subtle_effects.data.SparkProviderReloadListener;
@@ -9,6 +7,8 @@ import einstein.subtle_effects.platform.ForgeRegistryHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.client.particle.SpriteSet;
+import net.minecraft.client.renderer.entity.EntityRenderer;
+import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.server.packs.PackType;
@@ -48,13 +48,19 @@ public class SubtleEffectsForgeClient {
             event.registerReloadListener(new MobSkullShaderReloadListener());
             event.registerReloadListener(new BCWPPackManager());
         });
-        modEventBus.addListener((EntityRenderersEvent.RegisterLayerDefinitions event) -> {
-            event.registerLayerDefinition(EinsteinSolarSystemModel.MODEL_LAYER, EinsteinSolarSystemModel::createLayer);
-            event.registerLayerDefinition(PartyHatModel.MODEL_LAYER, PartyHatModel::createLayer);
-        });
         modEventBus.addListener((EntityRenderersEvent.RegisterLayerDefinitions event) ->
                 SubtleEffectsClient.registerModelLayers().forEach(event::registerLayerDefinition)
         );
+        modEventBus.addListener((EntityRenderersEvent.AddLayers event) -> {
+            for (String model : event.getSkins()) {
+                EntityRenderer<?> renderer = event.getSkin(model);
+
+                if (renderer instanceof PlayerRenderer playerRenderer) {
+                    SubtleEffectsClient.registerPlayerRenderLayers(playerRenderer, event.getContext())
+                            .forEach(playerRenderer::addLayer);
+                }
+            }
+        });
         MinecraftForge.EVENT_BUS.addListener((TickEvent.ClientTickEvent event) -> {
             Minecraft minecraft = Minecraft.getInstance();
             SubtleEffectsClient.clientTick(minecraft, minecraft.level);
