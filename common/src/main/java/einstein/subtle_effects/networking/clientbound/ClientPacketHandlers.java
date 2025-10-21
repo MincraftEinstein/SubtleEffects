@@ -20,6 +20,7 @@ import net.minecraft.core.particles.*;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -40,6 +41,7 @@ import net.minecraft.world.item.alchemy.PotionContents;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.Vec3;
 
 import java.util.List;
@@ -384,6 +386,45 @@ public class ClientPacketHandlers {
         if (entity != null) {
             ParticleType<SplashEmitterParticleOptions> particleType = payload.isLava() ? ModParticles.LAVA_SPLASH_EMITTER.get() : ModParticles.WATER_SPLASH_EMITTER.get();
             ParticleSpawnUtil.spawnSplashEffects(entity, level, particleType, payload.y(), payload.yVelocity());
+        }
+    }
+
+    public static void handle(ClientLevel level, ClientBoundExplosionPayload payload) {
+        if (ModConfigs.ENTITIES.splashes.explosionsCauseSplashes) {
+            float radius = payload.radius();
+            Vec3 position = payload.position();
+            BlockPos pos = BlockPos.containing(position);
+            FluidState fluidState = level.getFluidState(pos);
+
+            if (!fluidState.isEmpty()) {
+                int blockY = pos.getY();
+
+                for (int y = blockY; y < blockY + (radius * 1.5) + 1; y++) {
+                    BlockPos currentPos = pos.atY(y);
+                    FluidState currentFluidState = level.getFluidState(currentPos);
+
+                    if (fluidState.getType().isSame(currentFluidState.getType())) {
+                        continue;
+                    }
+
+                    if (level.getBlockState(currentPos).isSolidRender()) {
+                        return;
+                    }
+
+                    ParticleType<SplashEmitterParticleOptions> type = fluidState.is(FluidTags.WATER) ? ModParticles.WATER_SPLASH_EMITTER.get() : fluidState.is(FluidTags.LAVA) ? ModParticles.LAVA_SPLASH_EMITTER.get() : null;
+                    if (type != null) {
+                        BlockPos surfacePos = currentPos.below();
+                        FluidState surfaceFluidState = level.getFluidState(surfacePos);
+                        float scale = radius - ((y - blockY) / radius);
+
+                        level.addAlwaysVisibleParticle(new SplashEmitterParticleOptions(type, scale, scale * (scale * 0.1F), -1, -1),
+                                true, position.x(), surfacePos.getY() + surfaceFluidState.getHeight(level, surfacePos) + 0.01, position.z(),
+                                0, 0, 0
+                        );
+                    }
+                    return;
+                }
+            }
         }
     }
 

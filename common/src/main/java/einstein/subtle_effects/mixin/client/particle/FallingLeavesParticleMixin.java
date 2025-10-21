@@ -34,10 +34,10 @@ public abstract class FallingLeavesParticleMixin extends TextureSheetParticle {
         super(level, x, y, z);
     }
 
-    @ModifyExpressionValue(method = "tick", at = @At(value = "CONSTANT", args = "doubleValue=2.0"))
+    @ModifyExpressionValue(method = "tick", at = @At(value = "CONSTANT", args = "doubleValue=0.0024999999441206455"))
     private double replaceGravity(double original) {
         if (GENERAL.rainIncreasesLeavesMovementSpeed && Util.isRainingAt(level, BlockPos.containing(x, y, z))) {
-            return 6;
+            return original * 1.5;
         }
         return original;
     }

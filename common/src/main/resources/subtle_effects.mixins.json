@@ -7,7 +7,6 @@
   "client": [
     "client.ClientLevelMixin",
     "client.ColumnInstanceMixin",
-    "client.ExplosionMixin",
     "client.GameRendererAccessor",
     "client.GameRendererMixin",
     "client.ItemBordersConfigAccessor",
@@ -27,8 +26,8 @@
     "client.block.BeehiveBlockMixin",
     "client.block.BlockStateBaseMixin",
     "client.block.CampfireBlockMixin",
-    "client.block.CherryLeavesBlockMixin",
     "client.block.ClientComposterBlockMixin",
+    "client.block.ClientLeavesBlockMixin",
     "client.block.EndPortalBlockMixin",
     "client.block.FireflyBushBlockMixin",
     "client.block.FurnaceBlockMixin",
@@ -87,12 +86,13 @@
     "client.particle.bubbles.WaterCurrentDownParticleProviderMixin"
   ],
   "mixins": [
+    "common.ServerLevelMixin",
     "common.StonecutterMenuAccessor",
     "common.block.BeehiveBlockEntityMixin",
     "common.block.CommonComposterMixin",
     "common.block.CommonComposterMixin$InputContainerMixin",
+    "common.block.CommonLeavesBlockMixin",
     "common.block.FarmBlockMixin",
-    "common.block.LeavesBlockMixin",
     "common.block.dispenser.EmptyBucketDispenseItemBehaviorMixin",
     "common.block.dispenser.FilledBucketDispenseItemBehaviorMixin",
     "common.block.dispenser.GlassBottleDispenseItemBehaviorMixin",

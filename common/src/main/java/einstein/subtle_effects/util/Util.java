@@ -234,7 +234,7 @@ public class Util {
 
     public static boolean isRainingAt(Level level, BlockPos pos) {
         if (level.isRaining() && level.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, pos.getX(), pos.getZ()) <= pos.getY()) {
-            return level.getBiome(pos).value().getPrecipitationAt(pos) == Biome.Precipitation.RAIN;
+            return level.getBiome(pos).value().getPrecipitationAt(pos, level.getSeaLevel()) == Biome.Precipitation.RAIN;
         }
         return false;
     }
