@@ -37,7 +37,7 @@ public class ScreenEffectRendererMixin {
         poseStack.translate(0, ModConfigs.GENERAL.fireOverlayHeight.get(), 0);
     }
 
-    @WrapOperation(method = "renderFire", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/vertex/VertexConsumer;setColor(FFFF)Lcom/mojang/blaze3d/vertex/VertexConsumer;"))
+    @WrapOperation(method = "renderFire", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/vertex/VertexConsumer;color(FFFF)Lcom/mojang/blaze3d/vertex/VertexConsumer;"))
     private static VertexConsumer modifyAlpha(VertexConsumer consumer, float red, float green, float blue, float alpha, Operation<VertexConsumer> original, @Share("alpha") LocalFloatRef alphaRef) {
         return original.call(consumer, red, green, blue, alphaRef.get());
     }
