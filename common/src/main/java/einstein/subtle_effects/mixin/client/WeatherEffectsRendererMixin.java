@@ -36,7 +36,7 @@ public abstract class WeatherEffectsRendererMixin {
     @Shadow
     protected abstract Biome.Precipitation getPrecipitationAt(Level p_362885_, BlockPos p_362817_);
 
-    @WrapOperation(method = "render(Lnet/minecraft/client/renderer/MultiBufferSource;Lnet/minecraft/world/phys/Vec3;IFLjava/util/List;Ljava/util/List;)V", at = @At(value = "FIELD", target = "Lnet/minecraft/client/renderer/WeatherEffectRenderer;RAIN_LOCATION:Lnet/minecraft/resources/ResourceLocation;"))
+    @WrapOperation(method = "render", at = @At(value = "FIELD", target = "Lnet/minecraft/client/renderer/WeatherEffectRenderer;RAIN_LOCATION:Lnet/minecraft/resources/ResourceLocation;"))
     private ResourceLocation replaceRainTexture(Operation<ResourceLocation> original) {
         if (ENVIRONMENT.biomeColorRain) {
             return Util.COLORLESS_RAIN_TEXTURE;
@@ -80,7 +80,7 @@ public abstract class WeatherEffectsRendererMixin {
         original.call(level, options, x, y, z, xSpeed, ySpeed, zSpeed);
     }
 
-    @WrapOperation(method = "collectColumnInstances", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/WeatherEffectRenderer;createRainColumnInstance(Lnet/minecraft/util/RandomSource;IIIIIIF)Lnet/minecraft/client/renderer/WeatherEffectRenderer$ColumnInstance;"))
+    @WrapOperation(method = "extractRenderState", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/WeatherEffectRenderer;createRainColumnInstance(Lnet/minecraft/util/RandomSource;IIIIIIF)Lnet/minecraft/client/renderer/WeatherEffectRenderer$ColumnInstance;"))
     private WeatherEffectRenderer.ColumnInstance collectColumnInstances(WeatherEffectRenderer instance, RandomSource p_364494_, int p_361188_, int p_362466_, int p_364844_, int p_361656_, int p_364160_, int p_361622_, float p_363800_, Operation<WeatherEffectRenderer.ColumnInstance> original, Level level, @Local BlockPos.MutableBlockPos pos) {
         WeatherEffectRenderer.ColumnInstance column = original.call(instance, p_364494_, p_361188_, p_362466_, p_364844_, p_361656_, p_364160_, p_361622_, p_363800_);
         ((WeatherColumnInstance) (Object) column).subtleEffects$set(level, pos.immutable());
