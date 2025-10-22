@@ -78,6 +78,7 @@
     "client.particle.ParticleEngineMixin",
     "client.particle.ParticleMixin",
     "client.particle.ParticleResourcesMixin",
+    "client.particle.QuadParticleMixin",
     "client.particle.SpellParticleMixin",
     "client.particle.SpriteSetAccessor",
     "client.particle.bubbles.BubbleColumnUpParticleProviderMixin",
