@@ -36,7 +36,7 @@ public class ModGeneralConfigs extends Config {
     public ConfigGroup particleRenderingGroup = new ConfigGroup("particle_rendering");
     public boolean enableParticleCulling = true;
     public ValidatedInt particleRenderDistance = new ValidatedInt(5, 32, 1);
-    public ValidatedList<ParticleType<?>> particleCullingBlocklist = new ValidatedList<>(DEFAULT_CULLING_BLOCKLIST, ValidatedRegistryType.of(ParticleTypes.FLAME, BuiltInRegistries.PARTICLE_TYPE));
+    public ValidatedList<ParticleType<?>> particleCullingBlocklist = ValidatedRegistryType.of(ParticleTypes.FLAME, BuiltInRegistries.PARTICLE_TYPE).toList(DEFAULT_CULLING_BLOCKLIST);
     public boolean cullParticlesInUnloadedChunks = true;
     public boolean allowUsingBlendedRenderType = true;
     @ConfigGroup.Pop
@@ -74,9 +74,12 @@ public class ModGeneralConfigs extends Config {
     @ConfigGroup.Pop
     public boolean rainIncreasesLeavesMovementSpeed = true;
 
+    public ConfigGroup fireOverlayGroup = new ConfigGroup("fireOverlay");
+    public ValidatedFloat fireOverlayHeight = new ValidatedFloat(-0.15F, 0.4F, -0.5F);
+    public ValidatedFloat fireOverlayAlpha = new ValidatedFloat(0.9F, 1, 0);
+    @ConfigGroup.Pop
+    public ValidatedFloat fireOverlayAlphaWithFireResistance = new ValidatedFloat(0.4F, 1, 0);
     public boolean mobSkullShaders = true;
-    public ValidatedFloat fireHeight = new ValidatedFloat(-0.15F, 0.4F, -0.5F);
-    public boolean fireResistanceDisablesFireRendering = true;
     public boolean nightVisionFading = true;
     public ValidatedInt nightVisionFadingTime = new ValidatedInt(100, 200, 10);
     public boolean enableEasterEggs = true;

@@ -60,7 +60,7 @@ public class FireflyConfigs extends ConfigSection {
     public ValidatedList<ResourceLocation> dimensionBlocklist = ModConfigs.registryList(Registries.DIMENSION_TYPE, DEFAULT_BLOCKED_DIMENSIONS);
     public ValidatedList<ResourceLocation> biomesBlocklist = biomeList();
     public ValidatedList<ResourceLocation> biomesAllowlist = biomeList("lush_caves");
-    public ValidatedList<Block> spawnableBlocks = new ValidatedList<>(DEFAULT_SPAWNABLE_BLOCKS, ValidatedRegistryType.of(BuiltInRegistries.BLOCK));
+    public ValidatedList<Block> spawnableBlocks = ValidatedRegistryType.of(BuiltInRegistries.BLOCK).toList(DEFAULT_SPAWNABLE_BLOCKS);
     public ValidatedInt defaultDensity = new ValidatedInt(3, 10, 1);
     public ColdSeasonsType ignoredSeasons = ColdSeasonsType.DEFAULT;
     public FireflyType fireflyType = FireflyType.ORIGINAL;
