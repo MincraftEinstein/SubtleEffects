@@ -23,7 +23,7 @@ public class GeyserConfigs extends ConfigSection {
     public boolean useUpdatedSmoke = false;
     public ConfigGroup flameGeysersGroup = new ConfigGroup("flame_geysers");
     public ValidatedInt flameGeyserSpawnChance = new ValidatedInt(5, 50, 0);
-    public ValidatedList<Block> flameGeyserSpawnableBlocks = new ValidatedList<>(NETHER_GEYSER_BLOCKS, ValidatedRegistryType.of(BuiltInRegistries.BLOCK));
+    public ValidatedList<Block> flameGeyserSpawnableBlocks = ValidatedRegistryType.of(BuiltInRegistries.BLOCK).toList(NETHER_GEYSER_BLOCKS);
     public ValidatedFloat flameGeyserSoundVolume = new ValidatedFloat(0.5F, 1, 0);
     public ValidatedInt flameGeyserActiveTime = new ValidatedInt(300, 1000, 50);
     @ConfigGroup.Pop
@@ -31,7 +31,7 @@ public class GeyserConfigs extends ConfigSection {
 
     public ConfigGroup smokeGeysersGroup = new ConfigGroup("smoke_geysers");
     public ValidatedInt smokeGeyserSpawnChance = new ValidatedInt(5, 50, 0);
-    public ValidatedList<Block> smokeGeyserSpawnableBlocks = new ValidatedList<>(NETHER_GEYSER_BLOCKS, ValidatedRegistryType.of(BuiltInRegistries.BLOCK));
+    public ValidatedList<Block> smokeGeyserSpawnableBlocks = ValidatedRegistryType.of(BuiltInRegistries.BLOCK).toList(NETHER_GEYSER_BLOCKS);
     public ValidatedFloat smokeGeyserSoundVolume = new ValidatedFloat(0.2F, 1, 0);
     public ValidatedInt smokeGeyserActiveTime = new ValidatedInt(300, 1000, 50);
     @ConfigGroup.Pop
@@ -39,7 +39,7 @@ public class GeyserConfigs extends ConfigSection {
 
     public ConfigGroup bubbleGeysersGroup = new ConfigGroup("bubble_geysers");
     public ValidatedInt bubbleGeyserSpawnChance = new ValidatedInt(5, 50, 0);
-    public ValidatedList<Block> bubbleGeyserSpawnableBlocks = new ValidatedList<>(BUBBLE_GEYSER_BLOCKS, ValidatedRegistryType.of(BuiltInRegistries.BLOCK));
+    public ValidatedList<Block> bubbleGeyserSpawnableBlocks = ValidatedRegistryType.of(BuiltInRegistries.BLOCK).toList(BUBBLE_GEYSER_BLOCKS);
     public ValidatedFloat bubbleGeyserSoundVolume = new ValidatedFloat(0.5F, 1, 0);
     public ValidatedInt bubbleGeyserActiveTime = new ValidatedInt(300, 1000, 50);
     @ConfigGroup.Pop

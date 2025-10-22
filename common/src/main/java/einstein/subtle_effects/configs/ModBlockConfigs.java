@@ -67,10 +67,10 @@ public class ModBlockConfigs extends Config {
     public ConfigGroup dustyBlocksGroup = new ConfigGroup("dusty_blocks");
     public boolean redstoneBlockDust = true;
     public BlockDustDensity redstoneBlockDustDensity = BlockDustDensity.DEFAULT;
-    public ValidatedList<Block> redstoneDustEmittingBlocks = new ValidatedList<>(List.of(Blocks.REDSTONE_BLOCK), ValidatedRegistryType.of(BuiltInRegistries.BLOCK));
+    public ValidatedList<Block> redstoneDustEmittingBlocks = ValidatedRegistryType.of(BuiltInRegistries.BLOCK).toList(List.of(Blocks.REDSTONE_BLOCK));
     public boolean glowstoneBlockDust = true;
     public BlockDustDensity glowstoneBlockDustDensity = BlockDustDensity.DEFAULT;
-    public ValidatedList<Block> glowstoneDustEmittingBlocks = new ValidatedList<>(List.of(Blocks.GLOWSTONE), ValidatedRegistryType.of(BuiltInRegistries.BLOCK));
+    public ValidatedList<Block> glowstoneDustEmittingBlocks = ValidatedRegistryType.of(BuiltInRegistries.BLOCK).toList(List.of(Blocks.GLOWSTONE));
     @ConfigGroup.Pop
     public boolean netherOnlyGlowstoneBlockDust = false;
     public boolean beehivesHaveSleepingZs = true;
@@ -108,7 +108,7 @@ public class ModBlockConfigs extends Config {
 
     public ConfigGroup amethystGroup = new ConfigGroup("amethyst");
     public AmethystSparkleDisplayType amethystSparkleDisplayType = AmethystSparkleDisplayType.ON;
-    public ValidatedList<Block> amethystSparkleEmittingBlocks = new ValidatedList<>(List.of(Blocks.AMETHYST_BLOCK, Blocks.BUDDING_AMETHYST), ValidatedRegistryType.of(BuiltInRegistries.BLOCK));
+    public ValidatedList<Block> amethystSparkleEmittingBlocks = ValidatedRegistryType.of(BuiltInRegistries.BLOCK).toList(List.of(Blocks.AMETHYST_BLOCK, Blocks.BUDDING_AMETHYST));
     @ConfigGroup.Pop
     public boolean amethystSparkleSounds = true;
 

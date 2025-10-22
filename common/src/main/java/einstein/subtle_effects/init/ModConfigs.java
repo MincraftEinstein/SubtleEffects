@@ -47,14 +47,12 @@ public class ModConfigs {
     }
 
     public static <T> ValidatedList<ResourceLocation> registryList(ResourceKey<? extends Registry<? extends T>> registryKey, String... defaultIds) {
-        return new ValidatedList<>(Arrays.stream(defaultIds).map(ResourceLocation::tryParse).toList(),
-                new ValidatedIdentifier(new ResourceLocation("air"),
-                        new AllowableIdentifiers(
-                                location -> getRegistry(registryKey).map(biomes -> biomes.containsKey(location)).orElse(true),
-                                () -> getRegistry(registryKey).map(biomes -> biomes.keySet().stream().toList()).orElseGet(List::of)
-                        )
+        return new ValidatedIdentifier(new ResourceLocation("air"),
+                new AllowableIdentifiers(
+                        location -> getRegistry(registryKey).map(biomes -> biomes.containsKey(location)).orElse(true),
+                        () -> getRegistry(registryKey).map(biomes -> biomes.keySet().stream().toList()).orElseGet(List::of)
                 )
-        );
+        ).toList(Arrays.stream(defaultIds).map(ResourceLocation::tryParse).toList());
     }
 
     private static <T> Optional<Registry<T>> getRegistry(ResourceKey<? extends Registry<? extends T>> registryKey) {
