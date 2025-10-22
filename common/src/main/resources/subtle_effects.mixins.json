@@ -87,6 +87,8 @@
   ],
   "mixins": [
     "common.StonecutterMenuAccessor",
+    "common.block.AbstractCandleBlockAccessor",
+    "common.block.BaseFireBlockAccessor",
     "common.block.BeehiveBlockEntityMixin",
     "common.block.CommonComposterMixin",
     "common.block.CommonComposterMixin$InputContainerMixin",
