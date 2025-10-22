@@ -64,7 +64,7 @@ public abstract class AreaEffectCloudMixin {
     private void replaceEffectParticles(Level level, ParticleOptions options, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, Operation<Void> original) {
         if (ModConfigs.ITEMS.lingeringPotionClouds) {
             ColorParticleOption colorOptions = (ColorParticleOption) options;
-            if (subtleEffects$spawnParticles(level, colorOptions.getRed(), colorOptions.getBlue(), colorOptions.getGreen(),
+            if (subtleEffects$spawnParticles(level, colorOptions.getRed(), colorOptions.getGreen(), colorOptions.getBlue(),
                     x, y, z, 20, 4)) {
                 return;
             }
