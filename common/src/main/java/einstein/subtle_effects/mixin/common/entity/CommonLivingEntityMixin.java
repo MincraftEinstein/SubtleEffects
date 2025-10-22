@@ -106,7 +106,7 @@ public abstract class CommonLivingEntityMixin extends Entity {
         return damage;
     }
 
-    @ModifyExpressionValue(method = "travelFallFlying", at = @At(value = "FIELD", target = "Lnet/minecraft/world/level/Level;isClientSide:Z", ordinal = 0))
+    @ModifyExpressionValue(method = "travelFallFlying", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/Level;isClientSide()Z"))
     private boolean cancelFlyIntoWallServerCheck(boolean original) {
         return false;
     }
