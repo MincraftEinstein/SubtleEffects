@@ -21,7 +21,8 @@ import net.minecraft.client.renderer.entity.state.AvatarRenderState;
 import net.minecraft.util.Mth;
 import org.joml.Vector3f;
 
-import static einstein.subtle_effects.init.ModRenderStateKeys.*;
+import static einstein.subtle_effects.init.ModRenderStateKeys.SOLAR_SYSTEM_SPIN;
+import static einstein.subtle_effects.init.ModRenderStateKeys.STRING_UUID;
 
 public class EinsteinSolarSystemLayer<T extends AvatarRenderState, V extends HumanoidModel<T>> extends RenderLayer<T, V> implements RenderLayerParent<T, EinsteinSolarSystemModel<T>> {
 
@@ -55,7 +56,7 @@ public class EinsteinSolarSystemLayer<T extends AvatarRenderState, V extends Hum
     @Override
     public void submit(PoseStack poseStack, SubmitNodeCollector nodeCollector, int packedLight, T renderState, float yRot, float xRot) {
         EntityRenderStateAccessor accessor = (EntityRenderStateAccessor) renderState;
-        if (shouldRender(accessor)) {
+        if (!renderState.isInvisible && shouldRender(accessor)) {
             int headCount = HEAD_ROTATIONS.length;
             model.hat.visible = renderState.showHat;
 
@@ -104,11 +105,11 @@ public class EinsteinSolarSystemLayer<T extends AvatarRenderState, V extends Hum
 
     public static boolean shouldRender(EntityRenderStateAccessor accessor) {
         return ModConfigs.GENERAL.enableEasterEggs
-                && (Util.isMincraftEinstein(accessor.subtleEffects$get(STRING_UUID)) || Services.PLATFORM.isDevelopmentEnvironment())
-                && !accessor.subtleEffects$get(IS_INVISIBLE);
+                && (Util.isMincraftEinstein(accessor.subtleEffects$get(STRING_UUID)) || Services.PLATFORM.isDevelopmentEnvironment());
     }
 
     public static float getSpin(EntityRenderStateAccessor accessor, float speed) {
-        return accessor.subtleEffects$get(SOLAR_SYSTEM_SPIN) + (Mth.PI * speed);
+        var spin = accessor.subtleEffects$get(SOLAR_SYSTEM_SPIN);
+        return (spin != null) ? spin : 0 + (Mth.PI * speed);
     }
 }

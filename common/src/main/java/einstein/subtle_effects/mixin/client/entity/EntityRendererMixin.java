@@ -29,11 +29,10 @@ public class EntityRendererMixin<T extends Entity, S extends EntityRenderState> 
         EntityRenderStateAccessor accessor = (EntityRenderStateAccessor) renderState;
         if (entity instanceof LivingEntity livingEntity) {
             accessor.subtleEffects$set(IS_SLEEPING, livingEntity.isSleeping());
+            accessor.subtleEffects$set(SOLAR_SYSTEM_SPIN, (livingEntity.tickCount + partialTicks) / 20F);
         }
 
         if (entity instanceof AbstractClientPlayer player) {
-            accessor.subtleEffects$set(SOLAR_SYSTEM_SPIN, (player.tickCount + partialTicks) / 20F);
-            accessor.subtleEffects$set(IS_INVISIBLE, player.isInvisible());
             accessor.subtleEffects$set(STRING_UUID, player.getStringUUID());
         }
     }
