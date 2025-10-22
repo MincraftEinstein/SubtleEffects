@@ -2,6 +2,8 @@ package einstein.subtle_effects.ticking;
 
 import einstein.subtle_effects.data.SparkProviderData;
 import einstein.subtle_effects.data.SparkProviderReloadListener;
+import einstein.subtle_effects.mixin.common.block.AbstractCandleBlockAccessor;
+import einstein.subtle_effects.mixin.common.block.BaseFireBlockAccessor;
 import einstein.subtle_effects.particle.SparkParticle;
 import einstein.subtle_effects.util.Box;
 import einstein.subtle_effects.util.ParticleSpawnUtil;
@@ -12,8 +14,6 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.util.valueproviders.IntProvider;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.AbstractCandleBlock;
-import net.minecraft.world.level.block.BaseFireBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -72,8 +72,8 @@ public class SparkProviderManager {
                         );
                     }
                     case CANDLE -> {
-                        if (BLOCKS.sparks.candleSparks && block instanceof AbstractCandleBlock candleBlock) {
-                            candleBlock.getParticleOffsets(state).forEach(offset -> {
+                        if (BLOCKS.sparks.candleSparks && block instanceof AbstractCandleBlockAccessor candleBlock) {
+                            candleBlock.subtle_effects$getParticleOffsets(state).forEach(offset -> {
                                 ParticleSpawnUtil.spawnSparks(level, random, pos, SparkType.SHORT_LIFE, new Box(
                                         offset.subtract(0.05, 0, 0.05),
                                         offset.add(0.05, 0, 0.05)
@@ -96,13 +96,13 @@ public class SparkProviderManager {
                         }
                     }
                     case FIRE -> {
-                        if (BLOCKS.sparks.fireSparks && block instanceof BaseFireBlock fireBlock) {
+                        if (BLOCKS.sparks.fireSparks && block instanceof BaseFireBlockAccessor fireBlock) {
                             BlockPos belowPos = pos.below();
                             BlockState belowState = level.getBlockState(belowPos);
 
-                            if (!fireBlock.canBurn(belowState) && !belowState.isFaceSturdy(level, belowPos, Direction.UP)) {
+                            if (!fireBlock.subtle_effects$canBurn(belowState) && !belowState.isFaceSturdy(level, belowPos, Direction.UP)) {
                                 for (Direction direction : Direction.Plane.HORIZONTAL) {
-                                    if (fireBlock.canBurn(level.getBlockState(pos.relative(direction)))) {
+                                    if (fireBlock.subtle_effects$canBurn(level.getBlockState(pos.relative(direction)))) {
                                         Direction.Axis axis = direction.getAxis();
                                         int i = direction.getAxisDirection() == Direction.AxisDirection.NEGATIVE ? 0 : 1;
 
