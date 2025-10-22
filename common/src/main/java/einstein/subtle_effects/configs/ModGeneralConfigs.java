@@ -38,7 +38,7 @@ public class ModGeneralConfigs extends Config {
     public ConfigGroup particleRenderingGroup = new ConfigGroup("particle_rendering");
     public boolean enableParticleCulling = true;
     public ValidatedInt particleRenderDistance = new ValidatedInt(5, 32, 1);
-    public ValidatedList<ParticleType<?>> particleCullingBlocklist = new ValidatedList<>(DEFAULT_CULLING_BLOCKLIST, ValidatedRegistryType.of(ParticleTypes.FLAME, BuiltInRegistries.PARTICLE_TYPE));
+    public ValidatedList<ParticleType<?>> particleCullingBlocklist = ValidatedRegistryType.of(ParticleTypes.FLAME, BuiltInRegistries.PARTICLE_TYPE).toList(DEFAULT_CULLING_BLOCKLIST);
     public boolean cullParticlesInUnloadedChunks = true;
     public boolean allowUsingBlendedRenderType = true;
     @ConfigGroup.Pop
