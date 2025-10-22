@@ -12,10 +12,8 @@ import einstein.subtle_effects.ticking.tickers.TickerManager;
 import einstein.subtle_effects.util.ParticleSpawnUtil;
 import einstein.subtle_effects.util.Util;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.particle.Particle;
-import net.minecraft.client.particle.SingleQuadParticle;
+import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.LevelEventHandler;
-import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ColorParticleOption;
@@ -50,7 +48,7 @@ public class LevelEventHandlerMixin {
 
     @Shadow
     @Final
-    private Level level;
+    private ClientLevel level;
 
     @Shadow
     @Final
@@ -104,15 +102,15 @@ public class LevelEventHandlerMixin {
 
     @WrapOperation(method = "levelEvent",
             slice = @Slice(
-                    to = @At(value = "FIELD", target = "Lnet/minecraft/sounds/SoundEvents;SPLASH_POTION_BREAK:Lnet/minecraft/sounds/SoundEvent;"),
-                    from = @At(value = "FIELD", target = "Lnet/minecraft/core/particles/ParticleTypes;EFFECT:Lnet/minecraft/core/particles/SimpleParticleType;")
+                    from = @At(value = "FIELD", target = "Lnet/minecraft/core/particles/ParticleTypes;EFFECT:Lnet/minecraft/core/particles/ParticleType;"),
+                    to = @At(value = "FIELD", target = "Lnet/minecraft/sounds/SoundEvents;SPLASH_POTION_BREAK:Lnet/minecraft/sounds/SoundEvent;")
             ),
             at = @At(
                     value = "INVOKE",
-                    target = "Lnet/minecraft/client/renderer/LevelRenderer;addParticleInternal(Lnet/minecraft/core/particles/ParticleOptions;ZDDDDDD)Lnet/minecraft/client/particle/Particle;"
+                    target = "Lnet/minecraft/client/multiplayer/ClientLevel;addParticle(Lnet/minecraft/core/particles/ParticleOptions;DDDDDD)V"
             )
     )
-    private Particle replaceSplashPotionParticles(LevelRenderer levelRenderer, ParticleOptions options, boolean force, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, Operation<Particle> original, @Local(ordinal = 0) float red, @Local(ordinal = 1) float green, @Local(ordinal = 2) float blue) {
+    private void replaceSplashPotionParticles(ClientLevel instance, ParticleOptions particleData, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, Operation<Void> original, @Local(ordinal = 0) float red, @Local(ordinal = 1) float green, @Local(ordinal = 2) float blue) {
         if (ITEMS.splashPotionClouds && level != null) {
             RandomSource random = level.getRandom();
 
@@ -124,22 +122,20 @@ public class LevelEventHandlerMixin {
                 zSpeed *= powerModifier;
 
                 if (random.nextInt(3) == 0) {
-                    original.call(levelRenderer,
+                    original.call(instance,
                             ColorParticleOption.create(ModParticles.POTION_POOF_CLOUD.get(), red, green, blue),
-                            false, x, y, z, xSpeed, ySpeed, zSpeed
+                             x, y, z, xSpeed, ySpeed, zSpeed
                     );
                 }
 
-                Particle particle = original.call(levelRenderer, options, force, x, y, z, xSpeed, ySpeed, zSpeed);
-                if (particle instanceof SingleQuadParticle sqParticle) {
-                    sqParticle.setColor(red, green, blue);
-                }
+                //TODO (ender) figure out if this works
+                original.call(instance, particleData, x, y, z, xSpeed, ySpeed, zSpeed);
             }
 
             // always returning null to prevent calling particle.setPower
-            return null;
+            return;
         }
-        return original.call(levelRenderer, options, force, x, y, z, xSpeed, ySpeed, zSpeed);
+        original.call(instance, particleData, x, y, z, xSpeed, ySpeed, zSpeed);
     }
 
     @WrapOperation(method = "levelEvent", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/ParticleUtils;spawnParticlesOnBlockFaces(Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;Lnet/minecraft/core/particles/ParticleOptions;Lnet/minecraft/util/valueproviders/IntProvider;)V"))
@@ -152,8 +148,7 @@ public class LevelEventHandlerMixin {
                 subtleEffects$spawnCopperParticles(level, pos, count, state, random);
             }
             return;
-        }
-        else if (type == LevelEvent.PARTICLES_WAX_OFF) {
+        } else if (type == LevelEvent.PARTICLES_WAX_OFF) {
             if (ModConfigs.ITEMS.axeWaxOffParticlesDisplayType != ReplacedParticlesDisplayType.DEFAULT) {
                 subtleEffects$spawnCopperParticles(level, pos, count, state, random);
             }
@@ -176,8 +171,8 @@ public class LevelEventHandlerMixin {
     }
 
     // Fabric didn't like using a slice for some reason, should try again at some point
-    @WrapWithCondition(method = "levelEvent", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/Level;addParticle(Lnet/minecraft/core/particles/ParticleOptions;DDDDDD)V"))
-    private boolean shouldSpawnEndPortalFrameSmoke(Level level, ParticleOptions options, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, @Local(argsOnly = true, ordinal = 0) int type) {
+    @WrapWithCondition(method = "levelEvent", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/multiplayer/ClientLevel;addParticle(Lnet/minecraft/core/particles/ParticleOptions;DDDDDD)V"))
+    private boolean shouldSpawnEndPortalFrameSmoke(ClientLevel instance, ParticleOptions particleData, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, @Local(argsOnly = true, ordinal = 0) int type) {
         if (type == LevelEvent.END_PORTAL_FRAME_FILL) {
             return BLOCKS.enderEyePlacedParticlesDisplayType != ModBlockConfigs.EnderEyePlacedParticlesDisplayType.DOTS;
         }
