@@ -223,6 +223,6 @@ public class Util {
     }
 
     public static boolean isMincraftEinstein(String uuid) {
-        return uuid.equals(UUID);
+        return UUID.equals(uuid);
     }
 }
