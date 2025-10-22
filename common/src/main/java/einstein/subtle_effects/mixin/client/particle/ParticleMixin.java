@@ -29,14 +29,6 @@ public abstract class ParticleMixin implements ParticleAccessor {
     public abstract double getZ();
 
     @Override
-    @Accessor("alpha")
-    public abstract float getAlpha();
-
-    @Override
-    @Accessor("alpha")
-    public abstract void setAlpha(float alpha);
-
-    @Override
     @Accessor("gravity")
     public abstract void setGravity(float gravity);
 

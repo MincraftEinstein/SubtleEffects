@@ -8,10 +8,6 @@ public interface ParticleAccessor {
 
     double getZ();
 
-    float getAlpha();
-
-    void setAlpha(float alpha);
-
     void setGravity(float gravity);
 
     void setHasPhysics(boolean hasPhysics);
