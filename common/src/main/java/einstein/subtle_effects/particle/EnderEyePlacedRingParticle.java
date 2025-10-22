@@ -29,7 +29,7 @@ public class EnderEyePlacedRingParticle extends FlatPlaneParticle {
         alpha = lifetimeAlpha.startAlpha();
     }
 
-    @Override
+   /* @Override
     protected void renderQuad(VertexConsumer consumer, Camera camera, float partialTicks, Quaternionf rotation) {
         alpha = lifetimeAlpha.currentAlphaForAge(age, lifetime, partialTicks);
         Vec3 cameraPos = camera.getPosition();
@@ -46,7 +46,7 @@ public class EnderEyePlacedRingParticle extends FlatPlaneParticle {
     protected void renderQuad(VertexConsumer consumer, Quaternionf rotation, float partialTicks, float x, float y, float z) {
         renderQuad(consumer, rotation, partialTicks, x, y, z, false);
         renderQuad(consumer, rotation, partialTicks, x, y, z, true);
-    }
+    }*/
 
     @Override
     protected int getLightColor(float partialTick) {

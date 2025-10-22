@@ -14,18 +14,18 @@ import org.spongepowered.asm.mixin.injection.At;
 public abstract class LevelRendererMixin implements FrustumGetter {
 
     @Shadow
-    private Frustum cullingFrustum;
+    private Frustum capturedFrustum;
 
-    @ModifyReturnValue(method = "addParticleInternal(Lnet/minecraft/core/particles/ParticleOptions;ZZDDDDDD)Lnet/minecraft/client/particle/Particle;", at = @At(value = "RETURN", ordinal = 0))
-    private Particle spawnForcedParticle(Particle particle) {
-        if (particle != null) {
-            ((ParticleAccessor) particle).subtleEffects$force();
-        }
-        return particle;
-    }
+//    @ModifyReturnValue(method = "addParticleInternal(Lnet/minecraft/core/particles/ParticleOptions;ZZDDDDDD)Lnet/minecraft/client/particle/Particle;", at = @At(value = "RETURN", ordinal = 0))
+//    private Particle spawnForcedParticle(Particle particle) {
+//        if (particle != null) {
+//            ((ParticleAccessor) particle).subtleEffects$force();
+//        }
+//        return particle;
+//    }
 
     @Override
     public Frustum subtleEffects$getCullingFrustum() {
-        return cullingFrustum;
+        return capturedFrustum;
     }
 }

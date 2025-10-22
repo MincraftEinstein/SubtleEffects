@@ -38,7 +38,7 @@ public class EntityRendererMixin<T extends Entity, S extends EntityRenderState> 
         }
     }
 
-    @WrapOperation(method = "renderNameTag", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/vertex/PoseStack;translate(DDD)V"))
+   /* @WrapOperation(method = "renderNameTag", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/vertex/PoseStack;translate(DDD)V"))
     private void translate(PoseStack poseStack, double x, double y, double z, Operation<Void> original, EntityRenderState renderState, @Local Vec3 nameTagPos) {
         if (!ModConfigs.ENTITIES.sleeping.adjustNameTagWhenSleeping) {
             original.call(poseStack, x, y, z);
@@ -60,5 +60,5 @@ public class EntityRendererMixin<T extends Entity, S extends EntityRenderState> 
             return;
         }
         original.call(poseStack, x, y, z);
-    }
+    }*/
 }

@@ -120,7 +120,7 @@ public class SplashParticle extends FlatPlaneParticle {
         bottomSprite = bottomSprites.get(age, lifetime);
     }
 
-    @Override
+    /*@Override
     protected void renderQuad(VertexConsumer consumer, Camera camera, float partialTicks, Quaternionf rotation) {
         Vec3 cameraPos = camera.getPosition();
         float x = (float) (Mth.lerp(partialTicks, xo, this.x) - cameraPos.x());
@@ -139,7 +139,7 @@ public class SplashParticle extends FlatPlaneParticle {
                 renderBox(consumer, partialTicks, x, y, z, overlaySprite.getU0(), overlaySprite.getV0(), overlaySprite.getU1(), overlaySprite.getV1(), overlayRCol, overlayGCol, overlayBCol, overlayAlpha);
             }
         }
-    }
+    }*/
 
     private void renderBox(VertexConsumer consumer, float partialTicks, float x, float y, float z, float u0, float v0, float u1, float v1, float red, float green, float blue, float alpha) {
         renderDoubleQuads(consumer, new Quaternionf(), partialTicks, x, y + yScale, z + xScale, u0, v0, u1, v1, xScale, yScale, red, green, blue, alpha);
