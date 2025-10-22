@@ -76,9 +76,12 @@ public class ModGeneralConfigs extends Config {
     @ConfigGroup.Pop
     public boolean rainIncreasesLeavesMovementSpeed = true;
 
+    public ConfigGroup fireOverlayGroup = new ConfigGroup("fireOverlay");
+    public ValidatedFloat fireOverlayHeight = new ValidatedFloat(-0.15F, 0.4F, -0.5F);
+    public ValidatedFloat fireOverlayAlpha = new ValidatedFloat(0.9F, 1, 0);
+    @ConfigGroup.Pop
+    public ValidatedFloat fireOverlayAlphaWithFireResistance = new ValidatedFloat(0.4F, 1, 0);
     public boolean mobSkullShaders = true;
-    public ValidatedFloat fireHeight = new ValidatedFloat(-0.15F, 0.4F, -0.5F);
-    public boolean fireResistanceDisablesFireRendering = true;
     public boolean nightVisionFading = true;
     public ValidatedInt nightVisionFadingTime = new ValidatedInt(100, 200, 10);
     public boolean enableEasterEggs = true;
