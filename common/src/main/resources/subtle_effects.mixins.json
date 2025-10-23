@@ -41,6 +41,7 @@
     "client.block.entity.VaultBlockEntityClientMixin",
     "client.entity.AbstractHorseAccessor",
     "client.entity.AreaEffectCloudMixin",
+    "client.entity.AvatarRendererMixin",
     "client.entity.BlazeMixin",
     "client.entity.ClientEntityMixin",
     "client.entity.ClientLivingEntityMixin",
