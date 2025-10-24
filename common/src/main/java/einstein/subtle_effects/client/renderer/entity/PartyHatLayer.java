@@ -5,7 +5,7 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import einstein.subtle_effects.client.model.entity.PartyHatModel;
 import einstein.subtle_effects.platform.Services;
-import einstein.subtle_effects.util.EntityRenderStateAccessor;
+import einstein.subtle_effects.util.RenderStateAttachmentAccessor;
 import einstein.subtle_effects.util.Util;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -24,8 +24,7 @@ import java.util.List;
 
 import static einstein.subtle_effects.SubtleEffects.loc;
 import static einstein.subtle_effects.init.ModConfigs.GENERAL;
-import static einstein.subtle_effects.init.ModRenderStateKeys.IS_INVISIBLE;
-import static einstein.subtle_effects.init.ModRenderStateKeys.STRING_UUID;
+import static einstein.subtle_effects.init.ModRenderStateAttachmentKeys.STRING_UUID;
 
 public class PartyHatLayer<T extends PlayerRenderState, V extends HumanoidModel<T>> extends RenderLayer<T, V> {
 
@@ -54,8 +53,8 @@ public class PartyHatLayer<T extends PlayerRenderState, V extends HumanoidModel<
 
     @Override
     public void render(PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, T renderState, float yRot, float xRot) {
-        EntityRenderStateAccessor accessor = (EntityRenderStateAccessor) renderState;
-        if (shouldRender(accessor)) {
+        RenderStateAttachmentAccessor accessor = (RenderStateAttachmentAccessor) renderState;
+        if (shouldRender(renderState)) {
             poseStack.pushPose();
 
             getParentModel().getHead().translateAndRotate(poseStack);
@@ -81,8 +80,8 @@ public class PartyHatLayer<T extends PlayerRenderState, V extends HumanoidModel<
         return TEXTURES.get(index >= TEXTURES.size() ? TEXTURES.size() - 1 : index);
     }
 
-    public static boolean shouldRender(EntityRenderStateAccessor accessor) {
-        return GENERAL.enableEasterEggs && !accessor.subtleEffects$get(IS_INVISIBLE);
+    public static boolean shouldRender(PlayerRenderState renderState) {
+        return GENERAL.enableEasterEggs && !renderState.isInvisible;
     }
 
     public static boolean isModBirthday(boolean ignoreInDev) {
