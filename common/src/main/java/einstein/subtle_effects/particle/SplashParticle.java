@@ -1,12 +1,12 @@
 package einstein.subtle_effects.particle;
 
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import einstein.subtle_effects.particle.option.SplashParticleOptions;
 import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.client.particle.SpriteSet;
+import net.minecraft.client.renderer.state.QuadParticleRenderState;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.BlockPos;
 import net.minecraft.tags.FluidTags;
@@ -120,8 +120,8 @@ public class SplashParticle extends FlatPlaneParticle {
         bottomSprite = bottomSprites.get(age, lifetime);
     }
 
-    /*@Override
-    protected void renderQuad(VertexConsumer consumer, Camera camera, float partialTicks, Quaternionf rotation) {
+    @Override
+    protected void renderQuad(QuadParticleRenderState state, Camera camera, float partialTicks, Quaternionf rotation) {
         Vec3 cameraPos = camera.getPosition();
         float x = (float) (Mth.lerp(partialTicks, xo, this.x) - cameraPos.x());
         float y = (float) (Mth.lerp(partialTicks, yo, this.y) - cameraPos.y());
@@ -129,44 +129,44 @@ public class SplashParticle extends FlatPlaneParticle {
         float overlayAlpha = ENTITIES.splashes.splashOverlayAlpha.get();
 
         if (hasRipple) {
-            renderQuad(consumer, new Quaternionf().rotateX(90 * DEG_TO_RAD), partialTicks, x, y, z, false, bottomSprite.getU0(), bottomSprite.getV0(), bottomSprite.getU1(), bottomSprite.getV1(), xScale, xScale, overlayRCol, overlayGCol, overlayBCol, overlayAlpha);
+            renderQuad(state, new Quaternionf().rotateX(90 * DEG_TO_RAD), partialTicks, x, y, z, false, bottomSprite.getU0(), bottomSprite.getV0(), bottomSprite.getU1(), bottomSprite.getV1(), xScale, xScale, overlayRCol, overlayGCol, overlayBCol, overlayAlpha);
         }
 
         if (!isRipplePhase) {
-            renderBox(consumer, partialTicks, x, y, z, getU0(), getV0(), getU1(), getV1(), rCol, gCol, bCol, alpha);
+            renderBox(state, partialTicks, x, y, z, getU0(), getV0(), getU1(), getV1(), rCol, gCol, bCol, alpha);
 
             if (hasOverlay) {
-                renderBox(consumer, partialTicks, x, y, z, overlaySprite.getU0(), overlaySprite.getV0(), overlaySprite.getU1(), overlaySprite.getV1(), overlayRCol, overlayGCol, overlayBCol, overlayAlpha);
+                renderBox(state, partialTicks, x, y, z, overlaySprite.getU0(), overlaySprite.getV0(), overlaySprite.getU1(), overlaySprite.getV1(), overlayRCol, overlayGCol, overlayBCol, overlayAlpha);
             }
         }
-    }*/
-
-    private void renderBox(VertexConsumer consumer, float partialTicks, float x, float y, float z, float u0, float v0, float u1, float v1, float red, float green, float blue, float alpha) {
-        renderDoubleQuads(consumer, new Quaternionf(), partialTicks, x, y + yScale, z + xScale, u0, v0, u1, v1, xScale, yScale, red, green, blue, alpha);
-        renderDoubleQuads(consumer, new Quaternionf().rotateY(90 * DEG_TO_RAD), partialTicks, x - xScale, y + yScale, z, u0, v0, u1, v1, xScale, yScale, red, green, blue, alpha);
-        renderDoubleQuads(consumer, new Quaternionf().rotateY(180 * DEG_TO_RAD), partialTicks, x, y + yScale, z - xScale, u0, v0, u1, v1, xScale, yScale, red, green, blue, alpha);
-        renderDoubleQuads(consumer, new Quaternionf().rotateY(-90 * DEG_TO_RAD), partialTicks, x + xScale, y + yScale, z, u0, v0, u1, v1, xScale, yScale, red, green, blue, alpha);
     }
 
-    protected void renderDoubleQuads(VertexConsumer consumer, Quaternionf rotation, float partialTicks, float x, float y, float z, float u0, float v0, float u1, float v1, float quadWidthSize, float quadHeightSize, float red, float green, float blue, float alpha) {
-        renderQuad(consumer, rotation, partialTicks, x, y, z, false, u0, v0, u1, v1, quadWidthSize, quadHeightSize, red, green, blue, alpha);
-        renderQuad(consumer, rotation, partialTicks, x, y, z, true, u0, v0, u1, v1, quadWidthSize, quadHeightSize, red, green, blue, alpha);
+    private void renderBox(QuadParticleRenderState state, float partialTicks, float x, float y, float z, float u0, float v0, float u1, float v1, float red, float green, float blue, float alpha) {
+        renderDoubleQuads(state, new Quaternionf(), partialTicks, x, y + yScale, z + xScale, u0, v0, u1, v1, xScale, yScale, red, green, blue, alpha);
+        renderDoubleQuads(state, new Quaternionf().rotateY(90 * DEG_TO_RAD), partialTicks, x - xScale, y + yScale, z, u0, v0, u1, v1, xScale, yScale, red, green, blue, alpha);
+        renderDoubleQuads(state, new Quaternionf().rotateY(180 * DEG_TO_RAD), partialTicks, x, y + yScale, z - xScale, u0, v0, u1, v1, xScale, yScale, red, green, blue, alpha);
+        renderDoubleQuads(state, new Quaternionf().rotateY(-90 * DEG_TO_RAD), partialTicks, x + xScale, y + yScale, z, u0, v0, u1, v1, xScale, yScale, red, green, blue, alpha);
     }
 
-    protected void renderQuad(VertexConsumer consumer, Quaternionf rotation, float partialTicks, float x, float y, float z, boolean renderInverted, float u0, float v0, float u1, float v1, float quadWidthSize, float quadHeightSize, float red, float green, float blue, float alpha) {
+    protected void renderDoubleQuads(QuadParticleRenderState state, Quaternionf rotation, float partialTicks, float x, float y, float z, float u0, float v0, float u1, float v1, float quadWidthSize, float quadHeightSize, float red, float green, float blue, float alpha) {
+        renderQuad(state, rotation, partialTicks, x, y, z, false, u0, v0, u1, v1, quadWidthSize, quadHeightSize, red, green, blue, alpha);
+        renderQuad(state, rotation, partialTicks, x, y, z, true, u0, v0, u1, v1, quadWidthSize, quadHeightSize, red, green, blue, alpha);
+    }
+
+    protected void renderQuad(QuadParticleRenderState state, Quaternionf rotation, float partialTicks, float x, float y, float z, boolean renderInverted, float u0, float v0, float u1, float v1, float quadWidthSize, float quadHeightSize, float red, float green, float blue, float alpha) {
         int packedLight = getLightColor(partialTicks);
         int i = renderInverted ? 1 : -1;
         int i2 = renderInverted ? -1 : 1;
 
-        renderVertex(consumer, rotation, x, y, z, i, -1, quadWidthSize, quadHeightSize, u1, v1, packedLight, red, green, blue, alpha);
-        renderVertex(consumer, rotation, x, y, z, i, 1, quadWidthSize, quadHeightSize, u1, v0, packedLight, red, green, blue, alpha);
-        renderVertex(consumer, rotation, x, y, z, i2, 1, quadWidthSize, quadHeightSize, u0, v0, packedLight, red, green, blue, alpha);
-        renderVertex(consumer, rotation, x, y, z, i2, -1, quadWidthSize, quadHeightSize, u0, v1, packedLight, red, green, blue, alpha);
+        renderVertex(state, rotation, x, y, z, i, -1, quadWidthSize, quadHeightSize, u1, v1, packedLight, red, green, blue, alpha);
+        renderVertex(state, rotation, x, y, z, i, 1, quadWidthSize, quadHeightSize, u1, v0, packedLight, red, green, blue, alpha);
+        renderVertex(state, rotation, x, y, z, i2, 1, quadWidthSize, quadHeightSize, u0, v0, packedLight, red, green, blue, alpha);
+        renderVertex(state, rotation, x, y, z, i2, -1, quadWidthSize, quadHeightSize, u0, v1, packedLight, red, green, blue, alpha);
     }
 
-    protected void renderVertex(VertexConsumer buffer, Quaternionf rotation, float x, float y, float z, float xOffset, float yOffset, float quadWidthSize, float quadHeightSize, float u, float v, int packedLight, float red, float green, float blue, float alpha) {
+    protected void renderVertex(QuadParticleRenderState state, Quaternionf rotation, float x, float y, float z, float xOffset, float yOffset, float quadWidthSize, float quadHeightSize, float u, float v, int packedLight, float red, float green, float blue, float alpha) {
         Vector3f vector3f = new Vector3f(xOffset, yOffset, 0).rotate(rotation).mul(quadWidthSize, quadHeightSize, quadWidthSize).add(x, y, z);
-        buffer.addVertex(vector3f.x(), vector3f.y(), vector3f.z()).setUv(u, v).setColor(red, green, blue, alpha).setLight(packedLight);
+//        buffer.addVertex(vector3f.x(), vector3f.y(), vector3f.z()).setUv(u, v).setColor(red, green, blue, alpha).setLight(packedLight);
     }
 
     public record Provider(SpriteSet sprites) implements ParticleProvider<SplashParticleOptions> {
