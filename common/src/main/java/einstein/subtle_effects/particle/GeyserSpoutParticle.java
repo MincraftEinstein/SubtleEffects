@@ -9,8 +9,9 @@ import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.BlockPos;
-import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
+
+import static einstein.subtle_effects.util.Util.radians;
 
 public class GeyserSpoutParticle extends FlatPlaneParticle {
 
@@ -24,7 +25,7 @@ public class GeyserSpoutParticle extends FlatPlaneParticle {
         super(level, x, y, z, sprite);
         geyserLifeTime = options.lifeTime();
         type = options.type();
-        rotation.rotateY(90 * random.nextInt(3) * Mth.DEG_TO_RAD).rotateX(90 * Mth.DEG_TO_RAD);
+        rotation.rotateY(radians(90 * random.nextInt(3))).rotateX(radians(-90));
         lifetime = geyserLifeTime + FADE_TIME;
         hasPhysics = false;
         renderBackFace = false;
