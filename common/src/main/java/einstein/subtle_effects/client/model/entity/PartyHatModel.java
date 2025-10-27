@@ -6,9 +6,9 @@ import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
-import net.minecraft.client.renderer.entity.state.AvatarRenderState;
+import net.minecraft.client.renderer.entity.state.HumanoidRenderState;
 
-public class PartyHatModel<T extends AvatarRenderState> extends EntityModel<T> {
+public class PartyHatModel extends EntityModel<HumanoidRenderState> {
 
     public static final ModelLayerLocation MODEL_LAYER = new ModelLayerLocation(SubtleEffects.loc("party_hat"), "main");
     public final ModelPart hat;
@@ -30,6 +30,6 @@ public class PartyHatModel<T extends AvatarRenderState> extends EntityModel<T> {
     }
 
     @Override
-    public void setupAnim(T renderState) {
+    public void setupAnim(HumanoidRenderState renderState) {
     }
 }

@@ -38,12 +38,12 @@ public class PartyHatLayer<T extends AvatarRenderState, V extends HumanoidModel<
         addTexture(textures, "small_fuzz_3");
         addTexture(textures, "small_fuzz_4");
     });
-    private final PartyHatModel<T> model;
+    private final PartyHatModel model;
 
     @SuppressWarnings("unchecked")
     public PartyHatLayer(RenderLayerParent<?, ?> renderer, EntityRendererProvider.Context context) {
         super((RenderLayerParent<T, V>) renderer);
-        model = new PartyHatModel<>(context.bakeLayer(PartyHatModel.MODEL_LAYER));
+        model = new PartyHatModel(context.bakeLayer(PartyHatModel.MODEL_LAYER));
     }
 
     public static void addTexture(List<ResourceLocation> textures, String name) {
@@ -65,7 +65,7 @@ public class PartyHatLayer<T extends AvatarRenderState, V extends HumanoidModel<
             poseStack.rotateAround(Axis.ZP.rotationDegrees(id * 22.5F), 0, 0.25F, 0);
 
             var renderType = model.renderType(getHatTexture(id, uuid));
-            collector.submitModel(model, renderState, poseStack, renderType, packedLight, OverlayTexture.NO_OVERLAY, -1, null);
+            collector.submitModel(model, renderState, poseStack, renderType, packedLight, OverlayTexture.NO_OVERLAY, renderState.outlineColor, null);
 
             poseStack.popPose();
         }
