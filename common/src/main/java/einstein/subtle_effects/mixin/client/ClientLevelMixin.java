@@ -1,5 +1,8 @@
 package einstein.subtle_effects.mixin.client;
 
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import com.llamalad7.mixinextras.sugar.Local;
 import einstein.subtle_effects.init.ModBlockTickers;
 import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.ticking.FireflyManager;
@@ -9,11 +12,14 @@ import einstein.subtle_effects.ticking.tickers.ChestBlockEntityTicker;
 import einstein.subtle_effects.ticking.tickers.WaterfallTicker;
 import einstein.subtle_effects.ticking.tickers.entity.EntityTickerManager;
 import einstein.subtle_effects.util.BlockTickerProvider;
+import einstein.subtle_effects.util.Util;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.RegistryAccess;
+import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.server.level.ParticleStatus;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.Item;
@@ -24,6 +30,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.storage.WritableLevelData;
+import net.minecraft.world.phys.Vec3;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Mutable;
@@ -34,6 +41,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.HashSet;
 import java.util.Set;
+
+import static einstein.subtle_effects.init.ModConfigs.GENERAL;
 
 @Mixin(ClientLevel.class)
 public abstract class ClientLevelMixin extends Level {
@@ -97,5 +106,22 @@ public abstract class ClientLevelMixin extends Level {
 
             SparkProviderManager.tick(this, random, block, state, pos);
         }
+    }
+
+    @Inject(method = "doAddParticle", at = @At("HEAD"), cancellable = true)
+    void cullNotLoaded(ParticleOptions particle, boolean overrideLimiter, boolean alwaysShow, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, CallbackInfo ci) {
+        if (GENERAL.enableParticleCulling && GENERAL.cullParticlesInUnloadedChunks && !Util.isChunkLoaded(this, x, z)) {
+            ci.cancel();
+        }
+    }
+
+    @WrapOperation(method = "doAddParticle", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/phys/Vec3;distanceToSqr(DDD)D"))
+    double cullNotLoaded(Vec3 vec, double x, double y, double z, Operation<Double> original, @Local ParticleStatus particlestatus) {
+        if (particlestatus == ParticleStatus.MINIMAL) {
+            return 2048;
+        }
+        int maxDistance = GENERAL.particleRenderDistance.get() * 16;
+        var distance = original.call(vec, x, y, z);
+        return (distance > maxDistance * maxDistance) ? 2048 : 1;
     }
 }
