@@ -47,9 +47,9 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
-import static com.mojang.text2speech.Narrator.LOGGER;
 import static einstein.subtle_effects.init.ModConfigs.BLOCKS;
 import static einstein.subtle_effects.init.ModRenderStateKeys.IS_SLEEPING;
+import static net.minecraft.util.Mth.DEG_TO_RAD;
 
 public class Util {
 
@@ -246,5 +246,9 @@ public class Util {
             }
         }
         return nameTagAttachment;
+    }
+
+    public static float radians(float degrees) {
+        return degrees * DEG_TO_RAD;
     }
 }

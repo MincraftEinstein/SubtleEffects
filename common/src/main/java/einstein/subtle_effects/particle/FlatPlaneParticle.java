@@ -1,6 +1,5 @@
 package einstein.subtle_effects.particle;
 
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.SingleQuadParticle;
@@ -10,7 +9,8 @@ import net.minecraft.util.ARGB;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
 import org.joml.Quaternionf;
-import org.joml.Vector3f;
+
+import static einstein.subtle_effects.util.Util.radians;
 
 public abstract class FlatPlaneParticle extends SingleQuadParticle {
 
@@ -50,14 +50,9 @@ public abstract class FlatPlaneParticle extends SingleQuadParticle {
     }
 
     protected void renderQuad(QuadParticleRenderState state, Quaternionf rotation, float partialTicks, float x, float y, float z, boolean renderInverted) {
-        float quadSize = getQuadSize(partialTicks);
-        float u0 = getU0();
-        float u1 = getU1();
-        float v0 = getV0();
-        float v1 = getV1();
-        int packedLight = getLightColor(partialTicks);
-        int i = renderInverted ? 1 : -1;
-        int i2 = renderInverted ? -1 : 1;
+        if (renderInverted) {
+            rotation.rotateY(radians(-180));
+        }
         state.add(
                 getLayer(),
                 x, y, z,
@@ -67,14 +62,5 @@ public abstract class FlatPlaneParticle extends SingleQuadParticle {
                 ARGB.colorFromFloat(alpha, rCol, gCol, bCol),
                 getLightColor(partialTicks)
         );
-//        renderVertex(state, rotation, x, y, z, i, -1, quadSize, u1, v1, packedLight);
-//        renderVertex(state, rotation, x, y, z, i, 1, quadSize, u1, v0, packedLight);
-//        renderVertex(state, rotation, x, y, z, i2, 1, quadSize, u0, v0, packedLight);
-//        renderVertex(state, rotation, x, y, z, i2, -1, quadSize, u0, v1, packedLight);
-    }
-
-    protected void renderVertex(VertexConsumer buffer, Quaternionf rotation, float x, float y, float z, float xOffset, float yOffset, float quadSize, float u, float v, int packedLight) {
-        Vector3f vector3f = new Vector3f(xOffset, yOffset, 0).rotate(rotation).mul(quadSize).add(x, y, z);
-        buffer.addVertex(vector3f.x(), vector3f.y(), vector3f.z()).setUv(u, v).setColor(rCol, gCol, bCol, alpha).setLight(packedLight);
     }
 }
