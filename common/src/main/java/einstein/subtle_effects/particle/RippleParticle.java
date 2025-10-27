@@ -5,8 +5,9 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.client.particle.SpriteSet;
-import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
+
+import static einstein.subtle_effects.util.Util.radians;
 
 public class RippleParticle extends FlatPlaneParticle {
 
@@ -17,8 +18,7 @@ public class RippleParticle extends FlatPlaneParticle {
         super(level, x, y, z, sprites.first());
         this.sprites = sprites;
         this.translucent = translucent;
-        rotation.rotateX(90 * Mth.DEG_TO_RAD);
-        renderBackFace = false;
+        rotation.rotateX(radians(90));
         setSpriteFromAge(sprites);
         scale(scale);
         lifetime = 5;
