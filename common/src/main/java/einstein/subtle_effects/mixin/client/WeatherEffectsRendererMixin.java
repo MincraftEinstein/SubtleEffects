@@ -36,13 +36,14 @@ public abstract class WeatherEffectsRendererMixin {
     @Shadow
     protected abstract Biome.Precipitation getPrecipitationAt(Level p_362885_, BlockPos p_362817_);
 
-    @WrapOperation(method = "render", at = @At(value = "FIELD", target = "Lnet/minecraft/client/renderer/WeatherEffectRenderer;RAIN_LOCATION:Lnet/minecraft/resources/ResourceLocation;"))
+    // TODO
+   /* @WrapOperation(method = "render", at = @At(value = "FIELD", target = "Lnet/minecraft/client/renderer/WeatherEffectRenderer;RAIN_LOCATION:Lnet/minecraft/resources/ResourceLocation;"))
     private ResourceLocation replaceRainTexture(Operation<ResourceLocation> original) {
         if (ENVIRONMENT.biomeColorRain) {
             return Util.COLORLESS_RAIN_TEXTURE;
         }
         return original.call();
-    }
+    }*/
 
     @ModifyExpressionValue(method = "tickRainParticles", at = @At(value = "FIELD", target = "Lnet/minecraft/core/particles/ParticleTypes;SMOKE:Lnet/minecraft/core/particles/SimpleParticleType;"))
     private SimpleParticleType replaceRainEvaporationParticle(SimpleParticleType original) {
