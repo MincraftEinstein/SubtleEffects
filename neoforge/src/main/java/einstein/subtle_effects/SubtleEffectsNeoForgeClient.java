@@ -10,7 +10,6 @@ import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.entity.player.AvatarRenderer;
-import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.server.packs.PackType;
@@ -54,9 +53,9 @@ public class SubtleEffectsNeoForgeClient {
                     continue;
                 }
 
-                if (renderer instanceof PlayerRenderer playerRenderer) {
-                    SubtleEffectsClient.registerPlayerRenderLayers(playerRenderer, event.getContext())
-                            .forEach(playerRenderer::addLayer);
+                if (renderer instanceof AvatarRenderer<?> avatarRenderer) {
+                    SubtleEffectsClient.registerPlayerRenderLayers(avatarRenderer, event.getContext())
+                            .forEach(avatarRenderer::addLayer);
                 }
             }
         });

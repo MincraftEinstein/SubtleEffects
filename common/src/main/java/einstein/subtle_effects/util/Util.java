@@ -50,7 +50,7 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
 import static einstein.subtle_effects.init.ModConfigs.BLOCKS;
-import static einstein.subtle_effects.init.ModRenderStateKeys.IS_SLEEPING;
+import static einstein.subtle_effects.init.ModRenderStateAttachmentKeys.IS_SLEEPING;
 import static net.minecraft.util.Mth.DEG_TO_RAD;
 
 public class Util {
@@ -231,8 +231,10 @@ public class Util {
 
     @SuppressWarnings("SuspiciousNameCombination")
     public static Vec3 getNameTagOffset(EntityRenderState renderState, Vec3 nameTagAttachment) {
-        if (renderState instanceof LivingEntityRenderState livingRenderState && ((EntityRenderStateAccessor) renderState).subtleEffects$get(IS_SLEEPING)) {
+        // noinspection ConstantConditions
+        if (renderState instanceof LivingEntityRenderState livingRenderState && ((RenderStateAttachmentAccessor) renderState).subtleEffects$get(IS_SLEEPING)) {
             Direction facing = livingRenderState.bedOrientation;
+
             if (facing != null) {
                 var x = nameTagAttachment.x();
                 var y = nameTagAttachment.y() + 0.5;

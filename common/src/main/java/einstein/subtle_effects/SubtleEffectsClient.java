@@ -20,13 +20,14 @@ import einstein.subtle_effects.ticking.tickers.entity.EntityTickerManager;
 import einstein.subtle_effects.util.Util;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.ClientAvatarEntity;
 import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
-import net.minecraft.client.renderer.entity.player.PlayerRenderer;
-import net.minecraft.client.renderer.entity.state.PlayerRenderState;
+import net.minecraft.client.renderer.entity.player.AvatarRenderer;
+import net.minecraft.client.renderer.entity.state.AvatarRenderState;
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.SharedSuggestionProvider;
 import net.minecraft.network.chat.CommonComponents;
@@ -34,6 +35,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.util.profiling.Profiler;
 import net.minecraft.util.profiling.ProfilerFiller;
+import net.minecraft.world.entity.Avatar;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
@@ -122,8 +124,8 @@ public class SubtleEffectsClient {
         return layers;
     }
 
-    public static List<RenderLayer<PlayerRenderState, PlayerModel>> registerPlayerRenderLayers(PlayerRenderer renderer, EntityRendererProvider.Context context) {
-        List<RenderLayer<PlayerRenderState, PlayerModel>> renderLayers = new ArrayList<>();
+    public static <T extends Avatar & ClientAvatarEntity> List<RenderLayer<AvatarRenderState, PlayerModel>> registerPlayerRenderLayers(AvatarRenderer<T> renderer, EntityRendererProvider.Context context) {
+        List<RenderLayer<AvatarRenderState, PlayerModel>> renderLayers = new ArrayList<>();
         renderLayers.add(new EinsteinSolarSystemLayer<>(renderer, context));
 
         if (PartyHatLayer.isModBirthday(false)) {
