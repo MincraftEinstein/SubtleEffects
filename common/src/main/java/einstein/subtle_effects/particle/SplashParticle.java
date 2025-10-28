@@ -1,6 +1,7 @@
 package einstein.subtle_effects.particle;
 
 import einstein.subtle_effects.particle.option.SplashParticleOptions;
+import einstein.subtle_effects.util.Util;
 import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
@@ -83,7 +84,7 @@ public class SplashParticle extends FlatPlaneParticle {
     @Override
     public void tick() {
         pos.set(x, y, z);
-        if (!level.getFluidState(pos).is(fluidTag)) {
+        if (!level.getFluidState(pos).is(fluidTag) && !Util.getCauldronFluid(level.getBlockState(pos)).is(fluidTag)) {
             remove();
             return;
         }

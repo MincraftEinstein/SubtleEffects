@@ -1,10 +1,10 @@
 package einstein.subtle_effects.configs;
 
 import einstein.subtle_effects.SubtleEffects;
+import einstein.subtle_effects.SubtleEffectsClient;
 import einstein.subtle_effects.configs.entities.*;
 import einstein.subtle_effects.init.ModAnimalFedEffectSettings;
 import einstein.subtle_effects.init.ModConfigs;
-import einstein.subtle_effects.ticking.tickers.TickerManager;
 import me.fzzyhmstrs.fzzy_config.annotations.Translation;
 import me.fzzyhmstrs.fzzy_config.config.Config;
 import me.fzzyhmstrs.fzzy_config.config.ConfigGroup;
@@ -66,7 +66,7 @@ public class ModEntityConfigs extends Config {
 
     @Override
     public void onUpdateClient() {
-        TickerManager.clear(Minecraft.getInstance().level);
+        SubtleEffectsClient.clear(Minecraft.getInstance().level);
         ModAnimalFedEffectSettings.init();
     }
 

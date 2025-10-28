@@ -1,11 +1,9 @@
 package einstein.subtle_effects.particle;
 
-import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.client.particle.SpriteSet;
-import net.minecraft.client.renderer.state.QuadParticleRenderState;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.SimpleParticleType;
@@ -14,16 +12,13 @@ import net.minecraft.util.RandomSource;
 
 public class WaterfallDropletParticle extends BaseWaterfallParticle {
 
-    private final LifetimeAlpha lifetimeAlpha = new LifetimeAlpha(0.7F, 0, 0.5F, 0.8F);
-
     protected WaterfallDropletParticle(ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, TextureAtlasSprite sprite) {
-        super(level, x, y, z, 0, 0, 0, LifetimeAlpha.ALWAYS_OPAQUE, sprite);
+        super(level, x, y, z, 0, 0, 0, new LifetimeAlpha(0.7F, 0, 0.5F, 0.8F), sprite);
         xd = xSpeed;
         yd = ySpeed;
         zd = zSpeed;
         gravity = 0.3F;
         lifetime = 12;
-        alpha = lifetimeAlpha.startAlpha();
         quadSize = Mth.nextFloat(random, 0.0625F, 0.125F);
         setSize(quadSize, quadSize);
 
@@ -39,12 +34,6 @@ public class WaterfallDropletParticle extends BaseWaterfallParticle {
                 whiteIntensity + (colorIntensity * green),
                 whiteIntensity + (colorIntensity * blue)
         );
-    }
-
-    @Override
-    public void extract(QuadParticleRenderState state, Camera renderInfo, float partialTicks) {
-        alpha = lifetimeAlpha.currentAlphaForAge(age, lifetime, partialTicks);
-        super.extract(state, renderInfo, partialTicks);
     }
 
     @Override

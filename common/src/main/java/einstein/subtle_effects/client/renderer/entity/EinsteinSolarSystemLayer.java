@@ -5,7 +5,7 @@ import com.mojang.math.Axis;
 import einstein.subtle_effects.client.model.entity.EinsteinSolarSystemModel;
 import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.platform.Services;
-import einstein.subtle_effects.util.EntityRenderStateAccessor;
+import einstein.subtle_effects.util.RenderStateAttachmentAccessor;
 import einstein.subtle_effects.util.Util;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelLayers;
@@ -18,11 +18,12 @@ import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.CustomHeadLayer;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.entity.state.AvatarRenderState;
+import net.minecraft.client.renderer.entity.state.HumanoidRenderState;
 import net.minecraft.util.Mth;
 import org.joml.Vector3f;
 
-import static einstein.subtle_effects.init.ModRenderStateKeys.SOLAR_SYSTEM_SPIN;
-import static einstein.subtle_effects.init.ModRenderStateKeys.STRING_UUID;
+import static einstein.subtle_effects.init.ModRenderStateAttachmentKeys.SOLAR_SYSTEM_SPIN;
+import static einstein.subtle_effects.init.ModRenderStateAttachmentKeys.STRING_UUID;
 
 public class EinsteinSolarSystemLayer<T extends AvatarRenderState, V extends HumanoidModel<T>> extends RenderLayer<T, V> implements RenderLayerParent<T, EinsteinSolarSystemModel<T>> {
 
@@ -34,11 +35,10 @@ public class EinsteinSolarSystemLayer<T extends AvatarRenderState, V extends Hum
     private final EinsteinSolarSystemModel<T> model;
     private final CustomHeadLayer<T, EinsteinSolarSystemModel<T>> headLayer;
     private final EinsteinSolarSystemArmorLayer<T, EinsteinSolarSystemModel<T>, HumanoidModel<T>> armorLayer;
-    private final PartyHatLayer<T, V> partyHatLayer;
+    private final PartyHatLayer<T, EinsteinSolarSystemModel<T>> partyHatLayer;
 
-    @SuppressWarnings("unchecked")
-    public EinsteinSolarSystemLayer(RenderLayerParent<?, ?> renderer, EntityRendererProvider.Context context) {
-        super((RenderLayerParent<T, V>) renderer);
+    public EinsteinSolarSystemLayer(RenderLayerParent<T, V> renderer, EntityRendererProvider.Context context) {
+        super(renderer);
         // TODO fix the model copying head rotations
         model = new EinsteinSolarSystemModel<>(context.bakeLayer(EinsteinSolarSystemModel.MODEL_LAYER));
         headLayer = new CustomHeadLayer<>(this, context.getModelSet(), context.getPlayerSkinRenderCache());
@@ -47,7 +47,7 @@ public class EinsteinSolarSystemLayer<T extends AvatarRenderState, V extends Hum
                 context.getEquipmentRenderer()
         );
 
-        if (PartyHatLayer.isModAnniversary()) {
+        if (PartyHatLayer.isModBirthday(false)) {
             partyHatLayer = new PartyHatLayer<>(this, context);
             return;
         }
@@ -56,8 +56,8 @@ public class EinsteinSolarSystemLayer<T extends AvatarRenderState, V extends Hum
 
     @Override
     public void submit(PoseStack poseStack, SubmitNodeCollector nodeCollector, int packedLight, T renderState, float yRot, float xRot) {
-        EntityRenderStateAccessor accessor = (EntityRenderStateAccessor) renderState;
-        if (!renderState.isInvisible && shouldRender(accessor)) {
+        RenderStateAttachmentAccessor accessor = (RenderStateAttachmentAccessor) renderState;
+        if (shouldRender(renderState)) {
             int headCount = HEAD_ROTATIONS.length;
             model.hat.visible = renderState.showHat;
 
@@ -104,13 +104,19 @@ public class EinsteinSolarSystemLayer<T extends AvatarRenderState, V extends Hum
         return model;
     }
 
-    public static boolean shouldRender(EntityRenderStateAccessor accessor) {
+    public static boolean shouldRender(HumanoidRenderState renderState) {
+        String uuid = ((RenderStateAttachmentAccessor) renderState).subtleEffects$get(STRING_UUID);
+        if (uuid == null) {
+            return false;
+        }
+
         return ModConfigs.GENERAL.enableEasterEggs
-                && (Util.isMincraftEinstein(accessor.subtleEffects$get(STRING_UUID)) || Services.PLATFORM.isDevelopmentEnvironment());
+                && (Util.isMincraftEinstein(uuid) || Services.PLATFORM.isDevelopmentEnvironment())
+                && !renderState.isInvisible;
     }
 
-    public static float getSpin(EntityRenderStateAccessor accessor, float speed) {
-        var spin = accessor.subtleEffects$get(SOLAR_SYSTEM_SPIN);
-        return (spin != null) ? spin : 0 + (Mth.PI * speed);
+    public static float getSpin(RenderStateAttachmentAccessor accessor, float speed) {
+        // noinspection ConstantConditions
+        return accessor.subtleEffects$get(SOLAR_SYSTEM_SPIN) + (Mth.PI * speed);
     }
 }

@@ -27,6 +27,8 @@ public class HumanoidConfigs extends ConfigSection {
     public ConfigGroup potionRingsGroup = new ConfigGroup("potion_rings");
     public ModEntityConfigs.PerspectiveDisplayType potionRingsDisplayType = ModEntityConfigs.PerspectiveDisplayType.DEFAULT;
     public PotionRingsParticleType potionRingsParticleType = PotionRingsParticleType.BOTH;
+    public ValidatedFloat potionRingsScale = new ValidatedFloat(1, 1.5F, 1);
+    public ValidatedFloat potionRingsAlpha = new ValidatedFloat(1, 1, 0.2F);
     @ConfigGroup.Pop
     public boolean NPCsHavePotionRings = true;
 

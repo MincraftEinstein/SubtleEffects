@@ -10,6 +10,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseFireBlock;
+import net.minecraft.world.level.block.SupportType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
 
@@ -51,12 +52,12 @@ public abstract class GeyserTicker extends BlockPosTicker {
     }
 
     public static boolean checkLocation(GeyserType type, Level level, BlockPos pos, int checkHeight) {
-        if (type.getSpawnableBlocks().contains(level.getBlockState(pos).getBlock())) {
+        if (isSpawnableBlock(type, level, pos, SupportType.CENTER)) {
             BlockPos abovePos = pos.above();
-            if (isNotFaceSturdyOrFluidEmpty(type, level, abovePos)) {
+            if (canGeyserPassThrough(type, level, abovePos)) {
                 if (checkHeight > 0) {
                     for (int i = 1; i < checkHeight; i++) {
-                        if (!isNotFaceSturdyOrFluidEmpty(type, level, abovePos.relative(Direction.UP, i))) {
+                        if (!canGeyserPassThrough(type, level, abovePos.relative(Direction.UP, i))) {
                             return false;
                         }
                     }
@@ -67,10 +68,16 @@ public abstract class GeyserTicker extends BlockPosTicker {
         return false;
     }
 
-    public static boolean isNotFaceSturdyOrFluidEmpty(GeyserType type, Level level, BlockPos pos) {
+    public static boolean canGeyserPassThrough(GeyserType type, Level level, BlockPos pos) {
         BlockState state = level.getBlockState(pos);
         FluidState fluidState = level.getFluidState(pos);
         return !state.isFaceSturdy(level, pos, Direction.DOWN) && !(state.getBlock() instanceof BaseFireBlock) && (type.fluid != null ? fluidState.is(type.fluid) && fluidState.isSource() : fluidState.isEmpty());
+    }
+
+    public static boolean isSpawnableBlock(GeyserType type, Level level, BlockPos pos, SupportType supportType) {
+        BlockState state = level.getBlockState(pos);
+        FluidState fluidState = level.getFluidState(pos);
+        return type.spawnableBlocks.contains(state.getBlock()) && state.isFaceSturdy(level, pos, Direction.UP, supportType) || type.spawnableBlocks.contains(fluidState.createLegacyBlock().getBlock());
     }
 
     @Override
@@ -84,7 +91,7 @@ public abstract class GeyserTicker extends BlockPosTicker {
 
         if (Util.isChunkLoaded(level, pos.getX(), pos.getZ())) {
             if (checkLocation(type, level, pos, 0)) {
-                if (age == 1) {
+                if (age == 1 && isSpawnableBlock(type, level, pos, SupportType.RIGID)) {
                     level.addParticle(new GeyserSpoutParticleOptions(type, lifeTime),
                             pos.getX() + 0.5,
                             pos.getY() + 1.001,

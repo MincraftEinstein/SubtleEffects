@@ -13,10 +13,12 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.AbstractChestBlock;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.BubbleColumnBlock;
 import net.minecraft.world.level.block.ChestBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.minecraft.world.level.block.entity.ChestLidController;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.ChestType;
@@ -67,8 +69,13 @@ public class ChestBlockEntityTicker extends BlockPosTicker {
     @Override
     protected void positionedTick() {
         BlockState state = level.getBlockState(pos);
-        if (!state.is(Blocks.CHEST) && !state.is(Blocks.TRAPPED_CHEST) && !state.is(Blocks.ENDER_CHEST)) {
+        if (!(state.getBlock() instanceof AbstractChestBlock)) {
             remove();
+            return;
+        }
+
+        BlockEntity blockEntity = level.getBlockEntity(pos);
+        if (!(blockEntity instanceof ChestBlockEntity)) {
             return;
         }
 
@@ -88,7 +95,7 @@ public class ChestBlockEntityTicker extends BlockPosTicker {
         }
 
         if (BLOCKS.randomChestOpeningNeedsSoulSand) {
-            if (!isUpwardsBubbleColumn(pos) || (isDoubleChest && !isUpwardsBubbleColumn(oppositePos))) {
+            if (isNotUpwardsBubbleColumn(pos) || (isDoubleChest && isNotUpwardsBubbleColumn(oppositePos))) {
                 return;
             }
         }
@@ -149,7 +156,8 @@ public class ChestBlockEntityTicker extends BlockPosTicker {
 
         boolean isEnderChest = state.is(Blocks.ENDER_CHEST);
         if (BLOCKS.chestsOpenRandomlyUnderwater && random.nextInt(100) == 0 && openness == 0) {
-            lidController.shouldBeOpen(true);
+            // Triggering the block entity event rather than calling the lid controller, otherwise Lithium will block the animation
+            blockEntity.triggerEvent(1, 1);
             playSound(connectedDirection, type, isEnderChest ? SoundEvents.ENDER_CHEST_OPEN : SoundEvents.CHEST_OPEN);
             animationTicks = Mth.nextInt(random, 50, 200);
             return;
@@ -159,16 +167,16 @@ public class ChestBlockEntityTicker extends BlockPosTicker {
             animationTicks--;
 
             if (animationTicks <= 0) {
-                lidController.shouldBeOpen(false);
+                blockEntity.triggerEvent(1, 0);
                 playSound(connectedDirection, type, isEnderChest ? SoundEvents.ENDER_CHEST_CLOSE : SoundEvents.CHEST_CLOSE);
                 ticksSinceLastAnimation = 0;
             }
         }
     }
 
-    private boolean isUpwardsBubbleColumn(BlockPos pos) {
+    private boolean isNotUpwardsBubbleColumn(BlockPos pos) {
         BlockState belowState = level.getBlockState(pos.below());
-        return belowState.is(Blocks.SOUL_SAND) || (belowState.is(Blocks.BUBBLE_COLUMN) && !belowState.getValue(BubbleColumnBlock.DRAG_DOWN));
+        return !belowState.is(Blocks.SOUL_SAND) && (!belowState.is(Blocks.BUBBLE_COLUMN) || belowState.getValue(BubbleColumnBlock.DRAG_DOWN));
     }
 
     private boolean isDownwardsBubbleColumn(BlockPos pos) {

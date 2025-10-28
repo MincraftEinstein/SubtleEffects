@@ -1,11 +1,14 @@
 package einstein.subtle_effects.particle;
 
+import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.particle.option.ColorAndIntegerParticleOptions;
 import einstein.subtle_effects.util.Util;
+import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.client.particle.SpriteSet;
+import net.minecraft.client.renderer.state.QuadParticleRenderState;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
@@ -18,6 +21,8 @@ public class PotionRingParticle extends FlatPlaneParticle {
     private final Entity entity;
     private final boolean hasEntity;
     private double yDistance;
+    private final LifetimeAlpha fadeInLifetimeAlpha = new LifetimeAlpha(0, ModConfigs.ENTITIES.humanoids.potionRingsAlpha.get(), 0, 0.5F);
+    private final LifetimeAlpha fadeOutLifetimeAlpha = new LifetimeAlpha(ModConfigs.ENTITIES.humanoids.potionRingsAlpha.get(), 0, 0.5F, 1);
 
     protected PotionRingParticle(ClientLevel level, double x, double y, double z, @Nullable Entity entity, TextureAtlasSprite sprite) {
         super(level, x, y, z, sprite);
@@ -28,7 +33,13 @@ public class PotionRingParticle extends FlatPlaneParticle {
         alpha = 0;
         quadSize = 0.2F;
         rotation.rotateX(-90 * Mth.DEG_TO_RAD);
-        scale(3);
+        scale(3 * ModConfigs.ENTITIES.humanoids.potionRingsScale.get());
+    }
+
+    @Override
+    public void extract(QuadParticleRenderState state, Camera camera, float partialTicks) {
+        alpha = Math.min(fadeInLifetimeAlpha.currentAlphaForAge(age, lifetime, partialTicks), fadeOutLifetimeAlpha.currentAlphaForAge(age, lifetime, partialTicks));
+        super.extract(state, camera, partialTicks);
     }
 
     @Override
@@ -39,10 +50,7 @@ public class PotionRingParticle extends FlatPlaneParticle {
         }
 
         float halfLife = lifetime / 2F;
-        int ageMultiplier = age > halfLife ? -1 : 1;
-
-        yd += (0.25 / halfLife) * ageMultiplier;
-        alpha += 0.2F * ageMultiplier;
+        yd += (0.25 / halfLife) * (age > halfLife ? -1 : 1);
 
         xo = x;
         yo = y;

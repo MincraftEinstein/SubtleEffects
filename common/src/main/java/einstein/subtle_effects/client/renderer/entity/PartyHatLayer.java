@@ -4,7 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import einstein.subtle_effects.client.model.entity.PartyHatModel;
 import einstein.subtle_effects.platform.Services;
-import einstein.subtle_effects.util.EntityRenderStateAccessor;
+import einstein.subtle_effects.util.RenderStateAttachmentAccessor;
 import einstein.subtle_effects.util.Util;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.renderer.SubmitNodeCollector;
@@ -16,13 +16,14 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 
+import java.time.LocalDate;
+import java.time.Month;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 import static einstein.subtle_effects.SubtleEffects.loc;
 import static einstein.subtle_effects.init.ModConfigs.GENERAL;
-import static einstein.subtle_effects.init.ModRenderStateKeys.STRING_UUID;
+import static einstein.subtle_effects.init.ModRenderStateAttachmentKeys.STRING_UUID;
 
 public class PartyHatLayer<T extends AvatarRenderState, V extends HumanoidModel<T>> extends RenderLayer<T, V> {
 
@@ -40,9 +41,8 @@ public class PartyHatLayer<T extends AvatarRenderState, V extends HumanoidModel<
     });
     private final PartyHatModel model;
 
-    @SuppressWarnings("unchecked")
-    public PartyHatLayer(RenderLayerParent<?, ?> renderer, EntityRendererProvider.Context context) {
-        super((RenderLayerParent<T, V>) renderer);
+    public PartyHatLayer(RenderLayerParent<T, V> renderer, EntityRendererProvider.Context context) {
+        super(renderer);
         model = new PartyHatModel(context.bakeLayer(PartyHatModel.MODEL_LAYER));
     }
 
@@ -51,9 +51,10 @@ public class PartyHatLayer<T extends AvatarRenderState, V extends HumanoidModel<
     }
 
     @Override
-    public void submit(PoseStack poseStack, SubmitNodeCollector collector, int packedLight, T renderState, float yRot, float xRot) {
-        EntityRenderStateAccessor accessor = (EntityRenderStateAccessor) renderState;
-        if (!renderState.isInvisible && shouldRender(accessor)) {
+    public void submit(PoseStack poseStack, SubmitNodeCollector collector, int packedLight, T renderState,
+                       float yRot, float xRot) {
+        RenderStateAttachmentAccessor accessor = (RenderStateAttachmentAccessor) renderState;
+        if (shouldRender(renderState)) {
             poseStack.pushPose();
 
             getParentModel().getHead().translateAndRotate(poseStack);
@@ -80,18 +81,18 @@ public class PartyHatLayer<T extends AvatarRenderState, V extends HumanoidModel<
         return TEXTURES.get(index >= TEXTURES.size() ? TEXTURES.size() - 1 : index);
     }
 
-    public static boolean shouldRender(EntityRenderStateAccessor accessor) {
-        return GENERAL.enableEasterEggs;
+    public static boolean shouldRender(AvatarRenderState renderState) {
+        return GENERAL.enableEasterEggs && !renderState.isInvisible;
     }
 
-    public static boolean isModAnniversary() {
-        if (Services.PLATFORM.isDevelopmentEnvironment()) {
+    public static boolean isModBirthday(boolean ignoreInDev) {
+        if (!ignoreInDev && Services.PLATFORM.isDevelopmentEnvironment()) {
             return true;
         }
 
-        Calendar calendar = Calendar.getInstance();
-        int month = calendar.get(Calendar.MONTH);
-        int date = calendar.get(Calendar.DATE);
-        return month == Calendar.OCTOBER && date >= 3 && date <= 5;
+        LocalDate date = LocalDate.now();
+        Month month = date.getMonth();
+        int dayOfMonth = date.getDayOfMonth();
+        return month == Month.OCTOBER && dayOfMonth >= 3 && dayOfMonth <= 5;
     }
 }

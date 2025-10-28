@@ -1,5 +1,6 @@
 package einstein.subtle_effects.particle;
 
+import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.particle.option.ColorAndIntegerParticleOptions;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
@@ -26,6 +27,7 @@ public class PotionDotParticle extends SingleQuadParticle {
         lifetime = Mth.nextInt(random, 8, 12);
         scale(1.3F);
         hasEntity = entity != null;
+        alpha = ModConfigs.ENTITIES.humanoids.potionRingsAlpha.get();
 
         if (hasEntity) {
             xDistance = x - entity.getX();

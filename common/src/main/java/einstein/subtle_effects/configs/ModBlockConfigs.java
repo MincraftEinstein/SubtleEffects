@@ -1,6 +1,7 @@
 package einstein.subtle_effects.configs;
 
 import einstein.subtle_effects.SubtleEffects;
+import einstein.subtle_effects.SubtleEffectsClient;
 import einstein.subtle_effects.compat.CompatHelper;
 import einstein.subtle_effects.compat.EndRemasteredCompat;
 import einstein.subtle_effects.configs.blocks.FallingBlocksConfigs;
@@ -12,7 +13,6 @@ import einstein.subtle_effects.init.ModBlockTickers;
 import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.init.ModParticles;
 import einstein.subtle_effects.particle.EnderEyePlacedRingParticle;
-import einstein.subtle_effects.ticking.tickers.TickerManager;
 import einstein.subtle_effects.util.Util;
 import me.fzzyhmstrs.fzzy_config.annotations.Translation;
 import me.fzzyhmstrs.fzzy_config.config.Config;
@@ -67,10 +67,10 @@ public class ModBlockConfigs extends Config {
     public ConfigGroup dustyBlocksGroup = new ConfigGroup("dusty_blocks");
     public boolean redstoneBlockDust = true;
     public BlockDustDensity redstoneBlockDustDensity = BlockDustDensity.DEFAULT;
-    public ValidatedList<Block> redstoneDustEmittingBlocks = new ValidatedList<>(List.of(Blocks.REDSTONE_BLOCK), ValidatedRegistryType.of(BuiltInRegistries.BLOCK));
+    public ValidatedList<Block> redstoneDustEmittingBlocks = ValidatedRegistryType.of(BuiltInRegistries.BLOCK).toList(List.of(Blocks.REDSTONE_BLOCK));
     public boolean glowstoneBlockDust = true;
     public BlockDustDensity glowstoneBlockDustDensity = BlockDustDensity.DEFAULT;
-    public ValidatedList<Block> glowstoneDustEmittingBlocks = new ValidatedList<>(List.of(Blocks.GLOWSTONE), ValidatedRegistryType.of(BuiltInRegistries.BLOCK));
+    public ValidatedList<Block> glowstoneDustEmittingBlocks = ValidatedRegistryType.of(BuiltInRegistries.BLOCK).toList(List.of(Blocks.GLOWSTONE));
     @ConfigGroup.Pop
     public boolean netherOnlyGlowstoneBlockDust = false;
     public boolean beehivesHaveSleepingZs = true;
@@ -108,7 +108,7 @@ public class ModBlockConfigs extends Config {
 
     public ConfigGroup amethystGroup = new ConfigGroup("amethyst");
     public AmethystSparkleDisplayType amethystSparkleDisplayType = AmethystSparkleDisplayType.ON;
-    public ValidatedList<Block> amethystSparkleEmittingBlocks = new ValidatedList<>(List.of(Blocks.AMETHYST_BLOCK, Blocks.BUDDING_AMETHYST), ValidatedRegistryType.of(BuiltInRegistries.BLOCK));
+    public ValidatedList<Block> amethystSparkleEmittingBlocks = ValidatedRegistryType.of(BuiltInRegistries.BLOCK).toList(List.of(Blocks.AMETHYST_BLOCK, Blocks.BUDDING_AMETHYST));
     @ConfigGroup.Pop
     public boolean amethystSparkleSounds = true;
 
@@ -153,6 +153,7 @@ public class ModBlockConfigs extends Config {
     public boolean randomChestOpeningNeedsSoulSand = false;
     @ConfigGroup.Pop
     public boolean dispenseItemBubbles = true;
+    public boolean rainIncreasesLeavesSpawningParticles = true;
 
     private static ValidatedIdentifier getEyeHandler() {
         List<ResourceLocation> eyes = CompatHelper.IS_END_REMASTERED_LOADED.get()
@@ -173,7 +174,7 @@ public class ModBlockConfigs extends Config {
 
     @Override
     public void onUpdateClient() {
-        TickerManager.clear(Minecraft.getInstance().level);
+        SubtleEffectsClient.clear(Minecraft.getInstance().level);
         ModBlockTickers.init();
     }
 

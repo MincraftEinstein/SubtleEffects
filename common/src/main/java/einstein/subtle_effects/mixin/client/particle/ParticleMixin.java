@@ -16,6 +16,9 @@ public abstract class ParticleMixin implements ParticleAccessor {
     @Unique
     private boolean subtleEffects$forced = false;
 
+    @Unique
+    private boolean subtleEffects$ignoreCulling = false;
+
     @Override
     @Accessor("x")
     public abstract double getX();
@@ -61,5 +64,15 @@ public abstract class ParticleMixin implements ParticleAccessor {
     @Override
     public float getGravity() {
         return gravity;
+    }
+
+    @Override
+    public boolean subtleEffects$shouldIgnoreCulling() {
+        return subtleEffects$ignoreCulling;
+    }
+
+    @Override
+    public void subtleEffects$ignoresCulling() {
+        subtleEffects$ignoreCulling = true;
     }
 }
