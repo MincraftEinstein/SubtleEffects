@@ -12,7 +12,7 @@ import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedInt;
 @Translation(prefix = ModConfigs.BASE_KEY + "items.projectiles")
 public class ProjectileConfigs extends ConfigSection {
 
-    public boolean enderPearlTrail = true;
+    public ValidatedFloat enderPearlTrailDensity = new ValidatedFloat(0.5F, 1, 0);
     public ReplacedParticlesDisplayType xpBottleParticlesDisplayType = ReplacedParticlesDisplayType.DEFAULT;
     public ValidatedInt xpBottleParticlesDensity = new ValidatedInt(10, 200, 5);
     public ValidatedFloat eggSmashSoundVolume = new ValidatedFloat(0.5F, 1, 0);
