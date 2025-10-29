@@ -13,6 +13,8 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.material.Fluid;
 
+import static einstein.subtle_effects.init.ModConfigs.ENTITIES;
+
 public class SplashRippleParticle extends FlatPlaneParticle {
 
     private final BlockPos.MutableBlockPos pos;
@@ -79,7 +81,19 @@ public class SplashRippleParticle extends FlatPlaneParticle {
 
         @Override
         public Particle createParticle(FloatParticleOptions options, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
-            return new SplashRippleParticle(level, x, y, z, sprites, options.f(), FluidTags.WATER, false);
+            SplashRippleParticle particle = new SplashRippleParticle(level, x, y, z, sprites, options.f(), FluidTags.WATER, false);
+            int waterColor = level.getBiome(BlockPos.containing(x, y, z)).value().getWaterColor();
+            float colorIntensity = ENTITIES.splashes.splashOverlayTint.get();
+
+            if (colorIntensity > 0) {
+                float whiteIntensity = 1 - colorIntensity;
+                particle.setColor(whiteIntensity + (colorIntensity * ((waterColor >> 16 & 255) / 255F)),
+                        whiteIntensity + (colorIntensity * ((waterColor >> 8 & 255) / 255F)),
+                        whiteIntensity + (colorIntensity * ((waterColor & 255) / 255F)));
+            }
+
+            particle.setAlpha(ENTITIES.splashes.splashOverlayAlpha.get());
+            return particle;
         }
     }
 
@@ -87,7 +101,12 @@ public class SplashRippleParticle extends FlatPlaneParticle {
 
         @Override
         public Particle createParticle(FloatParticleOptions options, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
-            return new SplashRippleParticle(level, x, y, z, sprites, options.f(), FluidTags.LAVA, true);
+            SplashRippleParticle particle = new SplashRippleParticle(level, x, y, z, sprites, options.f(), FluidTags.LAVA, true);
+            if (ENTITIES.splashes.splashOverlayAlpha.get() == 0) {
+                particle.setAlpha(0);
+            }
+
+            return particle;
         }
     }
 }
