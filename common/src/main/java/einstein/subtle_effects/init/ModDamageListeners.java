@@ -18,7 +18,7 @@ public class ModDamageListeners {
 
     public static void init() {
         register(EntityType.CHICKEN, (entity, level, random) -> {
-            if (ENTITIES.chickenFeathers) {
+            if (ENTITIES.attackedChickenFeathers) {
                 for (int i = 0; i < 10; i++) {
                     level.addParticle(ModParticles.CHICKEN_FEATHER.get(),
                             entity.getX(),
@@ -32,7 +32,7 @@ public class ModDamageListeners {
             }
         });
         register(EntityType.PARROT, (entity, level, random) -> {
-            if (ENTITIES.parrotFeathers) {
+            if (ENTITIES.attackedParrotFeathers) {
                 ParticleOptions particle = switch (entity.getVariant()) {
                     case BLUE -> ModParticles.BLUE_PARROT_FEATHER.get();
                     case GRAY -> ModParticles.GRAY_PARROT_FEATHER.get();
@@ -54,7 +54,7 @@ public class ModDamageListeners {
             }
         });
         register(EntityType.SNOW_GOLEM, (entity, level, random) -> {
-            if (ENTITIES.snowGolemSnowflakes) {
+            if (ENTITIES.attackedSnowGolemSnowflakes) {
                 for (int i = 0; i < 20; i++) {
                     level.addParticle(ModParticles.SNOW.get(),
                             entity.getX(),
@@ -68,7 +68,7 @@ public class ModDamageListeners {
             }
         });
         register(EntityType.SHEEP, (entity, level, random) -> {
-            if (ENTITIES.sheepFluff) {
+            if (ENTITIES.attackedSheepFluff) {
                 ParticleSpawnUtil.spawnSheepFluff(entity, random.nextInt(3));
             }
         });

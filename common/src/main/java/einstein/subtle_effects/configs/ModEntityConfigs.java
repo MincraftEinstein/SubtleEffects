@@ -25,11 +25,11 @@ public class ModEntityConfigs extends Config {
     public SplashConfigs splashes = new SplashConfigs();
 
     public ConfigGroup attackedGroup = new ConfigGroup("attacked");
-    public boolean chickenFeathers = true;
-    public boolean parrotFeathers = true;
+    public boolean attackedChickenFeathers = true;
+    public boolean attackedParrotFeathers = true;
+    public boolean attackedSnowGolemSnowflakes = true;
     @ConfigGroup.Pop
-    public boolean snowGolemSnowflakes = true;
-    public boolean sheepFluff = true;
+    public boolean attackedSheepFluff = true;
 
     public ValidatedDouble allayMagicDensity = new ValidatedDouble(0.2, 1, 0);
     public ValidatedDouble vexMagicDensity = new ValidatedDouble(0.2, 1, 0);
