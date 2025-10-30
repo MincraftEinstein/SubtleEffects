@@ -588,11 +588,11 @@ public class ParticleSpawnUtil {
         }
     }
 
-    public static void sheep(Sheep sheep) {
+    public static void spawnSheepFluff(Sheep sheep, int count) {
         RandomSource random = sheep.getRandom();
         SheepFluffParticleOptions particle = new SheepFluffParticleOptions(sheep.getColor(), sheep.getId(), sheep.hasCustomName() && sheep.getName().getString().equals("jeb_"));
 
-        for (int i = 0; i < 7; i++) {
+        for (int i = 0; i < count; i++) {
             sheep.level().addParticle(particle,
                     sheep.getRandomX(0.5),
                     sheep.getY(0.5),

@@ -1,6 +1,7 @@
 package einstein.subtle_effects.init;
 
 import einstein.subtle_effects.util.EntityProvider;
+import einstein.subtle_effects.util.ParticleSpawnUtil;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -64,6 +65,11 @@ public class ModDamageListeners {
                             nextNonAbsDouble(random)
                     );
                 }
+            }
+        });
+        register(EntityType.SHEEP, (entity, level, random) -> {
+            if (ENTITIES.sheepFluff) {
+                ParticleSpawnUtil.spawnSheepFluff(entity, random.nextInt(3));
             }
         });
     }

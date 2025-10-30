@@ -381,6 +381,7 @@
   "config.subtle_effects.entities.chickenFeathers": "Chicken Feathers",
   "config.subtle_effects.entities.parrotFeathers": "Parrot Feathers",
   "config.subtle_effects.entities.snowGolemSnowflakes": "Snow Golem Snowflakes",
+  "config.subtle_effects.entities.sheepFluff": "Sheep Fluff",
   "config.subtle_effects.entities.allayMagicDensity": "Allay Magic Density",
   "config.subtle_effects.entities.allayMagicDensity.desc": "The density of particles spawning around an allay\n0 to disable",
   "config.subtle_effects.entities.vexMagicDensity": "Vex Magic Density",

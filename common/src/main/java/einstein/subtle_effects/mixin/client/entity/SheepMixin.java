@@ -38,7 +38,7 @@ public abstract class SheepMixin extends Animal {
     private void mobInteract(Player player, InteractionHand hand, CallbackInfoReturnable<InteractionResult> cir) {
         if (level().isClientSide() && ModConfigs.ENTITIES.sheepShearFluff) {
             if (player.getItemInHand(hand).is(Items.SHEARS) && readyForShearing()) {
-                ParticleSpawnUtil.sheep(subtleEffects$sheep);
+                ParticleSpawnUtil.spawnSheepFluff(subtleEffects$sheep, 7);
             }
         }
     }

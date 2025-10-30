@@ -29,6 +29,7 @@ public class ModEntityConfigs extends Config {
     public boolean parrotFeathers = true;
     @ConfigGroup.Pop
     public boolean snowGolemSnowflakes = true;
+    public boolean sheepFluff = true;
 
     public ValidatedDouble allayMagicDensity = new ValidatedDouble(0.2, 1, 0);
     public ValidatedDouble vexMagicDensity = new ValidatedDouble(0.2, 1, 0);
