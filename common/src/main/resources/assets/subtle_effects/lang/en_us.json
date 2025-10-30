@@ -382,6 +382,7 @@
   "config.subtle_effects.entities.attackedParrotFeathers": "Attacked Parrot Feathers",
   "config.subtle_effects.entities.attackedSnowGolemSnowflakes": "Attacked Snow Golem Snowflakes",
   "config.subtle_effects.entities.attackedSheepFluff": "Attacked Sheep Fluff",
+  "config.subtle_effects.entities.attackedSlimeSlime": "Attacked Slime Slime",
   "config.subtle_effects.entities.allayMagicDensity": "Allay Magic Density",
   "config.subtle_effects.entities.allayMagicDensity.desc": "The density of particles spawning around an allay\n0 to disable",
   "config.subtle_effects.entities.vexMagicDensity": "Vex Magic Density",

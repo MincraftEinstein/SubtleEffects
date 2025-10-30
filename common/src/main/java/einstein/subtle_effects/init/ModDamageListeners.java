@@ -2,15 +2,20 @@ package einstein.subtle_effects.init;
 
 import einstein.subtle_effects.util.EntityProvider;
 import einstein.subtle_effects.util.ParticleSpawnUtil;
+import net.minecraft.core.particles.BlockParticleOption;
+import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.block.Blocks;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import static einstein.subtle_effects.init.ModConfigs.ENTITIES;
-import static einstein.subtle_effects.util.MathUtil.nextNonAbsDouble;
+import static einstein.subtle_effects.util.MathUtil.*;
 
 public class ModDamageListeners {
 
@@ -70,6 +75,29 @@ public class ModDamageListeners {
         register(EntityType.SHEEP, (entity, level, random) -> {
             if (ENTITIES.attackedSheepFluff) {
                 ParticleSpawnUtil.spawnSheepFluff(entity, random.nextInt(3));
+            }
+        });
+        register(EntityType.SLIME, (entity, level, random) -> {
+            if (ENTITIES.attackedSlimeSlime) {
+                boolean replaceSlimeSquishParticles = ENTITIES.replaceSlimeSquishParticles;
+                ParticleOptions options = replaceSlimeSquishParticles
+                        ? new BlockParticleOption(ParticleTypes.BLOCK, Blocks.SLIME_BLOCK.defaultBlockState())
+                        : new ItemParticleOption(ParticleTypes.ITEM, Items.SLIME_BALL.getDefaultInstance());
+                double maxSpeed = replaceSlimeSquishParticles ? 0.5 : 0.15;
+
+                for (int i = 0; i < 10 * entity.getSize(); i++) {
+                    int xSign = nextSign(random);
+                    int zSign = nextSign(random);
+
+                    level.addParticle(options,
+                            entity.getX(nextDouble(random, 0.5) * xSign),
+                            entity.getRandomY(),
+                            entity.getZ(nextDouble(random, 0.5) * zSign),
+                            nextDouble(random, maxSpeed) * xSign,
+                            0,
+                            nextDouble(random, maxSpeed) * zSign
+                    );
+                }
             }
         });
     }
