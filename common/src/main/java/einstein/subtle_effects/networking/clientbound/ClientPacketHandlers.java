@@ -376,7 +376,7 @@ public class ClientPacketHandlers {
     public static void handle(ClientLevel level, ClientBoundSheepShearPayload payload) {
         Entity entity = level.getEntity(payload.entityId());
         if (entity instanceof Sheep sheep && ENTITIES.sheepShearFluff) {
-            ParticleSpawnUtil.sheep(sheep);
+            ParticleSpawnUtil.spawnSheepFluff(sheep, 7);
         }
     }
 

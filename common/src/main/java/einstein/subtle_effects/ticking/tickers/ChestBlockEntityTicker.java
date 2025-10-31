@@ -95,12 +95,12 @@ public class ChestBlockEntityTicker extends BlockPosTicker {
         }
 
         if (BLOCKS.randomChestOpeningNeedsSoulSand) {
-            if (isNotUpwardsBubbleColumn(pos) || (isDoubleChest && isNotUpwardsBubbleColumn(oppositePos))) {
+            if (isNotUpwardsBubbleColumn(level, pos) || (isDoubleChest && isNotUpwardsBubbleColumn(level, oppositePos))) {
                 return;
             }
         }
 
-        if (!(isUnderwater(pos) && (!isDoubleChest || isUnderwater(oppositePos)))) {
+        if (!(isUnderwater(level, pos) && (!isDoubleChest || isUnderwater(level, oppositePos)))) {
             return;
         }
 
@@ -145,7 +145,7 @@ public class ChestBlockEntityTicker extends BlockPosTicker {
         }
         oldOpenness = openness;
 
-        if (isDownwardsBubbleColumn(pos) || (isDoubleChest && isDownwardsBubbleColumn(oppositePos))) {
+        if (isDownwardsBubbleColumn(level, pos) || (isDoubleChest && isDownwardsBubbleColumn(level, oppositePos))) {
             return;
         }
 
@@ -174,12 +174,12 @@ public class ChestBlockEntityTicker extends BlockPosTicker {
         }
     }
 
-    private boolean isNotUpwardsBubbleColumn(BlockPos pos) {
+    public static boolean isNotUpwardsBubbleColumn(Level level, BlockPos pos) {
         BlockState belowState = level.getBlockState(pos.below());
         return !belowState.is(Blocks.SOUL_SAND) && (!belowState.is(Blocks.BUBBLE_COLUMN) || belowState.getValue(BubbleColumnBlock.DRAG_DOWN));
     }
 
-    private boolean isDownwardsBubbleColumn(BlockPos pos) {
+    public static boolean isDownwardsBubbleColumn(Level level, BlockPos pos) {
         BlockState belowState = level.getBlockState(pos.below());
         return belowState.is(Blocks.MAGMA_BLOCK) || (belowState.is(Blocks.BUBBLE_COLUMN) && belowState.getValue(BubbleColumnBlock.DRAG_DOWN));
     }
@@ -190,7 +190,7 @@ public class ChestBlockEntityTicker extends BlockPosTicker {
         CHEST_TICKERS.remove(pos);
     }
 
-    private boolean isUnderwater(BlockPos pos) {
+    public static boolean isUnderwater(Level level, BlockPos pos) {
         return level.isWaterAt(pos) && level.getBlockState(pos.above()).is(Blocks.WATER);
     }
 

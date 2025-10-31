@@ -8,6 +8,7 @@ import einstein.subtle_effects.configs.ModBlockConfigs;
 import einstein.subtle_effects.mixin.client.block.AmethystClusterBlockAccessor;
 import einstein.subtle_effects.particle.SparkParticle;
 import einstein.subtle_effects.particle.option.PositionParticleOptions;
+import einstein.subtle_effects.ticking.tickers.ChestBlockEntityTicker;
 import einstein.subtle_effects.util.BlockTickerProvider;
 import einstein.subtle_effects.util.ParticleSpawnUtil;
 import einstein.subtle_effects.util.SparkType;
@@ -332,14 +333,20 @@ public class ModBlockTickers {
             }
         });
         register(Blocks.DECORATED_POT, () -> BLOCKS.decoratedPotsSpawnBubbles, (state, level, pos, random) -> {
-            for (int i = 0; i < random.nextInt(2); i++) {
-                level.addParticle(
-                        ParticleTypes.BUBBLE_COLUMN_UP,
-                        pos.getX() + 0.5 + nextNonAbsDouble(random, 0.125),
-                        pos.getY() + 1 + nextNonAbsDouble(random, 0.25),
-                        pos.getZ() + 0.5 + nextNonAbsDouble(random, 0.125),
-                        0, 0, 0
-                );
+            if (ChestBlockEntityTicker.isUnderwater(level, pos)) {
+                if (ChestBlockEntityTicker.isDownwardsBubbleColumn(level, pos)) {
+                    return;
+                }
+
+                for (int i = 0; i < random.nextInt(2); i++) {
+                    level.addParticle(
+                            ParticleTypes.BUBBLE_COLUMN_UP,
+                            pos.getX() + 0.5 + nextNonAbsDouble(random, 0.125),
+                            pos.getY() + 1 + nextNonAbsDouble(random, 0.25),
+                            pos.getZ() + 0.5 + nextNonAbsDouble(random, 0.125),
+                            0, 0, 0
+                    );
+                }
             }
         });
     }

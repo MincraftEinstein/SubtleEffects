@@ -7,6 +7,7 @@ import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import einstein.subtle_effects.client.model.entity.EinsteinSolarSystemModel;
 import einstein.subtle_effects.client.model.entity.PartyHatModel;
+import einstein.subtle_effects.client.model.particle.SplashParticleModel;
 import einstein.subtle_effects.client.renderer.entity.EinsteinSolarSystemLayer;
 import einstein.subtle_effects.client.renderer.entity.PartyHatLayer;
 import einstein.subtle_effects.compat.CompatHelper;
@@ -58,6 +59,7 @@ public class SubtleEffectsClient {
 
     public static void clientSetup() {
         ModConfigs.init();
+        ModRenderTypes.init();
         ModParticleLayers.init();
         ModPayloads.initClientHandlers();
         ModEntityTickers.init();
@@ -121,6 +123,7 @@ public class SubtleEffectsClient {
         Map<ModelLayerLocation, Supplier<LayerDefinition>> layers = new HashMap<>();
         layers.put(EinsteinSolarSystemModel.MODEL_LAYER, EinsteinSolarSystemModel::createLayer);
         layers.put(PartyHatModel.MODEL_LAYER, PartyHatModel::createLayer);
+        layers.put(SplashParticleModel.MODEL_LAYER, SplashParticleModel::createLayer);
         return layers;
     }
 
