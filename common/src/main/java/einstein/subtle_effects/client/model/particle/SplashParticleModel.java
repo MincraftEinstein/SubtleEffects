@@ -3,12 +3,12 @@ package einstein.subtle_effects.client.model.particle;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import einstein.subtle_effects.SubtleEffects;
+import einstein.subtle_effects.init.ModRenderTypes;
 import net.minecraft.client.model.Model;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
-import net.minecraft.client.renderer.RenderType;
 
 public class SplashParticleModel extends Model {
 
@@ -16,7 +16,7 @@ public class SplashParticleModel extends Model {
     private final ModelPart splash;
 
     public SplashParticleModel(ModelPart rootPart) {
-        super(RenderType::entityTranslucent);
+        super(texture -> ModRenderTypes.ENTITY_PARTICLE_TRANSLUCENT_RENDER_TYPE.apply(texture, false));
         splash = rootPart;
     }
 
