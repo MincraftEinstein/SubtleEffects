@@ -9,15 +9,14 @@ import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
+import net.minecraft.util.Unit;
 
-public class SplashParticleModel extends Model {
+public class SplashParticleModel extends Model<Unit> {
 
     public static final ModelLayerLocation MODEL_LAYER = new ModelLayerLocation(SubtleEffects.loc("splash_particle"), "main");
-    private final ModelPart splash;
 
     public SplashParticleModel(ModelPart rootPart) {
-        super(texture -> ModRenderTypes.ENTITY_PARTICLE_TRANSLUCENT_RENDER_TYPE.apply(texture, false));
-        splash = rootPart;
+        super(rootPart, ModRenderTypes::entityParticleTranslucent);
     }
 
     public static LayerDefinition createLayer() {
@@ -29,10 +28,5 @@ public class SplashParticleModel extends Model {
                 PartPose.offset(0, 24, 0)
         );
         return LayerDefinition.create(meshdefinition, 48, 48);
-    }
-
-    @Override
-    public void renderToBuffer(PoseStack poseStack, VertexConsumer consumer, int packedLight, int packedOverlay, int color) {
-        splash.render(poseStack, consumer, packedLight, packedOverlay, color);
     }
 }

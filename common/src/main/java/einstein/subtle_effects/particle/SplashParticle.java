@@ -7,17 +7,15 @@ import einstein.subtle_effects.particle.option.SplashParticleOptions;
 import einstein.subtle_effects.util.Util;
 import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.client.particle.Particle;
-import net.minecraft.client.particle.ParticleProvider;
-import net.minecraft.client.particle.SpriteSet;
+import net.minecraft.client.particle.*;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.tags.TagKey;
+import net.minecraft.util.ARGB;
 import net.minecraft.util.RandomSource;
-import net.minecraft.util.FastColor;
 import net.minecraft.world.level.material.Fluid;
 import org.jetbrains.annotations.Nullable;
 
@@ -43,7 +41,7 @@ public class SplashParticle extends ModelParticle {
     private final SplashParticleModel model;
 
     protected SplashParticle(ClientLevel level, double x, double y, double z, boolean glowing, TagKey<Fluid> fluidTag, SpriteSet sprites, @Nullable SpriteSet overlaySprites, SplashParticleOptions options) {
-        super(level, x, y, z, mainSprites.first());
+        super(level, x, y, z);
         model = bakeModel(SplashParticleModel::new, SplashParticleModel.MODEL_LAYER);
         this.glowing = glowing;
         this.fluidTag = fluidTag;
@@ -56,14 +54,6 @@ public class SplashParticle extends ModelParticle {
         yScale = options.yScale();
         setSize(xScale, yScale);
         setSpriteFromAge();
-    }
-
-    @Override
-    protected Layer getLayer() {
-        if (translucent) {
-            return Layer.TRANSLUCENT;
-        }
-        return Layer.OPAQUE;
     }
 
     @Override
@@ -94,7 +84,7 @@ public class SplashParticle extends ModelParticle {
     @Override
     public void render(PoseStack poseStack, VertexConsumer consumer, MultiBufferSource.BufferSource bufferSource, Camera camera, float partialTicks) {
         int lightColor = getLightColor(partialTicks);
-        int color = FastColor.ARGB32.colorFromFloat(alpha, rCol, gCol, bCol);
+        int color = ARGB.colorFromFloat(alpha, rCol, gCol, bCol);
 
         poseStack.translate(0, -(6 * (yScale / 4)), 0); // 6 is 1/4 of the model's height
         poseStack.scale(xScale, yScale, xScale);
@@ -102,7 +92,7 @@ public class SplashParticle extends ModelParticle {
         model.renderToBuffer(poseStack, bufferSource.getBuffer(model.renderType(texture)), lightColor, OverlayTexture.NO_OVERLAY, color);
 
         if (hasOverlay) {
-            int overlayColor = FastColor.ARGB32.colorFromFloat(ENTITIES.splashes.splashOverlayAlpha.get(), overlayRCol, overlayGCol, overlayBCol);
+            int overlayColor = ARGB.colorFromFloat(ENTITIES.splashes.splashOverlayAlpha.get(), overlayRCol, overlayGCol, overlayBCol);
             model.renderToBuffer(poseStack, bufferSource.getBuffer(model.renderType(overlayTexture)), lightColor, OverlayTexture.NO_OVERLAY, overlayColor);
         }
 

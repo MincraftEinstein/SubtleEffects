@@ -21,6 +21,10 @@ import java.util.function.Function;
 public abstract class ModelParticle extends Particle {
 
     protected final Minecraft minecraft = Minecraft.getInstance();
+    protected float rCol = 1.0F;
+    protected float gCol = 1.0F;
+    protected float bCol = 1.0F;
+    protected float alpha = 1.0F;
 
     protected ModelParticle(ClientLevel level, double x, double y, double z) {
         super(level, x, y, z);
@@ -55,8 +59,14 @@ public abstract class ModelParticle extends Particle {
         return sprite.contents().name().withPrefix("textures/particle/").withSuffix(".png");
     }
 
+    public void setColor(float r, float g, float b) {
+        this.rCol = r;
+        this.gCol = g;
+        this.bCol = b;
+    }
+
     @Override
-    public ParticleRenderType getRenderType() {
+    public ParticleRenderType getGroup() {
         return ParticleRenderType.CUSTOM;
     }
 }

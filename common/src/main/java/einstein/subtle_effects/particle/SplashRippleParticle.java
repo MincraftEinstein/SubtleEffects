@@ -1,5 +1,6 @@
 package einstein.subtle_effects.particle;
 
+import einstein.subtle_effects.init.ModParticleLayers;
 import einstein.subtle_effects.particle.option.FloatParticleOptions;
 import einstein.subtle_effects.util.Util;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -11,6 +12,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.material.Fluid;
 
 import static einstein.subtle_effects.init.ModConfigs.ENTITIES;
@@ -23,8 +25,8 @@ public class SplashRippleParticle extends FlatPlaneParticle {
     private final boolean glowing;
     private boolean shouldAnimate = false;
 
-    protected SplashRippleParticle(ClientLevel level, double x, double y, double z, SpriteSet sprites, float xScale, TagKey<Fluid> fluidTag, boolean glowing) {
-        super(level, x, y, z);
+    protected SplashRippleParticle(ClientLevel level, double x, double y, double z, SpriteSet sprites, float xScale, TagKey<Fluid> fluidTag, boolean glowing, RandomSource random) {
+        super(level, x, y, z, sprites.first());
         this.sprites = sprites;
         this.fluidTag = fluidTag;
         this.glowing = glowing;
@@ -73,15 +75,15 @@ public class SplashRippleParticle extends FlatPlaneParticle {
     }
 
     @Override
-    public ParticleRenderType getRenderType() {
-        return ParticleRenderType.PARTICLE_SHEET_TRANSLUCENT;
+    protected Layer getLayer() {
+        return Layer.TRANSLUCENT;
     }
 
     public record Provider(SpriteSet sprites) implements ParticleProvider<FloatParticleOptions> {
 
         @Override
-        public Particle createParticle(FloatParticleOptions options, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
-            SplashRippleParticle particle = new SplashRippleParticle(level, x, y, z, sprites, options.f(), FluidTags.WATER, false);
+        public Particle createParticle(FloatParticleOptions options, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, RandomSource random) {
+            SplashRippleParticle particle = new SplashRippleParticle(level, x, y, z, sprites, options.f(), FluidTags.WATER, false, random);
             int waterColor = level.getBiome(BlockPos.containing(x, y, z)).value().getWaterColor();
             float colorIntensity = ENTITIES.splashes.splashOverlayTint.get();
 
@@ -100,8 +102,8 @@ public class SplashRippleParticle extends FlatPlaneParticle {
     public record LavaProvider(SpriteSet sprites) implements ParticleProvider<FloatParticleOptions> {
 
         @Override
-        public Particle createParticle(FloatParticleOptions options, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
-            SplashRippleParticle particle = new SplashRippleParticle(level, x, y, z, sprites, options.f(), FluidTags.LAVA, true);
+        public Particle createParticle(FloatParticleOptions options, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, RandomSource random) {
+            SplashRippleParticle particle = new SplashRippleParticle(level, x, y, z, sprites, options.f(), FluidTags.LAVA, true, random);
             if (ENTITIES.splashes.splashOverlayAlpha.get() == 0) {
                 particle.setAlpha(0);
             }
