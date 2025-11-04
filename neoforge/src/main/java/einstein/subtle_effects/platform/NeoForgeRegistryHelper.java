@@ -1,8 +1,7 @@
 package einstein.subtle_effects.platform;
 
 import einstein.subtle_effects.platform.services.RegistryHelper;
-import net.minecraft.client.particle.ParticleProvider;
-import net.minecraft.client.particle.SpriteSet;
+import net.minecraft.client.particle.*;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.registries.Registries;
@@ -22,6 +21,7 @@ public class NeoForgeRegistryHelper implements RegistryHelper {
     public static final DeferredRegister<ParticleType<?>> PARTICLE_TYPES = DeferredRegister.create(Registries.PARTICLE_TYPE, MOD_ID);
     public static final DeferredRegister<SoundEvent> SOUND_EVENTS = DeferredRegister.create(Registries.SOUND_EVENT, MOD_ID);
     public static final Map<Supplier<? extends ParticleType<?>>, Function<SpriteSet, ? extends ParticleProvider<?>>> PARTICLE_PROVIDERS = new HashMap<>();
+    public static final Map<ParticleRenderType, Function<ParticleEngine, ParticleGroup<?>>> PARTICLE_GROUP_FACTORIES = new HashMap<>();
 
     @Override
     public <T extends ParticleType<?>> Supplier<T> registerParticle(String name, Supplier<T> particle) {
@@ -31,6 +31,11 @@ public class NeoForgeRegistryHelper implements RegistryHelper {
     @Override
     public <T extends ParticleType<V>, V extends ParticleOptions> void registerParticleProvider(Supplier<T> particle, Function<SpriteSet, ParticleProvider<V>> provider) {
         PARTICLE_PROVIDERS.put(particle, provider);
+    }
+
+    @Override
+    public void registerParticleGroup(ParticleRenderType group, Function<ParticleEngine, ParticleGroup<?>> factory) {
+        PARTICLE_GROUP_FACTORIES.put(group, factory);
     }
 
     @Override

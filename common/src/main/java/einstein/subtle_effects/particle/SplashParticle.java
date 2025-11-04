@@ -6,6 +6,7 @@ import einstein.subtle_effects.client.model.particle.SplashParticleModel;
 import einstein.subtle_effects.particle.option.SplashParticleOptions;
 import einstein.subtle_effects.util.Util;
 import net.minecraft.client.Camera;
+import net.minecraft.client.model.Model;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -16,13 +17,14 @@ import net.minecraft.tags.FluidTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.ARGB;
 import net.minecraft.util.RandomSource;
+import net.minecraft.util.Unit;
 import net.minecraft.world.level.material.Fluid;
 import org.jetbrains.annotations.Nullable;
 
 import static einstein.subtle_effects.init.ModConfigs.ENTITIES;
 import static einstein.subtle_effects.init.ModSpriteSets.WATER_SPLASH_OVERLAY;
 
-public class SplashParticle extends ModelParticle {
+public class SplashParticle extends ModelParticle<Model<Unit>> {
 
     private final boolean glowing;
     private final TagKey<Fluid> fluidTag;
@@ -97,6 +99,11 @@ public class SplashParticle extends ModelParticle {
         }
 
         bufferSource.endBatch();
+    }
+
+    @Override
+    public Model<Unit> getModel() {
+        return model;
     }
 
     private void setSpriteFromAge() {

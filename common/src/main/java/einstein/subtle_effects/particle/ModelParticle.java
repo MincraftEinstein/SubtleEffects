@@ -14,11 +14,12 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
+import net.minecraft.util.Unit;
 import net.minecraft.world.phys.Vec3;
 
 import java.util.function.Function;
 
-public abstract class ModelParticle extends Particle {
+public abstract class ModelParticle<T extends Model<Unit>> extends Particle {
 
     protected final Minecraft minecraft = Minecraft.getInstance();
     protected float rCol = 1.0F;
@@ -51,9 +52,11 @@ public abstract class ModelParticle extends Particle {
 
     protected abstract void render(PoseStack poseStack, VertexConsumer consumer, MultiBufferSource.BufferSource bufferSource, Camera camera, float partialTicks);
 
-    protected <T extends Model> T bakeModel(Function<ModelPart, T> modelBaker, ModelLayerLocation layerLocation) {
+    protected T bakeModel(Function<ModelPart, T> modelBaker, ModelLayerLocation layerLocation) {
         return modelBaker.apply(minecraft.getEntityModels().bakeLayer(layerLocation));
     }
+
+    public abstract T getModel();
 
     protected ResourceLocation getSpriteId(TextureAtlasSprite sprite) {
         return sprite.contents().name().withPrefix("textures/particle/").withSuffix(".png");

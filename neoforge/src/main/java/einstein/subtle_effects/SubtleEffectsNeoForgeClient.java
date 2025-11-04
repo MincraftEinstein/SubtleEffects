@@ -35,6 +35,9 @@ public class SubtleEffectsNeoForgeClient {
         modEventBus.addListener((RegisterParticleProvidersEvent event) ->
                 NeoForgeRegistryHelper.PARTICLE_PROVIDERS.forEach((particle, provider) -> registerParticle(event, particle, provider))
         );
+        modEventBus.addListener((RegisterParticleGroupsEvent event) ->
+                NeoForgeRegistryHelper.PARTICLE_GROUP_FACTORIES.forEach(event::register)
+        );
         modEventBus.addListener((AddPackFindersEvent event) ->
                 event.addPackFinders(BCWPPackManager.PACK_LOCATION.get(), PackType.CLIENT_RESOURCES,
                         BCWPPackManager.PACK_NAME, PackSource.BUILT_IN, false, Pack.Position.TOP));
