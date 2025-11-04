@@ -491,7 +491,7 @@ public class ParticleSpawnUtil {
                 double yVelocity = entity.getDeltaMovement().y();
                 if (entity instanceof ServerPlayer player) {
                     Services.NETWORK.sendToClientsTracking(player, (ServerLevel) level, entity.blockPosition(),
-                            new ClientBoundEntityLandInFluidPayload(entity.getId(), entity.getY() + entity.getFluidHeight(FluidTags.LAVA), yVelocity, true)
+                            new ClientBoundEntityLandInFluidPayload(entity.getId(), entity.getY() + ((FluidHeightAccessor) entity).subtleEffects$getFluidHeight(((FluidAccessor) level.getFluidState(entity.blockPosition()).getType()).subtleEffects$getFluidPair()), yVelocity, true)
                     );
                     return;
                 }

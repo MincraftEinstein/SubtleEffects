@@ -1,6 +1,7 @@
 package einstein.subtle_effects;
 
 import einstein.subtle_effects.data.BCWPPackManager;
+import einstein.subtle_effects.data.FluidPairReloadListener;
 import einstein.subtle_effects.data.MobSkullShaderReloadListener;
 import einstein.subtle_effects.data.SparkProviderReloadListener;
 import einstein.subtle_effects.platform.NeoForgeRegistryHelper;
@@ -40,6 +41,7 @@ public class SubtleEffectsNeoForgeClient {
             event.registerReloadListener(new SparkProviderReloadListener());
             event.registerReloadListener(new MobSkullShaderReloadListener());
             event.registerReloadListener(new BCWPPackManager());
+            event.registerReloadListener(new FluidPairReloadListener());
         });
         modEventBus.addListener((EntityRenderersEvent.RegisterLayerDefinitions event) ->
                 SubtleEffectsClient.registerModelLayers().forEach(event::registerLayerDefinition)
