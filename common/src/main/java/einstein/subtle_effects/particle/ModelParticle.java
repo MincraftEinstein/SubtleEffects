@@ -1,7 +1,8 @@
 package einstein.subtle_effects.particle;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
+import einstein.subtle_effects.init.ModParticleGroups;
+import einstein.subtle_effects.particle.group.ModelParticleGroup;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.Model;
@@ -10,7 +11,6 @@ import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleRenderType;
-import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
@@ -35,9 +35,7 @@ public abstract class ModelParticle<T extends Model<Unit>> extends Particle {
         super(level, x, y, z, xSpeed, ySpeed, zSpeed);
     }
 
-    @Override
-    public void render(VertexConsumer consumer, Camera camera, float partialTicks) {
-        MultiBufferSource.BufferSource bufferSource = minecraft.renderBuffers().bufferSource();
+    public ModelParticleGroup.ModelParticleRenderState extractState(Camera camera, float partialTicks) {
         PoseStack poseStack = new PoseStack();
         Vec3 cameraPos = camera.getPosition();
         float x = (float) (Mth.lerp(partialTicks, xo, this.x) - cameraPos.x());
@@ -47,10 +45,10 @@ public abstract class ModelParticle<T extends Model<Unit>> extends Particle {
         poseStack.translate(x, y, z);
         poseStack.scale(1, -1, -1);
 
-        render(poseStack, consumer, bufferSource, camera, partialTicks);
+        return extractState(poseStack, camera, partialTicks);
     }
 
-    protected abstract void render(PoseStack poseStack, VertexConsumer consumer, MultiBufferSource.BufferSource bufferSource, Camera camera, float partialTicks);
+    public abstract ModelParticleGroup.ModelParticleRenderState extractState(PoseStack poseStack, Camera camera, float partialTicks);
 
     protected T bakeModel(Function<ModelPart, T> modelBaker, ModelLayerLocation layerLocation) {
         return modelBaker.apply(minecraft.getEntityModels().bakeLayer(layerLocation));
@@ -70,6 +68,6 @@ public abstract class ModelParticle<T extends Model<Unit>> extends Particle {
 
     @Override
     public ParticleRenderType getGroup() {
-        return ParticleRenderType.CUSTOM;
+        return ModParticleGroups.MODEL;
     }
 }

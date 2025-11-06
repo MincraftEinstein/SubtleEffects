@@ -2,8 +2,8 @@ package einstein.subtle_effects.platform;
 
 import einstein.subtle_effects.platform.services.RegistryHelper;
 import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
-import net.minecraft.client.particle.ParticleProvider;
-import net.minecraft.client.particle.SpriteSet;
+import net.fabricmc.fabric.api.client.particle.v1.ParticleRendererRegistry;
+import net.minecraft.client.particle.*;
 import net.minecraft.core.Registry;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
@@ -27,6 +27,11 @@ public class FabricRegistryHelper implements RegistryHelper {
     @Override
     public <T extends ParticleType<V>, V extends ParticleOptions> void registerParticleProvider(Supplier<T> particle, Function<SpriteSet, ParticleProvider<V>> provider) {
         ParticleFactoryRegistry.getInstance().register(particle.get(), provider::apply);
+    }
+
+    @Override
+    public void registerParticleGroup(ParticleRenderType group, Function<ParticleEngine, ParticleGroup<?>> factory) {
+        ParticleRendererRegistry.register(group, factory);
     }
 
     @Override

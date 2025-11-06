@@ -1,30 +1,29 @@
 package einstein.subtle_effects.particle;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import einstein.subtle_effects.client.model.particle.SplashParticleModel;
+import einstein.subtle_effects.init.ModConfigs;
+import einstein.subtle_effects.particle.group.ModelParticleGroup;
 import einstein.subtle_effects.particle.option.SplashParticleOptions;
 import einstein.subtle_effects.util.Util;
 import net.minecraft.client.Camera;
-import net.minecraft.client.model.Model;
 import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.client.particle.*;
-import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.client.particle.Particle;
+import net.minecraft.client.particle.ParticleProvider;
+import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.ARGB;
 import net.minecraft.util.RandomSource;
-import net.minecraft.util.Unit;
 import net.minecraft.world.level.material.Fluid;
 import org.jetbrains.annotations.Nullable;
 
 import static einstein.subtle_effects.init.ModConfigs.ENTITIES;
 import static einstein.subtle_effects.init.ModSpriteSets.WATER_SPLASH_OVERLAY;
 
-public class SplashParticle extends ModelParticle<Model<Unit>> {
+public class SplashParticle extends ModelParticle<SplashParticleModel> {
 
     private final boolean glowing;
     private final TagKey<Fluid> fluidTag;
@@ -83,7 +82,7 @@ public class SplashParticle extends ModelParticle<Model<Unit>> {
         setSpriteFromAge();
     }
 
-    @Override
+   /* @Override
     public void render(PoseStack poseStack, VertexConsumer consumer, MultiBufferSource.BufferSource bufferSource, Camera camera, float partialTicks) {
         int lightColor = getLightColor(partialTicks);
         int color = ARGB.colorFromFloat(alpha, rCol, gCol, bCol);
@@ -99,10 +98,26 @@ public class SplashParticle extends ModelParticle<Model<Unit>> {
         }
 
         bufferSource.endBatch();
+    }*/
+
+    @Override
+    public ModelParticleGroup.ModelParticleRenderState extractState(PoseStack poseStack, Camera camera, float partialTicks) {
+        int lightColor = getLightColor(partialTicks);
+        int color = ARGB.colorFromFloat(alpha, rCol, gCol, bCol);
+
+        poseStack.translate(0, -(6 * (yScale / 4)), 0); // 6 is 1/4 of the model's height
+        poseStack.scale(xScale, yScale, xScale);
+
+        ModelParticleGroup.OverlayModelState overlayState = null;
+        if (hasOverlay) {
+            overlayState = new ModelParticleGroup.OverlayModelState(ARGB.colorFromFloat(ModConfigs.ENTITIES.splashes.splashOverlayAlpha.get(), overlayRCol, overlayGCol, overlayBCol), model.renderType(overlayTexture));
+        }
+
+        return new ModelParticleGroup.ModelParticleRenderState(getModel(), poseStack, model.renderType(texture), lightColor, color, overlayState);
     }
 
     @Override
-    public Model<Unit> getModel() {
+    public SplashParticleModel getModel() {
         return model;
     }
 

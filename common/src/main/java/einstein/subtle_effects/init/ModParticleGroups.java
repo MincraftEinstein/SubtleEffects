@@ -18,7 +18,7 @@ public class ModParticleGroups {
     }
 
     private static ParticleRenderType register(String name, Function<ParticleEngine, ParticleGroup<?>> factory) {
-        var group = new ParticleRenderType(loc(name).toString().toUpperCase());
+        var group = new ParticleRenderType(loc(name).toString());
         REGISTRY.registerParticleGroup(group, factory);
         return group;
     }
