@@ -1,0 +1,11 @@
+{
+  "states": [
+    {
+      "name": "minecraft:copper_wall_torch"
+    }
+  ],
+  "options": {
+    "preset": "wall_torch",
+    "colors": "copper"
+  }
+}

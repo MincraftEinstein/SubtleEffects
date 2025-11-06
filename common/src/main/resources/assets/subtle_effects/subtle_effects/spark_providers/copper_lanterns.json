@@ -1,0 +1,32 @@
+{
+  "states": [
+    {
+      "name": "minecraft:copper_lantern"
+    },
+    {
+      "name": "minecraft:exposed_copper_lantern"
+    },
+    {
+      "name": "minecraft:weathered_copper_lantern"
+    },
+    {
+      "name": "minecraft:oxidized_copper_lantern"
+    },
+    {
+      "name": "minecraft:waxed_copper_lantern"
+    },
+    {
+      "name": "minecraft:waxed_exposed_copper_lantern"
+    },
+    {
+      "name": "minecraft:waxed_weathered_copper_lantern"
+    },
+    {
+      "name": "minecraft:waxed_oxidized_copper_lantern"
+    }
+  ],
+  "options": {
+    "preset": "lantern",
+    "colors": "copper"
+  }
+}

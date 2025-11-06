@@ -1,0 +1,11 @@
+{
+  "states": [
+    {
+      "name": "minecraft:copper_torch"
+    }
+  ],
+  "options": {
+    "preset": "torch",
+    "colors": "copper"
+  }
+}

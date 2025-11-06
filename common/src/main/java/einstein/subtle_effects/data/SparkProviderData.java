@@ -44,14 +44,19 @@ public record SparkProviderData(List<BlockStateEntry> states, Optional<Options> 
                 Codec.floatRange(0, 1).optionalFieldOf("chance").forGetter(Options::chance),
                 Vec3.CODEC.optionalFieldOf("velocity").forGetter(Options::velocity),
                 Codec.withAlternative(Codec.list(ExtraCodecs.RGB_COLOR_CODEC), Codec.STRING, string -> {
-                    if (string.equals("soul")) {
-                        return SparkParticle.SOUL_COLORS;
-                    }
-                    else if (string.equals("default")) {
-                        return SparkParticle.DEFAULT_COLORS;
+                    switch (string) {
+                        case "soul" -> {
+                            return SparkParticle.SOUL_COLORS;
+                        }
+                        case "copper" -> {
+                            return SparkParticle.COPPER_COLORS;
+                        }
+                        case "default" -> {
+                            return SparkParticle.DEFAULT_COLORS;
+                        }
                     }
 
-                    SubtleEffects.LOGGER.error("Spark color must be an integer array or string of either 'soul' or 'default'");
+                    SubtleEffects.LOGGER.error("Spark color must be an integer array or string of either 'soul', 'copper' or 'default'");
                     return null;
                 }).optionalFieldOf("colors").forGetter(Options::colors)
         ).apply(instance, Options::new));
