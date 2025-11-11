@@ -41,6 +41,8 @@ import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.AttachFace;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.ChestType;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
@@ -58,7 +60,7 @@ import static einstein.subtle_effects.init.ModConfigs.ENTITIES;
 import static einstein.subtle_effects.util.MathUtil.*;
 import static net.minecraft.util.Mth.DEG_TO_RAD;
 import static net.minecraft.util.Mth.nextFloat;
-import static net.minecraft.world.level.block.state.properties.BlockStateProperties.DOUBLE_BLOCK_HALF;
+import static net.minecraft.world.level.block.state.properties.BlockStateProperties.*;
 
 public class ParticleSpawnUtil {
 
@@ -324,6 +326,22 @@ public class ParticleSpawnUtil {
                                             || (half == DoubleBlockHalf.UPPER && direction == Direction.DOWN),
                             count, particleSpeed, offset
                     );
+                }
+            }
+        }
+        else if (state.hasProperty(CHEST_TYPE) && state.hasProperty(HORIZONTAL_FACING)) {
+            ChestType type = state.getValue(CHEST_TYPE);
+            if (type != ChestType.SINGLE) {
+                BlockPos oppositePos = ChestBlock.getConnectedBlockPos(pos, state);
+                BlockState oppositeState = level.getBlockState(oppositePos);
+
+                if (oppositeState.is(state.getBlock()) && oppositeState.hasProperty(CHEST_TYPE) && oppositeState.hasProperty(HORIZONTAL_FACING)) {
+                    if (type.getOpposite().equals(oppositeState.getValue(CHEST_TYPE)) && oppositeState.getValue(HORIZONTAL_FACING) == state.getValue(HORIZONTAL_FACING)) {
+                        spawnParticlesAroundShape(particle, level, oppositePos, state,
+                                direction -> direction == ChestBlock.getConnectedDirection(state),
+                                count, particleSpeed, offset
+                        );
+                    }
                 }
             }
         }

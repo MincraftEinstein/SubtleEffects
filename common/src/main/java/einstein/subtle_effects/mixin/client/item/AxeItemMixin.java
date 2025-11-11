@@ -21,6 +21,8 @@ import net.minecraft.world.phys.Vec3;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import static einstein.subtle_effects.init.ModConfigs.ITEMS;
 
@@ -35,7 +37,15 @@ public class AxeItemMixin {
                     level.addDestroyBlockEffect(pos, state);
                 }
             }
-            else if (sound.equals(SoundEvents.AXE_SCRAPE)) {
+        }
+
+        original.call(level, entity, pos, sound, source, volume, pitch);
+    }
+
+    @Inject(method = "spawnSoundAndParticle", at = @At("HEAD"))
+    private static void spawnSoundAndParticle(Level level, BlockPos pos, Player player, BlockState state, SoundEvent sound, int event, CallbackInfo ci) {
+        if (level.isClientSide()) {
+            if (sound.equals(SoundEvents.AXE_SCRAPE)) {
                 if (ITEMS.axeScrapeParticlesDisplayType != ReplacedParticlesDisplayType.VANILLA) {
                     subtleEffects$spawnCopperParticles(level, pos, state, state);
                 }
@@ -46,8 +56,6 @@ public class AxeItemMixin {
                 }
             }
         }
-
-        original.call(level, entity, pos, sound, source, volume, pitch);
     }
 
     @Unique
