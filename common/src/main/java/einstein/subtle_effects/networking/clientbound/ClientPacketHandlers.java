@@ -27,6 +27,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.Dolphin;
 import net.minecraft.world.entity.animal.MushroomCow;
+import net.minecraft.world.entity.animal.coppergolem.CopperGolem;
 import net.minecraft.world.entity.animal.frog.Tadpole;
 import net.minecraft.world.entity.animal.sheep.Sheep;
 import net.minecraft.world.entity.item.FallingBlockEntity;
@@ -426,6 +427,84 @@ public class ClientPacketHandlers {
                 }
             }
         }
+    }
+
+    public static void handle(ClientLevel level, ClientBoundCopperGolemPayload payload) {
+        Entity entity = level.getEntity(payload.entityId());
+        if (entity instanceof CopperGolem copperGolem) {
+            RandomSource random = copperGolem.getRandom();
+            ClientBoundCopperGolemPayload.Action action = payload.action();
+            BlockPos pos = copperGolem.blockPosition();
+
+            if (action == ClientBoundCopperGolemPayload.Action.WAX_ON) {
+                for (int i = 0; i < random.nextIntBetweenInclusive(3, 5) * 6; i++) {
+                    level.addParticle(ParticleTypes.WAX_ON,
+                            copperGolem.getRandomX(1.5),
+                            copperGolem.getRandomY(),
+                            copperGolem.getRandomZ(1.5),
+                            nextNonAbsDouble(random, 0.5F),
+                            nextNonAbsDouble(random, 0.5F),
+                            nextNonAbsDouble(random, 0.5F)
+                    );
+                }
+
+                level.playLocalSound(copperGolem.getX(), copperGolem.getY(), copperGolem.getZ(),
+                        SoundEvents.HONEYCOMB_WAX_ON, SoundSource.BLOCKS, 1, 1, false
+                );
+                return;
+            }
+
+            WeatheringCopper.WeatherState weatherState = copperGolem.getWeatherState();
+            if (tryDoVanillaEffects(level, copperGolem, action, pos, weatherState)) {
+                return;
+            }
+
+            ParticleOptions options = new BlockParticleOption(ModParticles.BLOCK_NO_MOMENTUM.get(),
+                    getStateForAction(action, weatherState)
+            );
+
+            for (int i = 0; i < 20; i++) {
+                level.addParticle(options,
+                        copperGolem.getRandomX(1.5),
+                        copperGolem.getRandomY() + nextDouble(random, 0.5),
+                        copperGolem.getRandomZ(1.5),
+                        0, 0, 0
+                );
+            }
+        }
+    }
+
+    private static boolean tryDoVanillaEffects(ClientLevel level, CopperGolem copperGolem, ClientBoundCopperGolemPayload.Action action, BlockPos pos, WeatheringCopper.WeatherState weatherState) {
+        int stateId = Block.getId((
+                switch (weatherState) {
+                    case UNAFFECTED -> Blocks.COPPER_BLOCK;
+                    case EXPOSED -> Blocks.EXPOSED_COPPER;
+                    case WEATHERED -> Blocks.WEATHERED_COPPER;
+                    case OXIDIZED -> Blocks.OXIDIZED_COPPER;
+                }).defaultBlockState()
+        );
+
+        if (action == ClientBoundCopperGolemPayload.Action.SCRAPE && ITEMS.axeScrapeParticlesDisplayType != ReplacedParticlesDisplayType.DEFAULT) {
+            level.levelEvent(copperGolem, LevelEvent.PARTICLES_SCRAPE, pos, stateId);
+            return ITEMS.axeScrapeParticlesDisplayType == ReplacedParticlesDisplayType.VANILLA;
+        }
+        else if (action == ClientBoundCopperGolemPayload.Action.WAX_OFF && ITEMS.axeWaxOffParticlesDisplayType != ReplacedParticlesDisplayType.DEFAULT) {
+            level.levelEvent(copperGolem, LevelEvent.PARTICLES_WAX_OFF, pos, stateId);
+            return ITEMS.axeWaxOffParticlesDisplayType == ReplacedParticlesDisplayType.VANILLA;
+        }
+        return false;
+    }
+
+    private static BlockState getStateForAction(ClientBoundCopperGolemPayload.Action action, WeatheringCopper.WeatherState weatherState) {
+        if (action == ClientBoundCopperGolemPayload.Action.SCRAPE) {
+            return (switch (weatherState) {
+                case UNAFFECTED -> Blocks.COPPER_GOLEM_STATUE;
+                case EXPOSED -> Blocks.EXPOSED_COPPER_GOLEM_STATUE;
+                case WEATHERED -> Blocks.WEATHERED_COPPER_GOLEM_STATUE;
+                case OXIDIZED -> Blocks.OXIDIZED_COPPER_GOLEM_STATUE;
+            }).defaultBlockState();
+        }
+        return Blocks.HONEY_BLOCK.defaultBlockState();
     }
 
     private static SoundEvent getEatSound(LivingEntity entity, ItemStack stack, ModAnimalFedEffectSettings.Settings settings) {

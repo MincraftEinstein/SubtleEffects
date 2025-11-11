@@ -25,6 +25,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.util.valueproviders.IntProvider;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LevelEvent;
 import net.minecraft.world.level.block.state.BlockState;
@@ -124,7 +125,7 @@ public class LevelEventHandlerMixin {
                 if (random.nextInt(3) == 0) {
                     original.call(instance,
                             ColorParticleOption.create(ModParticles.POTION_POOF_CLOUD.get(), red, green, blue),
-                             x, y, z, xSpeed, ySpeed, zSpeed
+                            x, y, z, xSpeed, ySpeed, zSpeed
                     );
                 }
 
@@ -139,8 +140,8 @@ public class LevelEventHandlerMixin {
     }
 
     @WrapOperation(method = "levelEvent", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/ParticleUtils;spawnParticlesOnBlockFaces(Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;Lnet/minecraft/core/particles/ParticleOptions;Lnet/minecraft/util/valueproviders/IntProvider;)V"))
-    private void cancelOrReplaceCopperParticles(Level level, BlockPos pos, ParticleOptions particle, IntProvider count, Operation<Void> original, @Local(argsOnly = true, ordinal = 0) int type) {
-        BlockState state = level.getBlockState(pos);
+    private void cancelOrReplaceCopperParticles(Level level, BlockPos pos, ParticleOptions particle, IntProvider count, Operation<Void> original, @Local(argsOnly = true, ordinal = 0) int type, @Local(argsOnly = true, ordinal = 1) int data) {
+        BlockState state = data > 0 ? Block.stateById(data) : level.getBlockState(pos);
         RandomSource random = level.getRandom();
 
         if (type == LevelEvent.PARTICLES_SCRAPE) {
@@ -148,7 +149,8 @@ public class LevelEventHandlerMixin {
                 subtleEffects$spawnCopperParticles(level, pos, count, state, random);
             }
             return;
-        } else if (type == LevelEvent.PARTICLES_WAX_OFF) {
+        }
+        else if (type == LevelEvent.PARTICLES_WAX_OFF) {
             if (ModConfigs.ITEMS.axeWaxOffParticlesDisplayType != ReplacedParticlesDisplayType.DEFAULT) {
                 subtleEffects$spawnCopperParticles(level, pos, count, state, random);
             }
