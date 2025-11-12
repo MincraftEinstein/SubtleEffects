@@ -53,9 +53,18 @@ repositories {
         url = "https://maven.minecraftforge.net"
     }
 
-    maven {
-        name = "Crystal Nest"
-        url = "https://maven.crystalnest.it"
+    repositories {
+        exclusiveContent {
+            forRepository {
+                maven {
+                    name = "Crystal Nest"
+                    url = "https://maven.crystalnest.it"
+                }
+            }
+            filter {
+                includeGroup "it.crystalnest"
+            }
+        }
     }
 
     maven {

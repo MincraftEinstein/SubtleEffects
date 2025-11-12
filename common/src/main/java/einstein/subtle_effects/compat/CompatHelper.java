@@ -17,7 +17,7 @@ public class CompatHelper {
     public static final String PARTICLE_RAIN_MOD_ID = "particlerain";
 
     public static final Supplier<Boolean> IS_SERENE_SEANSONS_LOADED = isLoaded("sereneseasons");
-    public static final Supplier<Boolean> IS_SOUL_FIRED_LOADED = isLoaded("soul_fire_d");
+    public static final Supplier<Boolean> IS_PROMETHEUS_LOADED = isLoaded("prometheus");
     public static final Supplier<Boolean> IS_ITEM_BORDERS_LOADED = isLoaded("itemborders");
     public static final Supplier<Boolean> IS_LEGENDARY_TOOLTIPS_LOADED = isLoaded("legendarytooltips");
     public static final Supplier<Boolean> IS_END_REMASTERED_LOADED = isLoaded("endrem");

@@ -23,7 +23,8 @@ dependencies {
     compileOnly group: 'com.electronwill.night-config', name : 'toml', version: '3.6.0'
     compileOnly group: 'com.github.glitchfiend', name: 'GlitchCore-common', version: "${glitchcore_version}"
     compileOnly group: 'com.github.glitchfiend', name: 'SereneSeasons-common', version: "${serene_seasons_version}"
-    compileOnly group: "it.crystalnest", name: "soul-fire-d-common", version: "${soul_fired_version}"
+    compileOnly group: "it.crystalnest", name: "cobweb-common", version: "${cobweb_version}"
+    compileOnly group: "it.crystalnest", name: "prometheus-common", version: "${prometheus_version}"
     compileOnly group: "maven.modrinth", name: "iceberg", version: "${neoforge_iceberg_version}"
     compileOnly group: "maven.modrinth", name: "prism-lib", version: "${neoforge_prism_version}"
     compileOnly group: "maven.modrinth", name: "item-borders", version: "${neoforge_item_borders_version}"
