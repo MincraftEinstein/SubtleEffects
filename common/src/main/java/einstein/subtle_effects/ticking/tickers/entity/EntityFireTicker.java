@@ -33,13 +33,14 @@ public class EntityFireTicker extends EntityTicker<Entity> {
     @Override
     public void entityTick() {
         if (entity.displayFireAnimation() || isBlaze) {
-            if (random.nextInt(90) == 0 && ENTITIES.burning.sounds) {
-                Util.playClientSound(entity, SoundEvents.FIRE_EXTINGUISH, entity.getSoundSource(), 0.3F, 1);
+            float volume = ENTITIES.burning.soundVolume.get();
+            if (volume > 0 && random.nextInt(90) == 0) {
+                Util.playClientSound(entity, SoundEvents.FIRE_EXTINGUISH, entity.getSoundSource(), volume, 1);
             }
 
             if (bbWidth <= 4 && bbHeight <= 4) {
-                if (ENTITIES.burning.smoke.isEnabled() && !isBlaze) {
-                    level.addParticle(ENTITIES.burning.smoke.getParticle().get(),
+                if (!isBlaze && ENTITIES.burning.smokeType.isEnabled() && random.nextDouble() < ENTITIES.burning.smokeDensity.get()) {
+                    level.addParticle(ENTITIES.burning.smokeType.getParticle().get(),
                             entity.getRandomX(1),
                             entity.getRandomY(),
                             entity.getRandomZ(1),
@@ -47,7 +48,7 @@ public class EntityFireTicker extends EntityTicker<Entity> {
                     );
                 }
 
-                if (ENTITIES.burning.sparks) {
+                if (random.nextDouble() < ENTITIES.burning.sparksDensity.get()) {
                     List<Integer> colors = getSparkColors();
                     if (colors != null) {
                         for (int i = 0; i < 2; i++) {
@@ -67,7 +68,7 @@ public class EntityFireTicker extends EntityTicker<Entity> {
                     return;
                 }
 
-                if (ENTITIES.burning.flames) {
+                if (random.nextDouble() < ENTITIES.burning.flamesDensity.get()) {
                     ParticleOptions options = getFlameParticle();
                     if (options != null) {
                         level.addParticle(options,

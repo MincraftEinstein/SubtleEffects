@@ -54,7 +54,7 @@ public class ModEntityTickers {
 
     public static void init() {
         register(entity -> true, EntityCauldronTicker::new);
-        register(entity -> !(entity instanceof LightningBolt), EntityFireTicker::new);
+        register(entity -> !ENTITIES.burning.entityBlocklist.contains(entity.getType()), EntityFireTicker::new);
         register(entity -> entity instanceof LivingEntity, ModEntityTickers::getSleepingTicker);
         register(entity -> entity instanceof AbstractMinecart && ENTITIES.minecartSparksDisplayType != ModEntityConfigs.MinecartSparksDisplayType.OFF, MinecartSparksTicker::new);
         register(LOCAL_PLAYER.and(entity -> ENTITIES.humanoids.player.stomachGrowlingThreshold.get() > 0), StomachGrowlingTicker::new);
