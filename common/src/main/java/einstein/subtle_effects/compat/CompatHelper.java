@@ -23,6 +23,7 @@ public class CompatHelper {
     public static final Supplier<Boolean> IS_END_REMASTERED_LOADED = isLoaded("endrem");
     public static final Supplier<Boolean> IS_PARTICLE_EFFECTS_LOADED = isLoaded(PARTICLE_EFFECTS_MOD_ID);
     public static final Supplier<Boolean> IS_PARTICLE_RAIN_LOADED = isLoaded(PARTICLE_RAIN_MOD_ID);
+    public static final Supplier<Boolean> IS_DYED_FLAMES_LOADED = isLoaded("dyedflames");
 
     public static final IntegerProperty FD_PIE_BITES = IntegerProperty.create("bites", 0, 3);
     public static final IntegerProperty JMC_TWO_TIERED_CAKE_BITES = IntegerProperty.create("bites", 0, 10);

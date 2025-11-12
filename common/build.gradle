@@ -29,6 +29,11 @@ dependencies {
     compileOnly group: "maven.modrinth", name: "prism-lib", version: "${neoforge_prism_version}"
     compileOnly group: "maven.modrinth", name: "item-borders", version: "${neoforge_item_borders_version}"
     compileOnly group: "maven.modrinth", name: "endrem", version: "${neoforge_endrem_version}"
+    compileOnly group: "maven.modrinth", name: "dyed-flames", version: "${neoforge_dyed_flames_version}"
+    compileOnly group: "fuzs.neoforgedatapackextensions", name: "neoforgedatapackextensions-common", version: "${neoforgedatapackextensions_version}"
+    compileOnly (group: "fuzs.puzzleslib", name: "puzzleslib-common", version: "${puzzleslib_version}") {
+        exclude group: "net.fabricmc.fabric-api"
+    }
 }
 
 configurations {

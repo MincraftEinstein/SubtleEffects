@@ -1,6 +1,7 @@
 package einstein.subtle_effects.ticking.tickers.entity;
 
 import einstein.subtle_effects.compat.CompatHelper;
+import einstein.subtle_effects.compat.DyedFlamesCompat;
 import einstein.subtle_effects.compat.PrometheusCompat;
 import einstein.subtle_effects.particle.SparkParticle;
 import einstein.subtle_effects.util.SparkType;
@@ -83,7 +84,13 @@ public class EntityFireTicker extends EntityTicker<Entity> {
 
     @Nullable
     private ParticleOptions getFlameParticle() {
-        return CompatHelper.IS_PROMETHEUS_LOADED.get() ? PrometheusCompat.getFlameParticle(entity) : ParticleTypes.FLAME;
+        if (CompatHelper.IS_PROMETHEUS_LOADED.get()) {
+            return PrometheusCompat.getFlameParticle(entity);
+        }
+        else if (CompatHelper.IS_DYED_FLAMES_LOADED.get()) {
+            return DyedFlamesCompat.getFlameParticle(entity);
+        }
+        return ParticleTypes.FLAME;
     }
 
     @Nullable
@@ -93,6 +100,9 @@ public class EntityFireTicker extends EntityTicker<Entity> {
         }
         else if (CompatHelper.IS_PROMETHEUS_LOADED.get()) {
             return PrometheusCompat.getSparkParticle(entity);
+        }
+        else if (CompatHelper.IS_DYED_FLAMES_LOADED.get()) {
+            return DyedFlamesCompat.getSparkParticle(entity);
         }
         return SparkParticle.DEFAULT_COLORS;
     }

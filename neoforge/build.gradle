@@ -59,4 +59,7 @@ dependencies {
     compileOnly("maven.modrinth:prism-lib:${neoforge_prism_version}")
     compileOnly("maven.modrinth:item-borders:${neoforge_item_borders_version}")
     compileOnly("maven.modrinth:endrem:${neoforge_endrem_version}")
+    compileOnly("maven.modrinth:dyed-flames:${neoforge_dyed_flames_version}")
+    compileOnly("fuzs.neoforgedatapackextensions:neoforgedatapackextensions-neoforge:${neoforgedatapackextensions_version}")
+    compileOnly("fuzs.puzzleslib:puzzleslib-neoforge:${puzzleslib_version}")
 }

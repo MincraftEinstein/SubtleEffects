@@ -71,6 +71,11 @@ repositories {
         name = "Modrinth"
         url = "https://api.modrinth.com/maven"
     }
+
+    maven {
+        name = "Fuzs Mod Resources"
+        url = "https://raw.githubusercontent.com/Fuzss/modresources/main/maven/"
+    }
 }
 
 // Declare capabilities on the outgoing configurations.
