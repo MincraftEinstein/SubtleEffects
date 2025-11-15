@@ -39,7 +39,6 @@ public class EinsteinSolarSystemLayer<T extends AvatarRenderState, V extends Hum
 
     public EinsteinSolarSystemLayer(RenderLayerParent<T, V> renderer, EntityRendererProvider.Context context) {
         super(renderer);
-        // TODO fix the model copying head rotations
         model = new EinsteinSolarSystemModel<>(context.bakeLayer(EinsteinSolarSystemModel.MODEL_LAYER));
         headLayer = new CustomHeadLayer<>(this, context.getModelSet(), context.getPlayerSkinRenderCache());
         armorLayer = new EinsteinSolarSystemArmorLayer<>(this,

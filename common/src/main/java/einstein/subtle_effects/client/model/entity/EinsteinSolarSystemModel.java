@@ -27,6 +27,10 @@ public class EinsteinSolarSystemModel<T extends AvatarRenderState> extends Human
     }
 
     @Override
+    public void setupAnim(T renderState) {
+    }
+
+    @Override
     public void setAllVisible(boolean visible) {
         head.visible = visible;
         hat.visible = visible;
