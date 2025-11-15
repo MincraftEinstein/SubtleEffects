@@ -8,6 +8,12 @@ public interface ParticleAccessor {
 
     double getZ();
 
+    double getOldX();
+
+    double getOldY();
+
+    double getOldZ();
+
     void setGravity(float gravity);
 
     void setHasPhysics(boolean hasPhysics);

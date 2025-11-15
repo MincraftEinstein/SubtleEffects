@@ -11,8 +11,6 @@ import org.spongepowered.asm.mixin.gen.Invoker;
 @Mixin(Particle.class)
 public abstract class ParticleMixin implements ParticleAccessor {
 
-    @Shadow
-    protected float gravity;
     @Unique
     private boolean subtleEffects$forced = false;
 
@@ -30,6 +28,18 @@ public abstract class ParticleMixin implements ParticleAccessor {
     @Override
     @Accessor("z")
     public abstract double getZ();
+
+    @Override
+    @Accessor("xo")
+    public abstract double getOldX();
+
+    @Override
+    @Accessor("yo")
+    public abstract double getOldY();
+
+    @Override
+    @Accessor("zo")
+    public abstract double getOldZ();
 
     @Override
     @Accessor("gravity")
@@ -62,9 +72,8 @@ public abstract class ParticleMixin implements ParticleAccessor {
     }
 
     @Override
-    public float getGravity() {
-        return gravity;
-    }
+    @Accessor("gravity")
+    public abstract float getGravity();
 
     @Override
     public boolean subtleEffects$shouldIgnoreCulling() {
