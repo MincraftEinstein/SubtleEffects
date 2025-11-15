@@ -6,7 +6,6 @@
   "compatibilityLevel": "JAVA_17",
   "client": [
     "client.ClientLevelMixin",
-    "client.ColumnInstanceMixin",
     "client.EntityInsideFireHandlerMixin",
     "client.GameRendererAccessor",
     "client.GameRendererMixin",

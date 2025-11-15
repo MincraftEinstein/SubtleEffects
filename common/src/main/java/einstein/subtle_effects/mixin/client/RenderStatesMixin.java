@@ -2,6 +2,7 @@ package einstein.subtle_effects.mixin.client;
 
 import einstein.subtle_effects.util.RenderStateAttachmentAccessor;
 import it.unimi.dsi.fastutil.objects.Reference2ObjectOpenHashMap;
+import net.minecraft.client.renderer.WeatherEffectRenderer;
 import net.minecraft.client.renderer.entity.state.EntityRenderState;
 import net.minecraft.client.renderer.state.LevelRenderState;
 import org.spongepowered.asm.mixin.Mixin;
@@ -9,7 +10,7 @@ import org.spongepowered.asm.mixin.Unique;
 
 import java.util.Map;
 
-@Mixin({EntityRenderState.class, LevelRenderState.class})
+@Mixin({EntityRenderState.class, LevelRenderState.class, WeatherEffectRenderer.ColumnInstance.class})
 public class RenderStatesMixin implements RenderStateAttachmentAccessor {
 
     @Unique

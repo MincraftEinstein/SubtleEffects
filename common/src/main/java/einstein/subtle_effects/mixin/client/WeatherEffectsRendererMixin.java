@@ -6,9 +6,10 @@ import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import einstein.subtle_effects.init.ModParticles;
+import einstein.subtle_effects.init.ModRenderStateAttachmentKeys;
 import einstein.subtle_effects.particle.option.FloatParticleOptions;
+import einstein.subtle_effects.util.RenderStateAttachmentAccessor;
 import einstein.subtle_effects.util.Util;
-import einstein.subtle_effects.util.WeatherColumnInstance;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.WeatherEffectRenderer;
 import net.minecraft.core.BlockPos;
@@ -22,6 +23,8 @@ import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.phys.Vec3;
+import org.joml.Vector3f;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -81,25 +84,22 @@ public abstract class WeatherEffectsRendererMixin {
     }
 
     @WrapOperation(method = "extractRenderState", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/WeatherEffectRenderer;createRainColumnInstance(Lnet/minecraft/util/RandomSource;IIIIIIF)Lnet/minecraft/client/renderer/WeatherEffectRenderer$ColumnInstance;"))
-    private WeatherEffectRenderer.ColumnInstance collectColumnInstances(WeatherEffectRenderer instance, RandomSource p_364494_, int p_361188_, int p_362466_, int p_364844_, int p_361656_, int p_364160_, int p_361622_, float p_363800_, Operation<WeatherEffectRenderer.ColumnInstance> original, Level level, @Local BlockPos.MutableBlockPos pos) {
-        WeatherEffectRenderer.ColumnInstance column = original.call(instance, p_364494_, p_361188_, p_362466_, p_364844_, p_361656_, p_364160_, p_361622_, p_363800_);
-        ((WeatherColumnInstance) (Object) column).subtleEffects$set(level, pos.immutable());
+    private WeatherEffectRenderer.ColumnInstance applyColorToColumn(WeatherEffectRenderer renderer, RandomSource random, int ticks, int x, int bottomY, int topY, int z, int lightCoords, float partialTick, Operation<WeatherEffectRenderer.ColumnInstance> original, Level level, @Local BlockPos.MutableBlockPos pos) {
+        WeatherEffectRenderer.ColumnInstance column = original.call(renderer, random, ticks, x, bottomY, topY, z, lightCoords, partialTick);
+
+        if (ENVIRONMENT.biomeColorRain) {
+            BlockPos immutablePos = pos.immutable();
+            ((RenderStateAttachmentAccessor) (Object) column).subtleEffects$set(ModRenderStateAttachmentKeys.COLOR, Vec3.fromRGB24(level.getBiome(immutablePos).value().getWaterColor()).toVector3f());
+        }
         return column;
     }
 
     @WrapOperation(method = "renderInstances", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/vertex/VertexConsumer;setColor(I)Lcom/mojang/blaze3d/vertex/VertexConsumer;"))
-    private VertexConsumer renderSnowAndRain(VertexConsumer instance, int color, Operation<VertexConsumer> original, @Local WeatherEffectRenderer.ColumnInstance column, @Local(ordinal = 4) float alpha) {
-        WeatherColumnInstance weatherColumn = (WeatherColumnInstance) (Object) column;
-        Level level = weatherColumn.subtleEffects$getLevel();
-
-        if (level != null) {
-            BlockPos pos = weatherColumn.subtleEffects$getPos();
-
-            if (getPrecipitationAt(level, pos) == Biome.Precipitation.RAIN && ENVIRONMENT.biomeColorRain) {
-                int waterColor = level.getBiome(pos).value().getWaterColor();
-                return instance.setColor((waterColor >> 16) / 255F, (waterColor >> 8) / 255F, waterColor / 255F, alpha);
-            }
+    private VertexConsumer replaceWeatherColor(VertexConsumer consumer, int color, Operation<VertexConsumer> original, @Local WeatherEffectRenderer.ColumnInstance column, @Local(ordinal = 4) float alpha) {
+        Vector3f waterColor = ((RenderStateAttachmentAccessor) (Object) column).subtleEffects$get(ModRenderStateAttachmentKeys.COLOR);
+        if (waterColor != null) {
+            return consumer.setColor(waterColor.x(), waterColor.y(), waterColor.z(), alpha);
         }
-        return original.call(instance, color);
+        return original.call(consumer, color);
     }
 }
