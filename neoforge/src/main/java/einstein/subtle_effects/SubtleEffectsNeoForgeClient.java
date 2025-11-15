@@ -60,6 +60,11 @@ public class SubtleEffectsNeoForgeClient {
         });
         NeoForge.EVENT_BUS.addListener((RegisterClientCommandsEvent event) ->
                 SubtleEffectsClient.registerClientCommands(event.getDispatcher(), event.getBuildContext()));
+        NeoForge.EVENT_BUS.addListener((RenderLevelStageEvent event) -> {
+            if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_PARTICLES) {
+                SubtleEffectsClient.renderParticleBoundingBoxes(event.getPoseStack(), event.getCamera());
+            }
+        });
     }
 
     @SuppressWarnings("unchecked")

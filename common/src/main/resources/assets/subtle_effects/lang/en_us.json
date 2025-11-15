@@ -28,6 +28,8 @@
   "commands.subtle_effects.subtle_effects.particles.clear.success": "Cleared Particles",
   "commands.subtle_effects.subtle_effects.particles.count.enable.success": "Displaying Particle Count",
   "commands.subtle_effects.subtle_effects.particles.count.disable.success": "No Longer Displaying Particle Count",
+  "commands.subtle_effects.subtle_effects.particles.display_bounding_boxes.enable.success": "Displaying Particle Bounding Boxes",
+  "commands.subtle_effects.subtle_effects.particles.display_bounding_boxes.disable.success": "No Longer Displaying Particle Bounding Boxes",
   "resourcePack.subtle_effects.biome_water_color_particles.name": "Biome Water Color Particles",
   "resourcePack.subtle_effects.biome_water_color_particles.description": "Water particles match biome water color",
   "ui.subtle_effects.hud.particle_count": "Particles: %s",
