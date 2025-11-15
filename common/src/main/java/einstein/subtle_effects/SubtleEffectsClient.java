@@ -1,7 +1,5 @@
 package einstein.subtle_effects;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.BoolArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
@@ -14,27 +12,19 @@ import einstein.subtle_effects.client.renderer.entity.EinsteinSolarSystemLayer;
 import einstein.subtle_effects.client.renderer.entity.PartyHatLayer;
 import einstein.subtle_effects.compat.CompatHelper;
 import einstein.subtle_effects.init.*;
-import einstein.subtle_effects.mixin.client.particle.ParticleEngineAccessor;
 import einstein.subtle_effects.ticking.GeyserManager;
 import einstein.subtle_effects.ticking.biome_particles.BiomeParticleManager;
 import einstein.subtle_effects.ticking.tickers.ChestBlockEntityTicker;
 import einstein.subtle_effects.ticking.tickers.TickerManager;
 import einstein.subtle_effects.ticking.tickers.WaterfallTicker;
 import einstein.subtle_effects.ticking.tickers.entity.EntityTickerManager;
-import einstein.subtle_effects.util.FrustumGetter;
-import einstein.subtle_effects.util.ParticleAccessor;
 import einstein.subtle_effects.util.Util;
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.ClientAvatarEntity;
 import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
-import net.minecraft.client.renderer.LevelRenderer;
-import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.entity.player.AvatarRenderer;
@@ -44,17 +34,12 @@ import net.minecraft.commands.SharedSuggestionProvider;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.util.FastColor;
-import net.minecraft.util.Mth;
 import net.minecraft.util.profiling.Profiler;
 import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.world.entity.Avatar;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.AABB;
-import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
-import org.joml.Vector3f;
 
 import java.time.LocalDate;
 import java.time.Month;
@@ -70,7 +55,7 @@ public class SubtleEffectsClient {
     private static boolean HAS_CLEARED = false;
     private static boolean DISPLAY_PARTICLE_COUNT = false;
     private static boolean HAS_DISPLAYED_BIRTHDAY_NOTIFICATION = false;
-    private static boolean DISPLAY_PARTICLE_BOUNDING_BOXES = false;
+    public static boolean DISPLAY_PARTICLE_BOUNDING_BOXES = false;
     private static Level LEVEL;
 
     public static void clientSetup() {
@@ -173,10 +158,10 @@ public class SubtleEffectsClient {
                 .then(particlesCountEnabled);
 
         RequiredArgumentBuilder<T, Boolean> particlesBoundingBoxesEnabled = RequiredArgumentBuilder.<T, Boolean>argument("enabled", BoolArgumentType.bool())
-                .executes(context -> toggleParticleBoundingBoxes(player, BoolArgumentType.getBool(context, "enabled")));
+                .executes(context -> toggleParticleBoundingBoxes(minecraft, BoolArgumentType.getBool(context, "enabled")));
 
         LiteralArgumentBuilder<T> particlesBoundingBoxes = LiteralArgumentBuilder.<T>literal("display_bounding_boxes")
-                .executes(context -> toggleParticleBoundingBoxes(player, true))
+                .executes(context -> toggleParticleBoundingBoxes(minecraft, true))
                 .then(particlesBoundingBoxesEnabled);
 
         LiteralArgumentBuilder<T> particles = LiteralArgumentBuilder.<T>literal("particles")
@@ -211,11 +196,11 @@ public class SubtleEffectsClient {
         return 1;
     }
 
-    private static int toggleParticleBoundingBoxes(Player player, boolean enabled) {
+    private static int toggleParticleBoundingBoxes(Minecraft minecraft, boolean enabled) {
         DISPLAY_PARTICLE_BOUNDING_BOXES = enabled;
 
         String enabledString = enabled ? "enable" : "disable";
-        sendSystemMsg(player, getMsgTranslation("subtle_effects.particles.display_bounding_boxes." + enabledString + ".success"));
+        sendSystemMsg(minecraft, getMsgTranslation("subtle_effects.particles.display_bounding_boxes." + enabledString + ".success"));
         return 1;
     }
 
@@ -234,47 +219,5 @@ public class SubtleEffectsClient {
         GeyserManager.INACTIVE_GEYSERS.clear();
         WaterfallTicker.WATERFALLS.clear();
         ChestBlockEntityTicker.clear();
-    }
-
-    public static void renderParticleBoundingBoxes(PoseStack poseStack, Camera camera) {
-        if (DISPLAY_PARTICLE_BOUNDING_BOXES) {
-            poseStack.pushPose();
-            Minecraft minecraft = Minecraft.getInstance();
-            MultiBufferSource.BufferSource bufferSource = minecraft.renderBuffers().bufferSource();
-            VertexConsumer consumer = bufferSource.getBuffer(RenderType.lines());
-            Vec3 cameraPos = camera.getPosition();
-            Frustum frustum = ((FrustumGetter) minecraft.levelRenderer).subtleEffects$getCullingFrustum();
-            float partialTicks = Util.getPartialTicks();
-
-            ((ParticleEngineAccessor) minecraft.particleEngine).getParticles().forEach((renderType, particles) -> {
-                if (particles == null || particles.isEmpty()) {
-                    return;
-                }
-
-                Vector3f renderTypeColor = Vec3.fromRGB24(FastColor.ARGB32.color(255, renderType.toString().hashCode())).toVector3f();
-                particles.forEach(particle -> {
-                    AABB aabb = particle.getBoundingBox();
-                    if (frustum.isVisible(aabb)) {
-                        poseStack.pushPose();
-                        ParticleAccessor accessor = (ParticleAccessor) particle;
-                        double x = Mth.lerp(partialTicks, accessor.getOldX(), accessor.getX()) - cameraPos.x();
-                        double y = Mth.lerp(partialTicks, accessor.getOldY(), accessor.getY()) - cameraPos.y();
-                        double z = Mth.lerp(partialTicks, accessor.getOldZ(), accessor.getZ()) - cameraPos.z();
-                        poseStack.translate(x, y, z);
-
-                        aabb = aabb.move(-accessor.getX(), -accessor.getY(), -accessor.getZ());
-                        LevelRenderer.renderLineBox(poseStack, consumer, aabb, 1, 1, 1, 1);
-
-                        AABB renderTypeAABB = new AABB(aabb.minX, aabb.maxY - 0.02, aabb.minZ, aabb.maxX, aabb.maxY + 0.02, aabb.maxZ);
-                        LevelRenderer.renderLineBox(poseStack, consumer, renderTypeAABB, renderTypeColor.x(), renderTypeColor.y(), renderTypeColor.z(), 1);
-
-                        poseStack.popPose();
-                    }
-                });
-            });
-
-            bufferSource.endBatch(RenderType.lines());
-            poseStack.popPose();
-        }
     }
 }

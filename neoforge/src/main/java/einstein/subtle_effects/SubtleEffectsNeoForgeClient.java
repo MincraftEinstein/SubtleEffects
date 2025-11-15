@@ -1,5 +1,6 @@
 package einstein.subtle_effects;
 
+import einstein.subtle_effects.client.renderer.ParticleBoundingBoxesRenderer;
 import einstein.subtle_effects.data.BCWPPackManager;
 import einstein.subtle_effects.data.MobSkullShaderReloadListener;
 import einstein.subtle_effects.data.NamedReloadListener;
@@ -68,11 +69,10 @@ public class SubtleEffectsNeoForgeClient {
         });
         NeoForge.EVENT_BUS.addListener((RegisterClientCommandsEvent event) ->
                 SubtleEffectsClient.registerClientCommands(event.getDispatcher(), event.getBuildContext()));
-        NeoForge.EVENT_BUS.addListener((RenderLevelStageEvent event) -> {
-            if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_PARTICLES) {
-                SubtleEffectsClient.renderParticleBoundingBoxes(event.getPoseStack(), event.getCamera());
-            }
-        });
+        NeoForge.EVENT_BUS.addListener((ExtractLevelRenderStateEvent event) ->
+                ParticleBoundingBoxesRenderer.extractParticleBoundingBoxes(event.getRenderState(), event.getCamera(), event.getFrustum()));
+        NeoForge.EVENT_BUS.addListener((RenderLevelStageEvent.AfterParticles event) ->
+                ParticleBoundingBoxesRenderer.renderParticleBoundingBoxes(event.getPoseStack(), event.getLevelRenderState()));
     }
 
     private static <T extends PreparableReloadListener & NamedReloadListener> void addReloadListener(AddClientReloadListenersEvent event, T listener) {

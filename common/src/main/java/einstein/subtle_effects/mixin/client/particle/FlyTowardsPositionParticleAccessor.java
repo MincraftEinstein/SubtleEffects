@@ -2,7 +2,7 @@ package einstein.subtle_effects.mixin.client.particle;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import einstein.subtle_effects.init.ModConfigs;
-import einstein.subtle_effects.util.QuadParticleAccessor;
+import einstein.subtle_effects.util.SingleQuadParticleAccessor;
 import net.minecraft.client.particle.FlyTowardsPositionParticle;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.SingleQuadParticle;
@@ -34,7 +34,7 @@ public interface FlyTowardsPositionParticleAccessor {
 
             if (ModConfigs.GENERAL.translucentEnchantmentParticles) {
                 accessor.setLifetimeAlpha(new Particle.LifetimeAlpha(0, 0.5F, 0, 1));
-                ((QuadParticleAccessor) particle).setAlpha(0.5F);
+                ((SingleQuadParticleAccessor) particle).setAlpha(0.5F);
             }
 
             if (ModConfigs.GENERAL.disableRandomizedShading) {
