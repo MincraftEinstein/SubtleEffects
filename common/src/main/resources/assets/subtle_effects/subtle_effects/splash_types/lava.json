@@ -8,6 +8,6 @@
     "sprite_set": "subtle_effects:lava_splash_ripple"
   },
   "droplet_color": {
-    "type": "none"
+    "type": "subtle_effects:none"
   }
 }

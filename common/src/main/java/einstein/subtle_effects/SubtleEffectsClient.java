@@ -10,6 +10,7 @@ import einstein.subtle_effects.client.model.entity.PartyHatModel;
 import einstein.subtle_effects.client.model.particle.SplashParticleModel;
 import einstein.subtle_effects.client.renderer.entity.EinsteinSolarSystemLayer;
 import einstein.subtle_effects.client.renderer.entity.PartyHatLayer;
+import einstein.subtle_effects.data.color_providers.ColorProviderType;
 import einstein.subtle_effects.init.*;
 import einstein.subtle_effects.ticking.GeyserManager;
 import einstein.subtle_effects.ticking.biome_particles.BiomeParticleManager;
@@ -65,6 +66,7 @@ public class SubtleEffectsClient {
         ModParticles.init();
         ModSpriteSets.init();
         ModAnimalFedEffectSettings.init();
+        ColorProviderType.init();
     }
 
     public static void clientTick(Minecraft minecraft, Level level) {
