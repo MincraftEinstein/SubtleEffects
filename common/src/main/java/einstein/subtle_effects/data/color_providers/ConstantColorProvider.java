@@ -2,7 +2,7 @@ package einstein.subtle_effects.data.color_providers;
 
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import einstein.subtle_effects.data.SparkProviderData;
+import einstein.subtle_effects.util.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
@@ -12,7 +12,7 @@ import org.joml.Vector3f;
 public class ConstantColorProvider extends ColorProviderType.ColorProvider {
 
     public static final MapCodec<ConstantColorProvider> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-            SparkProviderData.Options.RGB_COLOR_CODEC.fieldOf("color").forGetter(ConstantColorProvider::getColor)
+            Util.RGB_COLOR_CODEC.fieldOf("color").forGetter(ConstantColorProvider::getColor)
     ).apply(instance, ConstantColorProvider::new));
 
     private final int color;

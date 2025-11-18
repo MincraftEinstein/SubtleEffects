@@ -4,7 +4,7 @@ import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import einstein.subtle_effects.SubtleEffects;
-import einstein.subtle_effects.data.SparkProviderData;
+import einstein.subtle_effects.util.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
@@ -29,7 +29,7 @@ public record ColorProviderType<T extends ColorProviderType.ColorProvider>(Resou
     @SuppressWarnings("unchecked")
     public static final Codec<ColorProviderType<ColorProvider>> REGISTRY_CODEC = StringRepresentable.fromValues(() -> ColorProviderType.TYPES.values().toArray(new ColorProviderType[0]));
     @SuppressWarnings("unchecked")
-    private static final Codec<Either<Integer, ColorProvider>> CONSTANT_OR_DISPATCH_CODEC = Codec.either(SparkProviderData.Options.RGB_COLOR_CODEC, REGISTRY_CODEC.dispatch(colorProvider -> (ColorProviderType<ColorProvider>) colorProvider.getType(), type -> type.codec().get()));
+    private static final Codec<Either<Integer, ColorProvider>> CONSTANT_OR_DISPATCH_CODEC = Codec.either(Util.RGB_COLOR_CODEC, REGISTRY_CODEC.dispatch(colorProvider -> (ColorProviderType<ColorProvider>) colorProvider.getType(), type -> type.codec().get()));
     public static final Codec<ColorProvider> CODEC = CONSTANT_OR_DISPATCH_CODEC.xmap(either -> either.map(ConstantColorProvider::new, colorProvider -> colorProvider), colorProvider -> colorProvider.getType() == NONE ? Either.left(1) : Either.right(colorProvider));
 
     public static void init() {
