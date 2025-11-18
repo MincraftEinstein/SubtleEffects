@@ -4,6 +4,7 @@ import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import einstein.subtle_effects.data.BCWPPackManager;
+import einstein.subtle_effects.data.splash_types.SplashTypeReloadListener;
 import einstein.subtle_effects.init.ModSpriteSets;
 import einstein.subtle_effects.util.FrustumGetter;
 import einstein.subtle_effects.util.ParticleAccessor;
@@ -19,15 +20,19 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.packs.resources.Resource;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import static einstein.subtle_effects.init.ModConfigs.GENERAL;
 
@@ -41,9 +46,26 @@ public class ParticleEngineMixin {
     @Final
     private Map<ResourceLocation, ParticleEngine.MutableSpriteSet> spriteSets;
 
+    @Unique
+    private boolean subtleEffects$canAddCustomSpriteSets;
+
     @Inject(method = "registerProviders", at = @At("TAIL"))
     private void registerProviders(CallbackInfo ci) {
         spriteSets.putAll(ModSpriteSets.REGISTERED);
+    }
+
+    @Inject(method = "reload", at = @At("HEAD"))
+    private void reload(CallbackInfoReturnable<List<ParticleEngine.MutableSpriteSet>> cir) {
+        subtleEffects$canAddCustomSpriteSets = true;
+    }
+
+    @Inject(method = "loadParticleDescription", at = @At("TAIL"))
+    private void addCustomSpriteSets(ResourceLocation registryName, Resource resource, CallbackInfoReturnable<Optional<List<ResourceLocation>>> cir) {
+        if (subtleEffects$canAddCustomSpriteSets) {
+            subtleEffects$canAddCustomSpriteSets = false;
+            SplashTypeReloadListener.OLD_SPRITE_SETS.forEach(location -> spriteSets.remove(location));
+            spriteSets.putAll(SplashTypeReloadListener.SPRITE_SETS);
+        }
     }
 
     @Inject(method = "createParticle", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/particle/ParticleEngine;add(Lnet/minecraft/client/particle/Particle;)V"))

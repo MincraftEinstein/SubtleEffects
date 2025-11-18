@@ -40,7 +40,7 @@ public class NeoForgeClientEntityMixin implements FluidHeightAccessor {
         subtleEffects$fluidPairHeight.clear();
         boolean isInLava = CommonUtil.isEntityInFluid(subtleEffectsNeoForge$me, FluidTags.LAVA);
         CommonEntityAccessor accessor = (CommonEntityAccessor) subtleEffectsNeoForge$me;
-        ParticleSpawnUtil.spawnLavaSplash(subtleEffectsNeoForge$me, isInLava, firstTick, accessor.subtleEffects$wasTouchingLava());
+//        ParticleSpawnUtil.spawnLavaSplash(subtleEffectsNeoForge$me, isInLava, firstTick, accessor.subtleEffects$wasTouchingLava());
         accessor.subtleEffects$setTouchingLava(isInLava);
     }
 

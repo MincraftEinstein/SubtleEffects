@@ -6,13 +6,13 @@ import com.llamalad7.mixinextras.sugar.Local;
 import com.llamalad7.mixinextras.sugar.Share;
 import com.llamalad7.mixinextras.sugar.ref.LocalRef;
 import einstein.subtle_effects.data.FluidPair;
-import einstein.subtle_effects.util.CommonEntityAccessor;
+import einstein.subtle_effects.data.splash_types.SplashTypeReloadListener;
 import einstein.subtle_effects.util.FluidAccessor;
 import einstein.subtle_effects.util.FluidHeightAccessor;
 import einstein.subtle_effects.util.ParticleSpawnUtil;
 import it.unimi.dsi.fastutil.objects.Object2DoubleArrayMap;
 import it.unimi.dsi.fastutil.objects.Object2DoubleMap;
-import net.minecraft.tags.FluidTags;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.material.Fluid;
@@ -33,21 +33,40 @@ public class FabricClientEntityMixin implements FluidHeightAccessor {
     @Unique
     private final Object2DoubleMap<FluidPair> subtleEffects$fluidPairHeight = new Object2DoubleArrayMap<>();
 
-    @WrapOperation(method = "updateInWaterStateAndDoFluidPushing", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;updateFluidHeightAndDoFluidPushing(Lnet/minecraft/tags/TagKey;D)Z"))
-    private boolean doLavaSplash(Entity entity, TagKey<Fluid> fluidTag, double motionScale, Operation<Boolean> original) {
-        subtleEffects$fluidPairHeight.forEach((fluidPair, height) -> {
-            boolean b = height > 0;
-            // spawn splash
+    @Unique
+    private final Entity entity = (Entity) (Object) this;
 
-        });
+    @Unique
+    private FluidPair lastTouchedFluid;
 
+    @Inject(method = "updateInWaterStateAndDoFluidPushing", at = @At("HEAD"))
+    private void clearFluidPairHeight(CallbackInfoReturnable<Boolean> cir) {
         subtleEffects$fluidPairHeight.clear();
-        boolean result = original.call(entity, fluidTag, motionScale);
-        boolean isInLava = result && fluidTag == FluidTags.LAVA; // Just in case someone decides to do their own fluid pushing here
-        CommonEntityAccessor accessor = (CommonEntityAccessor) entity;
-        ParticleSpawnUtil.spawnLavaSplash(entity, isInLava, firstTick, accessor.subtleEffects$wasTouchingLava());
-        accessor.subtleEffects$setTouchingLava(isInLava);
-        return result;
+    }
+
+    @Inject(method = "updateInWaterStateAndDoFluidPushing", at = @At("TAIL"))
+    private void spawnSplash(CallbackInfoReturnable<Boolean> cir) {
+        if (!entity.level().isClientSide) {
+            return;
+        }
+
+        FluidState fluidState = entity.level().getFluidState(entity.blockPosition());
+        FluidPair fluidPair = ((FluidAccessor) fluidState.getType()).subtleEffects$getFluidPair();
+
+        if (fluidPair != null) {
+            double fluidPairHeight = subtleEffects$fluidPairHeight.getDouble(fluidPair);
+
+            if (fluidPairHeight > 0) {
+                if (lastTouchedFluid != fluidPair && !firstTick) {
+                    ResourceLocation type = SplashTypeReloadListener.FLUID_PAIR_TO_ID.get(fluidPair);
+
+                    if (type != null) {
+                        ParticleSpawnUtil.spawnSplashEffects(entity, entity.level(), type, entity.getY() + fluidPairHeight, entity.getDeltaMovement().y());
+                    }
+                }
+            }
+        }
+        lastTouchedFluid = fluidPair;
     }
 
     @Inject(method = "updateFluidHeightAndDoFluidPushing", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/material/FluidState;getHeight(Lnet/minecraft/world/level/BlockGetter;Lnet/minecraft/core/BlockPos;)F"))

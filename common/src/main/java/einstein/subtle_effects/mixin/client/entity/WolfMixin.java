@@ -4,7 +4,7 @@ import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.init.ModParticles;
-import einstein.subtle_effects.particle.option.SplashDropletParticleOptions;
+import einstein.subtle_effects.particle.option.DropletParticleOptions;
 import einstein.subtle_effects.util.Util;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
@@ -55,7 +55,7 @@ public class WolfMixin {
                 y -= 0.3F;
             }
 
-            level.addParticle(new SplashDropletParticleOptions(ModParticles.WATER_SPLASH_DROPLET.get(), 0.75F, 1, true),
+            level.addParticle(new DropletParticleOptions(ModParticles.WATER_DROPLET.get(), 0.75F, 1, true),
                     pos.x(), y, pos.z(), speed.x(), speed.y(), speed.z()
             );
             return;

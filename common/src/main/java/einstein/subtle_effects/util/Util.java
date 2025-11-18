@@ -11,7 +11,7 @@ import einstein.subtle_effects.init.ModParticles;
 import einstein.subtle_effects.mixin.client.GameRendererAccessor;
 import einstein.subtle_effects.mixin.client.block.AbstractCauldronBlockAccessor;
 import einstein.subtle_effects.particle.EnderEyePlacedRingParticle;
-import einstein.subtle_effects.particle.option.SplashDropletParticleOptions;
+import einstein.subtle_effects.particle.option.DropletParticleOptions;
 import me.fzzyhmstrs.fzzy_config.validation.misc.ValidatedColor;
 import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
@@ -126,10 +126,10 @@ public class Util {
     @Nullable
     public static ParticleOptions getParticleForFluid(Fluid fluid) {
         if (fluid.isSame(Fluids.WATER)) {
-            return new SplashDropletParticleOptions(ModParticles.WATER_SPLASH_DROPLET.get(), 1);
+            return new DropletParticleOptions(ModParticles.WATER_DROPLET.get(), 1);
         }
         else if (fluid.isSame(Fluids.LAVA)) {
-            return new SplashDropletParticleOptions(ModParticles.LAVA_SPLASH_DROPLET.get(), 1);
+            return new DropletParticleOptions(ModParticles.LAVA_DROPLET.get(), 1);
         }
         return null;
     }

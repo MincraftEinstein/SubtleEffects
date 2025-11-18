@@ -3,42 +3,29 @@ package einstein.subtle_effects.particle.option;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import io.netty.buffer.ByteBuf;
+import einstein.subtle_effects.init.ModParticles;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.resources.ResourceLocation;
 
-public record SplashDropletParticleOptions(ParticleType<SplashDropletParticleOptions> type, float scale,
-                                           float colorIntensity, boolean isSilent) implements ParticleOptions {
+public record SplashDropletParticleOptions(ResourceLocation typeId, float scale) implements ParticleOptions {
 
-    public SplashDropletParticleOptions(ParticleType<SplashDropletParticleOptions> type, float scale, float colorIntensity) {
-        this(type, scale, colorIntensity, false);
-    }
+    public static final MapCodec<SplashDropletParticleOptions> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+            ResourceLocation.CODEC.fieldOf("type").forGetter(SplashDropletParticleOptions::typeId),
+            Codec.FLOAT.fieldOf("scale").forGetter(SplashDropletParticleOptions::scale)
+    ).apply(instance, SplashDropletParticleOptions::new));
 
-    public SplashDropletParticleOptions(ParticleType<SplashDropletParticleOptions> type, float scale) {
-        this(type, scale, 1);
-    }
-
-    public static MapCodec<SplashDropletParticleOptions> codec(ParticleType<SplashDropletParticleOptions> type) {
-        return RecordCodecBuilder.mapCodec(instance -> instance.group(
-                Codec.FLOAT.fieldOf("scale").forGetter(SplashDropletParticleOptions::scale),
-                Codec.FLOAT.fieldOf("colorIntensity").forGetter(SplashDropletParticleOptions::colorIntensity),
-                Codec.BOOL.fieldOf("isSilent").forGetter(SplashDropletParticleOptions::isSilent)
-        ).apply(instance, (scale, colorIntensity, isSilent) -> new SplashDropletParticleOptions(type, scale, colorIntensity, isSilent)));
-    }
-
-    public static StreamCodec<ByteBuf, SplashDropletParticleOptions> streamCodec(ParticleType<SplashDropletParticleOptions> type) {
-        return StreamCodec.composite(
-                ByteBufCodecs.FLOAT, SplashDropletParticleOptions::scale,
-                ByteBufCodecs.FLOAT, SplashDropletParticleOptions::colorIntensity,
-                ByteBufCodecs.BOOL, SplashDropletParticleOptions::isSilent,
-                (scale, colorIntensity, isSilent) -> new SplashDropletParticleOptions(type, scale, colorIntensity, isSilent)
-        );
-    }
+    public static final StreamCodec<FriendlyByteBuf, SplashDropletParticleOptions> STREAM_CODEC = StreamCodec.composite(
+            ResourceLocation.STREAM_CODEC, SplashDropletParticleOptions::typeId,
+            ByteBufCodecs.FLOAT, SplashDropletParticleOptions::scale,
+            SplashDropletParticleOptions::new
+    );
 
     @Override
     public ParticleType<?> getType() {
-        return type;
+        return ModParticles.SPLASH_DROPLET.get();
     }
 }

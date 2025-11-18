@@ -25,12 +25,12 @@ public class CommonEntityMixin implements CommonEntityAccessor {
     @Inject(method = "doWaterSplashEffect", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/Mth;floor(D)I"))
     private void doWaterSplash(CallbackInfo ci) {
         if (subtleEffects$me instanceof ServerPlayer player) {
-            Services.NETWORK.sendToClientsTracking(player, (ServerLevel) subtleEffects$me.level(), subtleEffects$me.blockPosition(),
-                    new ClientBoundEntityLandInFluidPayload(subtleEffects$me.getId(),
-                            subtleEffects$me.getY() + subtleEffects$me.getFluidHeight(FluidTags.WATER),
-                            subtleEffects$me.getDeltaMovement().y(), false
-                    )
-            );
+//            Services.NETWORK.sendToClientsTracking(player, (ServerLevel) subtleEffects$me.level(), subtleEffects$me.blockPosition(),
+//                    new ClientBoundEntityLandInFluidPayload(subtleEffects$me.getId(),
+//                            subtleEffects$me.getY() + subtleEffects$me.getFluidHeight(FluidTags.WATER),
+//                            subtleEffects$me.getDeltaMovement().y(), false
+//                    )
+//            );
         }
     }
 

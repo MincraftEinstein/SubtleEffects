@@ -1,14 +1,16 @@
 package einstein.subtle_effects.networking.clientbound;
 
 import einstein.subtle_effects.configs.ReplacedParticlesDisplayType;
+import einstein.subtle_effects.data.FluidPair;
+import einstein.subtle_effects.data.splash_types.SplashTypeReloadListener;
 import einstein.subtle_effects.init.ModAnimalFedEffectSettings;
 import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.init.ModParticles;
 import einstein.subtle_effects.mixin.client.entity.AbstractHorseAccessor;
-import einstein.subtle_effects.particle.option.SplashEmitterParticleOptions;
 import einstein.subtle_effects.particle.option.FloatParticleOptions;
 import einstein.subtle_effects.particle.option.SheepFluffParticleOptions;
 import einstein.subtle_effects.ticking.tickers.TickerManager;
+import einstein.subtle_effects.util.FluidAccessor;
 import einstein.subtle_effects.util.MathUtil;
 import einstein.subtle_effects.util.ParticleSpawnUtil;
 import einstein.subtle_effects.util.Util;
@@ -17,6 +19,7 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.*;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -373,10 +376,16 @@ public class ClientPacketHandlers {
 
     public static void handle(ClientLevel level, ClientBoundEntityLandInFluidPayload payload) {
         Entity entity = level.getEntity(payload.entityId());
-
         if (entity != null) {
-            ParticleType<SplashEmitterParticleOptions> particleType = payload.isLava() ? ModParticles.LAVA_SPLASH_EMITTER.get() : ModParticles.WATER_SPLASH_EMITTER.get();
-            ParticleSpawnUtil.spawnSplashEffects(entity, level, particleType, payload.y(), payload.yVelocity());
+
+            FluidPair fluidPair = ((FluidAccessor) payload.fluid()).subtleEffects$getFluidPair();
+            if (fluidPair != null) {
+
+                ResourceLocation type = SplashTypeReloadListener.FLUID_PAIR_TO_ID.get(fluidPair);
+                if (type != null) {
+                    ParticleSpawnUtil.spawnSplashEffects(entity, level, type, payload.y(), payload.yVelocity());
+                }
+            }
         }
     }
 

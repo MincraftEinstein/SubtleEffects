@@ -1,11 +1,12 @@
 package einstein.subtle_effects.mixin.client;
 
+import einstein.subtle_effects.data.FluidPair;
+import einstein.subtle_effects.data.splash_types.SplashTypeReloadListener;
 import einstein.subtle_effects.init.ModConfigs;
-import einstein.subtle_effects.init.ModParticles;
 import einstein.subtle_effects.particle.option.SplashEmitterParticleOptions;
+import einstein.subtle_effects.util.FluidAccessor;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.particles.ParticleType;
-import net.minecraft.tags.FluidTags;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.FluidState;
@@ -60,16 +61,20 @@ public class ExplosionMixin {
                         return;
                     }
 
-                    ParticleType<SplashEmitterParticleOptions> type = fluidState.is(FluidTags.WATER) ? ModParticles.WATER_SPLASH_EMITTER.get() : fluidState.is(FluidTags.LAVA) ? ModParticles.LAVA_SPLASH_EMITTER.get() : null;
-                    if (type != null) {
-                        BlockPos surfacePos = currentPos.below();
-                        FluidState surfaceFluidState = level.getFluidState(surfacePos);
-                        float scale = radius - ((y - blockY) / radius);
+                    FluidPair fluidPair = ((FluidAccessor) fluidState.getType()).subtleEffects$getFluidPair();
+                    if (fluidPair != null) {
+                        ResourceLocation type = SplashTypeReloadListener.FLUID_PAIR_TO_ID.get(fluidPair);
 
-                        level.addAlwaysVisibleParticle(new SplashEmitterParticleOptions(type, scale, scale * (scale * 0.1F), -1, -1),
-                                true, x, surfacePos.getY() + surfaceFluidState.getHeight(level, surfacePos) + 0.01, z,
-                                0, 0, 0
-                        );
+                        if (type != null) {
+                            BlockPos surfacePos = currentPos.below();
+                            FluidState surfaceFluidState = level.getFluidState(surfacePos);
+                            float scale = radius - ((y - blockY) / radius);
+
+                            level.addAlwaysVisibleParticle(new SplashEmitterParticleOptions(type, scale, scale * (scale * 0.1F), -1, -1),
+                                    true, x, surfacePos.getY() + surfaceFluidState.getHeight(level, surfacePos) + 0.01, z,
+                                    0, 0, 0
+                            );
+                        }
                     }
                     return;
                 }

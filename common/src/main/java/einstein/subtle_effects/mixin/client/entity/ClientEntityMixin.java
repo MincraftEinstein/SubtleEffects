@@ -101,9 +101,9 @@ public abstract class ClientEntityMixin implements EntityTickerAccessor {
 
     @Inject(method = "doWaterSplashEffect", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/Mth;floor(D)I"), cancellable = true)
     private void doClientWaterSplash(CallbackInfo ci) {
-        if (ParticleSpawnUtil.spawnSplashEffects(subtleEffects$me, subtleEffects$me.level(), ModParticles.WATER_SPLASH_EMITTER.get(), FluidTags.WATER)) {
-            ci.cancel();
-        }
+//        if (ParticleSpawnUtil.spawnSplashEffects(subtleEffects$me, subtleEffects$me.level(), ModParticles.WATER_SPLASH_EMITTER.get(), FluidTags.WATER)) {
+//            ci.cancel();
+//        }
     }
 
     @Override

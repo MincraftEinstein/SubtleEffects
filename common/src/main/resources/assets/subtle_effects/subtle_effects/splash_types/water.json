@@ -1,0 +1,17 @@
+{
+  "fluid_pair": "subtle_effects:water",
+  "splash": {
+    "color": {
+      "type": "biome_water"
+    }
+  },
+  "splash_overlay": true,
+  "splash_ripple": {
+    "color": {
+      "type": "biome_water"
+    }
+  },
+  "droplet_color": {
+    "type": "biome_water"
+  }
+}

@@ -34,7 +34,7 @@ public class FallingBlockEntityMixin {
                 accessor.doWaterSplashingEffects();
             }
 
-            ParticleSpawnUtil.spawnLavaSplash(subtleEffects$me, isInLava, false, entityAccessor.subtleEffects$wasTouchingLava());
+//            ParticleSpawnUtil.spawnLavaSplash(subtleEffects$me, isInLava, false, entityAccessor.subtleEffects$wasTouchingLava());
         }
 
         accessor.subtleEffects$setTouchingWater(isInWater);

@@ -1,0 +1,13 @@
+{
+  "light_emission": 15,
+  "fluid_pair": "subtle_effects:lava",
+  "splash": {
+    "sprite_set": "subtle_effects:lava_splash"
+  },
+  "splash_ripple": {
+    "sprite_set": "subtle_effects:lava_splash_ripple"
+  },
+  "droplet_color": {
+    "type": "none"
+  }
+}

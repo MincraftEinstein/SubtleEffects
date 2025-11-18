@@ -1,9 +1,7 @@
 package einstein.subtle_effects;
 
-import einstein.subtle_effects.data.BCWPPackManager;
-import einstein.subtle_effects.data.FluidPairReloadListener;
-import einstein.subtle_effects.data.MobSkullShaderReloadListener;
-import einstein.subtle_effects.data.SparkProviderReloadListener;
+import einstein.subtle_effects.data.*;
+import einstein.subtle_effects.data.splash_types.SplashTypeReloadListener;
 import einstein.subtle_effects.platform.NeoForgeRegistryHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.ParticleProvider;
@@ -42,6 +40,7 @@ public class SubtleEffectsNeoForgeClient {
             event.registerReloadListener(new MobSkullShaderReloadListener());
             event.registerReloadListener(new BCWPPackManager());
             event.registerReloadListener(new FluidPairReloadListener());
+            event.registerReloadListener(new SplashTypeReloadListener());
         });
         modEventBus.addListener((EntityRenderersEvent.RegisterLayerDefinitions event) ->
                 SubtleEffectsClient.registerModelLayers().forEach(event::registerLayerDefinition)
