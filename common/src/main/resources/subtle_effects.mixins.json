@@ -14,6 +14,7 @@
     "client.LavaFluidMixin",
     "client.LevelRendererMixin",
     "client.MinecraftMixin",
+    "client.ReloadableResourceManagerMixin",
     "client.ScreenEffectRendererMixin",
     "client.WaterFluidMixin",
     "client.block.AbstractCandleBlockMixin",

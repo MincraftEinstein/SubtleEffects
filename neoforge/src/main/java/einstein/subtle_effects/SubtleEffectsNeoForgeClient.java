@@ -39,8 +39,6 @@ public class SubtleEffectsNeoForgeClient {
             event.registerReloadListener(new SparkProviderReloadListener());
             event.registerReloadListener(new MobSkullShaderReloadListener());
             event.registerReloadListener(new BCWPPackManager());
-            event.registerReloadListener(new FluidPairReloadListener());
-            event.registerReloadListener(new SplashTypeReloadListener());
         });
         modEventBus.addListener((EntityRenderersEvent.RegisterLayerDefinitions event) ->
                 SubtleEffectsClient.registerModelLayers().forEach(event::registerLayerDefinition)
