@@ -34,6 +34,7 @@ public class SplashRippleParticle extends FlatPlaneParticle {
         pos = BlockPos.containing(x, y, z).mutable();
         rotation = rotation.rotateX(90 * Mth.DEG_TO_RAD);
         lifetime = 15;
+        alpha = SplashParticle.alpha(rippleOptions);
         Vector3f color = SplashParticle.getColorAndApplyTint(rippleOptions, level, pos, random);
         rCol = color.x;
         gCol = color.y;
@@ -87,9 +88,7 @@ public class SplashRippleParticle extends FlatPlaneParticle {
 
         @Override
         public Particle createParticle(SplashRippleParticleOptions options, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
-            SplashRippleParticle particle = new SplashRippleParticle(level, x, y, z, options);
-//            particle.setAlpha(ENTITIES.splashes.splashOverlayAlpha.get());
-            return particle;
+            return new SplashRippleParticle(level, x, y, z, options);
         }
     }
 }

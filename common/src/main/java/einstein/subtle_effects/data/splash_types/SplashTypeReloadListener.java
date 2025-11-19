@@ -82,13 +82,13 @@ public class SplashTypeReloadListener extends SimplePreparableReloadListener<Map
                 createOptions(typeData.splashOptions(), WATER_SPLASH),
                 createOptions(overlayOptions, overlayOptions.colorProvider().isPresent() ? WATER_SPLASH_OVERLAY : null),
                 createOptions(typeData.splashRippleOptions(), WATER_SPLASH_RIPPLE),
-                new SplashOptionsData.SplashOptions(null, dropletOptions.colorProvider().orElse(NoneColorProvider.INSTANCE), dropletOptions.tinting())
+                new SplashOptionsData.SplashOptions(null, dropletOptions.colorProvider().orElse(NoneColorProvider.INSTANCE), dropletOptions.tinting(), dropletOptions.transparency())
         ));
     }
 
-    private static SplashOptionsData.SplashOptions createOptions(SplashOptionsData data, ParticleEngine.MutableSpriteSet defaultSprites) {
+    private static SplashOptionsData.SplashOptions createOptions(SplashOptionsData optionsData, ParticleEngine.MutableSpriteSet defaultSprites) {
         final ParticleEngine.MutableSpriteSet[] sprites = new ParticleEngine.MutableSpriteSet[1];
-        data.spriteSetId().ifPresentOrElse(
+        optionsData.spriteSetId().ifPresentOrElse(
                 location -> {
                     if (SPRITE_SETS.containsKey(location)) {
                         sprites[0] = SPRITE_SETS.get(location);
@@ -101,7 +101,7 @@ public class SplashTypeReloadListener extends SimplePreparableReloadListener<Map
                 () -> sprites[0] = defaultSprites
         );
 
-        return new SplashOptionsData.SplashOptions(sprites[0], data.colorProvider().orElse(NoneColorProvider.INSTANCE), data.tinting());
+        return new SplashOptionsData.SplashOptions(sprites[0], optionsData.colorProvider().orElse(NoneColorProvider.INSTANCE), optionsData.tinting(), optionsData.transparency());
     }
 
     @Override

@@ -25,6 +25,6 @@ public record SplashTypeData(ResourceLocation fluidPair, int lightEmission, Spla
             SplashOptionsData.CODEC.optionalFieldOf("splash", SplashOptionsData.EMPTY).forGetter(SplashTypeData::splashOptions),
             Codec.either(Codec.BOOL, SplashOptionsData.CODEC).optionalFieldOf("splash_overlay", Either.left(false)).forGetter(SplashTypeData::splashOverlayOptions),
             SplashOptionsData.CODEC.optionalFieldOf("splash_ripple", SplashOptionsData.EMPTY).forGetter(SplashTypeData::splashRippleOptions),
-            SplashOptionsData.CODEC_NO_SPRITES.optionalFieldOf("droplets").forGetter(SplashTypeData::dropletOptions)
+            SplashOptionsData.DROPLETS_CODEC.optionalFieldOf("droplets").forGetter(SplashTypeData::dropletOptions)
     ).apply(instance, SplashTypeData::new));
 }

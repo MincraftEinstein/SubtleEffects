@@ -25,6 +25,8 @@ import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
 
+import java.util.function.Function;
+
 import static einstein.subtle_effects.init.ModConfigs.ENTITIES;
 
 public class SplashParticle extends ModelParticle {
@@ -43,6 +45,7 @@ public class SplashParticle extends ModelParticle {
     private float overlayRCol = 1;
     private float overlayGCol = 1;
     private float overlayBCol = 1;
+    private final float overlayAlpha;
     private final SplashParticleModel model;
 
     protected SplashParticle(ClientLevel level, double x, double y, double z, SplashParticleOptions options) {
@@ -51,11 +54,14 @@ public class SplashParticle extends ModelParticle {
         SplashTypeData.SplashType type = SplashTypeReloadListener.SPLASH_TYPES_BY_ID.get(options.type());
         SplashOptionsData.SplashOptions splashOptions = type.splashOptions();
         SplashOptionsData.SplashOptions overlayOptions = type.splashOverlayOptions();
+        float overlayAlpha = alpha(overlayOptions);
 
         fluidPair = type.fluidPair();
         sprites = splashOptions.sprites();
         overlaySprites = overlayOptions.sprites();
-        hasOverlay = overlaySprites != null && ENTITIES.splashes.splashOverlayAlpha.get() > 0;
+        hasOverlay = overlaySprites != null && overlayAlpha > 0;
+        this.overlayAlpha = overlayAlpha;
+        alpha = alpha(splashOptions);
         pos = BlockPos.containing(x, y, z).mutable();
         lifetime = 15;
         lightLevel = type.lightEmission();
@@ -108,6 +114,13 @@ public class SplashParticle extends ModelParticle {
         tintedColor[2] = whiteIntensity + (colorIntensity * color.z());
     }
 
+    public static float alpha(SplashOptionsData.SplashOptions options) {
+        return options.transparency().map(transparency ->
+                transparency.mapRight(useConfig -> ENTITIES.splashes.splashOverlayAlpha.get())
+                        .map(Function.identity(), Function.identity())
+        ).orElse(1F);
+    }
+
     @Override
     protected int getLightColor(float partialTick) {
         return Math.max(LightTexture.block(lightLevel), super.getLightColor(partialTick));
@@ -141,7 +154,7 @@ public class SplashParticle extends ModelParticle {
         model.renderToBuffer(poseStack, bufferSource.getBuffer(model.renderType(texture)), lightColor, OverlayTexture.NO_OVERLAY, color);
 
         if (hasOverlay) {
-            int overlayColor = FastColor.ARGB32.colorFromFloat(ENTITIES.splashes.splashOverlayAlpha.get(), overlayRCol, overlayGCol, overlayBCol);
+            int overlayColor = FastColor.ARGB32.colorFromFloat(overlayAlpha, overlayRCol, overlayGCol, overlayBCol);
             model.renderToBuffer(poseStack, bufferSource.getBuffer(model.renderType(overlayTexture)), lightColor, OverlayTexture.NO_OVERLAY, overlayColor);
         }
 

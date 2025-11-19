@@ -11,6 +11,9 @@
     },
     "tinting": {
       "use_config": true
+    },
+    "transparency": {
+      "use_config": true
     }
   },
   "splash_ripple": {
@@ -18,6 +21,9 @@
       "type": "subtle_effects:biome_water"
     },
     "tinting": {
+      "use_config": true
+    },
+    "transparency": {
       "use_config": true
     }
   },
