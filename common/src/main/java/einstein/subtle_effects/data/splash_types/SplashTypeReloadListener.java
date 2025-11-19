@@ -75,12 +75,14 @@ public class SplashTypeReloadListener extends SimplePreparableReloadListener<Map
         }
 
         SplashOptionsData overlayOptions = Either.unwrap(typeData.splashOverlayOptions().mapLeft(hasOverlay -> hasOverlay ? SplashOptionsData.DEFAULT : SplashOptionsData.EMPTY));
+        SplashOptionsData dropletOptions = typeData.dropletOptions().orElse(SplashOptionsData.DEFAULT);
+
         fluidPairs.add(fluidPairId);
         splashTypes.put(id, new SplashTypeData.SplashType(fluidPair, typeData.lightEmission(),
                 createOptions(typeData.splashOptions(), WATER_SPLASH),
                 createOptions(overlayOptions, overlayOptions.colorProvider().isPresent() ? WATER_SPLASH_OVERLAY : null),
                 createOptions(typeData.splashRippleOptions(), WATER_SPLASH_RIPPLE),
-                typeData.dropletColors()
+                new SplashOptionsData.SplashOptions(null, dropletOptions.colorProvider().orElse(NoneColorProvider.INSTANCE), dropletOptions.tinting())
         ));
     }
 
@@ -99,7 +101,7 @@ public class SplashTypeReloadListener extends SimplePreparableReloadListener<Map
                 () -> sprites[0] = defaultSprites
         );
 
-        return new SplashOptionsData.SplashOptions(sprites[0], data.colorProvider().orElse(NoneColorProvider.INSTANCE));
+        return new SplashOptionsData.SplashOptions(sprites[0], data.colorProvider().orElse(NoneColorProvider.INSTANCE), data.tinting());
     }
 
     @Override

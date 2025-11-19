@@ -20,6 +20,8 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FastColor;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
 
@@ -62,17 +64,48 @@ public class SplashParticle extends ModelParticle {
         setSize(xScale, yScale);
         setSpriteFromAge();
 
-        Vector3f color = splashOptions.color().provideColor(level, pos, random);
+        Vector3f color = getColorAndApplyTint(splashOptions, level, pos, random);
         rCol = color.x;
         gCol = color.y;
         bCol = color.z;
 
         if (hasOverlay) {
-            Vector3f overlayColor = overlayOptions.color().provideColor(level, pos, random);
+            Vector3f overlayColor = getColorAndApplyTint(overlayOptions, level, pos, random);
             overlayRCol = overlayColor.x;
             overlayGCol = overlayColor.y;
             overlayBCol = overlayColor.z;
         }
+    }
+
+    public static Vector3f getColorAndApplyTint(SplashOptionsData.SplashOptions options, Level level, BlockPos pos, RandomSource random) {
+        Vector3f color = options.colorProvider().provideColor(level, pos, random);
+        float[] tintedColor = new float[] {color.x(), color.y(), color.z()};
+
+        options.tinting().ifPresent(tinting -> {
+            tintedColor[0] = 1;
+            tintedColor[1] = 1;
+            tintedColor[2] = 1;
+
+            tinting.ifLeft(colorIntensity -> tint(colorIntensity, tintedColor, color))
+                    .ifRight(useConfig -> {
+                        if (useConfig) {
+                            tint(ENTITIES.splashes.splashOverlayTint.get(), tintedColor, color);
+                        }
+                    });
+        });
+
+        return new Vector3f(tintedColor[0], tintedColor[1], tintedColor[2]);
+    }
+
+    private static void tint(float colorIntensity, float[] tintedColor, Vector3f color) {
+        if (colorIntensity <= 0) {
+            return;
+        }
+
+        float whiteIntensity = 1 - colorIntensity;
+        tintedColor[0] = whiteIntensity + (colorIntensity * color.x());
+        tintedColor[1] = whiteIntensity + (colorIntensity * color.y());
+        tintedColor[2] = whiteIntensity + (colorIntensity * color.z());
     }
 
     @Override
@@ -128,17 +161,7 @@ public class SplashParticle extends ModelParticle {
 
         @Override
         public Particle createParticle(SplashParticleOptions options, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
-            SplashParticle particle = new SplashParticle(level, x, y, z, options);
-//            if (colorIntensity > 0) {
-//                float whiteIntensity = 1 - colorIntensity;
-//
-//                particle.overlayRCol = whiteIntensity + (colorIntensity * red);
-//                particle.overlayGCol = whiteIntensity + (colorIntensity * green);
-//                particle.overlayBCol = whiteIntensity + (colorIntensity * blue);
-//            }
-//
-//            particle.setColor(red, green, blue);
-            return particle;
+            return new SplashParticle(level, x, y, z, options);
         }
     }
 }

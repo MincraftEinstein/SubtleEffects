@@ -4,17 +4,18 @@ import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import einstein.subtle_effects.data.FluidPair;
-import einstein.subtle_effects.data.color_providers.ColorProviderType;
 import net.minecraft.resources.ResourceLocation;
+
+import java.util.Optional;
 
 public record SplashTypeData(ResourceLocation fluidPair, int lightEmission, SplashOptionsData splashOptions,
                              Either<Boolean, SplashOptionsData> splashOverlayOptions,
-                             SplashOptionsData splashRippleOptions, ColorProviderType.ColorProvider dropletColors) {
+                             SplashOptionsData splashRippleOptions, Optional<SplashOptionsData> dropletOptions) {
 
     public record SplashType(FluidPair fluidPair, int lightEmission, SplashOptionsData.SplashOptions splashOptions,
                              SplashOptionsData.SplashOptions splashOverlayOptions,
                              SplashOptionsData.SplashOptions splashRippleOptions,
-                             ColorProviderType.ColorProvider dropletColors) {
+                             SplashOptionsData.SplashOptions dropletOptions) {
 
     }
 
@@ -24,6 +25,6 @@ public record SplashTypeData(ResourceLocation fluidPair, int lightEmission, Spla
             SplashOptionsData.CODEC.optionalFieldOf("splash", SplashOptionsData.EMPTY).forGetter(SplashTypeData::splashOptions),
             Codec.either(Codec.BOOL, SplashOptionsData.CODEC).optionalFieldOf("splash_overlay", Either.left(false)).forGetter(SplashTypeData::splashOverlayOptions),
             SplashOptionsData.CODEC.optionalFieldOf("splash_ripple", SplashOptionsData.EMPTY).forGetter(SplashTypeData::splashRippleOptions),
-            ColorProviderType.CODEC.fieldOf("droplet_color").forGetter(SplashTypeData::dropletColors)
+            SplashOptionsData.CODEC_NO_SPRITES.optionalFieldOf("droplets").forGetter(SplashTypeData::dropletOptions)
     ).apply(instance, SplashTypeData::new));
 }

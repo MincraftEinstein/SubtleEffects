@@ -5,13 +5,28 @@
       "type": "subtle_effects:biome_water"
     }
   },
-  "splash_overlay": true,
+  "splash_overlay": {
+    "color": {
+      "type": "subtle_effects:biome_water"
+    },
+    "tinting": {
+      "use_config": true
+    }
+  },
   "splash_ripple": {
     "color": {
       "type": "subtle_effects:biome_water"
+    },
+    "tinting": {
+      "use_config": true
     }
   },
-  "droplet_color": {
-    "type": "subtle_effects:biome_water"
+  "droplets": {
+    "color": {
+      "type": "subtle_effects:biome_water"
+    },
+    "tinting": {
+      "use_config": true
+    }
   }
 }

@@ -94,7 +94,7 @@ public class DropletParticle extends DripParticle.FallAndLandParticle implements
         @Override
         public Particle createParticle(SplashDropletParticleOptions options, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
             SplashTypeData.SplashType type = SplashTypeReloadListener.SPLASH_TYPES_BY_ID.get(options.typeId());
-            Vector3f color = type.dropletColors().provideColor(level, BlockPos.containing(x, y, z), level.getRandom());
+            Vector3f color = SplashParticle.getColorAndApplyTint(type.dropletOptions(), level, BlockPos.containing(x, y, z), level.getRandom());
             FluidPair fluidPair = type.fluidPair();
             // TODO config for isSilent
             Particle particle = new DropletParticle(level, x, y, z, xSpeed, ySpeed, zSpeed, options.scale(), sprites, type.lightEmission(), fluidPair.source(), fluidPair.is(Fluids.WATER) ? ParticleTypes.SPLASH : (fluidPair.is(Fluids.LAVA) ? ParticleTypes.LANDING_LAVA : null), false);
