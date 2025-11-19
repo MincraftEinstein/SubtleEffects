@@ -3,20 +3,21 @@ package einstein.subtle_effects.particle.emitter;
 import einstein.subtle_effects.data.FluidPair;
 import einstein.subtle_effects.data.splash_types.SplashTypeData;
 import einstein.subtle_effects.data.splash_types.SplashTypeReloadListener;
-import einstein.subtle_effects.init.ModParticles;
-import einstein.subtle_effects.particle.option.*;
+import einstein.subtle_effects.particle.option.SplashDropletParticleOptions;
+import einstein.subtle_effects.particle.option.SplashEmitterParticleOptions;
+import einstein.subtle_effects.particle.option.SplashParticleOptions;
+import einstein.subtle_effects.particle.option.SplashRippleParticleOptions;
 import einstein.subtle_effects.util.Util;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.NoRenderParticle;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.level.material.Fluids;
 import org.jetbrains.annotations.Nullable;
 
 import static einstein.subtle_effects.init.ModConfigs.ENTITIES;
@@ -94,7 +95,7 @@ public class SplashEmitter extends NoRenderParticle {
             firstSplash = false;
 
             if (ENTITIES.splashes.splashBubbles && entity != null) {
-                if (level.getFluidState(pos.below()).is(FluidTags.WATER)) {
+                if (fluidPair.is(Fluids.WATER)) {
                     for (int i = 0; i < 8 * (widthModifier * 5); i++) {
                         int xSign = nextSign(random);
                         int zSign = nextSign(random);

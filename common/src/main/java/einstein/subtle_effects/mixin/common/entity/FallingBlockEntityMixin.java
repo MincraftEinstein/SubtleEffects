@@ -1,48 +1,84 @@
 package einstein.subtle_effects.mixin.common.entity;
 
 import com.llamalad7.mixinextras.sugar.Local;
+import einstein.subtle_effects.data.FluidPair;
 import einstein.subtle_effects.networking.clientbound.ClientBoundFallingBlockLandPayload;
 import einstein.subtle_effects.platform.Services;
-import einstein.subtle_effects.util.CommonEntityAccessor;
-import einstein.subtle_effects.util.CommonUtil;
+import einstein.subtle_effects.util.FluidAccessor;
+import einstein.subtle_effects.util.FluidHeightAccessor;
 import einstein.subtle_effects.util.ParticleSpawnUtil;
+import it.unimi.dsi.fastutil.objects.Object2DoubleArrayMap;
+import it.unimi.dsi.fastutil.objects.Object2DoubleMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.tags.FluidTags;
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.item.FallingBlockEntity;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.phys.AABB;
+import org.apache.commons.lang3.function.Consumers;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(FallingBlockEntity.class)
-public class FallingBlockEntityMixin {
+public abstract class FallingBlockEntityMixin extends Entity implements FluidHeightAccessor {
 
-    @Unique
-    private final FallingBlockEntity subtleEffects$me = (FallingBlockEntity) (Object) this;
+    @Shadow
+    public abstract BlockState getBlockState();
+
+    public FallingBlockEntityMixin(EntityType<?> entityType, Level level) {
+        super(entityType, level);
+    }
 
     @Inject(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/item/FallingBlockEntity;handlePortal()V"))
     private void tick(CallbackInfo ci) {
-        EntityAccessor accessor = (EntityAccessor) subtleEffects$me;
-        CommonEntityAccessor entityAccessor = (CommonEntityAccessor) subtleEffects$me;
-        boolean isInWater = CommonUtil.isEntityInFluid(subtleEffects$me, FluidTags.WATER);
-        boolean isInLava = CommonUtil.isEntityInFluid(subtleEffects$me, FluidTags.LAVA);
-
-        if (subtleEffects$me.level().isClientSide()) {
-            if (isInWater && !subtleEffects$me.isInWater()) {
-                accessor.doWaterSplashingEffects();
-            }
-
-//            ParticleSpawnUtil.spawnLavaSplash(subtleEffects$me, isInLava, false, entityAccessor.subtleEffects$wasTouchingLava());
+        if (level().isClientSide) {
+            subtleEffects$getFluidPairHeight().clear();
+            subtleEffects$updateFluidPairHeight();
+            subtleEffects$setLastTouchedFluid(ParticleSpawnUtil.preformSplash(true, true, this, false, Consumers.nop()));
         }
-
-        accessor.subtleEffects$setTouchingWater(isInWater);
-        entityAccessor.subtleEffects$setTouchingLava(isInLava);
     }
 
     @Inject(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/Fallable;onLand(Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/entity/item/FallingBlockEntity;)V"))
     private void onLand(CallbackInfo ci, @Local BlockPos pos) {
-        Services.NETWORK.sendToClientsTracking((ServerLevel) subtleEffects$me.level(), pos, new ClientBoundFallingBlockLandPayload(subtleEffects$me.getBlockState(), pos, subtleEffects$me.isInWater()));
+        Services.NETWORK.sendToClientsTracking((ServerLevel) level(), pos, new ClientBoundFallingBlockLandPayload(getBlockState(), pos, isInWater()));
+    }
+
+    @Unique
+    private void subtleEffects$updateFluidPairHeight() {
+        if (touchingUnloadedChunk()) {
+            return;
+        }
+
+        AABB aabb = getBoundingBox();
+        BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
+        Object2DoubleMap<FluidPair> fluidHeights = new Object2DoubleArrayMap<>();
+
+        for (int x = Mth.floor(aabb.minX); x < Mth.ceil(aabb.maxX); x++) {
+            for (int y = Mth.floor(aabb.minY); y < Mth.ceil(aabb.maxY); y++) {
+                for (int z = Mth.floor(aabb.minZ); z < Mth.ceil(aabb.maxZ); z++) {
+                    pos.set(x, y, z);
+                    FluidState fluidState = level().getFluidState(pos);
+
+                    if (!fluidState.isEmpty()) {
+                        double fluidHeight = y + fluidState.getHeight(level(), pos);
+                        if (fluidHeight >= aabb.minY) {
+
+                            FluidPair fluidPair = ((FluidAccessor) fluidState.getType()).subtleEffects$getFluidPair();
+                            fluidHeights.put(fluidPair, Math.max(fluidHeight - aabb.minY, fluidHeights.getOrDefault(fluidPair, 0)));
+                        }
+                    }
+                }
+            }
+        }
+
+        subtleEffects$getFluidPairHeight().putAll(fluidHeights);
     }
 }

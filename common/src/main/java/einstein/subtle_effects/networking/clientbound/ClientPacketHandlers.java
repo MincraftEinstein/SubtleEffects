@@ -10,10 +10,7 @@ import einstein.subtle_effects.mixin.client.entity.AbstractHorseAccessor;
 import einstein.subtle_effects.particle.option.FloatParticleOptions;
 import einstein.subtle_effects.particle.option.SheepFluffParticleOptions;
 import einstein.subtle_effects.ticking.tickers.TickerManager;
-import einstein.subtle_effects.util.FluidAccessor;
-import einstein.subtle_effects.util.MathUtil;
-import einstein.subtle_effects.util.ParticleSpawnUtil;
-import einstein.subtle_effects.util.Util;
+import einstein.subtle_effects.util.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
@@ -42,6 +39,8 @@ import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.Vec3;
 import org.joml.Vector3f;
 
@@ -377,13 +376,22 @@ public class ClientPacketHandlers {
     public static void handle(ClientLevel level, ClientBoundEntityLandInFluidPayload payload) {
         Entity entity = level.getEntity(payload.entityId());
         if (entity != null) {
+            Fluid fluid = payload.fluid();
 
-            FluidPair fluidPair = ((FluidAccessor) payload.fluid()).subtleEffects$getFluidPair();
-            if (fluidPair != null) {
+            if (fluid.isSame(Fluids.EMPTY)) {
+                return;
+            }
 
-                ResourceLocation type = SplashTypeReloadListener.FLUID_PAIR_TO_ID.get(fluidPair);
-                if (type != null) {
-                    ParticleSpawnUtil.spawnSplashEffects(entity, level, type, payload.y(), payload.yVelocity());
+            FluidPair lastTouchedFluid = ((FluidHeightAccessor) entity).subtleEffects$getLastTouchedFluid();
+            if (lastTouchedFluid == null || !lastTouchedFluid.is(fluid)) {
+
+                FluidPair fluidPair = ((FluidAccessor) fluid).subtleEffects$getFluidPair();
+                if (fluidPair != null) {
+
+                    ResourceLocation type = SplashTypeReloadListener.FLUID_PAIR_TO_ID.get(fluidPair);
+                    if (type != null) {
+                        ParticleSpawnUtil.spawnSplashEffects(entity, level, type, payload.y(), payload.yVelocity());
+                    }
                 }
             }
         }

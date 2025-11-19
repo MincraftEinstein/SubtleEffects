@@ -1,6 +1,8 @@
 package einstein.subtle_effects.util;
 
 import einstein.subtle_effects.configs.ModBlockConfigs;
+import einstein.subtle_effects.data.FluidPair;
+import einstein.subtle_effects.data.splash_types.SplashTypeReloadListener;
 import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.init.ModParticles;
 import einstein.subtle_effects.mixin.client.item.BucketItemAccessor;
@@ -48,6 +50,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.function.BiPredicate;
+import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
@@ -481,26 +484,40 @@ public class ParticleSpawnUtil {
         }
     }
 
-//    public static void spawnLavaSplash(Entity entity, boolean isInLava, boolean firstTick, boolean wasTouchingLava) {
-//        Level level = entity.level();
-//
-//        if (isInLava && ENTITIES.splashes.lavaSplashes) {
-//            if (!wasTouchingLava && !firstTick) {
-//                double yVelocity = entity.getDeltaMovement().y();
-//                if (entity instanceof ServerPlayer player) {
-//                    Services.NETWORK.sendToClientsTracking(player, (ServerLevel) level, entity.blockPosition(),
-//                            new ClientBoundEntityLandInFluidPayload(entity.getId(), entity.getY() + ((FluidHeightAccessor) entity).subtleEffects$getFluidHeight(((FluidAccessor) level.getFluidState(entity.blockPosition()).getType()).subtleEffects$getFluidPair()), yVelocity, true)
-//                    );
-//                    return;
-//                }
-//                spawnSplashEffects(entity, level, ModParticles.LAVA_SPLASH_EMITTER.get(), FluidTags.LAVA);
-//            }
-//        }
-//    }
+    public static FluidPair preformSplash(boolean waterOnly, boolean allFluids, Entity entity, boolean firstTick, Consumer<Boolean> successConsumer) {
+        Level level = entity.level();
+        if (!level.isClientSide) {
+            return null;
+        }
 
-//    public static boolean spawnSplashEffects(Entity entity, Level level, ParticleType<SplashEmitterParticleOptions> splashParticle, TagKey<Fluid> fluidTag) {
-//        return spawnSplashEffects(entity, level, splashParticle, entity.getY() + entity.getFluidHeight(fluidTag), entity.getDeltaMovement().y());
-//    }
+        FluidState fluidState = level.getFluidState(entity.blockPosition());
+        FluidPair fluidPair = ((FluidAccessor) fluidState.getType()).subtleEffects$getFluidPair();
+
+        if (fluidPair != null) {
+            boolean isWater = fluidPair.is(Fluids.WATER);
+
+            if (waterOnly == isWater || allFluids) {
+                FluidHeightAccessor accessor = (FluidHeightAccessor) entity;
+                double fluidPairHeight = accessor.subtleEffects$getFluidPairHeight().getDouble(fluidPair);
+
+                if (fluidPairHeight > 0) {
+                    if (accessor.subtleEffects$getLastTouchedFluid() != fluidPair && !firstTick) {
+                        ResourceLocation type = SplashTypeReloadListener.FLUID_PAIR_TO_ID.get(fluidPair);
+
+                        if (type != null) {
+                            if (spawnSplashEffects(entity, level, type, entity.getY() + fluidPairHeight, entity.getDeltaMovement().y())) {
+                                successConsumer.accept(isWater);
+                            }
+                        }
+                    }
+
+                    return fluidPair;
+                }
+            }
+        }
+
+        return null;
+    }
 
     public static boolean spawnSplashEffects(Entity entity, Level level, ResourceLocation type, double y, double yVelocity) {
         if (!ENTITIES.splashes.splashEffects) {

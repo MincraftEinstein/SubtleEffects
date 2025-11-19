@@ -4,11 +4,12 @@ import com.llamalad7.mixinextras.sugar.Local;
 import com.llamalad7.mixinextras.sugar.Share;
 import com.llamalad7.mixinextras.sugar.ref.LocalRef;
 import einstein.subtle_effects.data.FluidPair;
-import einstein.subtle_effects.util.*;
+import einstein.subtle_effects.util.FluidAccessor;
+import einstein.subtle_effects.util.FluidHeightAccessor;
+import einstein.subtle_effects.util.InterimCalculationAccessor;
 import it.unimi.dsi.fastutil.objects.Object2DoubleArrayMap;
 import it.unimi.dsi.fastutil.objects.Object2DoubleMap;
 import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
-import net.minecraft.tags.FluidTags;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.material.FluidState;
 import net.neoforged.neoforge.fluids.FluidType;
@@ -24,40 +25,25 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Mixin(Entity.class)
-public class NeoForgeClientEntityMixin implements FluidHeightAccessor {
-
-    @Shadow
-    protected boolean firstTick;
-
-    @Unique
-    private final Entity subtleEffectsNeoForge$me = (Entity) (Object) this;
+public abstract class NeoForgeClientEntityMixin implements FluidHeightAccessor {
 
     @Unique
     private final Object2DoubleMap<FluidPair> subtleEffects$fluidPairHeight = new Object2DoubleArrayMap<>();
 
-    @Inject(method = "updateInWaterStateAndDoFluidPushing", at = @At("TAIL"))
-    private void updateInWaterStateAndDoFluidPushing(CallbackInfoReturnable<Boolean> cir) {
-        subtleEffects$fluidPairHeight.clear();
-        boolean isInLava = CommonUtil.isEntityInFluid(subtleEffectsNeoForge$me, FluidTags.LAVA);
-        CommonEntityAccessor accessor = (CommonEntityAccessor) subtleEffectsNeoForge$me;
-//        ParticleSpawnUtil.spawnLavaSplash(subtleEffectsNeoForge$me, isInLava, firstTick, accessor.subtleEffects$wasTouchingLava());
-        accessor.subtleEffects$setTouchingLava(isInLava);
-    }
-
     @Inject(method = "updateFluidHeightAndDoFluidPushing()V", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/material/FluidState;getHeight(Lnet/minecraft/world/level/BlockGetter;Lnet/minecraft/core/BlockPos;)F"))
-    private void getFluidPairs(CallbackInfo ci, @Local FluidState fluidState, @Share("fluidPairs") LocalRef<Map<FluidType, FluidPair>> fluidPairsRef) {
+    private void storeFluidPairHeight(CallbackInfo ci, @Local FluidState fluidState, @Share("fluidPairs") LocalRef<Map<FluidType, FluidPair>> fluidPairsRef) {
         FluidPair fluidPair = ((FluidAccessor) fluidState.getType()).subtleEffects$getFluidPair();
         FluidType type = fluidState.getFluidType();
-        Map<FluidType, FluidPair> map = fluidPairsRef.get();
-        if (map == null) {
-            map = new HashMap<>();
+        Map<FluidType, FluidPair> fluidTypePairs = fluidPairsRef.get();
+        if (fluidTypePairs == null) {
+            fluidTypePairs = new HashMap<>();
         }
 
-        if (!map.containsKey(type) && fluidPair != null) {
-            map.put(type, fluidPair);
+        if (!fluidTypePairs.containsKey(type) && fluidPair != null) {
+            fluidTypePairs.put(type, fluidPair);
         }
 
-        fluidPairsRef.set(map);
+        fluidPairsRef.set(fluidTypePairs);
     }
 
     @Inject(method = "updateFluidHeightAndDoFluidPushing()V", at = @At(value = "INVOKE", target = "Lit/unimi/dsi/fastutil/objects/Object2ObjectMap;forEach(Ljava/util/function/BiConsumer;)V", remap = false))
@@ -72,8 +58,8 @@ public class NeoForgeClientEntityMixin implements FluidHeightAccessor {
     }
 
     @Override
-    public double subtleEffects$getFluidHeight(FluidPair fluidPair) {
-        return subtleEffects$fluidPairHeight.getDouble(fluidPair);
+    public Object2DoubleMap<FluidPair> subtleEffects$getFluidPairHeight() {
+        return subtleEffects$fluidPairHeight;
     }
 
     // For some reason using an actual mixin accessor didn't work, idk why
