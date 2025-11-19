@@ -3,6 +3,7 @@ package einstein.subtle_effects.particle.emitter;
 import einstein.subtle_effects.data.FluidPair;
 import einstein.subtle_effects.data.splash_types.SplashTypeData;
 import einstein.subtle_effects.data.splash_types.SplashTypeReloadListener;
+import einstein.subtle_effects.particle.SplashParticle;
 import einstein.subtle_effects.particle.option.SplashDropletParticleOptions;
 import einstein.subtle_effects.particle.option.SplashEmitterParticleOptions;
 import einstein.subtle_effects.particle.option.SplashParticleOptions;
@@ -25,11 +26,11 @@ import static einstein.subtle_effects.util.MathUtil.*;
 
 public class SplashEmitter extends NoRenderParticle {
 
+    private final SplashTypeData.SplashType type;
     @Nullable
     private final Entity entity;
     private final float velocity;
     private final float absVelocity;
-    private final boolean isLava;
     private final ResourceLocation typeId;
     private final FluidPair fluidPair;
     private final float widthModifier;
@@ -43,9 +44,8 @@ public class SplashEmitter extends NoRenderParticle {
     protected SplashEmitter(ClientLevel level, double x, double y, double z, SplashEmitterParticleOptions options) {
         super(level, x, y, z);
         typeId = options.type();
-        SplashTypeData.SplashType type = SplashTypeReloadListener.SPLASH_TYPES_BY_ID.get(typeId);
+        type = SplashTypeReloadListener.SPLASH_TYPES_BY_ID.get(typeId);
         fluidPair = type.fluidPair();
-        this.isLava = false;
         lifetime = 8; // half the splash lifetime
         pos = BlockPos.containing(x, y, z).mutable();
         velocity = options.velocity();
@@ -94,7 +94,7 @@ public class SplashEmitter extends NoRenderParticle {
             spawnSplashParticles(xScale, yScale, ((yScale * 0.5F) / widthModifier) * 0.3F, xScale);
             firstSplash = false;
 
-            if (ENTITIES.splashes.splashBubbles && entity != null) {
+            if (ENTITIES.splashes.waterSplashBubbles && entity != null) {
                 if (fluidPair.is(Fluids.WATER)) {
                     for (int i = 0; i < 8 * (widthModifier * 5); i++) {
                         int xSign = nextSign(random);
@@ -166,11 +166,11 @@ public class SplashEmitter extends NoRenderParticle {
 
     private boolean hasRipple() {
         if (ENTITIES.splashes.splashRipples) {
-            if (!ENTITIES.splashes.lavaSplashRipples && isLava) {
-                return false;
+            if (firstSplash || (secondSplash && ENTITIES.splashes.secondarySplashRipples)) {
+                return SplashParticle.alpha(type.splashRippleOptions()) > 0;
             }
-            return firstSplash || (secondSplash && ENTITIES.splashes.secondarySplashRipples);
         }
+
         return false;
     }
 

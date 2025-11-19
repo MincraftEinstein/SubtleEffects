@@ -42,7 +42,7 @@ public class ExplosionMixin {
 
     @Inject(method = "finalizeExplosion", at = @At("HEAD"))
     private void addSplashes(boolean spawnParticles, CallbackInfo ci) {
-        if (spawnParticles && level.isClientSide && ModConfigs.ENTITIES.splashes.explosionsCauseSplashes) {
+        if (spawnParticles && level.isClientSide && ModConfigs.ENTITIES.splashes.splashEffects && ModConfigs.ENTITIES.splashes.explosionsCauseSplashes) {
             BlockPos pos = BlockPos.containing(x, y, z);
             FluidState fluidState = level.getFluidState(pos);
 
