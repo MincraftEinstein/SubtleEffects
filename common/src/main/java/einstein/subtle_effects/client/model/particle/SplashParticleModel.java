@@ -1,7 +1,5 @@
 package einstein.subtle_effects.client.model.particle;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import einstein.subtle_effects.SubtleEffects;
 import einstein.subtle_effects.init.ModRenderTypes;
 import net.minecraft.client.model.Model;
