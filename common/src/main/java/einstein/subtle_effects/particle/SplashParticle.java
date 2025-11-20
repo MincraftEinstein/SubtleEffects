@@ -8,7 +8,6 @@ import einstein.subtle_effects.data.splash_types.SplashOptionsData;
 import einstein.subtle_effects.data.splash_types.SplashTypeData;
 import einstein.subtle_effects.data.splash_types.SplashTypeReloadListener;
 import einstein.subtle_effects.particle.option.SplashParticleOptions;
-import einstein.subtle_effects.util.Util;
 import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
@@ -121,6 +120,10 @@ public class SplashParticle extends ModelParticle {
         ).orElse(1F);
     }
 
+    public static boolean canNotSurvive(FluidPair fluidPair, Level level, BlockPos pos) {
+        return !fluidPair.is(level.getFluidState(pos)) && !fluidPair.is(level.getBlockState(pos));
+    }
+
     @Override
     protected int getLightColor(float partialTick) {
         return Math.max(LightTexture.block(lightLevel), super.getLightColor(partialTick));
@@ -129,7 +132,7 @@ public class SplashParticle extends ModelParticle {
     @Override
     public void tick() {
         pos.set(x, y, z);
-        if (!fluidPair.is(level.getFluidState(pos)) && !fluidPair.is(Util.getCauldronFluid(level.getBlockState(pos)))) {
+        if (canNotSurvive(fluidPair, level, pos)) {
             remove();
             return;
         }

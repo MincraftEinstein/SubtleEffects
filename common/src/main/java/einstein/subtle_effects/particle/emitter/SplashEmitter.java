@@ -8,7 +8,6 @@ import einstein.subtle_effects.particle.option.SplashDropletParticleOptions;
 import einstein.subtle_effects.particle.option.SplashEmitterParticleOptions;
 import einstein.subtle_effects.particle.option.SplashParticleOptions;
 import einstein.subtle_effects.particle.option.SplashRippleParticleOptions;
-import einstein.subtle_effects.util.Util;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.NoRenderParticle;
 import net.minecraft.client.particle.Particle;
@@ -84,8 +83,7 @@ public class SplashEmitter extends NoRenderParticle {
         super.tick();
         pos.set(x, y, z);
 
-        boolean isInFluid = fluidPair.is(level.getFluidState(pos)) || fluidPair.is(Util.getCauldronFluid(level.getBlockState(pos)));
-        if (!isInFluid || onGround) {
+        if (SplashParticle.canNotSurvive(fluidPair, level, pos) || onGround) {
             remove();
             return;
         }
@@ -95,7 +93,7 @@ public class SplashEmitter extends NoRenderParticle {
             firstSplash = false;
 
             if (ENTITIES.splashes.waterSplashBubbles && entity != null) {
-                if (fluidPair.is(Fluids.WATER)) {
+                if (level.getFluidState(pos.below()).is(Fluids.WATER)) {
                     for (int i = 0; i < 8 * (widthModifier * 5); i++) {
                         int xSign = nextSign(random);
                         int zSign = nextSign(random);

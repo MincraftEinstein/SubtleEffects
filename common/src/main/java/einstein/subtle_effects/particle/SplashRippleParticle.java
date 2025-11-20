@@ -5,7 +5,6 @@ import einstein.subtle_effects.data.splash_types.SplashOptionsData;
 import einstein.subtle_effects.data.splash_types.SplashTypeData;
 import einstein.subtle_effects.data.splash_types.SplashTypeReloadListener;
 import einstein.subtle_effects.particle.option.SplashRippleParticleOptions;
-import einstein.subtle_effects.util.Util;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleProvider;
@@ -51,7 +50,7 @@ public class SplashRippleParticle extends FlatPlaneParticle {
     @Override
     public void tick() {
         pos.set(x, y, z);
-        if (!fluidPair.is(level.getFluidState(pos)) && !fluidPair.is(Util.getCauldronFluid(level.getBlockState(pos)))) {
+        if (SplashParticle.canNotSurvive(fluidPair, level, pos)) {
             remove();
             return;
         }
