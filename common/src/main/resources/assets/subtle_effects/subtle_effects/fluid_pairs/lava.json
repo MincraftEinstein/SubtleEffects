@@ -1,4 +1,5 @@
 {
   "source": "minecraft:lava",
-  "flowing": "minecraft:flowing_lava"
+  "flowing": "minecraft:flowing_lava",
+  "cauldron": "minecraft:lava_cauldron"
 }

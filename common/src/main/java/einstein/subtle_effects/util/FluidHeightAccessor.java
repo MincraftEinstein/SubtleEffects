@@ -12,4 +12,6 @@ public interface FluidHeightAccessor {
     FluidPair subtleEffects$getLastTouchedFluid();
 
     void subtleEffects$setLastTouchedFluid(@Nullable FluidPair fluidPair);
+
+    void subtleEffects$cancelNextWaterSplash();
 }

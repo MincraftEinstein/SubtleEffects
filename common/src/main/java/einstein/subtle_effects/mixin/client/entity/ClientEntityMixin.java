@@ -1,6 +1,5 @@
 package einstein.subtle_effects.mixin.client.entity;
 
-import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import einstein.subtle_effects.data.FluidPair;
 import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.init.ModParticles;
@@ -23,6 +22,7 @@ import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import org.apache.commons.lang3.function.Consumers;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -124,24 +124,24 @@ public abstract class ClientEntityMixin implements EntityTickerAccessor, FluidHe
 
     @Inject(method = "updateInWaterStateAndDoFluidPushing", at = @At("TAIL"))
     private void preformSplash(CallbackInfoReturnable<Boolean> cir) {
-        subtleEffects$lastTouchedFluid = ParticleSpawnUtil.preformSplash(false, false, subtleEffects$me, firstTick, isWater -> {
-        });
+        subtleEffects$lastTouchedFluid = ParticleSpawnUtil.preformSplash(false, false, subtleEffects$me, firstTick, Consumers.nop());
     }
 
     @Inject(method = "updateInWaterStateAndDoWaterCurrentPushing", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;updateFluidHeightAndDoFluidPushing(Lnet/minecraft/tags/TagKey;D)Z", shift = At.Shift.AFTER))
     private void preformWaterSplash(CallbackInfo ci) {
-        ParticleSpawnUtil.preformSplash(true, false, subtleEffects$me, firstTick, isWater -> {
+        subtleEffects$lastTouchedFluid = ParticleSpawnUtil.preformSplash(true, false, subtleEffects$me, firstTick, isWater -> {
             if (isWater) {
                 subtleEffects$cancelWaterSplash = true;
             }
         });
     }
 
-    @WrapWithCondition(method = "updateInWaterStateAndDoWaterCurrentPushing", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;doWaterSplashEffect()V"))
-    private boolean cancelWaterSplash(Entity entity) {
-        boolean cancelWaterSplash = this.subtleEffects$cancelWaterSplash;
-        this.subtleEffects$cancelWaterSplash = false;
-        return !cancelWaterSplash;
+    @Inject(method = "doWaterSplashEffect", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/Mth;floor(D)I"), cancellable = true)
+    private void cancelWaterSplash(CallbackInfo ci) {
+        if (level().isClientSide() && subtleEffects$cancelWaterSplash) {
+            ci.cancel();
+        }
+        subtleEffects$cancelWaterSplash = false;
     }
 
     @Nullable
@@ -153,6 +153,11 @@ public abstract class ClientEntityMixin implements EntityTickerAccessor, FluidHe
     @Override
     public void subtleEffects$setLastTouchedFluid(@Nullable FluidPair fluidPair) {
         subtleEffects$lastTouchedFluid = fluidPair;
+    }
+
+    @Override
+    public void subtleEffects$cancelNextWaterSplash() {
+        subtleEffects$cancelWaterSplash = true;
     }
 
     @Override

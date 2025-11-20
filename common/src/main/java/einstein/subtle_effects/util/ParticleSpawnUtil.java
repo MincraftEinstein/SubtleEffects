@@ -19,7 +19,10 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.component.DataComponents;
-import net.minecraft.core.particles.*;
+import net.minecraft.core.particles.ColorParticleOption;
+import net.minecraft.core.particles.ItemParticleOption;
+import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -494,13 +497,12 @@ public class ParticleSpawnUtil {
         FluidPair fluidPair = ((FluidAccessor) fluidState.getType()).subtleEffects$getFluidPair();
 
         if (fluidPair != null) {
+            FluidHeightAccessor accessor = (FluidHeightAccessor) entity;
+            double fluidPairHeight = accessor.subtleEffects$getFluidPairHeight().getDouble(fluidPair);
             boolean isWater = fluidPair.is(Fluids.WATER);
 
-            if (waterOnly == isWater || allFluids) {
-                FluidHeightAccessor accessor = (FluidHeightAccessor) entity;
-                double fluidPairHeight = accessor.subtleEffects$getFluidPairHeight().getDouble(fluidPair);
-
-                if (fluidPairHeight > 0) {
+            if (fluidPairHeight > 0) {
+                if (waterOnly == isWater || allFluids) {
                     if (accessor.subtleEffects$getLastTouchedFluid() != fluidPair && !firstTick) {
                         ResourceLocation type = SplashTypeReloadListener.FLUID_PAIR_TO_ID.get(fluidPair);
 
@@ -510,9 +512,9 @@ public class ParticleSpawnUtil {
                             }
                         }
                     }
-
-                    return fluidPair;
                 }
+
+                return fluidPair;
             }
         }
 

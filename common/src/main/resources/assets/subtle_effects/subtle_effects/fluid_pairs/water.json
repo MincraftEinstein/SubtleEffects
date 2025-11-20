@@ -1,4 +1,5 @@
 {
   "source": "minecraft:water",
-  "flowing": "minecraft:flowing_water"
+  "flowing": "minecraft:flowing_water",
+  "cauldron": "minecraft:water_cauldron"
 }

@@ -10,6 +10,7 @@ import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.server.packs.resources.SimplePreparableReloadListener;
 import net.minecraft.util.profiling.ProfilerFiller;
+import net.minecraft.world.level.block.AbstractCauldronBlock;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
 
@@ -30,12 +31,13 @@ public class FluidPairReloadListener extends SimplePreparableReloadListener<Map<
         SimpleJsonResourceReloadListener.scanDirectory(resourceManager, DIRECTORY, Util.GSON, resources);
         List<Fluid> sourceFluids = new ArrayList<>();
         List<Fluid> flowingFluids = new ArrayList<>();
+        List<AbstractCauldronBlock> cauldrons = new ArrayList<>();
         Map<ResourceLocation, FluidPair> fluidPairs = new HashMap<>();
 
         resources.forEach((id, element) ->
                 FluidPair.CODEC.parse(JsonOps.INSTANCE, element)
                         .resultOrPartial(error -> SubtleEffects.LOGGER.error("Failed to decode fluid pair with ID {} - Error: {}", id, error))
-                        .ifPresent(fluidPair -> validate(id, fluidPair, sourceFluids, flowingFluids, fluidPairs))
+                        .ifPresent(fluidPair -> validate(id, fluidPair, sourceFluids, flowingFluids, cauldrons, fluidPairs))
         );
         return fluidPairs;
     }
@@ -45,6 +47,7 @@ public class FluidPairReloadListener extends SimplePreparableReloadListener<Map<
         FLUID_PAIRS.forEach((id, fluidPair) -> {
             ((FluidAccessor) fluidPair.source()).subtleEffects$setFluidPair(null);
             ((FluidAccessor) fluidPair.flowing()).subtleEffects$setFluidPair(null);
+            fluidPair.cauldron().ifPresent(cauldron -> ((FluidAccessor) cauldron).subtleEffects$setFluidPair(fluidPair));
         });
 
         PREPARED_FLUID_PAIRS.clear();
@@ -53,11 +56,12 @@ public class FluidPairReloadListener extends SimplePreparableReloadListener<Map<
         resources.forEach((id, fluidPair) -> {
             ((FluidAccessor) fluidPair.source()).subtleEffects$setFluidPair(fluidPair);
             ((FluidAccessor) fluidPair.flowing()).subtleEffects$setFluidPair(fluidPair);
+            fluidPair.cauldron().ifPresent(cauldron -> ((FluidAccessor) cauldron).subtleEffects$setFluidPair(fluidPair));
             FLUID_PAIRS.put(id, fluidPair);
         });
     }
 
-    private static void validate(ResourceLocation id, FluidPair fluidPair, List<Fluid> sourceFluids, List<Fluid> flowingFluids, Map<ResourceLocation, FluidPair> fluidPairs) {
+    private static void validate(ResourceLocation id, FluidPair fluidPair, List<Fluid> sourceFluids, List<Fluid> flowingFluids, List<AbstractCauldronBlock> cauldrons, Map<ResourceLocation, FluidPair> fluidPairs) {
         Fluid source = fluidPair.source();
         Fluid flowing = fluidPair.flowing();
 
@@ -74,9 +78,13 @@ public class FluidPairReloadListener extends SimplePreparableReloadListener<Map<
             SubtleEffects.LOGGER.error("Found duplicate flowing fluid in fluid pair: '{}'", id);
             return;
         }
+        else if (fluidPair.cauldron().filter(cauldrons::contains).isPresent()) {
+            SubtleEffects.LOGGER.error("Found duplicate cauldron in fluid pair: '{}'", id);
+        }
 
         sourceFluids.add(source);
         flowingFluids.add(flowing);
+        fluidPair.cauldron().ifPresent(cauldrons::add);
         fluidPairs.put(id, fluidPair);
         PREPARED_FLUID_PAIRS.put(id, fluidPair);
     }
