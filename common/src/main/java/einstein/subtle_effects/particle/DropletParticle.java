@@ -1,11 +1,13 @@
 package einstein.subtle_effects.particle;
 
+import com.google.common.base.Suppliers;
+import einstein.subtle_effects.SubtleEffects;
+import einstein.subtle_effects.data.DropletOptions;
 import einstein.subtle_effects.data.FluidPair;
 import einstein.subtle_effects.data.FluidPairReloadListener;
 import einstein.subtle_effects.data.splash_types.SplashType;
 import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.particle.option.DropletParticleOptions;
-import einstein.subtle_effects.particle.option.SplashDropletParticleOptions;
 import einstein.subtle_effects.util.DripParticleAccessor;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
@@ -17,8 +19,12 @@ import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
 import org.joml.Vector3f;
 
+import java.util.Optional;
+import java.util.function.Supplier;
+
 public class DropletParticle extends DripParticle.FallAndLandParticle implements DripParticleAccessor {
 
+    public static final Supplier<DropletParticleOptions> WATER = Suppliers.memoize(() -> new DropletParticleOptions(SubtleEffects.loc("water"), false, 1, true));
     private final int lightLevel;
 
     protected DropletParticle(ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, float scale, SpriteSet sprites, int lightLevel, Fluid fluid, SimpleParticleType landParticle, boolean isSilent) {
@@ -61,43 +67,19 @@ public class DropletParticle extends DripParticle.FallAndLandParticle implements
         return ParticleRenderType.PARTICLE_SHEET_OPAQUE;
     }
 
-    public record Provider(SpriteSet sprites) implements ParticleProvider<DropletParticleOptions> {
+    public record SplashProvider(SpriteSet sprites) implements ParticleProvider<DropletParticleOptions> {
 
         @Override
         public Particle createParticle(DropletParticleOptions options, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
-            TextureSheetParticle particle = new DropletParticle(level, x, y, z, xSpeed, ySpeed, zSpeed, options.scale(), sprites, 0, Fluids.WATER, ParticleTypes.SPLASH, options.isSilent());
-            int waterColor = level.getBiome(BlockPos.containing(x, y, z)).value().getWaterColor();
-            float colorIntensity = options.colorIntensity();
-            float whiteIntensity = 1 - colorIntensity;
-            float red = (waterColor >> 16 & 255) / 255F;
-            float green = (waterColor >> 8 & 255) / 255F;
-            float blue = (waterColor & 255) / 255F;
-
-            particle.setColor(
-                    whiteIntensity + (colorIntensity * red),
-                    whiteIntensity + (colorIntensity * green),
-                    whiteIntensity + (colorIntensity * blue)
-            );
-            return particle;
-        }
-    }
-
-    public record LavaProvider(SpriteSet sprites) implements ParticleProvider<DropletParticleOptions> {
-
-        @Override
-        public Particle createParticle(DropletParticleOptions options, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
-            return new DropletParticle(level, x, y, z, xSpeed, ySpeed, zSpeed, options.scale(), sprites, 15, Fluids.LAVA, ParticleTypes.LANDING_LAVA, options.isSilent());
-        }
-    }
-
-    public record SplashProvider(SpriteSet sprites) implements ParticleProvider<SplashDropletParticleOptions> {
-
-        @Override
-        public Particle createParticle(SplashDropletParticleOptions options, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+            boolean splash = options.isSplash();
             FluidPair fluidPair = FluidPairReloadListener.FLUID_PAIRS.get(options.fluidPairId());
-            SplashType type = fluidPair.splashType().orElseThrow();
-            Vector3f color = SplashParticle.getColorAndApplyTint(type.dropletOptions(), level, BlockPos.containing(x, y, z), level.getRandom());
-            Particle particle = new DropletParticle(level, x, y, z, xSpeed, ySpeed, zSpeed, options.scale(), sprites, type.lightEmission(), fluidPair.source(), fluidPair.is(Fluids.WATER) ? ParticleTypes.SPLASH : (fluidPair.is(Fluids.LAVA) ? ParticleTypes.LANDING_LAVA : null), ModConfigs.ENTITIES.splashes.splashDropletSounds);
+            Optional<SplashType> splashType = fluidPair.splashType();
+            DropletOptions dropletOptions = splash && splashType.isPresent() ? splashType.get().dropletOptions() : fluidPair.dropletOptions();
+            Vector3f color = dropletOptions.getColorAndApplyTint(level, BlockPos.containing(x, y, z), level.getRandom());
+            Particle particle = new DropletParticle(level, x, y, z, xSpeed, ySpeed, zSpeed, options.scale(), sprites, fluidPair.lightEmission(), fluidPair.source(),
+                    fluidPair.is(Fluids.WATER) ? ParticleTypes.SPLASH : (fluidPair.is(Fluids.LAVA) ? ParticleTypes.LANDING_LAVA : null),
+                    splash ? ModConfigs.ENTITIES.splashes.splashDropletSounds : options.isSilent()
+            );
             particle.setColor(color.x(), color.y(), color.z());
             return particle;
         }

@@ -29,12 +29,12 @@ public class SplashRippleParticle extends FlatPlaneParticle {
         SplashType type = fluidPair.splashType().orElseThrow();
         SplashOptionsData.SplashOptions rippleOptions = type.splashRippleOptions();
         sprites = rippleOptions.sprites();
-        lightLevel = type.lightEmission();
+        lightLevel = fluidPair.lightEmission();
         pos = BlockPos.containing(x, y, z).mutable();
         rotation = rotation.rotateX(90 * Mth.DEG_TO_RAD);
         lifetime = 15;
         alpha = SplashParticle.alpha(rippleOptions);
-        Vector3f color = SplashParticle.getColorAndApplyTint(rippleOptions, level, pos, random);
+        Vector3f color = rippleOptions.getColorAndApplyTint(level, pos, random);
         rCol = color.x;
         gCol = color.y;
         bCol = color.z;

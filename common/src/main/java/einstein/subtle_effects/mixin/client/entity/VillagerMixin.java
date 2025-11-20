@@ -3,8 +3,7 @@ package einstein.subtle_effects.mixin.client.entity;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import einstein.subtle_effects.init.ModConfigs;
-import einstein.subtle_effects.init.ModParticles;
-import einstein.subtle_effects.particle.option.DropletParticleOptions;
+import einstein.subtle_effects.particle.DropletParticle;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.util.RandomSource;
@@ -30,7 +29,7 @@ public class VillagerMixin {
                 int xSign = nextSign(random);
                 int zSign = nextSign(random);
 
-                level.addParticle(new DropletParticleOptions(ModParticles.WATER_DROPLET.get(), 1, 1, true),
+                level.addParticle(DropletParticle.WATER.get(),
                         pos.x() + nextDouble(random, 0.2) * xSign,
                         pos.y() + villager.getEyeHeight() + nextNonAbsDouble(random, 0.3),
                         pos.z() + nextDouble(random, 0.2) * zSign,

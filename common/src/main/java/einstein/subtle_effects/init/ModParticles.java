@@ -81,11 +81,9 @@ public class ModParticles {
     public static final Supplier<ParticleType<ColorParticleOption>> POTION_POOF_CLOUD = register("potion_poof_cloud", ColorParticleOption::codec, ColorParticleOption::streamCodec, PotionPoofCloudProvider::new);
     public static final Supplier<ParticleType<FloatParticleOptions>> WATER_RIPPLE = register("water_ripple", FloatParticleOptions::codec, FloatParticleOptions::streamCodec, RippleParticle.Provider::new);
     public static final Supplier<ParticleType<FloatParticleOptions>> LAVA_RIPPLE = register("lava_ripple", FloatParticleOptions::codec, FloatParticleOptions::streamCodec, RippleParticle.LavaProvider::new);
-    public static final Supplier<ParticleType<DropletParticleOptions>> WATER_DROPLET = register("water_droplet", DropletParticleOptions::codec, DropletParticleOptions::streamCodec, DropletParticle.Provider::new);
-    public static final Supplier<ParticleType<DropletParticleOptions>> LAVA_DROPLET = register("lava_droplet", DropletParticleOptions::codec, DropletParticleOptions::streamCodec, DropletParticle.LavaProvider::new);
+    public static final Supplier<ParticleType<DropletParticleOptions>> DROPLET = register("droplet", type -> DropletParticleOptions.CODEC, type -> DropletParticleOptions.STREAM_CODEC, DropletParticle.SplashProvider::new);
     public static final Supplier<ParticleType<SplashParticleOptions>> SPLASH = register("splash", type -> SplashParticleOptions.CODEC, type -> SplashParticleOptions.STREAM_CODEC, sprites -> new SplashParticle.Provider());
     public static final Supplier<ParticleType<SplashRippleParticleOptions>> SPLASH_RIPPLE = register("splash_ripple", type -> SplashRippleParticleOptions.CODEC, type -> SplashRippleParticleOptions.STREAM_CODEC, sprites -> new SplashRippleParticle.Provider());
-    public static final Supplier<ParticleType<SplashDropletParticleOptions>> SPLASH_DROPLET = register("splash_droplet", type -> SplashDropletParticleOptions.CODEC, type -> SplashDropletParticleOptions.STREAM_CODEC, DropletParticle.SplashProvider::new);
     public static final Supplier<ParticleType<SplashEmitterParticleOptions>> SPLASH_EMITTER = register("splash_emitter", type -> SplashEmitterParticleOptions.CODEC, type -> SplashEmitterParticleOptions.STREAM_CODEC, sprites -> new SplashEmitter.Provider());
     public static final Supplier<SimpleParticleType> WATERFALL_CLOUD = register("waterfall_cloud", WaterfallCloud.Provider::new);
     public static final Supplier<SimpleParticleType> WATERFALL_DROPLET = register("waterfall_droplet", WaterfallDropletParticle.Provider::new);

@@ -8,6 +8,7 @@ import com.mojang.serialization.DataResult;
 import einstein.subtle_effects.SubtleEffects;
 import einstein.subtle_effects.compat.CompatHelper;
 import einstein.subtle_effects.compat.EndRemasteredCompat;
+import einstein.subtle_effects.data.FluidPair;
 import einstein.subtle_effects.data.MobSkullShaderData;
 import einstein.subtle_effects.data.MobSkullShaderReloadListener;
 import einstein.subtle_effects.init.ModParticles;
@@ -129,22 +130,32 @@ public class Util {
     }
 
     public static Fluid getCauldronFluid(BlockState state) {
-        if (state.is(Blocks.LAVA_CAULDRON)) {
-            return Fluids.LAVA;
-        }
-        else if (state.is(Blocks.WATER_CAULDRON)) {
-            return Fluids.WATER;
+        if (state.getBlock() instanceof AbstractCauldronBlock block) {
+            FluidPair fluidPair = ((FluidAccessor) block).subtleEffects$getFluidPair();
+            if (fluidPair != null) {
+                return fluidPair.source();
+            }
         }
         return Fluids.EMPTY;
     }
 
     @Nullable
     public static ParticleOptions getParticleForFluid(Fluid fluid) {
-        if (fluid.isSame(Fluids.WATER)) {
-            return new DropletParticleOptions(ModParticles.WATER_DROPLET.get(), 1);
+        FluidPair fluidPair = ((FluidAccessor) fluid).subtleEffects$getFluidPair();
+        if (fluidPair != null) {
+            return new DropletParticleOptions(fluidPair.id(), false, 1, false);
         }
-        else if (fluid.isSame(Fluids.LAVA)) {
-            return new DropletParticleOptions(ModParticles.LAVA_DROPLET.get(), 1);
+        return null;
+    }
+
+    @Nullable
+    public static ParticleOptions getCauldronParticle(BlockState state) {
+        Fluid fluid = getCauldronFluid(state);
+        if (!fluid.isSame(Fluids.EMPTY)) {
+            return getParticleForFluid(fluid);
+        }
+        else if (state.is(Blocks.POWDER_SNOW_CAULDRON)) {
+            return ModParticles.SNOW.get();
         }
         return null;
     }
@@ -181,18 +192,6 @@ public class Util {
                 randomizeColor(random, g, multiplier),
                 randomizeColor(random, b, multiplier)
         );
-    }
-
-    @Nullable
-    public static ParticleOptions getCauldronParticle(BlockState state) {
-        Fluid fluid = getCauldronFluid(state);
-        if (!fluid.isSame(Fluids.EMPTY)) {
-            return getParticleForFluid(fluid);
-        }
-        else if (state.is(Blocks.POWDER_SNOW_CAULDRON)) {
-            return ModParticles.SNOW.get();
-        }
-        return null;
     }
 
     public static float getPartialTicks() {

@@ -408,10 +408,10 @@ public class ParticleSpawnUtil {
             RandomSource random = level.getRandom();
             if (stack.getItem() instanceof BucketItemAccessor bucket) {
                 Fluid content = bucket.getContent();
-                boolean isWater = content.isSame(Fluids.WATER);
+                FluidPair fluidPair = ((FluidAccessor) content).subtleEffects$getFluidPair();
 
-                if ((isWater && ModConfigs.ITEMS.waterBucketUseParticles) || (content.isSame(Fluids.LAVA) && ModConfigs.ITEMS.lavaBucketUseParticles)) {
-                    if (isWater && level.dimensionType().ultraWarm()) {
+                if (fluidPair != null) {
+                    if (fluidPair.is(Fluids.WATER) && level.dimensionType().ultraWarm()) {
                         return;
                     }
 

@@ -5,6 +5,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import einstein.subtle_effects.data.color_providers.ColorProviderType;
 import einstein.subtle_effects.data.color_providers.NoneColorProvider;
+import einstein.subtle_effects.data.color_providers.Colorable;
 import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.resources.ResourceLocation;
 
@@ -16,7 +17,8 @@ public record SplashOptionsData(Optional<ResourceLocation> spriteSetId,
                                 Optional<Either<Float, Boolean>> transparency) {
 
     public record SplashOptions(SpriteSet sprites, ColorProviderType.ColorProvider colorProvider,
-                                Optional<Either<Float, Boolean>> tinting, Optional<Either<Float, Boolean>> transparency) {
+                                Optional<Either<Float, Boolean>> tinting,
+                                Optional<Either<Float, Boolean>> transparency) implements Colorable {
 
     }
 
@@ -45,9 +47,4 @@ public record SplashOptionsData(Optional<ResourceLocation> spriteSetId,
         }
         return new SplashOptionsData(location, colorProvider, tinting, alpha);
     }));
-
-    public static final Codec<SplashOptionsData> DROPLETS_CODEC = RecordCodecBuilder.create(instance -> instance.group(
-            ColorProviderType.CODEC.optionalFieldOf("color").forGetter(SplashOptionsData::colorProvider),
-            configurableFloatCodec("intensity").optionalFieldOf("tinting").forGetter(SplashOptionsData::tinting)
-    ).apply(instance, (colorProvider, tinting) -> new SplashOptionsData(Optional.empty(), colorProvider, tinting, Optional.empty())));
 }

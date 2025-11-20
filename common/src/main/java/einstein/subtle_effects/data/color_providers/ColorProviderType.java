@@ -5,7 +5,10 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import einstein.subtle_effects.SubtleEffects;
 import einstein.subtle_effects.util.Util;
+import io.netty.buffer.ByteBuf;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.StringRepresentable;
@@ -31,6 +34,7 @@ public record ColorProviderType<T extends ColorProviderType.ColorProvider>(Resou
     @SuppressWarnings("unchecked")
     private static final Codec<Either<Integer, ColorProvider>> CONSTANT_OR_DISPATCH_CODEC = Codec.either(Util.RGB_COLOR_CODEC, REGISTRY_CODEC.dispatch(colorProvider -> (ColorProviderType<ColorProvider>) colorProvider.getType(), type -> type.codec().get()));
     public static final Codec<ColorProvider> CODEC = CONSTANT_OR_DISPATCH_CODEC.xmap(either -> either.map(ConstantColorProvider::new, colorProvider -> colorProvider), colorProvider -> colorProvider.getType() == NONE ? Either.left(1) : Either.right(colorProvider));
+    public static final StreamCodec<ByteBuf, ColorProvider> STREAM_CODEC = ByteBufCodecs.fromCodec(CODEC);
 
     public static void init() {
     }

@@ -4,7 +4,7 @@ import einstein.subtle_effects.data.FluidPair;
 import einstein.subtle_effects.data.FluidPairReloadListener;
 import einstein.subtle_effects.data.splash_types.SplashType;
 import einstein.subtle_effects.particle.SplashParticle;
-import einstein.subtle_effects.particle.option.SplashDropletParticleOptions;
+import einstein.subtle_effects.particle.option.DropletParticleOptions;
 import einstein.subtle_effects.particle.option.SplashEmitterParticleOptions;
 import einstein.subtle_effects.particle.option.SplashParticleOptions;
 import einstein.subtle_effects.particle.option.SplashRippleParticleOptions;
@@ -137,7 +137,7 @@ public class SplashEmitter extends NoRenderParticle {
             return;
         }
 
-        SplashDropletParticleOptions dropletOptions = new SplashDropletParticleOptions(fluidPairId, Math.min(this.xScale, 2));
+        DropletParticleOptions dropletOptions = new DropletParticleOptions(fluidPairId, true, Math.min(this.xScale, 2), false);
         for (int i = 0; i < 4 * widthModifier; i++) {
             level.addParticle(dropletOptions,
                     x + nextNonAbsDouble(random, xScale),
