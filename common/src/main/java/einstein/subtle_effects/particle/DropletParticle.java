@@ -1,8 +1,8 @@
 package einstein.subtle_effects.particle;
 
 import einstein.subtle_effects.data.FluidPair;
-import einstein.subtle_effects.data.splash_types.SplashTypeData;
-import einstein.subtle_effects.data.splash_types.SplashTypeReloadListener;
+import einstein.subtle_effects.data.FluidPairReloadListener;
+import einstein.subtle_effects.data.splash_types.SplashType;
 import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.particle.option.DropletParticleOptions;
 import einstein.subtle_effects.particle.option.SplashDropletParticleOptions;
@@ -94,9 +94,9 @@ public class DropletParticle extends DripParticle.FallAndLandParticle implements
 
         @Override
         public Particle createParticle(SplashDropletParticleOptions options, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
-            SplashTypeData.SplashType type = SplashTypeReloadListener.SPLASH_TYPES_BY_ID.get(options.typeId());
+            FluidPair fluidPair = FluidPairReloadListener.FLUID_PAIRS.get(options.fluidPairId());
+            SplashType type = fluidPair.splashType().orElseThrow();
             Vector3f color = SplashParticle.getColorAndApplyTint(type.dropletOptions(), level, BlockPos.containing(x, y, z), level.getRandom());
-            FluidPair fluidPair = type.fluidPair();
             Particle particle = new DropletParticle(level, x, y, z, xSpeed, ySpeed, zSpeed, options.scale(), sprites, type.lightEmission(), fluidPair.source(), fluidPair.is(Fluids.WATER) ? ParticleTypes.SPLASH : (fluidPair.is(Fluids.LAVA) ? ParticleTypes.LANDING_LAVA : null), ModConfigs.ENTITIES.splashes.splashDropletSounds);
             particle.setColor(color.x(), color.y(), color.z());
             return particle;

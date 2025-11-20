@@ -11,15 +11,15 @@ import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceLocation;
 
-public record SplashRippleParticleOptions(ResourceLocation type, float xScale) implements ParticleOptions {
+public record SplashRippleParticleOptions(ResourceLocation fluidPairId, float xScale) implements ParticleOptions {
 
     public static MapCodec<SplashRippleParticleOptions> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-            ResourceLocation.CODEC.fieldOf("type").forGetter(SplashRippleParticleOptions::type),
+            ResourceLocation.CODEC.fieldOf("fluid_pair").forGetter(SplashRippleParticleOptions::fluidPairId),
             Codec.FLOAT.fieldOf("xScale").forGetter(SplashRippleParticleOptions::xScale)
     ).apply(instance, SplashRippleParticleOptions::new));
 
     public static StreamCodec<FriendlyByteBuf, SplashRippleParticleOptions> STREAM_CODEC = StreamCodec.composite(
-            ResourceLocation.STREAM_CODEC, SplashRippleParticleOptions::type,
+            ResourceLocation.STREAM_CODEC, SplashRippleParticleOptions::fluidPairId,
             ByteBufCodecs.FLOAT, SplashRippleParticleOptions::xScale,
             SplashRippleParticleOptions::new
     );

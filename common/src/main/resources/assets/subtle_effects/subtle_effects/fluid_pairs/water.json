@@ -1,5 +1,6 @@
 {
   "source": "minecraft:water",
   "flowing": "minecraft:flowing_water",
-  "cauldron": "minecraft:water_cauldron"
+  "cauldron": "minecraft:water_cauldron",
+  "splash_type": "subtle_effects:water"
 }

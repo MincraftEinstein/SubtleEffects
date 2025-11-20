@@ -1,6 +1,5 @@
 package einstein.subtle_effects.mixin.client;
 
-import einstein.subtle_effects.data.FluidPairReloadListener;
 import einstein.subtle_effects.data.splash_types.SplashTypeReloadListener;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.resources.PreparableReloadListener;
@@ -24,8 +23,7 @@ public abstract class ReloadableResourceManagerMixin {
     @Inject(method = "<init>", at = @At("TAIL"))
     private void addAdditionalListeners(PackType type, CallbackInfo ci) {
         if (type == PackType.CLIENT_RESOURCES) {
-            listeners.add(0, new FluidPairReloadListener());
-            listeners.add(1, new SplashTypeReloadListener());
+            listeners.addFirst(new SplashTypeReloadListener());
         }
     }
 }

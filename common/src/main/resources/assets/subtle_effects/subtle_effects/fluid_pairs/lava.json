@@ -1,5 +1,6 @@
 {
   "source": "minecraft:lava",
   "flowing": "minecraft:flowing_lava",
-  "cauldron": "minecraft:lava_cauldron"
+  "cauldron": "minecraft:lava_cauldron",
+  "splash_type": "subtle_effects:lava"
 }

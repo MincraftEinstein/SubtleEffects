@@ -1,9 +1,9 @@
 package einstein.subtle_effects.particle;
 
 import einstein.subtle_effects.data.FluidPair;
+import einstein.subtle_effects.data.FluidPairReloadListener;
 import einstein.subtle_effects.data.splash_types.SplashOptionsData;
-import einstein.subtle_effects.data.splash_types.SplashTypeData;
-import einstein.subtle_effects.data.splash_types.SplashTypeReloadListener;
+import einstein.subtle_effects.data.splash_types.SplashType;
 import einstein.subtle_effects.particle.option.SplashRippleParticleOptions;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
@@ -25,10 +25,10 @@ public class SplashRippleParticle extends FlatPlaneParticle {
 
     protected SplashRippleParticle(ClientLevel level, double x, double y, double z, SplashRippleParticleOptions options) {
         super(level, x, y, z);
-        SplashTypeData.SplashType type = SplashTypeReloadListener.SPLASH_TYPES_BY_ID.get(options.type());
+        fluidPair = FluidPairReloadListener.FLUID_PAIRS.get(options.fluidPairId());
+        SplashType type = fluidPair.splashType().orElseThrow();
         SplashOptionsData.SplashOptions rippleOptions = type.splashRippleOptions();
         sprites = rippleOptions.sprites();
-        fluidPair = type.fluidPair();
         lightLevel = type.lightEmission();
         pos = BlockPos.containing(x, y, z).mutable();
         rotation = rotation.rotateX(90 * Mth.DEG_TO_RAD);

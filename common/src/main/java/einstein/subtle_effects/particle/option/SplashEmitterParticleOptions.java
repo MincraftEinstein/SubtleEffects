@@ -11,12 +11,12 @@ import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceLocation;
 
-public record SplashEmitterParticleOptions(ResourceLocation type, float widthModifier,
+public record SplashEmitterParticleOptions(ResourceLocation fluidPairId, float widthModifier,
                                            float heightModifier, float velocity,
                                            int entityId) implements ParticleOptions {
 
     public static final MapCodec<SplashEmitterParticleOptions> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-                    ResourceLocation.CODEC.fieldOf("type").forGetter(SplashEmitterParticleOptions::type),
+                    ResourceLocation.CODEC.fieldOf("fluid_pair").forGetter(SplashEmitterParticleOptions::fluidPairId),
                     Codec.FLOAT.fieldOf("widthModifier").forGetter(SplashEmitterParticleOptions::widthModifier),
                     Codec.FLOAT.fieldOf("heightModifier").forGetter(SplashEmitterParticleOptions::heightModifier),
                     Codec.FLOAT.fieldOf("velocity").forGetter(SplashEmitterParticleOptions::velocity),
@@ -25,7 +25,7 @@ public record SplashEmitterParticleOptions(ResourceLocation type, float widthMod
     );
 
     public static final StreamCodec<ByteBuf, SplashEmitterParticleOptions> STREAM_CODEC = StreamCodec.composite(
-            ResourceLocation.STREAM_CODEC, SplashEmitterParticleOptions::type,
+            ResourceLocation.STREAM_CODEC, SplashEmitterParticleOptions::fluidPairId,
             ByteBufCodecs.FLOAT, SplashEmitterParticleOptions::widthModifier,
             ByteBufCodecs.FLOAT, SplashEmitterParticleOptions::heightModifier,
             ByteBufCodecs.FLOAT, SplashEmitterParticleOptions::velocity,

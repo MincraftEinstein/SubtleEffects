@@ -2,7 +2,6 @@ package einstein.subtle_effects.util;
 
 import einstein.subtle_effects.configs.ModBlockConfigs;
 import einstein.subtle_effects.data.FluidPair;
-import einstein.subtle_effects.data.splash_types.SplashTypeReloadListener;
 import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.init.ModParticles;
 import einstein.subtle_effects.mixin.client.item.BucketItemAccessor;
@@ -504,13 +503,11 @@ public class ParticleSpawnUtil {
             if (fluidPairHeight > 0) {
                 if (waterOnly == isWater || allFluids) {
                     if (accessor.subtleEffects$getLastTouchedFluid() != fluidPair && !firstTick) {
-                        ResourceLocation type = SplashTypeReloadListener.FLUID_PAIR_TO_ID.get(fluidPair);
-
-                        if (type != null) {
-                            if (spawnSplashEffects(entity, level, type, entity.getY() + fluidPairHeight, entity.getDeltaMovement().y())) {
+                        fluidPair.splashType().ifPresent(splashType -> {
+                            if (spawnSplashEffects(entity, level, fluidPair.id(), entity.getY() + fluidPairHeight, entity.getDeltaMovement().y())) {
                                 successConsumer.accept(isWater);
                             }
-                        }
+                        });
                     }
                 }
 
@@ -521,7 +518,7 @@ public class ParticleSpawnUtil {
         return null;
     }
 
-    public static boolean spawnSplashEffects(Entity entity, Level level, ResourceLocation type, double y, double yVelocity) {
+    public static boolean spawnSplashEffects(Entity entity, Level level, ResourceLocation fluidPairId, double y, double yVelocity) {
         if (!ENTITIES.splashes.splashEffects) {
             return false;
         }
@@ -533,7 +530,7 @@ public class ParticleSpawnUtil {
         if (yVelocity <= -ENTITIES.splashes.splashVelocityThreshold.get()) {
             double offset = y + 0.01;
             if (offset <= y + entity.getBbHeight()) {
-                level.addAlwaysVisibleParticle(SplashEmitter.createForEntity(entity, type, yVelocity), true,
+                level.addAlwaysVisibleParticle(SplashEmitter.createForEntity(entity, fluidPairId, yVelocity), true,
                         entity.getX(),
                         offset,
                         entity.getZ(),

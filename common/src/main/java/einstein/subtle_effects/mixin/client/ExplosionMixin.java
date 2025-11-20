@@ -1,12 +1,11 @@
 package einstein.subtle_effects.mixin.client;
 
 import einstein.subtle_effects.data.FluidPair;
-import einstein.subtle_effects.data.splash_types.SplashTypeReloadListener;
+import einstein.subtle_effects.data.splash_types.SplashType;
 import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.particle.option.SplashEmitterParticleOptions;
 import einstein.subtle_effects.util.FluidAccessor;
 import net.minecraft.core.BlockPos;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.FluidState;
@@ -16,6 +15,8 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
+import java.util.Optional;
 
 @Mixin(Explosion.class)
 public class ExplosionMixin {
@@ -63,14 +64,14 @@ public class ExplosionMixin {
 
                     FluidPair fluidPair = ((FluidAccessor) fluidState.getType()).subtleEffects$getFluidPair();
                     if (fluidPair != null) {
-                        ResourceLocation type = SplashTypeReloadListener.FLUID_PAIR_TO_ID.get(fluidPair);
+                        Optional<SplashType> splashType = fluidPair.splashType();
 
-                        if (type != null) {
+                        if (splashType.isPresent()) {
                             BlockPos surfacePos = currentPos.below();
                             FluidState surfaceFluidState = level.getFluidState(surfacePos);
                             float scale = radius - ((y - blockY) / radius);
 
-                            level.addAlwaysVisibleParticle(new SplashEmitterParticleOptions(type, scale, scale * (scale * 0.1F), -1, -1),
+                            level.addAlwaysVisibleParticle(new SplashEmitterParticleOptions(fluidPair.id(), scale, scale * (scale * 0.1F), -1, -1),
                                     true, x, surfacePos.getY() + surfaceFluidState.getHeight(level, surfacePos) + 0.01, z,
                                     0, 0, 0
                             );

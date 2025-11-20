@@ -2,7 +2,6 @@ package einstein.subtle_effects.networking.clientbound;
 
 import einstein.subtle_effects.configs.ReplacedParticlesDisplayType;
 import einstein.subtle_effects.data.FluidPair;
-import einstein.subtle_effects.data.splash_types.SplashTypeReloadListener;
 import einstein.subtle_effects.init.ModAnimalFedEffectSettings;
 import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.init.ModParticles;
@@ -16,7 +15,6 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.*;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -388,10 +386,9 @@ public class ClientPacketHandlers {
                 FluidPair fluidPair = ((FluidAccessor) fluid).subtleEffects$getFluidPair();
                 if (fluidPair != null) {
 
-                    ResourceLocation type = SplashTypeReloadListener.FLUID_PAIR_TO_ID.get(fluidPair);
-                    if (type != null) {
-                        ParticleSpawnUtil.spawnSplashEffects(entity, level, type, payload.y(), payload.yVelocity());
-                    }
+                    fluidPair.splashType().ifPresent(splashType ->
+                            ParticleSpawnUtil.spawnSplashEffects(entity, level, fluidPair.id(), payload.y(), payload.yVelocity())
+                    );
                 }
             }
         }

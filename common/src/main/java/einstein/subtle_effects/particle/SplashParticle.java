@@ -4,9 +4,9 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import einstein.subtle_effects.client.model.particle.SplashParticleModel;
 import einstein.subtle_effects.data.FluidPair;
+import einstein.subtle_effects.data.FluidPairReloadListener;
 import einstein.subtle_effects.data.splash_types.SplashOptionsData;
-import einstein.subtle_effects.data.splash_types.SplashTypeData;
-import einstein.subtle_effects.data.splash_types.SplashTypeReloadListener;
+import einstein.subtle_effects.data.splash_types.SplashType;
 import einstein.subtle_effects.particle.option.SplashParticleOptions;
 import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -50,12 +50,12 @@ public class SplashParticle extends ModelParticle {
     protected SplashParticle(ClientLevel level, double x, double y, double z, SplashParticleOptions options) {
         super(level, x, y, z);
         model = bakeModel(SplashParticleModel::new, SplashParticleModel.MODEL_LAYER);
-        SplashTypeData.SplashType type = SplashTypeReloadListener.SPLASH_TYPES_BY_ID.get(options.type());
+        fluidPair = FluidPairReloadListener.FLUID_PAIRS.get(options.fluidPairId());
+        SplashType type = fluidPair.splashType().orElseThrow();
         SplashOptionsData.SplashOptions splashOptions = type.splashOptions();
         SplashOptionsData.SplashOptions overlayOptions = type.splashOverlayOptions();
         float overlayAlpha = alpha(overlayOptions);
 
-        fluidPair = type.fluidPair();
         sprites = splashOptions.sprites();
         overlaySprites = overlayOptions.sprites();
         hasOverlay = overlaySprites != null && overlayAlpha > 0;

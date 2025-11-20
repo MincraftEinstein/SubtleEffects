@@ -1,7 +1,6 @@
 package einstein.subtle_effects.ticking.tickers.entity;
 
 import einstein.subtle_effects.data.FluidPair;
-import einstein.subtle_effects.data.splash_types.SplashTypeReloadListener;
 import einstein.subtle_effects.mixin.client.block.AbstractCauldronBlockAccessor;
 import einstein.subtle_effects.mixin.common.entity.EntityAccessor;
 import einstein.subtle_effects.util.FluidAccessor;
@@ -9,7 +8,6 @@ import einstein.subtle_effects.util.FluidHeightAccessor;
 import einstein.subtle_effects.util.ParticleSpawnUtil;
 import einstein.subtle_effects.util.Util;
 import net.minecraft.core.BlockPos;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -40,15 +38,13 @@ public class EntityCauldronTicker extends EntityTicker<Entity> {
             FluidPair fluidPair = ((FluidAccessor) block).subtleEffects$getFluidPair();
             if (fluidPair != null) {
                 if (lastTouchedFluid != fluidPair) {
-                    ResourceLocation type = SplashTypeReloadListener.FLUID_PAIR_TO_ID.get(fluidPair);
-
-                    if (type != null) {
-                        if (ParticleSpawnUtil.spawnSplashEffects(entity, level, type, pos.getY() + height, entity.getDeltaMovement().y())) {
+                    fluidPair.splashType().ifPresent(splashType -> {
+                        if (ParticleSpawnUtil.spawnSplashEffects(entity, level, fluidPair.id(), pos.getY() + height, entity.getDeltaMovement().y())) {
                             if (isWater) {
                                 ((FluidHeightAccessor) entity).subtleEffects$cancelNextWaterSplash();
                             }
                         }
-                    }
+                    });
                 }
                 lastTouchedFluid = fluidPair;
 

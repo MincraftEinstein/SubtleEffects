@@ -3,7 +3,9 @@ package einstein.subtle_effects.data;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import einstein.subtle_effects.data.splash_types.SplashType;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.AbstractCauldronBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
@@ -11,18 +13,8 @@ import net.minecraft.world.level.material.FluidState;
 
 import java.util.Optional;
 
-public record FluidPair(Fluid source, Fluid flowing, Optional<AbstractCauldronBlock> cauldron) {
-
-    public static final Codec<FluidPair> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-            BuiltInRegistries.FLUID.byNameCodec().fieldOf("source").forGetter(FluidPair::source),
-            BuiltInRegistries.FLUID.byNameCodec().fieldOf("flowing").forGetter(FluidPair::flowing),
-            BuiltInRegistries.BLOCK.byNameCodec().comapFlatMap(block -> {
-                if (block instanceof AbstractCauldronBlock cauldron) {
-                    return DataResult.success(cauldron);
-                }
-                return DataResult.error(() -> "Block is not a cauldron: '" + BuiltInRegistries.BLOCK.getKey(block) + "'");
-            }, a -> a).optionalFieldOf("cauldron").forGetter(FluidPair::cauldron)
-    ).apply(instance, FluidPair::new));
+public record FluidPair(ResourceLocation id, Fluid source, Fluid flowing, Optional<AbstractCauldronBlock> cauldron,
+                        Optional<SplashType> splashType) {
 
     public boolean is(Fluid fluid) {
         return fluid == source || fluid == flowing;
@@ -35,5 +27,21 @@ public record FluidPair(Fluid source, Fluid flowing, Optional<AbstractCauldronBl
 
     public boolean is(BlockState state) {
         return cauldron.filter(cauldronBlock -> state.getBlock() == cauldronBlock).isPresent();
+    }
+
+    public record Data(Fluid source, Fluid flowing, Optional<AbstractCauldronBlock> cauldron,
+                       Optional<ResourceLocation> splashTypeId) {
+
+        public static final Codec<Data> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+                BuiltInRegistries.FLUID.byNameCodec().fieldOf("source").forGetter(Data::source),
+                BuiltInRegistries.FLUID.byNameCodec().fieldOf("flowing").forGetter(Data::flowing),
+                BuiltInRegistries.BLOCK.byNameCodec().comapFlatMap(block -> {
+                    if (block instanceof AbstractCauldronBlock cauldron) {
+                        return DataResult.success(cauldron);
+                    }
+                    return DataResult.error(() -> "Block is not a cauldron: '" + BuiltInRegistries.BLOCK.getKey(block) + "'");
+                }, a -> a).optionalFieldOf("cauldron").forGetter(Data::cauldron),
+                ResourceLocation.CODEC.optionalFieldOf("splash_type").forGetter(Data::splashTypeId)
+        ).apply(instance, Data::new));
     }
 }
