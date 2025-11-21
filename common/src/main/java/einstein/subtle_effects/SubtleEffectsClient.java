@@ -60,6 +60,7 @@ public class SubtleEffectsClient {
 
     public static void clientSetup() {
         ModConfigs.init();
+        ModPipelines.init();
         ModRenderTypes.init();
         ModParticleLayers.init();
         ModPayloads.initClientHandlers();
