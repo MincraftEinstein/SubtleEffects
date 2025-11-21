@@ -27,6 +27,7 @@ public class BiomeParticleManager {
     private static final BlockPos.MutableBlockPos BIOME_POS = new BlockPos.MutableBlockPos();
     private static final BiPredicate<Level, BlockPos> NOT_RAINING = (level, pos) -> !level.isRaining();
     private static boolean HAS_CLEARED;
+    private static final RandomSource RANDOM = RandomSource.create();
 
     public static void init() {
         register(ENVIRONMENT.biomes.mushroomSporeBiomes, ENVIRONMENT.biomes.mushroomSporeDensity, 40, ModParticles.MUSHROOM_SPORE, NOT_RAINING);
@@ -55,10 +56,9 @@ public class BiomeParticleManager {
         }
 
         for (int i = 0; i < 100; i++) {
-            RandomSource random = level.getRandom();
-            int x = player.getBlockX() + random.nextInt(radius) - random.nextInt(radius);
-            int y = player.getBlockY() + random.nextInt(radius) - random.nextInt(radius);
-            int z = player.getBlockZ() + random.nextInt(radius) - random.nextInt(radius);
+            int x = player.getBlockX() + RANDOM.nextInt(radius) - RANDOM.nextInt(radius);
+            int y = player.getBlockY() + RANDOM.nextInt(radius) - RANDOM.nextInt(radius);
+            int z = player.getBlockZ() + RANDOM.nextInt(radius) - RANDOM.nextInt(radius);
             BIOME_POS.set(x, y, z);
 
             if (level.isOutsideBuildHeight(y)) {
@@ -83,7 +83,7 @@ public class BiomeParticleManager {
                     if (biomes.contains(biome.value())) {
                         BlockState state = level.getBlockState(BIOME_POS);
                         if (!state.isCollisionShapeFullBlock(level, BIOME_POS)) {
-                            level.addParticle(settings.getParticle().get(), x + random.nextDouble(), y + random.nextDouble(), z + random.nextDouble(), 0, 0, 0);
+                            level.addParticle(settings.getParticle().get(), x + RANDOM.nextDouble(), y + RANDOM.nextDouble(), z + RANDOM.nextDouble(), 0, 0, 0);
                         }
                     }
                 }
