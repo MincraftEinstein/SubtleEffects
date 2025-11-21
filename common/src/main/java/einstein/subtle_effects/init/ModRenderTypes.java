@@ -11,6 +11,7 @@ import static einstein.subtle_effects.init.ModPipelines.CUSTOM_TRANSLUCENT_PARTI
 
 
 public class ModRenderTypes {
+
     public static final BiFunction<ResourceLocation, Boolean, RenderType> ENTITY_PARTICLE_TRANSLUCENT_RENDER_TYPE = Util.memoize((texture, outline) -> {
         RenderType.CompositeState state = RenderType.CompositeState.builder()
                 .setLightmapState(RenderStateShard.LIGHTMAP)

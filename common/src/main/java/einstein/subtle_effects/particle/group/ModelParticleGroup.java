@@ -18,24 +18,30 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 public class ModelParticleGroup extends ParticleGroup<ModelParticle<?>> {
+
     public ModelParticleGroup(ParticleEngine engine) {
         super(engine);
     }
 
     public ParticleGroupRenderState extractRenderState(Frustum frustum, Camera camera, float partialTick) {
-        return new State(this.particles.stream().map((particle) -> particle.extractState(camera, partialTick)).toList());
+        return new State(particles.stream().map((particle) -> particle.extractState(camera, partialTick)).toList());
     }
 
-    public record ModelParticleRenderState(Model<Unit> model, PoseStack poseStack, RenderType renderType, int lightColor, int color, @Nullable OverlayModelState overlay) {
+    public record ModelParticleRenderState(Model<Unit> model, PoseStack poseStack, RenderType renderType,
+                                           int lightColor, int color, @Nullable OverlayModelState overlay) {
+
     }
 
     public record OverlayModelState(int color, RenderType renderType) {
+
     }
 
     public record State(List<ModelParticleRenderState> states) implements ParticleGroupRenderState {
+
         public void submit(SubmitNodeCollector collector, CameraRenderState cameraState) {
-            for (ModelParticleRenderState state : this.states) {
+            for (ModelParticleRenderState state : states) {
                 collector.submitModel(state.model, Unit.INSTANCE, state.poseStack, state.renderType, state.lightColor, OverlayTexture.NO_OVERLAY, state.color, null, 0, null);
+
                 if (state.overlay != null) {
                     collector.submitModel(state.model, Unit.INSTANCE, state.poseStack, state.overlay.renderType, state.lightColor, OverlayTexture.NO_OVERLAY, state.overlay.color, null, 0, null);
                 }

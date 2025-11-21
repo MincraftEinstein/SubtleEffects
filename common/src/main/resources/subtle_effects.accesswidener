@@ -1,5 +1,6 @@
 accessWidener	v1 named
 
+# Fields
 accessible field net/minecraft/client/renderer/RenderPipelines PARTICLE_SNIPPET Lcom/mojang/blaze3d/pipeline/RenderPipeline$Snippet;
 
 # Classes
@@ -7,7 +8,6 @@ accessible class net/minecraft/client/particle/ParticleResources$MutableSpriteSe
 accessible class net/minecraft/client/particle/DripParticle$FallAndLandParticle
 accessible class net/minecraft/client/particle/DripParticle$DripHangParticle
 accessible class net/minecraft/client/particle/DripParticle$DripLandParticle
-
 
 # <init>'s
 accessible method net/minecraft/client/particle/ParticleResources$MutableSpriteSet <init> ()V
@@ -19,8 +19,6 @@ accessible method net/minecraft/client/particle/BubblePopParticle <init> (Lnet/m
 accessible method net/minecraft/client/particle/DripParticle$DripHangParticle <init> (Lnet/minecraft/client/multiplayer/ClientLevel;DDDLnet/minecraft/world/level/material/Fluid;Lnet/minecraft/core/particles/ParticleOptions;Lnet/minecraft/client/renderer/texture/TextureAtlasSprite;)V
 accessible method net/minecraft/client/particle/DripParticle$DripLandParticle <init> (Lnet/minecraft/client/multiplayer/ClientLevel;DDDLnet/minecraft/world/level/material/Fluid;Lnet/minecraft/client/renderer/texture/TextureAtlasSprite;)V
 
-
 # Functions
 accessible method net/minecraft/client/renderer/RenderPipelines register (Lcom/mojang/blaze3d/pipeline/RenderPipeline;)Lcom/mojang/blaze3d/pipeline/RenderPipeline;
 accessible method net/minecraft/client/particle/DripParticle getType ()Lnet/minecraft/world/level/material/Fluid;
-

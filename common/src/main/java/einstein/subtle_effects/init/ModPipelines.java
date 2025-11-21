@@ -10,6 +10,7 @@ import static einstein.subtle_effects.SubtleEffects.loc;
 
 
 public class ModPipelines {
+
     private static final BlendFunction ALPHA_BLEND = new BlendFunction(SourceFactor.SRC_ALPHA, DestFactor.ONE_MINUS_SRC_ALPHA);
 
     public static final RenderPipeline CUSTOM_TRANSLUCENT_PARTICLE_PIPELINE = RenderPipelines.register(

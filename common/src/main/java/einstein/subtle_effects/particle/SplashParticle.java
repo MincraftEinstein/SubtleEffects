@@ -82,24 +82,6 @@ public class SplashParticle extends ModelParticle<SplashParticleModel> {
         setSpriteFromAge();
     }
 
-   /* @Override
-    public void render(PoseStack poseStack, VertexConsumer consumer, MultiBufferSource.BufferSource bufferSource, Camera camera, float partialTicks) {
-        int lightColor = getLightColor(partialTicks);
-        int color = ARGB.colorFromFloat(alpha, rCol, gCol, bCol);
-
-        poseStack.translate(0, -(6 * (yScale / 4)), 0); // 6 is 1/4 of the model's height
-        poseStack.scale(xScale, yScale, xScale);
-
-        model.renderToBuffer(poseStack, bufferSource.getBuffer(model.renderType(texture)), lightColor, OverlayTexture.NO_OVERLAY, color);
-
-        if (hasOverlay) {
-            int overlayColor = ARGB.colorFromFloat(ENTITIES.splashes.splashOverlayAlpha.get(), overlayRCol, overlayGCol, overlayBCol);
-            model.renderToBuffer(poseStack, bufferSource.getBuffer(model.renderType(overlayTexture)), lightColor, OverlayTexture.NO_OVERLAY, overlayColor);
-        }
-
-        bufferSource.endBatch();
-    }*/
-
     @Override
     public ModelParticleGroup.ModelParticleRenderState extractState(PoseStack poseStack, Camera camera, float partialTicks) {
         int lightColor = getLightColor(partialTicks);

@@ -12,7 +12,6 @@
     "client.ItemBordersConfigAccessor",
     "client.LavaFluidMixin",
     "client.LevelEventHandlerMixin",
-    "client.LevelRendererMixin",
     "client.MinecraftMixin",
     "client.ScreenEffectRendererMixin",
     "client.WaterFluidMixin",

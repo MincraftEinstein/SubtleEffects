@@ -111,7 +111,7 @@ public class LevelEventHandlerMixin {
                     target = "Lnet/minecraft/client/multiplayer/ClientLevel;addParticle(Lnet/minecraft/core/particles/ParticleOptions;DDDDDD)V"
             )
     )
-    private void replaceSplashPotionParticles(ClientLevel instance, ParticleOptions particleData, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, Operation<Void> original, @Local(ordinal = 0) float red, @Local(ordinal = 1) float green, @Local(ordinal = 2) float blue) {
+    private void replaceSplashPotionParticles(ClientLevel level, ParticleOptions particleData, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, Operation<Void> original, @Local(ordinal = 0) float red, @Local(ordinal = 1) float green, @Local(ordinal = 2) float blue) {
         if (ITEMS.splashPotionClouds && level != null) {
             RandomSource random = level.getRandom();
 
@@ -123,20 +123,18 @@ public class LevelEventHandlerMixin {
                 zSpeed *= powerModifier;
 
                 if (random.nextInt(3) == 0) {
-                    original.call(instance,
+                    original.call(level,
                             ColorParticleOption.create(ModParticles.POTION_POOF_CLOUD.get(), red, green, blue),
                             x, y, z, xSpeed, ySpeed, zSpeed
                     );
                 }
 
-                //TODO (ender) figure out if this works
-                original.call(instance, particleData, x, y, z, xSpeed, ySpeed, zSpeed);
+                original.call(level, particleData, x, y, z, xSpeed, ySpeed, zSpeed);
             }
 
-            // always returning null to prevent calling particle.setPower
             return;
         }
-        original.call(instance, particleData, x, y, z, xSpeed, ySpeed, zSpeed);
+        original.call(level, particleData, x, y, z, xSpeed, ySpeed, zSpeed);
     }
 
     @WrapOperation(method = "levelEvent", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/ParticleUtils;spawnParticlesOnBlockFaces(Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;Lnet/minecraft/core/particles/ParticleOptions;Lnet/minecraft/util/valueproviders/IntProvider;)V"))
@@ -174,7 +172,7 @@ public class LevelEventHandlerMixin {
 
     // Fabric didn't like using a slice for some reason, should try again at some point
     @WrapWithCondition(method = "levelEvent", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/multiplayer/ClientLevel;addParticle(Lnet/minecraft/core/particles/ParticleOptions;DDDDDD)V"))
-    private boolean shouldSpawnEndPortalFrameSmoke(ClientLevel instance, ParticleOptions particleData, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, @Local(argsOnly = true, ordinal = 0) int type) {
+    private boolean shouldSpawnEndPortalFrameSmoke(ClientLevel level, ParticleOptions particleData, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, @Local(argsOnly = true, ordinal = 0) int type) {
         if (type == LevelEvent.END_PORTAL_FRAME_FILL) {
             return BLOCKS.enderEyePlacedParticlesDisplayType != ModBlockConfigs.EnderEyePlacedParticlesDisplayType.DOTS;
         }
