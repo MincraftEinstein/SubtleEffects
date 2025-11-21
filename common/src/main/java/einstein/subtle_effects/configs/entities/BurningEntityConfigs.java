@@ -23,6 +23,5 @@ public class BurningEntityConfigs extends ConfigSection {
     public ValidatedFloat sparksDensity = new ValidatedFloat(1, 1, 0);
     public ValidatedFloat soundVolume = new ValidatedFloat(0.3F, 1, 0);
     public ValidatedList<EntityType<?>> entityBlocklist = ValidatedRegistryType.of(BuiltInRegistries.ENTITY_TYPE).toList(DEFAULT_ENTITY_BLOCKLIST);
-    public boolean overrideDyedFlamesEffects = true;
     public boolean extinguishSteam = true;
 }

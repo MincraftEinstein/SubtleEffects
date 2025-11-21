@@ -33,9 +33,6 @@ dependencies {
     modCompileOnly "maven.modrinth:item-borders:${fabric_item_borders_version}"
     modCompileOnly "fuzs.forgeconfigapiport:forgeconfigapiport-fabric:${config_api_port}"
     modCompileOnly "maven.modrinth:endrem:${fabric_endrem_version}"
-    modCompileOnly "maven.modrinth:dyed-flames:${fabric_dyed_flames_version}"
-    modCompileOnly "fuzs.neoforgedatapackextensions:neoforgedatapackextensions-fabric:${neoforgedatapackextensions_version}"
-    modCompileOnly "fuzs.puzzleslib:puzzleslib-fabric:${puzzleslib_version}"
 }
 
 loom {

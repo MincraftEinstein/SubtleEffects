@@ -340,8 +340,6 @@
   "config.subtle_effects.entities.burning.soundVolume": "Sound Volume",
   "config.subtle_effects.entities.burning.soundVolume.desc": "The volume of the hiss sound occasionally played by burning entities\n0 to disable",
   "config.subtle_effects.entities.burning.entityBlocklist": "Entity Blocklist",
-  "config.subtle_effects.entities.burning.overrideDyedFlamesEffects": "Override Dyed Flames Effects",
-  "config.subtle_effects.entities.burning.overrideDyedFlamesEffects.desc": "Disables the lava spark effects spawned by Dyed Flames\n\n§6Note:§r\nDyed Flames needs to be installed",
   "config.subtle_effects.entities.burning.extinguishSteam": "Extinguish Steam",
   "config.subtle_effects.entities.burning.extinguishSteam.desc": "When an burning entity is extinguished, from water or a splash water bottle, steam will appear",
   "config.subtle_effects.entities.explosives": "Explosives",
