@@ -1,7 +1,8 @@
 package einstein.subtle_effects.ticking.tickers.entity;
 
 import einstein.subtle_effects.compat.CompatHelper;
-import einstein.subtle_effects.compat.SoulFiredCompat;
+import einstein.subtle_effects.compat.DyedFlamesCompat;
+import einstein.subtle_effects.compat.PrometheusCompat;
 import einstein.subtle_effects.particle.SparkParticle;
 import einstein.subtle_effects.util.SparkType;
 import einstein.subtle_effects.util.Util;
@@ -10,6 +11,9 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
 
 import static einstein.subtle_effects.init.ModConfigs.ENTITIES;
 import static einstein.subtle_effects.util.MathUtil.nextNonAbsDouble;
@@ -29,13 +33,14 @@ public class EntityFireTicker extends EntityTicker<Entity> {
     @Override
     public void entityTick() {
         if (entity.displayFireAnimation() || isBlaze) {
-            if (random.nextInt(90) == 0 && ENTITIES.burning.sounds) {
-                Util.playClientSound(entity, SoundEvents.FIRE_EXTINGUISH, entity.getSoundSource(), 0.3F, 1);
+            float volume = ENTITIES.burning.soundVolume.get();
+            if (volume > 0 && random.nextInt(90) == 0) {
+                Util.playClientSound(entity, SoundEvents.FIRE_EXTINGUISH, entity.getSoundSource(), volume, 1);
             }
 
             if (bbWidth <= 4 && bbHeight <= 4) {
-                if (ENTITIES.burning.smoke.isEnabled() && !isBlaze) {
-                    level.addParticle(ENTITIES.burning.smoke.getParticle().get(),
+                if (!isBlaze && ENTITIES.burning.smokeType.isEnabled() && random.nextDouble() < ENTITIES.burning.smokeDensity.get()) {
+                    level.addParticle(ENTITIES.burning.smokeType.getParticle().get(),
                             entity.getRandomX(1),
                             entity.getRandomY(),
                             entity.getRandomZ(1),
@@ -43,21 +48,19 @@ public class EntityFireTicker extends EntityTicker<Entity> {
                     );
                 }
 
-                if (ENTITIES.burning.sparks) {
-                    for (int i = 0; i < 2; i++) {
-                        level.addParticle(isBlaze ?
-                                        SparkParticle.create(SparkType.SHORT_LIFE, random, SparkParticle.BLAZE_COLORS) :
-                                        getParticleForFireType(
-                                                SparkParticle.create(SparkType.SHORT_LIFE, random),
-                                                SparkParticle.createSoul(SparkType.SHORT_LIFE, random)
-                                        ),
-                                entity.getRandomX(1),
-                                entity.getRandomY(),
-                                entity.getRandomZ(1),
-                                nextNonAbsDouble(random, 0.03),
-                                nextNonAbsDouble(random, 0.05),
-                                nextNonAbsDouble(random, 0.03)
-                        );
+                if (random.nextDouble() < ENTITIES.burning.sparksDensity.get()) {
+                    List<Integer> colors = getSparkColors();
+                    if (colors != null) {
+                        for (int i = 0; i < 2; i++) {
+                            level.addParticle(SparkParticle.create(SparkType.SHORT_LIFE, random, colors),
+                                    entity.getRandomX(1),
+                                    entity.getRandomY(),
+                                    entity.getRandomZ(1),
+                                    nextNonAbsDouble(random, 0.03),
+                                    nextNonAbsDouble(random, 0.05),
+                                    nextNonAbsDouble(random, 0.03)
+                            );
+                        }
                     }
                 }
 
@@ -65,19 +68,43 @@ public class EntityFireTicker extends EntityTicker<Entity> {
                     return;
                 }
 
-                if (ENTITIES.burning.flames) {
-                    level.addParticle(getParticleForFireType(ParticleTypes.FLAME, ParticleTypes.SOUL_FIRE_FLAME),
-                            entity.getRandomX(1),
-                            entity.getRandomY(),
-                            entity.getRandomZ(1),
-                            0, 0, 0
-                    );
+                if (random.nextDouble() < ENTITIES.burning.flamesDensity.get()) {
+                    ParticleOptions options = getFlameParticle();
+                    if (options != null) {
+                        level.addParticle(options,
+                                entity.getRandomX(1),
+                                entity.getRandomY(),
+                                entity.getRandomZ(1),
+                                0, 0, 0
+                        );
+                    }
                 }
             }
         }
     }
 
-    private ParticleOptions getParticleForFireType(ParticleOptions normal, ParticleOptions soul) {
-        return CompatHelper.IS_SOUL_FIRED_LOADED.get() && SoulFiredCompat.isOnSoulFire(entity) ? soul : normal;
+    @Nullable
+    private ParticleOptions getFlameParticle() {
+        if (CompatHelper.IS_PROMETHEUS_LOADED.get()) {
+            return PrometheusCompat.getFlameParticle(entity);
+        }
+        else if (CompatHelper.IS_DYED_FLAMES_LOADED.get()) {
+            return DyedFlamesCompat.getFlameParticle(entity);
+        }
+        return ParticleTypes.FLAME;
+    }
+
+    @Nullable
+    private List<Integer> getSparkColors() {
+        if (isBlaze) {
+            return SparkParticle.BLAZE_COLORS;
+        }
+        else if (CompatHelper.IS_PROMETHEUS_LOADED.get()) {
+            return PrometheusCompat.getSparkParticle(entity);
+        }
+        else if (CompatHelper.IS_DYED_FLAMES_LOADED.get()) {
+            return DyedFlamesCompat.getSparkParticle(entity);
+        }
+        return SparkParticle.DEFAULT_COLORS;
     }
 }

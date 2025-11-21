@@ -74,6 +74,8 @@ public class ModParticles {
     public static final Supplier<ParticleType<FloatParticleOptions>> LAVA_RIPPLE = register("lava_ripple", FloatParticleOptions.DESERIALIZER, FloatParticleOptions::codec);
     public static final Supplier<ParticleType<SplashParticleOptions>> WATER_SPLASH = register("water_splash", SplashParticleOptions.DESERIALIZER, SplashParticleOptions::codec);
     public static final Supplier<ParticleType<SplashParticleOptions>> LAVA_SPLASH = register("lava_splash", SplashParticleOptions.DESERIALIZER, SplashParticleOptions::codec);
+    public static final Supplier<ParticleType<FloatParticleOptions>> WATER_SPLASH_RIPPLE = register("water_splash_ripple", FloatParticleOptions.DESERIALIZER, FloatParticleOptions::codec);
+    public static final Supplier<ParticleType<FloatParticleOptions>> LAVA_SPLASH_RIPPLE = register("lava_splash_ripple", FloatParticleOptions.DESERIALIZER, FloatParticleOptions::codec);
     public static final Supplier<ParticleType<SplashDropletParticleOptions>> WATER_SPLASH_DROPLET = register("water_splash_droplet", SplashDropletParticleOptions.DESERIALIZER, SplashDropletParticleOptions::codec);
     public static final Supplier<ParticleType<SplashDropletParticleOptions>> LAVA_SPLASH_DROPLET = register("lava_splash_droplet", SplashDropletParticleOptions.DESERIALIZER, SplashDropletParticleOptions::codec);
     public static final Supplier<ParticleType<SplashEmitterParticleOptions>> WATER_SPLASH_EMITTER = register("water_splash_emitter", SplashEmitterParticleOptions.DESERIALIZER, SplashEmitterParticleOptions::codec);

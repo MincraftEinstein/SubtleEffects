@@ -54,7 +54,7 @@ public class ModEntityTickers {
 
     public static void init() {
         register(entity -> true, EntityCauldronTicker::new);
-        register(entity -> !(entity instanceof LightningBolt), EntityFireTicker::new);
+        register(entity -> !ENTITIES.burning.entityBlocklist.contains(entity.getType()), EntityFireTicker::new);
         register(entity -> entity instanceof LivingEntity, ModEntityTickers::getSleepingTicker);
         register(entity -> entity instanceof AbstractMinecart && ENTITIES.minecartSparksDisplayType != ModEntityConfigs.MinecartSparksDisplayType.OFF, MinecartSparksTicker::new);
         register(LOCAL_PLAYER.and(entity -> ENTITIES.humanoids.player.stomachGrowlingThreshold.get() > 0), StomachGrowlingTicker::new);
@@ -140,14 +140,16 @@ public class ModEntityTickers {
                 );
             }
         });
-        registerSimple(EntityType.ENDER_PEARL, false, () -> ITEMS.projectiles.enderPearlTrail, (entity, level, random) -> {
-            for (int i = 0; i < 10; i++) {
-                level.addParticle(ParticleTypes.PORTAL,
-                        entity.getRandomX(2),
-                        entity.getRandomY(),
-                        entity.getRandomZ(2),
-                        0, 0, 0
-                );
+        registerSimple(EntityType.ENDER_PEARL, false, () -> ITEMS.projectiles.enderPearlTrailDensity.get() > 0, (entity, level, random) -> {
+            for (int i = 0; i < 20; i++) {
+                if (random.nextDouble() < ITEMS.projectiles.enderPearlTrailDensity.get()) {
+                    level.addParticle(ParticleTypes.PORTAL,
+                            entity.getRandomX(2),
+                            entity.getRandomY(),
+                            entity.getRandomZ(2),
+                            0, 0, 0
+                    );
+                }
             }
         });
         registerSimple(EntityType.ALLAY, true, () -> ENTITIES.allayMagicDensity.get() > 0, (entity, level, random) -> {

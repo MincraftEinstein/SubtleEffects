@@ -12,8 +12,6 @@ public class ModSpriteSets {
     public static final Map<ResourceLocation, ParticleEngine.MutableSpriteSet> REGISTERED = new HashMap<>();
 
     public static final ParticleEngine.MutableSpriteSet WATER_SPLASH_OVERLAY = register("water_splash_overlay");
-    public static final ParticleEngine.MutableSpriteSet WATER_SPLASH_BOTTOM = register("water_splash_bottom");
-    public static final ParticleEngine.MutableSpriteSet LAVA_SPLASH_BOTTOM = register("lava_splash_bottom");
 
     public static void init() {
     }

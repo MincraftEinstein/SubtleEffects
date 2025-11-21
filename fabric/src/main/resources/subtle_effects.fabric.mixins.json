@@ -6,6 +6,7 @@
   "compatibilityLevel": "JAVA_17",
   "client": [
     "client.FabricClientEntityMixin",
+    "client.FabricLevelRendererMixin",
     "client.FabricMultiPlayerGameModeMixin",
     "client.item.FabricBucketItemAccessor",
     "client.item.FabricBucketItemMixin",

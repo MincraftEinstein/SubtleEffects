@@ -27,12 +27,16 @@ dependencies {
     modImplementation "me.fzzyhmstrs:fzzy_config:${fzzy_config_version}"
     modCompileOnly "com.github.glitchfiend:GlitchCore-fabric:${glitchcore_version}"
     modCompileOnly "com.github.glitchfiend:SereneSeasons-fabric:${serene_seasons_version}"
-    modCompileOnly "it.crystalnest:soul-fire-d-fabric:${soul_fired_version}"
+    modCompileOnly "it.crystalnest:cobweb-fabric:${cobweb_version}"
+    modCompileOnly "it.crystalnest:prometheus-fabric:${prometheus_version}"
     modCompileOnly "maven.modrinth:iceberg:${fabric_iceberg_version}"
     modCompileOnly "maven.modrinth:prism-lib:${fabric_prism_version}"
     modCompileOnly "maven.modrinth:item-borders:${fabric_item_borders_version}"
     modCompileOnly "fuzs.forgeconfigapiport:forgeconfigapiport-fabric:${config_api_port}"
     modCompileOnly "maven.modrinth:endrem:${fabric_endrem_version}"
+    modCompileOnly "maven.modrinth:dyed-flames:${fabric_dyed_flames_version}"
+    modCompileOnly "fuzs.neoforgedatapackextensions:neoforgedatapackextensions-fabric:${neoforgedatapackextensions_version}"
+    modCompileOnly "fuzs.puzzleslib:puzzleslib-fabric:${puzzleslib_version}"
 }
 
 loom {
