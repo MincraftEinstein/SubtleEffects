@@ -50,7 +50,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
-import org.joml.Vector3f;
 
 import java.time.LocalDate;
 import java.time.Month;
@@ -247,7 +246,11 @@ public class SubtleEffectsClient {
                     return;
                 }
 
-                Vector3f renderTypeColor = Vec3.fromRGB24(FastColor.ARGB32.color(255, renderType.toString().hashCode())).toVector3f();
+                int color = renderType.toString().hashCode();
+                float red = FastColor.ARGB32.red(color) / 255F;
+                float green = FastColor.ARGB32.green(color) / 255F;
+                float blue = FastColor.ARGB32.blue(color) / 255F;
+
                 particles.forEach(particle -> {
                     AABB aabb = particle.getBoundingBox();
                     if (frustum.isVisible(aabb)) {
@@ -262,7 +265,7 @@ public class SubtleEffectsClient {
                         LevelRenderer.renderLineBox(poseStack, consumer, aabb, 1, 1, 1, 1);
 
                         AABB renderTypeAABB = new AABB(aabb.minX, aabb.maxY - 0.02, aabb.minZ, aabb.maxX, aabb.maxY + 0.02, aabb.maxZ);
-                        LevelRenderer.renderLineBox(poseStack, consumer, renderTypeAABB, renderTypeColor.x(), renderTypeColor.y(), renderTypeColor.z(), 1);
+                        LevelRenderer.renderLineBox(poseStack, consumer, renderTypeAABB, red, green, blue, 1);
 
                         poseStack.popPose();
                     }

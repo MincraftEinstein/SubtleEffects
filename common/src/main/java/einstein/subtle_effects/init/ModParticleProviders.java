@@ -81,6 +81,8 @@ public class ModParticleProviders {
         register(LAVA_RIPPLE, RippleParticle.LavaProvider::new);
         register(WATER_SPLASH, SplashParticle.Provider::new);
         register(LAVA_SPLASH, SplashParticle.LavaProvider::new);
+        register(WATER_SPLASH_RIPPLE, SplashRippleParticle.Provider::new);
+        register(LAVA_SPLASH_RIPPLE, SplashRippleParticle.LavaProvider::new);
         register(WATER_SPLASH_DROPLET, SplashDropletParticle.Provider::new);
         register(LAVA_SPLASH_DROPLET, SplashDropletParticle.LavaProvider::new);
         register(WATER_SPLASH_EMITTER, sprites -> new SplashEmitter.Provider());

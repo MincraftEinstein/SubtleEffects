@@ -32,7 +32,7 @@ public class SplashParticleModel extends Model {
     }
 
     @Override
-    public void renderToBuffer(PoseStack poseStack, VertexConsumer consumer, int packedLight, int packedOverlay, int color) {
-        splash.render(poseStack, consumer, packedLight, packedOverlay, color);
+    public void renderToBuffer(PoseStack poseStack, VertexConsumer consumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+        splash.render(poseStack, consumer, packedLight, packedOverlay, red, green, blue, alpha);
     }
 }
