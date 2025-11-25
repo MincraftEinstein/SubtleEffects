@@ -88,10 +88,10 @@ public class SplashParticle extends ModelParticle {
         poseStack.translate(0, -(6 * (yScale / 4)), 0); // 6 is 1/4 of the model's height
         poseStack.scale(xScale, yScale, xScale);
 
-        model.renderToBuffer(poseStack, bufferSource.getBuffer(model.renderType(texture)), lightColor, OverlayTexture.NO_OVERLAY, alpha, rCol, gCol, bCol);
+        model.renderToBuffer(poseStack, bufferSource.getBuffer(model.renderType(texture)), lightColor, OverlayTexture.NO_OVERLAY, rCol, gCol, bCol, alpha);
 
         if (hasOverlay) {
-            model.renderToBuffer(poseStack, bufferSource.getBuffer(model.renderType(overlayTexture)), lightColor, OverlayTexture.NO_OVERLAY, ENTITIES.splashes.splashOverlayAlpha.get(), overlayRCol, overlayGCol, overlayBCol);
+            model.renderToBuffer(poseStack, bufferSource.getBuffer(model.renderType(overlayTexture)), lightColor, OverlayTexture.NO_OVERLAY, overlayRCol, overlayGCol, overlayBCol, ENTITIES.splashes.splashOverlayAlpha.get());
         }
 
         bufferSource.endBatch();

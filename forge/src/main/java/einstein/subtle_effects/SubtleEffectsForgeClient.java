@@ -16,10 +16,7 @@ import net.minecraft.server.packs.PathPackResources;
 import net.minecraft.server.packs.repository.Pack;
 import net.minecraft.server.packs.repository.PackSource;
 import net.minecraft.server.packs.repository.RepositorySource;
-import net.minecraftforge.client.event.EntityRenderersEvent;
-import net.minecraftforge.client.event.RegisterClientCommandsEvent;
-import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
-import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
+import net.minecraftforge.client.event.*;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.AddPackFindersEvent;
 import net.minecraftforge.event.TickEvent;
@@ -67,7 +64,7 @@ public class SubtleEffectsForgeClient {
         });
         MinecraftForge.EVENT_BUS.addListener((RegisterClientCommandsEvent event) ->
                 SubtleEffectsClient.registerClientCommands(event.getDispatcher(), event.getBuildContext()));
-        NeoForge.EVENT_BUS.addListener((RenderLevelStageEvent event) -> {
+        MinecraftForge.EVENT_BUS.addListener((RenderLevelStageEvent event) -> {
             if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_PARTICLES) {
                 SubtleEffectsClient.renderParticleBoundingBoxes(event.getPoseStack(), event.getCamera());
             }
