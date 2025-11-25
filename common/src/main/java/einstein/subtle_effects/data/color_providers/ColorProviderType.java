@@ -28,13 +28,13 @@ public record ColorProviderType<T extends ColorProviderType.ColorProvider>(Resou
     public static final ColorProviderType<ConstantColorProvider> CONSTANT = register("constant", () -> ConstantColorProvider.CODEC);
     public static final ColorProviderType<BiomeWaterColorProvider> BIOME_WATER = register("biome_water", () -> BiomeWaterColorProvider.CODEC);
     public static final ColorProviderType<ListColorProvider> LIST = register("list", () -> ListColorProvider.CODEC);
+    public static final ColorProviderType<PresetColorProvider> PRESET = register("preset", () -> PresetColorProvider.CODEC);
 
     @SuppressWarnings("unchecked")
     public static final Codec<ColorProviderType<ColorProvider>> REGISTRY_CODEC = StringRepresentable.fromValues(() -> ColorProviderType.TYPES.values().toArray(new ColorProviderType[0]));
     @SuppressWarnings("unchecked")
     private static final Codec<Either<Integer, ColorProvider>> CONSTANT_OR_DISPATCH_CODEC = Codec.either(Util.RGB_COLOR_CODEC, REGISTRY_CODEC.dispatch(colorProvider -> (ColorProviderType<ColorProvider>) colorProvider.getType(), type -> type.codec().get()));
     public static final Codec<ColorProvider> CODEC = CONSTANT_OR_DISPATCH_CODEC.xmap(either -> either.map(ConstantColorProvider::new, colorProvider -> colorProvider), colorProvider -> colorProvider.getType() == NONE ? Either.left(1) : Either.right(colorProvider));
-    public static final StreamCodec<ByteBuf, ColorProvider> STREAM_CODEC = ByteBufCodecs.fromCodec(CODEC);
 
     public static void init() {
     }
@@ -51,10 +51,10 @@ public record ColorProviderType<T extends ColorProviderType.ColorProvider>(Resou
         return registryName().toString();
     }
 
-    public static abstract class ColorProvider {
+    public interface ColorProvider {
 
-        public abstract ColorProviderType<?> getType();
+        ColorProviderType<?> getType();
 
-        public abstract Vector3f provideColor(Level level, BlockPos pos, RandomSource random);
+        Vector3f provideColor(Level level, BlockPos pos, RandomSource random);
     }
 }

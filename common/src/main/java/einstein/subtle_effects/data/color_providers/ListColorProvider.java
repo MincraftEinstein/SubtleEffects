@@ -9,17 +9,12 @@ import org.joml.Vector3f;
 
 import java.util.List;
 
-public class ListColorProvider extends ColorProviderType.ColorProvider {
+public record ListColorProvider(List<ColorProviderType.ColorProvider> providers)
+        implements ColorProviderType.ColorProvider {
 
     public static final MapCodec<ListColorProvider> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-            ColorProviderType.CODEC.listOf().fieldOf("providers").forGetter(ListColorProvider::getProviders)
+            ColorProviderType.CODEC.listOf().fieldOf("providers").forGetter(ListColorProvider::providers)
     ).apply(instance, ListColorProvider::new));
-
-    private final List<ColorProviderType.ColorProvider> providers;
-
-    public ListColorProvider(List<ColorProviderType.ColorProvider> providers) {
-        this.providers = providers;
-    }
 
     @Override
     public ColorProviderType<?> getType() {
@@ -29,9 +24,5 @@ public class ListColorProvider extends ColorProviderType.ColorProvider {
     @Override
     public Vector3f provideColor(Level level, BlockPos pos, RandomSource random) {
         return providers.get(random.nextInt(providers.size())).provideColor(level, pos, random);
-    }
-
-    public List<ColorProviderType.ColorProvider> getProviders() {
-        return providers;
     }
 }

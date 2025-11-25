@@ -6,7 +6,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
 import org.joml.Vector3f;
 
-public class NoneColorProvider extends ColorProviderType.ColorProvider {
+public class NoneColorProvider implements ColorProviderType.ColorProvider {
 
     public static final NoneColorProvider INSTANCE = new NoneColorProvider();
     public static final MapCodec<NoneColorProvider> CODEC = MapCodec.unit(INSTANCE);

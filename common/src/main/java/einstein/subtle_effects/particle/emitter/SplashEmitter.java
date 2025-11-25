@@ -3,11 +3,12 @@ package einstein.subtle_effects.particle.emitter;
 import einstein.subtle_effects.data.FluidPair;
 import einstein.subtle_effects.data.FluidPairReloadListener;
 import einstein.subtle_effects.data.splash_types.SplashType;
+import einstein.subtle_effects.init.ModParticles;
 import einstein.subtle_effects.particle.SplashParticle;
 import einstein.subtle_effects.particle.option.DropletParticleOptions;
 import einstein.subtle_effects.particle.option.SplashEmitterParticleOptions;
 import einstein.subtle_effects.particle.option.SplashParticleOptions;
-import einstein.subtle_effects.particle.option.SplashRippleParticleOptions;
+import einstein.subtle_effects.particle.option.RippleParticleOptions;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.NoRenderParticle;
 import net.minecraft.client.particle.Particle;
@@ -128,7 +129,7 @@ public class SplashEmitter extends NoRenderParticle {
         );
 
         if (hasRipple()) {
-            level.addAlwaysVisibleParticle(new SplashRippleParticleOptions(fluidPairId, xScale),
+            level.addAlwaysVisibleParticle(new RippleParticleOptions(ModParticles.SPLASH_RIPPLE.get(), fluidPairId, xScale, true),
                     true, x, y, z, 0, 0, 0
             );
         }

@@ -4,7 +4,7 @@ import einstein.subtle_effects.data.FluidPair;
 import einstein.subtle_effects.data.FluidPairReloadListener;
 import einstein.subtle_effects.data.splash_types.SplashOptionsData;
 import einstein.subtle_effects.data.splash_types.SplashType;
-import einstein.subtle_effects.particle.option.SplashRippleParticleOptions;
+import einstein.subtle_effects.particle.option.RippleParticleOptions;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleProvider;
@@ -23,7 +23,7 @@ public class SplashRippleParticle extends FlatPlaneParticle {
     private final int lightLevel;
     private boolean shouldAnimate = false;
 
-    protected SplashRippleParticle(ClientLevel level, double x, double y, double z, SplashRippleParticleOptions options) {
+    protected SplashRippleParticle(ClientLevel level, double x, double y, double z, RippleParticleOptions options) {
         super(level, x, y, z);
         fluidPair = FluidPairReloadListener.FLUID_PAIRS.get(options.fluidPairId());
         SplashType type = fluidPair.splashType().orElseThrow();
@@ -39,7 +39,7 @@ public class SplashRippleParticle extends FlatPlaneParticle {
         gCol = color.y;
         bCol = color.z;
 
-        float xScale = options.xScale();
+        float xScale = options.scale();
         xScale /= 2; // Divided by 2 because it is used as the distance from the center
         xScale -= (xScale * 0.0625F * 4F); // Subtracts 4 in scale so it aligns with the splash particle
         quadSize = xScale;
@@ -83,10 +83,10 @@ public class SplashRippleParticle extends FlatPlaneParticle {
         return ParticleRenderType.PARTICLE_SHEET_TRANSLUCENT;
     }
 
-    public record Provider() implements ParticleProvider<SplashRippleParticleOptions> {
+    public record Provider() implements ParticleProvider<RippleParticleOptions> {
 
         @Override
-        public Particle createParticle(SplashRippleParticleOptions options, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+        public Particle createParticle(RippleParticleOptions options, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
             return new SplashRippleParticle(level, x, y, z, options);
         }
     }

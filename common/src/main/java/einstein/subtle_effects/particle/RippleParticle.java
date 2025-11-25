@@ -1,30 +1,36 @@
 package einstein.subtle_effects.particle;
 
-import einstein.subtle_effects.particle.option.FloatParticleOptions;
+import einstein.subtle_effects.data.DropletOptions;
+import einstein.subtle_effects.data.FluidPair;
+import einstein.subtle_effects.data.FluidPairReloadListener;
+import einstein.subtle_effects.data.splash_types.SplashType;
+import einstein.subtle_effects.init.ModParticles;
+import einstein.subtle_effects.particle.option.RippleParticleOptions;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.client.particle.ParticleRenderType;
 import net.minecraft.client.particle.SpriteSet;
+import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
+import org.jetbrains.annotations.Nullable;
+import org.joml.Vector3f;
+
+import java.util.Optional;
 
 public class RippleParticle extends FlatPlaneParticle {
 
-    private final SpriteSet sprites;
-    private final boolean translucent;
+    public static final RippleParticleOptions WATER = new RippleParticleOptions(ModParticles.RIPPLE.get(), FluidPairReloadListener.WATER_ID, 1, false);
 
-    protected RippleParticle(ClientLevel level, double x, double y, double z, SpriteSet sprites, boolean translucent, float scale) {
+    private final SpriteSet sprites;
+
+    protected RippleParticle(ClientLevel level, double x, double y, double z, SpriteSet sprites, float scale) {
         super(level, x, y, z);
         this.sprites = sprites;
-        this.translucent = translucent;
         rotation.rotateX(90 * Mth.DEG_TO_RAD);
         setSpriteFromAge(sprites);
         scale(scale);
         lifetime = 5;
-
-        if (translucent) {
-            alpha = 0.2F;
-        }
     }
 
     @Override
@@ -35,27 +41,37 @@ public class RippleParticle extends FlatPlaneParticle {
 
     @Override
     public ParticleRenderType getRenderType() {
-        if (translucent) {
-            return ParticleRenderType.PARTICLE_SHEET_TRANSLUCENT;
-        }
-        return ParticleRenderType.PARTICLE_SHEET_OPAQUE;
+        return ParticleRenderType.PARTICLE_SHEET_TRANSLUCENT;
     }
 
-    public record Provider(SpriteSet sprites) implements ParticleProvider<FloatParticleOptions> {
+    public record Provider(SpriteSet sprites) implements ParticleProvider<RippleParticleOptions> {
 
+        @Nullable
         @Override
-        public Particle createParticle(FloatParticleOptions options, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
-            return new RippleParticle(level, x, y, z, sprites, true, options.f());
+        public Particle createParticle(RippleParticleOptions options, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+            FluidPair fluidPair = FluidPairReloadListener.FLUID_PAIRS.get(options.fluidPairId());
+
+            return getRippleOptions(fluidPair, fluidPair.splashType(), options).map(rippleOptions -> {
+                RippleParticle particle = new RippleParticle(level, x, y, z, sprites, options.scale());
+                Vector3f color = rippleOptions.getColorAndApplyTint(level, BlockPos.containing(x, y, z), level.getRandom());
+
+                particle.setColor(color.x(), color.y(), color.z());
+                particle.setAlpha(SplashParticle.alpha(rippleOptions.transparency()));
+                return particle;
+            }).orElse(null);
         }
-    }
 
-    public record LavaProvider(SpriteSet sprites) implements ParticleProvider<FloatParticleOptions> {
+        private static Optional<DropletOptions.RippleOptions> getRippleOptions(FluidPair fluidPair, Optional<SplashType> splashType, RippleParticleOptions options) {
+            Optional<DropletOptions.RippleOptions> fluidRippleOptions = fluidPair.dropletOptions().rippleOptions();
+            if (options.fromSplash() && splashType.isPresent()) {
+                Optional<DropletOptions> dropletOptions = splashType.get().dropletOptions();
 
-        @Override
-        public Particle createParticle(FloatParticleOptions options, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
-            Particle particle = new RippleParticle(level, x, y, z, sprites, false, options.f());
-            particle.setColor(0.871F, 0.478F, 0.133F);
-            return particle;
+                if (dropletOptions.isPresent()) {
+                    Optional<DropletOptions.RippleOptions> rippleOptions = dropletOptions.get().rippleOptions();
+                    return rippleOptions.isPresent() ? rippleOptions : fluidRippleOptions;
+                }
+            }
+            return fluidRippleOptions;
         }
     }
 }

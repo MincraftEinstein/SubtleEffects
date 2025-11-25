@@ -24,6 +24,8 @@ import static einstein.subtle_effects.SubtleEffects.LOGGER;
 
 public class FluidPairReloadListener extends SimplePreparableReloadListener<Map<ResourceLocation, FluidPair.Data>> implements NamedReloadListener {
 
+    public static final ResourceLocation WATER_ID = SubtleEffects.loc("water");
+    public static final ResourceLocation LAVA_ID = SubtleEffects.loc("lava");
     private static final String DIRECTORY = "subtle_effects/fluid_pairs";
     public static final Map<ResourceLocation, FluidPair> FLUID_PAIRS = new HashMap<>();
 
@@ -34,12 +36,13 @@ public class FluidPairReloadListener extends SimplePreparableReloadListener<Map<
         List<Fluid> sourceFluids = new ArrayList<>();
         List<Fluid> flowingFluids = new ArrayList<>();
         List<AbstractCauldronBlock> cauldrons = new ArrayList<>();
+        List<BucketItem> bucketItems = new ArrayList<>();
         Map<ResourceLocation, FluidPair.Data> fluidPairs = new HashMap<>();
 
         resources.forEach((id, element) ->
                 FluidPair.Data.CODEC.parse(JsonOps.INSTANCE, element)
                         .resultOrPartial(error -> LOGGER.error("Failed to decode fluid pair with ID {} - Error: {}", id, error))
-                        .ifPresent(pairData -> validate(id, pairData, sourceFluids, flowingFluids, cauldrons, fluidPairs))
+                        .ifPresent(pairData -> validate(id, pairData, sourceFluids, flowingFluids, cauldrons, bucketItems, fluidPairs))
         );
         return fluidPairs;
     }
@@ -69,7 +72,7 @@ public class FluidPairReloadListener extends SimplePreparableReloadListener<Map<
         });
     }
 
-    private static void validate(ResourceLocation id, FluidPair.Data pairData, List<Fluid> sourceFluids, List<Fluid> flowingFluids, List<AbstractCauldronBlock> cauldrons, Map<ResourceLocation, FluidPair.Data> fluidPairs) {
+    private static void validate(ResourceLocation id, FluidPair.Data pairData, List<Fluid> sourceFluids, List<Fluid> flowingFluids, List<AbstractCauldronBlock> cauldrons, List<BucketItem> bucketItems, Map<ResourceLocation, FluidPair.Data> fluidPairs) {
         Fluid source = pairData.source();
         Fluid flowing = pairData.flowing();
 
@@ -103,6 +106,7 @@ public class FluidPairReloadListener extends SimplePreparableReloadListener<Map<
         sourceFluids.add(source);
         flowingFluids.add(flowing);
         pairData.cauldron().ifPresent(cauldrons::add);
+        bucketItem.ifPresent(bucketItems::add);
         fluidPairs.put(id, pairData);
     }
 

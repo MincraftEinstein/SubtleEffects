@@ -10,7 +10,7 @@ import java.util.Optional;
 public record SplashType(SplashOptionsData.SplashOptions splashOptions,
                          SplashOptionsData.SplashOptions splashOverlayOptions,
                          SplashOptionsData.SplashOptions splashRippleOptions,
-                         DropletOptions dropletOptions) {
+                         Optional<DropletOptions> dropletOptions) {
 
     public record Data(SplashOptionsData splashOptions,
                        Either<Boolean, SplashOptionsData> splashOverlayOptions,

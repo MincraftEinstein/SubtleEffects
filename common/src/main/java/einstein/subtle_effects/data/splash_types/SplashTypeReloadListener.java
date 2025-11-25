@@ -55,12 +55,11 @@ public class SplashTypeReloadListener extends SimplePreparableReloadListener<Map
 
     private static void load(ResourceLocation id, SplashType.Data typeData, Map<ResourceLocation, SplashType> splashTypes) {
         SplashOptionsData overlayOptions = Either.unwrap(typeData.splashOverlayOptions().mapLeft(hasOverlay -> hasOverlay ? SplashOptionsData.DEFAULT : SplashOptionsData.EMPTY));
-        DropletOptions dropletOptions = typeData.dropletOptions().orElse(DropletOptions.DEFAULT);
 
         splashTypes.put(id, new SplashType(createOptions(typeData.splashOptions(), WATER_SPLASH),
                 createOptions(overlayOptions, overlayOptions.colorProvider().isPresent() ? WATER_SPLASH_OVERLAY : null),
                 createOptions(typeData.splashRippleOptions(), WATER_SPLASH_RIPPLE),
-                dropletOptions
+                typeData.dropletOptions()
         ));
     }
 

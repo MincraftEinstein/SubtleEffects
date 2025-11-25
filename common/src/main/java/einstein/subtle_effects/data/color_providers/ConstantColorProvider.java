@@ -9,17 +9,11 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import org.joml.Vector3f;
 
-public class ConstantColorProvider extends ColorProviderType.ColorProvider {
+public record ConstantColorProvider(int color) implements ColorProviderType.ColorProvider {
 
     public static final MapCodec<ConstantColorProvider> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-            Util.RGB_COLOR_CODEC.fieldOf("color").forGetter(ConstantColorProvider::getColor)
+            Util.RGB_COLOR_CODEC.fieldOf("color").forGetter(ConstantColorProvider::color)
     ).apply(instance, ConstantColorProvider::new));
-
-    private final int color;
-
-    public ConstantColorProvider(Integer color) {
-        this.color = color;
-    }
 
     @Override
     public ColorProviderType<?> getType() {
@@ -29,9 +23,5 @@ public class ConstantColorProvider extends ColorProviderType.ColorProvider {
     @Override
     public Vector3f provideColor(Level level, BlockPos pos, RandomSource random) {
         return Vec3.fromRGB24(color).toVector3f();
-    }
-
-    public int getColor() {
-        return color;
     }
 }

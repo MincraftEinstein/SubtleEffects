@@ -7,7 +7,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import org.joml.Vector3f;
 
-public class BiomeWaterColorProvider extends ColorProviderType.ColorProvider {
+public class BiomeWaterColorProvider implements ColorProviderType.ColorProvider {
 
     public static final BiomeWaterColorProvider INSTANCE = new BiomeWaterColorProvider();
     public static final MapCodec<BiomeWaterColorProvider> CODEC = MapCodec.unit(INSTANCE);

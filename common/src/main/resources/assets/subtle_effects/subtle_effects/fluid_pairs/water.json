@@ -7,6 +7,14 @@
   "droplets": {
     "color": {
       "type": "subtle_effects:biome_water"
+    },
+    "ripple": {
+      "color": {
+        "type": "subtle_effects:none"
+      },
+      "transparency": {
+        "alpha": 0.2
+      }
     }
   }
 }

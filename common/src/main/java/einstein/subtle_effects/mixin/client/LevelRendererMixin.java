@@ -11,7 +11,9 @@ import einstein.subtle_effects.configs.ModBlockConfigs;
 import einstein.subtle_effects.configs.ReplacedParticlesDisplayType;
 import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.init.ModParticles;
+import einstein.subtle_effects.particle.RippleParticle;
 import einstein.subtle_effects.particle.option.FloatParticleOptions;
+import einstein.subtle_effects.particle.option.RippleParticleOptions;
 import einstein.subtle_effects.ticking.tickers.TickerManager;
 import einstein.subtle_effects.util.FrustumGetter;
 import einstein.subtle_effects.util.ParticleAccessor;
@@ -109,7 +111,7 @@ public abstract class LevelRendererMixin implements FrustumGetter {
                     return;
                 }
 
-                options = new FloatParticleOptions(ModParticles.WATER_RIPPLE.get(), 1);
+                options = RippleParticle.WATER;
 
                 if (isCauldron) {
                     x = pos.getX() + 0.1875 + nextDouble(random, 0.625);

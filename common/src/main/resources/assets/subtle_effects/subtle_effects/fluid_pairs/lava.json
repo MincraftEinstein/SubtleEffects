@@ -4,5 +4,17 @@
   "cauldron": "minecraft:lava_cauldron",
   "splash_type": "subtle_effects:lava",
   "bucket_item": "minecraft:lava_bucket",
-  "light_emission": 15
+  "light_emission": 15,
+  "droplets": {
+    "color": {
+      "type": "subtle_effects:preset",
+      "preset": "lava_droplet"
+    },
+    "ripple": {
+      "color": {
+        "type": "subtle_effects:preset",
+        "preset": "lava_ripple"
+      }
+    }
+  }
 }

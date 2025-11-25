@@ -2,6 +2,7 @@ package einstein.subtle_effects.particle;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.datafixers.util.Either;
 import einstein.subtle_effects.client.model.particle.SplashParticleModel;
 import einstein.subtle_effects.data.FluidPair;
 import einstein.subtle_effects.data.FluidPairReloadListener;
@@ -23,6 +24,7 @@ import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
 
+import java.util.Optional;
 import java.util.function.Function;
 
 import static einstein.subtle_effects.init.ModConfigs.ENTITIES;
@@ -82,7 +84,11 @@ public class SplashParticle extends ModelParticle {
     }
 
     public static float alpha(SplashOptionsData.SplashOptions options) {
-        return options.transparency().map(transparency ->
+        return alpha(options.transparency());
+    }
+
+    public static float alpha(Optional<Either<Float, Boolean>> options) {
+        return options.map(transparency ->
                 transparency.mapRight(useConfig -> ENTITIES.splashes.splashOverlayAlpha.get())
                         .map(Function.identity(), Function.identity())
         ).orElse(1F);

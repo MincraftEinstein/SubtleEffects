@@ -1,5 +1,4 @@
 {
-  "fluid_pair": "subtle_effects:water",
   "splash": {
     "color": {
       "type": "subtle_effects:biome_water"
