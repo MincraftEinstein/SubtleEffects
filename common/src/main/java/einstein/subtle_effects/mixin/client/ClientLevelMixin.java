@@ -49,8 +49,8 @@ public abstract class ClientLevelMixin extends Level {
         super(levelData, dimension, registryAccess, dimensionType, profiler, isClientSide, isDebug, biomeZoomSeed, maxNeighborUpdates);
     }
 
-    @Inject(method = "<clinit>", at = @At("TAIL"))
-    private static void clinit(CallbackInfo ci) {
+    @Inject(method = "<init>", at = @At("TAIL"))
+    private void init(CallbackInfo ci) {
         if (ModConfigs.ITEMS.structureVoidItemMarker) {
             Set<Item> markerItems = new HashSet<>(MARKER_PARTICLE_ITEMS);
             markerItems.add(Items.STRUCTURE_VOID);
