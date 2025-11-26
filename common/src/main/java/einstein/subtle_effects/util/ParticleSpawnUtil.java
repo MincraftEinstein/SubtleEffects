@@ -501,11 +501,12 @@ public class ParticleSpawnUtil {
         if (fluidDefinition != null) {
             FluidHeightAccessor accessor = (FluidHeightAccessor) entity;
             double fluidDefinitionHeight = accessor.subtleEffects$getFluidDefinitionHeight().getDouble(fluidDefinition);
-            boolean isWater = fluidDefinition.is(Fluids.WATER);
 
             if (fluidDefinitionHeight > 0) {
+                boolean isWater = fluidDefinition.is(Fluids.WATER);
+
                 if (waterOnly == isWater || allFluids) {
-                    if (accessor.subtleEffects$getLastTouchedFluid() != fluidDefinition && !firstTick) {
+                    if (!fluidDefinition.is(accessor.subtleEffects$getLastTouchedFluid()) && !firstTick) {
                         fluidDefinition.splashType().ifPresent(splashType -> {
                             if (spawnSplashEffects(entity, level, fluidDefinition.id(), entity.getY() + fluidDefinitionHeight, entity.getDeltaMovement().y())) {
                                 successConsumer.accept(isWater);

@@ -29,7 +29,7 @@ public class CommonEntityMixin {
     private final Entity subtleEffects$me = (Entity) (Object) this;
 
     @Inject(method = "updateInWaterStateAndDoFluidPushing", at = @At("TAIL"))
-    private void updateInWaterStateAndDoFluidPushing(CallbackInfoReturnable<Boolean> cir) {
+    private void sendServerPlayerSplashes(CallbackInfoReturnable<Boolean> cir) {
         if (subtleEffects$me instanceof ServerPlayer serverPlayer && !firstTick) {
             fluidHeight.forEach((fluidTag, height) -> {
                 if (height > 0) {

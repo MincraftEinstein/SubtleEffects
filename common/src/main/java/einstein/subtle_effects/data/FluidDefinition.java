@@ -11,12 +11,22 @@ import net.minecraft.world.level.block.AbstractCauldronBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 
-public record FluidDefinition(ResourceLocation id, Fluid source, Fluid flowing, Optional<AbstractCauldronBlock> cauldron,
-                              Optional<SplashType> splashType, Optional<BucketItem> bucketItem, DropletOptions dropletOptions,
+public record FluidDefinition(ResourceLocation id, Fluid source, Fluid flowing,
+                              Optional<AbstractCauldronBlock> cauldron,
+                              Optional<SplashType> splashType, Optional<BucketItem> bucketItem,
+                              DropletOptions dropletOptions,
                               int lightEmission) {
+
+    public boolean is(@Nullable FluidDefinition fluidDefinition) {
+        if (fluidDefinition == null) {
+            return false;
+        }
+        return this == fluidDefinition;
+    }
 
     public boolean is(Fluid fluid) {
         return fluid == source || fluid == flowing;

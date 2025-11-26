@@ -37,7 +37,7 @@ public class EntityCauldronTicker extends EntityTicker<Entity> {
 
             FluidDefinition fluidDefinition = ((FluidDefinitionAccessor) block).subtleEffects$getFluidDefinition();
             if (fluidDefinition != null) {
-                if (lastTouchedFluid != fluidDefinition) {
+                if (!fluidDefinition.is(lastTouchedFluid)) {
                     fluidDefinition.splashType().ifPresent(splashType -> {
                         if (ParticleSpawnUtil.spawnSplashEffects(entity, level, fluidDefinition.id(), pos.getY() + height, entity.getDeltaMovement().y())) {
                             if (isWater) {
