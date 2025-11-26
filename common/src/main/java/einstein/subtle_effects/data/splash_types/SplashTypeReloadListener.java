@@ -4,7 +4,6 @@ import com.google.gson.JsonElement;
 import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.JsonOps;
 import einstein.subtle_effects.SubtleEffects;
-import einstein.subtle_effects.data.DropletOptions;
 import einstein.subtle_effects.data.NamedReloadListener;
 import einstein.subtle_effects.data.color_providers.NoneColorProvider;
 import einstein.subtle_effects.util.Util;
@@ -33,8 +32,8 @@ public class SplashTypeReloadListener extends SimplePreparableReloadListener<Map
     @Override
     protected Map<ResourceLocation, SplashType> prepare(ResourceManager resourceManager, ProfilerFiller profiler) {
         Map<ResourceLocation, JsonElement> resources = new HashMap<>();
-        SimpleJsonResourceReloadListener.scanDirectory(resourceManager, DIRECTORY, Util.GSON, resources);
         Map<ResourceLocation, SplashType> splashTypes = new HashMap<>();
+        SimpleJsonResourceReloadListener.scanDirectory(resourceManager, DIRECTORY, Util.GSON, resources);
         OLD_SPRITE_SETS.clear();
         OLD_SPRITE_SETS.addAll(SPRITE_SETS.keySet());
         SPRITE_SETS.clear();
@@ -54,7 +53,7 @@ public class SplashTypeReloadListener extends SimplePreparableReloadListener<Map
     }
 
     private static void load(ResourceLocation id, SplashType.Data typeData, Map<ResourceLocation, SplashType> splashTypes) {
-        SplashOptionsData overlayOptions = Either.unwrap(typeData.splashOverlayOptions().mapLeft(hasOverlay -> hasOverlay ? SplashOptionsData.DEFAULT : SplashOptionsData.EMPTY));
+        SplashOptions.Data overlayOptions = Either.unwrap(typeData.splashOverlayOptions().mapLeft(hasOverlay -> hasOverlay ? SplashOptions.Data.DEFAULT : SplashOptions.Data.EMPTY));
 
         splashTypes.put(id, new SplashType(createOptions(typeData.splashOptions(), WATER_SPLASH),
                 createOptions(overlayOptions, overlayOptions.colorProvider().isPresent() ? WATER_SPLASH_OVERLAY : null),
@@ -63,7 +62,7 @@ public class SplashTypeReloadListener extends SimplePreparableReloadListener<Map
         ));
     }
 
-    private static SplashOptionsData.SplashOptions createOptions(SplashOptionsData optionsData, ParticleEngine.MutableSpriteSet defaultSprites) {
+    private static SplashOptions createOptions(SplashOptions.Data optionsData, ParticleEngine.MutableSpriteSet defaultSprites) {
         final ParticleEngine.MutableSpriteSet[] sprites = new ParticleEngine.MutableSpriteSet[1];
         optionsData.spriteSetId().ifPresentOrElse(
                 location -> {
@@ -78,7 +77,7 @@ public class SplashTypeReloadListener extends SimplePreparableReloadListener<Map
                 () -> sprites[0] = defaultSprites
         );
 
-        return new SplashOptionsData.SplashOptions(sprites[0], optionsData.colorProvider().orElse(NoneColorProvider.INSTANCE), optionsData.tinting(), optionsData.transparency());
+        return new SplashOptions(sprites[0], optionsData.colorProvider().orElse(NoneColorProvider.INSTANCE), optionsData.tinting(), optionsData.transparency());
     }
 
     @Override

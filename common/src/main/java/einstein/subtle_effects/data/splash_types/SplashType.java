@@ -7,20 +7,20 @@ import einstein.subtle_effects.data.DropletOptions;
 
 import java.util.Optional;
 
-public record SplashType(SplashOptionsData.SplashOptions splashOptions,
-                         SplashOptionsData.SplashOptions splashOverlayOptions,
-                         SplashOptionsData.SplashOptions splashRippleOptions,
+public record SplashType(SplashOptions splashOptions,
+                         SplashOptions splashOverlayOptions,
+                         SplashOptions splashRippleOptions,
                          Optional<DropletOptions> dropletOptions) {
 
-    public record Data(SplashOptionsData splashOptions,
-                       Either<Boolean, SplashOptionsData> splashOverlayOptions,
-                       SplashOptionsData splashRippleOptions, Optional<DropletOptions> dropletOptions) {
+    public record Data(SplashOptions.Data splashOptions,
+                       Either<Boolean, SplashOptions.Data> splashOverlayOptions,
+                       SplashOptions.Data splashRippleOptions, Optional<DropletOptions> dropletOptions) {
 
         public static final Codec<Data> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-                SplashOptionsData.CODEC.optionalFieldOf("splash", SplashOptionsData.EMPTY).forGetter(Data::splashOptions),
-                Codec.either(Codec.BOOL, SplashOptionsData.CODEC).optionalFieldOf("splash_overlay", Either.left(false)).forGetter(Data::splashOverlayOptions),
-                SplashOptionsData.CODEC.optionalFieldOf("splash_ripple", SplashOptionsData.EMPTY).forGetter(Data::splashRippleOptions),
-                DropletOptions.CODEC.optionalFieldOf("droplets").forGetter(Data::dropletOptions)
-        ).apply(instance, Data::new));
+                SplashOptions.Data.CODEC.optionalFieldOf("splash", SplashOptions.Data.EMPTY).forGetter(SplashType.Data::splashOptions),
+                Codec.either(Codec.BOOL, SplashOptions.Data.CODEC).optionalFieldOf("splash_overlay", Either.left(false)).forGetter(SplashType.Data::splashOverlayOptions),
+                SplashOptions.Data.CODEC.optionalFieldOf("splash_ripple", SplashOptions.Data.EMPTY).forGetter(SplashType.Data::splashRippleOptions),
+                DropletOptions.CODEC.optionalFieldOf("droplets").forGetter(SplashType.Data::dropletOptions)
+        ).apply(instance, SplashType.Data::new));
     }
 }

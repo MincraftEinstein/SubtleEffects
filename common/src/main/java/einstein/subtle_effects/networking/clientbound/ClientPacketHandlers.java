@@ -380,7 +380,7 @@ public class ClientPacketHandlers {
                 return;
             }
 
-            FluidDefinition lastTouchedFluid = ((FluidHeightAccessor) entity).subtleEffects$getLastTouchedFluid();
+            FluidDefinition lastTouchedFluid = ((FluidLogicAccessor) entity).subtleEffects$getLastTouchedFluid();
             if (lastTouchedFluid == null || !lastTouchedFluid.is(fluid)) {
 
                 FluidDefinition fluidDefinition = ((FluidDefinitionAccessor) fluid).subtleEffects$getFluidDefinition();

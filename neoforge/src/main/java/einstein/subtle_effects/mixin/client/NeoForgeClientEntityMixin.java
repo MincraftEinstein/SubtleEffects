@@ -5,7 +5,7 @@ import com.llamalad7.mixinextras.sugar.Share;
 import com.llamalad7.mixinextras.sugar.ref.LocalRef;
 import einstein.subtle_effects.data.FluidDefinition;
 import einstein.subtle_effects.util.FluidDefinitionAccessor;
-import einstein.subtle_effects.util.FluidHeightAccessor;
+import einstein.subtle_effects.util.FluidLogicAccessor;
 import einstein.subtle_effects.util.InterimCalculationAccessor;
 import it.unimi.dsi.fastutil.objects.Object2DoubleArrayMap;
 import it.unimi.dsi.fastutil.objects.Object2DoubleMap;
@@ -24,7 +24,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Mixin(Entity.class)
-public abstract class NeoForgeClientEntityMixin implements FluidHeightAccessor {
+public abstract class NeoForgeClientEntityMixin implements FluidLogicAccessor {
 
     @Unique
     private final Object2DoubleMap<FluidDefinition> subtleEffects$fluidPairHeight = new Object2DoubleArrayMap<>();

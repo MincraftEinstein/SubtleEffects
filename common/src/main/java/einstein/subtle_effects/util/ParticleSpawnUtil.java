@@ -499,7 +499,7 @@ public class ParticleSpawnUtil {
         FluidDefinition fluidDefinition = ((FluidDefinitionAccessor) fluidState.getType()).subtleEffects$getFluidDefinition();
 
         if (fluidDefinition != null) {
-            FluidHeightAccessor accessor = (FluidHeightAccessor) entity;
+            FluidLogicAccessor accessor = (FluidLogicAccessor) entity;
             double fluidDefinitionHeight = accessor.subtleEffects$getFluidDefinitionHeight().getDouble(fluidDefinition);
 
             if (fluidDefinitionHeight > 0) {

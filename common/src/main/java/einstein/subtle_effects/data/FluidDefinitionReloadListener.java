@@ -24,21 +24,21 @@ import static einstein.subtle_effects.SubtleEffects.LOGGER;
 
 public class FluidDefinitionReloadListener extends SimplePreparableReloadListener<Map<ResourceLocation, FluidDefinition.Data>> implements NamedReloadListener {
 
-    public static final ResourceLocation WATER_ID = SubtleEffects.loc("water");
-    public static final ResourceLocation LAVA_ID = SubtleEffects.loc("lava");
+    public static final ResourceLocation WATER_ID = ResourceLocation.withDefaultNamespace("water");
+    public static final ResourceLocation LAVA_ID = ResourceLocation.withDefaultNamespace("lava");
     private static final String DIRECTORY = "subtle_effects/fluid_definitions";
     public static final Map<ResourceLocation, FluidDefinition> DEFINITIONS = new HashMap<>();
 
     @Override
     protected Map<ResourceLocation, FluidDefinition.Data> prepare(ResourceManager resourceManager, ProfilerFiller profiler) {
         Map<ResourceLocation, JsonElement> resources = new HashMap<>();
-        SimpleJsonResourceReloadListener.scanDirectory(resourceManager, DIRECTORY, Util.GSON, resources);
         List<Fluid> sourceFluids = new ArrayList<>();
         List<Fluid> flowingFluids = new ArrayList<>();
         List<AbstractCauldronBlock> cauldrons = new ArrayList<>();
         List<BucketItem> bucketItems = new ArrayList<>();
         Map<ResourceLocation, FluidDefinition.Data> definitions = new HashMap<>();
 
+        SimpleJsonResourceReloadListener.scanDirectory(resourceManager, DIRECTORY, Util.GSON, resources);
         resources.forEach((id, element) ->
                 FluidDefinition.Data.CODEC.parse(JsonOps.INSTANCE, element)
                         .resultOrPartial(error -> LOGGER.error("Failed to decode fluid definition with ID {} - Error: {}", id, error))

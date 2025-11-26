@@ -2,7 +2,7 @@
   "source": "minecraft:water",
   "flowing": "minecraft:flowing_water",
   "cauldron": "minecraft:water_cauldron",
-  "splash_type": "subtle_effects:water",
+  "splash_type": "minecraft:water_splash",
   "bucket_item": "minecraft:water_bucket",
   "droplets": {
     "color": {

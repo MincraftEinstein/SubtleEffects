@@ -7,14 +7,12 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import einstein.subtle_effects.data.color_providers.ColorProviderType;
 import einstein.subtle_effects.data.color_providers.Colorable;
 import einstein.subtle_effects.data.color_providers.NoneColorProvider;
-import einstein.subtle_effects.data.splash_types.SplashOptionsData;
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.core.registries.BuiltInRegistries;
 
 import java.util.Optional;
 
-import static einstein.subtle_effects.data.splash_types.SplashOptionsData.configurableFloatCodec;
+import static einstein.subtle_effects.util.Util.configurableFloatCodec;
 
 public record DropletOptions(ColorProviderType.ColorProvider colorProvider,
                              Optional<Either<Float, Boolean>> tinting,
@@ -43,7 +41,7 @@ public record DropletOptions(ColorProviderType.ColorProvider colorProvider,
         public static final Codec<RippleOptions> CODEC = RecordCodecBuilder.create(instance -> instance.group(
                 ColorProviderType.CODEC.fieldOf("color").forGetter(RippleOptions::colorProvider),
                 configurableFloatCodec("intensity").optionalFieldOf("tinting").forGetter(RippleOptions::tinting),
-                SplashOptionsData.configurableFloatCodec("alpha").optionalFieldOf("transparency").forGetter(RippleOptions::transparency)
+                configurableFloatCodec("alpha").optionalFieldOf("transparency").forGetter(RippleOptions::transparency)
         ).apply(instance, RippleOptions::new));
     }
 }

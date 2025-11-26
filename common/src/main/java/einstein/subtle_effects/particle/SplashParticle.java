@@ -6,7 +6,7 @@ import com.mojang.datafixers.util.Either;
 import einstein.subtle_effects.client.model.particle.SplashParticleModel;
 import einstein.subtle_effects.data.FluidDefinition;
 import einstein.subtle_effects.data.FluidDefinitionReloadListener;
-import einstein.subtle_effects.data.splash_types.SplashOptionsData;
+import einstein.subtle_effects.data.splash_types.SplashOptions;
 import einstein.subtle_effects.data.splash_types.SplashType;
 import einstein.subtle_effects.particle.option.SplashParticleOptions;
 import net.minecraft.client.Camera;
@@ -53,8 +53,8 @@ public class SplashParticle extends ModelParticle {
         model = bakeModel(SplashParticleModel::new, SplashParticleModel.MODEL_LAYER);
         fluidDefinition = FluidDefinitionReloadListener.DEFINITIONS.get(options.fluidDefinitionId());
         SplashType type = fluidDefinition.splashType().orElseThrow();
-        SplashOptionsData.SplashOptions splashOptions = type.splashOptions();
-        SplashOptionsData.SplashOptions overlayOptions = type.splashOverlayOptions();
+        SplashOptions splashOptions = type.splashOptions();
+        SplashOptions overlayOptions = type.splashOverlayOptions();
         float overlayAlpha = alpha(overlayOptions);
 
         sprites = splashOptions.sprites();
@@ -83,7 +83,7 @@ public class SplashParticle extends ModelParticle {
         }
     }
 
-    public static float alpha(SplashOptionsData.SplashOptions options) {
+    public static float alpha(SplashOptions options) {
         return alpha(options.transparency());
     }
 

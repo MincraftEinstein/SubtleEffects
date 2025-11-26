@@ -7,7 +7,7 @@ import com.llamalad7.mixinextras.sugar.Share;
 import com.llamalad7.mixinextras.sugar.ref.LocalRef;
 import einstein.subtle_effects.data.FluidDefinition;
 import einstein.subtle_effects.util.FluidDefinitionAccessor;
-import einstein.subtle_effects.util.FluidHeightAccessor;
+import einstein.subtle_effects.util.FluidLogicAccessor;
 import it.unimi.dsi.fastutil.objects.Object2DoubleArrayMap;
 import it.unimi.dsi.fastutil.objects.Object2DoubleMap;
 import net.minecraft.tags.TagKey;
@@ -23,7 +23,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(Entity.class)
-public abstract class FabricClientEntityMixin implements FluidHeightAccessor {
+public abstract class FabricClientEntityMixin implements FluidLogicAccessor {
 
     @Shadow
     public abstract Level level();

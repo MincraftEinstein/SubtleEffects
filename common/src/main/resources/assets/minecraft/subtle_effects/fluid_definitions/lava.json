@@ -2,7 +2,7 @@
   "source": "minecraft:lava",
   "flowing": "minecraft:flowing_lava",
   "cauldron": "minecraft:lava_cauldron",
-  "splash_type": "subtle_effects:lava",
+  "splash_type": "minecraft:lava_splash",
   "bucket_item": "minecraft:lava_bucket",
   "light_emission": 15,
   "droplets": {

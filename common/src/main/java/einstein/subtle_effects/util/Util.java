@@ -5,6 +5,7 @@ import com.google.gson.GsonBuilder;
 import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import einstein.subtle_effects.SubtleEffects;
 import einstein.subtle_effects.compat.CompatHelper;
 import einstein.subtle_effects.compat.EndRemasteredCompat;
@@ -215,5 +216,16 @@ public class Util {
             return level.getBiome(pos).value().getPrecipitationAt(pos) == Biome.Precipitation.RAIN;
         }
         return false;
+    }
+
+    public static Codec<Either<Float, Boolean>> configurableFloatCodec(String floatName) {
+        return Codec.either(
+                RecordCodecBuilder.create(instance -> instance.group(
+                        Codec.floatRange(0, 1).fieldOf(floatName).forGetter(Float::floatValue)
+                ).apply(instance, Float::floatValue)),
+                RecordCodecBuilder.create(instance -> instance.group(
+                        Codec.BOOL.fieldOf("use_config").forGetter(Boolean::booleanValue)
+                ).apply(instance, Boolean::booleanValue))
+        );
     }
 }

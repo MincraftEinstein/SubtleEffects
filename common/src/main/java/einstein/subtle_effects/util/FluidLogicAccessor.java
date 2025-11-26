@@ -4,7 +4,7 @@ import einstein.subtle_effects.data.FluidDefinition;
 import it.unimi.dsi.fastutil.objects.Object2DoubleMap;
 import org.jetbrains.annotations.Nullable;
 
-public interface FluidHeightAccessor {
+public interface FluidLogicAccessor {
 
     Object2DoubleMap<FluidDefinition> subtleEffects$getFluidDefinitionHeight();
 

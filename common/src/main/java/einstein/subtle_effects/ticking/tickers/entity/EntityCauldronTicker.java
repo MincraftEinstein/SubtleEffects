@@ -4,7 +4,7 @@ import einstein.subtle_effects.data.FluidDefinition;
 import einstein.subtle_effects.mixin.client.block.AbstractCauldronBlockAccessor;
 import einstein.subtle_effects.mixin.common.entity.EntityAccessor;
 import einstein.subtle_effects.util.FluidDefinitionAccessor;
-import einstein.subtle_effects.util.FluidHeightAccessor;
+import einstein.subtle_effects.util.FluidLogicAccessor;
 import einstein.subtle_effects.util.ParticleSpawnUtil;
 import einstein.subtle_effects.util.Util;
 import net.minecraft.core.BlockPos;
@@ -41,7 +41,7 @@ public class EntityCauldronTicker extends EntityTicker<Entity> {
                     fluidDefinition.splashType().ifPresent(splashType -> {
                         if (ParticleSpawnUtil.spawnSplashEffects(entity, level, fluidDefinition.id(), pos.getY() + height, entity.getDeltaMovement().y())) {
                             if (isWater) {
-                                ((FluidHeightAccessor) entity).subtleEffects$cancelNextWaterSplash();
+                                ((FluidLogicAccessor) entity).subtleEffects$cancelNextWaterSplash();
                             }
                         }
                     });

@@ -5,7 +5,7 @@ import einstein.subtle_effects.data.FluidDefinition;
 import einstein.subtle_effects.networking.clientbound.ClientBoundFallingBlockLandPayload;
 import einstein.subtle_effects.platform.Services;
 import einstein.subtle_effects.util.FluidDefinitionAccessor;
-import einstein.subtle_effects.util.FluidHeightAccessor;
+import einstein.subtle_effects.util.FluidLogicAccessor;
 import einstein.subtle_effects.util.ParticleSpawnUtil;
 import it.unimi.dsi.fastutil.objects.Object2DoubleArrayMap;
 import it.unimi.dsi.fastutil.objects.Object2DoubleMap;
@@ -28,7 +28,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(FallingBlockEntity.class)
-public abstract class FallingBlockEntityMixin extends Entity implements FluidHeightAccessor {
+public abstract class FallingBlockEntityMixin extends Entity implements FluidLogicAccessor {
 
     @Shadow
     public abstract BlockState getBlockState();
