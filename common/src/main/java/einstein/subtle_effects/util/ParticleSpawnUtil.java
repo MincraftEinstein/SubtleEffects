@@ -56,8 +56,7 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
-import static einstein.subtle_effects.init.ModConfigs.BLOCKS;
-import static einstein.subtle_effects.init.ModConfigs.ENTITIES;
+import static einstein.subtle_effects.init.ModConfigs.*;
 import static einstein.subtle_effects.util.MathUtil.*;
 import static net.minecraft.util.Mth.DEG_TO_RAD;
 import static net.minecraft.util.Mth.nextFloat;
@@ -407,6 +406,10 @@ public class ParticleSpawnUtil {
         if (level.isClientSide) {
             RandomSource random = level.getRandom();
             if (stack.getItem() instanceof BucketItemAccessor bucket) {
+                if (!ITEMS.fluidBucketUseParticles) {
+                    return;
+                }
+
                 Fluid content = bucket.getContent();
                 FluidPair fluidPair = ((FluidAccessor) content).subtleEffects$getFluidPair();
 
