@@ -12,10 +12,8 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.world.level.material.Fluid;
-import net.minecraft.world.level.material.Fluids;
 import org.joml.Vector3f;
 
 import java.util.Optional;
@@ -91,8 +89,8 @@ public class DropletParticle extends DripParticle.FallAndLandParticle implements
 
             // noinspection ConstantConditions
             Particle particle = new DropletParticle(level, x, y, z, xSpeed, ySpeed, zSpeed, options.scale(), sprites, fluidPair.lightEmission(), fluidPair.source(),
-                    fluidPair.is(Fluids.WATER) ? ParticleTypes.SPLASH : (fluidPair.is(Fluids.LAVA) ? ParticleTypes.LANDING_LAVA : null),
-                    fromSplash ? ModConfigs.ENTITIES.splashes.splashDropletSounds : options.isSilent(), fluidPair, fromSplash);
+                    dropletOptions.landParticle().orElse(null), fromSplash ? ModConfigs.ENTITIES.splashes.splashDropletSounds : options.isSilent(),
+                    fluidPair, fromSplash);
             particle.setColor(color.x(), color.y(), color.z());
             return particle;
         }

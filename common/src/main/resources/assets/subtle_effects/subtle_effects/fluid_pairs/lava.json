@@ -15,6 +15,7 @@
         "type": "subtle_effects:preset",
         "preset": "lava_ripple"
       }
-    }
+    },
+    "land_particle": "minecraft:landing_lava"
   }
 }

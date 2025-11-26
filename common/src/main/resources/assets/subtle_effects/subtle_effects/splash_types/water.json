@@ -32,6 +32,7 @@
     },
     "tinting": {
       "use_config": true
-    }
+    },
+    "land_particle": "minecraft:splash"
   }
 }

@@ -15,6 +15,7 @@
       "transparency": {
         "alpha": 0.2
       }
-    }
+    },
+    "land_particle": "minecraft:splash"
   }
 }
