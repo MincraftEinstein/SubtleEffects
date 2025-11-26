@@ -8,7 +8,7 @@ import com.mojang.serialization.DataResult;
 import einstein.subtle_effects.SubtleEffects;
 import einstein.subtle_effects.compat.CompatHelper;
 import einstein.subtle_effects.compat.EndRemasteredCompat;
-import einstein.subtle_effects.data.FluidPair;
+import einstein.subtle_effects.data.FluidDefinition;
 import einstein.subtle_effects.data.MobSkullShaderData;
 import einstein.subtle_effects.data.MobSkullShaderReloadListener;
 import einstein.subtle_effects.init.ModParticles;
@@ -131,9 +131,9 @@ public class Util {
 
     public static Fluid getCauldronFluid(BlockState state) {
         if (state.getBlock() instanceof AbstractCauldronBlock block) {
-            FluidPair fluidPair = ((FluidAccessor) block).subtleEffects$getFluidPair();
-            if (fluidPair != null) {
-                return fluidPair.source();
+            FluidDefinition fluidDefinition = ((FluidDefinitionAccessor) block).subtleEffects$getFluidDefinition();
+            if (fluidDefinition != null) {
+                return fluidDefinition.source();
             }
         }
         return Fluids.EMPTY;
@@ -141,9 +141,9 @@ public class Util {
 
     @Nullable
     public static ParticleOptions getParticleForFluid(Fluid fluid) {
-        FluidPair fluidPair = ((FluidAccessor) fluid).subtleEffects$getFluidPair();
-        if (fluidPair != null) {
-            return new DropletParticleOptions(fluidPair.id(), false, 1, false);
+        FluidDefinition fluidDefinition = ((FluidDefinitionAccessor) fluid).subtleEffects$getFluidDefinition();
+        if (fluidDefinition != null) {
+            return new DropletParticleOptions(fluidDefinition.id(), false, 1, false);
         }
         return null;
     }

@@ -4,8 +4,8 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.datafixers.util.Either;
 import einstein.subtle_effects.client.model.particle.SplashParticleModel;
-import einstein.subtle_effects.data.FluidPair;
-import einstein.subtle_effects.data.FluidPairReloadListener;
+import einstein.subtle_effects.data.FluidDefinition;
+import einstein.subtle_effects.data.FluidDefinitionReloadListener;
 import einstein.subtle_effects.data.splash_types.SplashOptionsData;
 import einstein.subtle_effects.data.splash_types.SplashType;
 import einstein.subtle_effects.particle.option.SplashParticleOptions;
@@ -32,7 +32,7 @@ import static einstein.subtle_effects.init.ModConfigs.ENTITIES;
 public class SplashParticle extends ModelParticle {
 
     private final int lightLevel;
-    private final FluidPair fluidPair;
+    private final FluidDefinition fluidDefinition;
     private final SpriteSet sprites;
     @Nullable
     private final SpriteSet overlaySprites;
@@ -51,8 +51,8 @@ public class SplashParticle extends ModelParticle {
     protected SplashParticle(ClientLevel level, double x, double y, double z, SplashParticleOptions options) {
         super(level, x, y, z);
         model = bakeModel(SplashParticleModel::new, SplashParticleModel.MODEL_LAYER);
-        fluidPair = FluidPairReloadListener.FLUID_PAIRS.get(options.fluidPairId());
-        SplashType type = fluidPair.splashType().orElseThrow();
+        fluidDefinition = FluidDefinitionReloadListener.DEFINITIONS.get(options.fluidDefinitionId());
+        SplashType type = fluidDefinition.splashType().orElseThrow();
         SplashOptionsData.SplashOptions splashOptions = type.splashOptions();
         SplashOptionsData.SplashOptions overlayOptions = type.splashOverlayOptions();
         float overlayAlpha = alpha(overlayOptions);
@@ -64,7 +64,7 @@ public class SplashParticle extends ModelParticle {
         alpha = alpha(splashOptions);
         pos = BlockPos.containing(x, y, z).mutable();
         lifetime = 15;
-        lightLevel = fluidPair.lightEmission();
+        lightLevel = fluidDefinition.lightEmission();
         xScale = options.xScale();
         yScale = options.yScale();
         setSize(xScale, yScale);
@@ -94,8 +94,8 @@ public class SplashParticle extends ModelParticle {
         ).orElse(1F);
     }
 
-    public static boolean canNotSurvive(FluidPair fluidPair, Level level, BlockPos pos) {
-        return !fluidPair.is(level.getFluidState(pos)) && !fluidPair.is(level.getBlockState(pos));
+    public static boolean canNotSurvive(FluidDefinition fluidDefinition, Level level, BlockPos pos) {
+        return !fluidDefinition.is(level.getFluidState(pos)) && !fluidDefinition.is(level.getBlockState(pos));
     }
 
     @Override
@@ -106,7 +106,7 @@ public class SplashParticle extends ModelParticle {
     @Override
     public void tick() {
         pos.set(x, y, z);
-        if (canNotSurvive(fluidPair, level, pos)) {
+        if (canNotSurvive(fluidDefinition, level, pos)) {
             remove();
             return;
         }

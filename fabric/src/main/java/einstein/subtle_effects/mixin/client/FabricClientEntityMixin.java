@@ -5,8 +5,8 @@ import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.llamalad7.mixinextras.sugar.Share;
 import com.llamalad7.mixinextras.sugar.ref.LocalRef;
-import einstein.subtle_effects.data.FluidPair;
-import einstein.subtle_effects.util.FluidAccessor;
+import einstein.subtle_effects.data.FluidDefinition;
+import einstein.subtle_effects.util.FluidDefinitionAccessor;
 import einstein.subtle_effects.util.FluidHeightAccessor;
 import it.unimi.dsi.fastutil.objects.Object2DoubleArrayMap;
 import it.unimi.dsi.fastutil.objects.Object2DoubleMap;
@@ -29,24 +29,24 @@ public abstract class FabricClientEntityMixin implements FluidHeightAccessor {
     public abstract Level level();
 
     @Unique
-    private final Object2DoubleMap<FluidPair> subtleEffects$fluidPairHeight = new Object2DoubleArrayMap<>();
+    private final Object2DoubleMap<FluidDefinition> subtleEffects$fluidPairHeight = new Object2DoubleArrayMap<>();
 
     @Inject(method = "updateFluidHeightAndDoFluidPushing", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/material/FluidState;getHeight(Lnet/minecraft/world/level/BlockGetter;Lnet/minecraft/core/BlockPos;)F"))
-    private void storeFluidPairHeight(TagKey<Fluid> fluidTag, double motionScale, CallbackInfoReturnable<Boolean> cir, @Local FluidState fluidState, @Share("fluidPair") LocalRef<FluidPair> fluidPairRef) {
+    private void storeFluidPairHeight(TagKey<Fluid> fluidTag, double motionScale, CallbackInfoReturnable<Boolean> cir, @Local FluidState fluidState, @Share("fluidPair") LocalRef<FluidDefinition> fluidPairRef) {
         if (level().isClientSide) {
-            FluidPair fluidPair = ((FluidAccessor) fluidState.getType()).subtleEffects$getFluidPair();
-            if (fluidPair != null) {
-                fluidPairRef.set(fluidPair);
+            FluidDefinition fluidDefinition = ((FluidDefinitionAccessor) fluidState.getType()).subtleEffects$getFluidDefinition();
+            if (fluidDefinition != null) {
+                fluidPairRef.set(fluidDefinition);
             }
         }
     }
 
     @WrapOperation(method = "updateFluidHeightAndDoFluidPushing", at = @At(value = "INVOKE", target = "Lit/unimi/dsi/fastutil/objects/Object2DoubleMap;put(Ljava/lang/Object;D)D", remap = false))
-    private double updateFluidPairHeight(Object2DoubleMap<TagKey<Fluid>> vanillaFluidHeight, Object fluidTag, double fluidHeight, Operation<Double> original, @Share("fluidPair") LocalRef<FluidPair> fluidPairRef) {
+    private double updateFluidPairHeight(Object2DoubleMap<TagKey<Fluid>> vanillaFluidHeight, Object fluidTag, double fluidHeight, Operation<Double> original, @Share("fluidPair") LocalRef<FluidDefinition> fluidPairRef) {
         if (level().isClientSide) {
-            FluidPair fluidPair = fluidPairRef.get();
-            if (fluidPair != null) {
-                subtleEffects$fluidPairHeight.put(fluidPair, fluidHeight);
+            FluidDefinition fluidDefinition = fluidPairRef.get();
+            if (fluidDefinition != null) {
+                subtleEffects$fluidPairHeight.put(fluidDefinition, fluidHeight);
             }
         }
 
@@ -54,7 +54,7 @@ public abstract class FabricClientEntityMixin implements FluidHeightAccessor {
     }
 
     @Override
-    public Object2DoubleMap<FluidPair> subtleEffects$getFluidPairHeight() {
+    public Object2DoubleMap<FluidDefinition> subtleEffects$getFluidDefinitionHeight() {
         return subtleEffects$fluidPairHeight;
     }
 }

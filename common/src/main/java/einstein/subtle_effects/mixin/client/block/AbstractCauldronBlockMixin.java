@@ -2,10 +2,10 @@ package einstein.subtle_effects.mixin.client.block;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.llamalad7.mixinextras.sugar.Local;
-import einstein.subtle_effects.data.FluidPair;
+import einstein.subtle_effects.data.FluidDefinition;
 import einstein.subtle_effects.init.ModSounds;
 import einstein.subtle_effects.ticking.tickers.TickerManager;
-import einstein.subtle_effects.util.FluidAccessor;
+import einstein.subtle_effects.util.FluidDefinitionAccessor;
 import einstein.subtle_effects.util.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.cauldron.CauldronInteraction;
@@ -26,10 +26,10 @@ import static einstein.subtle_effects.util.MathUtil.nextDouble;
 import static einstein.subtle_effects.util.MathUtil.nextSign;
 
 @Mixin(AbstractCauldronBlock.class)
-public class AbstractCauldronBlockMixin implements FluidAccessor {
+public class AbstractCauldronBlockMixin implements FluidDefinitionAccessor {
 
     @Unique
-    private FluidPair subtleEffects$fluidPair;
+    private FluidDefinition subtleEffects$fluidDefinition;
 
     @ModifyReturnValue(method = "useItemOn", at = @At("RETURN"))
     private ItemInteractionResult spawnInteractionParticles(ItemInteractionResult result, @Local(argsOnly = true) BlockState state, @Local(argsOnly = true) Level level, @Local(argsOnly = true) BlockPos pos, @Local CauldronInteraction interaction) {
@@ -78,12 +78,12 @@ public class AbstractCauldronBlockMixin implements FluidAccessor {
     }
 
     @Override
-    public FluidPair subtleEffects$getFluidPair() {
-        return subtleEffects$fluidPair;
+    public FluidDefinition subtleEffects$getFluidDefinition() {
+        return subtleEffects$fluidDefinition;
     }
 
     @Override
-    public void subtleEffects$setFluidPair(FluidPair fluidPair) {
-        subtleEffects$fluidPair = fluidPair;
+    public void subtleEffects$setFluidDefinition(FluidDefinition fluidDefinition) {
+        subtleEffects$fluidDefinition = fluidDefinition;
     }
 }

@@ -1,8 +1,8 @@
 package einstein.subtle_effects.particle;
 
 import einstein.subtle_effects.data.DropletOptions;
-import einstein.subtle_effects.data.FluidPair;
-import einstein.subtle_effects.data.FluidPairReloadListener;
+import einstein.subtle_effects.data.FluidDefinition;
+import einstein.subtle_effects.data.FluidDefinitionReloadListener;
 import einstein.subtle_effects.data.splash_types.SplashType;
 import einstein.subtle_effects.init.ModParticles;
 import einstein.subtle_effects.particle.option.RippleParticleOptions;
@@ -20,7 +20,7 @@ import java.util.Optional;
 
 public class RippleParticle extends FlatPlaneParticle {
 
-    public static final RippleParticleOptions WATER = new RippleParticleOptions(ModParticles.RIPPLE.get(), FluidPairReloadListener.WATER_ID, 1, false);
+    public static final RippleParticleOptions WATER = new RippleParticleOptions(ModParticles.RIPPLE.get(), FluidDefinitionReloadListener.WATER_ID, 1, false);
 
     private final SpriteSet sprites;
 
@@ -49,9 +49,9 @@ public class RippleParticle extends FlatPlaneParticle {
         @Nullable
         @Override
         public Particle createParticle(RippleParticleOptions options, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
-            FluidPair fluidPair = FluidPairReloadListener.FLUID_PAIRS.get(options.fluidPairId());
+            FluidDefinition fluidDefinition = FluidDefinitionReloadListener.DEFINITIONS.get(options.fluidDefinitionId());
 
-            return getRippleOptions(fluidPair, fluidPair.splashType(), options).map(rippleOptions -> {
+            return getRippleOptions(fluidDefinition, fluidDefinition.splashType(), options).map(rippleOptions -> {
                 RippleParticle particle = new RippleParticle(level, x, y, z, sprites, options.scale());
                 Vector3f color = rippleOptions.getColorAndApplyTint(level, BlockPos.containing(x, y, z), level.getRandom());
 
@@ -61,8 +61,8 @@ public class RippleParticle extends FlatPlaneParticle {
             }).orElse(null);
         }
 
-        private static Optional<DropletOptions.RippleOptions> getRippleOptions(FluidPair fluidPair, Optional<SplashType> splashType, RippleParticleOptions options) {
-            Optional<DropletOptions.RippleOptions> fluidRippleOptions = fluidPair.dropletOptions().rippleOptions();
+        private static Optional<DropletOptions.RippleOptions> getRippleOptions(FluidDefinition fluidDefinition, Optional<SplashType> splashType, RippleParticleOptions options) {
+            Optional<DropletOptions.RippleOptions> fluidRippleOptions = fluidDefinition.dropletOptions().rippleOptions();
             if (options.fromSplash() && splashType.isPresent()) {
                 Optional<DropletOptions> dropletOptions = splashType.get().dropletOptions();
 

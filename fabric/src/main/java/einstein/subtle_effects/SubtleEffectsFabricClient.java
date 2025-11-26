@@ -25,7 +25,7 @@ public class SubtleEffectsFabricClient implements ClientModInitializer {
         addReloadListener(helper, new SparkProviderReloadListener());
         addReloadListener(helper, new MobSkullShaderReloadListener());
         addReloadListener(helper, new BCWPPackManager());
-        addReloadListener(helper, new FluidPairReloadListener());
+        addReloadListener(helper, new FluidDefinitionReloadListener());
         SubtleEffectsClient.registerModelLayers().forEach((modelLayerLocation, layerDefinitionSupplier) ->
                 EntityModelLayerRegistry.registerModelLayer(modelLayerLocation, layerDefinitionSupplier::get)
         );

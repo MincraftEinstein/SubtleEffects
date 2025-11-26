@@ -1,9 +1,9 @@
 package einstein.subtle_effects.ticking.tickers.entity;
 
-import einstein.subtle_effects.data.FluidPair;
+import einstein.subtle_effects.data.FluidDefinition;
 import einstein.subtle_effects.mixin.client.block.AbstractCauldronBlockAccessor;
 import einstein.subtle_effects.mixin.common.entity.EntityAccessor;
-import einstein.subtle_effects.util.FluidAccessor;
+import einstein.subtle_effects.util.FluidDefinitionAccessor;
 import einstein.subtle_effects.util.FluidHeightAccessor;
 import einstein.subtle_effects.util.ParticleSpawnUtil;
 import einstein.subtle_effects.util.Util;
@@ -16,7 +16,7 @@ import net.minecraft.world.level.block.state.BlockState;
 public class EntityCauldronTicker extends EntityTicker<Entity> {
 
     private boolean wasInWater;
-    private FluidPair lastTouchedFluid;
+    private FluidDefinition lastTouchedFluid;
 
     public EntityCauldronTicker(Entity entity) {
         super(entity);
@@ -35,18 +35,18 @@ public class EntityCauldronTicker extends EntityTicker<Entity> {
                 ((EntityAccessor) entity).playExtinguishedSound();
             }
 
-            FluidPair fluidPair = ((FluidAccessor) block).subtleEffects$getFluidPair();
-            if (fluidPair != null) {
-                if (lastTouchedFluid != fluidPair) {
-                    fluidPair.splashType().ifPresent(splashType -> {
-                        if (ParticleSpawnUtil.spawnSplashEffects(entity, level, fluidPair.id(), pos.getY() + height, entity.getDeltaMovement().y())) {
+            FluidDefinition fluidDefinition = ((FluidDefinitionAccessor) block).subtleEffects$getFluidDefinition();
+            if (fluidDefinition != null) {
+                if (lastTouchedFluid != fluidDefinition) {
+                    fluidDefinition.splashType().ifPresent(splashType -> {
+                        if (ParticleSpawnUtil.spawnSplashEffects(entity, level, fluidDefinition.id(), pos.getY() + height, entity.getDeltaMovement().y())) {
                             if (isWater) {
                                 ((FluidHeightAccessor) entity).subtleEffects$cancelNextWaterSplash();
                             }
                         }
                     });
                 }
-                lastTouchedFluid = fluidPair;
+                lastTouchedFluid = fluidDefinition;
 
                 if (!isWater) {
                     return;

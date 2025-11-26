@@ -1,24 +1,24 @@
 package einstein.subtle_effects.mixin.client;
 
-import einstein.subtle_effects.data.FluidPair;
-import einstein.subtle_effects.util.FluidAccessor;
+import einstein.subtle_effects.data.FluidDefinition;
+import einstein.subtle_effects.util.FluidDefinitionAccessor;
 import net.minecraft.world.level.material.Fluid;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 
 @Mixin(Fluid.class)
-public class FluidMixin implements FluidAccessor {
+public class FluidMixin implements FluidDefinitionAccessor {
 
     @Unique
-    private FluidPair subtleEffects$fluidPair;
+    private FluidDefinition subtleEffects$fluidDefinition;
 
     @Override
-    public FluidPair subtleEffects$getFluidPair() {
-        return subtleEffects$fluidPair;
+    public FluidDefinition subtleEffects$getFluidDefinition() {
+        return subtleEffects$fluidDefinition;
     }
 
     @Override
-    public void subtleEffects$setFluidPair(FluidPair fluidPair) {
-        subtleEffects$fluidPair = fluidPair;
+    public void subtleEffects$setFluidDefinition(FluidDefinition fluidDefinition) {
+        subtleEffects$fluidDefinition = fluidDefinition;
     }
 }

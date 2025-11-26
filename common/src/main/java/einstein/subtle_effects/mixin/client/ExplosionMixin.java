@@ -1,10 +1,10 @@
 package einstein.subtle_effects.mixin.client;
 
-import einstein.subtle_effects.data.FluidPair;
+import einstein.subtle_effects.data.FluidDefinition;
 import einstein.subtle_effects.data.splash_types.SplashType;
 import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.particle.option.SplashEmitterParticleOptions;
-import einstein.subtle_effects.util.FluidAccessor;
+import einstein.subtle_effects.util.FluidDefinitionAccessor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
@@ -62,16 +62,16 @@ public class ExplosionMixin {
                         return;
                     }
 
-                    FluidPair fluidPair = ((FluidAccessor) fluidState.getType()).subtleEffects$getFluidPair();
-                    if (fluidPair != null) {
-                        Optional<SplashType> splashType = fluidPair.splashType();
+                    FluidDefinition fluidDefinition = ((FluidDefinitionAccessor) fluidState.getType()).subtleEffects$getFluidDefinition();
+                    if (fluidDefinition != null) {
+                        Optional<SplashType> splashType = fluidDefinition.splashType();
 
                         if (splashType.isPresent()) {
                             BlockPos surfacePos = currentPos.below();
                             FluidState surfaceFluidState = level.getFluidState(surfacePos);
                             float scale = radius - ((y - blockY) / radius);
 
-                            level.addAlwaysVisibleParticle(new SplashEmitterParticleOptions(fluidPair.id(), scale, scale * (scale * 0.1F), -1, -1),
+                            level.addAlwaysVisibleParticle(new SplashEmitterParticleOptions(fluidDefinition.id(), scale, scale * (scale * 0.1F), -1, -1),
                                     true, x, surfacePos.getY() + surfaceFluidState.getHeight(level, surfacePos) + 0.01, z,
                                     0, 0, 0
                             );

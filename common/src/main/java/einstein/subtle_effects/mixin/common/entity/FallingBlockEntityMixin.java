@@ -1,10 +1,10 @@
 package einstein.subtle_effects.mixin.common.entity;
 
 import com.llamalad7.mixinextras.sugar.Local;
-import einstein.subtle_effects.data.FluidPair;
+import einstein.subtle_effects.data.FluidDefinition;
 import einstein.subtle_effects.networking.clientbound.ClientBoundFallingBlockLandPayload;
 import einstein.subtle_effects.platform.Services;
-import einstein.subtle_effects.util.FluidAccessor;
+import einstein.subtle_effects.util.FluidDefinitionAccessor;
 import einstein.subtle_effects.util.FluidHeightAccessor;
 import einstein.subtle_effects.util.ParticleSpawnUtil;
 import it.unimi.dsi.fastutil.objects.Object2DoubleArrayMap;
@@ -40,8 +40,8 @@ public abstract class FallingBlockEntityMixin extends Entity implements FluidHei
     @Inject(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/item/FallingBlockEntity;handlePortal()V"))
     private void tick(CallbackInfo ci) {
         if (level().isClientSide) {
-            subtleEffects$getFluidPairHeight().clear();
-            subtleEffects$updateFluidPairHeight();
+            subtleEffects$getFluidDefinitionHeight().clear();
+            subtleEffects$updateFluidDefinitionHeight();
             subtleEffects$setLastTouchedFluid(ParticleSpawnUtil.preformSplash(true, true, this, false, Consumers.nop()));
         }
     }
@@ -52,14 +52,14 @@ public abstract class FallingBlockEntityMixin extends Entity implements FluidHei
     }
 
     @Unique
-    private void subtleEffects$updateFluidPairHeight() {
+    private void subtleEffects$updateFluidDefinitionHeight() {
         if (touchingUnloadedChunk()) {
             return;
         }
 
         AABB aabb = getBoundingBox();
         BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
-        Object2DoubleMap<FluidPair> fluidHeights = new Object2DoubleArrayMap<>();
+        Object2DoubleMap<FluidDefinition> fluidHeights = new Object2DoubleArrayMap<>();
 
         for (int x = Mth.floor(aabb.minX); x < Mth.ceil(aabb.maxX); x++) {
             for (int y = Mth.floor(aabb.minY); y < Mth.ceil(aabb.maxY); y++) {
@@ -71,14 +71,14 @@ public abstract class FallingBlockEntityMixin extends Entity implements FluidHei
                         double fluidHeight = y + fluidState.getHeight(level(), pos);
                         if (fluidHeight >= aabb.minY) {
 
-                            FluidPair fluidPair = ((FluidAccessor) fluidState.getType()).subtleEffects$getFluidPair();
-                            fluidHeights.put(fluidPair, Math.max(fluidHeight - aabb.minY, fluidHeights.getOrDefault(fluidPair, 0)));
+                            FluidDefinition fluidDefinition = ((FluidDefinitionAccessor) fluidState.getType()).subtleEffects$getFluidDefinition();
+                            fluidHeights.put(fluidDefinition, Math.max(fluidHeight - aabb.minY, fluidHeights.getOrDefault(fluidDefinition, 0)));
                         }
                     }
                 }
             }
         }
 
-        subtleEffects$getFluidPairHeight().putAll(fluidHeights);
+        subtleEffects$getFluidDefinitionHeight().putAll(fluidHeights);
     }
 }

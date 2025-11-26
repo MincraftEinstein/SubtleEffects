@@ -14,9 +14,9 @@ import net.minecraft.world.level.material.FluidState;
 
 import java.util.Optional;
 
-public record FluidPair(ResourceLocation id, Fluid source, Fluid flowing, Optional<AbstractCauldronBlock> cauldron,
-                        Optional<SplashType> splashType, Optional<BucketItem> bucketItem, DropletOptions dropletOptions,
-                        int lightEmission) {
+public record FluidDefinition(ResourceLocation id, Fluid source, Fluid flowing, Optional<AbstractCauldronBlock> cauldron,
+                              Optional<SplashType> splashType, Optional<BucketItem> bucketItem, DropletOptions dropletOptions,
+                              int lightEmission) {
 
     public boolean is(Fluid fluid) {
         return fluid == source || fluid == flowing;

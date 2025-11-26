@@ -1,6 +1,6 @@
 package einstein.subtle_effects.mixin.client.particle;
 
-import einstein.subtle_effects.data.FluidPairReloadListener;
+import einstein.subtle_effects.data.FluidDefinitionReloadListener;
 import einstein.subtle_effects.init.ModParticles;
 import einstein.subtle_effects.init.ModSounds;
 import einstein.subtle_effects.particle.DropletParticle;
@@ -110,18 +110,18 @@ public abstract class DripParticleMixin extends TextureSheetParticle implements 
                 }
 
                 if (GENERAL.dropLandInFluidRipples) {
-                    ResourceLocation fluidPairId;
+                    ResourceLocation fluidDefinitionId;
                     boolean fromSplash = false;
 
                     if (((DripParticle) (Object) this) instanceof DropletParticle particle) {
-                        fluidPairId = particle.getFluidPair().id();
+                        fluidDefinitionId = particle.getFluidDefinition().id();
                         fromSplash = particle.isFromSplash();
                     }
                     else {
-                        fluidPairId = subtleEffects$isLava ? FluidPairReloadListener.LAVA_ID : FluidPairReloadListener.WATER_ID;
+                        fluidDefinitionId = subtleEffects$isLava ? FluidDefinitionReloadListener.LAVA_ID : FluidDefinitionReloadListener.WATER_ID;
                     }
 
-                    level.addParticle(new RippleParticleOptions(ModParticles.RIPPLE.get(), fluidPairId, Math.max(quadSize, Math.max(bbWidth, bbHeight)) + 0.3F * 3, fromSplash),
+                    level.addParticle(new RippleParticleOptions(ModParticles.RIPPLE.get(), fluidDefinitionId, Math.max(quadSize, Math.max(bbWidth, bbHeight)) + 0.3F * 3, fromSplash),
                             x + MathUtil.nextNonAbsDouble(random, 0.07),
                             fluidSurface,
                             z + MathUtil.nextNonAbsDouble(random, 0.07),

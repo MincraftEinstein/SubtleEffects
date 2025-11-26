@@ -1,7 +1,7 @@
 package einstein.subtle_effects.particle.emitter;
 
-import einstein.subtle_effects.data.FluidPair;
-import einstein.subtle_effects.data.FluidPairReloadListener;
+import einstein.subtle_effects.data.FluidDefinition;
+import einstein.subtle_effects.data.FluidDefinitionReloadListener;
 import einstein.subtle_effects.data.splash_types.SplashType;
 import einstein.subtle_effects.init.ModParticles;
 import einstein.subtle_effects.particle.SplashParticle;
@@ -31,8 +31,8 @@ public class SplashEmitter extends NoRenderParticle {
     private final Entity entity;
     private final float velocity;
     private final float absVelocity;
-    private final ResourceLocation fluidPairId;
-    private final FluidPair fluidPair;
+    private final ResourceLocation fluidDefinitionId;
+    private final FluidDefinition fluidDefinition;
     private final float widthModifier;
     private final float heightModifier;
     private final float xScale;
@@ -43,9 +43,9 @@ public class SplashEmitter extends NoRenderParticle {
 
     protected SplashEmitter(ClientLevel level, double x, double y, double z, SplashEmitterParticleOptions options) {
         super(level, x, y, z);
-        fluidPairId = options.fluidPairId();
-        fluidPair = FluidPairReloadListener.FLUID_PAIRS.get(fluidPairId);
-        type = fluidPair.splashType().orElseThrow();
+        fluidDefinitionId = options.fluidDefinitionId();
+        fluidDefinition = FluidDefinitionReloadListener.DEFINITIONS.get(fluidDefinitionId);
+        type = fluidDefinition.splashType().orElseThrow();
         lifetime = 8; // half the splash lifetime
         pos = BlockPos.containing(x, y, z).mutable();
         velocity = options.velocity();
@@ -62,7 +62,7 @@ public class SplashEmitter extends NoRenderParticle {
         entity = null;
     }
 
-    public static SplashEmitterParticleOptions createForEntity(Entity entity, ResourceLocation fluidPairId, double yVelocity) {
+    public static SplashEmitterParticleOptions createForEntity(Entity entity, ResourceLocation fluidDefinitionId, double yVelocity) {
         float entityWidth = entity.getBbWidth();
         float entityHeight = entity.getBbHeight();
         Entity passenger = entity.getFirstPassenger();
@@ -72,7 +72,7 @@ public class SplashEmitter extends NoRenderParticle {
             entityHeight += (passenger.getBbHeight() / 2);
         }
 
-        return new SplashEmitterParticleOptions(fluidPairId, entityWidth, entityHeight, (float) yVelocity, entity.getId());
+        return new SplashEmitterParticleOptions(fluidDefinitionId, entityWidth, entityHeight, (float) yVelocity, entity.getId());
     }
 
     @Override
@@ -84,7 +84,7 @@ public class SplashEmitter extends NoRenderParticle {
         super.tick();
         pos.set(x, y, z);
 
-        if (SplashParticle.canNotSurvive(fluidPair, level, pos) || onGround) {
+        if (SplashParticle.canNotSurvive(fluidDefinition, level, pos) || onGround) {
             remove();
             return;
         }
@@ -124,12 +124,12 @@ public class SplashEmitter extends NoRenderParticle {
     }
 
     private void spawnSplashParticles(float xScale, float yScale, float dropletYSpeed, float dropletXSpeed) {
-        level.addAlwaysVisibleParticle(new SplashParticleOptions(fluidPairId, xScale, yScale),
+        level.addAlwaysVisibleParticle(new SplashParticleOptions(fluidDefinitionId, xScale, yScale),
                 true, x, y, z, 0, 0, 0
         );
 
         if (hasRipple()) {
-            level.addAlwaysVisibleParticle(new RippleParticleOptions(ModParticles.SPLASH_RIPPLE.get(), fluidPairId, xScale, true),
+            level.addAlwaysVisibleParticle(new RippleParticleOptions(ModParticles.SPLASH_RIPPLE.get(), fluidDefinitionId, xScale, true),
                     true, x, y, z, 0, 0, 0
             );
         }
@@ -138,7 +138,7 @@ public class SplashEmitter extends NoRenderParticle {
             return;
         }
 
-        DropletParticleOptions dropletOptions = new DropletParticleOptions(fluidPairId, true, Math.min(this.xScale, 2), false);
+        DropletParticleOptions dropletOptions = new DropletParticleOptions(fluidDefinitionId, true, Math.min(this.xScale, 2), false);
         for (int i = 0; i < 4 * widthModifier; i++) {
             level.addParticle(dropletOptions,
                     x + nextNonAbsDouble(random, xScale),

@@ -1,7 +1,7 @@
 package einstein.subtle_effects.particle;
 
-import einstein.subtle_effects.data.FluidPair;
-import einstein.subtle_effects.data.FluidPairReloadListener;
+import einstein.subtle_effects.data.FluidDefinition;
+import einstein.subtle_effects.data.FluidDefinitionReloadListener;
 import einstein.subtle_effects.data.splash_types.SplashOptionsData;
 import einstein.subtle_effects.data.splash_types.SplashType;
 import einstein.subtle_effects.particle.option.RippleParticleOptions;
@@ -19,17 +19,17 @@ public class SplashRippleParticle extends FlatPlaneParticle {
 
     private final BlockPos.MutableBlockPos pos;
     private final SpriteSet sprites;
-    private final FluidPair fluidPair;
+    private final FluidDefinition fluidDefinition;
     private final int lightLevel;
     private boolean shouldAnimate = false;
 
     protected SplashRippleParticle(ClientLevel level, double x, double y, double z, RippleParticleOptions options) {
         super(level, x, y, z);
-        fluidPair = FluidPairReloadListener.FLUID_PAIRS.get(options.fluidPairId());
-        SplashType type = fluidPair.splashType().orElseThrow();
+        fluidDefinition = FluidDefinitionReloadListener.DEFINITIONS.get(options.fluidDefinitionId());
+        SplashType type = fluidDefinition.splashType().orElseThrow();
         SplashOptionsData.SplashOptions rippleOptions = type.splashRippleOptions();
         sprites = rippleOptions.sprites();
-        lightLevel = fluidPair.lightEmission();
+        lightLevel = fluidDefinition.lightEmission();
         pos = BlockPos.containing(x, y, z).mutable();
         rotation = rotation.rotateX(90 * Mth.DEG_TO_RAD);
         lifetime = 15;
@@ -50,7 +50,7 @@ public class SplashRippleParticle extends FlatPlaneParticle {
     @Override
     public void tick() {
         pos.set(x, y, z);
-        if (SplashParticle.canNotSurvive(fluidPair, level, pos)) {
+        if (SplashParticle.canNotSurvive(fluidDefinition, level, pos)) {
             remove();
             return;
         }

@@ -11,18 +11,18 @@ import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceLocation;
 
-public record DropletParticleOptions(ResourceLocation fluidPairId, boolean fromSplash,
+public record DropletParticleOptions(ResourceLocation fluidDefinitionId, boolean fromSplash,
                                      float scale, boolean isSilent) implements ParticleOptions {
 
     public static final MapCodec<DropletParticleOptions> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-            ResourceLocation.CODEC.fieldOf("fluid_pair").forGetter(DropletParticleOptions::fluidPairId),
+            ResourceLocation.CODEC.fieldOf("fluid_definition").forGetter(DropletParticleOptions::fluidDefinitionId),
             Codec.BOOL.fieldOf("from_splash").forGetter(DropletParticleOptions::fromSplash),
             Codec.FLOAT.fieldOf("scale").forGetter(DropletParticleOptions::scale),
             Codec.BOOL.fieldOf("is_silent").forGetter(DropletParticleOptions::isSilent)
     ).apply(instance, DropletParticleOptions::new));
 
     public static final StreamCodec<FriendlyByteBuf, DropletParticleOptions> STREAM_CODEC = StreamCodec.composite(
-            ResourceLocation.STREAM_CODEC, DropletParticleOptions::fluidPairId,
+            ResourceLocation.STREAM_CODEC, DropletParticleOptions::fluidDefinitionId,
             ByteBufCodecs.BOOL, DropletParticleOptions::fromSplash,
             ByteBufCodecs.FLOAT, DropletParticleOptions::scale,
             ByteBufCodecs.BOOL, DropletParticleOptions::isSilent,

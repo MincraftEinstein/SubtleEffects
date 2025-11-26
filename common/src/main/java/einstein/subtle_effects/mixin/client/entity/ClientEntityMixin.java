@@ -1,6 +1,6 @@
 package einstein.subtle_effects.mixin.client.entity;
 
-import einstein.subtle_effects.data.FluidPair;
+import einstein.subtle_effects.data.FluidDefinition;
 import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.init.ModParticles;
 import einstein.subtle_effects.ticking.tickers.entity.EntityTicker;
@@ -57,7 +57,7 @@ public abstract class ClientEntityMixin implements EntityTickerAccessor, FluidHe
 
     @Unique
     @Nullable
-    private FluidPair subtleEffects$lastTouchedFluid;
+    private FluidDefinition subtleEffects$lastTouchedFluid;
 
     @Unique
     private boolean subtleEffects$cancelWaterSplash = false;
@@ -118,8 +118,8 @@ public abstract class ClientEntityMixin implements EntityTickerAccessor, FluidHe
     }
 
     @Inject(method = "updateInWaterStateAndDoFluidPushing", at = @At("HEAD"))
-    private void clearFluidPairHeight(CallbackInfoReturnable<Boolean> cir) {
-        subtleEffects$getFluidPairHeight().clear();
+    private void clearFluidDefinitionHeight(CallbackInfoReturnable<Boolean> cir) {
+        subtleEffects$getFluidDefinitionHeight().clear();
     }
 
     @Inject(method = "updateInWaterStateAndDoFluidPushing", at = @At("TAIL"))
@@ -146,13 +146,13 @@ public abstract class ClientEntityMixin implements EntityTickerAccessor, FluidHe
 
     @Nullable
     @Override
-    public FluidPair subtleEffects$getLastTouchedFluid() {
+    public FluidDefinition subtleEffects$getLastTouchedFluid() {
         return subtleEffects$lastTouchedFluid;
     }
 
     @Override
-    public void subtleEffects$setLastTouchedFluid(@Nullable FluidPair fluidPair) {
-        subtleEffects$lastTouchedFluid = fluidPair;
+    public void subtleEffects$setLastTouchedFluid(@Nullable FluidDefinition fluidDefinition) {
+        subtleEffects$lastTouchedFluid = fluidDefinition;
     }
 
     @Override

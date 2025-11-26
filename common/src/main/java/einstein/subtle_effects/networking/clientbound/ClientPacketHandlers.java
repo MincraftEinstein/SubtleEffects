@@ -1,7 +1,7 @@
 package einstein.subtle_effects.networking.clientbound;
 
 import einstein.subtle_effects.configs.ReplacedParticlesDisplayType;
-import einstein.subtle_effects.data.FluidPair;
+import einstein.subtle_effects.data.FluidDefinition;
 import einstein.subtle_effects.init.ModAnimalFedEffectSettings;
 import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.init.ModParticles;
@@ -380,14 +380,14 @@ public class ClientPacketHandlers {
                 return;
             }
 
-            FluidPair lastTouchedFluid = ((FluidHeightAccessor) entity).subtleEffects$getLastTouchedFluid();
+            FluidDefinition lastTouchedFluid = ((FluidHeightAccessor) entity).subtleEffects$getLastTouchedFluid();
             if (lastTouchedFluid == null || !lastTouchedFluid.is(fluid)) {
 
-                FluidPair fluidPair = ((FluidAccessor) fluid).subtleEffects$getFluidPair();
-                if (fluidPair != null) {
+                FluidDefinition fluidDefinition = ((FluidDefinitionAccessor) fluid).subtleEffects$getFluidDefinition();
+                if (fluidDefinition != null) {
 
-                    fluidPair.splashType().ifPresent(splashType ->
-                            ParticleSpawnUtil.spawnSplashEffects(entity, level, fluidPair.id(), payload.y(), payload.yVelocity())
+                    fluidDefinition.splashType().ifPresent(splashType ->
+                            ParticleSpawnUtil.spawnSplashEffects(entity, level, fluidDefinition.id(), payload.y(), payload.yVelocity())
                     );
                 }
             }
