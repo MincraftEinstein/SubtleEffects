@@ -6,6 +6,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import einstein.subtle_effects.data.splash_types.SplashType;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.level.block.AbstractCauldronBlock;
 import net.minecraft.world.level.block.state.BlockState;
@@ -26,6 +27,11 @@ public record FluidDefinition(ResourceLocation id, Fluid source, Fluid flowing,
             return false;
         }
         return this == fluidDefinition;
+    }
+
+    @SuppressWarnings("deprecation")
+    public boolean is(TagKey<Fluid> tag) {
+        return source.is(tag) || flowing.is(tag);
     }
 
     public boolean is(Fluid fluid) {

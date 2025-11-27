@@ -503,7 +503,7 @@ public class ParticleSpawnUtil {
             double fluidDefinitionHeight = accessor.subtleEffects$getFluidDefinitionHeight().getDouble(fluidDefinition);
 
             if (fluidDefinitionHeight > 0) {
-                boolean isWater = fluidDefinition.is(Fluids.WATER);
+                boolean isWater = fluidDefinition.is(FluidTags.WATER);
 
                 if (waterOnly == isWater || allFluids) {
                     if (!fluidDefinition.is(accessor.subtleEffects$getLastTouchedFluid()) && !firstTick) {
