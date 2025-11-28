@@ -50,6 +50,7 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
 import static einstein.subtle_effects.init.ModConfigs.BLOCKS;
+import static einstein.subtle_effects.init.ModConfigs.ENTITIES;
 import static einstein.subtle_effects.init.ModRenderStateAttachmentKeys.IS_SLEEPING;
 import static net.minecraft.util.Mth.DEG_TO_RAD;
 
@@ -127,7 +128,8 @@ public class Util {
     public static Fluid getCauldronFluid(BlockState state) {
         if (state.is(Blocks.LAVA_CAULDRON)) {
             return Fluids.LAVA;
-        } else if (state.is(Blocks.WATER_CAULDRON)) {
+        }
+        else if (state.is(Blocks.WATER_CAULDRON)) {
             return Fluids.WATER;
         }
         return Fluids.EMPTY;
@@ -137,7 +139,8 @@ public class Util {
     public static ParticleOptions getParticleForFluid(Fluid fluid) {
         if (fluid.isSame(Fluids.WATER)) {
             return new SplashDropletParticleOptions(ModParticles.WATER_SPLASH_DROPLET.get(), 1);
-        } else if (fluid.isSame(Fluids.LAVA)) {
+        }
+        else if (fluid.isSame(Fluids.LAVA)) {
             return new SplashDropletParticleOptions(ModParticles.LAVA_SPLASH_DROPLET.get(), 1);
         }
         return null;
@@ -182,7 +185,8 @@ public class Util {
         Fluid fluid = getCauldronFluid(state);
         if (!fluid.isSame(Fluids.EMPTY)) {
             return getParticleForFluid(fluid);
-        } else if (state.is(Blocks.POWDER_SNOW_CAULDRON)) {
+        }
+        else if (state.is(Blocks.POWDER_SNOW_CAULDRON)) {
             return ModParticles.SNOW.get();
         }
         return null;
@@ -217,9 +221,11 @@ public class Util {
 
         if ((eatSound != null && !SoundEvents.GENERIC_EAT.value().equals(eatSound)) && !eatSound.equals(stackEatSound)) {
             return eatSound;
-        } else if (entity instanceof Strider) {
+        }
+        else if (entity instanceof Strider) {
             return SoundEvents.STRIDER_EAT;
-        } else if (entity instanceof Parrot) {
+        }
+        else if (entity instanceof Parrot) {
             return SoundEvents.PARROT_EAT;
         }
         return stackEatSound != null ? stackEatSound : SoundEvents.GENERIC_EAT.value();
@@ -230,23 +236,34 @@ public class Util {
     }
 
     @SuppressWarnings("SuspiciousNameCombination")
-    public static Vec3 getNameTagOffset(EntityRenderState renderState, Vec3 nameTagAttachment) {
-        // noinspection ConstantConditions
-        if (renderState instanceof LivingEntityRenderState livingRenderState && ((RenderStateAttachmentAccessor) renderState).subtleEffects$get(IS_SLEEPING)) {
-            Direction facing = livingRenderState.bedOrientation;
+    public static Vec3 getAdjustedNameTagPosition(EntityRenderState renderState, Vec3 nameTagAttachment) {
+        if (nameTagAttachment == null) {
+            return null;
+        }
 
-            if (facing != null) {
-                var x = nameTagAttachment.x();
-                var y = nameTagAttachment.y() + 0.5;
-                var z = nameTagAttachment.z() - 0.5;
+        if (!ENTITIES.sleeping.adjustNameTagWhenSleeping) {
+            return nameTagAttachment;
+        }
 
-                return switch (facing) {
-                    case NORTH -> new Vec3(x, z, -y);
-                    case SOUTH -> new Vec3(x, z, y);
-                    case EAST -> new Vec3(y, z, x);
-                    case WEST -> new Vec3(-y, z, x);
-                    default -> nameTagAttachment;
-                };
+        if (renderState instanceof LivingEntityRenderState livingRenderState) {
+            Boolean isSleeping = ((RenderStateAttachmentAccessor) renderState).subtleEffects$get(IS_SLEEPING);
+
+            if (isSleeping != null && isSleeping) {
+                Direction facing = livingRenderState.bedOrientation;
+
+                if (facing != null) {
+                    var x = nameTagAttachment.x();
+                    var y = nameTagAttachment.y() + 0.5;
+                    var z = nameTagAttachment.z() - 0.5;
+
+                    return switch (facing) {
+                        case NORTH -> new Vec3(x, z, -y);
+                        case SOUTH -> new Vec3(x, z, y);
+                        case EAST -> new Vec3(y, z, x);
+                        case WEST -> new Vec3(-y, z, x);
+                        default -> nameTagAttachment;
+                    };
+                }
             }
         }
         return nameTagAttachment;
