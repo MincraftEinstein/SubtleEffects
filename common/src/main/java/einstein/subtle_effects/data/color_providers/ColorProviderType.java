@@ -5,10 +5,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import einstein.subtle_effects.SubtleEffects;
 import einstein.subtle_effects.util.Util;
-import io.netty.buffer.ByteBuf;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.codec.ByteBufCodecs;
-import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.StringRepresentable;
@@ -26,7 +23,7 @@ public record ColorProviderType<T extends ColorProviderType.ColorProvider>(Resou
 
     public static final ColorProviderType<NoneColorProvider> NONE = register("none", () -> NoneColorProvider.CODEC);
     public static final ColorProviderType<ConstantColorProvider> CONSTANT = register("constant", () -> ConstantColorProvider.CODEC);
-    public static final ColorProviderType<BiomeWaterColorProvider> BIOME_WATER = register("biome_water", () -> BiomeWaterColorProvider.CODEC);
+    public static final ColorProviderType<BiomeColorProvider> BIOME_WATER = register("biome_color", () -> BiomeColorProvider.CODEC);
     public static final ColorProviderType<ListColorProvider> LIST = register("list", () -> ListColorProvider.CODEC);
     public static final ColorProviderType<PresetColorProvider> PRESET = register("preset", () -> PresetColorProvider.CODEC);
 

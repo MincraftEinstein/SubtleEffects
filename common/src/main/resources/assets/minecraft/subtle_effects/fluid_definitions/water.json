@@ -6,7 +6,8 @@
   "bucket_item": "minecraft:water_bucket",
   "droplets": {
     "color": {
-      "type": "subtle_effects:biome_water"
+      "type": "subtle_effects:biome_color",
+      "color_type": "water_color"
     },
     "ripple": {
       "color": {
