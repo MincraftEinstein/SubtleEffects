@@ -6,6 +6,9 @@
   ],
   "options": {
     "preset": "wall_torch",
-    "colors": "soul"
+    "color": {
+      "type": "subtle_effects:preset",
+      "preset": "soul_sparks"
+    }
   }
 }

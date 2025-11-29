@@ -50,7 +50,6 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.List;
 import java.util.function.BiPredicate;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
@@ -63,24 +62,6 @@ import static net.minecraft.util.Mth.nextFloat;
 import static net.minecraft.world.level.block.state.properties.BlockStateProperties.DOUBLE_BLOCK_HALF;
 
 public class ParticleSpawnUtil {
-
-    public static void spawnSparks(Level level, RandomSource random, BlockPos pos, SparkType sparkType, Box box, Vec3 maxSpeeds, int count, List<Integer> colors) {
-        if (random.nextBoolean()) {
-            Vec3 start = box.min();
-            Vec3 end = box.max();
-
-            for (int i = 0; i < count; i++) {
-                level.addParticle(SparkParticle.create(sparkType, random, colors),
-                        pos.getX() + Mth.nextDouble(random, start.x, end.x),
-                        pos.getY() + Mth.nextDouble(random, start.y, end.y),
-                        pos.getZ() + Mth.nextDouble(random, start.z, end.z),
-                        nextNonAbsDouble(random, maxSpeeds.x()),
-                        nextNonAbsDouble(random, maxSpeeds.y()),
-                        nextNonAbsDouble(random, maxSpeeds.z())
-                );
-            }
-        }
-    }
 
     public static void spawnParticlesAroundBlock(ParticleOptions particle, Level level, BlockPos pos, RandomSource random, int perSideChance) {
         spawnParticlesAroundBlock(particle, level, pos, random, 0.0625F, perSideChance > 0 ? direction -> random.nextInt(perSideChance) != 0 : null);

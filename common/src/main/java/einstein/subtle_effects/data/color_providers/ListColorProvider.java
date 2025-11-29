@@ -9,12 +9,17 @@ import org.joml.Vector3f;
 
 import java.util.List;
 
-public record ListColorProvider(List<ColorProviderType.ColorProvider> providers)
+public record ListColorProvider(List<? extends ColorProviderType.ColorProvider> providers)
         implements ColorProviderType.ColorProvider {
 
+    @SuppressWarnings("unchecked")
     public static final MapCodec<ListColorProvider> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-            ColorProviderType.CODEC.listOf().fieldOf("providers").forGetter(ListColorProvider::providers)
+            ColorProviderType.CODEC.listOf().fieldOf("providers").forGetter(listColorProvider -> (List<ColorProviderType.ColorProvider>) listColorProvider.providers)
     ).apply(instance, ListColorProvider::new));
+
+    public static ListColorProvider fromIntList(List<Integer> color) {
+        return new ListColorProvider(color.stream().map(ConstantColorProvider::new).toList());
+    }
 
     @Override
     public ColorProviderType<?> getType() {
