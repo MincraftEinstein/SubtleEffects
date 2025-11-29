@@ -10,6 +10,7 @@ import einstein.subtle_effects.client.model.entity.PartyHatModel;
 import einstein.subtle_effects.client.model.particle.SplashParticleModel;
 import einstein.subtle_effects.client.renderer.entity.EinsteinSolarSystemLayer;
 import einstein.subtle_effects.client.renderer.entity.PartyHatLayer;
+import einstein.subtle_effects.data.*;
 import einstein.subtle_effects.data.color_providers.ColorProviderType;
 import einstein.subtle_effects.init.*;
 import einstein.subtle_effects.ticking.GeyserManager;
@@ -33,6 +34,7 @@ import net.minecraft.commands.SharedSuggestionProvider;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.server.packs.resources.PreparableReloadListener;
 import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -132,6 +134,20 @@ public class SubtleEffectsClient {
             renderLayers.add(new PartyHatLayer<>(renderer, context));
         }
         return renderLayers;
+    }
+
+    public static <T extends PreparableReloadListener & NamedReloadListener> List<T> registerReloadListeners() {
+        List<T> reloadListeners = new ArrayList<>();
+        registerReloadListener(reloadListeners, new SparkProviderReloadListener());
+        registerReloadListener(reloadListeners, new MobSkullShaderReloadListener());
+        registerReloadListener(reloadListeners, new BCWPPackManager());
+        registerReloadListener(reloadListeners, new FluidDefinitionReloadListener());
+        return reloadListeners;
+    }
+
+    @SuppressWarnings("unchecked")
+    public static <T extends PreparableReloadListener & NamedReloadListener, V extends PreparableReloadListener & NamedReloadListener> void registerReloadListener(List<T> reloadListeners, V listener) {
+        reloadListeners.add((T) listener);
     }
 
     public static <T extends SharedSuggestionProvider> void registerClientCommands(CommandDispatcher<T> dispatcher, CommandBuildContext buildContext) {

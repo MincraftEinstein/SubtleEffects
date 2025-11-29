@@ -1,6 +1,7 @@
 package einstein.subtle_effects;
 
-import einstein.subtle_effects.data.*;
+import einstein.subtle_effects.data.BCWPPackManager;
+import einstein.subtle_effects.data.FabricReloadListenerWrapper;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
@@ -11,7 +12,6 @@ import net.fabricmc.fabric.api.resource.ResourcePackActivationType;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.server.packs.PackType;
-import net.minecraft.server.packs.resources.PreparableReloadListener;
 
 public class SubtleEffectsFabricClient implements ClientModInitializer {
 
@@ -22,10 +22,9 @@ public class SubtleEffectsFabricClient implements ClientModInitializer {
         ClientCommandRegistrationCallback.EVENT.register(SubtleEffectsClient::registerClientCommands);
         ResourceManagerHelper.registerBuiltinResourcePack(BCWPPackManager.PACK_LOCATION.get(), FabricLoader.getInstance().getModContainer(SubtleEffects.MOD_ID).orElseThrow(), BCWPPackManager.PACK_NAME, ResourcePackActivationType.NORMAL);
         ResourceManagerHelper helper = ResourceManagerHelper.get(PackType.CLIENT_RESOURCES);
-        addReloadListener(helper, new SparkProviderReloadListener());
-        addReloadListener(helper, new MobSkullShaderReloadListener());
-        addReloadListener(helper, new BCWPPackManager());
-        addReloadListener(helper, new FluidDefinitionReloadListener());
+        SubtleEffectsClient.registerReloadListeners().forEach(listener ->
+                helper.registerReloadListener(new FabricReloadListenerWrapper<>(listener))
+        );
         SubtleEffectsClient.registerModelLayers().forEach((modelLayerLocation, layerDefinitionSupplier) ->
                 EntityModelLayerRegistry.registerModelLayer(modelLayerLocation, layerDefinitionSupplier::get)
         );
@@ -34,9 +33,5 @@ public class SubtleEffectsFabricClient implements ClientModInitializer {
                 SubtleEffectsClient.registerPlayerRenderLayers(playerRenderer, context).forEach(registrationHelper::register);
             }
         });
-    }
-
-    private static <T extends PreparableReloadListener & NamedReloadListener> void addReloadListener(ResourceManagerHelper helper, T listener) {
-        helper.registerReloadListener(new FabricReloadListenerWrapper<>(listener));
     }
 }
