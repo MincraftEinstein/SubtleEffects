@@ -29,6 +29,18 @@ public abstract class ParticleMixin implements ParticleAccessor {
     public abstract double getZ();
 
     @Override
+    @Accessor("xo")
+    public abstract double getOldX();
+
+    @Override
+    @Accessor("yo")
+    public abstract double getOldY();
+
+    @Override
+    @Accessor("zo")
+    public abstract double getOldZ();
+
+    @Override
     @Accessor("alpha")
     public abstract float getAlpha();
 
