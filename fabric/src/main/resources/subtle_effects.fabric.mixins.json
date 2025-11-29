@@ -6,7 +6,8 @@
   "compatibilityLevel": "JAVA_17",
   "client": [
     "client.FabricClientEntityMixin",
-    "client.FabricMultiPlayerGameModeMixin"
+    "client.FabricMultiPlayerGameModeMixin",
+    "client.FabricParticleEngineMixin"
   ],
   "mixins": [
     "common.FabricStonecutterMenu$2Mixin",

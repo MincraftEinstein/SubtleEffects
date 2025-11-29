@@ -28,7 +28,7 @@ public class SplashRippleParticle extends FlatPlaneParticle {
         fluidDefinition = FluidDefinitionReloadListener.DEFINITIONS.get(options.fluidDefinitionId());
         SplashType type = fluidDefinition.splashType().orElseThrow();
         SplashOptions rippleOptions = type.splashRippleOptions();
-        sprites = rippleOptions.sprites();
+        sprites = rippleOptions.holder().get();
         lightLevel = fluidDefinition.lightEmission();
         pos = BlockPos.containing(x, y, z).mutable();
         rotation = rotation.rotateX(90 * Mth.DEG_TO_RAD);

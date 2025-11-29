@@ -3,6 +3,7 @@ package einstein.subtle_effects.data;
 import com.google.gson.JsonElement;
 import com.mojang.serialization.JsonOps;
 import einstein.subtle_effects.SubtleEffects;
+import einstein.subtle_effects.data.splash_types.SplashType;
 import einstein.subtle_effects.data.splash_types.SplashTypeReloadListener;
 import einstein.subtle_effects.mixin.client.item.BucketItemAccessor;
 import einstein.subtle_effects.util.FluidDefinitionAccessor;
@@ -61,7 +62,15 @@ public class FluidDefinitionReloadListener extends SimplePreparableReloadListene
             Fluid source = data.source();
             Fluid flowing = data.flowing();
             FluidDefinition fluidDefinition = new FluidDefinition(id, source, flowing, data.cauldron(),
-                    data.splashTypeId().map(SplashTypeReloadListener.SPLASH_TYPES_BY_ID::get),
+                    data.splashTypeId().map(splashTypeId -> {
+                        SplashType splashType = SplashTypeReloadListener.SPLASH_TYPES.get(splashTypeId);
+                        if (splashType != null) {
+                            return splashType;
+                        }
+
+                        LOGGER.error("Splash type '{}' not found for fluid definition '{}'", splashTypeId, id);
+                        return null;
+                    }),
                     data.bucketItem(), data.dropletOptions(), data.lightEmission()
             );
 

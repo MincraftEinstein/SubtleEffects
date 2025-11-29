@@ -3,16 +3,16 @@ package einstein.subtle_effects.data.splash_types;
 import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import einstein.subtle_effects.data.SpriteSetHolder;
 import einstein.subtle_effects.data.color_providers.ColorProviderType;
 import einstein.subtle_effects.data.color_providers.Colorable;
 import einstein.subtle_effects.data.color_providers.NoneColorProvider;
 import einstein.subtle_effects.util.Util;
-import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.resources.ResourceLocation;
 
 import java.util.Optional;
 
-public record SplashOptions(SpriteSet sprites, ColorProviderType.ColorProvider colorProvider,
+public record SplashOptions(SpriteSetHolder holder, ColorProviderType.ColorProvider colorProvider,
                             Optional<Either<Float, Boolean>> tinting,
                             Optional<Either<Float, Boolean>> transparency) implements Colorable {
 

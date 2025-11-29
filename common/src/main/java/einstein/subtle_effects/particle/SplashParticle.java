@@ -57,8 +57,8 @@ public class SplashParticle extends ModelParticle {
         SplashOptions overlayOptions = type.splashOverlayOptions();
         float overlayAlpha = alpha(overlayOptions);
 
-        sprites = splashOptions.sprites();
-        overlaySprites = overlayOptions.sprites();
+        sprites = splashOptions.holder().get();
+        overlaySprites = overlayOptions.holder() != null ? overlayOptions.holder().get() : null;
         hasOverlay = overlaySprites != null && overlayAlpha > 0;
         this.overlayAlpha = overlayAlpha;
         alpha = alpha(splashOptions);
