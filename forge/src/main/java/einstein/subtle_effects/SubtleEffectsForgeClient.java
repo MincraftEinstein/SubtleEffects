@@ -1,12 +1,15 @@
 package einstein.subtle_effects;
 
+import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import einstein.subtle_effects.data.BCWPPackManager;
 import einstein.subtle_effects.data.MobSkullShaderReloadListener;
 import einstein.subtle_effects.data.SparkProviderReloadListener;
+import einstein.subtle_effects.init.ModRenderTypes;
 import einstein.subtle_effects.platform.ForgeRegistryHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.client.particle.SpriteSet;
+import net.minecraft.client.renderer.ShaderInstance;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.core.particles.ParticleOptions;
@@ -24,6 +27,7 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.forgespi.language.IModInfo;
 
+import java.io.IOException;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -58,6 +62,16 @@ public class SubtleEffectsForgeClient {
                 }
             }
         });
+        modEventBus.addListener((RegisterShadersEvent event) -> {
+                    try {
+                        event.registerShader(new ShaderInstance(event.getResourceProvider(), ModRenderTypes.RENDERTYPE_ENTITY_PARTICLE_TRANSLUCENT_SHADER_ID, DefaultVertexFormat.NEW_ENTITY),
+                                shaderInstance -> ModRenderTypes.RENDERTYPE_ENTITY_PARTICLE_TRANSLUCENT_SHADER = shaderInstance);
+                    }
+                    catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+        );
         MinecraftForge.EVENT_BUS.addListener((TickEvent.ClientTickEvent event) -> {
             Minecraft minecraft = Minecraft.getInstance();
             SubtleEffectsClient.clientTick(minecraft, minecraft.level);

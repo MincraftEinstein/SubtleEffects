@@ -1,12 +1,15 @@
 package einstein.subtle_effects;
 
+import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import einstein.subtle_effects.data.*;
 import einstein.subtle_effects.init.ModParticles;
+import einstein.subtle_effects.init.ModRenderTypes;
 import einstein.subtle_effects.platform.FabricNetworkHelper;
 import einstein.subtle_effects.platform.services.NetworkHelper;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
+import net.fabricmc.fabric.api.client.rendering.v1.CoreShaderRegistrationCallback;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.LivingEntityFeatureRendererRegistrationCallback;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
@@ -38,6 +41,7 @@ public class SubtleEffectsFabricClient implements ClientModInitializer {
                 SubtleEffectsClient.registerPlayerRenderLayers(playerRenderer, context).forEach(registrationHelper::register);
             }
         });
+        CoreShaderRegistrationCallback.EVENT.register(context -> context.register(ModRenderTypes.RENDERTYPE_ENTITY_PARTICLE_TRANSLUCENT_SHADER_ID, DefaultVertexFormat.NEW_ENTITY, shaderInstance -> ModRenderTypes.RENDERTYPE_ENTITY_PARTICLE_TRANSLUCENT_SHADER = shaderInstance));
     }
 
     private static <T extends PreparableReloadListener & NamedReloadListener> void addReloadListener(ResourceManagerHelper helper, T listener) {
