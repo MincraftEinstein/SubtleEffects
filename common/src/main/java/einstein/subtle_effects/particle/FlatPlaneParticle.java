@@ -37,7 +37,7 @@ public abstract class FlatPlaneParticle extends SingleQuadParticle {
     }
 
     protected void renderQuad(QuadParticleRenderState state, Camera camera, float partialTicks, Quaternionf rotation) {
-        Vec3 vec3 = camera.getPosition();
+        Vec3 vec3 = camera.position();
         float x = (float) (Mth.lerp(partialTicks, xo, this.x) - vec3.x());
         float y = (float) (Mth.lerp(partialTicks, yo, this.y) - vec3.y());
         float z = (float) (Mth.lerp(partialTicks, zo, this.z) - vec3.z());

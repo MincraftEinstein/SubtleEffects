@@ -12,7 +12,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.projectile.ThrownEgg;
+import net.minecraft.world.entity.projectile.throwableitemprojectile.ThrownEgg;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;

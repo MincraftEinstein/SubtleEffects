@@ -27,10 +27,11 @@ import net.minecraft.tags.FluidTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.attribute.EnvironmentAttributes;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.animal.camel.Camel;
-import net.minecraft.world.entity.animal.horse.AbstractHorse;
+import net.minecraft.world.entity.animal.equine.AbstractHorse;
 import net.minecraft.world.entity.animal.sheep.Sheep;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -41,7 +42,6 @@ import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.AttachFace;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.ChestType;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.material.Fluid;
@@ -426,7 +426,7 @@ public class ParticleSpawnUtil {
                 boolean isWater = content.isSame(Fluids.WATER);
 
                 if ((isWater && ModConfigs.ITEMS.waterBucketUseParticles) || (content.isSame(Fluids.LAVA) && ModConfigs.ITEMS.lavaBucketUseParticles)) {
-                    if (isWater && level.dimensionType().ultraWarm()) {
+                    if (isWater && level.environmentAttributes().getDimensionValue(EnvironmentAttributes.WATER_EVAPORATES)) {
                         return;
                     }
 

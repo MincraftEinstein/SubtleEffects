@@ -7,7 +7,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.EntityEvent;
-import net.minecraft.world.entity.projectile.Snowball;
+import net.minecraft.world.entity.projectile.throwableitemprojectile.Snowball;
 import net.minecraft.world.level.Level;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;

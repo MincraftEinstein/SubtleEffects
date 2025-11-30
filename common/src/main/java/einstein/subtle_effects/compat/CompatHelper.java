@@ -4,7 +4,7 @@ import com.google.common.base.Suppliers;
 import einstein.subtle_effects.platform.Services;
 import einstein.subtle_effects.util.Util;
 import me.fzzyhmstrs.fzzy_config.validation.misc.ValidatedColor;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 
 import java.util.HashMap;
@@ -40,8 +40,8 @@ public class CompatHelper {
         return Suppliers.memoize(() -> Services.PLATFORM.isModLoaded(modId));
     }
 
-    public static Map<ResourceLocation, ValidatedColor.ColorHolder> getDefaultEyes() {
-        Map<ResourceLocation, ValidatedColor.ColorHolder> eyes = new HashMap<>();
+    public static Map<Identifier, ValidatedColor.ColorHolder> getDefaultEyes() {
+        Map<Identifier, ValidatedColor.ColorHolder> eyes = new HashMap<>();
         putEye(eyes, "black_eye", 0x020c26);
         putEye(eyes, "cold_eye", 0x40b5c0);
         putEye(eyes, "corrupted_eye", 0x575f5b);
@@ -61,11 +61,11 @@ public class CompatHelper {
         return eyes;
     }
 
-    private static void putEye(Map<ResourceLocation, ValidatedColor.ColorHolder> eyes, String name, int color) {
+    private static void putEye(Map<Identifier, ValidatedColor.ColorHolder> eyes, String name, int color) {
         eyes.put(endRemLoc(name), Util.toColorHolder(color));
     }
 
-    public static ResourceLocation endRemLoc(String path) {
-        return ResourceLocation.fromNamespaceAndPath("endrem", path);
+    public static Identifier endRemLoc(String path) {
+        return Identifier.fromNamespaceAndPath("endrem", path);
     }
 }

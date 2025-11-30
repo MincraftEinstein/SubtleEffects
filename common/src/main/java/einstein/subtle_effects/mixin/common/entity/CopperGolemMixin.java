@@ -8,7 +8,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.protocol.game.ClientboundLevelEventPacket;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.animal.coppergolem.CopperGolem;
+import net.minecraft.world.entity.animal.golem.CopperGolem;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.LevelEvent;
 import org.spongepowered.asm.mixin.Mixin;

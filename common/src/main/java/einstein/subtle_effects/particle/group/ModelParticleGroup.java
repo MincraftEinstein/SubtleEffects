@@ -6,7 +6,7 @@ import net.minecraft.client.Camera;
 import net.minecraft.client.model.Model;
 import net.minecraft.client.particle.ParticleEngine;
 import net.minecraft.client.particle.ParticleGroup;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.client.renderer.state.CameraRenderState;

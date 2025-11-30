@@ -5,20 +5,19 @@ import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedInt;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.function.BiPredicate;
 import java.util.function.Supplier;
 
 public class BiomeParticleSettings {
 
-    private final ValidatedList<ResourceLocation> biomesConfig;
+    private final ValidatedList<Identifier> biomesConfig;
     private final ValidatedInt density;
     private final int maxSpawnHeight;
     private final Supplier<? extends ParticleOptions> particle;
@@ -26,7 +25,7 @@ public class BiomeParticleSettings {
     private final boolean ignoreHeight;
     private final List<Biome> biomes = new ArrayList<>();
 
-    public BiomeParticleSettings(ValidatedList<ResourceLocation> biomesConfig,
+    public BiomeParticleSettings(ValidatedList<Identifier> biomesConfig,
                                  ValidatedInt density, int maxSpawnHeight,
                                  Supplier<? extends ParticleOptions> particle,
                                  BiPredicate<Level, BlockPos> spawnConditions, boolean ignoreHeight) {

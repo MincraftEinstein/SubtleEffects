@@ -12,7 +12,7 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.entity.animal.MushroomCow;
+import net.minecraft.world.entity.animal.cow.MushroomCow;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.SuspiciousStewEffects;
@@ -51,7 +51,8 @@ public class MooshroomMixin {
         original.call(level, particle, x, y, z, xSpeed, ySpeed, zSpeed);
     }
 
-    @Inject(method = "mobInteract", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/ItemStack;consume(ILnet/minecraft/world/entity/LivingEntity;)V"))
+    // TODO test if this still works normally
+    @Inject(method = "mobInteract", at = @At(value = "INVOKE", target = "Ljava/util/Optional;get()Ljava/lang/Object;"))
     private void spawnFeedingParticles(Player player, InteractionHand hand, CallbackInfoReturnable<InteractionResult> cir, @Local Optional<SuspiciousStewEffects> optional, @Local(ordinal = 0) ItemStack heldStack) {
         Level level = subtleEffects$me.level();
         RandomSource random = subtleEffects$me.getRandom();

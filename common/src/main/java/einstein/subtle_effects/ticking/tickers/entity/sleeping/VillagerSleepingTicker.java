@@ -1,7 +1,7 @@
 package einstein.subtle_effects.ticking.tickers.entity.sleeping;
 
 import einstein.subtle_effects.init.ModSounds;
-import net.minecraft.world.entity.npc.AbstractVillager;
+import net.minecraft.world.entity.npc.villager.AbstractVillager;
 
 import static einstein.subtle_effects.init.ModConfigs.ENTITIES;
 

@@ -12,7 +12,7 @@ import einstein.subtle_effects.util.Util;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.SingleQuadParticle;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.ShapeRenderer;
 import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.client.renderer.state.LevelRenderState;
@@ -29,19 +29,20 @@ import java.util.Map;
 
 public class ParticleBoundingBoxesRenderer {
 
-    private static final Map<SingleQuadParticle.Layer, Vector3f> LAYER_TO_COLOR = net.minecraft.Util.make(new HashMap<>(), map -> {
+    private static final Map<SingleQuadParticle.Layer, Vector3f> LAYER_TO_COLOR = net.minecraft.util.Util.make(new HashMap<>(), map -> {
         map.put(SingleQuadParticle.Layer.TERRAIN, stringToColor("TERRAIN"));
         map.put(SingleQuadParticle.Layer.OPAQUE, stringToColor("OPAQUE"));
         map.put(SingleQuadParticle.Layer.TRANSLUCENT, stringToColor("TRANSLUCENT"));
     });
 
     private static Vector3f stringToColor(String color) {
-        return Vec3.fromRGB24(ARGB.color(255, color.hashCode())).toVector3f();
+        // TODO make sure this is correct (might need to add alpha)
+        return ARGB.vector3fFromRGB24( color.hashCode());
     }
 
     public static void extractParticleBoundingBoxes(LevelRenderState levelRenderState, Camera camera, Frustum frustum) {
         if (SubtleEffectsClient.DISPLAY_PARTICLE_BOUNDING_BOXES) {
-            Vec3 cameraPos = camera.getPosition();
+            Vec3 cameraPos = camera.position();
             Minecraft minecraft = Minecraft.getInstance();
             List<ParticleBoundingBoxRenderState> renderStates = new ArrayList<>();
             float partialTicks = Util.getPartialTicks();
@@ -86,18 +87,19 @@ public class ParticleBoundingBoxesRenderer {
         if (SubtleEffectsClient.DISPLAY_PARTICLE_BOUNDING_BOXES) {
             List<ParticleBoundingBoxRenderState> renderStates = ((RenderStateAttachmentAccessor) levelRenderState).subtleEffects$get(ModRenderStateAttachmentKeys.PARTICLE_BOUNDING_BOXES);
             if (renderStates != null) {
-                VertexConsumer consumer = Minecraft.getInstance().renderBuffers().bufferSource().getBuffer(RenderType.lines());
+                VertexConsumer consumer = Minecraft.getInstance().renderBuffers().bufferSource().getBuffer(RenderTypes.lines());
 
                 renderStates.forEach(renderState -> {
                     poseStack.pushPose();
                     poseStack.translate(renderState.x(), renderState.y(), renderState.z());
 
                     PoseStack.Pose lastPose = poseStack.last();
-                    ShapeRenderer.renderLineBox(lastPose, consumer, renderState.aabb(), 1, 1, 1, 1);
+                    // TODO kill me
+//                    ShapeRenderer.renderLineBox(lastPose, consumer, renderState.aabb(), 1, 1, 1, 1);
 
                     Vector3f color = renderState.color();
                     if (color != null) {
-                        ShapeRenderer.renderLineBox(lastPose, consumer, renderState.renderTypeAABB(), renderState.color.x(), renderState.color.y(), renderState.color.z(), 1);
+//                        ShapeRenderer.renderLineBox(lastPose, consumer, renderState.renderTypeAABB(), renderState.color.x(), renderState.color.y(), renderState.color.z(), 1);
                     }
 
                     poseStack.popPose();

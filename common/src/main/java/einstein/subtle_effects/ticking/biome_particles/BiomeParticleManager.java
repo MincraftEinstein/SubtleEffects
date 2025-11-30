@@ -6,7 +6,7 @@ import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedInt;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.particles.ParticleOptions;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -34,11 +34,11 @@ public class BiomeParticleManager {
         register(ENVIRONMENT.biomes.sculkDustBiomes, ENVIRONMENT.biomes.sculkDustDensity, ModParticles.SCULK_DUST, (level, pos) -> true);
     }
 
-    private static void register(ValidatedList<ResourceLocation> biomesConfig, ValidatedInt density, int maxSpawnHeight, Supplier<? extends ParticleOptions> particle, BiPredicate<Level, BlockPos> spawnConditions) {
+    private static void register(ValidatedList<Identifier> biomesConfig, ValidatedInt density, int maxSpawnHeight, Supplier<? extends ParticleOptions> particle, BiPredicate<Level, BlockPos> spawnConditions) {
         REGISTERED.add(new BiomeParticleSettings(biomesConfig, density, maxSpawnHeight, particle, spawnConditions, false));
     }
 
-    private static void register(ValidatedList<ResourceLocation> biomesConfig, ValidatedInt density, Supplier<? extends ParticleOptions> particle, BiPredicate<Level, BlockPos> spawnConditions) {
+    private static void register(ValidatedList<Identifier> biomesConfig, ValidatedInt density, Supplier<? extends ParticleOptions> particle, BiPredicate<Level, BlockPos> spawnConditions) {
         REGISTERED.add(new BiomeParticleSettings(biomesConfig, density, 0, particle, spawnConditions, true));
     }
 

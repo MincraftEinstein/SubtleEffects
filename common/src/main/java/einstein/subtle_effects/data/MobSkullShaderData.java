@@ -6,15 +6,15 @@ import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.component.TypedDataComponent;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 
-public record MobSkullShaderData(ItemStackHolder stackHolder, ResourceLocation shaderId) {
+public record MobSkullShaderData(ItemStackHolder stackHolder, Identifier shaderId) {
 
     public static final Codec<MobSkullShaderData> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             ItemStackHolder.CODEC.fieldOf("item").forGetter(MobSkullShaderData::stackHolder),
-            ResourceLocation.CODEC.fieldOf("shader").forGetter(MobSkullShaderData::shaderId)
+            Identifier.CODEC.fieldOf("shader").forGetter(MobSkullShaderData::shaderId)
     ).apply(instance, MobSkullShaderData::new));
 
     public record ItemStackHolder(Item item, DataComponentMap components) {

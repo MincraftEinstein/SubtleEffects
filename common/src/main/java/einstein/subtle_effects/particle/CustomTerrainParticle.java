@@ -5,13 +5,13 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.data.AtlasIds;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.Blocks;
 
 public class CustomTerrainParticle extends TerrainParticle {
 
-    public static final ResourceLocation COMPOST_TEXTURE = ResourceLocation.parse("minecraft:block/composter_compost");
+    public static final Identifier COMPOST_TEXTURE = Identifier.parse("minecraft:block/composter_compost");
     private final Layer renderType;
 
     public CustomTerrainParticle(ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, Layer renderType) {

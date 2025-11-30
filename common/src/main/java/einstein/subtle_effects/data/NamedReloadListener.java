@@ -1,8 +1,8 @@
 package einstein.subtle_effects.data;
 
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 public interface NamedReloadListener {
 
-    ResourceLocation getId();
+    Identifier getId();
 }

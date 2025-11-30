@@ -4,12 +4,12 @@ import com.google.common.base.Suppliers;
 import einstein.subtle_effects.SubtleEffects;
 import einstein.subtle_effects.init.ModParticles;
 import einstein.subtle_effects.platform.Services;
-import net.minecraft.Util;
+import net.minecraft.util.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.ResourceManagerReloadListener;
 
@@ -19,7 +19,7 @@ import java.util.function.Supplier;
 
 public class BCWPPackManager implements ResourceManagerReloadListener, NamedReloadListener {
 
-    public static final Supplier<ResourceLocation> PACK_LOCATION = Suppliers.memoize(() -> SubtleEffects.loc("biome_color_water_particles").withPrefix(Services.PLATFORM.getPlatform().isForgeLike() ? "resourcepacks/" : ""));
+    public static final Supplier<Identifier> PACK_LOCATION = Suppliers.memoize(() -> SubtleEffects.loc("biome_color_water_particles").withPrefix(Services.PLATFORM.getPlatform().isForgeLike() ? "resourcepacks/" : ""));
     public static final Supplier<String> PACK_ID = Suppliers.memoize(() -> (Services.PLATFORM.getPlatform().isForgeLike() ? "mod/" : "") + PACK_LOCATION.get().toString());
     public static final Component PACK_NAME = Component.translatable("resourcePack.subtle_effects.biome_water_color_particles.name");
     public static final List<ParticleType<?>> BIOME_COLORED_PARTICLES = Util.make(new ArrayList<>(), particles -> {
@@ -55,7 +55,7 @@ public class BCWPPackManager implements ResourceManagerReloadListener, NamedRelo
     }
 
     @Override
-    public ResourceLocation getId() {
+    public Identifier getId() {
         return SubtleEffects.loc("biome_color_water_particles_pack_manager");
     }
 }

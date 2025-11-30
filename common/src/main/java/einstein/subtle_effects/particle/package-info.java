@@ -2,6 +2,6 @@
 @ParametersAreNonnullByDefault
 package einstein.subtle_effects.particle;
 
-import net.minecraft.MethodsReturnNonnullByDefault;
+import com.mojang.logging.annotations.MethodsReturnNonnullByDefault;
 
 import javax.annotation.ParametersAreNonnullByDefault;

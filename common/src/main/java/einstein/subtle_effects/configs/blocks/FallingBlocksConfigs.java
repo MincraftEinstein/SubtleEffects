@@ -6,9 +6,9 @@ import me.fzzyhmstrs.fzzy_config.config.ConfigSection;
 import me.fzzyhmstrs.fzzy_config.validation.collection.ValidatedList;
 import me.fzzyhmstrs.fzzy_config.validation.minecraft.ValidatedRegistryType;
 import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedInt;
-import net.minecraft.Util;
+import net.minecraft.util.Util;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -27,7 +27,7 @@ public class FallingBlocksConfigs extends ConfigSection {
         blocks.add(Blocks.SUSPICIOUS_GRAVEL);
 
         for (DyeColor color : DyeColor.values()) {
-            BuiltInRegistries.BLOCK.get(ResourceLocation.withDefaultNamespace(color.getName() + "_concrete_powder")).ifPresent(holder -> blocks.add(holder.value()));
+            BuiltInRegistries.BLOCK.get(Identifier.withDefaultNamespace(color.getName() + "_concrete_powder")).ifPresent(holder -> blocks.add(holder.value()));
         }
     });
 

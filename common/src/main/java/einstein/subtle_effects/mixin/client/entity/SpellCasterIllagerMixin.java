@@ -6,7 +6,7 @@ import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.init.ModParticles;
 import net.minecraft.core.particles.ColorParticleOption;
 import net.minecraft.core.particles.ParticleType;
-import net.minecraft.world.entity.monster.SpellcasterIllager;
+import net.minecraft.world.entity.monster.illager.SpellcasterIllager;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 

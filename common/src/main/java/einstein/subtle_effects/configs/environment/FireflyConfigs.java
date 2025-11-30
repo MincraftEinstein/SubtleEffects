@@ -11,12 +11,12 @@ import me.fzzyhmstrs.fzzy_config.validation.collection.ValidatedList;
 import me.fzzyhmstrs.fzzy_config.validation.minecraft.ValidatedRegistryType;
 import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedFloat;
 import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedInt;
-import net.minecraft.Util;
+import net.minecraft.util.Util;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import org.jetbrains.annotations.NotNull;
@@ -52,14 +52,14 @@ public class FireflyConfigs extends ConfigSection {
         blocks.add(Blocks.PINK_PETALS);
         blocks.add(Blocks.FLOWERING_AZALEA);
     });
-    private static final List<ResourceLocation> DEFAULT_BLOCKED_DIMENSIONS = Util.make(new ArrayList<>(), dimensions -> {
-        dimensions.add(ResourceLocation.fromNamespaceAndPath("twilightforest", "twilight_forest_type"));
+    private static final List<Identifier> DEFAULT_BLOCKED_DIMENSIONS = Util.make(new ArrayList<>(), dimensions -> {
+        dimensions.add(Identifier.fromNamespaceAndPath("twilightforest", "twilight_forest_type"));
     });
 
     public boolean firefliesEnabled = true;
-    public ValidatedList<ResourceLocation> dimensionBlocklist = ModConfigs.registryList(Registries.DIMENSION_TYPE, DEFAULT_BLOCKED_DIMENSIONS);
-    public ValidatedList<ResourceLocation> biomesBlocklist = biomeList();
-    public ValidatedList<ResourceLocation> biomesAllowlist = biomeList("lush_caves");
+    public ValidatedList<Identifier> dimensionBlocklist = ModConfigs.registryList(Registries.DIMENSION_TYPE, DEFAULT_BLOCKED_DIMENSIONS);
+    public ValidatedList<Identifier> biomesBlocklist = biomeList();
+    public ValidatedList<Identifier> biomesAllowlist = biomeList("lush_caves");
     public ValidatedList<Block> spawnableBlocks = ValidatedRegistryType.of(BuiltInRegistries.BLOCK).toList(DEFAULT_SPAWNABLE_BLOCKS);
     public ValidatedInt defaultDensity = new ValidatedInt(3, 10, 1);
     public ColdSeasonsType ignoredSeasons = ColdSeasonsType.DEFAULT;
@@ -68,7 +68,7 @@ public class FireflyConfigs extends ConfigSection {
 
     public ConfigGroup habitatBiomesGroup = new ConfigGroup("habitat_biomes");
     public boolean onlyAllowInHabitatBiomes = false;
-    public ValidatedList<ResourceLocation> habitatBiomes = biomeList("swamp", "mangrove_swamp");
+    public ValidatedList<Identifier> habitatBiomes = biomeList("swamp", "mangrove_swamp");
     @ConfigGroup.Pop
     public ValidatedInt habitatBiomeDensity = new ValidatedInt(3, 10, 1);
 

@@ -13,7 +13,7 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -38,21 +38,21 @@ public class ModConfigs {
         return ConfigApiJava.registerAndLoadConfig(supplier, RegisterType.CLIENT);
     }
 
-    public static ValidatedList<ResourceLocation> biomeList(String... biomeIds) {
+    public static ValidatedList<Identifier> biomeList(String... biomeIds) {
         return registryList(Registries.BIOME, biomeIds);
     }
 
-    public static <T> ValidatedList<ResourceLocation> registryList(ResourceKey<? extends Registry<? extends T>> registryKey, Collection<ResourceLocation> defaultIds) {
-        return registryList(registryKey, defaultIds.stream().map(ResourceLocation::toString).toArray(String[]::new));
+    public static <T> ValidatedList<Identifier> registryList(ResourceKey<? extends Registry<? extends T>> registryKey, Collection<Identifier> defaultIds) {
+        return registryList(registryKey, defaultIds.stream().map(Identifier::toString).toArray(String[]::new));
     }
 
-    public static <T> ValidatedList<ResourceLocation> registryList(ResourceKey<? extends Registry<? extends T>> registryKey, String... defaultIds) {
-        return new ValidatedIdentifier(ResourceLocation.withDefaultNamespace("air"),
+    public static <T> ValidatedList<Identifier> registryList(ResourceKey<? extends Registry<? extends T>> registryKey, String... defaultIds) {
+        return new ValidatedIdentifier(Identifier.withDefaultNamespace("air"),
                         new AllowableIdentifiers(
                                 location -> getRegistry(registryKey).map(biomes -> biomes.containsKey(location)).orElse(true),
                                 () -> getRegistry(registryKey).map(biomes -> biomes.keySet().stream().toList()).orElseGet(List::of)
                         )
-                ).toList(Arrays.stream(defaultIds).map(ResourceLocation::tryParse).toList());
+                ).toList(Arrays.stream(defaultIds).map(Identifier::tryParse).toList());
     }
 
     private static <T> Optional<Registry<T>> getRegistry(ResourceKey<? extends Registry<? extends T>> registryKey) {

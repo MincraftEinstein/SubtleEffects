@@ -3,7 +3,7 @@ package einstein.subtle_effects.ticking.tickers.entity;
 import einstein.subtle_effects.init.ModParticles;
 import einstein.subtle_effects.util.MathUtil;
 import net.minecraft.world.entity.Crackiness;
-import net.minecraft.world.entity.animal.IronGolem;
+import net.minecraft.world.entity.animal.golem.IronGolem;
 
 public class IronGolemTicker extends EntityTicker<IronGolem> {
 

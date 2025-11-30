@@ -2,7 +2,7 @@ package einstein.subtle_effects.ticking.tickers.entity.sleeping;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.animal.Cat;
+import net.minecraft.world.entity.animal.feline.Cat;
 
 import static einstein.subtle_effects.init.ModConfigs.ENTITIES;
 

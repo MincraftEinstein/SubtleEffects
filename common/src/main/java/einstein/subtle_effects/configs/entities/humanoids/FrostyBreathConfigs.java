@@ -9,7 +9,7 @@ import me.fzzyhmstrs.fzzy_config.validation.collection.ValidatedList;
 import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedFloat;
 import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedInt;
 import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedNumber;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 @Translation(prefix = ModConfigs.BASE_KEY + "entities.humanoids.frostyBreath")
 public class FrostyBreathConfigs extends ConfigSection {
@@ -18,6 +18,6 @@ public class FrostyBreathConfigs extends ConfigSection {
     public ValidatedFloat alpha = new ValidatedFloat(0.5F, 1, 0.2F, ValidatedNumber.WidgetType.SLIDER);
     public ValidatedInt waitTime = new ValidatedInt(60, 200, 10);
     public ColdSeasonsType seasons = ColdSeasonsType.DEFAULT;
-    public ValidatedList<ResourceLocation> additionalBiomes = ModConfigs.biomeList();
+    public ValidatedList<Identifier> additionalBiomes = ModConfigs.biomeList();
 
 }
