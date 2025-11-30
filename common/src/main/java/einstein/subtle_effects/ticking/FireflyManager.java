@@ -8,7 +8,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
@@ -36,7 +36,7 @@ public class FireflyManager {
         }
 
         Optional<ResourceKey<DimensionType>> dimensionKey = level.dimensionTypeRegistration().unwrapKey();
-        if (dimensionKey.isEmpty() || ENVIRONMENT.fireflies.dimensionBlocklist.contains(dimensionKey.get().location())) {
+        if (dimensionKey.isEmpty() || ENVIRONMENT.fireflies.dimensionBlocklist.contains(dimensionKey.get().identifier())) {
             return;
         }
 
@@ -50,7 +50,7 @@ public class FireflyManager {
             return;
         }
 
-        ResourceLocation biomeId = biomeKey.get().location();
+        Identifier biomeId = biomeKey.get().identifier();
         if (!ENVIRONMENT.fireflies.biomesBlocklist.contains(biomeId)) {
             boolean isHabitatBiome = ENVIRONMENT.fireflies.habitatBiomes.contains(biomeId);
             boolean isSpawnable = ENVIRONMENT.fireflies.spawnableBlocks.contains(state.getBlock());

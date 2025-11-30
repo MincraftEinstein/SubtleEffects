@@ -36,7 +36,7 @@ public class DustCloudParticle extends SingleQuadParticle {
 
     @Override
     public void extract(QuadParticleRenderState state, Camera camera, float partialTicks) {
-        if (ENTITIES.dustClouds.lessViewBlocking && minecraft.options.getCameraType().isFirstPerson() && camera.getEntity().distanceToSqr(x, y, z) < 4) {
+        if (ENTITIES.dustClouds.lessViewBlocking && minecraft.options.getCameraType().isFirstPerson() && camera.entity().distanceToSqr(x, y, z) < 4) {
             return;
         }
         super.extract(state, camera, partialTicks);

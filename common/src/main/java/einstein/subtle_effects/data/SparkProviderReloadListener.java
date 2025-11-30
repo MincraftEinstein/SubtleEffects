@@ -3,7 +3,7 @@ package einstein.subtle_effects.data;
 import einstein.subtle_effects.SubtleEffects;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.FileToIdConverter;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.util.profiling.ProfilerFiller;
@@ -26,12 +26,12 @@ public class SparkProviderReloadListener extends SimpleJsonResourceReloadListene
     }
 
     @Override
-    protected void apply(Map<ResourceLocation, SparkProviderData> resources, ResourceManager manager, ProfilerFiller filler) {
+    protected void apply(Map<Identifier, SparkProviderData> resources, ResourceManager manager, ProfilerFiller filler) {
         PROVIDERS.clear();
         load(resources);
     }
 
-    private static void load(Map<ResourceLocation, SparkProviderData> resources) {
+    private static void load(Map<Identifier, SparkProviderData> resources) {
         resources.forEach((location, providerData) -> {
             Optional<SparkProviderData.Options> providerOptions = providerData.options();
             if (providerOptions.isEmpty()) {
@@ -40,7 +40,7 @@ public class SparkProviderReloadListener extends SimpleJsonResourceReloadListene
 
             SparkProviderData.Options options = providerOptions.get();
             providerData.states().forEach(providerEntry -> {
-                ResourceLocation blockId = providerEntry.id();
+                Identifier blockId = providerEntry.id();
                 boolean isRequired = providerEntry.required();
                 boolean isRegistered = BuiltInRegistries.BLOCK.containsKey(blockId);
 
@@ -96,7 +96,7 @@ public class SparkProviderReloadListener extends SimpleJsonResourceReloadListene
     }
 
     @Override
-    public ResourceLocation getId() {
+    public Identifier getId() {
         return SubtleEffects.loc("spark_providers");
     }
 

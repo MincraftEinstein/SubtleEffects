@@ -26,15 +26,15 @@ import net.minecraft.core.SectionPos;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.core.particles.ParticleOptions;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.animal.Parrot;
-import net.minecraft.world.entity.animal.horse.AbstractHorse;
+import net.minecraft.world.entity.animal.parrot.Parrot;
+import net.minecraft.world.entity.animal.equine.AbstractHorse;
 import net.minecraft.world.entity.monster.Strider;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.Consumable;
@@ -61,9 +61,9 @@ public class Util {
     public static final int MAX_Z_COUNT = 3;
     public static final int PARTICLE_LIGHT_COLOR = 240;
     public static final DustParticleOptions GLOWSTONE_DUST_PARTICLES = new DustParticleOptions(0xFFBC5E, 1);
-    public static final ResourceLocation COLORLESS_RAIN_TEXTURE = SubtleEffects.loc("textures/environment/colorless_rain.png");
+    public static final Identifier COLORLESS_RAIN_TEXTURE = SubtleEffects.loc("textures/environment/colorless_rain.png");
     public static final Gson GSON = new GsonBuilder().create();
-    public static final ResourceLocation VANILLA_EYE = ResourceLocation.withDefaultNamespace("ender_eye");
+    public static final Identifier VANILLA_EYE = Identifier.withDefaultNamespace("ender_eye");
     private static final String UUID = "d71e4b41-9315-499f-a934-ca925421fb38";
 
     public static void playClientSound(Entity entity, SoundEvent sound, SoundSource source, float volume, float pitch) {
@@ -103,8 +103,8 @@ public class Util {
         gameRenderer.clearPostEffect();
     }
 
-    private static void loadShaderEffect(ResourceLocation shaderId, GameRenderer gameRenderer) {
-        ResourceLocation effect = gameRenderer.currentPostEffect();
+    private static void loadShaderEffect(Identifier shaderId, GameRenderer gameRenderer) {
+        Identifier effect = gameRenderer.currentPostEffect();
         if (effect == null || !effect.equals(shaderId)) {
             ((GameRendererAccessor) gameRenderer).setShaderEffect(shaderId);
         }

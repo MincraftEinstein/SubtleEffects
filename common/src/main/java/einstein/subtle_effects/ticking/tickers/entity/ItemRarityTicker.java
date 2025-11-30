@@ -57,7 +57,8 @@ public class ItemRarityTicker extends EntityTicker<ItemEntity> {
 
         if (!ITEMS.itemRarity.colorOverrides.isEmpty()) {
             for (Map.Entry<ValidatedIngredient.IngredientProvider, ValidatedColor.ColorHolder> entry : ITEMS.itemRarity.colorOverrides.entrySet()) {
-                if (entry.getKey().provide().test(stack)) {
+                // TODO fix when not fzzy update
+                if (/*entry.getKey().provide().test(stack)*/ false) {
                     nameColors.add(TextColor.fromRgb(entry.getValue().argb()));
 
                     if (!ITEMS.itemRarity.mixedColorName) {

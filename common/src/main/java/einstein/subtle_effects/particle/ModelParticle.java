@@ -12,7 +12,7 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleRenderType;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import net.minecraft.util.Unit;
 import net.minecraft.world.phys.Vec3;
@@ -37,7 +37,7 @@ public abstract class ModelParticle<T extends Model<Unit>> extends Particle {
 
     public ModelParticleGroup.ModelParticleRenderState extractState(Camera camera, float partialTicks) {
         PoseStack poseStack = new PoseStack();
-        Vec3 cameraPos = camera.getPosition();
+        Vec3 cameraPos = camera.position();
         float x = (float) (Mth.lerp(partialTicks, xo, this.x) - cameraPos.x());
         float y = (float) (Mth.lerp(partialTicks, yo, this.y) - cameraPos.y());
         float z = (float) (Mth.lerp(partialTicks, zo, this.z) - cameraPos.z());
@@ -56,7 +56,7 @@ public abstract class ModelParticle<T extends Model<Unit>> extends Particle {
 
     public abstract T getModel();
 
-    protected ResourceLocation getSpriteId(TextureAtlasSprite sprite) {
+    protected Identifier getSpriteId(TextureAtlasSprite sprite) {
         return sprite.contents().name().withPrefix("textures/particle/").withSuffix(".png");
     }
 

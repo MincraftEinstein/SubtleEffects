@@ -9,7 +9,6 @@ import einstein.subtle_effects.util.RenderStateAttachmentAccessor;
 import einstein.subtle_effects.util.Util;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelLayers;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.ArmorModelSet;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
@@ -19,6 +18,7 @@ import net.minecraft.client.renderer.entity.layers.CustomHeadLayer;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.entity.state.AvatarRenderState;
 import net.minecraft.client.renderer.entity.state.HumanoidRenderState;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.util.Mth;
 import org.joml.Vector3f;
 
@@ -79,7 +79,7 @@ public class EinsteinSolarSystemLayer<T extends AvatarRenderState, V extends Hum
 
                 poseStack.mulPose(Axis.YP.rotation(spin)); // Spins the head itself
 
-                var renderType = RenderType.entityCutout(renderState.skin.body().texturePath());
+                var renderType = RenderTypes.entityCutout(renderState.skin.body().texturePath());
                 int packedOverlay = LivingEntityRenderer.getOverlayCoords(renderState, 0);
                 model.setAllVisible(true);
                 nodeCollector.submitModel(model, renderState, poseStack, renderType, packedLight, packedOverlay, renderState.outlineColor, null);

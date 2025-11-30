@@ -1,6 +1,6 @@
 package einstein.subtle_effects.ticking.tickers.entity.sleeping;
 
-import net.minecraft.world.entity.animal.Fox;
+import net.minecraft.world.entity.animal.fox.Fox;
 
 import static einstein.subtle_effects.init.ModConfigs.ENTITIES;
 

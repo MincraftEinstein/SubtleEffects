@@ -33,7 +33,7 @@ import net.minecraft.core.particles.ColorParticleOption;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -51,7 +51,7 @@ import static einstein.subtle_effects.util.Util.VANILLA_EYE;
 @Translation(prefix = ModConfigs.BASE_KEY + "blocks")
 public class ModBlockConfigs extends Config {
 
-    private static final Map<ResourceLocation, ValidatedColor.ColorHolder> DEFAULT_EYE_COLORS = net.minecraft.Util.make(new HashMap<>(), map -> {
+    private static final Map<Identifier, ValidatedColor.ColorHolder> DEFAULT_EYE_COLORS = net.minecraft.util.Util.make(new HashMap<>(), map -> {
         map.put(VANILLA_EYE, Util.toColorHolder(EnderEyePlacedRingParticle.DEFAULT_COLOR));
 
         if (CompatHelper.IS_END_REMASTERED_LOADED.get()) {
@@ -130,7 +130,7 @@ public class ModBlockConfigs extends Config {
     public boolean enderEyePlacedRings = true;
     public ValidatedInt enderEyePlacedRingsDuration = new ValidatedInt(10, 60, 5);
     public EnderEyePlacedParticlesDisplayType enderEyePlacedParticlesDisplayType = EnderEyePlacedParticlesDisplayType.BOTH;
-    public ValidatedMap<ResourceLocation, ValidatedColor.ColorHolder> eyeColors = new ValidatedMap<>(DEFAULT_EYE_COLORS,
+    public ValidatedMap<Identifier, ValidatedColor.ColorHolder> eyeColors = new ValidatedMap<>(DEFAULT_EYE_COLORS,
             getEyeHandler(), new ValidatedColor(new Color(EnderEyePlacedRingParticle.DEFAULT_COLOR), false));
     public EndPortalFrameParticlesDisplayType endPortalFrameParticlesDisplayType = EndPortalFrameParticlesDisplayType.SMOKE;
     @ConfigGroup.Pop
@@ -156,7 +156,7 @@ public class ModBlockConfigs extends Config {
     public boolean rainIncreasesLeavesSpawningParticles = true;
 
     private static ValidatedIdentifier getEyeHandler() {
-        List<ResourceLocation> eyes = CompatHelper.IS_END_REMASTERED_LOADED.get()
+        List<Identifier> eyes = CompatHelper.IS_END_REMASTERED_LOADED.get()
                 ? EndRemasteredCompat.getAllEyes()
                 : CompatHelper.getDefaultEyes().keySet().stream().toList();
 

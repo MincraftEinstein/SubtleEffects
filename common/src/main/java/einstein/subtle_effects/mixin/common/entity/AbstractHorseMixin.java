@@ -7,7 +7,7 @@ import einstein.subtle_effects.util.ParticleSpawnUtil;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.camel.Camel;
-import net.minecraft.world.entity.animal.horse.AbstractHorse;
+import net.minecraft.world.entity.animal.equine.AbstractHorse;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
@@ -27,7 +27,7 @@ public abstract class AbstractHorseMixin extends Animal {
         super(type, level);
     }
 
-    @ModifyExpressionValue(method = "causeFallDamage", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/animal/horse/AbstractHorse;calculateFallDamage(DF)I"))
+    @ModifyExpressionValue(method = "causeFallDamage", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/animal/equine/AbstractHorse;calculateFallDamage(DF)I"))
     private int calculateFallDamage(int damage, double distance, float damageMultiplier) {
         if (!subtleEffects$me.isInvisible()) {
             ParticleSpawnUtil.spawnFallDustClouds(subtleEffects$me, damageMultiplier, damage, ClientBoundEntityFellPayload.TypeConfig.ENTITY);

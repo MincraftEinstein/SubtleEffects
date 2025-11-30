@@ -2,7 +2,7 @@ package einstein.subtle_effects;
 
 import einstein.subtle_effects.init.ModPayloads;
 import einstein.subtle_effects.init.ModSounds;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,7 +17,7 @@ public class SubtleEffects {
         ModPayloads.init();
     }
 
-    public static ResourceLocation loc(String path) {
-        return ResourceLocation.fromNamespaceAndPath(MOD_ID, path);
+    public static Identifier loc(String path) {
+        return Identifier.fromNamespaceAndPath(MOD_ID, path);
     }
 }

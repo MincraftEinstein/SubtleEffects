@@ -1,7 +1,7 @@
 package einstein.subtle_effects.mixin.client;
 
 import net.minecraft.client.renderer.GameRenderer;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Invoker;
 
@@ -9,5 +9,5 @@ import org.spongepowered.asm.mixin.gen.Invoker;
 public interface GameRendererAccessor {
 
     @Invoker("setPostEffect")
-    void setShaderEffect(ResourceLocation location);
+    void setShaderEffect(Identifier location);
 }

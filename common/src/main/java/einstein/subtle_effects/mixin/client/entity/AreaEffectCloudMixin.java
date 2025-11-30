@@ -10,7 +10,7 @@ import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.syncher.EntityDataAccessor;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.AreaEffectCloud;
@@ -153,7 +153,7 @@ public abstract class AreaEffectCloudMixin {
 
     @Unique
     private static boolean subtleEffects$isParticleEffectsParticle(ParticleOptions options) {
-        ResourceLocation id = BuiltInRegistries.PARTICLE_TYPE.getKey(options.getType());
+        Identifier id = BuiltInRegistries.PARTICLE_TYPE.getKey(options.getType());
         return id != null && id.getNamespace().equals(CompatHelper.PARTICLE_EFFECTS_MOD_ID);
     }
 }

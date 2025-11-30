@@ -7,8 +7,7 @@ import einstein.subtle_effects.platform.Services;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.protocol.game.ClientboundLevelEventPacket;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.entity.projectile.ThrownExperienceBottle;
-import net.minecraft.world.level.Level;
+import net.minecraft.world.entity.projectile.throwableitemprojectile.ThrownExperienceBottle;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 

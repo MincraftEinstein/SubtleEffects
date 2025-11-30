@@ -15,15 +15,15 @@ import net.minecraft.client.renderer.WeatherEffectRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.SimpleParticleType;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.tags.FluidTags;
+import net.minecraft.util.ARGB;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
-import net.minecraft.world.phys.Vec3;
 import org.joml.Vector3f;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -36,11 +36,8 @@ import static einstein.subtle_effects.util.MathUtil.nextDouble;
 @Mixin(WeatherEffectRenderer.class)
 public abstract class WeatherEffectsRendererMixin {
 
-    @Shadow
-    protected abstract Biome.Precipitation getPrecipitationAt(Level p_362885_, BlockPos p_362817_);
-
-    @WrapOperation(method = "render*", at = @At(value = "FIELD", target = "Lnet/minecraft/client/renderer/WeatherEffectRenderer;RAIN_LOCATION:Lnet/minecraft/resources/ResourceLocation;"))
-    private ResourceLocation replaceRainTexture(Operation<ResourceLocation> original) {
+    @WrapOperation(method = "render*", at = @At(value = "FIELD", target = "Lnet/minecraft/client/renderer/WeatherEffectRenderer;RAIN_LOCATION:Lnet/minecraft/resources/Identifier;"))
+    private Identifier replaceRainTexture(Operation<Identifier> original) {
         if (ENVIRONMENT.biomeColorRain) {
             return Util.COLORLESS_RAIN_TEXTURE;
         }
@@ -89,7 +86,7 @@ public abstract class WeatherEffectsRendererMixin {
 
         if (ENVIRONMENT.biomeColorRain) {
             BlockPos immutablePos = pos.immutable();
-            ((RenderStateAttachmentAccessor) (Object) column).subtleEffects$set(ModRenderStateAttachmentKeys.COLOR, Vec3.fromRGB24(level.getBiome(immutablePos).value().getWaterColor()).toVector3f());
+            ((RenderStateAttachmentAccessor) (Object) column).subtleEffects$set(ModRenderStateAttachmentKeys.COLOR, ARGB.vector3fFromRGB24(level.getBiome(immutablePos).value().getWaterColor()));
         }
         return column;
     }

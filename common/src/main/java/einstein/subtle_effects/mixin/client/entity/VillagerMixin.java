@@ -8,7 +8,7 @@ import einstein.subtle_effects.particle.option.SplashDropletParticleOptions;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.entity.npc.Villager;
+import net.minecraft.world.entity.npc.villager.Villager;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import org.spongepowered.asm.mixin.Mixin;
@@ -19,7 +19,7 @@ import static einstein.subtle_effects.util.MathUtil.*;
 @Mixin(Villager.class)
 public class VillagerMixin {
 
-    @WrapOperation(method = "handleEntityEvent", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/npc/Villager;addParticlesAroundSelf(Lnet/minecraft/core/particles/ParticleOptions;)V"))
+    @WrapOperation(method = "handleEntityEvent", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/npc/villager/Villager;addParticlesAroundSelf(Lnet/minecraft/core/particles/ParticleOptions;)V"))
     private void replaceSplashParticles(Villager villager, ParticleOptions options, Operation<Void> original) {
         if (ModConfigs.ENTITIES.improvedVillagerSweatingEffects && options.getType() == ParticleTypes.SPLASH) {
             RandomSource random = villager.getRandom();

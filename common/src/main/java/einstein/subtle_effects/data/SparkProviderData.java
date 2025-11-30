@@ -6,7 +6,7 @@ import einstein.subtle_effects.SubtleEffects;
 import einstein.subtle_effects.particle.SparkParticle;
 import einstein.subtle_effects.util.Box;
 import einstein.subtle_effects.util.SparkType;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.ExtraCodecs;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.util.valueproviders.IntProvider;
@@ -23,10 +23,10 @@ public record SparkProviderData(List<BlockStateEntry> states, Optional<Options> 
             Options.CODEC.optionalFieldOf("options").forGetter(SparkProviderData::options)
     ).apply(instance, SparkProviderData::new));
 
-    public record BlockStateEntry(ResourceLocation id, boolean required, Map<String, String> properties) {
+    public record BlockStateEntry(Identifier id, boolean required, Map<String, String> properties) {
 
         public static final Codec<BlockStateEntry> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-                ResourceLocation.CODEC.fieldOf("name").forGetter(BlockStateEntry::id),
+                Identifier.CODEC.fieldOf("name").forGetter(BlockStateEntry::id),
                 Codec.BOOL.optionalFieldOf("required", true).forGetter(BlockStateEntry::required),
                 Codec.unboundedMap(Codec.STRING, Codec.STRING).optionalFieldOf("properties", Map.of()).forGetter(BlockStateEntry::properties)
         ).apply(instance, BlockStateEntry::new));

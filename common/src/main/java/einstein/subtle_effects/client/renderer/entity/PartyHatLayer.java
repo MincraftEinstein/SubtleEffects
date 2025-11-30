@@ -13,7 +13,7 @@ import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.entity.state.AvatarRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 
 import java.time.LocalDate;
@@ -27,7 +27,7 @@ import static einstein.subtle_effects.init.ModRenderStateAttachmentKeys.STRING_U
 
 public class PartyHatLayer<T extends AvatarRenderState, V extends HumanoidModel<T>> extends RenderLayer<T, V> {
 
-    public static final List<ResourceLocation> TEXTURES = net.minecraft.Util.make(new ArrayList<>(), textures -> {
+    public static final List<Identifier> TEXTURES = net.minecraft.util.Util.make(new ArrayList<>(), textures -> {
         addTexture(textures, "big_fuzz_0");
         addTexture(textures, "big_fuzz_1");
         addTexture(textures, "big_fuzz_2");
@@ -46,7 +46,7 @@ public class PartyHatLayer<T extends AvatarRenderState, V extends HumanoidModel<
         model = new PartyHatModel(context.bakeLayer(PartyHatModel.MODEL_LAYER));
     }
 
-    public static void addTexture(List<ResourceLocation> textures, String name) {
+    public static void addTexture(List<Identifier> textures, String name) {
         textures.add(loc("textures/entity/party_hat/" + name + ".png"));
     }
 
@@ -72,7 +72,7 @@ public class PartyHatLayer<T extends AvatarRenderState, V extends HumanoidModel<
         }
     }
 
-    private static ResourceLocation getHatTexture(float id, String uuid) {
+    private static Identifier getHatTexture(float id, String uuid) {
         if (Util.isMincraftEinstein(uuid)) {
             return TEXTURES.getFirst();
         }

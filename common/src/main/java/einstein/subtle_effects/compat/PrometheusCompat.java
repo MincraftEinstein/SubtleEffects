@@ -6,27 +6,30 @@ import it.crystalnest.prometheus.api.FireManager;
 import it.crystalnest.prometheus.api.type.FireTyped;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.Entity;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class PrometheusCompat {
+import static einstein.subtle_effects.SubtleEffects.loc;
 
-    public static final ResourceLocation SOUL_FIRE_ID = ResourceLocation.withDefaultNamespace("soul");
+public class PrometheusCompat {
+    // TODO fix when update
+
+    public static final Identifier SOUL_FIRE_ID = Identifier.withDefaultNamespace("soul");
 
     @Nullable
     public static ParticleOptions getFlameParticle(Entity entity) {
-        return FireManager.getComponent(getFireType(entity), Fire.Component.FLAME_PARTICLE);
+        return null;//FireManager.getComponent(getFireType(entity), Fire.Component.FLAME_PARTICLE);
     }
 
     @Nullable
     public static List<Integer> getSparkParticle(Entity entity) {
-        ResourceLocation fireType = getFireType(entity);
+        Identifier fireType = loc("bad");// getFireType(entity);
         ParticleOptions flameParticle = getFlameParticle(entity);
 
-        if (fireType.equals(FireManager.DEFAULT_FIRE_TYPE) || ParticleTypes.FLAME.equals(flameParticle)) {
+        if (/*fireType.equals(FireManager.DEFAULT_FIRE_TYPE) || */ParticleTypes.FLAME.equals(flameParticle)) {
             return SparkParticle.DEFAULT_COLORS;
         }
         else if (fireType.equals(SOUL_FIRE_ID) || ParticleTypes.SOUL_FIRE_FLAME.equals(flameParticle)) {
@@ -35,7 +38,7 @@ public class PrometheusCompat {
         return null;
     }
 
-    private static ResourceLocation getFireType(Entity entity) {
-        return ((FireTyped) entity).getFireType();
-    }
+//    private static Identifier getFireType(Entity entity) {
+//        return ((FireTyped) entity).getFireType();
+//    }
 }
