@@ -1,7 +1,11 @@
 package einstein.subtle_effects.particle;
 
+import einstein.subtle_effects.util.ParticleAccessor;
 import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.client.particle.*;
+import net.minecraft.client.particle.Particle;
+import net.minecraft.client.particle.ParticleProvider;
+import net.minecraft.client.particle.SingleQuadParticle;
+import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.SimpleParticleType;
@@ -40,7 +44,7 @@ public class SnowParticle extends SingleQuadParticle {
         @Override
         public Particle createParticle(SimpleParticleType type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, RandomSource random) {
             SnowParticle particle = new SnowParticle(level, x, y, z, xSpeed, ySpeed, zSpeed, sprites.get(random));
-            particle.gravity = 1;
+            ((ParticleAccessor) particle).setGravity(1);
             return particle;
         }
     }
@@ -52,10 +56,8 @@ public class SnowParticle extends SingleQuadParticle {
         @Override
         public Particle createParticle(SimpleParticleType type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, RandomSource random) {
             SnowParticle particle = new SnowParticle(level, x, y, z, 0, 0, 0, sprites.get(random));
-            particle.gravity = GRAVITY;
-            particle.xd = 0;
-            particle.yd = -GRAVITY;
-            particle.zd = 0;
+            ((ParticleAccessor) particle).setGravity(GRAVITY);
+            particle.setParticleSpeed(0, -GRAVITY, 0);
             return particle;
         }
     }
@@ -65,10 +67,8 @@ public class SnowParticle extends SingleQuadParticle {
         @Override
         public Particle createParticle(SimpleParticleType type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, RandomSource random) {
             SnowParticle particle = new SnowParticle(level, x, y, z, 0, 0, 0, sprites.get(random));
-            particle.gravity = 0.05F;
-            particle.xd = 0;
-            particle.yd = -0.05F;
-            particle.zd = 0;
+            ((ParticleAccessor) particle).setGravity(0.05F);
+            particle.setParticleSpeed(0, -0.05, 0);
             return particle;
         }
     }

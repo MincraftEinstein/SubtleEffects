@@ -1,6 +1,7 @@
 package einstein.subtle_effects.particle;
 
 import einstein.subtle_effects.init.ModConfigs;
+import einstein.subtle_effects.util.ParticleAccessor;
 import einstein.subtle_effects.util.SparkType;
 import einstein.subtle_effects.util.Util;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -86,7 +87,7 @@ public class SparkParticle extends SingleQuadParticle {
         @Override
         public Particle createParticle(ColorParticleOption options, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, RandomSource random) {
             SparkParticle particle = new SparkParticle(level, x, y, z, xSpeed, ySpeed, zSpeed, 20, sprites.get(random));
-            particle.gravity = 0;
+            ((ParticleAccessor) particle).setGravity(0);
             particle.setColor(options.getRed(), options.getGreen(), options.getBlue());
             return particle;
         }
@@ -97,7 +98,7 @@ public class SparkParticle extends SingleQuadParticle {
         @Override
         public Particle createParticle(ColorParticleOption options, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, RandomSource random) {
             SparkParticle particle = new SparkParticle(level, x, y, z, xSpeed, ySpeed, zSpeed, 20, sprites.get(random));
-            particle.gravity = 1;
+            ((ParticleAccessor) particle).setGravity(1);
             particle.setColor(options.getRed(), options.getGreen(), options.getBlue());
             return particle;
         }
