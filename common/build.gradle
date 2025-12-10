@@ -19,7 +19,7 @@ dependencies {
     compileOnly group: 'io.github.llamalad7', name: 'mixinextras-common', version: '0.3.5'
     annotationProcessor group: 'io.github.llamalad7', name: 'mixinextras-common', version: '0.3.5'
 
-    compileOnly group: 'me.fzzyhmstrs', name: 'fzzy_config', version: "${fzzy_config_version}"
+    compileOnly group: 'me.fzzyhmstrs', name: 'fzzy_config', version: "${fzzy_config_version}+neoforge"
     compileOnly group: 'com.electronwill.night-config', name : 'toml', version: '3.6.0'
     compileOnly group: 'com.github.glitchfiend', name: 'GlitchCore-common', version: "${glitchcore_version}"
     compileOnly group: 'com.github.glitchfiend', name: 'SereneSeasons-common', version: "${serene_seasons_version}"
