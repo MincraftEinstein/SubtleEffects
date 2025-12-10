@@ -51,7 +51,6 @@ public class MooshroomMixin {
         original.call(level, particle, x, y, z, xSpeed, ySpeed, zSpeed);
     }
 
-    // TODO test if this still works normally
     @Inject(method = "mobInteract", at = @At(value = "INVOKE", target = "Ljava/util/Optional;get()Ljava/lang/Object;"))
     private void spawnFeedingParticles(Player player, InteractionHand hand, CallbackInfoReturnable<InteractionResult> cir, @Local Optional<SuspiciousStewEffects> optional, @Local(ordinal = 0) ItemStack heldStack) {
         Level level = subtleEffects$me.level();
