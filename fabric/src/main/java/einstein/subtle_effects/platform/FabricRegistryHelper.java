@@ -8,7 +8,7 @@ import net.minecraft.core.Registry;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.sounds.SoundEvent;
 
 import java.util.function.Function;
@@ -36,7 +36,7 @@ public class FabricRegistryHelper implements RegistryHelper {
 
     @Override
     public Supplier<SoundEvent> registerSound(String name) {
-        ResourceLocation location = loc(name);
+        Identifier location = loc(name);
         SoundEvent sound = Registry.register(BuiltInRegistries.SOUND_EVENT, location, SoundEvent.createVariableRangeEvent(location));
         return () -> sound;
     }
