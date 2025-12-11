@@ -20,13 +20,11 @@ import net.minecraft.tags.FluidTags;
 import net.minecraft.util.ARGB;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
 import org.joml.Vector3f;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 
 import static einstein.subtle_effects.init.ModConfigs.BLOCKS;
@@ -92,7 +90,7 @@ public abstract class WeatherEffectsRendererMixin {
     }
 
     @WrapOperation(method = "renderInstances", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/vertex/VertexConsumer;setColor(I)Lcom/mojang/blaze3d/vertex/VertexConsumer;"))
-    private VertexConsumer replaceWeatherColor(VertexConsumer consumer, int color, Operation<VertexConsumer> original, @Local WeatherEffectRenderer.ColumnInstance column, @Local(ordinal = 4) float alpha) {
+    private VertexConsumer replaceWeatherColor(VertexConsumer consumer, int color, Operation<VertexConsumer> original, @Local WeatherEffectRenderer.ColumnInstance column, @Local(ordinal = 6) float alpha) {
         Vector3f waterColor = ((RenderStateAttachmentAccessor) (Object) column).subtleEffects$get(ModRenderStateAttachmentKeys.COLOR);
         if (waterColor != null) {
             return consumer.setColor(waterColor.x(), waterColor.y(), waterColor.z(), alpha);
