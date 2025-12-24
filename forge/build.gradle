@@ -79,6 +79,8 @@ dependencies {
     compileOnly("maven.modrinth:prism-lib:${forge_prism_version}")
     compileOnly("maven.modrinth:item-borders:${forge_item_borders_version}")
     compileOnly("maven.modrinth:endrem:${forge_endrem_version}")
+    implementation fg.deobf("maven.modrinth:moonlight:${forge_moonlight_version}")
+    implementation fg.deobf("maven.modrinth:immersive-weathering:${forge_immersive_weathering_version}")
 }
 
 tasks.withType(JavaCompile).configureEach {
