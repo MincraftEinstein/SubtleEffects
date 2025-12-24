@@ -73,8 +73,10 @@ public class SubtleEffectsForgeClient {
                 }
         );
         MinecraftForge.EVENT_BUS.addListener((TickEvent.ClientTickEvent event) -> {
-            Minecraft minecraft = Minecraft.getInstance();
-            SubtleEffectsClient.clientTick(minecraft, minecraft.level);
+            if (event.phase == TickEvent.Phase.END) {
+                Minecraft minecraft = Minecraft.getInstance();
+                SubtleEffectsClient.clientTick(minecraft, minecraft.level);
+            }
         });
         MinecraftForge.EVENT_BUS.addListener((RegisterClientCommandsEvent event) ->
                 SubtleEffectsClient.registerClientCommands(event.getDispatcher(), event.getBuildContext()));
