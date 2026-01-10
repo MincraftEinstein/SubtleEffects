@@ -75,6 +75,11 @@ public class ItemRarityTicker extends EntityTicker<ItemEntity> {
             Component hoverName = stack.getHoverName();
             TextColor baseColor = hoverName.getStyle().getColor();
             List<TextColor> colors = new ArrayList<>(hoverName.getSiblings().stream().map(component -> component.getStyle().getColor()).filter(Objects::nonNull).toList());
+
+            Component displayName = stack.getDisplayName();
+            TextColor dispColor = displayName.getStyle().getColor();
+            if (baseColor == null && dispColor != null && !dispColor.equals(WHITE_TEXT)) baseColor = dispColor;
+
             boolean usesSingleColor = colors.isEmpty() || !ITEMS.itemRarity.mixedColorName; // isEmpty needs to be stored before adding the baseColor to the 'colors' list
 
             if (baseColor != null) {
