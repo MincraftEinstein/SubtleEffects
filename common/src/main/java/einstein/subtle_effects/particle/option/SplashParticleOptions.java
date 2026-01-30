@@ -11,19 +11,19 @@ import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceLocation;
 
-public record SplashParticleOptions(ResourceLocation fluidDefinitionId, float xScale,
-                                    float yScale) implements ParticleOptions {
+public record SplashParticleOptions(ResourceLocation fluidDefinitionId, float horizontalScale,
+                                    float verticalScale) implements ParticleOptions {
 
     public static MapCodec<SplashParticleOptions> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
             ResourceLocation.CODEC.fieldOf("fluid_definition").forGetter(SplashParticleOptions::fluidDefinitionId),
-            Codec.FLOAT.fieldOf("xScale").forGetter(SplashParticleOptions::xScale),
-            Codec.FLOAT.fieldOf("yScale").forGetter(SplashParticleOptions::yScale)
+            Codec.FLOAT.fieldOf("horizontalScale").forGetter(SplashParticleOptions::horizontalScale),
+            Codec.FLOAT.fieldOf("verticalScale").forGetter(SplashParticleOptions::verticalScale)
     ).apply(instance, SplashParticleOptions::new));
 
     public static StreamCodec<FriendlyByteBuf, SplashParticleOptions> STREAM_CODEC = StreamCodec.composite(
             ResourceLocation.STREAM_CODEC, SplashParticleOptions::fluidDefinitionId,
-            ByteBufCodecs.FLOAT, SplashParticleOptions::xScale,
-            ByteBufCodecs.FLOAT, SplashParticleOptions::yScale,
+            ByteBufCodecs.FLOAT, SplashParticleOptions::horizontalScale,
+            ByteBufCodecs.FLOAT, SplashParticleOptions::verticalScale,
             SplashParticleOptions::new
     );
 

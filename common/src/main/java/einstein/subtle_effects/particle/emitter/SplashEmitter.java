@@ -6,9 +6,9 @@ import einstein.subtle_effects.data.splash_types.SplashType;
 import einstein.subtle_effects.init.ModParticles;
 import einstein.subtle_effects.particle.SplashParticle;
 import einstein.subtle_effects.particle.option.DropletParticleOptions;
+import einstein.subtle_effects.particle.option.RippleParticleOptions;
 import einstein.subtle_effects.particle.option.SplashEmitterParticleOptions;
 import einstein.subtle_effects.particle.option.SplashParticleOptions;
-import einstein.subtle_effects.particle.option.RippleParticleOptions;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.NoRenderParticle;
 import net.minecraft.client.particle.Particle;
@@ -35,8 +35,8 @@ public class SplashEmitter extends NoRenderParticle {
     private final FluidDefinition fluidDefinition;
     private final float widthModifier;
     private final float heightModifier;
-    private final float xScale;
-    private final float yScale;
+    private final float baseHorizontalScale;
+    private final float baseVerticalScale;
     private final BlockPos.MutableBlockPos pos;
     private boolean firstSplash = true;
     private boolean secondSplash = true;
@@ -53,8 +53,8 @@ public class SplashEmitter extends NoRenderParticle {
         widthModifier = options.widthModifier();
         heightModifier = options.heightModifier();
         float baseScale = widthModifier + 0.5F;
-        xScale = Math.max(absVelocity * baseScale * 1.5F, baseScale);
-        yScale = Math.min(absVelocity * heightModifier * widthModifier * 2, heightModifier * 2);
+        baseHorizontalScale = Math.max(absVelocity * baseScale * 1.5F, baseScale);
+        baseVerticalScale = Math.min(absVelocity * heightModifier * widthModifier * 2, heightModifier * 2);
 
         int id = options.entityId();
         if (id > -1) {
@@ -92,7 +92,7 @@ public class SplashEmitter extends NoRenderParticle {
         }
 
         if (firstSplash) {
-            spawnSplashParticles(xScale, yScale, ((yScale * 0.5F) / widthModifier) * 0.3F, xScale);
+            spawnSplashParticles(baseHorizontalScale, baseVerticalScale, ((baseVerticalScale * 0.5F) / widthModifier) * 0.3F, baseHorizontalScale);
             firstSplash = false;
 
             if (ENTITIES.splashes.waterSplashBubbles && entity != null) {
@@ -105,9 +105,9 @@ public class SplashEmitter extends NoRenderParticle {
                                 x + nextDouble(random, 0.1) * xSign,
                                 random.nextInt(3) == 0 ? Mth.nextDouble(random, entity.getY() + heightModifier, y) : entity.getRandomY(),
                                 z + nextDouble(random, 0.1) * zSign,
-                                nextNonAbsDouble(random, xScale),
+                                nextNonAbsDouble(random, baseHorizontalScale),
                                 -absVelocity * 2 * Mth.nextDouble(random, 0.5, 2),
-                                nextNonAbsDouble(random, xScale)
+                                nextNonAbsDouble(random, baseHorizontalScale)
                         );
                     }
                 }
@@ -120,18 +120,18 @@ public class SplashEmitter extends NoRenderParticle {
         }
 
         if (age >= lifetime && secondSplash) {
-            spawnSplashParticles(xScale / 2, yScale * 1.5F, ((yScale * 0.85F) / widthModifier) * 0.3F, xScale * 0.8F);
+            spawnSplashParticles(baseHorizontalScale / 2, baseVerticalScale * 1.5F, ((baseVerticalScale * 0.85F) / widthModifier) * 0.3F, baseHorizontalScale * 0.8F);
             secondSplash = false;
         }
     }
 
-    private void spawnSplashParticles(float xScale, float yScale, float dropletYSpeed, float dropletXSpeed) {
-        level.addAlwaysVisibleParticle(new SplashParticleOptions(fluidDefinitionId, xScale, yScale),
+    private void spawnSplashParticles(float horizontalScale, float verticalScale, float dropletYSpeed, float dropletXSpeed) {
+        level.addAlwaysVisibleParticle(new SplashParticleOptions(fluidDefinitionId, horizontalScale, verticalScale),
                 true, x, y, z, 0, 0, 0
         );
 
         if (hasRipple()) {
-            level.addAlwaysVisibleParticle(new RippleParticleOptions(ModParticles.SPLASH_RIPPLE.get(), fluidDefinitionId, xScale, true),
+            level.addAlwaysVisibleParticle(new RippleParticleOptions(ModParticles.SPLASH_RIPPLE.get(), fluidDefinitionId, horizontalScale, true),
                     true, x, y, z, 0, 0, 0
             );
         }
@@ -140,12 +140,12 @@ public class SplashEmitter extends NoRenderParticle {
             return;
         }
 
-        DropletParticleOptions dropletOptions = new DropletParticleOptions(fluidDefinitionId, true, Math.min(this.xScale, 2), false);
+        DropletParticleOptions dropletOptions = new DropletParticleOptions(fluidDefinitionId, true, Math.min(this.baseHorizontalScale, 2), false);
         for (int i = 0; i < 4 * widthModifier; i++) {
             level.addParticle(dropletOptions,
-                    x + nextNonAbsDouble(random, xScale),
-                    y + (nextDouble(random, 0.6) * yScale),
-                    z + nextNonAbsDouble(random, xScale),
+                    x + nextNonAbsDouble(random, horizontalScale),
+                    y + (nextDouble(random, 0.6) * verticalScale),
+                    z + nextNonAbsDouble(random, horizontalScale),
                     0, dropletYSpeed, 0
             );
         }
@@ -155,9 +155,9 @@ public class SplashEmitter extends NoRenderParticle {
             int zSign = nextSign(random);
 
             level.addParticle(dropletOptions,
-                    x + nextDouble(random, xScale) * xSign,
-                    y + (nextDouble(random, 0.6) * yScale),
-                    z + nextDouble(random, xScale) * zSign,
+                    x + nextDouble(random, horizontalScale) * xSign,
+                    y + (nextDouble(random, 0.6) * verticalScale),
+                    z + nextDouble(random, horizontalScale) * zSign,
                     Mth.nextDouble(random, 0.01, 0.1) * dropletXSpeed * xSign,
                     dropletYSpeed,
                     Mth.nextDouble(random, 0.01, 0.1) * dropletXSpeed * zSign

@@ -38,8 +38,8 @@ public class SplashParticle extends ModelParticle {
     private final SpriteSet overlaySprites;
     private final boolean hasOverlay;
     private final BlockPos.MutableBlockPos pos;
-    private float xScale;
-    private final float yScale;
+    private float horizontalScale;
+    private final float verticalScale;
     private ResourceLocation texture;
     private ResourceLocation overlayTexture;
     private float overlayRCol = 1;
@@ -58,16 +58,20 @@ public class SplashParticle extends ModelParticle {
         float overlayAlpha = alpha(overlayOptions);
 
         sprites = splashOptions.holder().get();
+
+        // noinspection ConstantConditions
         overlaySprites = overlayOptions.holder() != null ? overlayOptions.holder().get() : null;
+
+        // noinspection ConstantConditions
         hasOverlay = overlaySprites != null && overlayAlpha > 0;
         this.overlayAlpha = overlayAlpha;
         alpha = alpha(splashOptions);
         pos = BlockPos.containing(x, y, z).mutable();
         lifetime = 15;
         lightLevel = fluidDefinition.lightEmission();
-        xScale = options.xScale();
-        yScale = options.yScale();
-        setSize(xScale, yScale);
+        horizontalScale = options.horizontalScale();
+        verticalScale = options.verticalScale();
+        setSize(horizontalScale, verticalScale);
         setSpriteFromAge();
 
         Vector3f color = splashOptions.getColorAndApplyTint(level, pos, random);
@@ -116,7 +120,7 @@ public class SplashParticle extends ModelParticle {
             return;
         }
 
-        xScale += 0.01333F;
+        horizontalScale += 0.01333F;
         setSpriteFromAge();
     }
 
@@ -125,8 +129,8 @@ public class SplashParticle extends ModelParticle {
         int lightColor = getLightColor(partialTicks);
         int color = FastColor.ARGB32.colorFromFloat(alpha, rCol, gCol, bCol);
 
-        poseStack.translate(0, -(6 * (yScale / 4)), 0); // 6 is 1/4 of the model's height
-        poseStack.scale(xScale, yScale, xScale);
+        poseStack.translate(0, -(6 * (verticalScale / 4)), 0); // 6 is 1/4 of the model's height
+        poseStack.scale(horizontalScale, verticalScale, horizontalScale);
 
         model.renderToBuffer(poseStack, bufferSource.getBuffer(model.renderType(texture)), lightColor, OverlayTexture.NO_OVERLAY, color);
 

@@ -39,11 +39,11 @@ public class SplashRippleParticle extends FlatPlaneParticle {
         gCol = color.y;
         bCol = color.z;
 
-        float xScale = options.scale();
-        xScale /= 2; // Divided by 2 because it is used as the distance from the center
-        xScale -= (xScale * 0.0625F * 4F); // Subtracts 4 in scale so it aligns with the splash particle
-        quadSize = xScale;
-        setSize(xScale, 0.1F);
+        float scale = options.scale();
+        scale /= 2; // Divided by 2 because it is used as the distance from the center
+        scale -= (scale * 0.0625F * 4F); // Subtracts 4 in scale so it aligns with the splash particle
+        quadSize = scale;
+        setSize(scale, 0.1F);
         setSpriteFromAge(sprites);
     }
 
