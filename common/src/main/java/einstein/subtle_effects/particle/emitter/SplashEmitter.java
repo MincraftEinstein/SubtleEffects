@@ -52,11 +52,13 @@ public class SplashEmitter extends NoRenderParticle {
         absVelocity = Mth.abs(velocity);
         widthModifier = options.widthModifier();
         heightModifier = options.heightModifier();
-        xScale = widthModifier + 0.5F;
-        yScale = absVelocity * heightModifier * widthModifier * 2;
+        float baseScale = widthModifier + 0.5F;
+        xScale = Math.max(absVelocity * baseScale * 1.5F, baseScale);
+        yScale = Math.min(absVelocity * heightModifier * widthModifier * 2, heightModifier * 2);
 
-        if (options.entityId() > -1) {
-            entity = level.getEntity(options.entityId());
+        int id = options.entityId();
+        if (id > -1) {
+            entity = level.getEntity(id);
             return;
         }
         entity = null;
