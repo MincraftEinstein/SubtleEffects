@@ -39,9 +39,7 @@ import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.SharedSuggestionProvider;
-import net.minecraft.network.chat.CommonComponents;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.*;
 import net.minecraft.util.FastColor;
 import net.minecraft.util.Mth;
 import net.minecraft.util.profiling.ProfilerFiller;
@@ -106,7 +104,11 @@ public class SubtleEffectsClient {
             sendSystemMsg(player, Component.empty()
                     .append(Component.translatable("chat.subtle_effects.prefix").withStyle(style -> style.withColor(ChatFormatting.BLUE)))
                     .append(CommonComponents.SPACE)
-                    .append(Component.translatable("chat.subtle_effects.anniversary.message", Util.getOrdinal(years)))
+                    .append(Component.translatable("chat.subtle_effects.anniversary.message", Util.formatOrdinal(years), Component.translatable("chat.subtle_effects.anniversary.message.click_event")
+                            .withStyle(style -> style.withUnderlined(true)
+                                    .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Component.translatable("chat.subtle_effects.anniversary.message.click_event.tooltip")))
+                                    .withClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/configure subtle_effects general")))
+                    ))
             );
             HAS_DISPLAYED_BIRTHDAY_NOTIFICATION = true;
         }
