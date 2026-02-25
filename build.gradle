@@ -3,4 +3,13 @@ plugins {
     id 'fabric-loom' version '1.10-SNAPSHOT' apply false
     // see https://projects.neoforged.net/neoforged/moddevgradle for new versions
     id 'net.neoforged.moddev' version '2.0.90' apply false
+    id 'org.moddedmc.wiki.toolkit' version "${moddedmc_toolkit_version}"
+}
+
+wiki {
+    docs {
+        'subtle-effects' {
+            root = file('docs')
+        }
+    }
 }
