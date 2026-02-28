@@ -11,7 +11,7 @@ public class VillagerSleepingTicker extends SleepingTicker<AbstractVillager> {
         super(villager,
                 doesEntitySnore(villager, ENTITIES.sleeping.villagerSnoreChance.get()),
                 80,
-                ModSounds.VILLAGER_SNORE.get(),
+                ModSounds.VILLAGER_SNORE,
                 ENTITIES.sleeping.villagerSnoreSoundVolume.get()
         );
     }
