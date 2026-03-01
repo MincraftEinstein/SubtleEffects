@@ -28,6 +28,8 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.SectionPos;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.core.particles.SimpleParticleType;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
@@ -70,6 +72,12 @@ public class Util {
             return DataResult.error(() -> "String '" + string + "' is not a valid integer color");
         }
     }), Either::left);
+    public static final Codec<SimpleParticleType> SIMPLE_PARTICLE_TYPE_CODEC = BuiltInRegistries.PARTICLE_TYPE.byNameCodec().comapFlatMap(options -> {
+        if (options instanceof SimpleParticleType particle) {
+            return DataResult.success(particle);
+        }
+        return DataResult.error(() -> "Particle type is not a simple particle type: " + options);
+    }, particle -> particle);
 
     public static void playClientSound(Entity entity, SoundEvent sound, SoundSource source, float volume, float pitch) {
         Minecraft minecraft = Minecraft.getInstance();

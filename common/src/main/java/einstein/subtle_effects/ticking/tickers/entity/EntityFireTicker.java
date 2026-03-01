@@ -3,6 +3,8 @@ package einstein.subtle_effects.ticking.tickers.entity;
 import einstein.subtle_effects.compat.CompatHelper;
 import einstein.subtle_effects.compat.DyedFlamesCompat;
 import einstein.subtle_effects.compat.PrometheusCompat;
+import einstein.subtle_effects.data.color_providers.ColorProviderType;
+import einstein.subtle_effects.data.color_providers.PresetColorProvider;
 import einstein.subtle_effects.particle.SparkParticle;
 import einstein.subtle_effects.util.SparkType;
 import einstein.subtle_effects.util.Util;
@@ -49,10 +51,10 @@ public class EntityFireTicker extends EntityTicker<Entity> {
                 }
 
                 if (random.nextDouble() < ENTITIES.burning.sparksDensity.get()) {
-                    List<Integer> colors = getSparkColors();
+                    ColorProviderType.ColorProvider colors = getSparkColors();
                     if (colors != null) {
                         for (int i = 0; i < 2; i++) {
-                            level.addParticle(SparkParticle.create(SparkType.SHORT_LIFE, random, colors),
+                            level.addParticle(SparkParticle.create(SparkType.SHORT_LIFE, colors, level, entity.blockPosition(), random),
                                     entity.getRandomX(1),
                                     entity.getRandomY(),
                                     entity.getRandomZ(1),
@@ -95,16 +97,16 @@ public class EntityFireTicker extends EntityTicker<Entity> {
     }
 
     @Nullable
-    private List<Integer> getSparkColors() {
+    private ColorProviderType.ColorProvider getSparkColors() {
         if (isBlaze) {
-            return SparkParticle.BLAZE_COLORS;
+            return new PresetColorProvider(PresetColorProvider.Preset.BLAZE_SPARKS);
         }
         else if (CompatHelper.IS_PROMETHEUS_LOADED.get()) {
-            return PrometheusCompat.getSparkParticle(entity);
+            return PrometheusCompat.getSparkColors(entity);
         }
         else if (CompatHelper.IS_DYED_FLAMES_LOADED.get()) {
-            return DyedFlamesCompat.getSparkParticle(entity);
+            return DyedFlamesCompat.getSparkColors(entity);
         }
-        return SparkParticle.DEFAULT_COLORS;
+        return new PresetColorProvider(PresetColorProvider.Preset.SPARKS);
     }
 }

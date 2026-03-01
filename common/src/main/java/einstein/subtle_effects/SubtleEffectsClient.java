@@ -160,6 +160,7 @@ public class SubtleEffectsClient {
         registerReloadListener(reloadListeners, new MobSkullShaderReloadListener());
         registerReloadListener(reloadListeners, new BCWPPackManager());
         registerReloadListener(reloadListeners, new FluidDefinitionReloadListener());
+        registerReloadListener(reloadListeners, new BurningEffectsReloadListener());
         return reloadListeners;
     }
 
