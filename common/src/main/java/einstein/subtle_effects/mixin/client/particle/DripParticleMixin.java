@@ -1,8 +1,10 @@
 package einstein.subtle_effects.mixin.client.particle;
 
+import einstein.subtle_effects.data.FluidDefinitionReloadListener;
 import einstein.subtle_effects.init.ModParticles;
 import einstein.subtle_effects.init.ModSounds;
-import einstein.subtle_effects.particle.option.FloatParticleOptions;
+import einstein.subtle_effects.particle.DropletParticle;
+import einstein.subtle_effects.particle.option.RippleParticleOptions;
 import einstein.subtle_effects.util.DripParticleAccessor;
 import einstein.subtle_effects.util.MathUtil;
 import einstein.subtle_effects.util.Util;
@@ -10,6 +12,7 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.DripParticle;
 import net.minecraft.client.particle.TextureSheetParticle;
 import net.minecraft.core.BlockPos;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -107,7 +110,18 @@ public abstract class DripParticleMixin extends TextureSheetParticle implements 
                 }
 
                 if (GENERAL.dropLandInFluidRipples) {
-                    level.addParticle(new FloatParticleOptions(subtleEffects$isLava ? ModParticles.LAVA_RIPPLE.get() : ModParticles.WATER_RIPPLE.get(), Math.max(quadSize, Math.max(bbWidth, bbHeight)) + 0.3F * 3),
+                    ResourceLocation fluidDefinitionId;
+                    boolean fromSplash = false;
+
+                    if (((DripParticle) (Object) this) instanceof DropletParticle particle) {
+                        fluidDefinitionId = particle.getFluidDefinition().id();
+                        fromSplash = particle.isFromSplash();
+                    }
+                    else {
+                        fluidDefinitionId = subtleEffects$isLava ? FluidDefinitionReloadListener.LAVA_ID : FluidDefinitionReloadListener.WATER_ID;
+                    }
+
+                    level.addParticle(new RippleParticleOptions(ModParticles.RIPPLE.get(), fluidDefinitionId, Math.max(quadSize, Math.max(bbWidth, bbHeight)) + 0.3F * 3, fromSplash),
                             x + MathUtil.nextNonAbsDouble(random, 0.07),
                             fluidSurface,
                             z + MathUtil.nextNonAbsDouble(random, 0.07),
