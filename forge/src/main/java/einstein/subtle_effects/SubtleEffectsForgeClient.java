@@ -36,6 +36,14 @@ public class SubtleEffectsForgeClient {
 
     public SubtleEffectsForgeClient(IEventBus modEventBus) {
         SubtleEffectsClient.clientSetup();
+
+        try {
+            Class.forName("net.optifine.Config");
+            SubtleEffects.LOGGER.warn("Optifine detected! Developer support for optifine related issues is little to none");
+        }
+        catch (ClassNotFoundException e) {
+        }
+
         modEventBus.addListener((RegisterParticleProvidersEvent event) ->
                 ForgeRegistryHelper.PARTICLE_PROVIDERS.forEach((particle, provider) -> registerParticle(event, particle, provider))
         );
