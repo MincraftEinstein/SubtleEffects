@@ -1,6 +1,6 @@
 package einstein.subtle_effects.platform.services;
 
-import einstein.subtle_effects.mixin.client.particle.SpriteSetAccessor;
+import net.minecraft.client.particle.ParticleEngine;
 import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.network.chat.TextColor;
@@ -13,7 +13,7 @@ public interface ParticleHelper {
 
     @Nullable
     default List<TextureAtlasSprite> getSpritesFromSet(SpriteSet spriteSet) {
-        return ((SpriteSetAccessor) spriteSet).getSprites();
+        return ((ParticleEngine.MutableSpriteSet) spriteSet).sprites;
     }
 
     default TextColor getRarityColor(Rarity rarity) {

@@ -6,6 +6,7 @@ accessible field net/minecraft/client/renderer/RenderStateShard NO_CULL Lnet/min
 accessible field net/minecraft/client/renderer/RenderStateShard OVERLAY Lnet/minecraft/client/renderer/RenderStateShard$OverlayStateShard;
 accessible field net/minecraft/client/renderer/RenderStateShard LIGHTMAP Lnet/minecraft/client/renderer/RenderStateShard$LightmapStateShard;
 accessible field net/minecraft/world/entity/animal/Parrot TAME_FOOD Ljava/util/Set;
+accessible field net/minecraft/client/particle/ParticleEngine$MutableSpriteSet sprites Ljava/util/List;
 
 # Methods
 accessible method net/minecraft/core/particles/SimpleParticleType <init> (Z)V
