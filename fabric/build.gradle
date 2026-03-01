@@ -33,6 +33,9 @@ dependencies {
     modCompileOnly "maven.modrinth:item-borders:${fabric_item_borders_version}"
     modCompileOnly "fuzs.forgeconfigapiport:forgeconfigapiport-fabric:${config_api_port}"
     modCompileOnly "maven.modrinth:endrem:${fabric_endrem_version}"
+
+    // when testing don't implement this, it's far easier just to go put the mod in the mods folder
+    modCompileOnly "maven.modrinth:iris:${fabric_iris_version}"
 }
 
 loom {

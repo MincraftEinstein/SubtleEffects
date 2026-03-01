@@ -31,6 +31,7 @@ dependencies {
     compileOnly group: "fuzs.forgeconfigapiport", name: "forgeconfigapiport-common", version: "${config_api_port}"
     compileOnly group: "maven.modrinth", name: "endrem", version: "${forge_endrem_version}"
     compileOnly group: "maven.modrinth", name: "immersive-weathering", version: "${forge_immersive_weathering_version}"
+    compileOnly group: "maven.modrinth", name: "oculus", version: "${forge_oculus_version}"
 }
 
 publishing {

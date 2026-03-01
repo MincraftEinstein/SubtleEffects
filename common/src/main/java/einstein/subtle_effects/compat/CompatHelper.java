@@ -23,6 +23,8 @@ public class CompatHelper {
     public static final Supplier<Boolean> IS_END_REMASTERED_LOADED = isLoaded("endrem");
     public static final Supplier<Boolean> IS_PARTICLE_EFFECTS_LOADED = isLoaded(PARTICLE_EFFECTS_MOD_ID);
     public static final Supplier<Boolean> IS_PARTICLE_RAIN_LOADED = isLoaded(PARTICLE_RAIN_MOD_ID);
+    public static final Supplier<Boolean> IS_IRIS_LOADED = isLoaded("iris");
+    public static final Supplier<Boolean> IS_OCULUS_LOADED = isLoaded("oculus");
 
     public static final IntegerProperty FD_PIE_BITES = IntegerProperty.create("bites", 0, 3);
     public static final IntegerProperty JMC_TWO_TIERED_CAKE_BITES = IntegerProperty.create("bites", 0, 10);
@@ -30,6 +32,10 @@ public class CompatHelper {
 
     private static Supplier<Boolean> isLoaded(String modId) {
         return Suppliers.memoize(() -> Services.PLATFORM.isModLoaded(modId));
+    }
+
+    public static boolean areShadersLoaded() {
+        return (IS_IRIS_LOADED.get() || IS_OCULUS_LOADED.get()) && IrisCompat.areShadersEnabled();
     }
 
     public static Map<ResourceLocation, ValidatedColor.ColorHolder> getDefaultEyes() {

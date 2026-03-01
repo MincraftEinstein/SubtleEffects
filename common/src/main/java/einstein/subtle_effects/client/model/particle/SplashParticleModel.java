@@ -16,7 +16,7 @@ public class SplashParticleModel extends Model {
     private final ModelPart splash;
 
     public SplashParticleModel(ModelPart rootPart) {
-        super(texture -> ModRenderTypes.ENTITY_PARTICLE_TRANSLUCENT_RENDER_TYPE.apply(texture, false));
+        super(ModRenderTypes::getModelParticleRenderType);
         splash = rootPart;
     }
 

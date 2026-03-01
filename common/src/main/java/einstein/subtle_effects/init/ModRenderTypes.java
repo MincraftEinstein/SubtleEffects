@@ -3,6 +3,7 @@ package einstein.subtle_effects.init;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import einstein.subtle_effects.SubtleEffects;
+import einstein.subtle_effects.compat.CompatHelper;
 import net.minecraft.Util;
 import net.minecraft.client.renderer.RenderStateShard;
 import net.minecraft.client.renderer.RenderType;
@@ -30,5 +31,12 @@ public class ModRenderTypes {
     });
 
     public static void init() {
+    }
+
+    public static RenderType getModelParticleRenderType(ResourceLocation texture) {
+        if (CompatHelper.areShadersLoaded()) {
+            return RenderType.entityTranslucent(texture);
+        }
+        return ENTITY_PARTICLE_TRANSLUCENT_RENDER_TYPE.apply(texture, false);
     }
 }
