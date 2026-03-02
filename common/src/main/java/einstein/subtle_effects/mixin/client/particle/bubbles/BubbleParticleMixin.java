@@ -11,6 +11,7 @@ import einstein.subtle_effects.util.Util;
 import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
+import net.minecraft.client.renderer.BiomeColors;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
@@ -47,7 +48,7 @@ public abstract class BubbleParticleMixin extends TextureSheetParticle implement
     @Inject(method = "tick", at = @At("RETURN"))
     private void tick(CallbackInfo ci) {
         BlockPos pos = BlockPos.containing(x, y, z);
-        subtleEffects$waterColor = level.getBiome(pos).value().getWaterColor();
+        subtleEffects$waterColor = BiomeColors.getAverageWaterColor(level, pos);
 
         if (!isAlive()) {
             float volume = ModConfigs.GENERAL.poppingBubblesVolume.get();

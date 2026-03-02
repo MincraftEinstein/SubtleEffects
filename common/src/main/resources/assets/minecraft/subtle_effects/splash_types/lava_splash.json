@@ -1,0 +1,8 @@
+{
+  "splash": {
+    "sprite_set": "subtle_effects:lava_splash"
+  },
+  "splash_ripple": {
+    "sprite_set": "subtle_effects:lava_splash_ripple"
+  }
+}

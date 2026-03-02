@@ -10,7 +10,8 @@
     "client.FabricMultiPlayerGameModeMixin",
     "client.item.FabricBucketItemAccessor",
     "client.item.FabricBucketItemMixin",
-    "client.particle.FabricParticleEngineMixin"
+    "client.particle.FabricParticleEngineMixin",
+    "client.FabricParticleEngineMixin"
   ],
   "mixins": [
     "common.FabricStonecutterMenu$2Mixin",

@@ -29,8 +29,7 @@ public class ModItemConfigs extends Config {
     public boolean increasedItemBreakParticles = true;
     public ConfigGroup bucketsGroup = new ConfigGroup("buckets");
     public boolean waterEvaporateFromBucketSteam = true;
-    public boolean waterBucketUseParticles = true;
-    public boolean lavaBucketUseParticles = true;
+    public boolean fluidBucketUseParticles = true;
     @ConfigGroup.Pop
     public boolean powderSnowBucketUseParticles = true;
     public boolean lingeringPotionClouds = true;

@@ -1,6 +1,7 @@
 package einstein.subtle_effects.networking.clientbound;
 
 import einstein.subtle_effects.configs.ReplacedParticlesDisplayType;
+import einstein.subtle_effects.data.FluidDefinition;
 import einstein.subtle_effects.init.ModAnimalFedEffectSettings;
 import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.init.ModParticles;
@@ -9,9 +10,7 @@ import einstein.subtle_effects.particle.option.FloatParticleOptions;
 import einstein.subtle_effects.particle.option.SheepFluffParticleOptions;
 import einstein.subtle_effects.particle.option.SplashEmitterParticleOptions;
 import einstein.subtle_effects.ticking.tickers.TickerManager;
-import einstein.subtle_effects.util.MathUtil;
-import einstein.subtle_effects.util.ParticleSpawnUtil;
-import einstein.subtle_effects.util.Util;
+import einstein.subtle_effects.util.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -39,6 +38,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.Vec3;
 import org.joml.Vector3f;
 
@@ -448,10 +449,24 @@ public class ClientPacketHandlers {
         }
 
         Entity entity = level.getEntity(payload.entityId());
-
         if (entity != null) {
-            ParticleType<SplashEmitterParticleOptions> particleType = payload.isLava() ? ModParticles.LAVA_SPLASH_EMITTER.get() : ModParticles.WATER_SPLASH_EMITTER.get();
-            ParticleSpawnUtil.spawnSplashEffects(entity, level, particleType, payload.y(), payload.yVelocity());
+            Fluid fluid = payload.fluid();
+
+            if (fluid.isSame(Fluids.EMPTY)) {
+                return;
+            }
+
+            FluidDefinition lastTouchedFluid = ((FluidLogicAccessor) entity).subtleEffects$getLastTouchedFluid();
+            if (lastTouchedFluid == null || !lastTouchedFluid.is(fluid)) {
+
+                FluidDefinition fluidDefinition = ((FluidDefinitionAccessor) fluid).subtleEffects$getFluidDefinition();
+                if (fluidDefinition != null) {
+
+                    fluidDefinition.splashType().ifPresent(splashType ->
+                            ParticleSpawnUtil.spawnSplashEffects(entity, level, fluidDefinition.id(), payload.y(), payload.yVelocity())
+                    );
+                }
+            }
         }
     }
 

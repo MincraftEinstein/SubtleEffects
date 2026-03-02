@@ -1,7 +1,8 @@
 package einstein.subtle_effects;
 
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
-import einstein.subtle_effects.data.*;
+import einstein.subtle_effects.data.BCWPPackManager;
+import einstein.subtle_effects.data.FabricReloadListenerWrapper;
 import einstein.subtle_effects.init.ModParticles;
 import einstein.subtle_effects.init.ModRenderTypes;
 import einstein.subtle_effects.platform.FabricNetworkHelper;
@@ -17,7 +18,6 @@ import net.fabricmc.fabric.api.resource.ResourcePackActivationType;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.server.packs.PackType;
-import net.minecraft.server.packs.resources.PreparableReloadListener;
 
 public class SubtleEffectsFabricClient implements ClientModInitializer {
 
@@ -30,9 +30,9 @@ public class SubtleEffectsFabricClient implements ClientModInitializer {
         ClientCommandRegistrationCallback.EVENT.register(SubtleEffectsClient::registerClientCommands);
         ResourceManagerHelper.registerBuiltinResourcePack(BCWPPackManager.PACK_LOCATION.get(), FabricLoader.getInstance().getModContainer(SubtleEffects.MOD_ID).orElseThrow(), BCWPPackManager.PACK_NAME, ResourcePackActivationType.NORMAL);
         ResourceManagerHelper helper = ResourceManagerHelper.get(PackType.CLIENT_RESOURCES);
-        addReloadListener(helper, new SparkProviderReloadListener());
-        addReloadListener(helper, new MobSkullShaderReloadListener());
-        addReloadListener(helper, new BCWPPackManager());
+        SubtleEffectsClient.registerReloadListeners().forEach(listener ->
+                helper.registerReloadListener(new FabricReloadListenerWrapper<>(listener))
+        );
         SubtleEffectsClient.registerModelLayers().forEach((modelLayerLocation, layerDefinitionSupplier) ->
                 EntityModelLayerRegistry.registerModelLayer(modelLayerLocation, layerDefinitionSupplier::get)
         );
@@ -42,9 +42,5 @@ public class SubtleEffectsFabricClient implements ClientModInitializer {
             }
         });
         CoreShaderRegistrationCallback.EVENT.register(context -> context.register(ModRenderTypes.RENDERTYPE_ENTITY_PARTICLE_TRANSLUCENT_SHADER_ID, DefaultVertexFormat.NEW_ENTITY, shaderInstance -> ModRenderTypes.RENDERTYPE_ENTITY_PARTICLE_TRANSLUCENT_SHADER = shaderInstance));
-    }
-
-    private static <T extends PreparableReloadListener & NamedReloadListener> void addReloadListener(ResourceManagerHelper helper, T listener) {
-        helper.registerReloadListener(new FabricReloadListenerWrapper<>(listener));
     }
 }

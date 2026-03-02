@@ -1,0 +1,9 @@
+{
+  "provider": "dyed_flames",
+  "id": "minecraft:lava",
+  "flame_particle": "minecraft:flame",
+  "color": {
+    "type": "subtle_effects:preset",
+    "preset": "sparks"
+  }
+}

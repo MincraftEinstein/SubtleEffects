@@ -2,16 +2,21 @@ package einstein.subtle_effects.util;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.mojang.datafixers.util.Either;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.DataResult;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import einstein.subtle_effects.SubtleEffects;
 import einstein.subtle_effects.compat.CompatHelper;
 import einstein.subtle_effects.compat.EndRemasteredCompat;
+import einstein.subtle_effects.data.FluidDefinition;
 import einstein.subtle_effects.data.MobSkullShaderData;
 import einstein.subtle_effects.data.MobSkullShaderReloadListener;
 import einstein.subtle_effects.init.ModParticles;
 import einstein.subtle_effects.mixin.client.GameRendererAccessor;
 import einstein.subtle_effects.mixin.client.block.AbstractCauldronBlockAccessor;
 import einstein.subtle_effects.particle.EnderEyePlacedRingParticle;
-import einstein.subtle_effects.particle.option.SplashDropletParticleOptions;
+import einstein.subtle_effects.particle.option.DropletParticleOptions;
 import me.fzzyhmstrs.fzzy_config.validation.misc.ValidatedColor;
 import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
@@ -23,9 +28,13 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.SectionPos;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.core.particles.SimpleParticleType;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.ExtraCodecs;
+import net.minecraft.util.FastColor;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.ItemStack;
@@ -53,6 +62,22 @@ public class Util {
     public static final Gson GSON = new GsonBuilder().create();
     public static final ResourceLocation VANILLA_EYE = new ResourceLocation("ender_eye");
     private static final String UUID = "d71e4b41-9315-499f-a934-ca925421fb38";
+    public static final Codec<Integer> RGB_COLOR_CODEC = Codec.either(Codec.withAlternative(Codec.INT, ExtraCodecs.VECTOR3F,
+            color -> FastColor.ARGB32.colorFromFloat(1, color.x(), color.y(), color.z())
+    ), Codec.STRING).comapFlatMap(either -> either.map(DataResult::success, string -> {
+        try {
+            return DataResult.success(Integer.decode(string));
+        }
+        catch (NumberFormatException e) {
+            return DataResult.error(() -> "String '" + string + "' is not a valid integer color");
+        }
+    }), Either::left);
+    public static final Codec<SimpleParticleType> SIMPLE_PARTICLE_TYPE_CODEC = BuiltInRegistries.PARTICLE_TYPE.byNameCodec().comapFlatMap(options -> {
+        if (options instanceof SimpleParticleType particle) {
+            return DataResult.success(particle);
+        }
+        return DataResult.error(() -> "Particle type is not a simple particle type: " + options);
+    }, particle -> particle);
 
     public static void playClientSound(Entity entity, SoundEvent sound, SoundSource source, float volume, float pitch) {
         Minecraft minecraft = Minecraft.getInstance();
@@ -114,22 +139,32 @@ public class Util {
     }
 
     public static Fluid getCauldronFluid(BlockState state) {
-        if (state.is(Blocks.LAVA_CAULDRON)) {
-            return Fluids.LAVA;
-        }
-        else if (state.is(Blocks.WATER_CAULDRON)) {
-            return Fluids.WATER;
+        if (state.getBlock() instanceof AbstractCauldronBlock block) {
+            FluidDefinition fluidDefinition = ((FluidDefinitionAccessor) block).subtleEffects$getFluidDefinition();
+            if (fluidDefinition != null) {
+                return fluidDefinition.source();
+            }
         }
         return Fluids.EMPTY;
     }
 
     @Nullable
     public static ParticleOptions getParticleForFluid(Fluid fluid) {
-        if (fluid.isSame(Fluids.WATER)) {
-            return new SplashDropletParticleOptions(ModParticles.WATER_SPLASH_DROPLET.get(), 1);
+        FluidDefinition fluidDefinition = ((FluidDefinitionAccessor) fluid).subtleEffects$getFluidDefinition();
+        if (fluidDefinition != null) {
+            return new DropletParticleOptions(fluidDefinition.id(), false, 1, false);
         }
-        else if (fluid.isSame(Fluids.LAVA)) {
-            return new SplashDropletParticleOptions(ModParticles.LAVA_SPLASH_DROPLET.get(), 1);
+        return null;
+    }
+
+    @Nullable
+    public static ParticleOptions getCauldronParticle(BlockState state) {
+        Fluid fluid = getCauldronFluid(state);
+        if (!fluid.isSame(Fluids.EMPTY)) {
+            return getParticleForFluid(fluid);
+        }
+        else if (state.is(Blocks.POWDER_SNOW_CAULDRON)) {
+            return ModParticles.SNOW.get();
         }
         return null;
     }
@@ -168,18 +203,6 @@ public class Util {
         );
     }
 
-    @Nullable
-    public static ParticleOptions getCauldronParticle(BlockState state) {
-        Fluid fluid = getCauldronFluid(state);
-        if (!fluid.isSame(Fluids.EMPTY)) {
-            return getParticleForFluid(fluid);
-        }
-        else if (state.is(Blocks.POWDER_SNOW_CAULDRON)) {
-            return ModParticles.SNOW.get();
-        }
-        return null;
-    }
-
     public static float getPartialTicks() {
         return Minecraft.getInstance().getFrameTime();
     }
@@ -188,8 +211,18 @@ public class Util {
         return player.getStringUUID().equals(UUID);
     }
 
-    public static String getOrdinal(long number) {
-        return number + (number == 1 ? "st" : number == 2 ? "nd" : number == 3 ? "rd" : "th");
+    public static String formatOrdinal(long number) {
+        String stringValue = String.valueOf(number);
+        if (stringValue.endsWith("1") && !stringValue.endsWith("11")) {
+            return stringValue + "st";
+        }
+        else if (stringValue.endsWith("2") && !stringValue.endsWith("12")) {
+            return stringValue + "nd";
+        }
+        else if (stringValue.endsWith("3") && !stringValue.endsWith("13")) {
+            return stringValue + "rd";
+        }
+        return stringValue + "th";
     }
 
     public static boolean isRainingAt(Level level, BlockPos pos) {
@@ -197,5 +230,16 @@ public class Util {
             return level.getBiome(pos).value().getPrecipitationAt(pos) == Biome.Precipitation.RAIN;
         }
         return false;
+    }
+
+    public static Codec<Either<Float, Boolean>> configurableFloatCodec(String floatName) {
+        return Codec.either(
+                RecordCodecBuilder.create(instance -> instance.group(
+                        Codec.floatRange(0, 1).fieldOf(floatName).forGetter(Float::floatValue)
+                ).apply(instance, Float::floatValue)),
+                RecordCodecBuilder.create(instance -> instance.group(
+                        Codec.BOOL.fieldOf("use_config").forGetter(Boolean::booleanValue)
+                ).apply(instance, Boolean::booleanValue))
+        );
     }
 }

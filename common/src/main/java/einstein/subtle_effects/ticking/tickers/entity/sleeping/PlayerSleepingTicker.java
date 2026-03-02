@@ -12,7 +12,7 @@ public class PlayerSleepingTicker extends SleepingTicker<Player> {
         super(player,
                 doesEntitySnore(player, ENTITIES.sleeping.playerSnoreChance.get()),
                 player.isLocalPlayer() ? 40 : Util.BREATH_DELAY,
-                ModSounds.PLAYER_SNORE.get(),
+                ModSounds.PLAYER_SNORE,
                 ENTITIES.sleeping.playerSnoreSoundVolume.get()
         );
     }

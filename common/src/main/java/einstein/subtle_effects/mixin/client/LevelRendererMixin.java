@@ -11,8 +11,8 @@ import einstein.subtle_effects.configs.ModBlockConfigs;
 import einstein.subtle_effects.configs.ReplacedParticlesDisplayType;
 import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.init.ModParticles;
+import einstein.subtle_effects.particle.RippleParticle;
 import einstein.subtle_effects.particle.option.ColorParticleOptions;
-import einstein.subtle_effects.particle.option.FloatParticleOptions;
 import einstein.subtle_effects.ticking.tickers.TickerManager;
 import einstein.subtle_effects.util.FrustumGetter;
 import einstein.subtle_effects.util.ParticleAccessor;
@@ -21,6 +21,7 @@ import einstein.subtle_effects.util.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
+import net.minecraft.client.renderer.BiomeColors;
 import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.core.BlockPos;
@@ -78,9 +79,9 @@ public abstract class LevelRendererMixin implements FrustumGetter {
     }
 
     @WrapOperation(method = "renderSnowAndRain", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/vertex/VertexConsumer;color(FFFF)Lcom/mojang/blaze3d/vertex/VertexConsumer;"))
-    private VertexConsumer renderSnowAndRain(VertexConsumer instance, float red, float green, float blue, float alpha, Operation<VertexConsumer> original, @Local Biome biome, @Local Biome.Precipitation precipitation) {
+    private VertexConsumer renderSnowAndRain(VertexConsumer instance, float red, float green, float blue, float alpha, Operation<VertexConsumer> original, @Local Level level, @Local Biome.Precipitation precipitation, @Local BlockPos.MutableBlockPos pos) {
         if (precipitation == Biome.Precipitation.RAIN && ENVIRONMENT.biomeColorRain) {
-            int waterColor = biome.getWaterColor();
+            int waterColor = BiomeColors.getAverageWaterColor(level, pos.immutable());
             return instance.color((waterColor >> 16) / 255F, (waterColor >> 8) / 255F, waterColor / 255F, alpha);
         }
         return original.call(instance, red, green, blue, alpha);
@@ -110,7 +111,7 @@ public abstract class LevelRendererMixin implements FrustumGetter {
                     return;
                 }
 
-                options = new FloatParticleOptions(ModParticles.WATER_RIPPLE.get(), 1);
+                options = RippleParticle.WATER;
 
                 if (isCauldron) {
                     x = pos.getX() + 0.1875 + nextDouble(random, 0.625);
