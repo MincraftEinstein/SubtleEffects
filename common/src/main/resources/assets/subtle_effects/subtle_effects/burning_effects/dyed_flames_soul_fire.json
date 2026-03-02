@@ -1,9 +1,0 @@
-{
-  "provider": "dyed_flames",
-  "id": "minecraft:soul_fire",
-  "flame_particle": "minecraft:soul_fire_flame",
-  "color": {
-    "type": "subtle_effects:preset",
-    "preset": "soul_sparks"
-  }
-}
