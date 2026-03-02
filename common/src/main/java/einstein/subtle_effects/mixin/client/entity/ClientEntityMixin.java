@@ -1,17 +1,17 @@
 package einstein.subtle_effects.mixin.client.entity;
 
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import einstein.subtle_effects.data.FluidDefinition;
 import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.init.ModDamageListeners;
 import einstein.subtle_effects.init.ModParticles;
 import einstein.subtle_effects.ticking.tickers.entity.EntityTicker;
-import einstein.subtle_effects.util.EntityProvider;
-import einstein.subtle_effects.util.EntityTickerAccessor;
-import einstein.subtle_effects.util.ParticleSpawnUtil;
-import einstein.subtle_effects.util.Util;
+import einstein.subtle_effects.util.*;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.minecraft.core.BlockPos;
-import net.minecraft.tags.FluidTags;
+import net.minecraft.tags.TagKey;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.damagesource.DamageSource;
@@ -22,10 +22,13 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import org.apache.commons.lang3.function.Consumers;
+import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -37,7 +40,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import static einstein.subtle_effects.util.MathUtil.nextDouble;
 
 @Mixin(Entity.class)
-public abstract class ClientEntityMixin implements EntityTickerAccessor {
+public abstract class ClientEntityMixin implements EntityTickerAccessor, FluidLogicAccessor {
 
     @Unique
     private final Entity subtleEffects$me = (Entity) (Object) this;
@@ -53,6 +56,18 @@ public abstract class ClientEntityMixin implements EntityTickerAccessor {
 
     @Shadow
     protected abstract boolean isInvulnerableToBase(DamageSource damageSource);
+
+    public abstract Level level();
+
+    @Shadow
+    protected boolean firstTick;
+
+    @Unique
+    @Nullable
+    private FluidDefinition subtleEffects$lastTouchedFluid;
+
+    @Unique
+    private boolean subtleEffects$cancelWaterSplash = false;
 
     @Inject(method = "playEntityOnFireExtinguishedSound", at = @At("TAIL"))
     private void addExtinguishParticles(CallbackInfo ci) {
@@ -122,11 +137,53 @@ public abstract class ClientEntityMixin implements EntityTickerAccessor {
         }
     }
 
+    @Inject(method = "updateInWaterStateAndDoFluidPushing", at = @At("HEAD"))
+    private void clearFluidDefinitionHeight(CallbackInfoReturnable<Boolean> cir) {
+        subtleEffects$getFluidDefinitionHeight().clear();
+    }
+
+    @Inject(method = "updateInWaterStateAndDoFluidPushing", at = @At("TAIL"))
+    private void preformSplash(CallbackInfoReturnable<Boolean> cir) {
+        subtleEffects$lastTouchedFluid = ParticleSpawnUtil.preformSplash(false, false, subtleEffects$me, firstTick, Consumers.nop());
+    }
+
+    @WrapOperation(method = "updateInWaterStateAndDoWaterCurrentPushing", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;updateFluidHeightAndDoFluidPushing(Lnet/minecraft/tags/TagKey;D)Z"))
+    private boolean preformWaterSplash(Entity instance, TagKey<Fluid> fluidTag, double motionScale, Operation<Boolean> original) {
+        boolean result = original.call(instance, fluidTag, motionScale);
+
+        if (result) {
+            subtleEffects$lastTouchedFluid = ParticleSpawnUtil.preformSplash(true, false, subtleEffects$me, firstTick, isWater -> {
+                if (isWater) {
+                    subtleEffects$cancelWaterSplash = true;
+                }
+            });
+        }
+
+        return result;
+    }
+
     @Inject(method = "doWaterSplashEffect", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/Mth;floor(D)I"), cancellable = true)
-    private void doClientWaterSplash(CallbackInfo ci) {
-        if (ParticleSpawnUtil.spawnSplashEffects(subtleEffects$me, subtleEffects$me.level(), ModParticles.WATER_SPLASH_EMITTER.get(), FluidTags.WATER)) {
+    private void cancelWaterSplash(CallbackInfo ci) {
+        if (level().isClientSide() && subtleEffects$cancelWaterSplash) {
             ci.cancel();
         }
+        subtleEffects$cancelWaterSplash = false;
+    }
+
+    @Nullable
+    @Override
+    public FluidDefinition subtleEffects$getLastTouchedFluid() {
+        return subtleEffects$lastTouchedFluid;
+    }
+
+    @Override
+    public void subtleEffects$setLastTouchedFluid(@Nullable FluidDefinition fluidDefinition) {
+        subtleEffects$lastTouchedFluid = fluidDefinition;
+    }
+
+    @Override
+    public void subtleEffects$cancelNextWaterSplash() {
+        subtleEffects$cancelWaterSplash = true;
     }
 
     @Override

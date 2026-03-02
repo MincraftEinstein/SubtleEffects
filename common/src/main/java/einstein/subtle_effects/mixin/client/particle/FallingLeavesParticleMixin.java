@@ -1,9 +1,10 @@
 package einstein.subtle_effects.mixin.client.particle;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
+import einstein.subtle_effects.data.FluidDefinitionReloadListener;
 import einstein.subtle_effects.init.ModParticles;
 import einstein.subtle_effects.particle.option.FallenLeafParticleOptions;
-import einstein.subtle_effects.particle.option.FloatParticleOptions;
+import einstein.subtle_effects.particle.option.RippleParticleOptions;
 import einstein.subtle_effects.util.Util;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.FallingLeavesParticle;
@@ -69,7 +70,7 @@ public abstract class FallingLeavesParticleMixin extends SingleQuadParticle {
             if (!onGround && GENERAL.leavesLandingOnWaterRipples) {
                 double halfSize = quadSize / 2;
 
-                level.addParticle(new FloatParticleOptions(ModParticles.WATER_RIPPLE.get(), Math.max(quadSize, Math.max(bbWidth, bbHeight)) + 0.3F * 3),
+                level.addParticle(new RippleParticleOptions(ModParticles.RIPPLE.get(), FluidDefinitionReloadListener.WATER_ID, Math.max(quadSize, Math.max(bbWidth, bbHeight)) + 0.3F * 3, false),
                         x + halfSize, surface, z + halfSize,
                         0, 0, 0
                 );

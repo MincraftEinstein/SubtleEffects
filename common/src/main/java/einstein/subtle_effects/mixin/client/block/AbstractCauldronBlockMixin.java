@@ -2,8 +2,10 @@ package einstein.subtle_effects.mixin.client.block;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.llamalad7.mixinextras.sugar.Local;
+import einstein.subtle_effects.data.FluidDefinition;
 import einstein.subtle_effects.init.ModSounds;
 import einstein.subtle_effects.ticking.tickers.TickerManager;
+import einstein.subtle_effects.util.FluidDefinitionAccessor;
 import einstein.subtle_effects.util.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponents;
@@ -20,6 +22,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.ShulkerBoxBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 
 import static einstein.subtle_effects.init.ModConfigs.BLOCKS;
@@ -27,7 +30,10 @@ import static einstein.subtle_effects.util.MathUtil.nextDouble;
 import static einstein.subtle_effects.util.MathUtil.nextSign;
 
 @Mixin(AbstractCauldronBlock.class)
-public class AbstractCauldronBlockMixin {
+public class AbstractCauldronBlockMixin implements FluidDefinitionAccessor {
+
+    @Unique
+    private FluidDefinition subtleEffects$fluidDefinition;
 
     @ModifyReturnValue(method = "useItemOn", at = @At("RETURN"))
     private InteractionResult spawnInteractionParticles(InteractionResult result, @Local(argsOnly = true) BlockState state, @Local(argsOnly = true) Level level, @Local(argsOnly = true) BlockPos pos, @Local(argsOnly = true) ItemStack stack) {
@@ -75,5 +81,15 @@ public class AbstractCauldronBlockMixin {
             }
         }
         return result;
+    }
+
+    @Override
+    public FluidDefinition subtleEffects$getFluidDefinition() {
+        return subtleEffects$fluidDefinition;
+    }
+
+    @Override
+    public void subtleEffects$setFluidDefinition(FluidDefinition fluidDefinition) {
+        subtleEffects$fluidDefinition = fluidDefinition;
     }
 }

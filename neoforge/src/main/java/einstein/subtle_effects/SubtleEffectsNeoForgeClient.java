@@ -2,9 +2,7 @@ package einstein.subtle_effects;
 
 import einstein.subtle_effects.client.renderer.ParticleBoundingBoxesRenderer;
 import einstein.subtle_effects.data.BCWPPackManager;
-import einstein.subtle_effects.data.MobSkullShaderReloadListener;
 import einstein.subtle_effects.data.NamedReloadListener;
-import einstein.subtle_effects.data.SparkProviderReloadListener;
 import einstein.subtle_effects.platform.NeoForgeRegistryHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.ParticleProvider;
@@ -42,11 +40,9 @@ public class SubtleEffectsNeoForgeClient {
         modEventBus.addListener((AddPackFindersEvent event) ->
                 event.addPackFinders(BCWPPackManager.PACK_LOCATION.get(), PackType.CLIENT_RESOURCES,
                         BCWPPackManager.PACK_NAME, PackSource.BUILT_IN, false, Pack.Position.TOP));
-        modEventBus.addListener((AddClientReloadListenersEvent event) -> {
-            addReloadListener(event, new SparkProviderReloadListener());
-            addReloadListener(event, new MobSkullShaderReloadListener());
-            addReloadListener(event, new BCWPPackManager());
-        });
+        modEventBus.addListener((AddClientReloadListenersEvent event) ->
+                SubtleEffectsClient.registerReloadListeners().forEach(listener -> addReloadListener(event, listener))
+        );
         modEventBus.addListener((EntityRenderersEvent.RegisterLayerDefinitions event) ->
                 SubtleEffectsClient.registerModelLayers().forEach(event::registerLayerDefinition)
         );

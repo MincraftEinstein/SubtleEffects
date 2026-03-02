@@ -1,0 +1,22 @@
+{
+  "source": "minecraft:water",
+  "flowing": "minecraft:flowing_water",
+  "cauldron": "minecraft:water_cauldron",
+  "splash_type": "minecraft:water_splash",
+  "bucket_item": "minecraft:water_bucket",
+  "droplets": {
+    "color": {
+      "type": "subtle_effects:biome_color",
+      "color_type": "water_color"
+    },
+    "ripple": {
+      "color": {
+        "type": "subtle_effects:none"
+      },
+      "transparency": {
+        "alpha": 0.2
+      }
+    },
+    "land_particle": "minecraft:splash"
+  }
+}

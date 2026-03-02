@@ -3,6 +3,7 @@ package einstein.subtle_effects.data;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import einstein.subtle_effects.SubtleEffects;
+import einstein.subtle_effects.data.color_providers.ColorProviderType;
 import einstein.subtle_effects.particle.SparkParticle;
 import einstein.subtle_effects.util.Box;
 import einstein.subtle_effects.util.SparkType;
@@ -19,7 +20,7 @@ import java.util.Optional;
 public record SparkProviderData(List<BlockStateEntry> states, Optional<Options> options) {
 
     public static final Codec<SparkProviderData> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-            Codec.list(BlockStateEntry.CODEC, 1, Integer.MAX_VALUE).fieldOf("states").forGetter(SparkProviderData::states),
+            Codec.list(BlockStateEntry.CODEC).fieldOf("states").forGetter(SparkProviderData::states),
             Options.CODEC.optionalFieldOf("options").forGetter(SparkProviderData::options)
     ).apply(instance, SparkProviderData::new));
 
@@ -34,7 +35,7 @@ public record SparkProviderData(List<BlockStateEntry> states, Optional<Options> 
 
     public record Options(PresetType preset, Optional<SparkType> sparkType, Optional<Box> box,
                           Optional<IntProvider> count, Optional<Float> chance, Optional<Vec3> velocity,
-                          Optional<List<Integer>> colors) {
+                          Optional<ColorProviderType.ColorProvider> colorProvider) {
 
         public static final Codec<Options> CODEC = RecordCodecBuilder.create(instance -> instance.group(
                 PresetType.CODEC.fieldOf("preset").forGetter(Options::preset),
@@ -43,22 +44,7 @@ public record SparkProviderData(List<BlockStateEntry> states, Optional<Options> 
                 IntProvider.CODEC.optionalFieldOf("count").forGetter(Options::count),
                 Codec.floatRange(0, 1).optionalFieldOf("chance").forGetter(Options::chance),
                 Vec3.CODEC.optionalFieldOf("velocity").forGetter(Options::velocity),
-                Codec.withAlternative(Codec.list(ExtraCodecs.RGB_COLOR_CODEC), Codec.STRING, string -> {
-                    switch (string) {
-                        case "soul" -> {
-                            return SparkParticle.SOUL_COLORS;
-                        }
-                        case "copper" -> {
-                            return SparkParticle.COPPER_COLORS;
-                        }
-                        case "default" -> {
-                            return SparkParticle.DEFAULT_COLORS;
-                        }
-                    }
-
-                    SubtleEffects.LOGGER.error("Spark color must be an integer array or string of either 'soul', 'copper' or 'default'");
-                    return null;
-                }).optionalFieldOf("colors").forGetter(Options::colors)
+                ColorProviderType.CODEC.optionalFieldOf("color").forGetter(Options::colorProvider)
         ).apply(instance, Options::new));
     }
 

@@ -1,30 +1,32 @@
 package einstein.subtle_effects.util;
 
 import einstein.subtle_effects.configs.ModBlockConfigs;
+import einstein.subtle_effects.data.FluidDefinition;
 import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.init.ModParticles;
 import einstein.subtle_effects.mixin.client.item.BucketItemAccessor;
 import einstein.subtle_effects.networking.clientbound.ClientBoundEntityFellPayload;
-import einstein.subtle_effects.networking.clientbound.ClientBoundEntityLandInFluidPayload;
 import einstein.subtle_effects.particle.EnderEyePlacedRingParticle;
 import einstein.subtle_effects.particle.SparkParticle;
 import einstein.subtle_effects.particle.emitter.SplashEmitter;
 import einstein.subtle_effects.particle.option.ColorAndIntegerParticleOptions;
 import einstein.subtle_effects.particle.option.DirectionParticleOptions;
 import einstein.subtle_effects.particle.option.SheepFluffParticleOptions;
-import einstein.subtle_effects.particle.option.SplashEmitterParticleOptions;
 import einstein.subtle_effects.platform.Services;
 import einstein.subtle_effects.ticking.tickers.TickerManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.component.DataComponents;
-import net.minecraft.core.particles.*;
+import net.minecraft.core.particles.ColorParticleOption;
+import net.minecraft.core.particles.ItemParticleOption;
+import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.tags.FluidTags;
-import net.minecraft.tags.TagKey;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.attribute.EnvironmentAttributes;
@@ -50,37 +52,18 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.List;
 import java.util.function.BiPredicate;
+import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
-import static einstein.subtle_effects.init.ModConfigs.BLOCKS;
-import static einstein.subtle_effects.init.ModConfigs.ENTITIES;
+import static einstein.subtle_effects.init.ModConfigs.*;
 import static einstein.subtle_effects.util.MathUtil.*;
 import static net.minecraft.util.Mth.DEG_TO_RAD;
 import static net.minecraft.util.Mth.nextFloat;
 import static net.minecraft.world.level.block.state.properties.BlockStateProperties.*;
 
 public class ParticleSpawnUtil {
-
-    public static void spawnSparks(Level level, RandomSource random, BlockPos pos, SparkType sparkType, Box box, Vec3 maxSpeeds, int count, List<Integer> colors) {
-        if (random.nextBoolean()) {
-            Vec3 start = box.min();
-            Vec3 end = box.max();
-
-            for (int i = 0; i < count; i++) {
-                level.addParticle(SparkParticle.create(sparkType, random, colors),
-                        pos.getX() + Mth.nextDouble(random, start.x, end.x),
-                        pos.getY() + Mth.nextDouble(random, start.y, end.y),
-                        pos.getZ() + Mth.nextDouble(random, start.z, end.z),
-                        nextNonAbsDouble(random, maxSpeeds.x()),
-                        nextNonAbsDouble(random, maxSpeeds.y()),
-                        nextNonAbsDouble(random, maxSpeeds.z())
-                );
-            }
-        }
-    }
 
     public static void spawnParticlesAroundBlock(ParticleOptions particle, Level level, BlockPos pos, RandomSource random, int perSideChance) {
         spawnParticlesAroundBlock(particle, level, pos, random, 0.0625F, perSideChance > 0 ? direction -> random.nextInt(perSideChance) != 0 : null);
@@ -422,11 +405,14 @@ public class ParticleSpawnUtil {
         if (level.isClientSide()) {
             RandomSource random = level.getRandom();
             if (stack.getItem() instanceof BucketItemAccessor bucket) {
-                Fluid content = bucket.getContent();
-                boolean isWater = content.isSame(Fluids.WATER);
+                if (!ITEMS.fluidBucketUseParticles) {
+                    return;
+                }
 
-                if ((isWater && ModConfigs.ITEMS.waterBucketUseParticles) || (content.isSame(Fluids.LAVA) && ModConfigs.ITEMS.lavaBucketUseParticles)) {
-                    if (isWater && level.environmentAttributes().getDimensionValue(EnvironmentAttributes.WATER_EVAPORATES)) {
+                Fluid content = bucket.getContent();
+                FluidDefinition fluidDefinition = ((FluidDefinitionAccessor) content).subtleEffects$getFluidDefinition();
+                if (fluidDefinition != null) {
+                    if (fluidDefinition.is(Fluids.WATER) && level.environmentAttributes().getDimensionValue(EnvironmentAttributes.WATER_EVAPORATES)) {
                         return;
                     }
 
@@ -501,28 +487,40 @@ public class ParticleSpawnUtil {
         }
     }
 
-    public static void spawnLavaSplash(Entity entity, boolean isInLava, boolean firstTick, boolean wasTouchingLava) {
+    public static FluidDefinition preformSplash(boolean waterOnly, boolean allFluids, Entity entity, boolean firstTick, Consumer<Boolean> successConsumer) {
         Level level = entity.level();
+        if (!level.isClientSide()) {
+            return null;
+        }
 
-        if (isInLava && ENTITIES.splashes.lavaSplashes) {
-            if (!wasTouchingLava && !firstTick) {
-                double yVelocity = entity.getDeltaMovement().y();
-                if (entity instanceof ServerPlayer player) {
-                    Services.NETWORK.sendToClientsTracking(player, (ServerLevel) level, entity.blockPosition(),
-                            new ClientBoundEntityLandInFluidPayload(entity.getId(), entity.getY() + entity.getFluidHeight(FluidTags.LAVA), yVelocity, true)
-                    );
-                    return;
+        FluidState fluidState = level.getFluidState(entity.blockPosition());
+        FluidDefinition fluidDefinition = ((FluidDefinitionAccessor) fluidState.getType()).subtleEffects$getFluidDefinition();
+
+        if (fluidDefinition != null) {
+            FluidLogicAccessor accessor = (FluidLogicAccessor) entity;
+            double fluidDefinitionHeight = accessor.subtleEffects$getFluidDefinitionHeight().getDouble(fluidDefinition);
+
+            if (fluidDefinitionHeight > 0) {
+                boolean isWater = fluidDefinition.is(FluidTags.WATER);
+
+                if (waterOnly == isWater || allFluids) {
+                    if (!fluidDefinition.is(accessor.subtleEffects$getLastTouchedFluid()) && !firstTick) {
+                        fluidDefinition.splashType().ifPresent(splashType -> {
+                            if (spawnSplashEffects(entity, level, fluidDefinition.id(), entity.getY() + fluidDefinitionHeight, entity.getDeltaMovement().y())) {
+                                successConsumer.accept(isWater);
+                            }
+                        });
+                    }
                 }
-                spawnSplashEffects(entity, level, ModParticles.LAVA_SPLASH_EMITTER.get(), FluidTags.LAVA);
+
+                return fluidDefinition;
             }
         }
+
+        return null;
     }
 
-    public static boolean spawnSplashEffects(Entity entity, Level level, ParticleType<SplashEmitterParticleOptions> splashParticle, TagKey<Fluid> fluidTag) {
-        return spawnSplashEffects(entity, level, splashParticle, entity.getY() + entity.getFluidHeight(fluidTag), entity.getDeltaMovement().y());
-    }
-
-    public static boolean spawnSplashEffects(Entity entity, Level level, ParticleType<SplashEmitterParticleOptions> splashParticle, double y, double yVelocity) {
+    public static boolean spawnSplashEffects(Entity entity, Level level, Identifier fluidDefinitionId, double y, double yVelocity) {
         if (!ENTITIES.splashes.splashEffects) {
             return false;
         }
@@ -534,7 +532,7 @@ public class ParticleSpawnUtil {
         if (yVelocity <= -ENTITIES.splashes.splashVelocityThreshold.get()) {
             double offset = y + 0.01;
             if (offset <= y + entity.getBbHeight()) {
-                level.addAlwaysVisibleParticle(SplashEmitter.createForEntity(entity, splashParticle, yVelocity), true,
+                level.addAlwaysVisibleParticle(SplashEmitter.createForEntity(entity, fluidDefinitionId, yVelocity), true,
                         entity.getX(),
                         offset,
                         entity.getZ(),

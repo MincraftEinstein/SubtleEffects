@@ -9,6 +9,9 @@
   ],
   "options": {
     "preset": "campfire",
-    "colors": "soul"
+    "color": {
+      "type": "subtle_effects:preset",
+      "preset": "soul_sparks"
+    }
   }
 }

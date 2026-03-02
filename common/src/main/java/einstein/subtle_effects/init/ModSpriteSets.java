@@ -1,24 +1,23 @@
 package einstein.subtle_effects.init;
 
 import einstein.subtle_effects.SubtleEffects;
-import net.minecraft.client.particle.ParticleResources;
-import net.minecraft.resources.Identifier;
-
-import java.util.HashMap;
-import java.util.Map;
+import einstein.subtle_effects.data.DynamicSpriteSetsManager;
+import einstein.subtle_effects.data.SpriteSetHolder;
+import net.minecraft.resources.ResourceLocation;
 
 public class ModSpriteSets {
 
-    public static final Map<Identifier, ParticleResources.MutableSpriteSet> REGISTERED = new HashMap<>();
-
-    public static final ParticleResources.MutableSpriteSet WATER_SPLASH_OVERLAY = register("water_splash_overlay");
+    public static final SpriteSetHolder WATER_SPLASH = register("water_splash");
+    public static final SpriteSetHolder WATER_SPLASH_OVERLAY = register("water_splash_overlay");
+    public static final SpriteSetHolder WATER_SPLASH_RIPPLE = register("water_splash_ripple");
 
     public static void init() {
     }
 
-    private static ParticleResources.MutableSpriteSet register(String name) {
-        ParticleResources.MutableSpriteSet spriteSet = new ParticleResources.MutableSpriteSet();
-        REGISTERED.put(SubtleEffects.loc(name), spriteSet);
-        return spriteSet;
+    private static SpriteSetHolder register(String name) {
+        ResourceLocation id = SubtleEffects.loc(name);
+        SpriteSetHolder holder = new SpriteSetHolder(id);
+        DynamicSpriteSetsManager.STATIC_SPRITE_SETS.put(id, holder);
+        return holder;
     }
 }

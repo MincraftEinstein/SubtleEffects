@@ -1,49 +1,56 @@
 package einstein.subtle_effects.particle;
 
-import einstein.subtle_effects.init.ModParticleLayers;
-import einstein.subtle_effects.particle.option.FloatParticleOptions;
-import einstein.subtle_effects.util.Util;
+import einstein.subtle_effects.data.FluidDefinition;
+import einstein.subtle_effects.data.FluidDefinitionReloadListener;
+import einstein.subtle_effects.data.splash_types.SplashOptions;
+import einstein.subtle_effects.data.splash_types.SplashType;
+import einstein.subtle_effects.particle.option.RippleParticleOptions;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleProvider;
-import net.minecraft.client.particle.ParticleRenderType;
 import net.minecraft.client.particle.SpriteSet;
+import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.core.BlockPos;
-import net.minecraft.tags.FluidTags;
-import net.minecraft.tags.TagKey;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.level.material.Fluid;
-
-import static einstein.subtle_effects.init.ModConfigs.ENTITIES;
+import org.joml.Vector3f;
 
 public class SplashRippleParticle extends FlatPlaneParticle {
 
     private final BlockPos.MutableBlockPos pos;
     private final SpriteSet sprites;
-    private final TagKey<Fluid> fluidTag;
-    private final boolean glowing;
+    private final FluidDefinition fluidDefinition;
+    private final int lightLevel;
     private boolean shouldAnimate = false;
 
-    protected SplashRippleParticle(ClientLevel level, double x, double y, double z, SpriteSet sprites, float xScale, TagKey<Fluid> fluidTag, boolean glowing, RandomSource random) {
-        super(level, x, y, z, sprites.first());
-        this.sprites = sprites;
-        this.fluidTag = fluidTag;
-        this.glowing = glowing;
+    protected SplashRippleParticle(ClientLevel level, double x, double y, double z, RippleParticleOptions options) {
+        super(level, x, y, z, null);
+        fluidDefinition = FluidDefinitionReloadListener.DEFINITIONS.get(options.fluidDefinitionId());
+        SplashType type = fluidDefinition.splashType().orElseThrow();
+        SplashOptions rippleOptions = type.splashRippleOptions();
+        sprites = rippleOptions.holder().get();
+        lightLevel = fluidDefinition.lightEmission();
         pos = BlockPos.containing(x, y, z).mutable();
         rotation = rotation.rotateX(90 * Mth.DEG_TO_RAD);
         lifetime = 15;
-        xScale /= 2; // Divided by 2 because it is used as the distance from the center
-        xScale -= (xScale * 0.0625F * 4F); // Subtracts 4 in scale so it aligns with the splash particle
-        quadSize = xScale;
-        setSize(xScale, 0.1F);
+        alpha = SplashParticle.alpha(rippleOptions);
+        Vector3f color = rippleOptions.getColorAndApplyTint(level, pos, random);
+        rCol = color.x;
+        gCol = color.y;
+        bCol = color.z;
+
+        float scale = options.scale();
+        scale /= 2; // Divided by 2 because it is used as the distance from the center
+        scale -= (scale * 0.0625F * 4F); // Subtracts 4 in scale so it aligns with the splash particle
+        quadSize = scale;
+        setSize(scale, 0.1F);
         setSpriteFromAge(sprites);
     }
 
     @Override
     public void tick() {
         pos.set(x, y, z);
-        if (!level.getFluidState(pos).is(fluidTag) && !Util.getCauldronFluid(level.getBlockState(pos)).is(fluidTag)) {
+        if (SplashParticle.canNotSurvive(fluidDefinition, level, pos)) {
             remove();
             return;
         }
@@ -68,10 +75,7 @@ public class SplashRippleParticle extends FlatPlaneParticle {
 
     @Override
     protected int getLightColor(float partialTick) {
-        if (glowing) {
-            return 240;
-        }
-        return super.getLightColor(partialTick);
+        return Math.max(LightTexture.block(lightLevel), super.getLightColor(partialTick));
     }
 
     @Override
@@ -79,36 +83,11 @@ public class SplashRippleParticle extends FlatPlaneParticle {
         return Layer.TRANSLUCENT;
     }
 
-    public record Provider(SpriteSet sprites) implements ParticleProvider<FloatParticleOptions> {
+    public record Provider() implements ParticleProvider<RippleParticleOptions> {
 
         @Override
-        public Particle createParticle(FloatParticleOptions options, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, RandomSource random) {
-            SplashRippleParticle particle = new SplashRippleParticle(level, x, y, z, sprites, options.f(), FluidTags.WATER, false, random);
-            int waterColor = level.getBiome(BlockPos.containing(x, y, z)).value().getWaterColor();
-            float colorIntensity = ENTITIES.splashes.splashOverlayTint.get();
-
-            if (colorIntensity > 0) {
-                float whiteIntensity = 1 - colorIntensity;
-                particle.setColor(whiteIntensity + (colorIntensity * ((waterColor >> 16 & 255) / 255F)),
-                        whiteIntensity + (colorIntensity * ((waterColor >> 8 & 255) / 255F)),
-                        whiteIntensity + (colorIntensity * ((waterColor & 255) / 255F)));
-            }
-
-            particle.setAlpha(ENTITIES.splashes.splashOverlayAlpha.get());
-            return particle;
-        }
-    }
-
-    public record LavaProvider(SpriteSet sprites) implements ParticleProvider<FloatParticleOptions> {
-
-        @Override
-        public Particle createParticle(FloatParticleOptions options, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, RandomSource random) {
-            SplashRippleParticle particle = new SplashRippleParticle(level, x, y, z, sprites, options.f(), FluidTags.LAVA, true, random);
-            if (ENTITIES.splashes.splashOverlayAlpha.get() == 0) {
-                particle.setAlpha(0);
-            }
-
-            return particle;
+        public Particle createParticle(RippleParticleOptions options, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, RandomSource random) {
+            return new SplashRippleParticle(level, x, y, z, options);
         }
     }
 }

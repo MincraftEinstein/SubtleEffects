@@ -9,6 +9,7 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleEngine;
 import net.minecraft.client.particle.SingleQuadParticle;
+import net.minecraft.client.renderer.BiomeColors;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
@@ -33,7 +34,7 @@ public class ParticleEngineMixin {
             }
 
             if (BCWPPackManager.isPackLoaded() && BCWPPackManager.BIOME_COLORED_PARTICLES.contains(type)) {
-                Util.setColorFromHex(sqParticle, level.getBiome(BlockPos.containing(x, y, z)).value().getWaterColor());
+                Util.setColorFromHex(sqParticle, BiomeColors.getAverageWaterColor(level, BlockPos.containing(x, y, z)));
             }
         }
     }

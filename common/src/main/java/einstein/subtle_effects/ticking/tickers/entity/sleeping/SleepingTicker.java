@@ -7,14 +7,17 @@ import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.LivingEntity;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.UUID;
+import java.util.function.Supplier;
 
 import static einstein.subtle_effects.init.ModConfigs.ENTITIES;
 
 public class SleepingTicker<T extends LivingEntity> extends EntityTicker<T> {
 
-    private final SoundEvent snoreSound;
+    @Nullable
+    private final Supplier<SoundEvent> snoreSound;
     private final float snoreVolume;
     private final int breathDelay;
     private final boolean doesSnore;
@@ -30,7 +33,7 @@ public class SleepingTicker<T extends LivingEntity> extends EntityTicker<T> {
         this(entity, true, Util.BREATH_DELAY, null, 0);
     }
 
-    public SleepingTicker(T entity, boolean doesSnore, int breathDelay, SoundEvent snoreSound, float snoreVolume) {
+    public SleepingTicker(T entity, boolean doesSnore, int breathDelay, @Nullable Supplier<SoundEvent> snoreSound, float snoreVolume) {
         super(entity);
         this.doesSnore = doesSnore;
         this.snoreVolume = snoreVolume;
@@ -59,7 +62,7 @@ public class SleepingTicker<T extends LivingEntity> extends EntityTicker<T> {
 
             if (snoreTimer >= Util.SNORE_DELAY) {
                 if (doesSnore && !entity.isSilent() && zCount <= 0 && snoreSound != null) {
-                    Util.playClientSound(entity, snoreSound, SoundSource.NEUTRAL, snoreVolume, entity.getVoicePitch());
+                    Util.playClientSound(entity, snoreSound.get(), SoundSource.NEUTRAL, snoreVolume, entity.getVoicePitch());
                 }
 
                 snoreTimer = 0;

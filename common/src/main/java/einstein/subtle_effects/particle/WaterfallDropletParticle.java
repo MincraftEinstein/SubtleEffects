@@ -4,6 +4,7 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.client.particle.SpriteSet;
+import net.minecraft.client.renderer.BiomeColors;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.SimpleParticleType;
@@ -22,7 +23,7 @@ public class WaterfallDropletParticle extends BaseWaterfallParticle {
         quadSize = Mth.nextFloat(random, 0.0625F, 0.125F);
         setSize(quadSize, quadSize);
 
-        int waterColor = level.getBiome(BlockPos.containing(x, y, z)).value().getWaterColor();
+        int waterColor = BiomeColors.getAverageWaterColor(level, BlockPos.containing(x, y, z));
         float colorIntensity = Mth.nextFloat(random, 0.2F, 0.5F);
         float whiteIntensity = 1 - colorIntensity;
         float red = (waterColor >> 16 & 255) / 255F;

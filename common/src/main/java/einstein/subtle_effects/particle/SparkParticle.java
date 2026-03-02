@@ -1,15 +1,22 @@
 package einstein.subtle_effects.particle;
 
+import einstein.subtle_effects.data.color_providers.ColorProviderType;
 import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.util.ParticleAccessor;
 import einstein.subtle_effects.util.SparkType;
 import einstein.subtle_effects.util.Util;
 import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.client.particle.*;
+import net.minecraft.client.particle.Particle;
+import net.minecraft.client.particle.ParticleProvider;
+import net.minecraft.client.particle.SingleQuadParticle;
+import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ColorParticleOption;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.Level;
+import org.joml.Vector3f;
 
 import java.util.List;
 
@@ -37,6 +44,11 @@ public class SparkParticle extends SingleQuadParticle {
 
     public static ColorParticleOption create(SparkType sparkType, RandomSource random) {
         return create(sparkType, random, DEFAULT_COLORS);
+    }
+
+    public static ColorParticleOption create(SparkType sparkType, ColorProviderType.ColorProvider colorProvider, Level level, BlockPos pos, RandomSource random) {
+        Vector3f color = colorProvider.provideColor(level, pos, random);
+        return ColorParticleOption.create(sparkType.getType().get(), color.x(), color.y(), color.z());
     }
 
     public static ColorParticleOption create(SparkType sparkType, RandomSource random, List<Integer> colors) {

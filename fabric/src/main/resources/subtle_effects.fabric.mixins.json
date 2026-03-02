@@ -7,7 +7,8 @@
   "client": [
     "client.FabricClientEntityMixin",
     "client.FabricLevelRendererMixin",
-    "client.FabricMultiPlayerGameModeMixin"
+    "client.FabricMultiPlayerGameModeMixin",
+    "client.FabricParticleEngineMixin"
   ],
   "mixins": [
     "common.FabricStonecutterMenu$2Mixin",
