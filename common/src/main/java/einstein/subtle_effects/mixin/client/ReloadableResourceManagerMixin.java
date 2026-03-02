@@ -23,7 +23,7 @@ public abstract class ReloadableResourceManagerMixin {
     @Inject(method = "<init>", at = @At("TAIL"))
     private void addAdditionalListeners(PackType type, CallbackInfo ci) {
         if (type == PackType.CLIENT_RESOURCES) {
-            listeners.addFirst(new SplashTypeReloadListener());
+            listeners.add(0, new SplashTypeReloadListener());
         }
     }
 }

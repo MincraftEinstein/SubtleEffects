@@ -16,7 +16,7 @@ import java.util.concurrent.CompletionStage;
 import java.util.concurrent.Executor;
 
 @Mixin(ParticleEngine.class)
-public abstract class NeoForgeParticleEngineMixin {
+public abstract class ForgeParticleEngineMixin {
 
     @Shadow
     @Final

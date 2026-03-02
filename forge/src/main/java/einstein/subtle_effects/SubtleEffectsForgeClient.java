@@ -52,11 +52,7 @@ public class SubtleEffectsForgeClient {
                 event.addRepositorySource(new BCWPSource());
             }
         });
-        modEventBus.addListener((RegisterClientReloadListenersEvent event) -> {
-            event.registerReloadListener(new SparkProviderReloadListener());
-            event.registerReloadListener(new MobSkullShaderReloadListener());
-            event.registerReloadListener(new BCWPPackManager());
-        });
+        modEventBus.addListener((RegisterClientReloadListenersEvent event) -> SubtleEffectsClient.registerReloadListeners().forEach(event::registerReloadListener));
         modEventBus.addListener((EntityRenderersEvent.RegisterLayerDefinitions event) ->
                 SubtleEffectsClient.registerModelLayers().forEach(event::registerLayerDefinition)
         );

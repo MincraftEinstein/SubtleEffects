@@ -38,7 +38,7 @@ public record PresetColorProvider(Preset preset) implements ColorProviderType.Co
         LAVA_DROPLET("lava_droplet", fromIntList(List.of(0xEEBA4E, 0xE48F30, 0xD96415))),
         LAVA_RIPPLE("lava_ripple", new ConstantColorProvider(0xDE7A22));
 
-        public static final Codec<Preset> CODEC = StringRepresentable.fromValues(Preset::values);
+        public static final Codec<Preset> CODEC = StringRepresentable.fromEnum(Preset::values);
 
         private final String name;
         private final ColorProviderType.ColorProvider color;

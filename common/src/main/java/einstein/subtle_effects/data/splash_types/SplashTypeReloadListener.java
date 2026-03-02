@@ -1,7 +1,6 @@
 package einstein.subtle_effects.data.splash_types;
 
 import com.google.gson.JsonElement;
-import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.JsonOps;
 import einstein.subtle_effects.SubtleEffects;
 import einstein.subtle_effects.data.DynamicSpriteSetsManager;
@@ -18,6 +17,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Function;
 
 import static einstein.subtle_effects.SubtleEffects.LOGGER;
 import static einstein.subtle_effects.init.ModSpriteSets.*;
@@ -48,7 +48,7 @@ public class SplashTypeReloadListener extends SimplePreparableReloadListener<Map
     }
 
     private static void load(ResourceLocation id, SplashType.Data typeData, Map<ResourceLocation, SplashType> splashTypes) {
-        SplashOptions.Data overlayOptions = Either.unwrap(typeData.splashOverlayOptions().mapLeft(hasOverlay -> hasOverlay ? SplashOptions.Data.DEFAULT : SplashOptions.Data.EMPTY));
+        SplashOptions.Data overlayOptions = typeData.splashOverlayOptions().mapLeft(hasOverlay -> hasOverlay ? SplashOptions.Data.DEFAULT : SplashOptions.Data.EMPTY).map(Function.identity(), Function.identity());
 
         splashTypes.put(id, new SplashType(createOptions(typeData.splashOptions(), WATER_SPLASH),
                 createOptions(overlayOptions, overlayOptions.colorProvider().isPresent() ? WATER_SPLASH_OVERLAY : null),

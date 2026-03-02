@@ -1,7 +1,5 @@
 package einstein.subtle_effects.mixin.client.entity;
 
-import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
-import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import einstein.subtle_effects.data.FluidDefinition;
 import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.init.ModParticles;
@@ -13,7 +11,6 @@ import einstein.subtle_effects.util.Util;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.minecraft.core.BlockPos;
-import net.minecraft.tags.TagKey;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
@@ -21,7 +18,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.AABB;
@@ -132,21 +128,6 @@ public abstract class ClientEntityMixin implements EntityTickerAccessor, FluidLo
     private void preformSplash(CallbackInfoReturnable<Boolean> cir) {
         subtleEffects$lastTouchedFluid = ParticleSpawnUtil.preformSplash(false, false, subtleEffects$me, firstTick, isWater -> {
         });
-    }
-
-    @WrapOperation(method = "updateInWaterStateAndDoWaterCurrentPushing", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;updateFluidHeightAndDoFluidPushing(Lnet/minecraft/tags/TagKey;D)Z"))
-    private boolean preformWaterSplash(Entity instance, TagKey<Fluid> fluidTag, double motionScale, Operation<Boolean> original) {
-        boolean result = original.call(instance, fluidTag, motionScale);
-
-        if (result) {
-            subtleEffects$lastTouchedFluid = ParticleSpawnUtil.preformSplash(true, false, subtleEffects$me, firstTick, isWater -> {
-                if (isWater) {
-                    subtleEffects$cancelWaterSplash = true;
-                }
-            });
-        }
-
-        return result;
     }
 
     @Inject(method = "doWaterSplashEffect", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/Mth;floor(D)I"), cancellable = true)

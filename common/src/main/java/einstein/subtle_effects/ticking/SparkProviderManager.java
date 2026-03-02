@@ -5,11 +5,11 @@ import einstein.subtle_effects.data.SparkProviderReloadListener;
 import einstein.subtle_effects.data.color_providers.ColorProviderType;
 import einstein.subtle_effects.data.color_providers.PresetColorProvider;
 import einstein.subtle_effects.particle.SparkParticle;
+import einstein.subtle_effects.particle.option.ColorParticleOptions;
 import einstein.subtle_effects.util.Box;
 import einstein.subtle_effects.util.SparkType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.particles.ColorParticleOption;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.valueproviders.ConstantInt;
@@ -163,7 +163,7 @@ public class SparkProviderManager {
         if (random.nextBoolean()) {
             Vec3 start = box.min();
             Vec3 end = box.max();
-            ColorParticleOption options = SparkParticle.create(sparkType, colorProvider, level, pos, random);
+            ColorParticleOptions options = SparkParticle.create(sparkType, colorProvider, level, pos, random);
 
             for (int i = 0; i < count; i++) {
                 level.addParticle(options,
@@ -179,7 +179,7 @@ public class SparkProviderManager {
     }
 
     private static void spawnFireSparks(Level level, RandomSource random, BlockPos pos, ColorProviderType.ColorProvider colorProvider, double xOffset, double zOffset) {
-        ColorParticleOption options = SparkParticle.create(SparkType.LONG_LIFE, colorProvider, level, pos, random);
+        ColorParticleOptions options = SparkParticle.create(SparkType.LONG_LIFE, colorProvider, level, pos, random);
 
         for (int i = 0; i < 5; i++) {
             level.addParticle(options,

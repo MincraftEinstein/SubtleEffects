@@ -70,11 +70,11 @@ public class ModParticles {
     public static final Supplier<SimpleParticleType> GEYSER_SMOKE = register("geyser_smoke");
     public static final Supplier<ParticleType<ColorParticleOptions>> POTION_CLOUD = register("potion_cloud", ColorParticleOptions.DESERIALIZER, ColorParticleOptions::codec);
     public static final Supplier<ParticleType<ColorParticleOptions>> POTION_POOF_CLOUD = register("potion_poof_cloud", ColorParticleOptions.DESERIALIZER, ColorParticleOptions::codec);
-    public static final Supplier<ParticleType<RippleParticleOptions>> RIPPLE = register("ripple", RippleParticleOptions::codec, RippleParticleOptions::streamCodec);
-    public static final Supplier<ParticleType<DropletParticleOptions>> DROPLET = register("droplet", type -> DropletParticleOptions.CODEC, type -> DropletParticleOptions.STREAM_CODEC);
-    public static final Supplier<ParticleType<SplashParticleOptions>> SPLASH = register("splash", type -> SplashParticleOptions.DESERIALIZER, type -> SplashParticleOptions.codec());
-    public static final Supplier<ParticleType<RippleParticleOptions>> SPLASH_RIPPLE = register("splash_ripple", RippleParticleOptions::codec, RippleParticleOptions::streamCodec);
-    public static final Supplier<ParticleType<SplashEmitterParticleOptions>> SPLASH_EMITTER = register("splash_emitter", type -> SplashEmitterParticleOptions.CODEC, type -> SplashEmitterParticleOptions.STREAM_CODEC);
+    public static final Supplier<ParticleType<RippleParticleOptions>> RIPPLE = register("ripple", RippleParticleOptions.DESERIALIZER, RippleParticleOptions::codec);
+    public static final Supplier<ParticleType<DropletParticleOptions>> DROPLET = register("droplet", DropletParticleOptions.DESERIALIZER, type -> DropletParticleOptions.CODEC);
+    public static final Supplier<ParticleType<SplashParticleOptions>> SPLASH = register("splash", SplashParticleOptions.DESERIALIZER, type -> SplashParticleOptions.codec());
+    public static final Supplier<ParticleType<RippleParticleOptions>> SPLASH_RIPPLE = register("splash_ripple", RippleParticleOptions.DESERIALIZER, RippleParticleOptions::codec);
+    public static final Supplier<ParticleType<SplashEmitterParticleOptions>> SPLASH_EMITTER = register("splash_emitter", SplashEmitterParticleOptions.DESERIALIZER, type -> SplashEmitterParticleOptions.codec());
     public static final Supplier<SimpleParticleType> WATERFALL_CLOUD = register("waterfall_cloud");
     public static final Supplier<SimpleParticleType> WATERFALL_DROPLET = register("waterfall_droplet");
     public static final Supplier<SimpleParticleType> WATERFALL_MIST = register("waterfall_mist");

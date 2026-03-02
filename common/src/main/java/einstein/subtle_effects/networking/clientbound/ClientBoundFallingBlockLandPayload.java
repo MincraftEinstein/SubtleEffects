@@ -2,7 +2,6 @@ package einstein.subtle_effects.networking.clientbound;
 
 import einstein.subtle_effects.SubtleEffects;
 import einstein.subtle_effects.networking.Packet;
-import it.crystalnest.soul_fire_d.network.CustomPacketPayload;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;

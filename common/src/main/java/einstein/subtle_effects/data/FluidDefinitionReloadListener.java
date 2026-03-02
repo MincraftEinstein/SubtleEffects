@@ -5,7 +5,7 @@ import com.mojang.serialization.JsonOps;
 import einstein.subtle_effects.SubtleEffects;
 import einstein.subtle_effects.data.splash_types.SplashType;
 import einstein.subtle_effects.data.splash_types.SplashTypeReloadListener;
-import einstein.subtle_effects.mixin.client.item.BucketItemAccessor;
+import einstein.subtle_effects.util.BucketItemAccessor;
 import einstein.subtle_effects.util.FluidDefinitionAccessor;
 import einstein.subtle_effects.util.Util;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -25,8 +25,8 @@ import static einstein.subtle_effects.SubtleEffects.LOGGER;
 
 public class FluidDefinitionReloadListener extends SimplePreparableReloadListener<Map<ResourceLocation, FluidDefinition.Data>> implements NamedReloadListener {
 
-    public static final ResourceLocation WATER_ID = ResourceLocation.withDefaultNamespace("water");
-    public static final ResourceLocation LAVA_ID = ResourceLocation.withDefaultNamespace("lava");
+    public static final ResourceLocation WATER_ID = new ResourceLocation("water");
+    public static final ResourceLocation LAVA_ID = new ResourceLocation("lava");
     private static final String DIRECTORY = "subtle_effects/fluid_definitions";
     public static final Map<ResourceLocation, FluidDefinition> DEFINITIONS = new HashMap<>();
 

@@ -19,7 +19,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.AABB;
-import org.apache.commons.lang3.function.Consumers;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -42,7 +41,8 @@ public abstract class FallingBlockEntityMixin extends Entity implements FluidLog
         if (level().isClientSide) {
             subtleEffects$getFluidDefinitionHeight().clear();
             subtleEffects$updateFluidDefinitionHeight();
-            subtleEffects$setLastTouchedFluid(ParticleSpawnUtil.preformSplash(true, true, this, false, Consumers.nop()));
+            subtleEffects$setLastTouchedFluid(ParticleSpawnUtil.preformSplash(true, true, this, false, isWater -> {
+            }));
         }
     }
 

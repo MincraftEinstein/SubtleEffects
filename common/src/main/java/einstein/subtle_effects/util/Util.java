@@ -35,6 +35,7 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.ExtraCodecs;
 import net.minecraft.util.FastColor;
+import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.ItemStack;
@@ -62,8 +63,11 @@ public class Util {
     public static final Gson GSON = new GsonBuilder().create();
     public static final ResourceLocation VANILLA_EYE = new ResourceLocation("ender_eye");
     private static final String UUID = "d71e4b41-9315-499f-a934-ca925421fb38";
-    public static final Codec<Integer> RGB_COLOR_CODEC = Codec.either(Codec.withAlternative(Codec.INT, ExtraCodecs.VECTOR3F,
-            color -> FastColor.ARGB32.colorFromFloat(1, color.x(), color.y(), color.z())
+    public static final Codec<Integer> RGB_COLOR_CODEC = Codec.either(Codec.either(Codec.INT, ExtraCodecs.VECTOR3F).xmap(either ->
+            either.map(
+                    i -> i,
+                    color -> FastColor.ARGB32.color(255, Mth.floor(color.x() * 255), Mth.floor(color.y() * 255), Mth.floor(color.z() * 255))
+            ), Either::left
     ), Codec.STRING).comapFlatMap(either -> either.map(DataResult::success, string -> {
         try {
             return DataResult.success(Integer.decode(string));
