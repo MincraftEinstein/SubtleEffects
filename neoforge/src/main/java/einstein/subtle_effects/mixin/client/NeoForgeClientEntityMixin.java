@@ -1,5 +1,7 @@
 package einstein.subtle_effects.mixin.client;
 
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.llamalad7.mixinextras.sugar.Share;
 import com.llamalad7.mixinextras.sugar.ref.LocalRef;
@@ -7,6 +9,7 @@ import einstein.subtle_effects.data.FluidDefinition;
 import einstein.subtle_effects.util.FluidDefinitionAccessor;
 import einstein.subtle_effects.util.FluidLogicAccessor;
 import einstein.subtle_effects.util.InterimCalculationAccessor;
+import einstein.subtle_effects.util.ParticleSpawnUtil;
 import it.unimi.dsi.fastutil.objects.Object2DoubleArrayMap;
 import it.unimi.dsi.fastutil.objects.Object2DoubleMap;
 import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
@@ -26,10 +29,16 @@ import java.util.Map;
 @Mixin(Entity.class)
 public abstract class NeoForgeClientEntityMixin implements FluidLogicAccessor {
 
+    @Shadow
+    protected boolean firstTick;
+
     @Unique
     private final Object2DoubleMap<FluidDefinition> subtleEffects$fluidPairHeight = new Object2DoubleArrayMap<>();
 
-    @Inject(method = "updateFluidHeightAndDoFluidPushing()V", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/material/FluidState;getHeight(Lnet/minecraft/world/level/BlockGetter;Lnet/minecraft/core/BlockPos;)F"))
+    @Unique
+    private final Entity subtleEffects$me = (Entity) (Object) this;
+
+    @Inject(method = "updateFluidHeightAndDoFluidPushing(Z)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/material/FluidState;getHeight(Lnet/minecraft/world/level/BlockGetter;Lnet/minecraft/core/BlockPos;)F"))
     private void storeFluidPairHeight(CallbackInfo ci, @Local FluidState fluidState, @Share("fluidPairs") LocalRef<Map<FluidType, FluidDefinition>> fluidPairsRef) {
         FluidDefinition fluidDefinition = ((FluidDefinitionAccessor) fluidState.getType()).subtleEffects$getFluidDefinition();
         FluidType type = fluidState.getFluidType();
@@ -45,7 +54,7 @@ public abstract class NeoForgeClientEntityMixin implements FluidLogicAccessor {
         fluidPairsRef.set(fluidTypePairs);
     }
 
-    @Inject(method = "updateFluidHeightAndDoFluidPushing()V", at = @At(value = "INVOKE", target = "Lit/unimi/dsi/fastutil/objects/Object2ObjectMap;forEach(Ljava/util/function/BiConsumer;)V", remap = false))
+    @Inject(method = "updateFluidHeightAndDoFluidPushing(Z)V", at = @At(value = "INVOKE", target = "Lit/unimi/dsi/fastutil/objects/Object2ObjectMap;forEach(Ljava/util/function/BiConsumer;)V", remap = false))
     private void updateFluidPairHeight(CallbackInfo ci, @Local Object2ObjectMap<FluidType, Object> interimCalcs, @Share("fluidPairs") LocalRef<Map<FluidType, FluidDefinition>> fluidPairsRef) {
         interimCalcs.forEach((type, interim) -> {
             FluidDefinition fluidDefinition = fluidPairsRef.get().get(type);
@@ -54,6 +63,21 @@ public abstract class NeoForgeClientEntityMixin implements FluidLogicAccessor {
                 subtleEffects$fluidPairHeight.put(fluidDefinition, ((InterimCalculationAccessor) interim).subtleEffects$getFluidHeight());
             }
         });
+    }
+
+    @WrapOperation(method = "updateInWaterStateAndDoWaterCurrentPushing(Z)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;updateFluidHeightAndDoCanPushEntityFluidPushing(Z)Z"))
+    private boolean preformWaterSplash(Entity instance, boolean preformFluidPushing, Operation<Boolean> original) {
+        boolean result = original.call(instance, preformFluidPushing);
+
+        if (result) {
+            subtleEffects$setLastTouchedFluid(ParticleSpawnUtil.preformSplash(true, false, subtleEffects$me, firstTick, isWater -> {
+                if (isWater) {
+                    subtleEffects$cancelNextWaterSplash();
+                }
+            }));
+        }
+
+        return result;
     }
 
     @Override

@@ -5,9 +5,12 @@ import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import einstein.subtle_effects.data.FluidDefinition;
+import einstein.subtle_effects.data.FluidDefinitionReloadListener;
 import einstein.subtle_effects.init.ModParticles;
 import einstein.subtle_effects.init.ModRenderStateAttachmentKeys;
 import einstein.subtle_effects.particle.option.FloatParticleOptions;
+import einstein.subtle_effects.particle.option.RippleParticleOptions;
 import einstein.subtle_effects.util.RenderStateAttachmentAccessor;
 import einstein.subtle_effects.util.Util;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -66,7 +69,7 @@ public abstract class WeatherEffectsRendererMixin {
                     return;
                 }
 
-                options = new FloatParticleOptions(ModParticles.WATER_RIPPLE.get(), 1);
+                options = new RippleParticleOptions(ModParticles.RIPPLE.get(), FluidDefinitionReloadListener.WATER_ID, 1, false);
 
                 if (isCauldron) {
                     x = pos.getX() + 0.1875 + nextDouble(random, 0.625);

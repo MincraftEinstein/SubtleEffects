@@ -19,7 +19,6 @@ import net.minecraft.core.particles.*;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.tags.FluidTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -427,17 +426,20 @@ public class ClientPacketHandlers {
                         return;
                     }
 
-                    ParticleType<SplashEmitterParticleOptions> type = fluidState.is(FluidTags.WATER) ? ModParticles.WATER_SPLASH_EMITTER.get() : fluidState.is(FluidTags.LAVA) ? ModParticles.LAVA_SPLASH_EMITTER.get() : null;
-                    if (type != null) {
-                        BlockPos surfacePos = currentPos.below();
-                        FluidState surfaceFluidState = level.getFluidState(surfacePos);
-                        float scale = radius - ((y - blockY) / radius);
+                    FluidDefinition fluidDefinition = ((FluidDefinitionAccessor) fluidState.getType()).subtleEffects$getFluidDefinition();
+                    if (fluidDefinition != null) {
+                        if (fluidDefinition.splashType().isPresent()) {
+                            BlockPos surfacePos = currentPos.below();
+                            FluidState surfaceFluidState = level.getFluidState(surfacePos);
+                            float scale = radius - ((y - blockY) / radius);
 
-                        level.addAlwaysVisibleParticle(new SplashEmitterParticleOptions(type, scale, scale * (scale * 0.1F), -1, -1),
-                                true, position.x(), surfacePos.getY() + surfaceFluidState.getHeight(level, surfacePos) + 0.01, position.z(),
-                                0, 0, 0
-                        );
+                            level.addAlwaysVisibleParticle(new SplashEmitterParticleOptions(fluidDefinition.id(), scale, scale * (scale * 0.1F), -1, -1),
+                                    true, position.x(), surfacePos.getY() + surfaceFluidState.getHeight(level, surfacePos) + 0.01, position.z(),
+                                    0, 0, 0
+                            );
+                        }
                     }
+
                     return;
                 }
             }

@@ -6,6 +6,9 @@
   ],
   "options": {
     "preset": "torch",
-    "colors": "copper"
+    "color": {
+      "type": "subtle_effects:preset",
+      "preset": "copper_sparks"
+    }
   }
 }

@@ -8,7 +8,7 @@ import einstein.subtle_effects.data.color_providers.ColorProviderType;
 import einstein.subtle_effects.data.color_providers.Colorable;
 import einstein.subtle_effects.data.color_providers.NoneColorProvider;
 import einstein.subtle_effects.util.Util;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 import java.util.Optional;
 
@@ -16,7 +16,7 @@ public record SplashOptions(SpriteSetHolder holder, ColorProviderType.ColorProvi
                             Optional<Either<Float, Boolean>> tinting,
                             Optional<Either<Float, Boolean>> transparency) implements Colorable {
 
-    public record Data(Optional<ResourceLocation> spriteSetId,
+    public record Data(Optional<Identifier> spriteSetId,
                        Optional<ColorProviderType.ColorProvider> colorProvider,
                        Optional<Either<Float, Boolean>> tinting,
                        Optional<Either<Float, Boolean>> transparency) {
@@ -25,7 +25,7 @@ public record SplashOptions(SpriteSetHolder holder, ColorProviderType.ColorProvi
         public static final Data DEFAULT = new Data(Optional.empty(), Optional.of(NoneColorProvider.INSTANCE), Optional.empty(), Optional.empty());
 
         public static final Codec<Data> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-                ResourceLocation.CODEC.optionalFieldOf("sprite_set").forGetter(Data::spriteSetId),
+                Identifier.CODEC.optionalFieldOf("sprite_set").forGetter(Data::spriteSetId),
                 ColorProviderType.CODEC.optionalFieldOf("color").forGetter(Data::colorProvider),
                 Util.configurableFloatCodec("intensity").optionalFieldOf("tinting").forGetter(Data::tinting),
                 Util.configurableFloatCodec("alpha").optionalFieldOf("transparency").forGetter(Data::transparency)

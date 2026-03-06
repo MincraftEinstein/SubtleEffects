@@ -4,9 +4,9 @@ import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import einstein.subtle_effects.util.Util;
 import net.minecraft.core.BlockPos;
+import net.minecraft.util.ARGB;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.Vec3;
 import org.joml.Vector3f;
 
 public record ConstantColorProvider(int color) implements ColorProviderType.ColorProvider {
@@ -22,6 +22,6 @@ public record ConstantColorProvider(int color) implements ColorProviderType.Colo
 
     @Override
     public Vector3f provideColor(Level level, BlockPos pos, RandomSource random) {
-        return Vec3.fromRGB24(color).toVector3f();
+        return ARGB.vector3fFromRGB24(color);
     }
 }

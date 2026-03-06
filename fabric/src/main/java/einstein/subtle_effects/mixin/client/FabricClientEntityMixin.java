@@ -8,6 +8,7 @@ import com.llamalad7.mixinextras.sugar.ref.LocalRef;
 import einstein.subtle_effects.data.FluidDefinition;
 import einstein.subtle_effects.util.FluidDefinitionAccessor;
 import einstein.subtle_effects.util.FluidLogicAccessor;
+import einstein.subtle_effects.util.ParticleSpawnUtil;
 import it.unimi.dsi.fastutil.objects.Object2DoubleArrayMap;
 import it.unimi.dsi.fastutil.objects.Object2DoubleMap;
 import net.minecraft.tags.TagKey;
@@ -28,12 +29,18 @@ public abstract class FabricClientEntityMixin implements FluidLogicAccessor {
     @Shadow
     public abstract Level level();
 
+    @Shadow
+    protected boolean firstTick;
+
     @Unique
     private final Object2DoubleMap<FluidDefinition> subtleEffects$fluidPairHeight = new Object2DoubleArrayMap<>();
 
+    @Unique
+    private final Entity subtleEffects$me = (Entity) (Object) this;
+
     @Inject(method = "updateFluidHeightAndDoFluidPushing", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/material/FluidState;getHeight(Lnet/minecraft/world/level/BlockGetter;Lnet/minecraft/core/BlockPos;)F"))
     private void storeFluidPairHeight(TagKey<Fluid> fluidTag, double motionScale, CallbackInfoReturnable<Boolean> cir, @Local FluidState fluidState, @Share("fluidPair") LocalRef<FluidDefinition> fluidPairRef) {
-        if (level().isClientSide) {
+        if (level().isClientSide()) {
             FluidDefinition fluidDefinition = ((FluidDefinitionAccessor) fluidState.getType()).subtleEffects$getFluidDefinition();
             if (fluidDefinition != null) {
                 fluidPairRef.set(fluidDefinition);
@@ -43,7 +50,7 @@ public abstract class FabricClientEntityMixin implements FluidLogicAccessor {
 
     @WrapOperation(method = "updateFluidHeightAndDoFluidPushing", at = @At(value = "INVOKE", target = "Lit/unimi/dsi/fastutil/objects/Object2DoubleMap;put(Ljava/lang/Object;D)D", remap = false))
     private double updateFluidPairHeight(Object2DoubleMap<TagKey<Fluid>> vanillaFluidHeight, Object fluidTag, double fluidHeight, Operation<Double> original, @Share("fluidPair") LocalRef<FluidDefinition> fluidPairRef) {
-        if (level().isClientSide) {
+        if (level().isClientSide()) {
             FluidDefinition fluidDefinition = fluidPairRef.get();
             if (fluidDefinition != null) {
                 subtleEffects$fluidPairHeight.put(fluidDefinition, fluidHeight);
@@ -51,6 +58,21 @@ public abstract class FabricClientEntityMixin implements FluidLogicAccessor {
         }
 
         return original.call(vanillaFluidHeight, fluidTag, fluidHeight);
+    }
+
+    @WrapOperation(method = "updateInWaterStateAndDoWaterCurrentPushing", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;updateFluidHeightAndDoFluidPushing(Lnet/minecraft/tags/TagKey;D)Z"))
+    private boolean preformWaterSplash(Entity instance, TagKey<Fluid> fluidTag, double motionScale, Operation<Boolean> original) {
+        boolean result = original.call(instance, fluidTag, motionScale);
+
+        if (result) {
+            subtleEffects$setLastTouchedFluid(ParticleSpawnUtil.preformSplash(true, false, subtleEffects$me, firstTick, isWater -> {
+                if (isWater) {
+                    subtleEffects$cancelNextWaterSplash();
+                }
+            }));
+        }
+
+        return result;
     }
 
     @Override

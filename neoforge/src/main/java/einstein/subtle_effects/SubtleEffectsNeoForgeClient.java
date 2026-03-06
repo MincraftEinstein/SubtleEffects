@@ -3,6 +3,7 @@ package einstein.subtle_effects;
 import einstein.subtle_effects.client.renderer.ParticleBoundingBoxesRenderer;
 import einstein.subtle_effects.data.BCWPPackManager;
 import einstein.subtle_effects.data.NamedReloadListener;
+import einstein.subtle_effects.data.splash_types.SplashTypeReloadListener;
 import einstein.subtle_effects.platform.NeoForgeRegistryHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.ParticleProvider;
@@ -20,6 +21,7 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.client.event.*;
+import net.neoforged.neoforge.client.resources.VanillaClientListeners;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.AddPackFindersEvent;
 
@@ -40,9 +42,11 @@ public class SubtleEffectsNeoForgeClient {
         modEventBus.addListener((AddPackFindersEvent event) ->
                 event.addPackFinders(BCWPPackManager.PACK_LOCATION.get(), PackType.CLIENT_RESOURCES,
                         BCWPPackManager.PACK_NAME, PackSource.BUILT_IN, false, Pack.Position.TOP));
-        modEventBus.addListener((AddClientReloadListenersEvent event) ->
-                SubtleEffectsClient.registerReloadListeners().forEach(listener -> addReloadListener(event, listener))
-        );
+        modEventBus.addListener((AddClientReloadListenersEvent event) -> {
+            SubtleEffectsClient.registerReloadListeners().forEach(listener -> addReloadListener(event, listener));
+            addReloadListener(event, new SplashTypeReloadListener());
+            event.addDependency(SplashTypeReloadListener.ID, VanillaClientListeners.FIRST);
+        });
         modEventBus.addListener((EntityRenderersEvent.RegisterLayerDefinitions event) ->
                 SubtleEffectsClient.registerModelLayers().forEach(event::registerLayerDefinition)
         );

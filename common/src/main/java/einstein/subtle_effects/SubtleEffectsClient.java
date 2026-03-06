@@ -102,8 +102,8 @@ public class SubtleEffectsClient {
                     .append(CommonComponents.SPACE)
                     .append(Component.translatable("chat.subtle_effects.anniversary.message", Util.formatOrdinal(years), Component.translatable("chat.subtle_effects.anniversary.message.click_event")
                             .withStyle(style -> style.withUnderlined(true)
-                                    .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Component.translatable("chat.subtle_effects.anniversary.message.click_event.tooltip")))
-                                    .withClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/configure subtle_effects general")))
+                                    .withHoverEvent(new HoverEvent.ShowText(Component.translatable("chat.subtle_effects.anniversary.message.click_event.tooltip")))
+                                    .withClickEvent(new ClickEvent.RunCommand("/configure subtle_effects general")))
                     ))
             );
             HAS_DISPLAYED_BIRTHDAY_NOTIFICATION = true;

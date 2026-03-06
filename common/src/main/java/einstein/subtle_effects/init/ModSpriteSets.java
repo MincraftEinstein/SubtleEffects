@@ -3,7 +3,7 @@ package einstein.subtle_effects.init;
 import einstein.subtle_effects.SubtleEffects;
 import einstein.subtle_effects.data.DynamicSpriteSetsManager;
 import einstein.subtle_effects.data.SpriteSetHolder;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 public class ModSpriteSets {
 
@@ -15,7 +15,7 @@ public class ModSpriteSets {
     }
 
     private static SpriteSetHolder register(String name) {
-        ResourceLocation id = SubtleEffects.loc(name);
+        Identifier id = SubtleEffects.loc(name);
         SpriteSetHolder holder = new SpriteSetHolder(id);
         DynamicSpriteSetsManager.STATIC_SPRITE_SETS.put(id, holder);
         return holder;

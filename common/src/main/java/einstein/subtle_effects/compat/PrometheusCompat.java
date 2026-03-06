@@ -7,7 +7,7 @@ import it.crystalnest.prometheus.api.Fire;
 import it.crystalnest.prometheus.api.FireManager;
 import it.crystalnest.prometheus.api.type.FireTyped;
 import net.minecraft.core.particles.ParticleOptions;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.Entity;
 import org.jetbrains.annotations.Nullable;
 
@@ -38,7 +38,7 @@ public class PrometheusCompat {
         return BurningEffectsReloadListener.PROMETHEUS_BURNING_EFFECTS.get(getFireType(entity));
     }
 
-    private static ResourceLocation getFireType(Entity entity) {
+    private static Identifier getFireType(Entity entity) {
         return ((FireTyped) entity).getFireType();
     }
 }

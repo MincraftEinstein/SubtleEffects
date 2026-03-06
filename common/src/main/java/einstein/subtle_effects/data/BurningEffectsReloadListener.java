@@ -1,10 +1,8 @@
 package einstein.subtle_effects.data;
 
-import com.google.gson.JsonElement;
-import com.mojang.serialization.JsonOps;
 import einstein.subtle_effects.SubtleEffects;
-import einstein.subtle_effects.util.Util;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.FileToIdConverter;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.util.profiling.ProfilerFiller;
@@ -12,29 +10,24 @@ import net.minecraft.util.profiling.ProfilerFiller;
 import java.util.HashMap;
 import java.util.Map;
 
-public class BurningEffectsReloadListener extends SimpleJsonResourceReloadListener implements NamedReloadListener {
+public class BurningEffectsReloadListener extends SimpleJsonResourceReloadListener<BurningEffects.Data> implements NamedReloadListener {
 
-    private static final String DIRECTORY = "subtle_effects/burning_effects";
-    public static final Map<ResourceLocation, BurningEffects> PROMETHEUS_BURNING_EFFECTS = new HashMap<>();
-    public static final Map<ResourceLocation, BurningEffects> DYED_FLAMES_BURNING_EFFECTS = new HashMap<>();
+    private static final FileToIdConverter DIRECTORY = FileToIdConverter.json("subtle_effects/burning_effects");
+    public static final Map<Identifier, BurningEffects> PROMETHEUS_BURNING_EFFECTS = new HashMap<>();
+    public static final Map<Identifier, BurningEffects> DYED_FLAMES_BURNING_EFFECTS = new HashMap<>();
 
     public BurningEffectsReloadListener() {
-        super(Util.GSON, DIRECTORY);
+        super(BurningEffects.Data.CODEC, DIRECTORY);
     }
 
     @Override
-    protected void apply(Map<ResourceLocation, JsonElement> resources, ResourceManager resourceManager, ProfilerFiller profiler) {
+    protected void apply(Map<Identifier, BurningEffects.Data> resources, ResourceManager manager, ProfilerFiller profiler) {
         PROMETHEUS_BURNING_EFFECTS.clear();
-
-        resources.forEach((id, element) ->
-                BurningEffects.Data.CODEC.parse(JsonOps.INSTANCE, element)
-                        .resultOrPartial(error -> SubtleEffects.LOGGER.error("Failed to decode burning effects with ID {} - Error: {}", id, error))
-                        .ifPresent(BurningEffectsReloadListener::load)
-        );
+        resources.forEach((id, data) -> load(data));
     }
 
     private static void load(BurningEffects.Data data) {
-        ResourceLocation id = data.id();
+        Identifier id = data.id();
         BurningEffects burningEffects = new BurningEffects(data.colorProvider(), data.flameParticle());
 
         if (data.isPrometheus()) {
@@ -46,7 +39,7 @@ public class BurningEffectsReloadListener extends SimpleJsonResourceReloadListen
     }
 
     @Override
-    public ResourceLocation getId() {
+    public Identifier getId() {
         return SubtleEffects.loc("burning_effects");
     }
 }

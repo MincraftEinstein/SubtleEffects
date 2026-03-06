@@ -1,15 +1,14 @@
 package einstein.subtle_effects.data;
 
-import com.google.gson.JsonElement;
 import com.mojang.serialization.JsonOps;
 import einstein.subtle_effects.SubtleEffects;
 import einstein.subtle_effects.data.splash_types.SplashType;
 import einstein.subtle_effects.data.splash_types.SplashTypeReloadListener;
 import einstein.subtle_effects.mixin.client.item.BucketItemAccessor;
 import einstein.subtle_effects.util.FluidDefinitionAccessor;
-import einstein.subtle_effects.util.Util;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.FileToIdConverter;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.server.packs.resources.SimplePreparableReloadListener;
@@ -23,33 +22,29 @@ import java.util.*;
 
 import static einstein.subtle_effects.SubtleEffects.LOGGER;
 
-public class FluidDefinitionReloadListener extends SimplePreparableReloadListener<Map<ResourceLocation, FluidDefinition.Data>> implements NamedReloadListener {
+public class FluidDefinitionReloadListener extends SimplePreparableReloadListener<Map<Identifier, FluidDefinition.Data>> implements NamedReloadListener {
 
-    public static final ResourceLocation WATER_ID = ResourceLocation.withDefaultNamespace("water");
-    public static final ResourceLocation LAVA_ID = ResourceLocation.withDefaultNamespace("lava");
-    private static final String DIRECTORY = "subtle_effects/fluid_definitions";
-    public static final Map<ResourceLocation, FluidDefinition> DEFINITIONS = new HashMap<>();
+    public static final Identifier WATER_ID = Identifier.withDefaultNamespace("water");
+    public static final Identifier LAVA_ID = Identifier.withDefaultNamespace("lava");
+    private static final FileToIdConverter DIRECTORY = FileToIdConverter.json("subtle_effects/fluid_definitions");
+    public static final Map<Identifier, FluidDefinition> DEFINITIONS = new HashMap<>();
 
     @Override
-    protected Map<ResourceLocation, FluidDefinition.Data> prepare(ResourceManager resourceManager, ProfilerFiller profiler) {
-        Map<ResourceLocation, JsonElement> resources = new HashMap<>();
+    protected Map<Identifier, FluidDefinition.Data> prepare(ResourceManager resourceManager, ProfilerFiller profiler) {
         List<Fluid> sourceFluids = new ArrayList<>();
         List<Fluid> flowingFluids = new ArrayList<>();
         List<AbstractCauldronBlock> cauldrons = new ArrayList<>();
         List<BucketItem> bucketItems = new ArrayList<>();
-        Map<ResourceLocation, FluidDefinition.Data> definitions = new HashMap<>();
+        Map<Identifier, FluidDefinition.Data> definitions = new HashMap<>();
+        Map<Identifier, FluidDefinition.Data> validDefinitions = new HashMap<>();
 
-        SimpleJsonResourceReloadListener.scanDirectory(resourceManager, DIRECTORY, Util.GSON, resources);
-        resources.forEach((id, element) ->
-                FluidDefinition.Data.CODEC.parse(JsonOps.INSTANCE, element)
-                        .resultOrPartial(error -> LOGGER.error("Failed to decode fluid definition with ID {} - Error: {}", id, error))
-                        .ifPresent(data -> validate(id, data, sourceFluids, flowingFluids, cauldrons, bucketItems, definitions))
-        );
-        return definitions;
+        SimpleJsonResourceReloadListener.scanDirectory(resourceManager, DIRECTORY, JsonOps.INSTANCE, FluidDefinition.Data.CODEC, definitions);
+        definitions.forEach((id, data) -> validate(id, data, sourceFluids, flowingFluids, cauldrons, bucketItems, validDefinitions));
+        return validDefinitions;
     }
 
     @Override
-    protected void apply(Map<ResourceLocation, FluidDefinition.Data> resources, ResourceManager manager, ProfilerFiller profiler) {
+    protected void apply(Map<Identifier, FluidDefinition.Data> resources, ResourceManager manager, ProfilerFiller profiler) {
         DEFINITIONS.forEach((id, fluidDefinition) -> {
             ((FluidDefinitionAccessor) fluidDefinition.source()).subtleEffects$setFluidDefinition(null);
             ((FluidDefinitionAccessor) fluidDefinition.flowing()).subtleEffects$setFluidDefinition(null);
@@ -81,7 +76,7 @@ public class FluidDefinitionReloadListener extends SimplePreparableReloadListene
         });
     }
 
-    private static void validate(ResourceLocation id, FluidDefinition.Data data, List<Fluid> sourceFluids, List<Fluid> flowingFluids, List<AbstractCauldronBlock> cauldrons, List<BucketItem> bucketItems, Map<ResourceLocation, FluidDefinition.Data> definitions) {
+    private static void validate(Identifier id, FluidDefinition.Data data, List<Fluid> sourceFluids, List<Fluid> flowingFluids, List<AbstractCauldronBlock> cauldrons, List<BucketItem> bucketItems, Map<Identifier, FluidDefinition.Data> definitions) {
         Fluid source = data.source();
         Fluid flowing = data.flowing();
 
@@ -120,7 +115,7 @@ public class FluidDefinitionReloadListener extends SimplePreparableReloadListene
     }
 
     @Override
-    public ResourceLocation getId() {
+    public Identifier getId() {
         return SubtleEffects.loc("fluid_definitions");
     }
 }

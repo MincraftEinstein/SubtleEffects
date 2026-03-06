@@ -39,7 +39,7 @@ public abstract class FallingBlockEntityMixin extends Entity implements FluidLog
 
     @Inject(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/item/FallingBlockEntity;handlePortal()V"))
     private void tick(CallbackInfo ci) {
-        if (level().isClientSide) {
+        if (level().isClientSide()) {
             subtleEffects$getFluidDefinitionHeight().clear();
             subtleEffects$updateFluidDefinitionHeight();
             subtleEffects$setLastTouchedFluid(ParticleSpawnUtil.preformSplash(true, true, this, false, Consumers.nop()));

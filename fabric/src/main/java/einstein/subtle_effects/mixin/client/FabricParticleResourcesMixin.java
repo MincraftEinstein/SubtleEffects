@@ -1,8 +1,8 @@
 package einstein.subtle_effects.mixin.client;
 
 import einstein.subtle_effects.data.DynamicSpriteSetsManager;
-import net.minecraft.client.particle.ParticleEngine;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.client.particle.ParticleResources;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.resources.Resource;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -15,15 +15,15 @@ import java.util.Map;
 import java.util.concurrent.CompletionStage;
 import java.util.concurrent.Executor;
 
-@Mixin(ParticleEngine.class)
-public abstract class FabricParticleEngineMixin {
+@Mixin(ParticleResources.class)
+public abstract class FabricParticleResourcesMixin {
 
     @Shadow
     @Final
-    private Map<ResourceLocation, ParticleEngine.MutableSpriteSet> spriteSets;
+    private Map<Identifier, ParticleResources.MutableSpriteSet> spriteSets;
 
-    @Inject(method = "method_45772", at = @At("HEAD"))
-    private void allowDynamicSpriteSetLoading(Executor executor, Map<ResourceLocation, Resource> resources, CallbackInfoReturnable<CompletionStage<?>> cir) {
+    @Inject(method = "method_74299", at = @At("HEAD"))
+    private void allowDynamicSpriteSetLoading(Executor executor, Map<Identifier, Resource> resources, CallbackInfoReturnable<CompletionStage<?>> cir) {
         DynamicSpriteSetsManager.reload(spriteSets);
     }
 }

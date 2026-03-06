@@ -6,19 +6,19 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import einstein.subtle_effects.data.color_providers.ColorProviderType;
 import einstein.subtle_effects.util.Util;
 import net.minecraft.core.particles.SimpleParticleType;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 import java.util.Optional;
 
 public record BurningEffects(ColorProviderType.ColorProvider colorProvider,
                              Optional<SimpleParticleType> flameParticle) {
 
-    public record Data(ResourceLocation id, boolean isPrometheus,
+    public record Data(Identifier id, boolean isPrometheus,
                        ColorProviderType.ColorProvider colorProvider,
                        Optional<SimpleParticleType> flameParticle) {
 
         public static final Codec<Data> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-                ResourceLocation.CODEC.fieldOf("id").forGetter(Data::id),
+                Identifier.CODEC.fieldOf("id").forGetter(Data::id),
                 Codec.STRING.comapFlatMap(string -> {
                     if (string.equals("prometheus")) {
                         return DataResult.success(true);

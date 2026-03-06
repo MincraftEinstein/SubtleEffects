@@ -9,10 +9,15 @@ import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.particle.option.DropletParticleOptions;
 import einstein.subtle_effects.util.DripParticleAccessor;
 import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.client.particle.*;
+import net.minecraft.client.particle.DripParticle;
+import net.minecraft.client.particle.Particle;
+import net.minecraft.client.particle.ParticleProvider;
+import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.client.renderer.LightTexture;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.SimpleParticleType;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.material.Fluid;
 import org.joml.Vector3f;
 
@@ -26,13 +31,12 @@ public class DropletParticle extends DripParticle.FallAndLandParticle implements
     private final FluidDefinition fluidDefinition;
     private final boolean fromSplash;
 
-    protected DropletParticle(ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, float scale, SpriteSet sprites, int lightLevel, Fluid fluid, SimpleParticleType landParticle, boolean isSilent, FluidDefinition fluidDefinition, boolean fromSplash) {
-        super(level, x, y, z, fluid, landParticle);
+    protected DropletParticle(ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, float scale, TextureAtlasSprite sprite, int lightLevel, Fluid fluid, SimpleParticleType landParticle, boolean isSilent, FluidDefinition fluidDefinition, boolean fromSplash) {
+        super(level, x, y, z, fluid, landParticle, sprite);
         this.lightLevel = lightLevel;
         this.fluidDefinition = fluidDefinition;
         this.fromSplash = fromSplash;
         setParticleSpeed(xSpeed, ySpeed, zSpeed);
-        pickSprite(sprites);
         scale(scale * 1.5F);
         gravity = 0.06F;
 
@@ -64,8 +68,8 @@ public class DropletParticle extends DripParticle.FallAndLandParticle implements
     }
 
     @Override
-    public ParticleRenderType getRenderType() {
-        return ParticleRenderType.PARTICLE_SHEET_OPAQUE;
+    public Layer getLayer() {
+        return Layer.OPAQUE;
     }
 
     public FluidDefinition getFluidDefinition() {
@@ -79,7 +83,7 @@ public class DropletParticle extends DripParticle.FallAndLandParticle implements
     public record SplashProvider(SpriteSet sprites) implements ParticleProvider<DropletParticleOptions> {
 
         @Override
-        public Particle createParticle(DropletParticleOptions options, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+        public Particle createParticle(DropletParticleOptions options, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, RandomSource random) {
             boolean fromSplash = options.fromSplash();
             FluidDefinition fluidDefinition = FluidDefinitionReloadListener.DEFINITIONS.get(options.fluidDefinitionId());
             Optional<SplashType> splashType = fluidDefinition.splashType();
@@ -88,7 +92,7 @@ public class DropletParticle extends DripParticle.FallAndLandParticle implements
             Vector3f color = dropletOptions.getColorAndApplyTint(level, BlockPos.containing(x, y, z), level.getRandom());
 
             // noinspection ConstantConditions
-            Particle particle = new DropletParticle(level, x, y, z, xSpeed, ySpeed, zSpeed, options.scale(), sprites, fluidDefinition.lightEmission(), fluidDefinition.source(),
+            DropletParticle particle = new DropletParticle(level, x, y, z, xSpeed, ySpeed, zSpeed, options.scale(), sprites.get(random), fluidDefinition.lightEmission(), fluidDefinition.source(),
                     dropletOptions.landParticle().orElse(null), fromSplash ? ModConfigs.ENTITIES.splashes.splashDropletSounds : options.isSilent(),
                     fluidDefinition, fromSplash);
             particle.setColor(color.x(), color.y(), color.z());

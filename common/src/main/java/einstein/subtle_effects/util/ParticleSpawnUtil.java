@@ -412,7 +412,7 @@ public class ParticleSpawnUtil {
                 Fluid content = bucket.getContent();
                 FluidDefinition fluidDefinition = ((FluidDefinitionAccessor) content).subtleEffects$getFluidDefinition();
                 if (fluidDefinition != null) {
-                    if (fluidDefinition.is(Fluids.WATER) && level.environmentAttributes().getDimensionValue(EnvironmentAttributes.WATER_EVAPORATES)) {
+                    if (fluidDefinition.is(Fluids.WATER) && level.environmentAttributes().getValue(EnvironmentAttributes.WATER_EVAPORATES, pos)) {
                         return;
                     }
 

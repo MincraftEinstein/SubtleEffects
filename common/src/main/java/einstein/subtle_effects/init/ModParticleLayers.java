@@ -7,6 +7,7 @@ import static einstein.subtle_effects.init.ModPipelines.BLENDED_PIPELINE;
 
 public class ModParticleLayers {
 
+    @SuppressWarnings("deprecation")
     public static final SingleQuadParticle.Layer BLENDED = new SingleQuadParticle.Layer(true, TextureAtlas.LOCATION_PARTICLES, BLENDED_PIPELINE);
 
     public static void init() {

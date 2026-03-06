@@ -5,12 +5,11 @@
   "refmap": "subtle_effects.refmap.json",
   "compatibilityLevel": "JAVA_17",
   "client": [
-    "client.ClientPacketListenerMixin",
     "client.FluidTypeMixin",
     "client.NeoForgeClientEntityMixin",
     "client.NeoForgeClientEntityMixin$InterimCalculationMixin",
     "client.NeoForgeMultiPlayerGameModeMixin",
-    "client.NeoForgeParticleEngineMixin"
+    "client.NeoForgeParticleResourcesMixin"
   ],
   "mixins": [
     "common.NeoForgeCommonMooshroomMixin",

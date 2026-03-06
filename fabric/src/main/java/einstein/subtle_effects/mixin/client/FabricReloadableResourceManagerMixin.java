@@ -14,12 +14,14 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.util.List;
 
 @Mixin(ReloadableResourceManager.class)
-public abstract class ReloadableResourceManagerMixin {
+public abstract class FabricReloadableResourceManagerMixin {
 
     @Shadow
     @Final
     private List<PreparableReloadListener> listeners;
 
+    // Despite Fabric api having dependency ordering. Fabric's ordering only takes place during the
+    // apply phase, which won't do because custom sprite sets need to be loaded before the particle definitions in ParticleResources.
     @Inject(method = "<init>", at = @At("TAIL"))
     private void addAdditionalListeners(PackType type, CallbackInfo ci) {
         if (type == PackType.CLIENT_RESOURCES) {

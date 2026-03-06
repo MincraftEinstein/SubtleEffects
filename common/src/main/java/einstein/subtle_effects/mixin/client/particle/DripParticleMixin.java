@@ -13,7 +13,7 @@ import net.minecraft.client.particle.DripParticle;
 import net.minecraft.client.particle.SingleQuadParticle;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.BlockPos;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -111,7 +111,7 @@ public abstract class DripParticleMixin extends SingleQuadParticle implements Dr
                 }
 
                 if (GENERAL.dropLandInFluidRipples) {
-                    ResourceLocation fluidDefinitionId;
+                    Identifier fluidDefinitionId;
                     boolean fromSplash = false;
 
                     if (((DripParticle) (Object) this) instanceof DropletParticle particle) {

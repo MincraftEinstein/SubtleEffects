@@ -5,7 +5,7 @@ import com.mojang.serialization.DataResult;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import einstein.subtle_effects.data.splash_types.SplashType;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.level.block.AbstractCauldronBlock;
@@ -16,7 +16,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 
-public record FluidDefinition(ResourceLocation id, Fluid source, Fluid flowing,
+public record FluidDefinition(Identifier id, Fluid source, Fluid flowing,
                               Optional<AbstractCauldronBlock> cauldron,
                               Optional<SplashType> splashType, Optional<BucketItem> bucketItem,
                               DropletOptions dropletOptions,
@@ -48,7 +48,7 @@ public record FluidDefinition(ResourceLocation id, Fluid source, Fluid flowing,
     }
 
     public record Data(Fluid source, Fluid flowing, Optional<AbstractCauldronBlock> cauldron,
-                       Optional<ResourceLocation> splashTypeId, Optional<BucketItem> bucketItem,
+                       Optional<Identifier> splashTypeId, Optional<BucketItem> bucketItem,
                        DropletOptions dropletOptions, int lightEmission) {
 
         public static final Codec<Data> CODEC = RecordCodecBuilder.create(instance -> instance.group(
@@ -60,7 +60,7 @@ public record FluidDefinition(ResourceLocation id, Fluid source, Fluid flowing,
                     }
                     return DataResult.error(() -> "Block is not a cauldron: '" + BuiltInRegistries.BLOCK.getKey(block) + "'");
                 }, cauldronBlock -> cauldronBlock).optionalFieldOf("cauldron").forGetter(Data::cauldron),
-                ResourceLocation.CODEC.optionalFieldOf("splash_type").forGetter(Data::splashTypeId),
+                Identifier.CODEC.optionalFieldOf("splash_type").forGetter(Data::splashTypeId),
                 BuiltInRegistries.ITEM.byNameCodec().comapFlatMap(item -> {
                     if (item instanceof BucketItem bucketItem) {
                         return DataResult.success(bucketItem);

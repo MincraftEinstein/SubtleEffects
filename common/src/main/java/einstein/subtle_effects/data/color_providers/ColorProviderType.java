@@ -6,7 +6,7 @@ import com.mojang.serialization.MapCodec;
 import einstein.subtle_effects.SubtleEffects;
 import einstein.subtle_effects.util.Util;
 import net.minecraft.core.BlockPos;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.level.Level;
@@ -16,10 +16,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Supplier;
 
-public record ColorProviderType<T extends ColorProviderType.ColorProvider>(ResourceLocation registryName,
+public record ColorProviderType<T extends ColorProviderType.ColorProvider>(Identifier registryName,
                                                                            Supplier<MapCodec<T>> codec) implements StringRepresentable {
 
-    public static final Map<ResourceLocation, ColorProviderType<?>> TYPES = new HashMap<>();
+    public static final Map<Identifier, ColorProviderType<?>> TYPES = new HashMap<>();
 
     public static final ColorProviderType<NoneColorProvider> NONE = register("none", () -> NoneColorProvider.CODEC);
     public static final ColorProviderType<ConstantColorProvider> CONSTANT = register("constant", () -> ConstantColorProvider.CODEC);
@@ -37,7 +37,7 @@ public record ColorProviderType<T extends ColorProviderType.ColorProvider>(Resou
     }
 
     private static <V extends ColorProvider> ColorProviderType<V> register(String name, Supplier<MapCodec<V>> codec) {
-        ResourceLocation registryName = SubtleEffects.loc(name);
+        Identifier registryName = SubtleEffects.loc(name);
         ColorProviderType<V> type = new ColorProviderType<>(registryName, codec);
         TYPES.put(registryName, type);
         return type;

@@ -1,8 +1,8 @@
 package einstein.subtle_effects.data;
 
 import einstein.subtle_effects.SubtleEffects;
-import net.minecraft.client.particle.ParticleEngine;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.client.particle.ParticleResources;
+import net.minecraft.resources.Identifier;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -11,11 +11,11 @@ import java.util.Map;
 
 public class DynamicSpriteSetsManager {
 
-    private static final Map<ResourceLocation, SpriteSetHolder> SPRITE_SETS = new HashMap<>();
-    private static final Map<ResourceLocation, SpriteSetHolder> REGISTERED_SPRITE_SETS = new HashMap<>();
-    public static final Map<ResourceLocation, SpriteSetHolder> STATIC_SPRITE_SETS = new HashMap<>();
+    private static final Map<Identifier, SpriteSetHolder> SPRITE_SETS = new HashMap<>();
+    private static final Map<Identifier, SpriteSetHolder> REGISTERED_SPRITE_SETS = new HashMap<>();
+    public static final Map<Identifier, SpriteSetHolder> STATIC_SPRITE_SETS = new HashMap<>();
 
-    public static SpriteSetHolder getOrCreate(ResourceLocation id) {
+    public static SpriteSetHolder getOrCreate(Identifier id) {
         if (REGISTERED_SPRITE_SETS.containsKey(id)) {
             return REGISTERED_SPRITE_SETS.get(id);
         }
@@ -28,8 +28,8 @@ public class DynamicSpriteSetsManager {
         return holder;
     }
 
-    public static void reload(Map<ResourceLocation, ParticleEngine.MutableSpriteSet> spriteSets) {
-        List<ResourceLocation> oldSpriteSets = new ArrayList<>(SPRITE_SETS.keySet());
+    public static void reload(Map<Identifier, ParticleResources.MutableSpriteSet> spriteSets) {
+        List<Identifier> oldSpriteSets = new ArrayList<>(SPRITE_SETS.keySet());
         oldSpriteSets.forEach(location -> {
             SpriteSetHolder holder = SPRITE_SETS.get(location);
             if (!holder.referencesPreExisting()) {
@@ -37,7 +37,7 @@ public class DynamicSpriteSetsManager {
             }
         });
 
-        Map<ResourceLocation, SpriteSetHolder> preparedHolders = new HashMap<>(STATIC_SPRITE_SETS);
+        Map<Identifier, SpriteSetHolder> preparedHolders = new HashMap<>(STATIC_SPRITE_SETS);
         REGISTERED_SPRITE_SETS.forEach((id, holder) -> {
             if (preparedHolders.containsKey(id)) {
                 SubtleEffects.LOGGER.error("Found duplicate sprite set holder with id '{}'", id);
@@ -51,7 +51,7 @@ public class DynamicSpriteSetsManager {
         SPRITE_SETS.putAll(preparedHolders);
         SPRITE_SETS.forEach((id, holder) -> {
             if (!spriteSets.containsKey(id)) {
-                ParticleEngine.MutableSpriteSet spriteSet = new ParticleEngine.MutableSpriteSet();
+                ParticleResources.MutableSpriteSet spriteSet = new ParticleResources.MutableSpriteSet();
                 holder.set(spriteSet, false);
                 spriteSets.put(id, spriteSet);
                 return;
