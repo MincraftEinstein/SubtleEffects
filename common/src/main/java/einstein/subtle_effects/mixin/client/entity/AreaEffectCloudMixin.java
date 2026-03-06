@@ -154,6 +154,6 @@ public abstract class AreaEffectCloudMixin {
     @Unique
     private static boolean subtleEffects$isParticleEffectsParticle(ParticleOptions options) {
         ResourceLocation id = BuiltInRegistries.PARTICLE_TYPE.getKey(options.getType());
-        return id != null && id.getNamespace().equals(CompatHelper.PARTICLE_EFFECTS_MOD_ID);
+        return id != null && (id.getNamespace().equals(CompatHelper.PARTICLE_EFFECTS_MOD_ID) || id.getNamespace().equals(CompatHelper.PARTICLE_EFFECTS_MOD_ID_NEW));
     }
 }
