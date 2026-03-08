@@ -454,6 +454,8 @@
   "config.subtle_effects.entities.improvedWetWolfShakeEffects.desc": "Improves the water effects of a wolf shaking water off",
   "config.subtle_effects.entities.improvedVillagerSweatingEffects": "Improved Villager Sweating Effects",
   "config.subtle_effects.entities.improvedVillagerSweatingEffects.desc": "Improves the sweating effects of villagers during raids",
+  "config.subtle_effects.entities.magmaCubeLandSparks": "Magma Cube Land Sparks",
+  "config.subtle_effects.entities.magmaCubeLandSparks.desc": "Should magma cubes spawn sparks when they land on the ground",
   "config.subtle_effects.environment": "Environment",
   "config.subtle_effects.environment.biomeColorRain": "Biome Color Rain",
   "config.subtle_effects.environment.biomes": "Biomes",
