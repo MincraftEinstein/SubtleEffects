@@ -291,5 +291,15 @@
         "volume": 4.0
       }
     ]
+  },
+  "item.spawn_egg.spawn_mob": {
+    "subtitle": "subtitles.subtle_effects.item.spawn_egg.spawn_mob",
+    "sounds": [
+      {
+        "name": "entity.turtle.egg_break",
+        "type": "event",
+        "pitch": 1.7
+      }
+    ]
   }
 }

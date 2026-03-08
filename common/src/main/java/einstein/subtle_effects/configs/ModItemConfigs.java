@@ -10,6 +10,7 @@ import me.fzzyhmstrs.fzzy_config.annotations.RequiresAction;
 import me.fzzyhmstrs.fzzy_config.annotations.Translation;
 import me.fzzyhmstrs.fzzy_config.config.Config;
 import me.fzzyhmstrs.fzzy_config.config.ConfigGroup;
+import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedFloat;
 import net.minecraft.client.Minecraft;
 
 @Translation(prefix = ModConfigs.BASE_KEY + "items")
@@ -38,6 +39,8 @@ public class ModItemConfigs extends Config {
     @RequiresAction(action = Action.RESTART)
     public boolean structureVoidItemMarker = true;
     public boolean armadilloBrushParticles = true;
+    public ValidatedFloat spawnEggUseSoundVolume = new ValidatedFloat(0.5F, 1, 0);
+    public boolean spawnEggUseParticles = true;
 
     public ModItemConfigs() {
         super(SubtleEffects.loc("items"));

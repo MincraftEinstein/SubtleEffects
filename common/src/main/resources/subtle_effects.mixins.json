@@ -67,6 +67,7 @@
     "client.item.BucketItemMixin",
     "client.item.FlintAndSteelItemMixin",
     "client.item.SolidBucketItemMixin",
+    "client.item.SpawnEggItemMixin",
     "client.particle.CherryParticleMixin",
     "client.particle.DripParticleMixin",
     "client.particle.FallAndLandParticleMixin",

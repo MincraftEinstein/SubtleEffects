@@ -35,6 +35,7 @@ public class ModSounds {
     public static final Supplier<SoundEvent> GEYSER_WHOOSH = register("environment.geyser.whoosh");
     public static final Supplier<SoundEvent> GEYSER_HISS = register("environment.geyser.hiss");
     public static final Supplier<SoundEvent> FIREFLY_BUZZ = register("environment.firefly.buzz");
+    public static final Supplier<SoundEvent> SPAWN_EGG_SPAWN_MOB = register("item.spawn_egg.spawn_mob");
 
     public static void init() {
     }
