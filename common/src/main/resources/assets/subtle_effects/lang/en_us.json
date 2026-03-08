@@ -603,6 +603,8 @@
   "config.subtle_effects.items.waterEvaporateFromBucketSteam.desc": "Replaces the smoke particles with steam when water evaporates from a bucket in the nether",
   "config.subtle_effects.items.fluidBucketUseParticles": "Fluid Bucket Use Particles",
   "config.subtle_effects.items.powderSnowBucketUseParticles": "Powder Snow Bucket Use Particles",
+  "config.subtle_effects.items.powderSnowBucketBlockPlaceSound": "Powder Snow Bucket Block Place Sound",
+  "config.subtle_effects.items.powderSnowBucketBlockPlaceSound.desc": "Should the powder snow block place sound be played in addition to the powder snow bucket empty sound",
   "config.subtle_effects.items.lingeringPotionClouds": "Lingering Potion Clouds",
   "config.subtle_effects.items.lingeringPotionClouds.desc": "Replaces the vanilla bubble swirl particles with wispy clouds",
   "config.subtle_effects.items.splashPotionClouds": "Splash Potion Clouds",
