@@ -1,5 +1,6 @@
 package einstein.subtle_effects.mixin.client.entity;
 
+import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import einstein.subtle_effects.data.FluidDefinition;
@@ -17,6 +18,7 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.animal.SnowGolem;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SoundType;
@@ -102,6 +104,14 @@ public abstract class ClientEntityMixin implements EntityTickerAccessor, FluidLo
                 }
             }
         }
+    }
+
+    @ModifyExpressionValue(method = "playStepSound", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/state/BlockState;getSoundType()Lnet/minecraft/world/level/block/SoundType;"))
+    private SoundType stepSound(SoundType soundType) {
+        if (subtleEffects$me instanceof SnowGolem && ModConfigs.ENTITIES.snowGolemStepSounds) {
+            return SoundType.SNOW;
+        }
+        return soundType;
     }
 
     @Inject(method = "onInsideBlock", at = @At("HEAD"))

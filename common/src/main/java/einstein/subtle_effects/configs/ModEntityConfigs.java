@@ -62,6 +62,7 @@ public class ModEntityConfigs extends Config {
     public boolean improvedWetWolfShakeEffects = true;
     public boolean improvedVillagerSweatingEffects = true;
     public boolean magmaCubeLandSparks = true;
+    public boolean snowGolemStepSounds = true;
 
     public ModEntityConfigs() {
         super(SubtleEffects.loc("entities"));
