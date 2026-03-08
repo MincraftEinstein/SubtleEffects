@@ -106,14 +106,6 @@ public abstract class ClientEntityMixin implements EntityTickerAccessor, FluidLo
         }
     }
 
-    @ModifyExpressionValue(method = "playStepSound", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/state/BlockState;getSoundType()Lnet/minecraft/world/level/block/SoundType;"))
-    private SoundType stepSound(SoundType soundType) {
-        if (subtleEffects$me instanceof SnowGolem && ModConfigs.ENTITIES.snowGolemStepSounds) {
-            return SoundType.SNOW;
-        }
-        return soundType;
-    }
-
     @Inject(method = "onInsideBlock", at = @At("HEAD"))
     private void inside(BlockState state, CallbackInfo ci) {
         if (subtleEffects$me.level().isClientSide) {
