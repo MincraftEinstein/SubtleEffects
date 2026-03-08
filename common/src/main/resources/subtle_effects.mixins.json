@@ -41,6 +41,7 @@
     "client.block.entity.EnderChestBlockEntityMixin",
     "client.block.entity.VaultBlockEntityClientMixin",
     "client.entity.AbstractHorseAccessor",
+    "client.entity.AbstractMinecartMixin",
     "client.entity.AreaEffectCloudMixin",
     "client.entity.ArmadilloMixin",
     "client.entity.BlazeMixin",
