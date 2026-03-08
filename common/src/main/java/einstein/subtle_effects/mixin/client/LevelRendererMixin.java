@@ -12,8 +12,6 @@ import einstein.subtle_effects.configs.ReplacedParticlesDisplayType;
 import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.init.ModParticles;
 import einstein.subtle_effects.particle.RippleParticle;
-import einstein.subtle_effects.particle.option.FloatParticleOptions;
-import einstein.subtle_effects.particle.option.RippleParticleOptions;
 import einstein.subtle_effects.ticking.tickers.TickerManager;
 import einstein.subtle_effects.util.FrustumGetter;
 import einstein.subtle_effects.util.ParticleAccessor;
@@ -166,6 +164,14 @@ public abstract class LevelRendererMixin implements FrustumGetter {
                 break;
             }
         }
+    }
+
+    @ModifyExpressionValue(method = "levelEvent", at = @At(value = "FIELD", target = "Lnet/minecraft/core/particles/ParticleTypes;FLAME:Lnet/minecraft/core/particles/SimpleParticleType;"))
+    private SimpleParticleType replaceFlame(SimpleParticleType original, int type) {
+        if (BLOCKS.purpleMonsterSpawnerParticles && type == LevelEvent.PARTICLES_MOBBLOCK_SPAWN) {
+            return ModParticles.PURPLE_FLAME.get();
+        }
+        return original;
     }
 
     @WrapOperation(method = "levelEvent",

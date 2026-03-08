@@ -5,9 +5,11 @@ import einstein.subtle_effects.data.FluidDefinition;
 import einstein.subtle_effects.init.ModAnimalFedEffectSettings;
 import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.init.ModParticles;
+import einstein.subtle_effects.init.ModSounds;
 import einstein.subtle_effects.mixin.client.entity.AbstractHorseAccessor;
 import einstein.subtle_effects.particle.option.FloatParticleOptions;
 import einstein.subtle_effects.particle.option.SheepFluffParticleOptions;
+import einstein.subtle_effects.platform.Services;
 import einstein.subtle_effects.ticking.tickers.TickerManager;
 import einstein.subtle_effects.util.*;
 import net.minecraft.client.Minecraft;
@@ -391,6 +393,14 @@ public class ClientPacketHandlers {
                     );
                 }
             }
+        }
+    }
+
+    public static void handle(ClientLevel level, ClientBoundMobSpawnerSpawnPayload payload) {
+        float volume = BLOCKS.monsterSpawnerSpawnMobSoundVolume.get();
+        if (volume > 0) {
+            RandomSource random = level.getRandom();
+            level.playLocalSound(payload.pos(), ModSounds.MONSTER_SPAWNER_SPAWN_MOB.get(), SoundSource.BLOCKS, volume, (random.nextFloat() - random.nextFloat()) * 0.2F + 1, true);
         }
     }
 

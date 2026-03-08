@@ -69,6 +69,7 @@
     "client.particle.CherryParticleMixin",
     "client.particle.DripParticleMixin",
     "client.particle.FallAndLandParticleMixin",
+    "client.particle.FlameParticleMixin",
     "client.particle.FlyTowardsPositionParticleAccessor",
     "client.particle.FlyTowardsPositionParticleAccessor$EnchantProviderMixin",
     "client.particle.HeartParticleMixin",
@@ -85,6 +86,7 @@
     "client.particle.bubbles.WaterCurrentDownParticleProviderMixin"
   ],
   "mixins": [
+    "common.BaseSpawnerMixin",
     "common.StonecutterMenuAccessor",
     "common.block.BeehiveBlockEntityMixin",
     "common.block.CommonComposterMixin",

@@ -2,15 +2,13 @@ package einstein.subtle_effects.init;
 
 import com.mojang.serialization.MapCodec;
 import einstein.subtle_effects.particle.*;
+import einstein.subtle_effects.particle.SplashParticle;
 import einstein.subtle_effects.particle.emitter.FireFlyEmitter;
 import einstein.subtle_effects.particle.emitter.PotionEmitter;
 import einstein.subtle_effects.particle.emitter.SplashEmitter;
 import einstein.subtle_effects.particle.option.*;
 import einstein.subtle_effects.particle.provider.*;
-import net.minecraft.client.particle.FlyTowardsPositionParticle;
-import net.minecraft.client.particle.ParticleProvider;
-import net.minecraft.client.particle.SpriteSet;
-import net.minecraft.client.particle.SuspendedTownParticle;
+import net.minecraft.client.particle.*;
 import net.minecraft.core.particles.*;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
@@ -89,6 +87,7 @@ public class ModParticles {
     public static final Supplier<SimpleParticleType> WATERFALL_MIST = register("waterfall_mist", WaterfallMistParticle.Provider::new);
     public static final Supplier<ParticleType<FallenLeafParticleOptions>> FALLEN_LEAF = register("fallen_leaf", type -> FallenLeafParticleOptions.CODEC, type -> FallenLeafParticleOptions.STREAM_CODEC, sprites -> new FallenLeafParticle.Provider());
     public static final Supplier<SimpleParticleType> ARMADILLO = register("armadillo", CustomTerrainParticle.Provider::new);
+    public static final Supplier<SimpleParticleType> PURPLE_FLAME = register("purple_flame", FlameParticle.Provider::new);
 
     public static void init() {
     }

@@ -209,6 +209,24 @@
       }
     ]
   },
+  "block.monster_spawner.ambient": {
+    "subtitle": "subtitles.subtle_effects.block.monster_spawner.ambient",
+    "sounds": [
+      {
+        "name": "minecraft:block.trial_spawner.ambient",
+        "type": "event"
+      }
+    ]
+  },
+  "block.monster_spawner.spawn_mob": {
+    "subtitle": "subtitles.subtle_effects.block.monster_spawner.spawn_mob",
+    "sounds": [
+      {
+        "name": "minecraft:block.trial_spawner.spawn_mob",
+        "type": "event"
+      }
+    ]
+  },
   "environment.geyser.whoosh": {
     "subtitle": "subtitles.subtle_effects.environment.geyser.whoosh",
     "sounds": [

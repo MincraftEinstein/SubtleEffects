@@ -35,6 +35,7 @@ public record PresetColorProvider(Preset preset) implements ColorProviderType.Co
         SOUL_SPARKS("soul_sparks", fromIntList(SparkParticle.SOUL_COLORS)),
         BLAZE_SPARKS("blaze_sparks", fromIntList(SparkParticle.BLAZE_COLORS)),
         COPPER_SPARKS("copper_sparks", fromIntList(SparkParticle.COPPER_COLORS)),
+        SPAWNER_SPARKS("spawner_sparks", fromIntList(SparkParticle.SPAWNER_COLORS)),
         LAVA_DROPLET("lava_droplet", fromIntList(List.of(0xEEBA4E, 0xE48F30, 0xD96415))),
         LAVA_RIPPLE("lava_ripple", new ConstantColorProvider(0xDE7A22));
 

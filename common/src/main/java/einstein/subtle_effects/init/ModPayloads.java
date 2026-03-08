@@ -22,6 +22,7 @@ public class ModPayloads {
         NETWORK.registerToClient(ClientBoundDispenseBucketPayload.TYPE, ClientBoundDispenseBucketPayload.STREAM_CODEC);
         NETWORK.registerToClient(ClientBoundSheepShearPayload.TYPE, ClientBoundSheepShearPayload.STREAM_CODEC);
         NETWORK.registerToClient(ClientBoundEntityLandInFluidPayload.TYPE, ClientBoundEntityLandInFluidPayload.STREAM_CODEC);
+        NETWORK.registerToClient(ClientBoundMobSpawnerSpawnPayload.TYPE, ClientBoundMobSpawnerSpawnPayload.STREAM_CODEC);
     }
 
     public static void initClientHandlers() {
@@ -40,5 +41,6 @@ public class ModPayloads {
         NETWORK.registerClientHandler(ClientBoundDispenseBucketPayload.TYPE, ClientPacketHandlers::handle);
         NETWORK.registerClientHandler(ClientBoundSheepShearPayload.TYPE, ClientPacketHandlers::handle);
         NETWORK.registerClientHandler(ClientBoundEntityLandInFluidPayload.TYPE, ClientPacketHandlers::handle);
+        NETWORK.registerClientHandler(ClientBoundMobSpawnerSpawnPayload.TYPE, ClientPacketHandlers::handle);
     }
 }
