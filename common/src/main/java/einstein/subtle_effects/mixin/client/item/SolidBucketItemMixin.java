@@ -5,6 +5,7 @@ import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.init.ModParticles;
 import einstein.subtle_effects.util.ParticleSpawnUtil;
 import net.minecraft.core.BlockPos;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.ItemStack;
@@ -13,6 +14,8 @@ import net.minecraft.world.item.SolidBucketItem;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.SoundType;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -29,9 +32,16 @@ public class SolidBucketItemMixin {
             BlockPos pos = blockContext.getClickedPos();
             ItemStack stack = blockContext.getItemInHand();
 
-            if (stack.is(Items.POWDER_SNOW_BUCKET) && ModConfigs.ITEMS.powderSnowBucketUseParticles) {
-                RandomSource random = level.getRandom();
-                ParticleSpawnUtil.spawnBucketParticles(level, random, pos, ModParticles.SNOW.get(), random.nextDouble());
+            if (stack.is(Items.POWDER_SNOW_BUCKET)) {
+                if (ModConfigs.ITEMS.powderSnowBucketUseParticles) {
+                    RandomSource random = level.getRandom();
+                    ParticleSpawnUtil.spawnBucketParticles(level, random, pos, ModParticles.SNOW.get(), random.nextDouble());
+                }
+
+                if (ModConfigs.ITEMS.powderSnowBucketBlockPlaceSound) {
+                    SoundType soundType = Blocks.POWDER_SNOW.defaultBlockState().getSoundType();
+                    level.playSound(context.getPlayer(), pos, soundType.getPlaceSound(), SoundSource.BLOCKS, (soundType.getVolume() + 1) / 2, soundType.getPitch() * 0.8F);
+                }
             }
         }
     }

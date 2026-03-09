@@ -3,14 +3,22 @@ package einstein.subtle_effects.mixin.common.entity;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import einstein.subtle_effects.init.ModConfigs;
+import einstein.subtle_effects.init.ModSounds;
 import einstein.subtle_effects.networking.clientbound.ClientBoundAnimalFedPacket;
 import einstein.subtle_effects.platform.Services;
+import einstein.subtle_effects.ticking.tickers.TickerManager;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.tags.ItemTags;
+import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.AgeableMob;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityEvent;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.Dolphin;
@@ -21,12 +29,19 @@ import net.minecraft.world.entity.animal.frog.Tadpole;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.SpawnEggItem;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Mixin(Mob.class)
 public class MobMixin {
@@ -50,6 +65,48 @@ public class MobMixin {
                     subtleEffects$mob.getRandomZ(1),
                     0, 0, 0
             );
+        }
+    }
+
+    @Inject(method = "checkAndHandleImportantInteractions", at = @At("HEAD"))
+    private void mobSpawnedFromMobEffects(Player player, InteractionHand hand, CallbackInfoReturnable<InteractionResult> cir) {
+        Level level = subtleEffects$mob.level();
+        if (!level.isClientSide()) {
+            return;
+        }
+
+        ItemStack stack = player.getItemInHand(hand);
+        if (stack.getItem() instanceof SpawnEggItem spawnEggItem) {
+            CompoundTag tag = stack.getTag();
+            if (spawnEggItem.spawnsEntity(tag, subtleEffects$mob.getType())) {
+                TickerManager.schedule(3, () -> {
+                    List<Entity> entities = new ArrayList<>();
+                    Vec3 pos = subtleEffects$mob.position();
+                    level.getEntities(spawnEggItem.getType(tag), new AABB(pos, pos.add(1, 1, 1)),
+                            entity -> entity instanceof AgeableMob ageableMob && ageableMob.isBaby(),
+                            entities, 1
+                    );
+
+                    if (!entities.isEmpty()) {
+                        Entity entity = entities.get(0);
+                        float volume = ModConfigs.ITEMS.spawnEggUseSoundVolume.get();
+
+                        if (volume > 0) {
+                            level.playSound(player, pos.x, pos.y, pos.z, ModSounds.EGG_BREAK.get(), SoundSource.PLAYERS,
+                                    volume, Mth.nextFloat(level.getRandom(), 0.7F, 1.5F));
+                        }
+
+                        if (ModConfigs.ITEMS.spawnEggUseParticles) {
+                            if (entity instanceof Mob mob) {
+                                mob.spawnAnim();
+                                return;
+                            }
+
+                            entity.handleEntityEvent(EntityEvent.POOF);
+                        }
+                    }
+                });
+            }
         }
     }
 

@@ -2,6 +2,7 @@ package einstein.subtle_effects.init;
 
 import com.mojang.serialization.Codec;
 import einstein.subtle_effects.particle.option.*;
+import net.minecraft.client.particle.FlameParticle;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
@@ -79,6 +80,7 @@ public class ModParticles {
     public static final Supplier<SimpleParticleType> WATERFALL_DROPLET = register("waterfall_droplet");
     public static final Supplier<SimpleParticleType> WATERFALL_MIST = register("waterfall_mist");
     public static final Supplier<ParticleType<FallenLeafParticleOptions>> FALLEN_LEAF = register("fallen_leaf", FallenLeafParticleOptions.DESERIALIZER, type -> FallenLeafParticleOptions.CODEC);
+    public static final Supplier<SimpleParticleType> PURPLE_FLAME = register("purple_flame");
 
     public static void init() {
     }

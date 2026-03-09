@@ -14,6 +14,7 @@ import java.util.function.Supplier;
 public class CompatHelper {
 
     public static final String PARTICLE_EFFECTS_MOD_ID = "particle-effects";
+    public static final String PARTICLE_EFFECTS_MOD_ID_NEW = "particle_effects";
     public static final String PARTICLE_RAIN_MOD_ID = "particlerain";
 
     public static final Supplier<Boolean> IS_SERENE_SEANSONS_LOADED = isLoaded("sereneseasons");
@@ -21,7 +22,7 @@ public class CompatHelper {
     public static final Supplier<Boolean> IS_ITEM_BORDERS_LOADED = isLoaded("itemborders");
     public static final Supplier<Boolean> IS_LEGENDARY_TOOLTIPS_LOADED = isLoaded("legendarytooltips");
     public static final Supplier<Boolean> IS_END_REMASTERED_LOADED = isLoaded("endrem");
-    public static final Supplier<Boolean> IS_PARTICLE_EFFECTS_LOADED = isLoaded(PARTICLE_EFFECTS_MOD_ID);
+    public static final Supplier<Boolean> IS_PARTICLE_EFFECTS_LOADED = Suppliers.memoize(() -> Services.PLATFORM.isModLoaded(PARTICLE_EFFECTS_MOD_ID) || Services.PLATFORM.isModLoaded(PARTICLE_EFFECTS_MOD_ID_NEW));
     public static final Supplier<Boolean> IS_PARTICLE_RAIN_LOADED = isLoaded(PARTICLE_RAIN_MOD_ID);
     public static final Supplier<Boolean> IS_IRIS_LOADED = isLoaded("iris");
     public static final Supplier<Boolean> IS_OCULUS_LOADED = isLoaded("oculus");

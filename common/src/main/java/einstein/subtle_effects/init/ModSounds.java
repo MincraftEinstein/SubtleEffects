@@ -30,9 +30,12 @@ public class ModSounds {
     public static final Supplier<SoundEvent> DRIP_WATER_INTO_FLUID = register("block.water.drip_into_fluid");
     public static final Supplier<SoundEvent> DRIP_LAVA_INTO_FLUID = register("block.lava.drip_into_fluid");
     public static final Supplier<SoundEvent> CAULDRON_CLEAN_ITEM = register("block.cauldron.clean_item");
+    public static final Supplier<SoundEvent> MONSTER_SPAWNER_AMBIENT = register("block.monster_spawner.ambient");
+    public static final Supplier<SoundEvent> MONSTER_SPAWNER_SPAWN_MOB = register("block.monster_spawner.spawn_mob");
     public static final Supplier<SoundEvent> GEYSER_WHOOSH = register("environment.geyser.whoosh");
     public static final Supplier<SoundEvent> GEYSER_HISS = register("environment.geyser.hiss");
     public static final Supplier<SoundEvent> FIREFLY_BUZZ = register("environment.firefly.buzz");
+    public static final Supplier<SoundEvent> SPAWN_EGG_SPAWN_MOB = register("item.spawn_egg.spawn_mob");
 
     public static void init() {
     }
