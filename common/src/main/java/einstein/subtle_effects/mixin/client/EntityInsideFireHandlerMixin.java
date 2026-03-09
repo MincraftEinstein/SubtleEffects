@@ -9,7 +9,7 @@ import org.spongepowered.asm.mixin.injection.At;
 @Mixin(value = EntityInsideFireHandler.class, remap = false)
 public class EntityInsideFireHandlerMixin {
 
-    @ModifyExpressionValue(method = "onEndEntityTick", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;displayFireAnimation()Z", remap = true))
+    @ModifyExpressionValue(method = "emitFlameParticles", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;displayFireAnimation()Z", remap = true))
     private static boolean cancelFireParticles(boolean original) {
         return original && !ModConfigs.ENTITIES.burning.overrideDyedFlamesEffects;
     }
