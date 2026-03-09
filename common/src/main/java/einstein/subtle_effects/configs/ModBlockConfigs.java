@@ -154,6 +154,9 @@ public class ModBlockConfigs extends Config {
     @ConfigGroup.Pop
     public boolean dispenseItemBubbles = true;
     public boolean rainIncreasesLeavesSpawningParticles = true;
+    public boolean purpleMonsterSpawnerParticles = false;
+    public ValidatedFloat monsterSpawnerSpawnMobSoundVolume = new ValidatedFloat(1, 1, 0);
+    public ValidatedFloat monsterSpawnerAmbientSoundVolume = new ValidatedFloat(1, 1, 0);
 
     private static ValidatedIdentifier getEyeHandler() {
         List<Identifier> eyes = CompatHelper.IS_END_REMASTERED_LOADED.get()

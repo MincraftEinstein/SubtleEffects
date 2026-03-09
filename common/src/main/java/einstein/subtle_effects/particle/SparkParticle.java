@@ -26,6 +26,7 @@ public class SparkParticle extends SingleQuadParticle {
     public static final List<Integer> SOUL_COLORS = List.of(0x60F5FA, 0x01A7AC);
     public static final List<Integer> BLAZE_COLORS = List.of(0xFFF847, 0xFFD528, 0xD17800, 0x8B3401);
     public static final List<Integer> COPPER_COLORS = List.of(0x46824D, 0x99EB99);
+    public static final List<Integer> SPAWNER_COLORS = List.of(0xD968E3, 0xAC35A1);
 
     protected SparkParticle(ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, float lifeTimeModifier, TextureAtlasSprite sprite) {
         super(level, x, y, z, xSpeed, ySpeed, zSpeed, sprite);

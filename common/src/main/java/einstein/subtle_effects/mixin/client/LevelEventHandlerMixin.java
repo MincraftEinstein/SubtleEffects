@@ -1,5 +1,6 @@
 package einstein.subtle_effects.mixin.client;
 
+import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
@@ -99,6 +100,14 @@ public class LevelEventHandlerMixin {
                 break;
             }
         }
+    }
+
+    @ModifyExpressionValue(method = "levelEvent", at = @At(value = "FIELD", target = "Lnet/minecraft/core/particles/ParticleTypes;FLAME:Lnet/minecraft/core/particles/SimpleParticleType;"))
+    private SimpleParticleType replaceFlame(SimpleParticleType original, int type) {
+        if (BLOCKS.purpleMonsterSpawnerParticles && type == LevelEvent.PARTICLES_MOBBLOCK_SPAWN) {
+            return ModParticles.PURPLE_FLAME.get();
+        }
+        return original;
     }
 
     @WrapOperation(method = "levelEvent",

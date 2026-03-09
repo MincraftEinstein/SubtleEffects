@@ -21,6 +21,7 @@ public class SparksConfigs extends ConfigSection {
     public LavaSparksDisplayType lavaSparksDisplayType = LavaSparksDisplayType.ON;
     public ValidatedDouble lavaSparksDensity = new ValidatedDouble(1, 1, 0.1);
     public boolean brewingStandSparks = true;
+    public boolean monsterSpawnerSparks = true;
 
     public enum LavaSparksDisplayType implements EnumTranslatable {
         OFF,

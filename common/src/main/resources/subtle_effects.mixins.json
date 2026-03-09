@@ -42,6 +42,7 @@
     "client.block.entity.EnderChestBlockEntityMixin",
     "client.block.entity.VaultBlockEntityClientMixin",
     "client.entity.AbstractHorseAccessor",
+    "client.entity.AbstractMinecartMixin",
     "client.entity.AreaEffectCloudMixin",
     "client.entity.ArmadilloMixin",
     "client.entity.AvatarRendererMixin",
@@ -68,9 +69,11 @@
     "client.item.BucketItemMixin",
     "client.item.FlintAndSteelItemMixin",
     "client.item.SolidBucketItemMixin",
+    "client.item.SpawnEggItemMixin",
     "client.particle.DripParticleMixin",
     "client.particle.FallAndLandParticleMixin",
     "client.particle.FallingLeavesParticleMixin",
+    "client.particle.FlameParticleMixin",
     "client.particle.FlyTowardsPositionParticleAccessor",
     "client.particle.FlyTowardsPositionParticleAccessor$EnchantProviderMixin",
     "client.particle.HeartParticleMixin",
@@ -89,6 +92,7 @@
     "client.particle.bubbles.WaterCurrentDownParticleProviderMixin"
   ],
   "mixins": [
+    "common.BaseSpawnerMixin",
     "common.ServerLevelMixin",
     "common.StonecutterMenuAccessor",
     "common.block.AbstractCandleBlockAccessor",
