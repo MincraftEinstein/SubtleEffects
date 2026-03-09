@@ -2,6 +2,7 @@ package einstein.subtle_effects.init;
 
 import com.mojang.serialization.MapCodec;
 import einstein.subtle_effects.particle.*;
+import einstein.subtle_effects.particle.FireflyParticle;
 import einstein.subtle_effects.particle.SplashParticle;
 import einstein.subtle_effects.particle.emitter.FireFlyEmitter;
 import einstein.subtle_effects.particle.emitter.PotionEmitter;

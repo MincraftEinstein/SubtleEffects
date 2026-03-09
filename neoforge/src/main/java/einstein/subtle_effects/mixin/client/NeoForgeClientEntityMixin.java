@@ -1,6 +1,5 @@
 package einstein.subtle_effects.mixin.client;
 
-import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
@@ -15,9 +14,11 @@ import einstein.subtle_effects.util.ParticleSpawnUtil;
 import it.unimi.dsi.fastutil.objects.Object2DoubleArrayMap;
 import it.unimi.dsi.fastutil.objects.Object2DoubleMap;
 import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.animal.golem.SnowGolem;
 import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
 import net.neoforged.neoforge.fluids.FluidType;
 import org.spongepowered.asm.mixin.Mixin;
@@ -42,12 +43,13 @@ public abstract class NeoForgeClientEntityMixin implements FluidLogicAccessor {
     @Unique
     private final Entity subtleEffects$me = (Entity) (Object) this;
 
-    @ModifyExpressionValue(method = "playStepSound", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/state/BlockState;getSoundType(Lnet/minecraft/world/level/LevelReader;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/entity/Entity;)Lnet/minecraft/world/level/block/SoundType;"))
-    private SoundType stepSound(SoundType soundType) {
+    @Inject(method = "playStepSound", at = @At(value = "HEAD"), cancellable = true)
+    private void stepSound(BlockPos pos, BlockState state, CallbackInfo ci) {
         if (subtleEffects$me instanceof SnowGolem && ModConfigs.ENTITIES.snowGolemStepSounds) {
-            return SoundType.SNOW;
+            SoundType soundType = SoundType.SNOW;
+            subtleEffects$me.playSound(soundType.getStepSound(), soundType.getVolume() * 0.15F, soundType.getPitch());
+            ci.cancel();
         }
-        return soundType;
     }
 
     @Inject(method = "updateFluidHeightAndDoFluidPushing(Z)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/material/FluidState;getHeight(Lnet/minecraft/world/level/BlockGetter;Lnet/minecraft/core/BlockPos;)F"))

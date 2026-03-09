@@ -24,7 +24,7 @@ public interface FluidLogicAccessor {
     void subtleEffects$cancelNextWaterSplash();
 
     static void clientUpdateInWaterStateAndDoFluidPushing(Entity entity) {
-        if (entity.level().isClientSide) {
+        if (entity.level().isClientSide()) {
             FluidLogicAccessor accessor = (FluidLogicAccessor) entity;
             accessor.subtleEffects$getFluidDefinitionHeight().clear();
             subtleEffects$updateFluidDefinitionHeight(entity);
