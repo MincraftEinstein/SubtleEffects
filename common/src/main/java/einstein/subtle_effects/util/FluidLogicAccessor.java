@@ -9,7 +9,6 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.AABB;
-import org.apache.commons.lang3.function.Consumers;
 import org.jetbrains.annotations.Nullable;
 
 public interface FluidLogicAccessor {
@@ -28,7 +27,8 @@ public interface FluidLogicAccessor {
             FluidLogicAccessor accessor = (FluidLogicAccessor) entity;
             accessor.subtleEffects$getFluidDefinitionHeight().clear();
             subtleEffects$updateFluidDefinitionHeight(entity);
-            accessor.subtleEffects$setLastTouchedFluid(ParticleSpawnUtil.preformSplash(true, true, entity, false, Consumers.nop()));
+            accessor.subtleEffects$setLastTouchedFluid(ParticleSpawnUtil.preformSplash(true, true, entity, false, isWater -> {
+            }));
         }
     }
 

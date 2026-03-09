@@ -14,7 +14,7 @@ public abstract class AbstractMinecartMixin {
     @Unique
     private final AbstractMinecart subtleEffects$me = (AbstractMinecart) (Object) this;
 
-    @Inject(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/vehicle/AbstractMinecart;handlePortal()V"))
+    @Inject(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/vehicle/AbstractMinecart;handleNetherPortal()V"))
     private void tick(CallbackInfo ci) {
         FluidLogicAccessor.clientUpdateInWaterStateAndDoFluidPushing(subtleEffects$me);
     }

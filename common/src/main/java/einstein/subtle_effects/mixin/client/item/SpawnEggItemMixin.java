@@ -4,7 +4,6 @@ import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.init.ModSounds;
 import einstein.subtle_effects.ticking.tickers.TickerManager;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.component.DataComponents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
@@ -22,8 +21,8 @@ import net.minecraft.world.item.SpawnEggItem;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.Spawner;
 import net.minecraft.world.level.block.LiquidBlock;
+import net.minecraft.world.level.block.entity.SpawnerBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
@@ -55,7 +54,7 @@ public class SpawnEggItemMixin extends Item {
         BlockPos pos = context.getClickedPos();
         BlockState state = level.getBlockState(pos);
 
-        if (!level.isClientSide() || level.getBlockEntity(pos) instanceof Spawner) {
+        if (!level.isClientSide() || level.getBlockEntity(pos) instanceof SpawnerBlockEntity) {
             return;
         }
 
@@ -95,12 +94,12 @@ public class SpawnEggItemMixin extends Item {
 
                 // noinspection ConstantConditions
                 level.getEntities(defaultType, new AABB(pos),
-                        entity -> !entity.hasCustomName() || entity.getCustomName().equals(stack.get(DataComponents.CUSTOM_NAME)),
+                        entity -> !entity.hasCustomName() || entity.getCustomName().equals(stack.getHoverName()),
                         entities, 1
                 );
 
                 if (!entities.isEmpty()) {
-                    Entity entity = entities.getFirst();
+                    Entity entity = entities.get(0);
                     if (entity instanceof Mob mob) {
                         mob.spawnAnim();
                         return;

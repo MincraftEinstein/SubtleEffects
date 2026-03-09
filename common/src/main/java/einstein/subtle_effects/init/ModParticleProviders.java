@@ -7,6 +7,7 @@ import einstein.subtle_effects.particle.emitter.PotionEmitter;
 import einstein.subtle_effects.particle.emitter.SplashEmitter;
 import einstein.subtle_effects.particle.provider.*;
 import einstein.subtle_effects.platform.Services;
+import net.minecraft.client.particle.FlameParticle;
 import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.client.particle.SuspendedTownParticle;
@@ -86,6 +87,7 @@ public class ModParticleProviders {
         register(WATERFALL_DROPLET, WaterfallDropletParticle.Provider::new);
         register(WATERFALL_MIST, WaterfallMistParticle.Provider::new);
         register(FALLEN_LEAF, sprites -> new FallenLeafParticle.Provider());
+        register(PURPLE_FLAME, FlameParticle.Provider::new);
         SubtleEffects.LOGGER.info("Forge please do the world a favor and STOP EXISTING!!");
     }
 
