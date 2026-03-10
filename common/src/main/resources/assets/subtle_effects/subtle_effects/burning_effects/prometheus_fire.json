@@ -1,0 +1,8 @@
+{
+  "provider": "prometheus",
+  "id": "minecraft:",
+  "color": {
+    "type": "subtle_effects:preset",
+    "preset": "sparks"
+  }
+}

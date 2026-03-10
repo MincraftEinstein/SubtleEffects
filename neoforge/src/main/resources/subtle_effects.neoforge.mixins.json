@@ -8,7 +8,9 @@
     "client.ClientPacketListenerMixin",
     "client.FluidTypeMixin",
     "client.NeoForgeClientEntityMixin",
-    "client.NeoForgeMultiPlayerGameModeMixin"
+    "client.NeoForgeClientEntityMixin$InterimCalculationMixin",
+    "client.NeoForgeMultiPlayerGameModeMixin",
+    "client.NeoForgeParticleEngineMixin"
   ],
   "mixins": [
     "common.NeoForgeShearsDispenseItemBehaviorMixin",

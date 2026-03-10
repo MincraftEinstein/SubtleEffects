@@ -10,6 +10,7 @@ import me.fzzyhmstrs.fzzy_config.annotations.RequiresAction;
 import me.fzzyhmstrs.fzzy_config.annotations.Translation;
 import me.fzzyhmstrs.fzzy_config.config.Config;
 import me.fzzyhmstrs.fzzy_config.config.ConfigGroup;
+import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedFloat;
 import net.minecraft.client.Minecraft;
 
 @Translation(prefix = ModConfigs.BASE_KEY + "items")
@@ -29,15 +30,17 @@ public class ModItemConfigs extends Config {
     public boolean increasedItemBreakParticles = true;
     public ConfigGroup bucketsGroup = new ConfigGroup("buckets");
     public boolean waterEvaporateFromBucketSteam = true;
-    public boolean waterBucketUseParticles = true;
-    public boolean lavaBucketUseParticles = true;
-    @ConfigGroup.Pop
+    public boolean fluidBucketUseParticles = true;
     public boolean powderSnowBucketUseParticles = true;
+    @ConfigGroup.Pop
+    public boolean powderSnowBucketBlockPlaceSound = true;
     public boolean lingeringPotionClouds = true;
     public boolean splashPotionClouds = true;
     @RequiresAction(action = Action.RESTART)
     public boolean structureVoidItemMarker = true;
     public boolean armadilloBrushParticles = true;
+    public ValidatedFloat spawnEggUseSoundVolume = new ValidatedFloat(0.5F, 1, 0);
+    public boolean spawnEggUseParticles = true;
 
     public ModItemConfigs() {
         super(SubtleEffects.loc("items"));

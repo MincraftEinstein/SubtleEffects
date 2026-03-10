@@ -1,13 +1,17 @@
 package einstein.subtle_effects.particle;
 
+import einstein.subtle_effects.data.color_providers.ColorProviderType;
 import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.util.SparkType;
 import einstein.subtle_effects.util.Util;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ColorParticleOption;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.Level;
+import org.joml.Vector3f;
 
 import java.util.List;
 
@@ -16,6 +20,8 @@ public class SparkParticle extends TextureSheetParticle {
     public static final List<Integer> DEFAULT_COLORS = List.of(0xFFD800, 0xFF6A00);
     public static final List<Integer> SOUL_COLORS = List.of(0x60F5FA, 0x01A7AC);
     public static final List<Integer> BLAZE_COLORS = List.of(0xFFF847, 0xFFD528, 0xD17800, 0x8B3401);
+    public static final List<Integer> COPPER_COLORS = List.of(0x46824D, 0x99EB99);
+    public static final List<Integer> SPAWNER_COLORS = List.of(0xD968E3, 0xAC35A1);
 
     protected SparkParticle(ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, float lifeTimeModifier, SpriteSet sprites) {
         super(level, x, y, z, xSpeed, ySpeed, zSpeed);
@@ -35,6 +41,11 @@ public class SparkParticle extends TextureSheetParticle {
 
     public static ColorParticleOption create(SparkType sparkType, RandomSource random) {
         return create(sparkType, random, DEFAULT_COLORS);
+    }
+
+    public static ColorParticleOption create(SparkType sparkType, ColorProviderType.ColorProvider colorProvider, Level level, BlockPos pos, RandomSource random) {
+        Vector3f color = colorProvider.provideColor(level, pos, random);
+        return ColorParticleOption.create(sparkType.getType().get(), color.x(), color.y(), color.z());
     }
 
     public static ColorParticleOption create(SparkType sparkType, RandomSource random, List<Integer> colors) {

@@ -1,0 +1,42 @@
+{
+  "splash": {
+    "color": {
+      "type": "subtle_effects:biome_color",
+      "color_type": "water_color"
+    }
+  },
+  "splash_overlay": {
+    "color": {
+      "type": "subtle_effects:biome_color",
+      "color_type": "water_color"
+    },
+    "tinting": {
+      "use_config": true
+    },
+    "transparency": {
+      "use_config": true
+    }
+  },
+  "splash_ripple": {
+    "color": {
+      "type": "subtle_effects:biome_color",
+      "color_type": "water_color"
+    },
+    "tinting": {
+      "use_config": true
+    },
+    "transparency": {
+      "use_config": true
+    }
+  },
+  "droplets": {
+    "color": {
+      "type": "subtle_effects:biome_color",
+      "color_type": "water_color"
+    },
+    "tinting": {
+      "use_config": true
+    },
+    "land_particle": "minecraft:splash"
+  }
+}

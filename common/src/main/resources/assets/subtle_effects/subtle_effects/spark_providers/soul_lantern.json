@@ -6,6 +6,9 @@
   ],
   "options": {
     "preset": "lantern",
-    "colors": "soul"
+    "color": {
+      "type": "subtle_effects:preset",
+      "preset": "soul_sparks"
+    }
   }
 }

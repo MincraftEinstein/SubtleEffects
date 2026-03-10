@@ -2,13 +2,10 @@ package einstein.subtle_effects.data;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import einstein.subtle_effects.SubtleEffects;
-import einstein.subtle_effects.particle.SparkParticle;
+import einstein.subtle_effects.data.color_providers.ColorProviderType;
 import einstein.subtle_effects.util.Box;
 import einstein.subtle_effects.util.SparkType;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.ExtraCodecs;
-import net.minecraft.util.FastColor;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.util.valueproviders.IntProvider;
 import net.minecraft.world.phys.Vec3;
@@ -35,12 +32,7 @@ public record SparkProviderData(List<BlockStateEntry> states, Optional<Options> 
 
     public record Options(PresetType preset, Optional<SparkType> sparkType, Optional<Box> box,
                           Optional<IntProvider> count, Optional<Float> chance, Optional<Vec3> velocity,
-                          Optional<List<Integer>> colors) {
-
-        // Backported from 1.21.4
-        public static final Codec<Integer> RGB_COLOR_CODEC = Codec.withAlternative(Codec.INT, ExtraCodecs.VECTOR3F,
-                color -> FastColor.ARGB32.colorFromFloat(1, color.x(), color.y(), color.z())
-        );
+                          Optional<ColorProviderType.ColorProvider> colorProvider) {
 
         public static final Codec<Options> CODEC = RecordCodecBuilder.create(instance -> instance.group(
                 PresetType.CODEC.fieldOf("preset").forGetter(Options::preset),
@@ -49,17 +41,7 @@ public record SparkProviderData(List<BlockStateEntry> states, Optional<Options> 
                 IntProvider.CODEC.optionalFieldOf("count").forGetter(Options::count),
                 Codec.floatRange(0, 1).optionalFieldOf("chance").forGetter(Options::chance),
                 Vec3.CODEC.optionalFieldOf("velocity").forGetter(Options::velocity),
-                Codec.withAlternative(Codec.list(RGB_COLOR_CODEC), Codec.STRING, string -> {
-                    if (string.equals("soul")) {
-                        return SparkParticle.SOUL_COLORS;
-                    }
-                    else if (string.equals("default")) {
-                        return SparkParticle.DEFAULT_COLORS;
-                    }
-
-                    SubtleEffects.LOGGER.error("Spark color must be an integer array or string of either 'soul' or 'default'");
-                    return null;
-                }).optionalFieldOf("colors").forGetter(Options::colors)
+                ColorProviderType.CODEC.optionalFieldOf("color").forGetter(Options::colorProvider)
         ).apply(instance, Options::new));
     }
 

@@ -209,6 +209,24 @@
       }
     ]
   },
+  "block.monster_spawner.ambient": {
+    "subtitle": "subtitles.subtle_effects.block.monster_spawner.ambient",
+    "sounds": [
+      {
+        "name": "minecraft:block.trial_spawner.ambient",
+        "type": "event"
+      }
+    ]
+  },
+  "block.monster_spawner.spawn_mob": {
+    "subtitle": "subtitles.subtle_effects.block.monster_spawner.spawn_mob",
+    "sounds": [
+      {
+        "name": "minecraft:block.trial_spawner.spawn_mob",
+        "type": "event"
+      }
+    ]
+  },
   "environment.geyser.whoosh": {
     "subtitle": "subtitles.subtle_effects.environment.geyser.whoosh",
     "sounds": [
@@ -271,6 +289,16 @@
       {
         "name": "subtle_effects:block/firefly_bush/firefly_bush11",
         "volume": 4.0
+      }
+    ]
+  },
+  "item.spawn_egg.spawn_mob": {
+    "subtitle": "subtitles.subtle_effects.item.spawn_egg.spawn_mob",
+    "sounds": [
+      {
+        "name": "entity.turtle.egg_break",
+        "type": "event",
+        "pitch": 1.7
       }
     ]
   }

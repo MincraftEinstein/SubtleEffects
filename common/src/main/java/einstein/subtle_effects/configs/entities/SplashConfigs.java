@@ -18,7 +18,8 @@ public class SplashConfigs extends ConfigSection {
     public boolean splashEffects = true;
     public boolean splashRipples = true;
     public boolean splashDroplets = true;
-    public boolean splashBubbles = true;
+    public boolean splashDropletSounds = true;
+    public boolean waterSplashBubbles = true;
     public boolean explosionsCauseSplashes = true;
     public ValidatedFloat splashOverlayTint = new ValidatedFloat(0.2F, 1, 0);
     public ValidatedFloat splashOverlayAlpha = new ValidatedFloat(0.8F, 1, 0);
@@ -29,8 +30,4 @@ public class SplashConfigs extends ConfigSection {
     public boolean secondarySplashRipples = false;
     @ConfigGroup.Pop
     public ValidatedFloat secondarySplashVelocityThreshold = new ValidatedFloat(0.3F, 1, 0);
-    public ConfigGroup lavaSplashesGroup = new ConfigGroup("lava_splashes");
-    public boolean lavaSplashes = true;
-    @ConfigGroup.Pop
-    public boolean lavaSplashRipples = true;
 }

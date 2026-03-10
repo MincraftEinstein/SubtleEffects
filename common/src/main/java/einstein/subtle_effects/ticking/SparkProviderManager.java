@@ -2,12 +2,15 @@ package einstein.subtle_effects.ticking;
 
 import einstein.subtle_effects.data.SparkProviderData;
 import einstein.subtle_effects.data.SparkProviderReloadListener;
+import einstein.subtle_effects.data.color_providers.ColorProviderType;
+import einstein.subtle_effects.data.color_providers.PresetColorProvider;
 import einstein.subtle_effects.particle.SparkParticle;
 import einstein.subtle_effects.util.Box;
-import einstein.subtle_effects.util.ParticleSpawnUtil;
 import einstein.subtle_effects.util.SparkType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.particles.ColorParticleOption;
+import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.util.valueproviders.IntProvider;
@@ -26,6 +29,8 @@ import static einstein.subtle_effects.util.MathUtil.*;
 
 public class SparkProviderManager {
 
+    private static final ColorProviderType.ColorProvider DEFAULT_COLOR_PROVIDER = new PresetColorProvider(PresetColorProvider.Preset.SPARKS);
+
     public static void tick(Level level, RandomSource random, Block block, BlockState state, BlockPos pos) {
         List<SparkProviderReloadListener.SparkProvider> providers = SparkProviderReloadListener.PROVIDERS.get(block);
         if (providers != null && !providers.isEmpty()) {
@@ -37,22 +42,22 @@ public class SparkProviderManager {
 
                 SparkProviderData.Options options = provider.options();
                 SparkProviderData.PresetType preset = options.preset();
-                List<Integer> colors = options.colors().orElse(SparkParticle.DEFAULT_COLORS);
+                ColorProviderType.ColorProvider colorProvider = options.colorProvider().orElse(DEFAULT_COLOR_PROVIDER);
 
                 switch (preset) {
                     case CAMPFIRE -> {
                         if (BLOCKS.sparks.campfireSparks) {
-                            ParticleSpawnUtil.spawnSparks(level, random, pos, SparkType.LONG_LIFE,
+                            spawnSparks(level, random, pos, SparkType.LONG_LIFE,
                                     new Box(0.3, 0.4, 0.3, 0.6, 0.4, 0.6),
-                                    new Vec3(0.03, 0.05, 0.03), 10, colors
+                                    new Vec3(0.03, 0.05, 0.03), 10, colorProvider
                             );
                         }
                     }
                     case TORCH -> {
                         if (BLOCKS.sparks.torchSparks) {
-                            ParticleSpawnUtil.spawnSparks(level, random, pos, SparkType.SHORT_LIFE,
+                            spawnSparks(level, random, pos, SparkType.SHORT_LIFE,
                                     new Box(0.3, 0.5, 0.3, 0.6, 0.5, 0.6),
-                                    new Vec3(0.01, 0.01, 0.01), 2, colors
+                                    new Vec3(0.01, 0.01, 0.01), 2, colorProvider
                             );
                         }
                     }
@@ -63,29 +68,29 @@ public class SparkProviderManager {
 
                         Direction direction = state.getValue(BlockStateProperties.HORIZONTAL_FACING).getOpposite();
                         Vec3 offset = new Vec3(0.5 + (0.27 * direction.getStepX()), 0.7, 0.5 + (0.27 * direction.getStepZ()));
-                        ParticleSpawnUtil.spawnSparks(level, random, pos, SparkType.SHORT_LIFE,
+                        spawnSparks(level, random, pos, SparkType.SHORT_LIFE,
                                 new Box(
                                         offset.subtract(0.05, 0, 0.05),
                                         offset.add(0.05, 0, 0.05)
                                 ),
-                                new Vec3(0.01, 0.01, 0.01), 2, colors
+                                new Vec3(0.01, 0.01, 0.01), 2, colorProvider
                         );
                     }
                     case CANDLE -> {
                         if (BLOCKS.sparks.candleSparks && block instanceof AbstractCandleBlock candleBlock) {
-                            candleBlock.getParticleOffsets(state).forEach(offset -> {
-                                ParticleSpawnUtil.spawnSparks(level, random, pos, SparkType.SHORT_LIFE, new Box(
-                                        offset.subtract(0.05, 0, 0.05),
-                                        offset.add(0.05, 0, 0.05)
-                                ), new Vec3(0.01, 0.01, 0.01), 2, colors);
-                            });
+                            candleBlock.getParticleOffsets(state).forEach(offset ->
+                                    spawnSparks(level, random, pos, SparkType.SHORT_LIFE, new Box(
+                                            offset.subtract(0.05, 0, 0.05),
+                                            offset.add(0.05, 0, 0.05)
+                                    ), new Vec3(0.01, 0.01, 0.01), 2, colorProvider)
+                            );
                         }
                     }
                     case LANTERN -> {
                         for (int i = 0; i < BLOCKS.sparks.lanternSparksDensity.get(); i++) {
                             int xSign = nextSign(random);
                             int zSign = nextSign(random);
-                            level.addParticle(SparkParticle.create(SparkType.FLOATING, random, colors),
+                            level.addParticle(SparkParticle.create(SparkType.FLOATING, colorProvider, level, pos, random),
                                     pos.getX() + 0.5 + (nextDouble(random, 0.5) * xSign),
                                     pos.getY() + random.nextInt(5) / 10D,
                                     pos.getZ() + 0.5 + (nextDouble(random, 0.5) * zSign),
@@ -106,7 +111,7 @@ public class SparkProviderManager {
                                         Direction.Axis axis = direction.getAxis();
                                         int i = direction.getAxisDirection() == Direction.AxisDirection.NEGATIVE ? 0 : 1;
 
-                                        spawnFireSparks(level, random, pos, colors,
+                                        spawnFireSparks(level, random, pos, colorProvider,
                                                 axis == Direction.Axis.X ? i : random.nextDouble(),
                                                 axis == Direction.Axis.Z ? random.nextDouble() : i
                                         );
@@ -114,7 +119,7 @@ public class SparkProviderManager {
                                 }
                                 return;
                             }
-                            spawnFireSparks(level, random, pos, colors, random.nextDouble(), random.nextDouble());
+                            spawnFireSparks(level, random, pos, colorProvider, random.nextDouble(), random.nextDouble());
                         }
                     }
                     case FURNACE -> {
@@ -126,7 +131,7 @@ public class SparkProviderManager {
                         Direction.Axis axis = direction.getAxis();
 
                         for (int i = 0; i < 3; i++) {
-                            level.addParticle(SparkParticle.create(SparkType.SHORT_LIFE, random, colors),
+                            level.addParticle(SparkParticle.create(SparkType.SHORT_LIFE, colorProvider, level, pos, random),
                                     pos.getX() + 0.5 + (0.6 * direction.getStepX()) + random.nextDouble()
                                             / (axis == Direction.Axis.X ? 10 : 3) * nextSign(random),
                                     pos.getY() + (random.nextDouble() * 6 / 16),
@@ -146,7 +151,7 @@ public class SparkProviderManager {
                         float chance = options.chance().orElse(1F);
 
                         if (random.nextFloat() <= chance) {
-                            ParticleSpawnUtil.spawnSparks(level, random, pos, sparkType, box, velocity, count.sample(random), colors);
+                            spawnSparks(level, random, pos, sparkType, box, velocity, count.sample(random), colorProvider);
                         }
                     }
                 }
@@ -154,9 +159,30 @@ public class SparkProviderManager {
         }
     }
 
-    private static void spawnFireSparks(Level level, RandomSource random, BlockPos pos, List<Integer> colors, double xOffset, double zOffset) {
+    private static void spawnSparks(Level level, RandomSource random, BlockPos pos, SparkType sparkType, Box box, Vec3 maxSpeeds, int count, ColorProviderType.ColorProvider colorProvider) {
+        if (random.nextBoolean()) {
+            Vec3 start = box.min();
+            Vec3 end = box.max();
+            ColorParticleOption options = SparkParticle.create(sparkType, colorProvider, level, pos, random);
+
+            for (int i = 0; i < count; i++) {
+                level.addParticle(options,
+                        pos.getX() + Mth.nextDouble(random, start.x, end.x),
+                        pos.getY() + Mth.nextDouble(random, start.y, end.y),
+                        pos.getZ() + Mth.nextDouble(random, start.z, end.z),
+                        nextNonAbsDouble(random, maxSpeeds.x()),
+                        nextNonAbsDouble(random, maxSpeeds.y()),
+                        nextNonAbsDouble(random, maxSpeeds.z())
+                );
+            }
+        }
+    }
+
+    private static void spawnFireSparks(Level level, RandomSource random, BlockPos pos, ColorProviderType.ColorProvider colorProvider, double xOffset, double zOffset) {
+        ColorParticleOption options = SparkParticle.create(SparkType.LONG_LIFE, colorProvider, level, pos, random);
+
         for (int i = 0; i < 5; i++) {
-            level.addParticle(SparkParticle.create(SparkType.LONG_LIFE, random, colors),
+            level.addParticle(options,
                     pos.getX() + xOffset + random.nextDouble() / 10 * nextSign(random),
                     pos.getY() + random.nextDouble(),
                     pos.getZ() + zOffset + random.nextDouble() / 10 * nextSign(random),
