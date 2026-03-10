@@ -1,3 +1,123 @@
 ---
 title: Spark Providers
 ---
+
+The information of this page relates to Spark Providers from Subtle Effects version 1.14.0 and up, for versions below
+1.14.0 please visit the [legacy wiki](https://github.com/MincraftEinstein/SubtleEffects/wiki/Spark-Providers)
+
+## Setup
+
+Spark providers allow [resource packs](@minecraft:Resource_packs) to add, remove, and otherwise customize spark particles for blocks. To start,
+create a new JSON file in the `assets/{namespace}/subtle_effects/spark_providers` folder of a resource pack. Next,
+inside the file create a list called `states`.
+
+```json
+{
+  "states": [
+  ]
+}
+```
+
+This list is where you provide the block states that this provider will spawn sparks for. States are made up of two main
+parts, the block id, and an optional list of block state properties that the block must match. Any unspecified properties
+will be ignored. For example, campfires have a `waterlogged` property, but since it is not specified in the example below
+it will be ignored and sparks will spawn regardless of whether the campfire is waterlogged or not. For a full list of
+vanilla block states please refer to [this page](@minecraft:Block_states#List_of_block_states)
+
+<Callout>
+    The block state property value must be surrounded by quotation marks, or the file will fail to load
+</Callout>
+
+```json
+{
+  "states": [
+    {
+      "name": "minecraft:campfire",
+      "properties": {
+        "lit": "true"
+      }
+    }
+  ]
+  ...
+}
+```
+
+Additionally a `required` boolean type element can optionally be added to an entry, which allows blocks to be specified
+that may not exist in the game e.g. blocks from a mod that hasn't been installed.
+
+<Callout variant="warning">
+    Please keep in mind that while a resource pack can have as many state providers as you like and every provider can
+    have as many blocks/block state entries as you like, having too many of either could significantly slow down the game
+</Callout>
+
+## Options
+
+Options are an optional element for customizing the color and behavior of sparks. If omitted, the provider will do
+nothing, making for an easy way to remove providers added by other packs/mods. To do so, put the provider in the same
+namespace with the same file name as an existing provider and load your pack above the other.
+
+Options require that you define a preset type which will control the spawn behavior of the sparks. This can be any of:
+
+| Name         | Requirements                                            |
+|--------------|---------------------------------------------------------|
+| `campfire`   | N/A                                                     |
+| `fire`       | The block inherits from the `BaseFireBlock` class       |
+| `torch`      | N/A                                                     |
+| `wall_torch` | The block has the horizontal `facing` property          |
+| `candle`     | The block inherits from the `AbstractCandleBlock` class |
+| `lantern`    | N/A                                                     |
+| `furnace`    | The block has the horizontal `facing` property          |
+| `custom`     | N/A                                                     |
+
+```json
+{
+  ...
+  "options": {
+    "preset": "campfire"
+  }
+}
+```
+
+List all optional Options elements for customizing behavior
+- `color` A [Color Provider](color_providers) used to determine a particle's color
+
+**If `preset` is set to `custom` then the following elements may also be used**
+- `count` An integer or [Int Provider](@minecraft:Configured_feature/int_provider) specifying the number of particles spawned at a time
+- `spark` The [Spark Type](#spark-types) to use.
+- `chance` A float from 0 to 1 of the chance that particles will be spawn during a random game tick
+- `velocity` A list of exactly three doubles used for velocity of the particles. Each double representing the X, Y, and Z axises respectively
+- `box` An element containing two lists of exactly three doubles. Each double represents the XYZ coordinates in blocks,
+  relative to the spawning block, that will be used for the start and end positions of the box that the particles are
+  spawned in. To specify pixels, multiply the number of pixels you want times 0.0625, which is the result of dividing 1 by
+  16 pixels, 1 being a single block and 16 being the default number of pixels in block.
+
+<a name="spark-types"></a>**Spark Types**
+| Name         | Summary                  | Approximate Lifetime |
+|--------------|--------------------------|----------------------|
+| `short_life` | Rises upwards            | 1 second             |
+| `long_life`  | Rises upwards            | 2 seconds            |
+| `floating`   | Drifts around in the air | 1 second             |
+| `metal`      | Has gravity              | 1 second             |
+
+**Example of all options in use**
+```json
+{
+  ...
+  "options": {
+    "preset": "custom",
+    "color": "0x7ABAAB",
+    "count": {
+        "type": "uniform",
+        "max_inclusive": 5,
+        "min_inclusive": 2
+    },
+    "spark": "long_life",
+    "chance": 0.25,
+    "velocity": [0.5, 0, -0.3],
+    "box": {
+      "min": [0, 0, 0],
+      "max": [1, 1, 1]
+    }
+  }
+}
+```

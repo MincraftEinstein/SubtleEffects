@@ -1,0 +1,47 @@
+---
+title: Mob Skull Shaders
+---
+
+Mob Skull Shaders allow [resource packs](@minecraft:Resource_packs) to apply a [Post Processing Effect Shader](@minecraft:Shader#Post-processing_effects)
+when an item is worn on the player's head. To start, create a new JSON file in the `assets/{namespace}/subtle_effects/mob_skull_shaders`
+folder. Next, inside the file create an object called `item` along with an element called `id`. `id` is where you specify
+the item ID used for this effect
+
+```json
+{
+  "item": {
+    "id": "minecraft:diamond_helmet"
+  },
+  ...
+}
+```
+
+Additionally, an optional list of [item components](@minecraft:Data_component_format) required for the shader to be applied can also be specified.
+
+<Callout>
+    Specifying components is not available in 1.20.1 and due to item components not being added until 1.20.5.
+    Specifying item NBT tags is also not available
+</Callout>
+
+```json
+{
+  "item": {
+    "id": "minecraft:diamond_helmet",
+    "components": {
+      "custom_name": "{\"text\": \"Cool Helmet\"}"
+    }
+  },
+  ...
+}
+```
+
+Lastly, add an element called `shader`. This is the id of the post shader to be applied.
+
+```json
+{
+  "item": {
+    "id": "minecraft:diamond_helmet"
+  },
+  "shader": "minecraft:spider"
+}
+```

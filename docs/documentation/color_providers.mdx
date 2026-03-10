@@ -1,0 +1,74 @@
+---
+title: Color Providers
+---
+
+Color Providers are a JSON object that can be used throughout the resource driven side of the mod to define colors.
+
+[Minecraft Wiki color calculator](@minecraft:Calculators/Decimal_representation_of_color)
+
+----
+- `type` The type of the color provider. One of `none`, `constant`, `biome_color`, `list`, or `preset`
+
+**If `type` is `constant` additional fields are as follows**
+- `color`: Can be either an integer of a color in decimal, a string containing a color in hexadecimal, or a list of three
+float values from 0 to 1
+
+**If `type` is `biome_color` additional fields are as follows**
+- `color_type`: A string value of either `water_color`, `water_fog_color`, `sky_color`, `fog_color`, `foliage_color`, `grass_color`.
+For Minecraft versions 1.21.11 and above the following values can also be used `dry_foliage_color`, `sunrise_sunset_color`, `cloud_color`, `sky_light_color`
+
+**If `type` is `list` additional fields are as follows**
+- `providers`: A list of color providers. The returned provider will be randomized
+
+**If `type` is `preset` additional fields are as follows**
+- `preset`: A string value of either `sparks`, `soul_sparks`, `blaze_sparks`, `copper_sparks`, `spawner_sparks`, `lava_droplet`, `lava_ripple`
+
+----
+
+When using a `constant` type color provider the `type` element and surrounding object may be omitted in favor of simply
+supplying the value that would be passed to the `color` element. For example the following code snippet:
+
+```json
+{
+  "color_provider": {
+    "type": "constant",
+    "color": "#FF0000"
+  }
+}
+```
+
+can be shorted/inlined to simply:
+
+```json
+{
+  "color_provider": "#FF0000"
+}
+```
+
+This works with all data types (integer decimal, string hexadecimal, or float array) of the `constant` color provider type,
+allowing for a less bulky implementation of color
+
+----
+
+**Example of the wierd things that can be done with list type color providers**
+```json
+{
+  "type": "subtle_effects:list",
+  "providers": [
+    "0xFF0000",
+    "#FF00FF",
+    [0, 1, 0],
+    {
+      "type": "subtle_effects:preset",
+      "preset": "soul_sparks"
+    },
+    {
+      "type": "subtle_effects:list",
+      "providers": [
+        [0.5, 0.5, 0.5],
+        [0.3, 0.3, 0.3]
+      ]
+    }
+  ]
+}
+```
