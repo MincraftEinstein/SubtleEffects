@@ -13,14 +13,12 @@ import einstein.subtle_effects.util.FluidLogicAccessor;
 import einstein.subtle_effects.util.ParticleSpawnUtil;
 import it.unimi.dsi.fastutil.objects.Object2DoubleArrayMap;
 import it.unimi.dsi.fastutil.objects.Object2DoubleMap;
-import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
+import it.unimi.dsi.fastutil.objects.Object2ObjectArrayMap;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.animal.SnowGolem;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.material.FluidState;
-import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.fluids.FluidType;
-import org.apache.commons.lang3.tuple.MutableTriple;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -67,7 +65,7 @@ public abstract class ForgeClientEntityMixin implements FluidLogicAccessor {
         return result;
     }
 
-    @Inject(method = "updateFluidHeightAndDoFluidPushing(Ljava/util/function/Predicate;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/material/FluidState;getHeight(Lnet/minecraft/world/level/BlockGetter;Lnet/minecraft/core/BlockPos;)F"), remap = false)
+    @Inject(method = "updateFluidHeightAndDoFluidPushing(Ljava/util/function/Predicate;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/material/FluidState;getHeight(Lnet/minecraft/world/level/BlockGetter;Lnet/minecraft/core/BlockPos;)F", remap = true), remap = false)
     private void storeFluidPairHeight(CallbackInfo ci, @Local FluidState fluidState, @Share("fluidPairs") LocalRef<Map<FluidType, FluidDefinition>> fluidPairsRef) {
         FluidDefinition fluidDefinition = ((FluidDefinitionAccessor) fluidState.getType()).subtleEffects$getFluidDefinition();
         FluidType type = fluidState.getFluidType();
@@ -83,13 +81,13 @@ public abstract class ForgeClientEntityMixin implements FluidLogicAccessor {
         fluidPairsRef.set(fluidTypePairs);
     }
 
-    @Inject(method = "updateFluidHeightAndDoFluidPushing(Ljava/util/function/Predicate;)V", at = @At(value = "INVOKE", target = "Lit/unimi/dsi/fastutil/objects/Object2ObjectMap;forEach(Ljava/util/function/BiConsumer;)V"), remap = false)
-    private void updateFluidPairHeight(CallbackInfo ci, @Local Object2ObjectMap<FluidType, MutableTriple<Double, Vec3, Integer>> interimCalcs, @Share("fluidPairs") LocalRef<Map<FluidType, FluidDefinition>> fluidPairsRef) {
-        interimCalcs.forEach((type, interim) -> {
+    @Inject(method = "updateFluidHeightAndDoFluidPushing(Ljava/util/function/Predicate;)V", at = @At(value = "INVOKE", target = "Lit/unimi/dsi/fastutil/objects/Object2ObjectArrayMap;forEach(Ljava/util/function/BiConsumer;)V"), remap = false)
+    private void updateFluidPairHeight(CallbackInfo ci, @Local Object2ObjectArrayMap<FluidType, Entity.FluidCalcs> fluidCalcs, @Share("fluidPairs") LocalRef<Map<FluidType, FluidDefinition>> fluidPairsRef) {
+        fluidCalcs.forEach((type, fluidCalc) -> {
             FluidDefinition fluidDefinition = fluidPairsRef.get().get(type);
 
             if (fluidDefinition != null) {
-                subtleEffects$fluidPairHeight.put(fluidDefinition, interim.getLeft());
+                subtleEffects$fluidPairHeight.put(fluidDefinition, fluidCalc.height);
             }
         });
     }
