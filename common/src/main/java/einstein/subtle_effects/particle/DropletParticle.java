@@ -13,10 +13,10 @@ import net.minecraft.client.particle.DripParticle;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.client.particle.SpriteSet;
-import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.SimpleParticleType;
+import net.minecraft.util.LightCoordsUtil;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.material.Fluid;
 import org.joml.Vector3f;
@@ -46,8 +46,8 @@ public class DropletParticle extends DripParticle.FallAndLandParticle implements
     }
 
     @Override
-    public int getLightColor(float partialTick) {
-        return Math.max(LightTexture.block(lightLevel), super.getLightColor(partialTick));
+    public int getLightCoords(float partialTick) {
+        return Math.max(LightCoordsUtil.block(lightLevel), super.getLightCoords(partialTick));
     }
 
     @Override

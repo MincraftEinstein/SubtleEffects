@@ -51,7 +51,7 @@ public class EnderEyePlacedRingParticle extends FlatPlaneParticle {
     }
 
     @Override
-    protected int getLightColor(float partialTick) {
+    protected int getLightCoords(float partialTick) {
         return 240;
     }
 

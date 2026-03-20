@@ -71,7 +71,7 @@ public class SparkParticle extends SingleQuadParticle {
     }
 
     @Override
-    public int getLightColor(float partialTick) {
+    public int getLightCoords(float partialTick) {
         return Util.PARTICLE_LIGHT_COLOR;
     }
 

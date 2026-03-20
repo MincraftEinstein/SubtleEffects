@@ -60,7 +60,7 @@ public abstract class FlatPlaneParticle extends SingleQuadParticle {
                 getQuadSize(partialTicks),
                 getU0(), getU1(), getV0(), getV1(),
                 ARGB.colorFromFloat(alpha, rCol, gCol, bCol),
-                getLightColor(partialTicks)
+                getLightCoords(partialTicks)
         );
     }
 }

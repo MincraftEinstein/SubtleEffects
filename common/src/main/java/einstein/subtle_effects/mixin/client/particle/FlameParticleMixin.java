@@ -11,8 +11,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(FlameParticle.class)
 public class FlameParticleMixin {
 
-    @Inject(method = "getLightColor", at = @At("HEAD"), cancellable = true)
-    private void getLightColor(float partialTick, CallbackInfoReturnable<Integer> cir) {
+    @Inject(method = "getLightCoords", at = @At("HEAD"), cancellable = true)
+    private void getLightCoords(float partialTick, CallbackInfoReturnable<Integer> cir) {
         if (ModConfigs.GENERAL.staticFlameBrightness) {
             cir.setReturnValue(Util.PARTICLE_LIGHT_COLOR);
         }

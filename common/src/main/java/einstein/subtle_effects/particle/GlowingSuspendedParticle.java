@@ -12,7 +12,7 @@ public class GlowingSuspendedParticle extends SuspendedParticle {
     }
 
     @Override
-    protected int getLightColor(float partialTick) {
+    protected int getLightCoords(float partialTick) {
         return Util.PARTICLE_LIGHT_COLOR;
     }
 }

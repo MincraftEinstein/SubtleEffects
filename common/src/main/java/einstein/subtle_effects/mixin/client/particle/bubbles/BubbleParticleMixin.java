@@ -82,7 +82,7 @@ public abstract class BubbleParticleMixin extends SingleQuadParticle implements 
                     getLayer(), x, y, z,
                     quaternion.x, quaternion.y, quaternion.z, quaternion.w,
                     getQuadSize(partialTicks), u0, u1, v0, v1,
-                    subtleEffects$color(), getLightColor(partialTicks)
+                    subtleEffects$color(), getLightCoords(partialTicks)
             );
         }
     }

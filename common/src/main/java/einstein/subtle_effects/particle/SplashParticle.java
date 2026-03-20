@@ -14,10 +14,10 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.client.particle.SpriteSet;
-import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.ARGB;
+import net.minecraft.util.LightCoordsUtil;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
@@ -102,8 +102,8 @@ public class SplashParticle extends ModelParticle<SplashParticleModel> {
     }
 
     @Override
-    protected int getLightColor(float partialTick) {
-        return Math.max(LightTexture.block(lightLevel), super.getLightColor(partialTick));
+    protected int getLightCoords(float partialTick) {
+        return Math.max(LightCoordsUtil.block(lightLevel), super.getLightCoords(partialTick));
     }
 
     @Override
@@ -125,7 +125,7 @@ public class SplashParticle extends ModelParticle<SplashParticleModel> {
 
     @Override
     public ModelParticleGroup.ModelParticleRenderState extractState(PoseStack poseStack, Camera camera, float partialTicks) {
-        int lightColor = getLightColor(partialTicks);
+        int lightColor = getLightCoords(partialTicks);
         int color = ARGB.colorFromFloat(alpha, rCol, gCol, bCol);
 
         poseStack.translate(0, -(6 * (verticalScale / 4)), 0); // 6 is 1/4 of the model's height
