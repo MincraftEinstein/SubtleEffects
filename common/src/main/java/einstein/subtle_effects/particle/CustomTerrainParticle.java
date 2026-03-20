@@ -29,7 +29,7 @@ public class CustomTerrainParticle extends TerrainParticle {
 
         @Override
         public Particle createParticle(SimpleParticleType type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, RandomSource random) {
-            CustomTerrainParticle particle = new CustomTerrainParticle(level, x, y, z, xSpeed, ySpeed, zSpeed, Layer.TERRAIN);
+            CustomTerrainParticle particle = new CustomTerrainParticle(level, x, y, z, xSpeed, ySpeed, zSpeed, Layer.OPAQUE_TERRAIN);
             particle.setSprite(Minecraft.getInstance().getAtlasManager().getAtlasOrThrow(AtlasIds.BLOCKS).getSprite(COMPOST_TEXTURE));
             return particle;
         }

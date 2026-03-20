@@ -28,7 +28,10 @@ import java.util.Map;
 public class ParticleBoundingBoxesRenderer {
 
     private static final Map<SingleQuadParticle.Layer, Integer> LAYER_TO_COLOR = net.minecraft.util.Util.make(new HashMap<>(), map -> {
-        map.put(SingleQuadParticle.Layer.TERRAIN, 0xff_00ff00);
+        map.put(SingleQuadParticle.Layer.OPAQUE_TERRAIN, 0xff_00ff00);
+        map.put(SingleQuadParticle.Layer.TRANSLUCENT_TERRAIN, 0xff_00ff00);
+        map.put(SingleQuadParticle.Layer.OPAQUE_ITEMS, 0xff_f0ff00);
+        map.put(SingleQuadParticle.Layer.TRANSLUCENT_ITEMS, 0xff_0ffff0);
         map.put(SingleQuadParticle.Layer.OPAQUE, 0xff_ffff00);
         map.put(SingleQuadParticle.Layer.TRANSLUCENT, 0xff_00ffff);
     });
