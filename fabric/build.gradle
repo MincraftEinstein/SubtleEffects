@@ -1,6 +1,6 @@
 plugins {
     id 'multiloader-loader'
-    id 'fabric-loom'
+    id 'net.fabricmc.fabric-loom'
 }
 
 repositories {
@@ -11,29 +11,24 @@ repositories {
 
 dependencies {
     minecraft "com.mojang:minecraft:${minecraft_version}"
-//    loom.officialMojangMappings()
-    mappings loom.layered {
-        officialMojangMappings()
-        parchment("org.parchmentmc.data:parchment-${parchment_minecraft_version}:${parchment_version}@zip")
-    }
 
-    modImplementation "net.fabricmc:fabric-loader:${fabric_version}"
-    modImplementation "net.fabricmc.fabric-api:fabric-api:${fabric_api_version}"
-    modImplementation("com.terraformersmc:modmenu:${modmenu_version}")
-    modImplementation "me.fzzyhmstrs:fzzy_config:${fzzy_config_version}"
-    modCompileOnly "com.github.glitchfiend:GlitchCore-fabric:${glitchcore_version}"
-    modCompileOnly "com.github.glitchfiend:SereneSeasons-fabric:${serene_seasons_version}"
-    modCompileOnly "it.crystalnest:cobweb-fabric:${cobweb_version}"
-    modCompileOnly "it.crystalnest:prometheus-fabric:${prometheus_version}"
-    modCompileOnly "maven.modrinth:iceberg:${fabric_iceberg_version}"
-    modCompileOnly "maven.modrinth:prism-lib:${fabric_prism_version}"
-    modCompileOnly "maven.modrinth:item-borders:${fabric_item_borders_version}"
-    modCompileOnly "maven.modrinth:endrem:${fabric_endrem_version}"
-    modCompileOnly "maven.modrinth:sodium:${fabric_sodium_version}"
-    modCompileOnly "maven.modrinth:iris:${fabric_iris_version}"
-    modCompileOnly "maven.modrinth:dyed-flames:${fabric_dyed_flames_version}"
-    modCompileOnly "fuzs.neoforgedatapackextensions:neoforgedatapackextensions-fabric:${neoforgedatapackextensions_version}"
-    modCompileOnly "fuzs.puzzleslib:puzzleslib-fabric:${puzzleslib_version}"
+    implementation "net.fabricmc:fabric-loader:${fabric_version}"
+    implementation "net.fabricmc.fabric-api:fabric-api:${fabric_api_version}"
+    implementation("com.terraformersmc:modmenu:${modmenu_version}")
+    implementation "me.fzzyhmstrs:fzzy_config:${fzzy_config_version}"
+    compileOnly "com.github.glitchfiend:GlitchCore-fabric:${glitchcore_version}"
+    compileOnly "com.github.glitchfiend:SereneSeasons-fabric:${serene_seasons_version}"
+    compileOnly "it.crystalnest:cobweb-fabric:${cobweb_version}"
+    compileOnly "it.crystalnest:prometheus-fabric:${prometheus_version}"
+    compileOnly "maven.modrinth:iceberg:${fabric_iceberg_version}"
+    compileOnly "maven.modrinth:prism-lib:${fabric_prism_version}"
+    compileOnly "maven.modrinth:item-borders:${fabric_item_borders_version}"
+    compileOnly "maven.modrinth:endrem:${fabric_endrem_version}"
+    compileOnly "maven.modrinth:sodium:${fabric_sodium_version}"
+    compileOnly "maven.modrinth:iris:${fabric_iris_version}"
+    compileOnly "maven.modrinth:dyed-flames:${fabric_dyed_flames_version}"
+    compileOnly "fuzs.neoforgedatapackextensions:neoforgedatapackextensions-fabric:${neoforgedatapackextensions_version}"
+    compileOnly "fuzs.puzzleslib:puzzleslib-fabric:${puzzleslib_version}"
 }
 
 loom {

@@ -1,4 +1,4 @@
-accessWidener	v1 named
+accessWidener   v2 official
 
 # Fields
 accessible field net/minecraft/client/renderer/RenderPipelines PARTICLE_SNIPPET Lcom/mojang/blaze3d/pipeline/RenderPipeline$Snippet;
