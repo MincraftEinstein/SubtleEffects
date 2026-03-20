@@ -2,15 +2,13 @@ package einstein.subtle_effects.data;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import einstein.subtle_effects.SubtleEffects;
 import einstein.subtle_effects.data.color_providers.ColorProviderType;
-import einstein.subtle_effects.particle.SparkParticle;
 import einstein.subtle_effects.util.Box;
 import einstein.subtle_effects.util.SparkType;
 import net.minecraft.resources.Identifier;
-import net.minecraft.util.ExtraCodecs;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.util.valueproviders.IntProvider;
+import net.minecraft.util.valueproviders.IntProviders;
 import net.minecraft.world.phys.Vec3;
 
 import java.util.List;
@@ -41,7 +39,7 @@ public record SparkProviderData(List<BlockStateEntry> states, Optional<Options> 
                 PresetType.CODEC.fieldOf("preset").forGetter(Options::preset),
                 SparkType.CODEC.optionalFieldOf("spark").forGetter(Options::sparkType),
                 Box.CODEC.optionalFieldOf("box").forGetter(Options::box),
-                IntProvider.CODEC.optionalFieldOf("count").forGetter(Options::count),
+                IntProviders.CODEC.optionalFieldOf("count").forGetter(Options::count),
                 Codec.floatRange(0, 1).optionalFieldOf("chance").forGetter(Options::chance),
                 Vec3.CODEC.optionalFieldOf("velocity").forGetter(Options::velocity),
                 ColorProviderType.CODEC.optionalFieldOf("color").forGetter(Options::colorProvider)
