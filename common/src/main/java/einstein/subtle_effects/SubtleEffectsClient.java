@@ -110,7 +110,7 @@ public class SubtleEffectsClient {
         }
 
         if (DISPLAY_PARTICLE_COUNT) {
-            player.displayClientMessage(Component.translatable("ui.subtle_effects.hud.particle_count", minecraft.particleEngine.countParticles()), true);
+            player.sendOverlayMessage(Component.translatable("ui.subtle_effects.hud.particle_count", minecraft.particleEngine.countParticles()));
         }
 
         ProfilerFiller profiler = Profiler.get();
@@ -231,7 +231,7 @@ public class SubtleEffectsClient {
     }
 
     private static void sendSystemMsg(Minecraft minecraft, Component component) {
-        minecraft.gui.getChat().addMessage(component);
+        minecraft.gui.getChat().addClientSystemMessage(component);
     }
 
     public static void clear(@Nullable Level level) {
