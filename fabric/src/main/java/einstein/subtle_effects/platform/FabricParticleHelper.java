@@ -1,7 +1,7 @@
 package einstein.subtle_effects.platform;
 
 import einstein.subtle_effects.platform.services.ParticleHelper;
-import net.fabricmc.fabric.api.client.particle.v1.FabricSpriteProvider;
+import net.fabricmc.fabric.api.client.particle.v1.FabricSpriteSet;
 import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 
@@ -11,7 +11,7 @@ public class FabricParticleHelper implements ParticleHelper {
 
     @Override
     public List<TextureAtlasSprite> getSpritesFromSet(SpriteSet spriteSet) {
-        if (spriteSet instanceof FabricSpriteProvider spriteProvider) {
+        if (spriteSet instanceof FabricSpriteSet spriteProvider) {
             return spriteProvider.getSprites();
         }
         return ParticleHelper.super.getSpritesFromSet(spriteSet);

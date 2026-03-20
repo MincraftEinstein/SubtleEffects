@@ -22,7 +22,7 @@ public class FabricNetworkHelper implements NetworkHelper {
 
     @Override
     public <T extends CustomPacketPayload> void registerToClient(CustomPacketPayload.Type<T> type, StreamCodec<? super RegistryFriendlyByteBuf, T> streamCodec) {
-        PayloadTypeRegistry.playS2C().register(type, streamCodec);
+        PayloadTypeRegistry.clientboundPlay().register(type, streamCodec);
     }
 
     @Override

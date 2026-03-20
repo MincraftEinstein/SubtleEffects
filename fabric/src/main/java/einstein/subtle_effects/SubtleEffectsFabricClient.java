@@ -5,8 +5,8 @@ import einstein.subtle_effects.data.NamedReloadListener;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
-import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
-import net.fabricmc.fabric.api.client.rendering.v1.LivingEntityFeatureRendererRegistrationCallback;
+import net.fabricmc.fabric.api.client.rendering.v1.LivingEntityRenderLayerRegistrationCallback;
+import net.fabricmc.fabric.api.client.rendering.v1.ModelLayerRegistry;
 import net.fabricmc.fabric.api.resource.v1.ResourceLoader;
 import net.fabricmc.fabric.api.resource.v1.pack.PackActivationType;
 import net.fabricmc.loader.api.FabricLoader;
@@ -25,9 +25,9 @@ public class SubtleEffectsFabricClient implements ClientModInitializer {
         ResourceLoader loader = ResourceLoader.get(PackType.CLIENT_RESOURCES);
         SubtleEffectsClient.registerReloadListeners().forEach(listener -> addReloadListener(loader, listener));
         SubtleEffectsClient.registerModelLayers().forEach((modelLayerLocation, layerDefinitionSupplier) ->
-                EntityModelLayerRegistry.registerModelLayer(modelLayerLocation, layerDefinitionSupplier::get)
+                ModelLayerRegistry.registerModelLayer(modelLayerLocation, layerDefinitionSupplier::get)
         );
-        LivingEntityFeatureRendererRegistrationCallback.EVENT.register((type, renderer, registrationHelper, context) -> {
+        LivingEntityRenderLayerRegistrationCallback.EVENT.register((type, renderer, registrationHelper, context) -> {
             if (renderer instanceof AvatarRenderer<?> playerRenderer) {
                 SubtleEffectsClient.registerPlayerRenderLayers(playerRenderer, context).forEach(registrationHelper::register);
             }
@@ -35,6 +35,6 @@ public class SubtleEffectsFabricClient implements ClientModInitializer {
     }
 
     private static <T extends PreparableReloadListener & NamedReloadListener> void addReloadListener(ResourceLoader loader, T listener) {
-        loader.registerReloader(listener.getId(), listener);
+        loader.registerReloadListener(listener.getId(), listener);
     }
 }
