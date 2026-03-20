@@ -87,7 +87,7 @@ public class ModDamageListeners {
                 boolean replaceSlimeSquishParticles = ENTITIES.replaceSlimeSquishParticles;
                 ParticleOptions options = replaceSlimeSquishParticles
                         ? new BlockParticleOption(ParticleTypes.BLOCK, Blocks.SLIME_BLOCK.defaultBlockState())
-                        : new ItemParticleOption(ParticleTypes.ITEM, Items.SLIME_BALL.getDefaultInstance());
+                        : new ItemParticleOption(ParticleTypes.ITEM, Items.SLIME_BALL);
                 double maxSpeed = replaceSlimeSquishParticles ? 0.5 : 0.15;
 
                 for (int i = 0; i < 10 * entity.getSize(); i++) {

@@ -25,7 +25,7 @@ public class BoneMealItemMixin {
         if (ITEMS.boneMealUsingParticles) {
             Block block = accessor.getBlockState(pos).getBlock();
             BlockPos particlePos = block instanceof BonemealableBlock bonemealableBlock ? bonemealableBlock.getParticlePos(pos) : pos;
-            ParticleUtils.spawnParticles(accessor, particlePos, data, 3, 1, false, new ItemParticleOption(ParticleTypes.ITEM, new ItemStack(Items.BONE_MEAL)));
+            ParticleUtils.spawnParticles(accessor, particlePos, data, 3, 1, false, new ItemParticleOption(ParticleTypes.ITEM, Items.BONE_MEAL));
         }
     }
 
@@ -33,7 +33,7 @@ public class BoneMealItemMixin {
     private static void spawnParticlesInBlock(LevelAccessor accessor, BlockPos pos, int data, CallbackInfo ci) {
         if (ITEMS.boneMealUsingParticles) {
             BlockPos particlePos = ((BonemealableBlock) accessor.getBlockState(pos).getBlock()).getParticlePos(pos);
-            ParticleUtils.spawnParticleInBlock(accessor, particlePos, data / 3, new ItemParticleOption(ParticleTypes.ITEM, new ItemStack(Items.BONE_MEAL)));
+            ParticleUtils.spawnParticleInBlock(accessor, particlePos, data / 3, new ItemParticleOption(ParticleTypes.ITEM, Items.BONE_MEAL));
         }
     }
 }

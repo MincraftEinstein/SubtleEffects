@@ -28,6 +28,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static einstein.subtle_effects.init.ModConfigs.ENTITIES;
+import static einstein.subtle_effects.util.Util.template;
 
 @Mixin(MushroomCow.class)
 public class MooshroomMixin {
@@ -57,7 +58,7 @@ public class MooshroomMixin {
         RandomSource random = subtleEffects$me.getRandom();
 
         if (ENTITIES.animalFeedingParticles && !heldStack.isEmpty()) {
-            ItemParticleOption options = new ItemParticleOption(ParticleTypes.ITEM, heldStack);
+            ItemParticleOption options = new ItemParticleOption(ParticleTypes.ITEM, template(heldStack));
 
             for (int i = 0; i < 16; i++) {
                 ParticleSpawnUtil.spawnEntityFaceParticle(options, subtleEffects$me, level,

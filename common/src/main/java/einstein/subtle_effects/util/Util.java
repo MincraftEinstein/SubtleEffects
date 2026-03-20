@@ -46,6 +46,7 @@ import net.minecraft.world.entity.animal.equine.AbstractHorse;
 import net.minecraft.world.entity.animal.parrot.Parrot;
 import net.minecraft.world.entity.monster.Strider;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.component.Consumable;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
@@ -326,5 +327,9 @@ public class Util {
                         Codec.BOOL.fieldOf("use_config").forGetter(Boolean::booleanValue)
                 ).apply(instance, Boolean::booleanValue))
         );
+    }
+
+    public static ItemStackTemplate template(ItemStack stack) {
+        return ItemStackTemplate.fromNonEmptyStack(stack);
     }
 }

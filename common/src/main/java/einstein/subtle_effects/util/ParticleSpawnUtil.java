@@ -59,6 +59,7 @@ import java.util.function.Supplier;
 
 import static einstein.subtle_effects.init.ModConfigs.*;
 import static einstein.subtle_effects.util.MathUtil.*;
+import static einstein.subtle_effects.util.Util.template;
 import static net.minecraft.util.Mth.DEG_TO_RAD;
 import static net.minecraft.util.Mth.nextFloat;
 import static net.minecraft.world.level.block.state.properties.BlockStateProperties.*;
@@ -95,8 +96,7 @@ public class ParticleSpawnUtil {
         Level level = entity.level();
         if (level.isClientSide() && entity.equals(Minecraft.getInstance().player)) {
             spawnEntityFellParticles((LivingEntity) entity, entity.getY(), distance, fallDamage, ENTITIES.dustClouds.playerFell);
-        }
-        else if (level instanceof ServerLevel serverLevel) {
+        } else if (level instanceof ServerLevel serverLevel) {
             Services.NETWORK.sendToClientsTracking(
                     entity instanceof ServerPlayer player ? player : null,
                     serverLevel, entity.blockPosition(),
@@ -311,8 +311,7 @@ public class ParticleSpawnUtil {
                     );
                 }
             }
-        }
-        else if (state.hasProperty(CHEST_TYPE) && state.hasProperty(HORIZONTAL_FACING)) {
+        } else if (state.hasProperty(CHEST_TYPE) && state.hasProperty(HORIZONTAL_FACING)) {
             ChestType type = state.getValue(CHEST_TYPE);
             if (type != ChestType.SINGLE) {
                 BlockPos oppositePos = ChestBlock.getConnectedBlockPos(pos, state);
@@ -423,8 +422,7 @@ public class ParticleSpawnUtil {
                     float fluidHeight = level.getFluidState(pos).getHeight(level, pos);
                     spawnBucketParticles(level, random, pos, Util.getParticleForFluid(content), fluidHeight == 0 ? 1 : fluidHeight);
                 }
-            }
-            else if (stack.is(Items.POWDER_SNOW_BUCKET) && ModConfigs.ITEMS.powderSnowBucketUseParticles) {
+            } else if (stack.is(Items.POWDER_SNOW_BUCKET) && ModConfigs.ITEMS.powderSnowBucketUseParticles) {
                 spawnBucketParticles(level, random, pos, ModParticles.SNOW.get(), random.nextDouble());
             }
         }
@@ -477,7 +475,7 @@ public class ParticleSpawnUtil {
             Direction direction = state.getValue(StonecutterBlock.FACING).getClockWise();
 
             for (int i = 0; i < 16; i++) {
-                spawnParticlesOnSide(new ItemParticleOption(ParticleTypes.ITEM, stack),
+                spawnParticlesOnSide(new ItemParticleOption(ParticleTypes.ITEM, template(stack)),
                         -0.125F, Direction.UP, level, pos, random,
                         nextFloat(random, 0.1F, 0.2F) * (direction.getStepX() * 1.5),
                         nextFloat(random, 0.1F, 0.2F),

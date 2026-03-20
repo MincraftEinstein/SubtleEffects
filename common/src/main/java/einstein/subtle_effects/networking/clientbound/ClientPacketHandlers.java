@@ -51,6 +51,7 @@ import java.util.function.Supplier;
 
 import static einstein.subtle_effects.init.ModConfigs.*;
 import static einstein.subtle_effects.util.MathUtil.*;
+import static einstein.subtle_effects.util.Util.template;
 
 public class ClientPacketHandlers {
 
@@ -125,7 +126,7 @@ public class ClientPacketHandlers {
         if (ITEMS.projectiles.xpBottleParticlesDisplayType == ReplacedParticlesDisplayType.DEFAULT) {
             for (int i = 0; i < 8; ++i) {
                 level.addParticle(
-                        new ItemParticleOption(ParticleTypes.ITEM, new ItemStack(Items.SPLASH_POTION)),
+                        new ItemParticleOption(ParticleTypes.ITEM, Items.SPLASH_POTION),
                         vec3.x, vec3.y, vec3.z,
                         random.nextGaussian() * 0.15,
                         random.nextDouble() * 0.2,
@@ -192,7 +193,7 @@ public class ClientPacketHandlers {
         if (BLOCKS.compostingItemParticles && (!payload.wasFarmer() || ENTITIES.villagerWorkAtWorkstationParticles)) {
             RandomSource random = level.getRandom();
             ParticleSpawnUtil.spawnCompostParticles(level, payload.pos(),
-                    new ItemParticleOption(ParticleTypes.ITEM, payload.stack()),
+                    new ItemParticleOption(ParticleTypes.ITEM, template(payload.stack())),
                     nextNonAbsDouble(random, 0.15),
                     nextNonAbsDouble(random, 0.15),
                     nextNonAbsDouble(random, 0.15)
@@ -277,7 +278,7 @@ public class ClientPacketHandlers {
                             nextNonAbsDouble(random, 0.1)
                     );
 
-                    level.addParticle(new ItemParticleOption(ParticleTypes.ITEM, new ItemStack(Items.FLINT)),
+                    level.addParticle(new ItemParticleOption(ParticleTypes.ITEM, Items.FLINT),
                             pos.getX() + random.nextDouble(),
                             pos.getY() + 1,
                             pos.getZ() + random.nextDouble(),
@@ -310,9 +311,9 @@ public class ClientPacketHandlers {
             }
 
             RandomSource random = mooshroom.getRandom();
-            ItemParticleOption particle = new ItemParticleOption(ParticleTypes.ITEM, new ItemStack(
-                    mooshroom.getVariant() == MushroomCow.Variant.BROWN ? Blocks.BROWN_MUSHROOM_BLOCK : Blocks.RED_MUSHROOM_BLOCK
-            ));
+            ItemParticleOption particle = new ItemParticleOption(ParticleTypes.ITEM,
+                    (mooshroom.getVariant() == MushroomCow.Variant.BROWN ? Blocks.BROWN_MUSHROOM_BLOCK : Blocks.RED_MUSHROOM_BLOCK).asItem()
+            );
 
             for (int i = 0; i < 20; i++) {
                 level.addParticle(
@@ -342,7 +343,7 @@ public class ClientPacketHandlers {
             if (ENTITIES.animalFeedingParticles) {
                 for (int i = 0; i < 16; i++) {
                     ParticleSpawnUtil.spawnEntityFaceParticle(
-                            new ItemParticleOption(ParticleTypes.ITEM, settings.stackReplacer().apply(stack)),
+                            new ItemParticleOption(ParticleTypes.ITEM, template(settings.stackReplacer().apply(stack))),
                             livingEntity, level, random, settings.offset(), Util.getPartialTicks()
                     );
                 }
