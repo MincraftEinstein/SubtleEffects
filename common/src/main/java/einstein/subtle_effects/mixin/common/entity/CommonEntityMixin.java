@@ -34,7 +34,7 @@ public class CommonEntityMixin {
             fluidHeight.forEach((fluidTag, height) -> {
                 if (height > 0) {
                     FluidState fluidState = subtleEffects$me.level().getFluidState(subtleEffects$me.blockPosition());
-                    if (!fluidState.isEmpty() && fluidState.getTags().toList().contains(fluidTag)) {
+                    if (!fluidState.isEmpty() && fluidState.tags().toList().contains(fluidTag)) {
                         Services.NETWORK.sendToClientsTracking(serverPlayer, (ServerLevel) subtleEffects$me.level(), subtleEffects$me.blockPosition(),
                                 new ClientBoundEntityLandInFluidPayload(subtleEffects$me.getId(), subtleEffects$me.getY() + height,
                                         subtleEffects$me.getDeltaMovement().y(), fluidState.getType())

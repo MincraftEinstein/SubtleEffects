@@ -191,7 +191,7 @@ public class ParticleSpawnUtil {
     }
 
     public static void spawnEntityFellParticles(LivingEntity entity, double y, float distance, int fallDamage, boolean config) {
-        if (!config || entity.getType().is(EntityTypeTags.FALL_DAMAGE_IMMUNE)) {
+        if (!config || entity.is(EntityTypeTags.FALL_DAMAGE_IMMUNE)) {
             return;
         }
 
