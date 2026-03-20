@@ -86,7 +86,7 @@ public class BlockStateBaseMixin {
                                     SoundEvents.PLAYER_BURP,
                                     soundSource,
                                     0.5F,
-                                    level.random.nextFloat() * 0.1F + 0.9F
+                                    level.getRandom().nextFloat() * 0.1F + 0.9F
                             );
                         }
 

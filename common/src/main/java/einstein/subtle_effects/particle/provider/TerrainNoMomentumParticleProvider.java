@@ -27,7 +27,7 @@ public class TerrainNoMomentumParticleProvider extends TerrainParticle.Provider 
                 maxGravity = 0.2F;
             }
 
-            ((ParticleAccessor) particle).setGravity(Mth.nextFloat(level.random, minGravity, maxGravity));
+            ((ParticleAccessor) particle).setGravity(Mth.nextFloat(level.getRandom(), minGravity, maxGravity));
             return particle;
         }
         return null;

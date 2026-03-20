@@ -17,7 +17,7 @@ public class GeyserSmokeParticleProvider extends LargeSmokeParticle.Provider {
     public Particle createParticle(SimpleParticleType type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, RandomSource random) {
         LargeSmokeParticle particle = (LargeSmokeParticle) super.createParticle(type, level, x, y, z, xSpeed, ySpeed, zSpeed, random);
         particle.setColor(1, 1, 1);
-        particle.setLifetime((int) Math.max(1, 8 / (level.random.nextFloat() * 0.8 + 0.2)));
+        particle.setLifetime((int) Math.max(1, 8 / (level.getRandom().nextFloat() * 0.8 + 0.2)));
         return particle;
     }
 }

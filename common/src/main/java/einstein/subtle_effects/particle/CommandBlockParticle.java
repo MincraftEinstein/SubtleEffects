@@ -34,7 +34,7 @@ public class CommandBlockParticle extends SingleQuadParticle {
         quadSize = 0.1F;
         hasPhysics = false;
         lifetime = 50;
-        float shade = Mth.clamp(level.random.nextFloat(), 0.6F, 1);
+        float shade = Mth.clamp(level.getRandom().nextFloat(), 0.6F, 1);
         setColor(shade, shade, shade);
     }
 
