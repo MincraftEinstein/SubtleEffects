@@ -71,7 +71,7 @@ public class FireflyManager {
             }
 
             if (biome.value().warmEnoughToRain(pos, level.getSeaLevel()) || ENVIRONMENT.fireflies.biomesAllowlist.contains(biomeId)) {
-                float time = level.getDayTime() % 24000F;
+                float time = level.getOverworldClockTime() % 24000F;
 
                 if (((time > 13000 && time < 23000) || level.getBrightness(LightLayer.SKY, pos) == 0) && level.getBrightness(LightLayer.BLOCK, pos) <= 5) {
                     if (!level.isRaining() || !canSeeSky || surfaceLevel > pos.getY()) {
