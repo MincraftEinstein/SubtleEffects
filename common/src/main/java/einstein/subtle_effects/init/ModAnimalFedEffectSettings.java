@@ -29,7 +29,7 @@ public class ModAnimalFedEffectSettings {
         register(EntityType.COW, ModSounds.COW_EAT);
         register(EntityType.MOOSHROOM, SoundEvents.MOOSHROOM_EAT);
         register(EntityType.CHICKEN, 0.3, -0.7, ModSounds.CHICKEN_EAT);
-        register(EntityType.CAT, 0, -0.4, SoundEvents.CAT_EAT);
+        register(EntityType.CAT, 0, -0.4);
         register(EntityType.OCELOT, 0, -0.3, ModSounds.OCELOT_EAT);
         register(EntityType.PANDA, -0.35, 0.3, SoundEvents.PANDA_EAT);
         register(EntityType.SHEEP, 0, -0.2, ModSounds.SHEEP_EAT);
