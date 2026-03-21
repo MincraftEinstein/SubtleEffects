@@ -71,7 +71,7 @@ public class AbstractCauldronBlockMixin implements FluidDefinitionAccessor {
                     }
 
                     if (BLOCKS.cauldronCleanItemSounds) {
-                        if ((stack.is(ItemTags.DYEABLE) && stack.has(DataComponents.DYED_COLOR))
+                        if ((stack.has(DataComponents.DYED_COLOR))
                                 || (stack.has(DataComponents.BANNER_PATTERNS) && !stack.get(DataComponents.BANNER_PATTERNS).layers().isEmpty())
                                 || (Block.byItem(stack.getItem()) instanceof ShulkerBoxBlock)) {
                             Util.playClientSound(pos, ModSounds.CAULDRON_CLEAN_ITEM.get(), SoundSource.BLOCKS, 1, (random.nextFloat() - random.nextFloat()) * 0.2F + 1);
