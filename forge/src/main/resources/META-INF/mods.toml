@@ -21,7 +21,7 @@ issueTrackerURL="https://github.com/MincraftEinstein/SubtleEffects/issues"
 [[dependencies.subtle_effects]]
     modId = "forge"
     mandatory = true
-    versionRange = "[47.0.0,)"
+    versionRange = "[47.4.14,)"
     ordering = "NONE"
     side = "BOTH"
 
