@@ -45,7 +45,7 @@ public class NeoForgeNetworkHelper implements NetworkHelper {
     @Override
     public <T extends CustomPacketPayload> void sendToClientsTracking(@Nullable ServerPlayer exceptPlayer, ServerLevel level, BlockPos pos, T packet, @Nullable Consumer<ServerPlayer> skippedPlayerConsumer) {
         ClientboundCustomPayloadPacket payloadPacket = new ClientboundCustomPayloadPacket(packet);
-        level.getChunkSource().chunkMap.getPlayers(new ChunkPos(pos), false).forEach(player -> {
+        level.getChunkSource().chunkMap.getPlayers(ChunkPos.containing(pos), false).forEach(player -> {
             if (!player.equals(exceptPlayer)) {
                 if (player.connection.hasChannel(packet.type().id())) {
                     player.connection.send(payloadPacket);
