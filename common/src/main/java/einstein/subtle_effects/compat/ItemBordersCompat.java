@@ -26,7 +26,7 @@ public class ItemBordersCompat {
         RegistryAccess access = level.registryAccess();
 
         for (String colorString : manualBorders.keySet()) {
-            TextColor color = getColor(colorString);
+           /* TextColor color = getColor(colorString);
 
             if (color != null) {
                 Object object = manualBorders.get(colorString);
@@ -41,14 +41,14 @@ public class ItemBordersCompat {
                         }
                     }
                 }
-            }
+            }*/
         }
         return null;
     }
 
     private static boolean matchesStack(RegistryAccess access, ItemStack stack, Object object) {
         if (object instanceof String string) {
-            return Selectors.itemMatches(stack, string, access);
+//            return Selectors.itemMatches(stack, string, access);
         }
         return false;
     }
@@ -67,12 +67,12 @@ public class ItemBordersCompat {
 
                     if (colorsTag.contains("top")) {
                         // noinspection all
-                        colors.add(getColor(colorsTag.getString("top")));
+//                        colors.add(getColor(colorsTag.getString("top")));
                     }
 
                     if (colorsTag.contains("bottom")) {
                         // noinspection all
-                        colors.add(getColor(colorsTag.getString("bottom")));
+//                        colors.add(getColor(colorsTag.getString("bottom")));
                     }
 
                     return colors.stream().filter(Objects::nonNull).toList();
@@ -82,13 +82,13 @@ public class ItemBordersCompat {
         }
 
         if (CompatHelper.IS_LEGENDARY_TOOLTIPS_LOADED.get() && ItemBordersConfig.getInstance().legendaryTooltipsSync.get()) {
-            Pair<Supplier<Integer>, Supplier<Integer>> borderColors = LegendaryTooltipsHandler.getBorderColors(stack);
+          /*  Pair<Supplier<Integer>, Supplier<Integer>> borderColors = LegendaryTooltipsHandler.getBorderColors(stack);
             if (borderColors != null) {
                 List<TextColor> colors = new ArrayList<>();
                 colors.add(TextColor.fromRgb(borderColors.getFirst().get()));
                 colors.add(TextColor.fromRgb(borderColors.getSecond().get()));
                 return colors;
-            }
+            }*/
         }
         return List.of();
     }

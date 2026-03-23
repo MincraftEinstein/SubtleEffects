@@ -3,13 +3,15 @@ package einstein.subtle_effects.compat;
 import einstein.subtle_effects.data.BurningEffects;
 import einstein.subtle_effects.data.BurningEffectsReloadListener;
 import einstein.subtle_effects.data.color_providers.ColorProviderType;
-import it.crystalnest.prometheus.api.Fire;
-import it.crystalnest.prometheus.api.FireManager;
-import it.crystalnest.prometheus.api.type.FireTyped;
+//import it.crystalnest.prometheus.api.Fire;
+//import it.crystalnest.prometheus.api.FireManager;
+//import it.crystalnest.prometheus.api.type.FireTyped;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.Entity;
 import org.jetbrains.annotations.Nullable;
+
+import static einstein.subtle_effects.SubtleEffects.loc;
 
 public class PrometheusCompat {
 
@@ -17,9 +19,9 @@ public class PrometheusCompat {
     public static ParticleOptions getFlameParticle(Entity entity) {
         BurningEffects burningEffects = getBurningEffect(entity);
         if (burningEffects != null) {
-            return burningEffects.flameParticle().orElseGet(() ->
-                    FireManager.getComponent(getFireType(entity), Fire.Component.FLAME_PARTICLE)
-            );
+//            return burningEffects.flameParticle().orElseGet(() ->
+//                    FireManager.getComponent(getFireType(entity), Fire.Component.FLAME_PARTICLE)
+//            );
         }
         return null;
     }
@@ -39,6 +41,6 @@ public class PrometheusCompat {
     }
 
     private static Identifier getFireType(Entity entity) {
-        return ((FireTyped) entity).getFireType();
+        return loc("empty");//((FireTyped) entity).getFireType();
     }
 }
