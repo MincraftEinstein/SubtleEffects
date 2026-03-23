@@ -18,7 +18,7 @@ public class FabricCommonMooshroomMixin {
     @Unique
     private final MushroomCow subtleEffects$me = (MushroomCow) (Object) this;
 
-    @WrapOperation(method = "method_63648", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/level/ServerLevel;sendParticles(Lnet/minecraft/core/particles/ParticleOptions;DDDIDDDD)I"))
+    @WrapOperation(method = "lambda$shear$0", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/level/ServerLevel;sendParticles(Lnet/minecraft/core/particles/ParticleOptions;DDDIDDDD)I"), remap = false)
     private <T extends ParticleOptions> int replaceShearingParticles(ServerLevel level, T particle, double x, double y, double z, int count, double xOffset, double yOffset, double zOffset, double speed, Operation<Integer> original) {
         Services.NETWORK.sendToClientsTracking(null, level, BlockPos.containing(x, y, z), new ClientBoundMooshroomShearedPayload(subtleEffects$me.getId()), serverPlayer ->
                 level.sendParticles(serverPlayer, particle, false, false, x, y, z, count, xOffset, yOffset, zOffset, speed)
