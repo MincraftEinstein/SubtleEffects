@@ -16,13 +16,13 @@ import java.util.concurrent.CompletionStage;
 import java.util.concurrent.Executor;
 
 @Mixin(ParticleResources.class)
-public abstract class NeoForgeParticleResourcesMixin {
+public abstract class ParticleResourcesMixin {
 
     @Shadow
     @Final
     private Map<Identifier, ParticleResources.MutableSpriteSet> spriteSets;
 
-    @Inject(method = "lambda$reload$3", at = @At("HEAD"))
+    @Inject(method = "lambda$reload$1", at = @At("HEAD"))
     private void allowDynamicSpriteSetLoading(Executor executor, Map<Identifier, Resource> resources, CallbackInfoReturnable<CompletionStage<?>> cir) {
         DynamicSpriteSetsManager.reload(spriteSets);
     }

@@ -14,6 +14,7 @@
     "client.LavaFluidMixin",
     "client.LevelEventHandlerMixin",
     "client.MinecraftMixin",
+    "client.ParticleResourcesMixin",
     "client.RenderStatesMixin",
     "client.ScreenEffectRendererMixin",
     "client.WaterFluidMixin",
@@ -93,6 +94,7 @@
   "mixins": [
     "common.BaseSpawnerMixin",
     "common.ServerLevelMixin",
+    "common.StonecutterMenu$2Mixin",
     "common.StonecutterMenuAccessor",
     "common.block.AbstractCandleBlockAccessor",
     "common.block.BaseFireBlockAccessor",

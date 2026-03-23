@@ -8,11 +8,9 @@
     "client.FabricClientEntityMixin",
     "client.FabricLevelRendererMixin",
     "client.FabricMultiPlayerGameModeMixin",
-    "client.FabricParticleResourcesMixin",
     "client.FabricReloadableResourceManagerMixin"
   ],
   "mixins": [
-    "common.FabricStonecutterMenu$2Mixin",
     "common.block.dispenser.FabricShearsDispenseItemBehaviorMixin",
     "common.entity.FabricCommonMooshroomMixin"
   ],

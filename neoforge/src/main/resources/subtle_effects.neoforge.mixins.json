@@ -8,13 +8,11 @@
     "client.FluidTypeMixin",
     "client.NeoForgeClientEntityMixin",
     "client.NeoForgeClientEntityMixin$InterimCalculationMixin",
-    "client.NeoForgeMultiPlayerGameModeMixin",
-    "client.NeoForgeParticleResourcesMixin"
+    "client.NeoForgeMultiPlayerGameModeMixin"
   ],
   "mixins": [
     "common.NeoForgeCommonMooshroomMixin",
-    "common.NeoForgeShearsDispenseItemBehaviorMixin",
-    "common.NeoForgeStonecutterMenu$2Mixin"
+    "common.NeoForgeShearsDispenseItemBehaviorMixin"
   ],
   "injectors": {
     "defaultRequire": 1
