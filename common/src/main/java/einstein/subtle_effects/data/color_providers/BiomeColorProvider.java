@@ -5,7 +5,9 @@ import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import einstein.subtle_effects.util.Util;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.BiomeColors;
+import net.minecraft.client.renderer.block.BlockAndTintGetter;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.ARGB;
 import net.minecraft.util.RandomSource;
@@ -30,7 +32,7 @@ public record BiomeColorProvider(ColorType colorType) implements ColorProviderTy
 
     @Override
     public Vector3f provideColor(Level level, BlockPos pos, RandomSource random) {
-        return ARGB.vector3fFromRGB24(colorType.colorGetter.apply(level, pos));
+        return ARGB.vector3fFromRGB24(colorType.colorGetter.apply((ClientLevel) level, pos));
     }
 
     public enum ColorType implements StringRepresentable {
@@ -48,9 +50,9 @@ public record BiomeColorProvider(ColorType colorType) implements ColorProviderTy
         public static final Codec<ColorType> CODEC = StringRepresentable.fromEnum(ColorType::values);
 
         private final String name;
-        private final BiFunction<Level, BlockPos, Integer> colorGetter;
+        private final BiFunction<BlockAndTintGetter, BlockPos, Integer> colorGetter;
 
-        ColorType(String name, BiFunction<Level, BlockPos, Integer> colorGetter) {
+        ColorType(String name, BiFunction<BlockAndTintGetter, BlockPos, Integer> colorGetter) {
             this.name = name;
             this.colorGetter = colorGetter;
         }
