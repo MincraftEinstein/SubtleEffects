@@ -5,11 +5,9 @@ import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import einstein.subtle_effects.data.FluidDefinition;
 import einstein.subtle_effects.data.FluidDefinitionReloadListener;
 import einstein.subtle_effects.init.ModParticles;
 import einstein.subtle_effects.init.ModRenderStateAttachmentKeys;
-import einstein.subtle_effects.particle.option.FloatParticleOptions;
 import einstein.subtle_effects.particle.option.RippleParticleOptions;
 import einstein.subtle_effects.util.RenderStateAttachmentAccessor;
 import einstein.subtle_effects.util.Util;
@@ -54,7 +52,7 @@ public abstract class WeatherEffectsRendererMixin {
     }
 
     // 'original' does not capture the '!', so the returned expression must be written inverted
-    @ModifyExpressionValue(method = "tickRainParticles", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/state/BlockState;is(Lnet/minecraft/world/level/block/Block;)Z"))
+    @ModifyExpressionValue(method = "tickRainParticles", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/state/BlockState;is(Ljava/lang/Object;)Z"))
     private boolean modifyRainEvaporationBlocks(boolean original, @Local BlockState state) {
         return original || (BLOCKS.steam.lavaCauldronsEvaporateRain && state.is(Blocks.LAVA_CAULDRON));
     }
