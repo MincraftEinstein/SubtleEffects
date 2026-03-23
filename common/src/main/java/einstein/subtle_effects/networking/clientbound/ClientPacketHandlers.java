@@ -569,8 +569,7 @@ public class ClientPacketHandlers {
                 return getFallingBlockDustColor(level, turnsIntoBlock, state, pos);
             }
         }
-
-        return Minecraft.getInstance().getBlockColors().getColor(state, level, pos);
+        return Minecraft.getInstance().getBlockColors().getTintSource(state, 0).colorAsTerrainParticle(state, level, pos);
     }
 
     // Don't convert to enum parameters, because the server will crash trying to access the client configs
