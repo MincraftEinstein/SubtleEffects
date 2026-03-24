@@ -13,6 +13,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityFluidInteraction;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
@@ -25,6 +26,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.apache.commons.lang3.function.Consumers;
 import org.jetbrains.annotations.Nullable;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -59,6 +61,9 @@ public abstract class ClientEntityMixin implements EntityTickerAccessor, FluidLo
     @Shadow
     protected boolean firstTick;
 
+    @Shadow
+    @Final
+    private EntityFluidInteraction fluidInteraction;
     @Unique
     @Nullable
     private FluidDefinition subtleEffects$lastTouchedFluid;
@@ -134,12 +139,25 @@ public abstract class ClientEntityMixin implements EntityTickerAccessor, FluidLo
         }
     }
 
-    @Inject(method = "updateInWaterStateAndDoFluidPushing", at = @At("HEAD"))
+    @Inject(method = "updateFluidInteraction", at = @At("HEAD"))
     private void clearFluidDefinitionHeight(CallbackInfoReturnable<Boolean> cir) {
         subtleEffects$getFluidDefinitionHeight().clear();
     }
 
-    @Inject(method = "updateInWaterStateAndDoFluidPushing", at = @At("TAIL"))
+    @Inject(method = "updateFluidInteraction", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/EntityFluidInteraction;isInFluid(Lnet/minecraft/tags/TagKey;)Z", ordinal = 0))
+    private void preformWaterSplash(CallbackInfoReturnable<Boolean> cir) {
+        fluidInteraction.trackerByFluid.forEach((tag, _) -> {
+            if (fluidInteraction.isInFluid(tag)) {
+                subtleEffects$setLastTouchedFluid(ParticleSpawnUtil.preformSplash(true, false, subtleEffects$me, firstTick, isWater -> {
+                    if (isWater) {
+                        subtleEffects$cancelNextWaterSplash();
+                    }
+                }));
+            }
+        });
+    }
+
+    @Inject(method = "updateFluidInteraction", at = @At("TAIL"))
     private void preformSplash(CallbackInfoReturnable<Boolean> cir) {
         subtleEffects$lastTouchedFluid = ParticleSpawnUtil.preformSplash(false, false, subtleEffects$me, firstTick, Consumers.nop());
     }

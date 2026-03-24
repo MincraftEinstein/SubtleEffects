@@ -2,12 +2,15 @@ accessWidener   v2 official
 
 # Fields
 accessible field net/minecraft/client/renderer/RenderPipelines PARTICLE_SNIPPET Lcom/mojang/blaze3d/pipeline/RenderPipeline$Snippet;
+accessible field net/minecraft/world/entity/EntityFluidInteraction$Tracker height D
+accessible field net/minecraft/world/entity/EntityFluidInteraction trackerByFluid Ljava/util/Map;
 
 # Classes
 accessible class net/minecraft/client/particle/ParticleResources$MutableSpriteSet
 accessible class net/minecraft/client/particle/DripParticle$FallAndLandParticle
 accessible class net/minecraft/client/particle/DripParticle$DripHangParticle
 accessible class net/minecraft/client/particle/DripParticle$DripLandParticle
+accessible class net/minecraft/world/entity/EntityFluidInteraction$Tracker
 
 # <init>'s
 accessible method net/minecraft/client/particle/ParticleResources$MutableSpriteSet <init> ()V
