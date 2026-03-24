@@ -27,7 +27,7 @@ public class ModPipelines {
             RenderPipeline.builder(RenderPipelines.PARTICLE_SNIPPET)
                     .withLocation(loc("pipeline/alpha_blend"))
                     .withColorTargetState(new ColorTargetState(ALPHA_BLEND))
-                    .withDepthStencilState(new DepthStencilState(CompareOp.ALWAYS_PASS, false))
+                    .withDepthStencilState(new DepthStencilState(CompareOp.LESS_THAN_OR_EQUAL, false))
                     .build()
     );
 
