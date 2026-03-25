@@ -3,6 +3,7 @@ package einstein.subtle_effects.mixin.client.item;
 import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.init.ModSounds;
 import einstein.subtle_effects.ticking.tickers.TickerManager;
+import einstein.subtle_effects.util.SpawnEggItemAccessor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
@@ -26,6 +27,7 @@ import net.minecraft.world.level.block.entity.SpawnerBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
+import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -38,7 +40,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Mixin(SpawnEggItem.class)
-public class SpawnEggItemMixin extends Item {
+public class SpawnEggItemMixin extends Item implements SpawnEggItemAccessor {
 
     @Shadow
     @Final
@@ -92,11 +94,14 @@ public class SpawnEggItemMixin extends Item {
             TickerManager.schedule(3, () -> {
                 List<Entity> entities = new ArrayList<>();
 
-                // noinspection ConstantConditions
-                level.getEntities(defaultType, new AABB(pos),
-                        entity -> !entity.hasCustomName() || entity.getCustomName().equals(stack.getHoverName()),
-                        entities, 1
-                );
+                EntityType<?> entityType = subtleEffects$getDefaultEntityType();
+                if (entityType != null) {
+                    // noinspection ConstantConditions
+                    level.getEntities(entityType, new AABB(pos),
+                            entity -> !entity.hasCustomName() || entity.getCustomName().equals(stack.getHoverName()),
+                            entities, 1
+                    );
+                }
 
                 if (!entities.isEmpty()) {
                     Entity entity = entities.get(0);
@@ -109,5 +114,10 @@ public class SpawnEggItemMixin extends Item {
                 }
             });
         }
+    }
+
+    @Override
+    public @Nullable EntityType<?> subtleEffects$getDefaultEntityType() {
+        return defaultType;
     }
 }

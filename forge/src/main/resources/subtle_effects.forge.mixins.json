@@ -12,6 +12,7 @@
     "client.ForgeParticleEngineMixin",
     "client.item.ForgeBucketItemAccessor",
     "client.item.ForgeBucketItemMixin",
+    "client.item.ForgeSpawnEggItemMixin",
     "client.particle.ForgeParticleEngineMixin"
   ],
   "mixins": [
