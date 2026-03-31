@@ -1,9 +1,9 @@
 package einstein.subtle_effects.mixin.client;
 
-import com.terraformersmc.mod_menu.ModMenu;
-import com.terraformersmc.mod_menu.gui.ModsScreen;
-import com.terraformersmc.mod_menu.util.mod.Mod;
-import com.terraformersmc.mod_menu.util.mod.ModSearch;
+import com.terraformersmc.modmenu.ModMenu;
+import com.terraformersmc.modmenu.gui.ModsScreen;
+import com.terraformersmc.modmenu.util.mod.Mod;
+import com.terraformersmc.modmenu.util.mod.ModSearch;
 import einstein.subtle_effects.SubtleEffects;
 import einstein.subtle_effects.util.Util;
 import org.spongepowered.asm.mixin.Mixin;
