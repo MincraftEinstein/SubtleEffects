@@ -85,7 +85,7 @@ public abstract class ForgeClientEntityMixin implements FluidLogicAccessor {
     private void updateFluidPairHeight(CallbackInfo ci, @Local Object2ObjectArrayMap<FluidType, Entity.FluidCalcs> fluidCalcs, @Share("fluidPairs") LocalRef<Map<FluidType, FluidDefinition>> fluidPairsRef) {
         fluidCalcs.forEach((type, fluidCalc) -> {
             FluidDefinition fluidDefinition = fluidPairsRef.get().get(type);
-
+// :forge-shredder: + check fabric and neo on all versions to make sure the mod menu mixins aren't causing remap crashes
             if (fluidDefinition != null) {
                 subtleEffects$fluidPairHeight.put(fluidDefinition, fluidCalc.height);
             }

@@ -71,6 +71,7 @@ dependencies {
         jarJar.ranged(it, "[0.3.5,)")
     }
     implementation(annotationProcessor("io.github.llamalad7:mixinextras-common:0.3.5"))
+    compileOnly("maven.modrinth:better-modlist:${forge_better_modlist}")
     compileOnly "com.github.glitchfiend:GlitchCore-forge:${glitchcore_version}"
     compileOnly "com.github.glitchfiend:SereneSeasons-forge:${serene_seasons_version}"
     compileOnly fg.deobf("it.crystalnest:cobweb-forge:${cobweb_version}")

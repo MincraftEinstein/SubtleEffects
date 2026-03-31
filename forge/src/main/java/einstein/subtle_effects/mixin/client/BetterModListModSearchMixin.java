@@ -16,7 +16,7 @@ public class BetterModListModSearchMixin {
 
     @Inject(method = "passesFilters", at = @At("HEAD"), cancellable = true, remap = false)
     private static void passesFilters(ModsScreen screen, Mod mod, String query, CallbackInfoReturnable<Integer> cir) {
-        if (ModMenu.getConfig().EASTER_EGGS.getAsBoolean()) {
+        if (ModMenu.getConfig().EASTER_EGGS.get()) {
             if (query.length() >= 3 && mod.getId().equals(SubtleEffects.MOD_ID) && Util.isSouthEast(query)) {
                 cir.setReturnValue(2);
             }
