@@ -246,4 +246,8 @@ public class Util {
                 ).apply(instance, Boolean::booleanValue))
         );
     }
+
+    public static boolean isSouthEast(CharSequence searchQuery) {
+        return "south east".contains(searchQuery) || "south_east".contains(searchQuery);
+    }
 }

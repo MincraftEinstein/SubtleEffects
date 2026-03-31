@@ -11,7 +11,8 @@
     "client.item.FabricBucketItemAccessor",
     "client.item.FabricBucketItemMixin",
     "client.particle.FabricParticleEngineMixin",
-    "client.FabricParticleEngineMixin"
+    "client.FabricParticleEngineMixin",
+    "client.ModMenuModSearchMixin"
   ],
   "mixins": [
     "common.FabricStonecutterMenu$2Mixin",

@@ -31,8 +31,8 @@ import static net.minecraft.world.level.block.ChestBlock.TYPE;
 
 public class ChestBlockEntityTicker extends BlockPosTicker {
 
-    private static final int MAX_TICKS_SINCE_LAST_ANIMATION = 100;
     private static final Map<BlockPos, ChestBlockEntityTicker> CHEST_TICKERS = new HashMap<>();
+    private boolean firstOpeningTick;
     private int ticksSinceLastAnimation;
     private int animationTicks;
     private float oldOpenness;
@@ -44,7 +44,7 @@ public class ChestBlockEntityTicker extends BlockPosTicker {
     }
 
     public static void trySpawn(Level level, BlockPos pos) {
-        if (!BLOCKS.chestsOpenRandomlyUnderwater && !BLOCKS.openingChestsSpawnsBubbles) {
+        if (BLOCKS.chestsOpenRandomlyUnderwaterFrequency.get() <= 0 && !BLOCKS.openingChestsSpawnsBubbles) {
             return;
         }
 
@@ -149,17 +149,20 @@ public class ChestBlockEntityTicker extends BlockPosTicker {
             return;
         }
 
-        if (ticksSinceLastAnimation < MAX_TICKS_SINCE_LAST_ANIMATION) {
+        int openFrequency = BLOCKS.chestsOpenRandomlyUnderwaterFrequency.get() * 20;
+        if (ticksSinceLastAnimation < openFrequency) {
             ticksSinceLastAnimation++;
             return;
         }
 
         boolean isEnderChest = state.is(Blocks.ENDER_CHEST);
-        if (BLOCKS.chestsOpenRandomlyUnderwater && random.nextInt(100) == 0 && openness == 0) {
-            // Triggering the block entity event rather than calling the lid controller, otherwise Lithium will block the animation
+        if ((firstOpeningTick && random.nextInt(openFrequency) == 0) || (openFrequency > 0 && openness == 0)) {
+            // Triggering the block entity event rather than calling the lid controller,
+            // because otherwise Lithium will prevent the animation from playing
             blockEntity.triggerEvent(1, 1);
             playSound(connectedDirection, type, isEnderChest ? SoundEvents.ENDER_CHEST_OPEN : SoundEvents.CHEST_OPEN);
             animationTicks = Mth.nextInt(random, 50, 200);
+            firstOpeningTick = false;
             return;
         }
 

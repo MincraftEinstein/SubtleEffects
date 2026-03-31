@@ -30,6 +30,7 @@ import static einstein.subtle_effects.init.ModConfigs.ENTITIES;
 
 public class SplashParticle extends ModelParticle {
 
+    private static final SplashParticleModel MODEL = bakeModel(SplashParticleModel::new, SplashParticleModel.MODEL_LAYER);
     private final int lightLevel;
     private final FluidDefinition fluidDefinition;
     private final SpriteSet sprites;
@@ -45,11 +46,9 @@ public class SplashParticle extends ModelParticle {
     private float overlayGCol = 1;
     private float overlayBCol = 1;
     private final float overlayAlpha;
-    private final SplashParticleModel model;
 
     protected SplashParticle(ClientLevel level, double x, double y, double z, SplashParticleOptions options) {
         super(level, x, y, z);
-        model = bakeModel(SplashParticleModel::new, SplashParticleModel.MODEL_LAYER);
         fluidDefinition = FluidDefinitionReloadListener.DEFINITIONS.get(options.fluidDefinitionId());
         SplashType type = fluidDefinition.splashType().orElseThrow();
         SplashOptions splashOptions = type.splashOptions();
@@ -130,10 +129,10 @@ public class SplashParticle extends ModelParticle {
         poseStack.translate(0, -(6 * (verticalScale / 4)), 0); // 6 is 1/4 of the model's height
         poseStack.scale(horizontalScale, verticalScale, horizontalScale);
 
-        model.renderToBuffer(poseStack, bufferSource.getBuffer(model.renderType(texture)), lightColor, OverlayTexture.NO_OVERLAY, rCol, gCol, bCol, alpha);
+        MODEL.renderToBuffer(poseStack, bufferSource.getBuffer(MODEL.renderType(texture)), lightColor, OverlayTexture.NO_OVERLAY, rCol, gCol, bCol, alpha);
 
         if (hasOverlay) {
-            model.renderToBuffer(poseStack, bufferSource.getBuffer(model.renderType(overlayTexture)), lightColor, OverlayTexture.NO_OVERLAY, overlayRCol, overlayGCol, overlayBCol, overlayAlpha);
+            MODEL.renderToBuffer(poseStack, bufferSource.getBuffer(MODEL.renderType(overlayTexture)), lightColor, OverlayTexture.NO_OVERLAY, overlayRCol, overlayGCol, overlayBCol, overlayAlpha);
         }
 
         bufferSource.endBatch();

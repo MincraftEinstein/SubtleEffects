@@ -145,7 +145,7 @@ public class ModBlockConfigs extends Config {
     public boolean decoratedPotsSpawnBubbles = true;
     public boolean openingBarrelsSpawnsBubbles = true;
     public boolean openingChestsSpawnsBubbles = true;
-    public boolean chestsOpenRandomlyUnderwater = true;
+    public ValidatedInt chestsOpenRandomlyUnderwaterFrequency = new ValidatedInt(5, 60, 0);
     public boolean randomChestOpeningNeedsSoulSand = false;
     @ConfigGroup.Pop
     public boolean dispenseItemBubbles = true;
