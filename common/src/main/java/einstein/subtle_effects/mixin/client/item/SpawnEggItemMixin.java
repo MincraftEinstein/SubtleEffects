@@ -12,11 +12,13 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityEvent;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SpawnEggItem;
+import net.minecraft.world.item.component.TypedEntityData;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
@@ -86,10 +88,14 @@ public class SpawnEggItemMixin extends Item {
                 List<Entity> entities = new ArrayList<>();
 
                 // noinspection ConstantConditions
-                level.getEntities(stack.get(DataComponents.ENTITY_DATA).type(), new AABB(pos),
-                        entity -> !entity.hasCustomName() || entity.getCustomName().equals(stack.get(DataComponents.CUSTOM_NAME)),
-                        entities, 1
-                );
+                TypedEntityData<EntityType<?>> entityData = stack.get(DataComponents.ENTITY_DATA);
+                if (entityData != null) {
+                    // noinspection ConstantConditions
+                    level.getEntities(entityData.type(), new AABB(pos),
+                            entity -> !entity.hasCustomName() || entity.getCustomName().equals(stack.get(DataComponents.CUSTOM_NAME)),
+                            entities, 1
+                    );
+                }
 
                 if (!entities.isEmpty()) {
                     Entity entity = entities.getFirst();

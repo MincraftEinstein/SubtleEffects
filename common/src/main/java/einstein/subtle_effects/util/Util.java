@@ -332,4 +332,8 @@ public class Util {
     public static ItemStackTemplate template(ItemStack stack) {
         return ItemStackTemplate.fromNonEmptyStack(stack);
     }
+
+    public static boolean isSouthEast(CharSequence searchQuery) {
+        return "south east".contains(searchQuery) || "south_east".contains(searchQuery);
+    }
 }

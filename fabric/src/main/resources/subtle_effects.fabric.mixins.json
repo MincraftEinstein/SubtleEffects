@@ -8,7 +8,8 @@
     "client.FabricClientEntityMixin",
     "client.FabricLevelRendererMixin",
     "client.FabricMultiPlayerGameModeMixin",
-    "client.FabricReloadableResourceManagerMixin"
+    "client.FabricReloadableResourceManagerMixin",
+    "client.ModMenuModSearchMixin"
   ],
   "mixins": [
     "common.block.dispenser.FabricShearsDispenseItemBehaviorMixin",

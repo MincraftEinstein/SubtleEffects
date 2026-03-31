@@ -17,6 +17,16 @@ issueTrackerURL="https://github.com/MincraftEinstein/SubtleEffects/issues"
 [modProperties]
     fzzy_config = "subtle_effects"
 
+[modproperties.modmenu]
+    sources = "https://github.com/MincraftEinstein/SubtleEffects"
+    links = [
+        "mod_menu.modrinth=https://modrinth.com/mod/subtle-effects",
+        "mod_menu.curseforge=https://curseforge.com/minecraft/mc-mods/subtle-effects",
+        "mod_menu.discord=https://discord.gg/gSsaFAvrBM",
+        "mod_menu.kofi=https://ko-fi.com/mincrafteinstein",
+        "mod_menu.wiki=https://github.com/MincraftEinstein/SubtleEffects/wiki"
+    ]
+
 [[accessTransformers]]
     file = "META-INF/accesstransformer.cfg"
 

@@ -50,8 +50,8 @@ public abstract class ModelParticle<T extends Model<Unit>> extends Particle {
 
     public abstract ModelParticleGroup.ModelParticleRenderState extractState(PoseStack poseStack, Camera camera, float partialTicks);
 
-    protected T bakeModel(Function<ModelPart, T> modelBaker, ModelLayerLocation layerLocation) {
-        return modelBaker.apply(minecraft.getEntityModels().bakeLayer(layerLocation));
+    protected static <T extends Model<?>> T bakeModel(Function<ModelPart, T> modelBaker, ModelLayerLocation layerLocation) {
+        return modelBaker.apply(Minecraft.getInstance().getEntityModels().bakeLayer(layerLocation));
     }
 
     public abstract T getModel();

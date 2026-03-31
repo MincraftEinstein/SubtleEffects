@@ -30,6 +30,7 @@ import static einstein.subtle_effects.init.ModConfigs.ENTITIES;
 
 public class SplashParticle extends ModelParticle<SplashParticleModel> {
 
+    private static final SplashParticleModel MODEL = bakeModel(SplashParticleModel::new, SplashParticleModel.MODEL_LAYER);
     private final int lightLevel;
     private final FluidDefinition fluidDefinition;
     private final SpriteSet sprites;
@@ -45,11 +46,9 @@ public class SplashParticle extends ModelParticle<SplashParticleModel> {
     private float overlayGCol = 1;
     private float overlayBCol = 1;
     private final float overlayAlpha;
-    private final SplashParticleModel model;
 
     protected SplashParticle(ClientLevel level, double x, double y, double z, SplashParticleOptions options) {
         super(level, x, y, z);
-        model = bakeModel(SplashParticleModel::new, SplashParticleModel.MODEL_LAYER);
         fluidDefinition = FluidDefinitionReloadListener.DEFINITIONS.get(options.fluidDefinitionId());
         SplashType type = fluidDefinition.splashType().orElseThrow();
         SplashOptions splashOptions = type.splashOptions();
@@ -133,15 +132,15 @@ public class SplashParticle extends ModelParticle<SplashParticleModel> {
 
         ModelParticleGroup.OverlayModelState overlayState = null;
         if (hasOverlay) {
-            overlayState = new ModelParticleGroup.OverlayModelState(ARGB.colorFromFloat(overlayAlpha, overlayRCol, overlayGCol, overlayBCol), model.renderType(overlayTexture));
+            overlayState = new ModelParticleGroup.OverlayModelState(ARGB.colorFromFloat(overlayAlpha, overlayRCol, overlayGCol, overlayBCol), MODEL.renderType(overlayTexture));
         }
 
-        return new ModelParticleGroup.ModelParticleRenderState(getModel(), poseStack, model.renderType(texture), lightColor, color, overlayState);
+        return new ModelParticleGroup.ModelParticleRenderState(getModel(), poseStack, MODEL.renderType(texture), lightColor, color, overlayState);
     }
 
     @Override
     public SplashParticleModel getModel() {
-        return model;
+        return MODEL;
     }
 
     private void setSpriteFromAge() {
