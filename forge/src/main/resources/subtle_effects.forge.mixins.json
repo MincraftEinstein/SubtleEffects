@@ -7,15 +7,15 @@
   "client": [
     "client.BetterModListModSearchMixin",
     "client.ClientPacketListenerMixin",
+    "client.FluidCalcsAccessor",
     "client.FluidTypeMixin",
     "client.ForgeClientEntityMixin",
     "client.ForgeMultiPlayerGameModeMixin",
     "client.ForgeParticleEngineMixin",
-    "client.ModListScreenMixin",
     "client.ForgeSpawnEggItemAccessor",
+    "client.ModListScreenMixin",
     "client.item.ForgeBucketItemAccessor",
     "client.item.ForgeBucketItemMixin",
-    "client.item.ForgeSpawnEggItemMixin",
     "client.particle.ForgeParticleEngineMixin"
   ],
   "mixins": [

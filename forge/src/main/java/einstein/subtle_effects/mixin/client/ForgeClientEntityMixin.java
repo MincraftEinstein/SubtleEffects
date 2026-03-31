@@ -82,12 +82,13 @@ public abstract class ForgeClientEntityMixin implements FluidLogicAccessor {
     }
 
     @Inject(method = "updateFluidHeightAndDoFluidPushing(Ljava/util/function/Predicate;)V", at = @At(value = "INVOKE", target = "Lit/unimi/dsi/fastutil/objects/Object2ObjectArrayMap;forEach(Ljava/util/function/BiConsumer;)V"), remap = false)
-    private void updateFluidPairHeight(CallbackInfo ci, @Local Object2ObjectArrayMap<FluidType, Entity.FluidCalcs> fluidCalcs, @Share("fluidPairs") LocalRef<Map<FluidType, FluidDefinition>> fluidPairsRef) {
+    private void updateFluidPairHeight(CallbackInfo ci, @Local Object2ObjectArrayMap<FluidType, Object> fluidCalcs, @Share("fluidPairs") LocalRef<Map<FluidType, FluidDefinition>> fluidPairsRef) {
         fluidCalcs.forEach((type, fluidCalc) -> {
             FluidDefinition fluidDefinition = fluidPairsRef.get().get(type);
 
             if (fluidDefinition != null) {
-                subtleEffects$fluidPairHeight.put(fluidDefinition, fluidCalc.height);
+                // if intellij says the FluidCalcsAccessor can't be accessed, it's crazy
+                subtleEffects$fluidPairHeight.put(fluidDefinition, ((FluidCalcsAccessor) fluidCalc).getHeight());
             }
         });
     }
