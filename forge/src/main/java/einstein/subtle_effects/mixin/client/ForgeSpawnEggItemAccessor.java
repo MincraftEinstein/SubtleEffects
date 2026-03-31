@@ -7,7 +7,7 @@ import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Invoker;
 
-@Mixin(value = SpawnEggItem.class, priority = 1001)
+@Mixin(value = SpawnEggItem.class, priority = 1001, remap = false)
 public abstract class ForgeSpawnEggItemAccessor implements SpawnEggItemAccessor {
 
     @Override
