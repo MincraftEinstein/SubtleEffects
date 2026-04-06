@@ -1,3 +1,14 @@
 ---
 title: Burning Effects
 ---
+
+<Callout>
+    This feature is only available for minecraft versions 1.21.1+
+</Callout>
+
+Create a new JSON file in the `assets/{namespace}/subtle_effects/burning_effects` folder of a resource pack.
+
+- `id` String ID of the fire type these effects will be used for
+- `provider` A String of either `prometheus` or `dyed_flames`. Used to determine which mod the fire type is from
+- `color` A [Color Provider](../color_providers) used to determine a particle's color
+- `flame_particle` String ID of a simple particle (particle with no parameters) that will be spawned around the entity on fire
