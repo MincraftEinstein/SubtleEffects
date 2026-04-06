@@ -1,0 +1,27 @@
+---
+title: Splash Types
+---
+
+## Setup
+Create a new JSON file in the `assets/{namespace}/subtle_effects/fluid_definitions` folder of a resource pack.
+
+All elements are optional
+- `splash` A [Splash Options](#splash-options) object
+- `splash_overlay` Either a boolean, if true splashes will have an overlay using default values, if false splashes won't have an overlay. Or a [Splash Options](#splash-options) object
+- `splash_ripple` A [Splash Options](#splash-options) object used to customize ripple ring around the point of impact of the fluid
+- `droplets` [Droplet Options](droplet_options) object. If omitted, the droplet options will be gotten from the [Fluid Definition](fluid-definitions) that spawned splash particle
+
+## Splash Options
+
+All elements are optional
+- `sprite_set` String Id of a particle definition in `assets/{namespace}/particles`
+- `color` A [Color Provider](../color_providers) used to determine a particle's color
+- `tinting` An object containing either a float from 0 to 1 defined as `"intensity"`, which will change the strength that the `color` is applied to the particle, or a boolean defined as "use_config", which will use the value of the `Entities > Splashes > Splash Overlay Tint` config
+- `transparency` An object containing either a float from 0 to 1 defined as `"alpha"`, or a boolean defined as `"use_config"`, which will use the value of the `Entities > Splashes > Splash Overlay Alpha` config
+
+{/* TODO idk what to do with this but particle definitions also need one */}
+{/* ## IDs */}
+{/* The ID for a splash type is the namespace of the resource pack defining the splash type followed by the path relative to */}
+{/* the `/subtle_effects/splash_types` folder. For example, the path of the water splash type is: */}
+{/* `assets/minecraft/subtle_effects/fluid_definitions/water.json` and it's ID is `minecraft:water`. */}
+{/* `assets/examplepack/subtle_effects/fluid_definitions/example_path/example.json` and its ID is `examplepack:example_path/example` */}

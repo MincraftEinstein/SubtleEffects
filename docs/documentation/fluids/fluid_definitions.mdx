@@ -1,0 +1,60 @@
+---
+title: Fluid Definitions
+---
+
+Fluid Definitions are used to tell the mod about all the different objects related to a fluid, such as fluid buckets or
+cauldrons, as well as defining a few default settings for a fluid.
+
+## Setup
+Create a new JSON file in the `assets/{namespace}/subtle_effects/fluid_definitions` folder of a resource pack.
+Inside this file, add the `source` and `flowing` string elements. These elements are the minimum requirement for a fluid
+definition and define the IDs of the source and flowing fluid types.
+
+```json
+{
+  "source": "minecraft:water",
+  "flowing": "minecraft:flowing_water"
+}
+```
+
+List of all additional optional elements
+- `cauldron` String ID of a block that inherits from the `AbstractCauldronBlock` class
+- `splash_type` String ID of a [Splash Type](splash_types)
+- `bucket_item` String ID of an item that inherits from the `BucketItem` class
+- `droplets` A [Droplet Options](droplet_options) object used for bucket interaction effects and as a fallback for [Splash Types](splash_types)
+- `light_emission` Integer from 0 to 15
+
+----
+
+**Fluid definition for water**
+```json
+{
+  "source": "minecraft:water",
+  "flowing": "minecraft:flowing_water",
+  "cauldron": "minecraft:water_cauldron",
+  "splash_type": "minecraft:water_splash",
+  "bucket_item": "minecraft:water_bucket",
+  "droplets": {
+        ...
+    },
+    "land_particle": "minecraft:splash"
+  }
+}
+```
+
+**Fluid definition for lava**
+```json
+{
+  "source": "minecraft:lava",
+  "flowing": "minecraft:flowing_lava",
+  "cauldron": "minecraft:lava_cauldron",
+  "splash_type": "minecraft:lava_splash",
+  "bucket_item": "minecraft:lava_bucket",
+  "light_emission": 15,
+  "droplets": {
+        ...
+    },
+    "land_particle": "minecraft:landing_lava"
+  }
+}
+```

@@ -1,7 +1,6 @@
 {
+  "fluids": "Fluids",
   "spark_providers.mdx": "Spark Providers",
-  "fluid_definitions.mdx": "Fluid Definitions",
-  "splash_types.mdx": "Splash Types",
   "burning_effects.mdx": "Burning Effects",
   "mob_skull_shaders.mdx": "Mob Skull Shaders",
   "color_providers.mdx": "Color Providers"
