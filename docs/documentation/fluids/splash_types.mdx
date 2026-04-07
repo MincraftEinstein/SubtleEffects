@@ -7,19 +7,21 @@ type is not enough for it to work it must be added to a [Fluid Definition](fluid
 
 Create a new JSON file in the `assets/{namespace}/subtle_effects/fluid_definitions` folder of a resource pack.
 
-All elements are optional
-- `splash` A [Splash Options](#splash-options) object
-- `splash_overlay` Either a boolean, if true splashes will have an overlay using default values, if false splashes won't have an overlay. Or a [Splash Options](#splash-options) object
-- `splash_ripple` A [Splash Options](#splash-options) object used to customize ripple ring around the point of impact of the fluid
-- `droplets` [Droplet Options](droplet_options) object. If omitted, the droplet options will be gotten from the [Fluid Definition](fluid-definitions) that spawned splash particle
+| Name             | Required | Description |
+|------------------|----|------------------|
+| `splash`         | No | A [Splash Options](#splash-options) object |
+| `splash_overlay` | No | Either a boolean or a [Splash Options](#splash-options) object. If true splashes will have an overlay using default values, if false splashes won't have an overlay |
+| `splash_ripple`  | No | A [Splash Options](#splash-options) object used to customize ripple ring around the point of impact of the fluid |
+| `droplets`       | No | [Droplet Options](droplet_options) object. If omitted, the droplet options will be gotten from the [Fluid Definition](fluid-definitions) that spawned splash particle |
 
 ## Splash Options
 
-All elements are optional
-- `sprite_set` String ID of a particle definition in `assets/{namespace}/particles`
-- `color` A [Color Provider](../color_providers) used to determine a particle's color
-- `tinting` An object containing either a float from 0 to 1 defined as `"intensity"`, which will change the strength that the `color` is applied to the particle, or a boolean defined as "use_config", which will use the value of the `Entities > Splashes > Splash Overlay Tint` config
-- `transparency` An object containing either a float from 0 to 1 defined as `"alpha"`, or a boolean defined as `"use_config"`, which will use the value of the `Entities > Splashes > Splash Overlay Alpha` config
+| Name           | Required | Description |
+|----------------|----|------------------|
+| `sprite_set`   | No | String ID of a particle definition in `assets/{namespace}/particles` |
+| `color`        | No | A [Color Provider](../color_providers) used to determine a particle's color |
+| `tinting`      | No | An object containing either a float from 0 to 1 defined as `"intensity"`, which will change the strength that the `color` is applied to the particle, or a boolean defined as "use_config", which will use the value of the `Entities > Splashes > Splash Overlay Tint` config |
+| `transparency` | No | An object containing either a float from 0 to 1 defined as `"alpha"`, or a boolean defined as `"use_config"`, which will use the value of the `Entities > Splashes > Splash Overlay Alpha` config |
 
 {/* TODO idk what to do with this but particle definitions also need one */}
 {/* ## IDs */}

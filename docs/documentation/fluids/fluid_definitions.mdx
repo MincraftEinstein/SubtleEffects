@@ -17,12 +17,15 @@ definition and define the IDs of the source and flowing fluid types.
 }
 ```
 
-List of all additional optional elements
-- `cauldron` String ID of a block that inherits from the `AbstractCauldronBlock` class
-- `splash_type` String ID of a [Splash Type](splash_types)
-- `bucket_item` String ID of an item that inherits from the `BucketItem` class
-- `droplets` A [Droplet Options](droplet_options) object used for bucket interaction effects and as a fallback for [Splash Types](splash_types)
-- `light_emission` Integer from 0 to 15
+| Name             | Required | Description |
+|------------------|-----|------------------|
+| `source`         | Yes | String ID of a source fluid |
+| `flowing`        | Yes | String Id of a flowing fluid |
+| `cauldron`       | No  | String ID of a block that inherits from the `AbstractCauldronBlock` class |
+| `splash_type`    | No  | String ID of a [Splash Type](splash_types) |
+| `bucket_item`    | No  | String ID of an item that inherits from the `BucketItem` class |
+| `droplets`       | No  | A [Droplet Options](droplet_options) object used for bucket interaction effects and as a fallback for [Splash Types](splash_types) |
+| `light_emission` | No  | Integer from 0 to 15. Controls brightness for splash particles |
 
 ----
 

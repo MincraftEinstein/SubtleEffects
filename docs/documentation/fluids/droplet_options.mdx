@@ -5,18 +5,22 @@ title: Droplet Options
 Droplet Options are a JSON object that are used in [Splash Types](splash_types) and [Fluid Definitions](fluid_definitions)
 for customizing the droplet particles of fluids.
 
-- `color` A [Color Provider](../color_providers) used to determine a particle's color
-- `tinting` An object containing either a float from 0 to 1 defined as `"intensity"`, which will change the strength that the `color` is applied to the particle, or a boolean defined as `"use_config"`, which will use the value of the `Entities > Splashes > Splash Overlay Tint` config
-- `ripple` A [Ripple Options](#ripple-options) object
-- `land_particle` String ID of a simple particle (particle with no parameters) that will be spawned when a droplet lands on the ground
+| Name            | Required | Description |
+|-----------------|-----|------------------|
+| `color`         | Yes | A [Color Provider](../color_providers) used to determine a particle's color |
+| `tinting`       | No  | An object containing either a float from 0 to 1 defined as `"intensity"`, which will change the strength that the `color` is applied to the particle, or a boolean defined as `"use_config"`, which will use the value of the `Entities > Splashes > Splash Overlay Tint` config |
+| `ripple`        | No  | A [Ripple Options](#ripple-options) object |
+| `land_particle` | No  | String ID of a simple particle (particle with no parameters) that will be spawned when a droplet lands on the ground |
 
 ## Ripple Options
 
 Ripple Options are a JSON object used for customizing the ripple particle spawned by a droplet landing in a fluid
 
-- `color` A [Color Provider](../color_providers) used to determine a particle's color
-- `tinting` An object containing either a float from 0 to 1 defined as `"intensity"`, which will change the strength that the `color` is applied to the particle, or a boolean defined as "use_config", which will use the value of the `Entities > Splashes > Splash Overlay Tint` config
-- `transparency` An object containing either a float from 0 to 1 defined as `"alpha"`, or a boolean defined as `"use_config"`, which will use the value of the `Entities > Splashes > Splash Overlay Alpha` config
+| Name           | Required | Description |
+|----------------|-----|------------------|
+| `color`        | Yes | A [Color Provider](../color_providers) used to determine a particle's color |
+| `tinting`      | No  | An object containing either a float from 0 to 1 defined as `"intensity"`, which will change the strength that the `color` is applied to the particle, or a boolean defined as "use_config", which will use the value of the `Entities > Splashes > Splash Overlay Tint` config |
+| `transparency` | No  | An object containing either a float from 0 to 1 defined as `"alpha"`, or a boolean defined as `"use_config"`, which will use the value of the `Entities > Splashes > Splash Overlay Alpha` config |
 
 ----
 
