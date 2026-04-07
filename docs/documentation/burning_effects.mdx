@@ -12,3 +12,30 @@ Create a new JSON file in the `assets/{namespace}/subtle_effects/burning_effects
 - `provider` A String of either `prometheus` or `dyed_flames`. Used to determine which mod the fire type is from
 - `color` A [Color Provider](../color_providers) used to determine a particle's color
 - `flame_particle` String ID of a simple particle (particle with no parameters) that will be spawned around the entity on fire
+
+----
+
+**Burning Effects for the `soul` fire type from Prometheus**
+```json
+{
+  "id": "minecraft:soul",
+  "provider": "prometheus",
+  "color": {
+    "type": "subtle_effects:preset",
+    "preset": "soul_sparks"
+  }
+}
+```
+
+**Burning Effects for the `soul_fire` fire type from Dyed Flames**
+```json
+{
+  "id": "minecraft:soul_fire",
+  "provider": "dyed_flames",
+  "flame_particle": "minecraft:soul_fire_flame",
+  "color": {
+    "type": "subtle_effects:preset",
+    "preset": "soul_sparks"
+  }
+}
+```

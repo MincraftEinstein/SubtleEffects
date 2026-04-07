@@ -13,7 +13,7 @@ All elements are optional
 ## Splash Options
 
 All elements are optional
-- `sprite_set` String Id of a particle definition in `assets/{namespace}/particles`
+- `sprite_set` String ID of a particle definition in `assets/{namespace}/particles`
 - `color` A [Color Provider](../color_providers) used to determine a particle's color
 - `tinting` An object containing either a float from 0 to 1 defined as `"intensity"`, which will change the strength that the `color` is applied to the particle, or a boolean defined as "use_config", which will use the value of the `Entities > Splashes > Splash Overlay Tint` config
 - `transparency` An object containing either a float from 0 to 1 defined as `"alpha"`, or a boolean defined as `"use_config"`, which will use the value of the `Entities > Splashes > Splash Overlay Alpha` config
@@ -24,3 +24,63 @@ All elements are optional
 {/* the `/subtle_effects/splash_types` folder. For example, the path of the water splash type is: */}
 {/* `assets/minecraft/subtle_effects/fluid_definitions/water.json` and it's ID is `minecraft:water`. */}
 {/* `assets/examplepack/subtle_effects/fluid_definitions/example_path/example.json` and its ID is `examplepack:example_path/example` */}
+
+----
+
+**Splash Type for lava**
+```json
+{
+  "splash": {
+    "sprite_set": "subtle_effects:lava_splash"
+  },
+  "splash_ripple": {
+    "sprite_set": "subtle_effects:lava_splash_ripple"
+  }
+}
+```
+
+**Splash Type for water**
+```json
+{
+  "splash": {
+    "color": {
+      "type": "subtle_effects:biome_color",
+      "color_type": "water_color"
+    }
+  },
+  "splash_overlay": {
+    "color": {
+      "type": "subtle_effects:biome_color",
+      "color_type": "water_color"
+    },
+    "tinting": {
+      "use_config": true
+    },
+    "transparency": {
+      "use_config": true
+    }
+  },
+  "splash_ripple": {
+    "color": {
+      "type": "subtle_effects:biome_color",
+      "color_type": "water_color"
+    },
+    "tinting": {
+      "use_config": true
+    },
+    "transparency": {
+      "use_config": true
+    }
+  },
+  "droplets": {
+    "color": {
+      "type": "subtle_effects:biome_color",
+      "color_type": "water_color"
+    },
+    "tinting": {
+      "use_config": true
+    },
+    "land_particle": "minecraft:splash"
+  }
+}
+```

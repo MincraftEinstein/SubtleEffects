@@ -17,3 +17,49 @@ Ripple Options are a JSON object used for customizing the ripple particle spawne
 - `color` A [Color Provider](../color_providers) used to determine a particle's color
 - `tinting` An object containing either a float from 0 to 1 defined as `"intensity"`, which will change the strength that the `color` is applied to the particle, or a boolean defined as "use_config", which will use the value of the `Entities > Splashes > Splash Overlay Tint` config
 - `transparency` An object containing either a float from 0 to 1 defined as `"alpha"`, or a boolean defined as `"use_config"`, which will use the value of the `Entities > Splashes > Splash Overlay Alpha` config
+
+----
+
+**Droplet options used in the water [Fluid Definition](fluid_definitions)**
+```json
+{
+  ...
+  "droplets": {
+    "color": {
+      "type": "subtle_effects:biome_color",
+      "color_type": "water_color"
+    },
+    "ripple": {
+      "color": {
+        "type": "subtle_effects:none"
+      },
+      "transparency": {
+        "alpha": 0.2
+      }
+    },
+    "land_particle": "minecraft:splash"
+  }
+  ...
+}
+```
+
+**Droplet options used in the lava [Fluid Definition](fluid_definitions)**
+```json
+{
+  ...
+  "droplets": {
+    "color": {
+      "type": "subtle_effects:preset",
+      "preset": "lava_droplet"
+    },
+    "ripple": {
+      "color": {
+        "type": "subtle_effects:preset",
+        "preset": "lava_ripple"
+      }
+    },
+    "land_particle": "minecraft:landing_lava"
+  }
+  ...
+}
+```
