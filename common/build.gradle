@@ -34,6 +34,7 @@ dependencies {
     compileOnly (group: "fuzs.puzzleslib", name: "puzzleslib-common", version: "${puzzleslib_version}") {
         exclude group: "net.fabricmc.fabric-api"
     }
+    compileOnly("com.moulberry:mixinconstraints:${mixin_constraints_version}")
 }
 
 configurations {
