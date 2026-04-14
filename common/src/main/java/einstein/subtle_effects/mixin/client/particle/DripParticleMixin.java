@@ -77,7 +77,7 @@ public abstract class DripParticleMixin extends TextureSheetParticle implements 
         if (fluidHeight > 0 && y <= fluidSurface) {
             Fluid fluid = fluidState.isEmpty() ? Util.getCauldronFluid(state) : fluidState.getType();
 
-            if (GENERAL.fluidDropsEvaporate) {
+            if (GENERAL.fluidDropsEvaporate.get()) {
                 if ((fluid.is(FluidTags.LAVA) && !subtleEffects$isLava) || (fluid.is(FluidTags.WATER) && subtleEffects$isLava)) {
                     level.addParticle(ModParticles.STEAM.get(), x, fluidSurface, z, 0, 0, 0);
 

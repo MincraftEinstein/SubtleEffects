@@ -40,6 +40,8 @@
   "chat.subtle_effects.anniversary.message": "It's the mod's %s birthday! In celebration, players will have party hats! To disable party hats, set the 'Enable Easter Eggs' config option to false in the '%s' config category.",
   "chat.subtle_effects.anniversary.message.click_event": "General",
   "chat.subtle_effects.anniversary.message.click_event.tooltip": "Click to open the config menu",
+  "config.subtle_effects.conditions.config_disabled": "- Config disabled by the current value of: \"%s\"",
+  "config.subtle_effects.conditions.mod_not_loaded": "- Mod not loaded: \"%s\"",
   "config.subtle_effects.smokeType.OFF": "Off",
   "config.subtle_effects.smokeType.DEFAULT": "Default",
   "config.subtle_effects.smokeType.UPDATED": "Updated",

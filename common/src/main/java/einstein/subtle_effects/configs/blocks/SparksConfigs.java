@@ -4,6 +4,8 @@ import einstein.subtle_effects.init.ModConfigs;
 import me.fzzyhmstrs.fzzy_config.annotations.Translation;
 import me.fzzyhmstrs.fzzy_config.config.ConfigSection;
 import me.fzzyhmstrs.fzzy_config.util.EnumTranslatable;
+import me.fzzyhmstrs.fzzy_config.validation.misc.ValidatedCondition;
+import me.fzzyhmstrs.fzzy_config.validation.misc.ValidatedEnum;
 import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedDouble;
 import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedInt;
 import org.jetbrains.annotations.NotNull;
@@ -18,8 +20,9 @@ public class SparksConfigs extends ConfigSection {
     public boolean campfireSparks = true;
     public boolean torchSparks = true;
     public ValidatedInt lanternSparksDensity = new ValidatedInt(5, 10, 0);
-    public LavaSparksDisplayType lavaSparksDisplayType = LavaSparksDisplayType.ON;
-    public ValidatedDouble lavaSparksDensity = new ValidatedDouble(1, 1, 0.1);
+    public ValidatedEnum<LavaSparksDisplayType> lavaSparksDisplayType = new ValidatedEnum<>(LavaSparksDisplayType.ON);
+    public ValidatedCondition<Double> lavaSparksDensity = ModConfigs.conditional(new ValidatedDouble(1, 1, 0.1),
+            lavaSparksDisplayType, LavaSparksDisplayType.OFF);
     public boolean brewingStandSparks = true;
     public boolean monsterSpawnerSparks = true;
 

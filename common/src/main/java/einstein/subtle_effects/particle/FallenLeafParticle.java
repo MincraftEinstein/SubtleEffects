@@ -19,7 +19,7 @@ public class FallenLeafParticle extends FlatPlaneParticle {
 
     protected FallenLeafParticle(ClientLevel level, double x, double y, double z, double xSpeed, double zSpeed, FallenLeafParticleOptions options) {
         super(level, x, y, z);
-        if (!options.onGround() && ModConfigs.GENERAL.leavesLandingOnWaterKeepMomentum) {
+        if (!options.onGround() && ModConfigs.GENERAL.leavesLandingOnWaterKeepMomentum.get()) {
             xd = MathUtil.nextDouble(random, (xSpeed / 4) * 3);
             zd = MathUtil.nextDouble(random, (zSpeed / 4) * 3);
         }

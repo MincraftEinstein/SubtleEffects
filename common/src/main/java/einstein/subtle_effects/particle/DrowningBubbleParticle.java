@@ -15,7 +15,7 @@ public class DrowningBubbleParticle extends BubbleParticle {
         alpha = ENTITIES.humanoids.drowningBubbleAlpha.get();
         lifetime *= 3;
 
-        if (ENTITIES.humanoids.forceDrowningBubblesToColumn) {
+        if (ENTITIES.humanoids.forceDrowningBubblesToColumn.get()) {
             xd = 0;
             yd = 0;
             zd = 0;

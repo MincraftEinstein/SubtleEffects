@@ -35,7 +35,7 @@ public class ParticleEngineMixin {
     @Inject(method = "createParticle", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/particle/ParticleEngine;add(Lnet/minecraft/client/particle/Particle;)V"))
     private void modifyParticle(ParticleOptions options, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, CallbackInfoReturnable<Particle> cir, @Local Particle particle) {
         ParticleType<?> type = options.getType();
-        if (GENERAL.particleCullingBlocklist.contains(type)) {
+        if (GENERAL.particleCullingBlocklist.get().contains(type)) {
             ((ParticleAccessor) particle).subtleEffects$ignoresCulling();
         }
 
@@ -46,7 +46,7 @@ public class ParticleEngineMixin {
 
     @WrapWithCondition(method = "render*", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/particle/Particle;render(Lcom/mojang/blaze3d/vertex/VertexConsumer;Lnet/minecraft/client/Camera;F)V"))
     private boolean shouldRenderParticle(Particle particle, VertexConsumer consumer, Camera camera, float partialTick) {
-        if (!GENERAL.enableParticleCulling) {
+        if (!GENERAL.enableParticleCulling.get()) {
             return true;
         }
 
@@ -61,7 +61,7 @@ public class ParticleEngineMixin {
 
         Frustum frustum = ((FrustumGetter) Minecraft.getInstance().levelRenderer).subtleEffects$getCullingFrustum();
         if (frustum != null && frustum.isVisible(particle.getBoundingBox())) {
-            if (GENERAL.cullParticlesInUnloadedChunks && !Util.isChunkLoaded(level, accessor.getX(), accessor.getZ())) {
+            if (GENERAL.cullParticlesInUnloadedChunks.get() && !Util.isChunkLoaded(level, accessor.getX(), accessor.getZ())) {
                 return false;
             }
 

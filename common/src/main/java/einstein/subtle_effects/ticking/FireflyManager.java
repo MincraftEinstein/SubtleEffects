@@ -26,7 +26,7 @@ import static einstein.subtle_effects.util.MathUtil.nextNonAbsDouble;
 public class FireflyManager {
 
     public static void tick(Level level, BlockPos pos, BlockState state, RandomSource random) {
-        if (!ENVIRONMENT.fireflies.firefliesEnabled) {
+        if (!ENVIRONMENT.fireflies.firefliesEnabled.get()) {
             return;
         }
 
@@ -36,11 +36,11 @@ public class FireflyManager {
         }
 
         Optional<ResourceKey<DimensionType>> dimensionKey = level.dimensionTypeRegistration().unwrapKey();
-        if (dimensionKey.isEmpty() || ENVIRONMENT.fireflies.dimensionBlocklist.contains(dimensionKey.get().location())) {
+        if (dimensionKey.isEmpty() || ENVIRONMENT.fireflies.dimensionBlocklist.get().contains(dimensionKey.get().location())) {
             return;
         }
 
-        if (CompatHelper.IS_SERENE_SEANSONS_LOADED.get() && SereneSeasonsCompat.isColdSeason(level, ENVIRONMENT.fireflies.ignoredSeasons)) {
+        if (CompatHelper.IS_SERENE_SEANSONS_LOADED.get() && SereneSeasonsCompat.isColdSeason(level, ENVIRONMENT.fireflies.ignoredSeasons.get())) {
             return;
         }
 
@@ -51,10 +51,10 @@ public class FireflyManager {
         }
 
         ResourceLocation biomeId = biomeKey.get().location();
-        if (!ENVIRONMENT.fireflies.biomesBlocklist.contains(biomeId)) {
-            boolean isHabitatBiome = ENVIRONMENT.fireflies.habitatBiomes.contains(biomeId);
-            boolean isSpawnable = ENVIRONMENT.fireflies.spawnableBlocks.contains(state.getBlock());
-            if (!isHabitatBiome && (ENVIRONMENT.fireflies.onlyAllowInHabitatBiomes || !isSpawnable)) {
+        if (!ENVIRONMENT.fireflies.biomesBlocklist.get().contains(biomeId)) {
+            boolean isHabitatBiome = ENVIRONMENT.fireflies.habitatBiomes.get().contains(biomeId);
+            boolean isSpawnable = ENVIRONMENT.fireflies.spawnableBlocks.get().contains(state.getBlock());
+            if (!isHabitatBiome && (ENVIRONMENT.fireflies.onlyAllowInHabitatBiomes.get() || !isSpawnable)) {
                 return;
             }
 
@@ -70,7 +70,7 @@ public class FireflyManager {
                 }
             }
 
-            if (biome.value().warmEnoughToRain(pos) || ENVIRONMENT.fireflies.biomesAllowlist.contains(biomeId)) {
+            if (biome.value().warmEnoughToRain(pos) || ENVIRONMENT.fireflies.biomesAllowlist.get().contains(biomeId)) {
                 float time = level.getDayTime() % 24000F;
 
                 if (((time > 13000 && time < 23000) || level.getBrightness(LightLayer.SKY, pos) == 0) && level.getBrightness(LightLayer.BLOCK, pos) <= 5) {
@@ -78,7 +78,7 @@ public class FireflyManager {
                         if (!state.isCollisionShapeFullBlock(level, pos) && level.getFluidState(pos).isEmpty()) {
 
                             if (canSpawn(random, isHabitatBiome)) {
-                                level.addParticle(ENVIRONMENT.fireflies.fireflyType.getParticle().get(),
+                                level.addParticle(ENVIRONMENT.fireflies.fireflyType.get().getParticle().get(),
                                         pos.getX() + 0.5 + nextNonAbsDouble(random, 0.4375),
                                         pos.getY() + 0.5 + nextNonAbsDouble(random, 0.4375),
                                         pos.getZ() + 0.5 + nextNonAbsDouble(random, 0.4375),
@@ -116,7 +116,7 @@ public class FireflyManager {
             return random.nextDouble() < (0.0005 * ENVIRONMENT.fireflies.habitatBiomeDensity.get());
         }
 
-        int spawnRate = ENVIRONMENT.fireflies.fireflyType == FireflyConfigs.FireflyType.VANILLA ? 170 : 1;
+        int spawnRate = ENVIRONMENT.fireflies.fireflyType.get() == FireflyConfigs.FireflyType.VANILLA ? 170 : 1;
         return random.nextDouble() < (0.008 * ENVIRONMENT.fireflies.defaultDensity.get() * spawnRate);
     }
 }

@@ -4,6 +4,8 @@ import einstein.subtle_effects.init.ModConfigs;
 import me.fzzyhmstrs.fzzy_config.annotations.Translation;
 import me.fzzyhmstrs.fzzy_config.config.ConfigSection;
 import me.fzzyhmstrs.fzzy_config.util.EnumTranslatable;
+import me.fzzyhmstrs.fzzy_config.validation.misc.ValidatedBoolean;
+import me.fzzyhmstrs.fzzy_config.validation.misc.ValidatedCondition;
 import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedInt;
 import org.jetbrains.annotations.NotNull;
 
@@ -16,12 +18,14 @@ public class SteamConfigs extends ConfigSection {
     public boolean replaceRainEvaporationSteam = true;
     public boolean lavaCauldronsEvaporateRain = true;
     public SteamSpawnLogicType spawnLogic = SteamSpawnLogicType.BRIGHTNESS;
-    public boolean steamingWater = false;
-    public boolean boilingWater = false;
-    public boolean steamingWaterCauldron = false;
-    public boolean boilingWaterCauldron = false;
-    public ValidatedInt steamingThreshold = new ValidatedInt(11, 14, 1);
-    public ValidatedInt boilingThreshold = new ValidatedInt(13, 14, 1);
+    public ValidatedBoolean steamingWater = new ValidatedBoolean(false);
+    public ValidatedBoolean boilingWater = new ValidatedBoolean(false);
+    public ValidatedBoolean steamingWaterCauldron = new ValidatedBoolean(false);
+    public ValidatedBoolean boilingWaterCauldron = new ValidatedBoolean(false);
+    public ValidatedCondition<Integer> steamingThreshold = ModConfigs.conditional(new ValidatedInt(11, 14, 1),
+            () -> steamingWater.get() || steamingWaterCauldron.get(), () -> steamingWater.get() ? steamingWater : steamingWaterCauldron, false);
+    public ValidatedCondition<Integer> boilingThreshold = ModConfigs.conditional(new ValidatedInt(13, 14, 1),
+            () -> boilingWater.get() || boilingWaterCauldron.get(), () -> boilingWater.get() ? boilingWater : boilingWaterCauldron, false);
 
     public enum SteamSpawnLogicType implements EnumTranslatable {
         BRIGHTNESS,

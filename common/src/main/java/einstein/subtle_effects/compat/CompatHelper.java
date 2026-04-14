@@ -18,8 +18,9 @@ public class CompatHelper {
     public static final String PARTICLE_EFFECTS_MOD_ID_NEW = "particle_effects";
     public static final String PARTICLE_RAIN_MOD_ID = "particlerain";
     public static final String DYED_FLAMES_MOD_ID = "dyedflames";
+    public static final String SERENESEASONS_MOD_ID = "sereneseasons";
 
-    public static final Supplier<Boolean> IS_SERENE_SEANSONS_LOADED = isLoaded("sereneseasons");
+    public static final Supplier<Boolean> IS_SERENE_SEANSONS_LOADED = isLoaded(SERENESEASONS_MOD_ID);
     public static final Supplier<Boolean> IS_PROMETHEUS_LOADED = isLoaded("prometheus");
     public static final Supplier<Boolean> IS_ITEM_BORDERS_LOADED = isLoaded(ITEMBORDERS_MOD_ID);
     public static final Supplier<Boolean> IS_LEGENDARY_TOOLTIPS_LOADED = isLoaded("legendarytooltips");

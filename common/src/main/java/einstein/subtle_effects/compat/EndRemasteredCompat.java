@@ -22,7 +22,7 @@ public class EndRemasteredCompat {
 
     public static void init() {
         ModBlockTickers.REGISTERED_SPECIAL.put(state -> state.is(CommonBlockRegistry.ANCIENT_PORTAL_FRAME), (state, level, pos, random) -> {
-            if (BLOCKS.endPortalFrameParticlesDisplayType == ModBlockConfigs.EndPortalFrameParticlesDisplayType.OFF) {
+            if (BLOCKS.endPortalFrameParticlesDisplayType.get() == ModBlockConfigs.EndPortalFrameParticlesDisplayType.OFF) {
                 return;
             }
 
@@ -32,7 +32,7 @@ public class EndRemasteredCompat {
                     return;
                 }
 
-                ParticleSpawnUtil.spawnEndPortalParticles(level, pos, random, BLOCKS.endPortalFrameParticlesDisplayType.particle.apply(level, pos), BLOCKS.endPortalFrameParticlesDisplayType.count);
+                ParticleSpawnUtil.spawnEndPortalParticles(level, pos, random, BLOCKS.endPortalFrameParticlesDisplayType.get().particle.apply(level, pos), BLOCKS.endPortalFrameParticlesDisplayType.get().count);
             }
         });
     }
@@ -41,7 +41,7 @@ public class EndRemasteredCompat {
     public static ValidatedColor.ColorHolder getEyeColor(Level level, BlockPos pos) {
         BlockEntity blockEntity = level.getBlockEntity(pos);
         if (blockEntity instanceof AncientPortalFrameEntity frameBlockEntity) {
-            return BLOCKS.eyeColors.get(frameBlockEntity.getEyeID());
+            return BLOCKS.eyeColors.get().get(frameBlockEntity.getEyeID());
         }
         return null;
     }

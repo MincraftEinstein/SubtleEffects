@@ -1,8 +1,7 @@
 package einstein.subtle_effects.ticking.biome_particles;
 
 import einstein.subtle_effects.init.ModParticles;
-import me.fzzyhmstrs.fzzy_config.validation.collection.ValidatedList;
-import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedInt;
+import me.fzzyhmstrs.fzzy_config.validation.ValidatedField;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.particles.ParticleOptions;
@@ -34,11 +33,11 @@ public class BiomeParticleManager {
         register(ENVIRONMENT.biomes.sculkDustBiomes, ENVIRONMENT.biomes.sculkDustDensity, ModParticles.SCULK_DUST, (level, pos) -> true);
     }
 
-    private static void register(ValidatedList<ResourceLocation> biomesConfig, ValidatedInt density, int maxSpawnHeight, Supplier<? extends ParticleOptions> particle, BiPredicate<Level, BlockPos> spawnConditions) {
+    private static void register(ValidatedField<List<? extends ResourceLocation>> biomesConfig, ValidatedField<Integer> density, int maxSpawnHeight, Supplier<? extends ParticleOptions> particle, BiPredicate<Level, BlockPos> spawnConditions) {
         REGISTERED.add(new BiomeParticleSettings(biomesConfig, density, maxSpawnHeight, particle, spawnConditions, false));
     }
 
-    private static void register(ValidatedList<ResourceLocation> biomesConfig, ValidatedInt density, Supplier<? extends ParticleOptions> particle, BiPredicate<Level, BlockPos> spawnConditions) {
+    private static void register(ValidatedField<List<? extends ResourceLocation>> biomesConfig, ValidatedField<Integer> density, Supplier<? extends ParticleOptions> particle, BiPredicate<Level, BlockPos> spawnConditions) {
         REGISTERED.add(new BiomeParticleSettings(biomesConfig, density, 0, particle, spawnConditions, true));
     }
 
