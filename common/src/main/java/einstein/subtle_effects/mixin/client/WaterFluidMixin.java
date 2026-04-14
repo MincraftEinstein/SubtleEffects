@@ -20,6 +20,6 @@ public class WaterFluidMixin {
     @Inject(method = "animateTick", at = @At("TAIL"))
     private void animateTick(Level level, BlockPos pos, FluidState state, RandomSource random, CallbackInfo ci) {
         ParticleSpawnUtil.spawnHeatedWaterParticles(level, pos, random, state.getValue(FALLING),
-                state.getHeight(level, pos), BLOCKS.steam.steamingWater, BLOCKS.steam.boilingWater);
+                state.getHeight(level, pos), BLOCKS.steam.steamingWater.get(), BLOCKS.steam.boilingWater.get());
     }
 }

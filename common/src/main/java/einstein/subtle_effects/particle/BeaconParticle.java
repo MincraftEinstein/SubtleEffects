@@ -46,7 +46,7 @@ public class BeaconParticle extends SparkParticle {
             }
 
             List<BeaconBlockEntity.BeaconBeamSection> sections = beaconBlockEntity.getBeamSections();
-            boolean isNotColored = BLOCKS.beaconParticlesDisplayType == ModBlockConfigs.BeaconParticlesDisplayType.NOT_COLORED;
+            boolean isNotColored = BLOCKS.beaconParticlesDisplayType.get() == ModBlockConfigs.BeaconParticlesDisplayType.NOT_COLORED;
             boolean hasMultipleSections = sections.size() > 1;
 
             if (sections.isEmpty() || (hasMultipleSections && isNotColored)) {

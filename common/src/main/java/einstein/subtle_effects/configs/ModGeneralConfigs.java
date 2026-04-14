@@ -8,8 +8,9 @@ import einstein.subtle_effects.util.Util;
 import me.fzzyhmstrs.fzzy_config.annotations.Translation;
 import me.fzzyhmstrs.fzzy_config.config.Config;
 import me.fzzyhmstrs.fzzy_config.config.ConfigGroup;
-import me.fzzyhmstrs.fzzy_config.validation.collection.ValidatedList;
 import me.fzzyhmstrs.fzzy_config.validation.minecraft.ValidatedRegistryType;
+import me.fzzyhmstrs.fzzy_config.validation.misc.ValidatedBoolean;
+import me.fzzyhmstrs.fzzy_config.validation.misc.ValidatedCondition;
 import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedFloat;
 import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedInt;
 import net.minecraft.client.Minecraft;
@@ -21,6 +22,8 @@ import net.minecraft.world.entity.player.Player;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static einstein.subtle_effects.init.ModConfigs.conditional;
 
 @Translation(prefix = ModConfigs.BASE_KEY + "general")
 public class ModGeneralConfigs extends Config {
@@ -36,20 +39,21 @@ public class ModGeneralConfigs extends Config {
     });
 
     public ConfigGroup particleRenderingGroup = new ConfigGroup("particle_rendering");
-    public boolean enableParticleCulling = true;
-    public ValidatedInt particleRenderDistance = new ValidatedInt(5, 32, 1);
-    public ValidatedList<ParticleType<?>> particleCullingBlocklist = ValidatedRegistryType.of(ParticleTypes.FLAME, BuiltInRegistries.PARTICLE_TYPE).toList(DEFAULT_CULLING_BLOCKLIST);
-    public boolean cullParticlesInUnloadedChunks = true;
-    public boolean allowUsingBlendedRenderType = true;
+    public ValidatedBoolean enableParticleCulling = new ValidatedBoolean();
+    public ValidatedCondition<Integer> particleRenderDistance = conditional(new ValidatedInt(5, 32, 1), enableParticleCulling);
+    public ValidatedCondition<List<? extends ParticleType<?>>> particleCullingBlocklist =
+            conditional(ValidatedRegistryType.of(ParticleTypes.FLAME, BuiltInRegistries.PARTICLE_TYPE).toList(DEFAULT_CULLING_BLOCKLIST), enableParticleCulling);
+    public ValidatedCondition<Boolean> cullParticlesInUnloadedChunks = conditional(new ValidatedBoolean(), enableParticleCulling);
+    public ValidatedBoolean allowUsingBlendedRenderType = new ValidatedBoolean();
     @ConfigGroup.Pop
-    public boolean spellParticlesUseBlendedRenderType = true;
+    public ValidatedCondition<Boolean> spellParticlesUseBlendedRenderType = conditional(new ValidatedBoolean(), allowUsingBlendedRenderType);
 
     public ConfigGroup particlesGroup = new ConfigGroup("particles");
 
     public ConfigGroup dripParticlesGroup = new ConfigGroup("particles.drip_particles");
     public boolean glowingLavaDrops = true;
-    public boolean fluidDropsEvaporate = true;
-    public ValidatedFloat fluidDropsEvaporationVolume = new ValidatedFloat(0.25F, 1, 0);
+    public ValidatedBoolean fluidDropsEvaporate = new ValidatedBoolean();
+    public ValidatedCondition<Float> fluidDropsEvaporationVolume = conditional(new ValidatedFloat(0.25F, 1, 0), fluidDropsEvaporate);
     public boolean dropLandInFluidRipples = true;
     @ConfigGroup.Pop
     public ValidatedFloat dropLandSoundVolume = new ValidatedFloat(1, 2, 0);
@@ -68,9 +72,9 @@ public class ModGeneralConfigs extends Config {
     public ValidatedFloat potionParticleAlphaNearPlayer = new ValidatedFloat(0.2F, 1, 0);
     public ConfigGroup leavesGroup = new ConfigGroup("leaves");
     public boolean leavesLandOnGround = true;
-    public boolean leavesLandOnWater = true;
-    public boolean leavesLandingOnWaterRipples = true;
-    public boolean leavesLandingOnWaterKeepMomentum = true;
+    public ValidatedBoolean leavesLandOnWater = new ValidatedBoolean();
+    public ValidatedCondition<Boolean> leavesLandingOnWaterRipples = conditional(new ValidatedBoolean(), leavesLandOnWater);
+    public ValidatedCondition<Boolean> leavesLandingOnWaterKeepMomentum = conditional(new ValidatedBoolean(), leavesLandOnWater);
     public ValidatedInt fallenLeavesLifeTime = new ValidatedInt(40, 100, 20);
     @ConfigGroup.Pop
     public boolean rainIncreasesLeavesMovementSpeed = true;
@@ -83,8 +87,9 @@ public class ModGeneralConfigs extends Config {
     @ConfigGroup.Pop
     public ValidatedFloat fireOverlayAlphaWithFireResistance = new ValidatedFloat(0.4F, 1, 0);
     public boolean mobSkullShaders = true;
-    public boolean nightVisionFading = true;
-    public ValidatedInt nightVisionFadingTime = new ValidatedInt(100, 200, 10);
+    public ValidatedBoolean nightVisionFading = new ValidatedBoolean();
+    public ValidatedCondition<Integer> nightVisionFadingTime =
+            conditional(new ValidatedInt(100, 200, 10), nightVisionFading);
     public boolean enableEasterEggs = true;
 
     public ModGeneralConfigs() {

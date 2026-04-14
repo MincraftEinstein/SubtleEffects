@@ -178,7 +178,7 @@ public class Util {
             }
         }
 
-        ValidatedColor.ColorHolder vanillaColor = BLOCKS.eyeColors.get(VANILLA_EYE);
+        ValidatedColor.ColorHolder vanillaColor = BLOCKS.eyeColors.get().get(VANILLA_EYE);
         if (vanillaColor != null) {
             return vanillaColor;
         }
@@ -245,5 +245,9 @@ public class Util {
                         Codec.BOOL.fieldOf("use_config").forGetter(Boolean::booleanValue)
                 ).apply(instance, Boolean::booleanValue))
         );
+    }
+
+    public static boolean isSouthEast(CharSequence searchQuery) {
+        return "south east".contains(searchQuery) || "south_east".contains(searchQuery);
     }
 }

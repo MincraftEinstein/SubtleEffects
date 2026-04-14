@@ -44,7 +44,7 @@ public class ModParticleRenderTypes {
     }
 
     public static ParticleRenderType getBlendedOrTransparent() {
-        if (ModConfigs.GENERAL.allowUsingBlendedRenderType) {
+        if (ModConfigs.GENERAL.allowUsingBlendedRenderType.get()) {
             return BLENDED;
         }
         return ParticleRenderType.PARTICLE_SHEET_TRANSLUCENT;

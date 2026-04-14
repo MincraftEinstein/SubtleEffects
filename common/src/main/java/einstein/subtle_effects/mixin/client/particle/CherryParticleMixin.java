@@ -45,7 +45,7 @@ public abstract class CherryParticleMixin extends TextureSheetParticle {
 
     @Inject(method = "tick", at = @At("RETURN"))
     private void tick(CallbackInfo ci) {
-        if (!GENERAL.leavesLandOnGround && !GENERAL.leavesLandOnWater) {
+        if (!GENERAL.leavesLandOnGround && !GENERAL.leavesLandOnWater.get()) {
             return;
         }
 
@@ -54,19 +54,19 @@ public abstract class CherryParticleMixin extends TextureSheetParticle {
         BlockState state = level.getBlockState(subtleEffects$pos);
         FluidState fluidState = level.getFluidState(subtleEffects$pos);
         boolean isWaterCauldron = state.is(Blocks.WATER_CAULDRON);
-        double fluidHeight = GENERAL.leavesLandOnWater ?
+        double fluidHeight = GENERAL.leavesLandOnWater.get() ?
                 (fluidState.is(Fluids.WATER) ? fluidState.getHeight(level, subtleEffects$pos) :
                         (isWaterCauldron ? Util.getCauldronFillHeight(state) : 0)) : 0;
         double surface = subtleEffects$pos.getY() + Math.max(fluidHeight, isWaterCauldron ? 0 : state.getCollisionShape(level, subtleEffects$pos).max(Direction.Axis.Y)) + 0.01;
 
-        if ((fluidHeight > 0 && y <= surface && GENERAL.leavesLandOnWater) || (onGround && !state.is(Blocks.WATER) && GENERAL.leavesLandOnGround)) {
+        if ((fluidHeight > 0 && y <= surface && GENERAL.leavesLandOnWater.get()) || (onGround && !state.is(Blocks.WATER) && GENERAL.leavesLandOnGround)) {
             level.addParticle(
                     new FallenLeafParticleOptions(sprite, quadSize, bbWidth, bbHeight, onGround, new Vector3f(rCol, gCol, bCol), alpha, roll),
                     x, surface + Mth.nextFloat(random, 0.001F, 0.005F), z,
                     xd, 0, zd
             );
 
-            if (!onGround && GENERAL.leavesLandingOnWaterRipples) {
+            if (!onGround && GENERAL.leavesLandingOnWaterRipples.get()) {
                 double halfSize = quadSize / 2;
 
                 level.addParticle(new RippleParticleOptions(ModParticles.RIPPLE.get(), FluidDefinitionReloadListener.WATER_ID, Math.max(quadSize, Math.max(bbWidth, bbHeight)) + 0.3F * 3, false),

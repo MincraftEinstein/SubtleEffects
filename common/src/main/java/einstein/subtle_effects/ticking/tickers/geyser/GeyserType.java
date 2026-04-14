@@ -2,6 +2,7 @@ package einstein.subtle_effects.ticking.tickers.geyser;
 
 import com.mojang.serialization.Codec;
 import io.netty.buffer.ByteBuf;
+import me.fzzyhmstrs.fzzy_config.validation.ValidatedField;
 import me.fzzyhmstrs.fzzy_config.validation.collection.ValidatedList;
 import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedInt;
 import net.minecraft.core.BlockPos;
@@ -16,12 +17,26 @@ import net.minecraft.world.level.material.Fluids;
 import org.apache.commons.lang3.function.TriFunction;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.List;
+
 import static einstein.subtle_effects.init.ModConfigs.ENVIRONMENT;
 
 public enum GeyserType implements StringRepresentable {
-    FLAME("flame", true, 5, FlameGeyserTicker::new, null, ENVIRONMENT.geysers.flameGeyserSpawnableBlocks, ENVIRONMENT.geysers.flameGeyserSpawnChance, ENVIRONMENT.geysers.flameGeyserActiveTime, ENVIRONMENT.geysers.flameGeyserInactiveTime),
-    SMOKE("smoke", true, 4, SmokeGeyserTicker::new, null, ENVIRONMENT.geysers.smokeGeyserSpawnableBlocks, ENVIRONMENT.geysers.smokeGeyserSpawnChance, ENVIRONMENT.geysers.smokeGeyserActiveTime, ENVIRONMENT.geysers.smokeGeyserInactiveTime),
-    BUBBLE("bubble", false, 3, BubbleGeyserTicker::new, Fluids.WATER, ENVIRONMENT.geysers.bubbleGeyserSpawnableBlocks, ENVIRONMENT.geysers.bubbleGeyserSpawnChance, ENVIRONMENT.geysers.bubbleGeyserActiveTime, ENVIRONMENT.geysers.bubbleGeyserInactiveTime);
+    FLAME("flame", true, 5, FlameGeyserTicker::new, null,
+            ENVIRONMENT.geysers.flameGeyserSpawnableBlocks,
+            ENVIRONMENT.geysers.flameGeyserSpawnChance,
+            ENVIRONMENT.geysers.flameGeyserActiveTime,
+            ENVIRONMENT.geysers.flameGeyserInactiveTime),
+    SMOKE("smoke", true, 4, SmokeGeyserTicker::new, null,
+            ENVIRONMENT.geysers.smokeGeyserSpawnableBlocks,
+            ENVIRONMENT.geysers.smokeGeyserSpawnChance,
+            ENVIRONMENT.geysers.smokeGeyserActiveTime,
+            ENVIRONMENT.geysers.smokeGeyserInactiveTime),
+    BUBBLE("bubble", false, 3, BubbleGeyserTicker::new, Fluids.WATER,
+            ENVIRONMENT.geysers.bubbleGeyserSpawnableBlocks,
+            ENVIRONMENT.geysers.bubbleGeyserSpawnChance,
+            ENVIRONMENT.geysers.bubbleGeyserActiveTime,
+            ENVIRONMENT.geysers.bubbleGeyserInactiveTime);
 
     public static final Codec<GeyserType> CODEC = StringRepresentable.fromEnum(GeyserType::values);
     public static final StreamCodec<ByteBuf, GeyserType> STREAM_CODEC = ByteBufCodecs.fromCodec(CODEC);
@@ -32,12 +47,16 @@ public enum GeyserType implements StringRepresentable {
     public final TriFunction<Level, BlockPos, RandomSource, GeyserTicker> geyserTickerProvider;
     @Nullable
     public final Fluid fluid;
-    public final ValidatedList<Block> spawnableBlocks;
-    public final ValidatedInt spawnChance;
-    public final ValidatedInt activeTime;
-    public final ValidatedInt inactiveTime;
+    public final ValidatedField<List<? extends Block>> spawnableBlocks;
+    public final ValidatedField<Integer> spawnChance;
+    public final ValidatedField<Integer> activeTime;
+    public final ValidatedField<Integer> inactiveTime;
 
-    GeyserType(String name, boolean isNetherOnly, int height, TriFunction<Level, BlockPos, RandomSource, GeyserTicker> geyserTickerProvider, @Nullable Fluid fluid, ValidatedList<Block> spawnableBlocks, ValidatedInt spawnChance, ValidatedInt activeTime, ValidatedInt inactiveTime) {
+    GeyserType(String name, boolean isNetherOnly, int height,
+               TriFunction<Level, BlockPos, RandomSource, GeyserTicker> geyserTickerProvider,
+               @Nullable Fluid fluid, ValidatedField<List<? extends Block>> spawnableBlocks,
+               ValidatedField<Integer> spawnChance, ValidatedField<Integer> activeTime,
+               ValidatedField<Integer> inactiveTime) {
         this.name = name;
         this.isNetherOnly = isNetherOnly;
         this.height = height;

@@ -47,8 +47,8 @@ public abstract class ModelParticle extends Particle {
 
     protected abstract void render(PoseStack poseStack, VertexConsumer consumer, MultiBufferSource.BufferSource bufferSource, Camera camera, float partialTicks);
 
-    protected <T extends Model> T bakeModel(Function<ModelPart, T> modelBaker, ModelLayerLocation layerLocation) {
-        return modelBaker.apply(minecraft.getEntityModels().bakeLayer(layerLocation));
+    protected static <T extends Model> T bakeModel(Function<ModelPart, T> modelBaker, ModelLayerLocation layerLocation) {
+        return modelBaker.apply(Minecraft.getInstance().getEntityModels().bakeLayer(layerLocation));
     }
 
     protected ResourceLocation getSpriteId(TextureAtlasSprite sprite) {

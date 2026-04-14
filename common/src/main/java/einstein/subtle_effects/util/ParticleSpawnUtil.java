@@ -268,14 +268,14 @@ public class ParticleSpawnUtil {
     }
 
     public static void spawnEnderEyePlacementParticles(BlockPos pos, RandomSource random, Level level, int color) {
-        if (BLOCKS.enderEyePlacedRings) {
+        if (BLOCKS.enderEyePlacedRings.get()) {
             level.addParticle(ColorParticleOption.create(ModParticles.ENDER_EYE_PLACED_RING.get(), color),
                     pos.getX() + 0.5, pos.getY() + 0.8125 + EnderEyePlacedRingParticle.SIZE, pos.getZ() + 0.5,
                     0, 0, 0
             );
         }
 
-        if (BLOCKS.enderEyePlacedParticlesDisplayType != ModBlockConfigs.EnderEyePlacedParticlesDisplayType.VANILLA) {
+        if (BLOCKS.enderEyePlacedParticlesDisplayType.get() != ModBlockConfigs.EnderEyePlacedParticlesDisplayType.VANILLA) {
             spawnEndPortalParticles(level, pos, random, ColorParticleOption.create(ModParticles.SHORT_SPARK.get(), color), 16);
         }
     }
@@ -504,11 +504,11 @@ public class ParticleSpawnUtil {
     }
 
     public static boolean spawnSplashEffects(Entity entity, Level level, ResourceLocation fluidDefinitionId, double y, double yVelocity) {
-        if (!ENTITIES.splashes.splashEffects) {
+        if (!ENTITIES.splashes.splashEffects.get()) {
             return false;
         }
 
-        if (ENTITIES.splashes.entityBlocklist.contains(entity.getType())) {
+        if (ENTITIES.splashes.entityBlocklist.get().contains(entity.getType())) {
             return false;
         }
 
@@ -564,7 +564,7 @@ public class ParticleSpawnUtil {
     public static void spawnPotionRings(LivingEntity entity) {
         Minecraft minecraft = Minecraft.getInstance();
         if (entity instanceof Player player) {
-            if (player.equals(minecraft.player) && !ENTITIES.humanoids.potionRingsDisplayType.test(minecraft)) {
+            if (player.equals(minecraft.player) && !ENTITIES.humanoids.potionRingsDisplayType.get().test(minecraft)) {
                 return;
             }
         }

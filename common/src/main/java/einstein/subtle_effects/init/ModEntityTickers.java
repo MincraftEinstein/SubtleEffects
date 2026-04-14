@@ -10,6 +10,7 @@ import einstein.subtle_effects.ticking.tickers.entity.sleeping.*;
 import einstein.subtle_effects.util.ParticleSpawnUtil;
 import einstein.subtle_effects.util.SparkType;
 import einstein.subtle_effects.util.Util;
+import me.fzzyhmstrs.fzzy_config.validation.ValidatedField;
 import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedDouble;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.particles.BlockParticleOption;
@@ -56,18 +57,18 @@ public class ModEntityTickers {
         register(entity -> true, EntityCauldronTicker::new);
         register(entity -> !ENTITIES.burning.entityBlocklist.contains(entity.getType()), EntityFireTicker::new);
         register(entity -> entity instanceof LivingEntity, ModEntityTickers::getSleepingTicker);
-        register(entity -> entity instanceof AbstractMinecart && ENTITIES.minecartSparksDisplayType != ModEntityConfigs.MinecartSparksDisplayType.OFF, MinecartSparksTicker::new);
+        register(entity -> entity instanceof AbstractMinecart && ENTITIES.minecartSparksDisplayType.get() != ModEntityConfigs.MinecartSparksDisplayType.OFF, MinecartSparksTicker::new);
         register(LOCAL_PLAYER.and(entity -> ENTITIES.humanoids.player.stomachGrowlingThreshold.get() > 0), StomachGrowlingTicker::new);
         register(LOCAL_PLAYER.and(entity -> ModConfigs.GENERAL.mobSkullShaders), MobSkullShaderTicker::new);
         register(LOCAL_PLAYER.and(entity -> ENTITIES.humanoids.player.heartBeatingThreshold.get() > 0), HeartbeatTicker::new);
-        register(entity -> isHumanoid(entity, !entity.level().dimension().equals(Level.NETHER)) && ENTITIES.humanoids.drowningBubblesDisplayType.isEnabled(), DrowningTicker::new);
-        register(entity -> isHumanoid(entity, !entity.level().dimension().equals(Level.NETHER)) && ENTITIES.humanoids.frostyBreath.displayType.isEnabled(), FrostyBreathTicker::new);
+        register(entity -> isHumanoid(entity, !entity.level().dimension().equals(Level.NETHER)) && ENTITIES.humanoids.drowningBubblesDisplayType.get().isEnabled(), DrowningTicker::new);
+        register(entity -> isHumanoid(entity, !entity.level().dimension().equals(Level.NETHER)) && ENTITIES.humanoids.frostyBreath.displayType.get().isEnabled(), FrostyBreathTicker::new);
         register(entity -> entity.getType().equals(EntityType.SLIME) && ENTITIES.slimeTrails, (Slime entity) -> new SlimeTrailTicker<>(entity, ModParticles.SLIME_TRAIL));
         register(entity -> entity.getType().equals(EntityType.MAGMA_CUBE) && ENTITIES.magmaCubeTrails, (MagmaCube entity) -> new SlimeTrailTicker<>(entity, ModParticles.MAGMA_CUBE_TRAIL));
         register(entity -> entity.getType().equals(EntityType.IRON_GOLEM) && ENTITIES.ironGolemCrackParticles, IronGolemTicker::new);
-        register(entity -> entity instanceof ItemEntity && ITEMS.itemRarity.particlesDisplayType != ItemRarityConfigs.DisplayType.OFF, ItemRarityTicker::new);
-        register(entity -> entity instanceof Witch && ENTITIES.humanoids.NPCsHavePotionRings && ENTITIES.humanoids.potionRingsDisplayType.isEnabled(), WitchPotionRingTicker::new);
-        register(entity -> isNPC(entity, true) && ENTITIES.humanoids.NPCsHavePotionRings && ENTITIES.humanoids.potionRingsDisplayType.isEnabled(), (LivingEntity entity) -> new HumanoidPotionRingTicker<>(entity));
+        register(entity -> entity instanceof ItemEntity && ITEMS.itemRarity.particlesDisplayType.get() != ItemRarityConfigs.DisplayType.OFF, ItemRarityTicker::new);
+        register(entity -> entity instanceof Witch && ENTITIES.humanoids.NPCsHavePotionRings.get() && ENTITIES.humanoids.potionRingsDisplayType.get().isEnabled(), WitchPotionRingTicker::new);
+        register(entity -> isNPC(entity, true) && ENTITIES.humanoids.NPCsHavePotionRings.get() && ENTITIES.humanoids.potionRingsDisplayType.get().isEnabled(), (LivingEntity entity) -> new HumanoidPotionRingTicker<>(entity));
 
         registerSimple(entity -> entity instanceof Player && ENTITIES.dustClouds.playerRunning, true,
                 (entity, level, random) -> {
@@ -95,7 +96,7 @@ public class ModEntityTickers {
                         }
                     }
                 });
-        registerSimple(entity -> entity instanceof FallingBlockEntity && BLOCKS.fallingBlocks.whileFallingDust, false, (entity, level, random) -> {
+        registerSimple(entity -> entity instanceof FallingBlockEntity && BLOCKS.fallingBlocks.whileFallingDust.get(), false, (entity, level, random) -> {
             FallingBlockEntity fallingBlock = (FallingBlockEntity) entity;
 
             int startDistance = BLOCKS.fallingBlocks.whileFallingDustStartDistance.get();
@@ -296,7 +297,7 @@ public class ModEntityTickers {
         });
     }
 
-    public static boolean shouldSpawn(RandomSource random, ValidatedDouble chanceConfig) {
+    public static boolean shouldSpawn(RandomSource random, ValidatedField<Double> chanceConfig) {
         return Math.min(random.nextFloat(), 1) < chanceConfig.get();
     }
 

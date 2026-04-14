@@ -5,12 +5,15 @@
   "refmap": "subtle_effects.refmap.json",
   "compatibilityLevel": "JAVA_17",
   "client": [
+    "client.BetterModListModSearchMixin",
     "client.ClientPacketListenerMixin",
     "client.FluidTypeMixin",
+    "client.ModListScreenMixin",
     "client.NeoForgeClientEntityMixin",
     "client.NeoForgeClientEntityMixin$InterimCalculationMixin",
     "client.NeoForgeMultiPlayerGameModeMixin",
-    "client.NeoForgeParticleEngineMixin"
+    "client.NeoForgeParticleEngineMixin",
+    "client.NeoForgeSpawnEggItemAccessor"
   ],
   "mixins": [
     "common.NeoForgeShearsDispenseItemBehaviorMixin",
@@ -18,5 +21,6 @@
   ],
   "injectors": {
     "defaultRequire": 1
-  }
+  },
+  "plugin": "com.moulberry.mixinconstraints.ConstraintsMixinPlugin"
 }

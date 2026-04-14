@@ -9,7 +9,6 @@ import einstein.subtle_effects.init.ModSounds;
 import einstein.subtle_effects.mixin.client.entity.AbstractHorseAccessor;
 import einstein.subtle_effects.particle.option.FloatParticleOptions;
 import einstein.subtle_effects.particle.option.SheepFluffParticleOptions;
-import einstein.subtle_effects.platform.Services;
 import einstein.subtle_effects.ticking.tickers.TickerManager;
 import einstein.subtle_effects.util.*;
 import net.minecraft.client.Minecraft;
@@ -93,7 +92,8 @@ public class ClientPacketHandlers {
         BlockPos pos = payload.pos();
         Vec3 vec3 = Vec3.atBottomCenterOf(pos);
         RandomSource random = level.getRandom();
-        if (ITEMS.projectiles.xpBottleParticlesDisplayType == ReplacedParticlesDisplayType.BOTH || ITEMS.projectiles.xpBottleParticlesDisplayType == ReplacedParticlesDisplayType.VANILLA) {
+        ReplacedParticlesDisplayType type = ITEMS.projectiles.xpBottleParticlesDisplayType.get();
+        if (type == ReplacedParticlesDisplayType.BOTH || type == ReplacedParticlesDisplayType.VANILLA) {
             level.levelEvent(
                     LevelEvent.PARTICLES_SPELL_POTION_SPLASH,
                     pos,
@@ -101,7 +101,7 @@ public class ClientPacketHandlers {
             );
         }
 
-        if (ITEMS.projectiles.xpBottleParticlesDisplayType == ReplacedParticlesDisplayType.BOTH || ITEMS.projectiles.xpBottleParticlesDisplayType == ReplacedParticlesDisplayType.DEFAULT) {
+        if (type == ReplacedParticlesDisplayType.BOTH || type == ReplacedParticlesDisplayType.DEFAULT) {
             for (int i = 0; i < ITEMS.projectiles.xpBottleParticlesDensity.get(); ++i) {
                 double d = random.nextDouble() * 4;
                 double d1 = random.nextDouble() * Math.PI * 2;
@@ -120,7 +120,7 @@ public class ClientPacketHandlers {
             }
         }
 
-        if (ITEMS.projectiles.xpBottleParticlesDisplayType == ReplacedParticlesDisplayType.DEFAULT) {
+        if (type == ReplacedParticlesDisplayType.DEFAULT) {
             for (int i = 0; i < 8; ++i) {
                 level.addParticle(
                         new ItemParticleOption(ParticleTypes.ITEM, new ItemStack(Items.SPLASH_POTION)),

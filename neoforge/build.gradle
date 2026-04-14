@@ -51,6 +51,8 @@ sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 dependencies {
     implementation("me.fzzyhmstrs:fzzy_config:${fzzy_config_version}+neoforge")
+    implementation("maven.modrinth:better-modlist:${neoforge_better_modlist}")
+    jarJar(implementation("com.moulberry:mixinconstraints:${mixin_constraints_version}"))
     compileOnly("com.github.glitchfiend:GlitchCore-neoforge:${glitchcore_version}")
     compileOnly("com.github.glitchfiend:SereneSeasons-neoforge:${serene_seasons_version}")
     compileOnly("it.crystalnest:cobweb-neoforge:${cobweb_version}")
