@@ -295,7 +295,7 @@ public class ModBlockTickers {
                 );
             }
         });
-        register(Blocks.DECORATED_POT, () -> BLOCKS.decoratedPotsSpawnBubbles, (state, level, pos, random) -> {
+        register(state -> state.getBlock() instanceof DecoratedPotBlock, () -> BLOCKS.decoratedPotsSpawnBubbles, (state, level, pos, random) -> {
             if (ChestBlockEntityTicker.isUnderwater(level, pos)) {
                 if (ChestBlockEntityTicker.isDownwardsBubbleColumn(level, pos)) {
                     return;
