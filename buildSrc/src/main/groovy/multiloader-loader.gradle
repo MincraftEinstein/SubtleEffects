@@ -21,7 +21,7 @@ dependencies {
 
     commonJava project(path: ':common', configuration: 'commonJava')
     commonResources project(path: ':common', configuration: 'commonResources')
-    implementation group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.1'
+    implementation "com.google.code.findbugs:jsr305:3.0.1"
 }
 
 tasks.named('compileJava', JavaCompile) {
