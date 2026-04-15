@@ -512,6 +512,10 @@ public class ParticleSpawnUtil {
             return false;
         }
 
+        if (entity.isSpectator()) {
+            return false;
+        }
+
         if (yVelocity <= -ENTITIES.splashes.splashVelocityThreshold.get()) {
             double offset = y + 0.01;
             if (offset <= y + entity.getBbHeight()) {
