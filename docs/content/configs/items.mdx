@@ -1,0 +1,263 @@
+---
+title: Items
+---
+
+**File name:** `items.toml`
+
+<table>
+    <tr>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Default Value</th>
+        <th>Allowed Values</th>
+        <th>ID</th>
+    </tr>
+    <tr>
+        <td>Axe Strip Particles</td>
+        <td>Display the destroy particle effect when stripping a block with an axe.<br/>This doesn't affect removing oxidization/wax from copper</td>
+        <td>```true```</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>axeStripParticles</td>
+    </tr>
+    <tr>
+        <td>Axe Scrape Particles Display Type</td>
+        <td></td>
+        <td>```DEFAULT```</td>
+        <td><ul><li>`DEFAULT`</li><li>`VANILLA`</li><li>`BOTH`</li></ul></td>
+        <td>axeScrapeParticlesDisplayType</td>
+    </tr>
+    <tr>
+        <td>Axe Wax Off Particles Display Type</td>
+        <td></td>
+        <td>```DEFAULT```</td>
+        <td><ul><li>`DEFAULT`</li><li>`VANILLA`</li><li>`BOTH`</li></ul></td>
+        <td>axeWaxOffParticlesDisplayType</td>
+    </tr>
+    <tr>
+        <td>Bone Meal Using Particles</td>
+        <td>Should bone meal item particles spawn when using bone meal</td>
+        <td>`true`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>boneMealUsingParticles</td>
+    </tr>
+    <tr>
+        <td>Flint And Steel Particles</td>
+        <td>Using flint and steel spawns flame and spark particles when lighting a block on fire e.g campfires, candles. This does not affect placing fire</td>
+        <td>`true`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>flintAndSteelParticles</td>
+    </tr>
+    <tr>
+        <td>Increased Item Break Particles</td>
+        <td>Increases the number of item break particles that appear when equipment (e.g. tools/weapons/armor) breaks so the effect is more noticeable</td>
+        <td>`true`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>increasedItemBreakParticles</td>
+    </tr>
+    <tr>
+        <td>Water Evaporate From Bucket Steam</td>
+        <td>Replaces the smoke particles with steam when water evaporates from a bucket in the nether</td>
+        <td>`true`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>waterEvaporateFromBucketSteam</td>
+    </tr>
+    <tr>
+        <td>Fluid Bucket Use Particles</td>
+        <td></td>
+        <td>`true`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>fluidBucketUseParticles</td>
+    </tr>
+    <tr>
+        <td>Powder Snow Bucket Use Particles</td>
+        <td></td>
+        <td>`true`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>powderSnowBucketUseParticles</td>
+    </tr>
+    <tr>
+        <td>Powder Snow Bucket Block Place Sound</td>
+        <td>Should the powder snow block place sound be played in addition to the powder snow bucket empty sound</td>
+        <td>`true`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>powderSnowBucketBlockPlaceSound</td>
+    </tr>
+    <tr>
+        <td>Lingering Potion Clouds</td>
+        <td>Replaces the vanilla bubble swirl particles with wispy clouds</td>
+        <td>`true`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>lingeringPotionClouds</td>
+    </tr>
+    <tr>
+        <td>Splash Potion Clouds</td>
+        <td>Replaces the vanilla bubble swirl particles with poofy clouds</td>
+        <td>`true`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>splashPotionClouds</td>
+    </tr>
+    <tr>
+        <td>Structure Void Item Marker</td>
+        <td>Makes placed structure voids display similar to placed barriers, where if the player is holding a structure void item other structure voids in the world will be visible</td>
+        <td>`true`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>structureVoidItemMarker</td>
+    </tr>
+    <tr>
+        <td>Armadillo Brush Particles</td>
+        <td>Should brushing an armadillo spawn particles</td>
+        <td>`true`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>armadilloBrushParticles</td>
+    </tr>
+    <tr>
+        <td>Spawn Egg Use Sound Volume</td>
+        <td>The volume of the spawn egg use sound</td>
+        <td>```0.5```</td>
+        <td>Float (`0` to `1`)</td>
+        <td>spawnEggUseSoundVolume</td>
+    </tr>
+    <tr>
+        <td>Spawn Egg Use Particles</td>
+        <td>Should using a spawn egg spawn poof particles around the mob.<br/>Note: This effect may not appear everytime due to client side limitations</td>
+        <td>`true`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>spawnEggUseParticles</td>
+    </tr>
+</table>
+
+### Item Rarity
+
+<table>
+    <tr>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Default Value</th>
+        <th>Allowed Values</th>
+        <th>ID</th>
+    </tr>
+    <tr>
+        <td>Particles Display Type</td>
+        <td>Adds colored particles that float up from items on the ground.</td>
+        <td>```ON```</td>
+        <td><ul><li>`OFF`</li><li>`ON`</li><li>`NOT_COMMON`</li></ul></td>
+        <td>particlesDisplayType</td>
+    </tr>
+    <tr>
+        <td>Particle Color Type</td>
+        <td>How the item rarity particles are colored.<br/>'Name Color' gets the color from the item's name, if the name color is white than it defaults to 'Rarity Color'.<br/>'Only Color Overrides' will disable particles for all items except for the items specified in 'Color Overrides'</td>
+        <td>```NAME_COLOR```</td>
+        <td><ul><li>`RARITY_COLOR`</li><li>`NAME_COLOR`</li><li>`ONLY_COLOR_OVERRIDES`</li></ul></td>
+        <td>particleColorType</td>
+    </tr>
+    <tr>
+        <td>Mixed Color Name</td>
+        <td>If 'Particle Color' is set to 'Name Color' when an item with multiple colors in it's name spawns rarity particles they will pick a random color from the item's name</td>
+        <td>```true```</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>mixedColorName</td>
+    </tr>
+    <tr>
+        <td>Use Item Border</td>
+        <td>Use the item's border color if the item doesn't have a name color<br/><br/>Note:<br/>Item Borders needs to be installed</td>
+        <td>```true```</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>useItemBorder</td>
+    </tr>
+    <tr>
+        <td>Color Overrides</td>
+        <td>Allows for adding additional colors to specified items. If 'Particle Color Type' is set to 'Only Color Overrides' than only the items in this list will have particles</td>
+        <td>```[  ]```</td>
+        <td>A list of lists, each sublist must contain an ingredient object and a color object</td>
+        <td>colorOverrides</td>
+    </tr>
+    <tr>
+        <td>Particle Max Height</td>
+        <td>How high item rarity particles float</td>
+        <td>```1```</td>
+        <td>Float (`0.5` to `1.5`)</td>
+        <td>particleMaxHeight</td>
+    </tr>
+    <tr>
+        <td>Particle Max Speed</td>
+        <td>How fast item rarity particles should move</td>
+        <td>```1```</td>
+        <td>Float (`0.1` to `2`)</td>
+        <td>particleMaxSpeed</td>
+    </tr>
+    <tr>
+        <td>Particle Density</td>
+        <td>The density of particles spawning around an item</td>
+        <td>```1```</td>
+        <td>Double (`0.1` to `1`)</td>
+        <td>particleDensity</td>
+    </tr>
+</table>
+
+### Projectiles
+
+<table>
+    <tr>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Default Value</th>
+        <th>Allowed Values</th>
+        <th>ID</th>
+    </tr>
+    <tr>
+        <td>Ender Pearl Trail Density</td>
+        <td>The density of the ender pearl particle trail.<br/>0 to disable</td>
+        <td>```0.5```</td>
+        <td>Float (`0` to `1`)</td>
+        <td>enderPearlTrailDensity</td>
+    </tr>
+    <tr>
+        <td>XP Bottle Particles Display Type</td>
+        <td></td>
+        <td>```DEFAULT```</td>
+        <td><ul><li>`DEFAULT`</li><li>`VANILLA`</li><li>`BOTH`</li></ul></td>
+        <td>xpBottleParticlesDisplayType</td>
+    </tr>
+    <tr>
+        <td>XP Bottle Particles Density</td>
+        <td>Does not change the vanilla particle effect</td>
+        <td>```10```</td>
+        <td>Integer (`5` to `200`)</td>
+        <td>xpBottleParticlesDensity</td>
+    </tr>
+    <tr>
+        <td>Egg Smash Sound Volume</td>
+        <td>The volume of the egg break sound when a thrown egg hits something</td>
+        <td>```0.5```</td>
+        <td>Float (`0` to `1`)</td>
+        <td>eggSmashSoundVolume</td>
+    </tr>
+    <tr>
+        <td>Egg Splat Particles</td>
+        <td>Should egg splat particles spawn when breaking an egg</td>
+        <td>`true`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>eggSplatParticles</td>
+    </tr>
+    <tr>
+        <td>Snowball Trail Density</td>
+        <td>The density of the snowball particle trail.<br/>0 to disable</td>
+        <td>```0.5```</td>
+        <td>Double (`0` to `1`)</td>
+        <td>snowballTrailDensity</td>
+    </tr>
+    <tr>
+        <td>Snowball Poofs Have Snowflakes</td>
+        <td></td>
+        <td>`true`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>snowballPoofsHaveSnowflakes</td>
+    </tr>
+    <tr>
+        <td>Snowball Poof Sound Volume</td>
+        <td></td>
+        <td>```0.3```</td>
+        <td>Float (`0` to `1`)</td>
+        <td>snowballPoofSoundVolume</td>
+    </tr>
+</table>

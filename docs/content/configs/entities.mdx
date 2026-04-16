@@ -1,0 +1,853 @@
+---
+title: Entities
+---
+
+**File name:** `entities.toml`
+
+<table>
+    <tr>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Default Value</th>
+        <th>Allowed Values</th>
+        <th>ID</th>
+    </tr>
+    <tr>
+        <td>Attacked Chicken Feathers</td>
+        <td></td>
+        <td>`true`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>attackedChickenFeathers</td>
+    </tr>
+    <tr>
+        <td>Attacked Parrot Feathers</td>
+        <td></td>
+        <td>`true`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>attackedParrotFeathers</td>
+    </tr>
+    <tr>
+        <td>Attacked Snow Golem Snowflakes</td>
+        <td></td>
+        <td>`true`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>attackedSnowGolemSnowflakes</td>
+    </tr>
+    <tr>
+        <td>Attacked Sheep Fluff</td>
+        <td></td>
+        <td>`true`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>attackedSheepFluff</td>
+    </tr>
+    <tr>
+        <td>Attacked Slime Slime</td>
+        <td></td>
+        <td>`true`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>attackedSlimeSlime</td>
+    </tr>
+    <tr>
+        <td>Allay Magic Density</td>
+        <td>The density of particles spawning around an allay<br/>0 to disable</td>
+        <td>```0.2```</td>
+        <td>Double (`0` to `1`)</td>
+        <td>allayMagicDensity</td>
+    </tr>
+    <tr>
+        <td>Vex Magic Density</td>
+        <td>The density of particles spawning around a vex<br/>0 to disable</td>
+        <td>```0.2```</td>
+        <td>Double (`0` to `1`)</td>
+        <td>vexMagicDensity</td>
+    </tr>
+    <tr>
+        <td>Sheep Shear Fluff</td>
+        <td>When a sheep is sheared fluff particles will fall off</td>
+        <td>`true`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>sheepShearFluff</td>
+    </tr>
+    <tr>
+        <td>Improved Dragon Fireball Trail</td>
+        <td>Adds more particles to the trail of the Ender Dragon's fireballs</td>
+        <td>`true`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>improvedDragonFireballTrail</td>
+    </tr>
+    <tr>
+        <td>Dragons Breath Clouds</td>
+        <td>Applies the lingering potion cloud effects to the ender dragons breath</td>
+        <td>`true`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>dragonsBreathClouds</td>
+    </tr>
+    <tr>
+        <td>Command Block Minecart Particles</td>
+        <td>Adds command block particles to the command block minecart. Yes I actually did this</td>
+        <td>`ON`</td>
+        <td><ul><li>`ON`</li><li>`OFF`</li><li>`NOT_CREATIVE`</li></ul></td>
+        <td>commandBlockMinecartParticles</td>
+    </tr>
+    <tr>
+        <td>End Crystal Particles</td>
+        <td>Should end crystals have little pink particles floating around them</td>
+        <td>`true`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>endCrystalParticles</td>
+    </tr>
+    <tr>
+        <td>Minecart Sparks Display Type</td>
+        <td>Should sparks particles spawn for minecarts moving on rails.<br/>'Land On Rail' will spawn sparks only when a minecart lands on rails</td>
+        <td>```DEFAULT```</td>
+        <td><ul><li>`OFF`</li><li>`LAND_ON_RAIL`</li><li>`DEFAULT`</li></ul></td>
+        <td>minecartSparksDisplayType</td>
+    </tr>
+    <tr>
+        <td>Minecart Sparks Density</td>
+        <td></td>
+        <td>```0.5```</td>
+        <td>Float (`0` to `1`)</td>
+        <td>minecartSparksDensity</td>
+    </tr>
+    <tr>
+        <td>Slime Trails</td>
+        <td>Do Slimes leave a trail of slime behind them when they move</td>
+        <td>`true`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>slimeTrails</td>
+    </tr>
+    <tr>
+        <td>Magma Cube Trails</td>
+        <td>Do Magma Cubes leave a trail of maga slime behind them when they move</td>
+        <td>`true`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>magmaCubeTrails</td>
+    </tr>
+    <tr>
+        <td>Replace Slime Squish Particles</td>
+        <td>Replaces the slime ball item particles with slime block particles when a slime squishes</td>
+        <td>`true`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>replaceSlimeSquishParticles</td>
+    </tr>
+    <tr>
+        <td>Replace Oozing Effect Particles</td>
+        <td>Replaces the slime ball item particles with slime block particles for mobs and players with the oozing effect</td>
+        <td>`true`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>replaceOozingEffectParticles</td>
+    </tr>
+    <tr>
+        <td>Replace Spell Caster Particles</td>
+        <td>Replaces the potion effect particles when a spell caster illager is casting a spell e.g Evoker summoning vexes</td>
+        <td>`true`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>replaceSpellCasterParticles</td>
+    </tr>
+    <tr>
+        <td>Iron Golem Crack Particles</td>
+        <td>Should iron particles spawn around iron golems when they crack</td>
+        <td>`true`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>ironGolemCrackParticles</td>
+    </tr>
+    <tr>
+        <td>Spectral Arrow Particles</td>
+        <td>Should spectral arrows emit glowstone dust particles</td>
+        <td>`true`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>spectralArrowParticles</td>
+    </tr>
+    <tr>
+        <td>Warden Death Soul Particles</td>
+        <td>Should sculk soul particles emit from wardens upon death</td>
+        <td>`true`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>wardenDeathSoulParticles</td>
+    </tr>
+    <tr>
+        <td>Freezing Snow Flakes</td>
+        <td></td>
+        <td>`true`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>freezingSnowFlakes</td>
+    </tr>
+    <tr>
+        <td>Feather Tickling Pandas</td>
+        <td>Allows baby and weak pandas to be tickled with a feather to sneeze. No slimeballs will drop</td>
+        <td>`true`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>featherTicklingPandas</td>
+    </tr>
+    <tr>
+        <td>Improved Panda Sneezes</td>
+        <td></td>
+        <td>`true`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>improvedPandaSneezes</td>
+    </tr>
+    <tr>
+        <td>Villager Work At Workstation Particles</td>
+        <td>Should profession/workstation related particles spawn around a workstation when a villager uses it</td>
+        <td>`true`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>villagerWorkAtWorkstationParticles</td>
+    </tr>
+    <tr>
+        <td>Improved Brown Mooshroom Feeding Effects</td>
+        <td>Changes the effects for feeding a brown mooshroom a flower</td>
+        <td>`true`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>improvedBrownMooshroomFeedingEffects</td>
+    </tr>
+    <tr>
+        <td>Improved Mooshroom Shearing Effects</td>
+        <td></td>
+        <td>`true`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>improvedMooshroomShearingEffects</td>
+    </tr>
+    <tr>
+        <td>Replace Blaze Smoke</td>
+        <td></td>
+        <td>`true`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>replaceBlazeSmoke</td>
+    </tr>
+    <tr>
+        <td>Animal Feeding Particles</td>
+        <td>When feeding an animal, e.g. breeding a cow, taming a wolf, item destroy particles will appear around the mouth area</td>
+        <td>`true`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>animalFeedingParticles</td>
+    </tr>
+    <tr>
+        <td>Animal Feeding Sound Volume</td>
+        <td>Volume of the eat sounds played when feeding an animal, e.g. breeding a cow, taming a wolf. Note: This will not affect the volume of vanilla animal eating sounds</td>
+        <td>```1```</td>
+        <td>Float (`0` to `1`)</td>
+        <td>animalFeedingSoundVolume</td>
+    </tr>
+    <tr>
+        <td>Underwater Entity Poof Bubbles</td>
+        <td>When an entity is spawned or dies underwater, should the poof effect have bubbles</td>
+        <td>`true`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>underwaterEntityPoofBubbles</td>
+    </tr>
+    <tr>
+        <td>Improved Wet Wolf Shake Effects</td>
+        <td>Improves the water effects of a wolf shaking water off</td>
+        <td>`true`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>improvedWetWolfShakeEffects</td>
+    </tr>
+    <tr>
+        <td>Improved Villager Sweating Effects</td>
+        <td>Improves the sweating effects of villagers during raids</td>
+        <td>`true`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>improvedVillagerSweatingEffects</td>
+    </tr>
+    <tr>
+        <td>Magma Cube Land Sparks</td>
+        <td>Should magma cubes spawn sparks when they land on the ground</td>
+        <td>`true`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>magmaCubeLandSparks</td>
+    </tr>
+    <tr>
+        <td>Snow Golem Step Sounds</td>
+        <td>Replaces step sounds for snow golems with snow block step sounds</td>
+        <td>`true`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>snowGolemStepSounds</td>
+    </tr>
+</table>
+
+### Sleeping
+
+<table>
+    <tr>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Default Value</th>
+        <th>Allowed Values</th>
+        <th>ID</th>
+    </tr>
+    <tr>
+        <td>Player Snore Chance</td>
+        <td>A percentage based chance for a player to snore. This is UUID based so it doesn't change every night.<br/>0 to disable</td>
+        <td>```1```</td>
+        <td>Double (`0` to `1`)</td>
+        <td>playerSnoreChance</td>
+    </tr>
+    <tr>
+        <td>Player Snore Sound Volume</td>
+        <td>0 to disable player snoring sounds</td>
+        <td>```1```</td>
+        <td>Float (`0` to `1`)</td>
+        <td>playerSnoreSoundVolume</td>
+    </tr>
+    <tr>
+        <td>Players Have Sleeping Zs</td>
+        <td>Display Z particles for sleeping players</td>
+        <td>`true`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>playersHaveSleepingZs</td>
+    </tr>
+    <tr>
+        <td>Villager Snore Chance</td>
+        <td>A percentage based chance for a villager to snore. This is UUID based so it doesn't change every night.<br/>0 to disable</td>
+        <td>```1```</td>
+        <td>Double (`0` to `1`)</td>
+        <td>villagerSnoreChance</td>
+    </tr>
+    <tr>
+        <td>Villager Snore Sound Volume</td>
+        <td>0 to disable to disable villager soring sounds</td>
+        <td>```1```</td>
+        <td>Float (`0` to `1`)</td>
+        <td>villagerSnoreSoundVolume</td>
+    </tr>
+    <tr>
+        <td>Villagers Have Sleeping Zs</td>
+        <td>Display Z particles for sleeping villagers</td>
+        <td>`true`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>villagersHaveSleepingZs</td>
+    </tr>
+    <tr>
+        <td>Foxes Have Sleeping Zs</td>
+        <td>Display Z particles for sleeping foxes</td>
+        <td>`true`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>foxesHaveSleepingZs</td>
+    </tr>
+    <tr>
+        <td>Bats Have Sleeping Zs</td>
+        <td>Display Z particles for resting/hanging bats</td>
+        <td>`true`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>batsHaveSleepingZs</td>
+    </tr>
+    <tr>
+        <td>Cats Have Sleeping Zs</td>
+        <td>Display Z particles for resting/laying cats</td>
+        <td>`true`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>catsHaveSleepingZs</td>
+    </tr>
+    <tr>
+        <td>Other Mobs Have Sleeping Zs</td>
+        <td>Display Z particles for other sleeping mobs, mainly mobs other mods</td>
+        <td>`true`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>otherMobsHaveSleepingZs</td>
+    </tr>
+    <tr>
+        <td>Display Sleeping Zs Only When Snoring</td>
+        <td>Forces Z particles to only display when a mob's UUID chance allows them to snore (Only applicable for players and villagers)</td>
+        <td>`false`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>displaySleepingZsOnlyWhenSnoring</td>
+    </tr>
+    <tr>
+        <td>Adjust Name Tag When Sleeping</td>
+        <td>Adjust name tag rendering to be at the top of the head rather than above it when a mob is sleeping in a bed</td>
+        <td>`true`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>adjustNameTagWhenSleeping</td>
+    </tr>
+</table>
+
+### Humanoids
+
+<table>
+    <tr>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Default Value</th>
+        <th>Allowed Values</th>
+        <th>ID</th>
+    </tr>
+    <tr>
+        <td>Drowning Bubbles Display Type</td>
+        <td></td>
+        <td>```DEFAULT```</td>
+        <td><ul><li>`OFF`</li><li>`DEFAULT`</li><li>`THIRD_PERSON_ONLY`</li></ul></td>
+        <td>drowningBubblesDisplayType</td>
+    </tr>
+    <tr>
+        <td>Drowning Bubbles Density</td>
+        <td></td>
+        <td>```3```</td>
+        <td>Integer (`1` to `10`)</td>
+        <td>drowningBubblesDensity</td>
+    </tr>
+    <tr>
+        <td>Drowning Bubble Alpha</td>
+        <td></td>
+        <td>```1```</td>
+        <td>Float (`0.2` to `1`)</td>
+        <td>drowningBubbleAlpha</td>
+    </tr>
+    <tr>
+        <td>Force Drowning Bubbles To Column</td>
+        <td>Forces drowning bubbles to spawn in a single column rather that being randomized</td>
+        <td>```false```</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>forceDrowningBubblesToColumn</td>
+    </tr>
+    <tr>
+        <td>Potion Rings Display Type</td>
+        <td></td>
+        <td>```DEFAULT```</td>
+        <td><ul><li>`OFF`</li><li>`DEFAULT`</li><li>`THIRD_PERSON_ONLY`</li></ul></td>
+        <td>potionRingsDisplayType</td>
+    </tr>
+    <tr>
+        <td>Potion Rings Particle Type</td>
+        <td></td>
+        <td>```BOTH```</td>
+        <td><ul><li>`RINGS_ONLY`</li><li>`DOTS_ONLY`</li><li>`BOTH`</li></ul></td>
+        <td>potionRingsParticleType</td>
+    </tr>
+    <tr>
+        <td>Potion Rings Scale</td>
+        <td></td>
+        <td>```1```</td>
+        <td>Float (`1` to `1.5`)</td>
+        <td>potionRingsScale</td>
+    </tr>
+    <tr>
+        <td>Potion Rings Alpha</td>
+        <td></td>
+        <td>```1```</td>
+        <td>Float (`0.2` to `1`)</td>
+        <td>potionRingsAlpha</td>
+    </tr>
+    <tr>
+        <td>NPCs Have Potion Rings</td>
+        <td>Should NPCs, like witches and wandering traders, have potion rings</td>
+        <td>```true```</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>NPCsHavePotionRings</td>
+    </tr>
+### Frosty Breath
+
+<table>
+    <tr>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Default Value</th>
+        <th>Allowed Values</th>
+        <th>ID</th>
+    </tr>
+    <tr>
+        <td>Display Type</td>
+        <td></td>
+        <td>```DEFAULT```</td>
+        <td><ul><li>`OFF`</li><li>`DEFAULT`</li><li>`THIRD_PERSON_ONLY`</li></ul></td>
+        <td>displayType</td>
+    </tr>
+    <tr>
+        <td>Alpha</td>
+        <td>The starting alpha transparency</td>
+        <td>```0.5```</td>
+        <td>Float (`0.2` to `1`)</td>
+        <td>alpha</td>
+    </tr>
+    <tr>
+        <td>Wait Time</td>
+        <td>The time between frosty breathing spawning in ticks</td>
+        <td>```60```</td>
+        <td>Integer (`10` to `200`)</td>
+        <td>waitTime</td>
+    </tr>
+    <tr>
+        <td>Seasons</td>
+        <td>Seasons for frosty breath to spawn.<br/>'Default' will start frosty breath spawning in the late autumn and end it at the end of early spring<br/><br/>Note:<br/>Serene Seasons needs to be installed</td>
+        <td>```DEFAULT```</td>
+        <td><ul><li>`OFF`</li><li>`DEFAULT`</li><li>`WINTER_ONLY`</li></ul></td>
+        <td>seasons</td>
+    </tr>
+    <tr>
+        <td>Additional Biomes</td>
+        <td>A list of additional biomes that the effect does not already detect</td>
+        <td>```[  ]```</td>
+        <td>A list containing any biome String ID. List can be empty</td>
+        <td>additionalBiomes</td>
+    </tr>
+</table>
+
+### Player
+
+<table>
+    <tr>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Default Value</th>
+        <th>Allowed Values</th>
+        <th>ID</th>
+    </tr>
+    <tr>
+        <td>Enable Breathing Effects In Creative</td>
+        <td>Should breath effects e.g. Frosty Breath and Drowning Bubbles, be visible in creative mode</td>
+        <td>`true`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>enableBreathingEffectsInCreative</td>
+    </tr>
+    <tr>
+        <td>Stomach Growling Threshold</td>
+        <td>When the player's hunger gets below this point a stomach growl sound will play every 15 sec.<br/>Value measured in half hunger points.<br/>0 to disable</td>
+        <td>```6```</td>
+        <td>Integer (`0` to `20`)</td>
+        <td>stomachGrowlingThreshold</td>
+    </tr>
+    <tr>
+        <td>Stomach Growling volume</td>
+        <td></td>
+        <td>```1```</td>
+        <td>Float (`0` to `1`)</td>
+        <td>stomachGrowlingVolume</td>
+    </tr>
+    <tr>
+        <td>Stomach Growling Wait Time</td>
+        <td>The time between stomach growl sounds playing</td>
+        <td>```15```</td>
+        <td>Integer (`5` to `30`)</td>
+        <td>stomachGrowlingWaitTime</td>
+    </tr>
+    <tr>
+        <td>Heart Beating Threshold</td>
+        <td>When the player's health gets below this point a heart beat sound will play every 3 sec and every 1 sec when the player's health is below half this value.<br/>Value measured in half hearts.<br/>0 to disable</td>
+        <td>```6```</td>
+        <td>Integer (`0` to `20`)</td>
+        <td>heartBeatingThreshold</td>
+    </tr>
+    <tr>
+        <td>Heartbeat Volume</td>
+        <td></td>
+        <td>```1```</td>
+        <td>Float (`0` to `1`)</td>
+        <td>heartbeatVolume</td>
+    </tr>
+    <tr>
+        <td>Heart Beating Wait Time</td>
+        <td>The time between heart beat sounds playing</td>
+        <td>```3```</td>
+        <td>Integer (`2` to `10`)</td>
+        <td>heartBeatingWaitTime</td>
+    </tr>
+</table>
+
+</table>
+
+### Dust Clouds
+
+<table>
+    <tr>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Default Value</th>
+        <th>Allowed Values</th>
+        <th>ID</th>
+    </tr>
+    <tr>
+        <td>Scale</td>
+        <td></td>
+        <td>```2```</td>
+        <td>Float (`0.5` to `2`)</td>
+        <td>scale</td>
+    </tr>
+    <tr>
+        <td>Alpha</td>
+        <td>The starting alpha transparency</td>
+        <td>```1```</td>
+        <td>Float (`0.3` to `1`)</td>
+        <td>alpha</td>
+    </tr>
+    <tr>
+        <td>Prevent When Raining</td>
+        <td></td>
+        <td>`false`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>preventWhenRaining</td>
+    </tr>
+    <tr>
+        <td>Fly Into Wall</td>
+        <td>Should dust clouds be spawned when flying into a wall, like with an elytra</td>
+        <td>`true`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>flyIntoWall</td>
+    </tr>
+    <tr>
+        <td>Less View Blocking</td>
+        <td>Will prevent dust clouds from rendering within about 2 blocks of the player in first person</td>
+        <td>`false`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>lessViewBlocking</td>
+    </tr>
+    <tr>
+        <td>Player Fell</td>
+        <td>Should a cloud of dust appear when a player takes fall damage</td>
+        <td>`true`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>playerFell</td>
+    </tr>
+    <tr>
+        <td>Mob Fell</td>
+        <td>Should a cloud of dust appear when a mob takes fall damage</td>
+        <td>`true`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>mobFell</td>
+    </tr>
+    <tr>
+        <td>Land Mace Attack</td>
+        <td>Spawn dust clouds when successfully landing a mace attack</td>
+        <td>`true`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>landMaceAttack</td>
+    </tr>
+    <tr>
+        <td>Player Running</td>
+        <td>Should a dust cloud form behind a running player</td>
+        <td>`true`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>playerRunning</td>
+    </tr>
+    <tr>
+        <td>Mob Running</td>
+        <td>Should a dust cloud form behind charging ravagers, hoglins, zoglins, galloping horses, and dashing camels</td>
+        <td>`true`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>mobRunning</td>
+    </tr>
+    <tr>
+        <td>Player Running Requires Speed</td>
+        <td>Forces player running dust clouds to only spawn if the player is using the speed potion effect</td>
+        <td>`false`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>playerRunningRequiresSpeed</td>
+    </tr>
+</table>
+
+### Burning
+
+<table>
+    <tr>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Default Value</th>
+        <th>Allowed Values</th>
+        <th>ID</th>
+    </tr>
+    <tr>
+        <td>Smoke Type</td>
+        <td></td>
+        <td>`DEFAULT`</td>
+        <td><ul><li>`OFF`</li><li>`DEFAULT`</li><li>`UPDATED`</li></ul></td>
+        <td>smokeType</td>
+    </tr>
+    <tr>
+        <td>Smoke Density</td>
+        <td></td>
+        <td>```1```</td>
+        <td>Float (`0` to `1`)</td>
+        <td>smokeDensity</td>
+    </tr>
+    <tr>
+        <td>Flames Density</td>
+        <td>0 to disable</td>
+        <td>```1```</td>
+        <td>Float (`0` to `1`)</td>
+        <td>flamesDensity</td>
+    </tr>
+    <tr>
+        <td>Sparks Density</td>
+        <td>0 to disable</td>
+        <td>```1```</td>
+        <td>Float (`0` to `1`)</td>
+        <td>sparksDensity</td>
+    </tr>
+    <tr>
+        <td>Sound Volume</td>
+        <td>The volume of the hiss sound occasionally played by burning entities<br/>0 to disable</td>
+        <td>```0.3```</td>
+        <td>Float (`0` to `1`)</td>
+        <td>soundVolume</td>
+    </tr>
+    <tr>
+        <td>Entity Blocklist</td>
+        <td></td>
+        <td>```[ minecraft:lightning_bolt ]```</td>
+        <td>A list containing any entity String ID. List can be empty</td>
+        <td>entityBlocklist</td>
+    </tr>
+    <tr>
+        <td>Override Dyed Flames Effects</td>
+        <td>Disables the lava spark effects spawned by Dyed Flames<br/><br/>Note:<br/>Dyed Flames needs to be installed</td>
+        <td>`true`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>overrideDyedFlamesEffects</td>
+    </tr>
+    <tr>
+        <td>Extinguish Steam</td>
+        <td>When an burning entity is extinguished, from water or a splash water bottle, steam will appear</td>
+        <td>`true`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>extinguishSteam</td>
+    </tr>
+</table>
+
+### Explosives
+
+<table>
+    <tr>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Default Value</th>
+        <th>Allowed Values</th>
+        <th>ID</th>
+    </tr>
+    <tr>
+        <td>TNT Update Smoke</td>
+        <td></td>
+        <td>`true`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>tntUpdateSmoke</td>
+    </tr>
+    <tr>
+        <td>TNT Flames Density</td>
+        <td>The density of flame particles spawned around primed TNT.<br/>0 to disable</td>
+        <td>```1```</td>
+        <td>Integer (`0` to `15`)</td>
+        <td>tntFlamesDensity</td>
+    </tr>
+    <tr>
+        <td>TNT Sparks</td>
+        <td></td>
+        <td>`true`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>tntSparks</td>
+    </tr>
+    <tr>
+        <td>Creeper Smoke</td>
+        <td></td>
+        <td>`UPDATED`</td>
+        <td><ul><li>`OFF`</li><li>`DEFAULT`</li><li>`UPDATED`</li></ul></td>
+        <td>creeperSmoke</td>
+    </tr>
+    <tr>
+        <td>Creeper Sparks</td>
+        <td></td>
+        <td>`true`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>creeperSparks</td>
+    </tr>
+</table>
+
+### Splashes
+
+<table>
+    <tr>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Default Value</th>
+        <th>Allowed Values</th>
+        <th>ID</th>
+    </tr>
+    <tr>
+        <td>Splash Effects</td>
+        <td>Should entities falling in vanilla fluids have splash effects</td>
+        <td>```true```</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>splashEffects</td>
+    </tr>
+    <tr>
+        <td>Splash Ripples</td>
+        <td>Should a ripple effect be played after a splash</td>
+        <td>```true```</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>splashRipples</td>
+    </tr>
+    <tr>
+        <td>Splash Droplets</td>
+        <td></td>
+        <td>```true```</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>splashDroplets</td>
+    </tr>
+    <tr>
+        <td>Splash Droplet Sounds</td>
+        <td></td>
+        <td>```true```</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>splashDropletSounds</td>
+    </tr>
+    <tr>
+        <td>Water Splash Bubbles</td>
+        <td>Should an eruption of bubbles be spawned underwater</td>
+        <td>```true```</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>waterSplashBubbles</td>
+    </tr>
+    <tr>
+        <td>Explosions Cause Splashes</td>
+        <td>Should explosions cause splash effects when in water/lava</td>
+        <td>```true```</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>explosionsCauseSplashes</td>
+    </tr>
+    <tr>
+        <td>Splash Overlay Tint</td>
+        <td>The tint strength of the splash overlay. See 'Splash Overlay Alpha' for explanation of what this config affects</td>
+        <td>```0.2```</td>
+        <td>Float (`0` to `1`)</td>
+        <td>splashOverlayTint</td>
+    </tr>
+    <tr>
+        <td>Splash Overlay Alpha</td>
+        <td>The alpha transparency of the splash overlay. The overlay is the white edge of foam along the top of water splashes. This config also affects the water splash ripple effect <br/>0 to disable overlay</td>
+        <td>```0.8```</td>
+        <td>Float (`0` to `1`)</td>
+        <td>splashOverlayAlpha</td>
+    </tr>
+    <tr>
+        <td>Splash Velocity Threshold</td>
+        <td>The velocity threshold needed to trigger a splash</td>
+        <td>```0.35```</td>
+        <td>Float (`0` to `1`)</td>
+        <td>splashVelocityThreshold</td>
+    </tr>
+    <tr>
+        <td>Entity Blocklist</td>
+        <td>List of entities that will not have splash effects</td>
+        <td>```[  ]```</td>
+        <td>A list containing any entity String ID. List can be empty</td>
+        <td>entityBlocklist</td>
+    </tr>
+    <tr>
+        <td>Secondary Splash</td>
+        <td>Plays a second splash effect after the initial splash</td>
+        <td>```true```</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>secondarySplash</td>
+    </tr>
+    <tr>
+        <td>Secondary Splash Ripples</td>
+        <td>Should a ripple effect be played after a secondary splash</td>
+        <td>```true```</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>secondarySplashRipples</td>
+    </tr>
+    <tr>
+        <td>Secondary Splash Velocity Threshold</td>
+        <td>The velocity threshold needed to trigger a secondary splash. Cannot be lower than the normal splash velocity threshold</td>
+        <td>```0.3```</td>
+        <td>Float (`0` to `1`)</td>
+        <td>secondarySplashVelocityThreshold</td>
+    </tr>
+</table>

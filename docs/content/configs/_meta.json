@@ -1,0 +1,7 @@
+{
+  "general.mdx": "General Configs",
+  "blocks.mdx": "Block Configs",
+  "entities.mdx": "Entity Configs",
+  "items.mdx": "Item Configs",
+  "environment.mdx": "Environment Configs"
+}

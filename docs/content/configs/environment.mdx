@@ -1,0 +1,392 @@
+---
+title: Environment
+---
+
+**File name:** `environment.toml`
+
+<table>
+    <tr>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Default Value</th>
+        <th>Allowed Values</th>
+        <th>ID</th>
+    </tr>
+    <tr>
+        <td>Biome Color Rain</td>
+        <td></td>
+        <td>`true`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>biomeColorRain</td>
+    </tr>
+</table>
+
+### Biomes
+
+<table>
+    <tr>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Default Value</th>
+        <th>Allowed Values</th>
+        <th>ID</th>
+    </tr>
+    <tr>
+        <td>Biome Particles Radius</td>
+        <td>The radius around the player that biome particles will spawn in<br/>0 to disable all biome particles (vanilla not included)</td>
+        <td>```32```</td>
+        <td>Integer (`0` to `32`)</td>
+        <td>biomeParticlesRadius</td>
+    </tr>
+    <tr>
+        <td>Mushroom Spore Density</td>
+        <td>The density of spawned mushroom spores in a biome<br/>0 to disable</td>
+        <td>```10```</td>
+        <td>Integer (`0` to `100`)</td>
+        <td>mushroomSporeDensity</td>
+    </tr>
+    <tr>
+        <td>Mushroom Spore Biomes</td>
+        <td>A list of biome IDs that mushroom spore particles will spawn in</td>
+        <td>```[ minecraft:mushroom_fields ]```</td>
+        <td>A list containing any biome String ID. List can be empty</td>
+        <td>mushroomSporeBiomes</td>
+    </tr>
+    <tr>
+        <td>Pollen Density</td>
+        <td>The density of spawned pollen in a biome<br/>0 to disable</td>
+        <td>```50```</td>
+        <td>Integer (`0` to `100`)</td>
+        <td>pollenDensity</td>
+    </tr>
+    <tr>
+        <td>Pollen Biomes</td>
+        <td>A list of biome IDs that pollen particles will spawn in</td>
+        <td>```[ minecraft:flower_forest, minecraft:sunflower_plains ]```</td>
+        <td>A list containing any biome String ID. List can be empty</td>
+        <td>pollenBiomes</td>
+    </tr>
+    <tr>
+        <td>Sculk Dust Density</td>
+        <td>The density of spawned sculk dust in a biome<br/>0 to disable</td>
+        <td>```5```</td>
+        <td>Integer (`0` to `100`)</td>
+        <td>sculkDustDensity</td>
+    </tr>
+    <tr>
+        <td>Sculk Dust Biomes</td>
+        <td>A list of biomes IDs that sculk dust particles will spawn in</td>
+        <td>```[ minecraft:deep_dark ]```</td>
+        <td>A list containing any biome String ID. List can be empty</td>
+        <td>sculkDustBiomes</td>
+    </tr>
+</table>
+
+### Geysers
+
+<table>
+    <tr>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Default Value</th>
+        <th>Allowed Values</th>
+        <th>ID</th>
+    </tr>
+    <tr>
+        <td>Use Updated Smoke</td>
+        <td></td>
+        <td>`false`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>useUpdatedSmoke</td>
+    </tr>
+    <tr>
+        <td>Flame Geyser Spawn Chance</td>
+        <td>The chance for a geyser to spawn<br/>0 to disable</td>
+        <td>```5```</td>
+        <td>Integer (`0` to `50`)</td>
+        <td>flameGeyserSpawnChance</td>
+    </tr>
+    <tr>
+        <td>Flame Geyser Spawnable Blocks</td>
+        <td>A list of block IDs that flame geysers can spawn on, including fluids</td>
+        <td>```[ minecraft:netherrack, minecraft:blackstone, minecraft:soul_soil ]```</td>
+        <td>A list containing any block String ID. List can be empty</td>
+        <td>flameGeyserSpawnableBlocks</td>
+    </tr>
+    <tr>
+        <td>Flame Geyser Sound Volume</td>
+        <td></td>
+        <td>```0.5```</td>
+        <td>Float (`0` to `1`)</td>
+        <td>flameGeyserSoundVolume</td>
+    </tr>
+    <tr>
+        <td>Flame Geyser Active Time</td>
+        <td>Number of ticks a geyser will be active, value will be somewhat randomized</td>
+        <td>```300```</td>
+        <td>Integer (`50` to `1000`)</td>
+        <td>flameGeyserActiveTime</td>
+    </tr>
+    <tr>
+        <td>Flame Geyser Inactive Time</td>
+        <td>Number of ticks a geyser will be inactive, value will be somewhat randomized</td>
+        <td>```500```</td>
+        <td>Integer (`50` to `1000`)</td>
+        <td>flameGeyserInactiveTime</td>
+    </tr>
+    <tr>
+        <td>Smoke Geyser Spawn Chance</td>
+        <td>The chance for a geyser to spawn<br/>0 to disable</td>
+        <td>```5```</td>
+        <td>Integer (`0` to `50`)</td>
+        <td>smokeGeyserSpawnChance</td>
+    </tr>
+    <tr>
+        <td>Smoke Geyser Spawnable Blocks</td>
+        <td>A list of block IDs that smoke geysers can spawn on, including fluids</td>
+        <td>```[ minecraft:netherrack, minecraft:blackstone, minecraft:soul_soil ]```</td>
+        <td>A list containing any block String ID. List can be empty</td>
+        <td>smokeGeyserSpawnableBlocks</td>
+    </tr>
+    <tr>
+        <td>Smoke Geyser Sound Volume</td>
+        <td></td>
+        <td>```0.2```</td>
+        <td>Float (`0` to `1`)</td>
+        <td>smokeGeyserSoundVolume</td>
+    </tr>
+    <tr>
+        <td>Smoke Geyser Active Time</td>
+        <td>Number of ticks a geyser will be active, value will be somewhat randomized</td>
+        <td>```300```</td>
+        <td>Integer (`50` to `1000`)</td>
+        <td>smokeGeyserActiveTime</td>
+    </tr>
+    <tr>
+        <td>Smoke Geyser Inactive Time</td>
+        <td>Number of ticks a geyser will be inactive, value will be somewhat randomized</td>
+        <td>```500```</td>
+        <td>Integer (`50` to `1000`)</td>
+        <td>smokeGeyserInactiveTime</td>
+    </tr>
+    <tr>
+        <td>Bubble Geyser Spawn Chance</td>
+        <td>The chance for a geyser to spawn<br/>0 to disable</td>
+        <td>```5```</td>
+        <td>Integer (`0` to `50`)</td>
+        <td>bubbleGeyserSpawnChance</td>
+    </tr>
+    <tr>
+        <td>Bubble Geyser Spawnable Blocks</td>
+        <td>A list of block IDs that bubble geysers can spawn on, including fluids</td>
+        <td>```[ minecraft:sand, minecraft:red_sand, minecraft:gravel, minecraft:dirt, minecraft:clay ]```</td>
+        <td>A list containing any block String ID. List can be empty</td>
+        <td>bubbleGeyserSpawnableBlocks</td>
+    </tr>
+    <tr>
+        <td>Bubble Geyser Sound Volume</td>
+        <td></td>
+        <td>```0.5```</td>
+        <td>Float (`0` to `1`)</td>
+        <td>bubbleGeyserSoundVolume</td>
+    </tr>
+    <tr>
+        <td>Bubble Geyser Active Time</td>
+        <td>Number of ticks a geyser will be active, value will be somewhat randomized</td>
+        <td>```300```</td>
+        <td>Integer (`50` to `1000`)</td>
+        <td>bubbleGeyserActiveTime</td>
+    </tr>
+    <tr>
+        <td>Bubble Geyser Inactive Time</td>
+        <td>Number of ticks a geyser will be inactive, value will be somewhat randomized</td>
+        <td>```500```</td>
+        <td>Integer (`50` to `1000`)</td>
+        <td>bubbleGeyserInactiveTime</td>
+    </tr>
+</table>
+
+### Fireflies
+
+<table>
+    <tr>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Default Value</th>
+        <th>Allowed Values</th>
+        <th>ID</th>
+    </tr>
+    <tr>
+        <td>Fireflies Enabled</td>
+        <td></td>
+        <td>```true```</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>firefliesEnabled</td>
+    </tr>
+    <tr>
+        <td>Dimension Blocklist</td>
+        <td>List of dimensions fireflies will not spawn in</td>
+        <td>```[ twilightforest:twilight_forest_type ]```</td>
+        <td>A list containing any dimension String ID. List can be empty</td>
+        <td>dimensionBlocklist</td>
+    </tr>
+    <tr>
+        <td>Biomes Blocklist</td>
+        <td></td>
+        <td>```[  ]```</td>
+        <td>A list containing any biome String ID. List can be empty</td>
+        <td>biomesBlocklist</td>
+    </tr>
+    <tr>
+        <td>Biomes Allowlist</td>
+        <td></td>
+        <td>```[ minecraft:lush_caves ]```</td>
+        <td>A list containing any biome String ID. List can be empty</td>
+        <td>biomesAllowlist</td>
+    </tr>
+    <tr>
+        <td>Spawnable Blocks</td>
+        <td>List of non solid blocks that fireflies can spawn in/around. Fireflies spawned in habitat biomes will ignore this config</td>
+        <td>```[ minecraft:short_grass, minecraft:tall_grass, minecraft:poppy, minecraft:dandelion, minecraft:peony, minecraft:blue_orchid, minecraft:allium, minecraft:azure_bluet, minecraft:orange_tulip, minecraft:pink_tulip, minecraft:red_tulip, minecraft:white_tulip, minecraft:oxeye_daisy, minecraft:cornflower, minecraft:lily_of_the_valley, minecraft:sunflower, minecraft:lilac, minecraft:rose_bush, minecraft:pink_petals, minecraft:flowering_azalea ]```</td>
+        <td>A list containing any block String ID, however solid blocks will be ignored. List can be empty</td>
+        <td>spawnableBlocks</td>
+    </tr>
+    <tr>
+        <td>Default Density</td>
+        <td></td>
+        <td>```3```</td>
+        <td>Integer (`1` to `10`)</td>
+        <td>defaultDensity</td>
+    </tr>
+    <tr>
+        <td>Ignored Seasons</td>
+        <td>Seasons that fireflies will not spawn during.<br/>'Default' will stop firefly spawning in the late autumn and start them again at the end of early spring<br/><br/>Note:<br/>Serene Seasons needs to be installed</td>
+        <td>```DEFAULT```</td>
+        <td><ul><li>`OFF`</li><li>`DEFAULT`</li><li>`WINTER_ONLY`</li></ul></td>
+        <td>ignoredSeasons</td>
+    </tr>
+    <tr>
+        <td>FireflyType</td>
+        <td>The type of firefly spawned.<br/>'Original' will spawn fireflies based on the original fireflies shown at Minecraft Live 2021<br/>'Vanilla' will spawn the vanilla fireflies added in the Spring to Life drop</td>
+        <td>```ORIGINAL```</td>
+        <td><ul><li>`ORIGINAL`</li><li>`VANILLA`</li></ul></td>
+        <td>fireflyType</td>
+    </tr>
+    <tr>
+        <td>Firefly Sound Volume</td>
+        <td>Volume of the buzzing sounds fireflies make</td>
+        <td>```1```</td>
+        <td>Float (`0` to `2`)</td>
+        <td>fireflySoundVolume</td>
+    </tr>
+    <tr>
+        <td>Only Allow In Habitat Biomes</td>
+        <td>Forces fireflies to only spawn in habitat biomes</td>
+        <td>```true```</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>onlyAllowInHabitatBiomes</td>
+    </tr>
+    <tr>
+        <td>Habitat Biomes</td>
+        <td>Biomes where fireflies have a higher spawn rate and will be more evenly distributed around the biome.<br/>Biomes added to this list must either already be able to spawn fireflies or be in the 'Biomes Allowlist' config, additionally biomes in this list must also not be in the 'Biomes Blocklist' config</td>
+        <td>```[ minecraft:swamp, minecraft:mangrove_swamp ]```</td>
+        <td>A list containing any biome String ID. List can be empty</td>
+        <td>habitatBiomes</td>
+    </tr>
+    <tr>
+        <td>Habitat Biome Density</td>
+        <td></td>
+        <td>```3```</td>
+        <td>Integer (`1` to `10`)</td>
+        <td>habitatBiomeDensity</td>
+    </tr>
+</table>
+
+### Waterfalls
+
+<table>
+    <tr>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Default Value</th>
+        <th>Allowed Values</th>
+        <th>ID</th>
+    </tr>
+    <tr>
+        <td>Waterfalls Enabled</td>
+        <td></td>
+        <td>```true```</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>waterfallsEnabled</td>
+    </tr>
+    <tr>
+        <td>Small Waterfalls Enabled</td>
+        <td></td>
+        <td>```true```</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>smallWaterfallsEnabled</td>
+    </tr>
+    <tr>
+        <td>Waterfall Update Frequency</td>
+        <td>The frequency in ticks that waterfalls will check their validity. This can be a somewhat intense process so higher values are recommended</td>
+        <td>```6```</td>
+        <td>Integer (`1` to `40`)</td>
+        <td>waterfallUpdateFrequency</td>
+    </tr>
+    <tr>
+        <td>Randomize Waterfall Particle Rotation</td>
+        <td>Should waterfall particles be rotated randomly</td>
+        <td>```false```</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>randomizeWaterfallParticleRotation</td>
+    </tr>
+    <tr>
+        <td>Medium Waterfall Particle Density</td>
+        <td></td>
+        <td>```1```</td>
+        <td>Float (`0.1` to `1`)</td>
+        <td>mediumWaterfallParticleDensity</td>
+    </tr>
+    <tr>
+        <td>Medium Waterfall Height Threshold</td>
+        <td>The height in blocks that waterfalls will be considered medium</td>
+        <td>```6```</td>
+        <td>Integer (`2` to `20`)</td>
+        <td>mediumWaterfallHeightThreshold</td>
+    </tr>
+    <tr>
+        <td>Force Spawn Medium Waterfall Particles</td>
+        <td>Should medium waterfall particles be visible regardless of the distance from the player</td>
+        <td>```true```</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>forceSpawnMediumWaterfallParticles</td>
+    </tr>
+    <tr>
+        <td>Large Waterfalls Enabled</td>
+        <td></td>
+        <td>```true```</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>largeWaterfallsEnabled</td>
+    </tr>
+    <tr>
+        <td>Large Waterfall Particle Density</td>
+        <td></td>
+        <td>```1```</td>
+        <td>Float (`0.1` to `1`)</td>
+        <td>largeWaterfallParticleDensity</td>
+    </tr>
+    <tr>
+        <td>Large Waterfall Height Threshold</td>
+        <td>The height in blocks that waterfalls will be considered large</td>
+        <td>```10```</td>
+        <td>Integer (`4` to `20`)</td>
+        <td>largeWaterfallHeightThreshold</td>
+    </tr>
+    <tr>
+        <td>Force Spawn Large Waterfall Particles</td>
+        <td>Should large waterfall particles be visible regardless of the distance from the player</td>
+        <td>```true```</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>forceSpawnLargeWaterfallParticles</td>
+    </tr>
+</table>

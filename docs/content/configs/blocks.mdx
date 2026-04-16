@@ -1,0 +1,791 @@
+---
+title: Blocks
+---
+
+**File name:** `blocks.toml`
+
+<table>
+    <tr>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Default Value</th>
+        <th>Allowed Values</th>
+        <th>ID</th>
+    </tr>
+    <tr>
+        <td>Redstone Block Dust</td>
+        <td></td>
+        <td>```true```</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>redstoneBlockDust</td>
+    </tr>
+    <tr>
+        <td>Redstone Block Dust Density</td>
+        <td></td>
+        <td>```DEFAULT```</td>
+        <td><ul><li>`DEFAULT`</li><li>`MINIMAL`</li></ul></td>
+        <td>redstoneBlockDustDensity</td>
+    </tr>
+    <tr>
+        <td>Redstone Dust Emitting Blocks</td>
+        <td>Blocks that emit redstone dust particles, good for applying the particles to blocks from mods that add redstone block variants, e.g. Polished, Chiseled</td>
+        <td>```[ minecraft:redstone_block ]```</td>
+        <td>A list containing any block String ID. List can be empty</td>
+        <td>redstoneDustEmittingBlocks</td>
+    </tr>
+    <tr>
+        <td>Glowstone Block Dust</td>
+        <td></td>
+        <td>```true```</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>glowstoneBlockDust</td>
+    </tr>
+    <tr>
+        <td>Glowstone Block Dust Density</td>
+        <td></td>
+        <td>```DEFAULT```</td>
+        <td><ul><li>`DEFAULT`</li><li>`MINIMAL`</li></ul></td>
+        <td>glowstoneBlockDustDensity</td>
+    </tr>
+    <tr>
+        <td>Glowstone Dust Emitting Blocks</td>
+        <td>Blocks that emit glowstone dust particles, good for applying the particles to blocks from mods that add glowstone block variants, e.g. Polished, Chiseled</td>
+        <td>```[ minecraft:glowstone ]```</td>
+        <td>A list containing any block String ID. List can be empty</td>
+        <td>glowstoneDustEmittingBlocks</td>
+    </tr>
+    <tr>
+        <td>Nether Only Glowstone Block Dust</td>
+        <td></td>
+        <td>```false```</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>netherOnlyGlowstoneBlockDust</td>
+    </tr>
+    <tr>
+        <td>Beehives Have Sleeping Zs</td>
+        <td>Display Z particles in front of bee hives/nests at night</td>
+        <td>`true`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>beehivesHaveSleepingZs</td>
+    </tr>
+    <tr>
+        <td>Torchflower Smoke</td>
+        <td>Should torchflowers have smoke particles</td>
+        <td>`DEFAULT`</td>
+        <td><ul><li>`OFF`</li><li>`DEFAULT`</li><li>`UPDATED`</li></ul></td>
+        <td>torchflowerSmoke</td>
+    </tr>
+    <tr>
+        <td>Torchflower Flames</td>
+        <td>Should torchflowers have flame particles</td>
+        <td>`true`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>torchflowerFlames</td>
+    </tr>
+    <tr>
+        <td>Dragon Egg Particles</td>
+        <td>Should the dragon egg have particles like the ender chest</td>
+        <td>`true`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>dragonEggParticles</td>
+    </tr>
+    <tr>
+        <td>Replace End Portal Smoke</td>
+        <td>Replaces the normal end portal smoke particles with nether portal particles so that it is consistent with end gateways</td>
+        <td>`true`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>replaceEndPortalSmoke</td>
+    </tr>
+    <tr>
+        <td>Pumpkin Carved Particles</td>
+        <td>Display the destroy particle effect when carving a pumpkin</td>
+        <td>`true`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>pumpkinCarvedParticles</td>
+    </tr>
+    <tr>
+        <td>Anvil Break Particles</td>
+        <td>Display the destroy particle effect when an anvil breaks</td>
+        <td>`true`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>anvilBreakParticles</td>
+    </tr>
+    <tr>
+        <td>Anvil Use Particles</td>
+        <td>Should spark particles fly off anvils when used</td>
+        <td>`true`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>anvilUseParticles</td>
+    </tr>
+    <tr>
+        <td>Grindstone Use Particles</td>
+        <td>Should spark particles fly off grindstones when used</td>
+        <td>`true`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>grindstoneUseParticles</td>
+    </tr>
+    <tr>
+        <td>Smithing Table Use Particles</td>
+        <td>Should spark particles fly off smithing tables when used</td>
+        <td>`true`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>smithingTableUseParticles</td>
+    </tr>
+    <tr>
+        <td>Stonecutter Use Particles</td>
+        <td>Should block destroy particles fly off stonecutters when used</td>
+        <td>`true`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>stonecutterUseParticles</td>
+    </tr>
+    <tr>
+        <td>Cauldron Use Particles</td>
+        <td></td>
+        <td>`true`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>cauldronUseParticles</td>
+    </tr>
+    <tr>
+        <td>Cauldron Clean Item Sounds</td>
+        <td>Plays a sound when an item is cleaned e.g. Using a dyeable item/banner/shulker box on a water cauldron</td>
+        <td>`true`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>cauldronCleanItemSounds</td>
+    </tr>
+    <tr>
+        <td>Composting Compost Particles</td>
+        <td>Should compost looking particles be spawned when composting items</td>
+        <td>`true`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>compostingCompostParticles</td>
+    </tr>
+    <tr>
+        <td>Composting Item Particles</td>
+        <td>Should item particles be spawned when composting items</td>
+        <td>`true`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>compostingItemParticles</td>
+    </tr>
+    <tr>
+        <td>Command Block Particles</td>
+        <td>Should command blocks have particles like in MC Story Mode</td>
+        <td>```ON```</td>
+        <td><ul><li>`ON`</li><li>`OFF`</li><li>`NOT_CREATIVE`</li></ul></td>
+        <td>commandBlockParticles</td>
+    </tr>
+    <tr>
+        <td>Command Block Particles Density</td>
+        <td></td>
+        <td>```1```</td>
+        <td>Double (`0.1` to `1`)</td>
+        <td>commandBlockParticlesDensity</td>
+    </tr>
+    <tr>
+        <td>Slime Block Bounce Sounds</td>
+        <td>Slime bounce sounds when bouncing on a slime block</td>
+        <td>`true`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>slimeBlockBounceSounds</td>
+    </tr>
+    <tr>
+        <td>Beacon Particles Display Type</td>
+        <td>Should beacons emit particles that float up.<br/><br/>WARNING!<br/>This can cause severe lag for slower computers when around a beacon, potentially adding up to a couple of thousand particles at one time per beacon</td>
+        <td>```ON```</td>
+        <td><ul><li>`OFF`</li><li>`ON`</li><li>`NOT_COLORED`</li></ul></td>
+        <td>beaconParticlesDisplayType</td>
+    </tr>
+    <tr>
+        <td>Beacon Particles Density</td>
+        <td></td>
+        <td>```10```</td>
+        <td>Integer (`1` to `20`)</td>
+        <td>beaconParticlesDensity</td>
+    </tr>
+    <tr>
+        <td>Beacon Particles Speed</td>
+        <td></td>
+        <td>```1```</td>
+        <td>Float (`0.5` to `2`)</td>
+        <td>beaconParticlesSpeed</td>
+    </tr>
+    <tr>
+        <td>Respawn Anchor Particles</td>
+        <td>Crying obsidian particles for respawn anchors</td>
+        <td>`true`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>respawnAnchorParticles</td>
+    </tr>
+    <tr>
+        <td>Beehive Shear Particles</td>
+        <td>Display the destroy particle effect when shearing a beehive/nest</td>
+        <td>`true`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>beehiveShearParticles</td>
+    </tr>
+    <tr>
+        <td>End Portal Particles</td>
+        <td>Should end portals and end gateways have little colored particles floating around them</td>
+        <td>`true`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>endPortalParticles</td>
+    </tr>
+    <tr>
+        <td>Leaves Decay Effects</td>
+        <td>Play the destroy block sound and particle effects when leaves decay/despawn</td>
+        <td>`true`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>leavesDecayEffects</td>
+    </tr>
+    <tr>
+        <td>Farmland Destroy Effects</td>
+        <td>Play the destroy block sound and particle effects when a mob/player destroys farmland</td>
+        <td>`true`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>farmlandDestroyEffects</td>
+    </tr>
+    <tr>
+        <td>Amethyst Sparkle Display Type</td>
+        <td></td>
+        <td>```ON```</td>
+        <td><ul><li>`OFF`</li><li>`ON`</li><li>`CRYSTALS_ONLY`</li></ul></td>
+        <td>amethystSparkleDisplayType</td>
+    </tr>
+    <tr>
+        <td>Amethyst Sparkle Emitting Blocks</td>
+        <td>Blocks that emit amethyst sparkle particles, not including amethyst clusters/buds, good for applying the particles to blocks from mods that add amethyst variants, e.g. Polished, Chiseled.<br/>'Amethyst Sparkle Display Type' must be set to 'ON'</td>
+        <td>```[ minecraft:amethyst_block, minecraft:budding_amethyst ]```</td>
+        <td>A list containing any block String ID. List can be empty</td>
+        <td>amethystSparkleEmittingBlocks</td>
+    </tr>
+    <tr>
+        <td>Amethyst Sparkle Sounds</td>
+        <td>Should amethyst crystals randomly play the amethyst chime sounds</td>
+        <td>`true`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>amethystSparkleSounds</td>
+    </tr>
+    <tr>
+        <td>Flowering Azalea Petals</td>
+        <td></td>
+        <td>`true`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>floweringAzaleaPetals</td>
+    </tr>
+    <tr>
+        <td>Sculk Block Sculk Dust</td>
+        <td></td>
+        <td>`true`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>sculkBlockSculkDust</td>
+    </tr>
+    <tr>
+        <td>Sculk Vein Sculk Dust</td>
+        <td></td>
+        <td>`true`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>sculkVeinSculkDust</td>
+    </tr>
+    <tr>
+        <td>Sculk Shrieker Destroy Souls</td>
+        <td>Should a sculk soul particle spawn when a sculk shrieker is broken</td>
+        <td>`true`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>sculkShriekerDestroySouls</td>
+    </tr>
+    <tr>
+        <td>Sculk Catalyst Destroy Souls</td>
+        <td>Should a sculk soul particle spawn when a sculk catalyst is broken</td>
+        <td>`true`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>sculkCatalystDestroySouls</td>
+    </tr>
+    <tr>
+        <td>Calibrated Sculk Sensor Amethyst Sparkle</td>
+        <td></td>
+        <td>`true`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>calibratedSculkSensorAmethystSparkle</td>
+    </tr>
+    <tr>
+        <td>Campfire Sizzling Sound Volume</td>
+        <td></td>
+        <td>```0.5```</td>
+        <td>Float (`0` to `1`)</td>
+        <td>campfireSizzlingSoundVolume</td>
+    </tr>
+    <tr>
+        <td>Replace Powder Snow Flakes</td>
+        <td></td>
+        <td>`true`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>replacePowderSnowFlakes</td>
+    </tr>
+    <tr>
+        <td>Lava Cauldron Effects</td>
+        <td>Apply lava sounds and particles to lava cauldrons</td>
+        <td>`true`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>lavaCauldronEffects</td>
+    </tr>
+    <tr>
+        <td>Ender Eye Placed Rings</td>
+        <td></td>
+        <td>```true```</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>enderEyePlacedRings</td>
+    </tr>
+    <tr>
+        <td>Ender Eye Placed Rings Duration</td>
+        <td>The lifetime of the effect in ticks</td>
+        <td>```10```</td>
+        <td>Integer (`5` to `60`)</td>
+        <td>enderEyePlacedRingsDuration</td>
+    </tr>
+    <tr>
+        <td>Ender Eye Placed Particles Display Type</td>
+        <td></td>
+        <td>```BOTH```</td>
+        <td><ul><li>`DOTS`</li><li>`VANILLA`</li><li>`BOTH`</li></ul></td>
+        <td>enderEyePlacedParticlesDisplayType</td>
+    </tr>
+    <tr>
+        <td>Eye Colors</td>
+        <td></td>
+        <td>```[ [ minecraft:ender_eye, { r = 122, g = 186, b = 171 } ] ]```</td>
+        <td>A list of lists, each sublist must contain the String ID of an Eye of Ender either from vanilla or from End Remastered, and a color object</td>
+        <td>eyeColors</td>
+    </tr>
+    <tr>
+        <td>Ender Eye Placed Particles Display Type</td>
+        <td></td>
+        <td>```SMOKE```</td>
+        <td><ul><li>`OFF`</li><li>`DOTS`</li><li>`SMOKE`</li></ul></td>
+        <td>endPortalFrameParticlesDisplayType</td>
+    </tr>
+    <tr>
+        <td>End Portal Frame Particles Density</td>
+        <td></td>
+        <td>```1```</td>
+        <td>Float (`0` to `1`)</td>
+        <td>endPortalFrameParticlesDensity</td>
+    </tr>
+    <tr>
+        <td>Replace Ominous Vault Connection</td>
+        <td>Replaces the vanilla orange connection particles when near a ominous vault with blue particles</td>
+        <td>`true`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>replaceOminousVaultConnection</td>
+    </tr>
+    <tr>
+        <td>Cobweb Movement Sounds</td>
+        <td></td>
+        <td>`true`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>cobwebMovementSounds</td>
+    </tr>
+    <tr>
+        <td>Cake Eat Particles</td>
+        <td></td>
+        <td>`true`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>cakeEatParticles</td>
+    </tr>
+    <tr>
+        <td>Cake Eat Sounds</td>
+        <td></td>
+        <td>`true`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>cakeEatSounds</td>
+    </tr>
+    <tr>
+        <td>Rain Water Ripples</td>
+        <td>Should ripple particles be spawned on water when its raining</td>
+        <td>```true```</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>rainWaterRipples</td>
+    </tr>
+    <tr>
+        <td>Rain Water Ripples Density</td>
+        <td></td>
+        <td>```0.35```</td>
+        <td>Float (`0` to `1`)</td>
+        <td>rainWaterRipplesDensity</td>
+    </tr>
+    <tr>
+        <td>Underwater Block Break Bubbles</td>
+        <td>Should breaking blocks underwater spawn bubbles</td>
+        <td>`true`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>underwaterBlockBreakBubbles</td>
+    </tr>
+    <tr>
+        <td>Decorated Pots Spawn Bubbles</td>
+        <td>Should decorated pots spawn bubbles when underwater</td>
+        <td>`true`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>decoratedPotsSpawnBubbles</td>
+    </tr>
+    <tr>
+        <td>Opening Barrels Spawns Bubbles</td>
+        <td></td>
+        <td>`true`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>openingBarrelsSpawnsBubbles</td>
+    </tr>
+    <tr>
+        <td>Opening Chests Spawns Bubbles</td>
+        <td>When a chest is opened underwater should it spawn bubbles</td>
+        <td>`true`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>openingChestsSpawnsBubbles</td>
+    </tr>
+    <tr>
+        <td>Chests Open Randomly Underwater Frequency</td>
+        <td>How often should chests open randomly underwater in seconds.<br/>0 to disable chests randomly opening underwater</td>
+        <td>```5```</td>
+        <td>Integer (`0` to `60`)</td>
+        <td>chestsOpenRandomlyUnderwaterFrequency</td>
+    </tr>
+    <tr>
+        <td>Random Chest Opening Needs Soul Sand</td>
+        <td></td>
+        <td>```false```</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>randomChestOpeningNeedsSoulSand</td>
+    </tr>
+    <tr>
+        <td>Dispense Item Bubbles</td>
+        <td>Should bubbles be spawned when items are dispensed underwater from dispensers/droppers/crafters</td>
+        <td>`true`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>dispenseItemBubbles</td>
+    </tr>
+    <tr>
+        <td>Rain Increases Leaves Spawning Particles</td>
+        <td>Should rain increase the amount of leaves particles spawned from leaf blocks</td>
+        <td>`true`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>rainIncreasesLeavesSpawningParticles</td>
+    </tr>
+    <tr>
+        <td>Purple Monster Spawner Particles</td>
+        <td>Replaces the vanilla flame particles with purple flame particles that match the purple eyes for monster spawners</td>
+        <td>`false`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>purpleMonsterSpawnerParticles</td>
+    </tr>
+    <tr>
+        <td>Monster Spawner Spawn Mob Sound Volume</td>
+        <td>The volume of the sound played when a monster spawner spawns a mob</td>
+        <td>```1```</td>
+        <td>Float (`0` to `1`)</td>
+        <td>monsterSpawnerSpawnMobSoundVolume</td>
+    </tr>
+    <tr>
+        <td>Monster Spawner Ambient Sound Volume</td>
+        <td></td>
+        <td>```1```</td>
+        <td>Float (`0` to `1`)</td>
+        <td>monsterSpawnerAmbientSoundVolume</td>
+    </tr>
+</table>
+
+### Sparks
+
+<table>
+    <tr>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Default Value</th>
+        <th>Allowed Values</th>
+        <th>ID</th>
+    </tr>
+    <tr>
+        <td>Remove Vanilla Campfire Sparks</td>
+        <td>Removes the vanilla lava spark particle from campfires</td>
+        <td>`true`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>removeVanillaCampfireSparks</td>
+    </tr>
+    <tr>
+        <td>Candle Sparks</td>
+        <td></td>
+        <td>`true`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>candleSparks</td>
+    </tr>
+    <tr>
+        <td>Furnace Sparks</td>
+        <td></td>
+        <td>`true`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>furnaceSparks</td>
+    </tr>
+    <tr>
+        <td>Fire Sparks</td>
+        <td></td>
+        <td>`true`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>fireSparks</td>
+    </tr>
+    <tr>
+        <td>Campfire Sparks</td>
+        <td></td>
+        <td>`true`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>campfireSparks</td>
+    </tr>
+    <tr>
+        <td>Torch Sparks</td>
+        <td></td>
+        <td>`true`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>torchSparks</td>
+    </tr>
+    <tr>
+        <td>Lantern Sparks Density</td>
+        <td>0 to disable</td>
+        <td>```5```</td>
+        <td>Integer (`0` to `10`)</td>
+        <td>lanternSparksDensity</td>
+    </tr>
+    <tr>
+        <td>Lava Sparks Display Type</td>
+        <td>WARNING!<br/>This can cause severe lag for slower computers when around large pools of lava (like in the nether)</td>
+        <td>```ON```</td>
+        <td><ul><li>`OFF`</li><li>`ON`</li><li>`NOT_NETHER`</li></ul></td>
+        <td>lavaSparksDisplayType</td>
+    </tr>
+    <tr>
+        <td>Lava Sparks Density</td>
+        <td></td>
+        <td>```1```</td>
+        <td>Double (`0.1` to `1`)</td>
+        <td>lavaSparksDensity</td>
+    </tr>
+    <tr>
+        <td>Brewing Stand Sparks</td>
+        <td></td>
+        <td>`true`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>brewingStandSparks</td>
+    </tr>
+    <tr>
+        <td>Monster Spawner Sparks</td>
+        <td></td>
+        <td>`true`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>monsterSpawnerSparks</td>
+    </tr>
+</table>
+
+### Updated Smoke
+
+<table>
+    <tr>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Default Value</th>
+        <th>Allowed Values</th>
+        <th>ID</th>
+    </tr>
+    <tr>
+        <td>Candle Smoke</td>
+        <td></td>
+        <td>`true`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>candleSmoke</td>
+    </tr>
+    <tr>
+        <td>Furnace Smoke</td>
+        <td>Includes vanilla furnace variants</td>
+        <td>`true`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>furnaceSmoke</td>
+    </tr>
+    <tr>
+        <td>Fire Smoke</td>
+        <td></td>
+        <td>`true`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>fireSmoke</td>
+    </tr>
+    <tr>
+        <td>Torch Smoke</td>
+        <td></td>
+        <td>`true`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>torchSmoke</td>
+    </tr>
+    <tr>
+        <td>Campfire Dowse Smoke</td>
+        <td></td>
+        <td>`true`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>campfireDowseSmoke</td>
+    </tr>
+</table>
+
+### Steam (Beta)
+
+<table>
+    <tr>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Default Value</th>
+        <th>Allowed Values</th>
+        <th>ID</th>
+    </tr>
+    <tr>
+        <td>Lava Fizz Steam</td>
+        <td>Replaces the smoke particles with steam when lava and water create a block (obsidian/cobblestone/stone)</td>
+        <td>`true`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>lavaFizzSteam</td>
+    </tr>
+    <tr>
+        <td>Replace Campfire Food Smoke</td>
+        <td>Replaces the vanilla smoke particles emitted from food cooking on a campfire with steam particles</td>
+        <td>`true`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>replaceCampfireFoodSmoke</td>
+    </tr>
+    <tr>
+        <td>Sponge Drying Out Steam</td>
+        <td>Replaces the cloud particles when a sponge is dried out in the nether with steam</td>
+        <td>`true`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>spongeDryingOutSteam</td>
+    </tr>
+    <tr>
+        <td>Replace Rain Evaporation Steam</td>
+        <td>Replaces the vanilla smoke particles spawned on lava/campfires/magma blocks with steam</td>
+        <td>`true`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>replaceRainEvaporationSteam</td>
+    </tr>
+    <tr>
+        <td>Lava Cauldrons Evaporate Rain</td>
+        <td>Adds lava cauldrons to the list of blocks that can cause rain to create steam</td>
+        <td>`true`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>lavaCauldronsEvaporateRain</td>
+    </tr>
+    <tr>
+        <td>Spawn Logic</td>
+        <td></td>
+        <td>`BRIGHTNESS`</td>
+        <td><ul><li>`BRIGHTNESS`</li><li>`NEAR_LAVA`</li></ul></td>
+        <td>spawnLogic</td>
+    </tr>
+    <tr>
+        <td>Steaming Water</td>
+        <td>Should water steam when near blocks with a light level greater than 11</td>
+        <td>```false```</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>steamingWater</td>
+    </tr>
+    <tr>
+        <td>Boiling Water</td>
+        <td>Should water bubble/boil when near blocks with a light level of 13 or more</td>
+        <td>```false```</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>boilingWater</td>
+    </tr>
+    <tr>
+        <td>Steaming Water Cauldron</td>
+        <td>Should water cauldrons steam when near blocks with a light level greater than 11</td>
+        <td>```false```</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>steamingWaterCauldron</td>
+    </tr>
+    <tr>
+        <td>Boiling Water Cauldron</td>
+        <td>Should water bubble/boil when near blocks with a light level of 13 or more</td>
+        <td>```false```</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>boilingWaterCauldron</td>
+    </tr>
+    <tr>
+        <td>Steaming Threshold</td>
+        <td>The light level at which water will steam</td>
+        <td>```11```</td>
+        <td>Integer (`1` to `14`)</td>
+        <td>steamingThreshold</td>
+    </tr>
+    <tr>
+        <td>Boiling Threshold</td>
+        <td>The light level at which water will bubble (boil). The value cannot be lower than the value of Steaming Threshold</td>
+        <td>```13```</td>
+        <td>Integer (`1` to `14`)</td>
+        <td>boilingThreshold</td>
+    </tr>
+</table>
+
+### Falling Blocks
+
+<table>
+    <tr>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Default Value</th>
+        <th>Allowed Values</th>
+        <th>ID</th>
+    </tr>
+    <tr>
+        <td>Dusty Blocks</td>
+        <td>A list of blocks that that can spawn dust particles. Used by, 'Falling Dust', 'Land Dust', and 'Weak Support Dust'</td>
+        <td>```[ minecraft:sand, minecraft:suspicious_sand, minecraft:red_sand, minecraft:gravel, minecraft:suspicious_gravel, minecraft:white_concrete_powder, minecraft:orange_concrete_powder, minecraft:magenta_concrete_powder, minecraft:light_blue_concrete_powder, minecraft:yellow_concrete_powder, minecraft:lime_concrete_powder, minecraft:pink_concrete_powder, minecraft:gray_concrete_powder, minecraft:light_gray_concrete_powder, minecraft:cyan_concrete_powder, minecraft:purple_concrete_powder, minecraft:blue_concrete_powder, minecraft:brown_concrete_powder, minecraft:green_concrete_powder, minecraft:red_concrete_powder, minecraft:black_concrete_powder ]```</td>
+        <td>A list containing any block String ID, however non falling blocks will not be affected in average gameplay. List can be empty</td>
+        <td>dustyBlocks</td>
+    </tr>
+    <tr>
+        <td>While Falling Dust</td>
+        <td>Do falling blocks have a trail of dust</td>
+        <td>```true```</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>whileFallingDust</td>
+    </tr>
+    <tr>
+        <td>While Falling Dust Start Distance</td>
+        <td>The distance in blocks a falling block must fall before spawning dust</td>
+        <td>```3```</td>
+        <td>Integer (`0` to `20`)</td>
+        <td>whileFallingDustStartDistance</td>
+    </tr>
+    <tr>
+        <td>On Land Dust</td>
+        <td>Should a small puff of dust appear from around the edges of falling blocks when landing on the ground</td>
+        <td>`true`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>onLandDust</td>
+    </tr>
+    <tr>
+        <td>On Land Sound</td>
+        <td>Plays the block place sound when a falling block lands on the ground</td>
+        <td>`true`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>onLandSound</td>
+    </tr>
+    <tr>
+        <td>Weak Support Dust</td>
+        <td>When a falling block is on a weak support block, e.g. non full/solid blocks, dust particles will fall from the bottom of the falling block</td>
+        <td>`true`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>weakSupportDust</td>
+    </tr>
+    <tr>
+        <td>Weak Support Dust Density</td>
+        <td></td>
+        <td>```1```</td>
+        <td>Integer (`1` to `16`)</td>
+        <td>weakSupportDustDensity</td>
+    </tr>
+    <tr>
+        <td>Replace Dust With Bubbles Underwater</td>
+        <td>Replaces the falling block dust particles with bubbles when the falling block is underwater</td>
+        <td>`true`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>replaceDustWithBubblesUnderwater</td>
+    </tr>
+</table>

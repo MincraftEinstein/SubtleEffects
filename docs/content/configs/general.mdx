@@ -1,0 +1,260 @@
+---
+title: General
+---
+
+**File name:** `general.toml`
+
+<table>
+    <tr>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Default Value</th>
+        <th>Allowed Values</th>
+        <th>ID</th>
+    </tr>
+    <tr>
+        <td>Enable Particle Culling</td>
+        <td></td>
+        <td>```true```</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>enableParticleCulling</td>
+    </tr>
+    <tr>
+        <td>Particle Render Distance</td>
+        <td>The maximum number of chunks away from the player a particle will render.<br/>This does not affect particles spawning/existing in the world only rendering.<br/>This affects most particles in the game including particles from other mods, some particles however ignore this value e.g. campfire smoke.</td>
+        <td>```5```</td>
+        <td>Integer (`1` to `32`)</td>
+        <td>particleRenderDistance</td>
+    </tr>
+    <tr>
+        <td>Particle Culling Blocklist</td>
+        <td>List of particles that will not be culled by the particle culling system. <br/>This list should be kept at a minimum and used mainly for particles that break when culled.<br/>Particles already spawned in a world will not be affected by changes to this config</td>
+        <td>```[  ]```</td>
+        <td>A list containing any particle String ID. List can be empty</td>
+        <td>particleCullingBlocklist</td>
+    </tr>
+    <tr>
+        <td>Cull Particles In Unloaded Chunks</td>
+        <td>Prevents rendering particles in unloaded chunk. This usually doesn't affect anything, unless the server is running slowing</td>
+        <td>```true```</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>cullParticlesInUnloadedChunks</td>
+    </tr>
+    <tr>
+        <td>Allow Using Blended Render Type</td>
+        <td>Some particles use a custom render type to blend transparency. This can cause visual issues with other mods. This config allows you to disable the custom render type and use the default transparency render type instead.</td>
+        <td>```true```</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>allowUsingBlendedRenderType</td>
+    </tr>
+    <tr>
+        <td>Spell Particles Use Blended Render Type</td>
+        <td>Changes spell particles to use the custom blended render type. This can cause visual issues with other mods. This config allows you to disable the custom render type and use the default transparency render type instead. This config is ignored if 'Allow Using Blended Render Type' is disabled.</td>
+        <td>```true```</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>spellParticlesUseBlendedRenderType</td>
+    </tr>
+    <tr>
+        <td>Glowing Lava Drops</td>
+        <td></td>
+        <td>`true`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>glowingLavaDrops</td>
+    </tr>
+    <tr>
+        <td>Fluid Drops Evaporate</td>
+        <td>When a drop particle lands in a fluid of the opposite type, e.g. water into lava, a hiss sound will play and steam particles will appear</td>
+        <td>```true```</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>fluidDropsEvaporate</td>
+    </tr>
+    <tr>
+        <td>Fluid Drops Evaporation Volume</td>
+        <td>The volume of the hiss sound played when a drop particle evaporates</td>
+        <td>```0.25```</td>
+        <td>Float (`0` to `1`)</td>
+        <td>fluidDropsEvaporationVolume</td>
+    </tr>
+    <tr>
+        <td>Drop Land In Fluid Ripples</td>
+        <td>When a drop particle lands in a fluid of the same type it will cause a ripple particle</td>
+        <td>`true`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>dropLandInFluidRipples</td>
+    </tr>
+    <tr>
+        <td>Drop Land Sound Volume</td>
+        <td>Volume of the drip sound played when a drop particle lands on the ground or in a fluid. Note, vanilla has sounds for dripstone drop particles and this config will not affect that.<br/>0 to disable</td>
+        <td>```1```</td>
+        <td>Float (`0` to `2`)</td>
+        <td>dropLandSoundVolume</td>
+    </tr>
+    <tr>
+        <td>Lava Spark Smoke</td>
+        <td></td>
+        <td>`true`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>lavaSparkSmoke</td>
+    </tr>
+    <tr>
+        <td>Sparks Scale</td>
+        <td></td>
+        <td>```1```</td>
+        <td>Float (`1` to `2`)</td>
+        <td>sparksScale</td>
+    </tr>
+    <tr>
+        <td>Popping Hearts</td>
+        <td>Should heart particles play a popping animation before disappearing</td>
+        <td>`true`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>poppingHearts</td>
+    </tr>
+    <tr>
+        <td>Popping Bubbles</td>
+        <td></td>
+        <td>`true`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>poppingBubbles</td>
+    </tr>
+    <tr>
+        <td>Popping Bubbles Volume</td>
+        <td></td>
+        <td>```0.2```</td>
+        <td>Float (`0` to `1`)</td>
+        <td>poppingBubblesVolume</td>
+    </tr>
+    <tr>
+        <td>Glowing Enchantment Particles</td>
+        <td></td>
+        <td>`true`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>glowingEnchantmentParticles</td>
+    </tr>
+    <tr>
+        <td>Translucent Enchantment Particles</td>
+        <td></td>
+        <td>`true`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>translucentEnchantmentParticles</td>
+    </tr>
+    <tr>
+        <td>Disable Randomized Shading</td>
+        <td>Disables the random shading applied to enchantment particles</td>
+        <td>`true`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>disableRandomizedShading</td>
+    </tr>
+    <tr>
+        <td>Potion Particle Alpha</td>
+        <td>Alpha transparency value for vanilla potion related particles</td>
+        <td>```0.7```</td>
+        <td>Float (`0.3` to `1`)</td>
+        <td>potionParticleAlpha</td>
+    </tr>
+    <tr>
+        <td>Potion Particle Alpha Near Player</td>
+        <td>Alpha transparency value for vanilla potion related particles when close to the player, helpful for making them less intrusive</td>
+        <td>```0.2```</td>
+        <td>Float (`0` to `1`)</td>
+        <td>potionParticleAlphaNearPlayer</td>
+    </tr>
+    <tr>
+        <td>Leaves Land On Ground</td>
+        <td></td>
+        <td>`true`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>leavesLandOnGround</td>
+    </tr>
+    <tr>
+        <td>Leaves Land On Water</td>
+        <td></td>
+        <td>```true```</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>leavesLandOnWater</td>
+    </tr>
+    <tr>
+        <td>Leaves Landing On Water Ripples</td>
+        <td>When leaves land on water they will cause a ripple particle</td>
+        <td>```true```</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>leavesLandingOnWaterRipples</td>
+    </tr>
+    <tr>
+        <td>Leaves Landing On Water Keep Momentum</td>
+        <td>When leaves land on water they will keep their some of their momentum</td>
+        <td>```true```</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>leavesLandingOnWaterKeepMomentum</td>
+    </tr>
+    <tr>
+        <td>Fallen Leaves Life Time</td>
+        <td>The amount of time in ticks that fallen leaves will stay on the ground/water before disappearing. Value will be somewhat randomized</td>
+        <td>```40```</td>
+        <td>Integer (`20` to `100`)</td>
+        <td>fallenLeavesLifeTime</td>
+    </tr>
+    <tr>
+        <td>Rain Increases Leaves Movement Speed</td>
+        <td>During rain and thunder storms leaves will have increased movement speed</td>
+        <td>`true`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>rainIncreasesLeavesMovementSpeed</td>
+    </tr>
+    <tr>
+        <td>Static Flame Brightness</td>
+        <td>Should flame particles always be full bright or should they dynamically change brightness based on age and light level</td>
+        <td>`true`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>staticFlameBrightness</td>
+    </tr>
+    <tr>
+        <td>Fire Overlay Height</td>
+        <td>The height on screen for the fire overlay.<br/>0 is the vanilla value</td>
+        <td>```-0.15```</td>
+        <td>Float (`-0.5` to `0.4`)</td>
+        <td>fireOverlayHeight</td>
+    </tr>
+    <tr>
+        <td>Fire Overlay Alpha</td>
+        <td>Alpha transparency of the fire overlay.<br/>0.9 is the vanilla value</td>
+        <td>```0.9```</td>
+        <td>Float (`0` to `1`)</td>
+        <td>fireOverlayAlpha</td>
+    </tr>
+    <tr>
+        <td>Fire Overlay Alpha With Fire Resistance</td>
+        <td>Alpha transparency of the fire overlay while the Fire Resistance effect is active.<br/>0.9 is the vanilla value</td>
+        <td>```0.4```</td>
+        <td>Float (`0` to `1`)</td>
+        <td>fireOverlayAlphaWithFireResistance</td>
+    </tr>
+    <tr>
+        <td>Mob Skull Shaders</td>
+        <td>Apply a mob's spectate shader when wearing its skull/head e.g Creeper head makes everything look green.<br/>No new shaders are added</td>
+        <td>`true`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>mobSkullShaders</td>
+    </tr>
+    <tr>
+        <td>Night Vision Fading</td>
+        <td>Night vision slowly fades out rather then flashing</td>
+        <td>```true```</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>nightVisionFading</td>
+    </tr>
+    <tr>
+        <td>Night Vision Fading Time</td>
+        <td>The length night vision fading in ticks</td>
+        <td>```100```</td>
+        <td>Integer (`10` to `200`)</td>
+        <td>nightVisionFadingTime</td>
+    </tr>
+    <tr>
+        <td>Enable Easter Eggs</td>
+        <td></td>
+        <td>`true`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>enableEasterEggs</td>
+    </tr>
+</table>
