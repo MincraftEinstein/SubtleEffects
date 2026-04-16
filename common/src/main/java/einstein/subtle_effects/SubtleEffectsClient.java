@@ -16,12 +16,14 @@ import einstein.subtle_effects.data.*;
 import einstein.subtle_effects.data.color_providers.ColorProviderType;
 import einstein.subtle_effects.init.*;
 import einstein.subtle_effects.mixin.client.particle.ParticleEngineAccessor;
+import einstein.subtle_effects.platform.Services;
 import einstein.subtle_effects.ticking.GeyserManager;
 import einstein.subtle_effects.ticking.biome_particles.BiomeParticleManager;
 import einstein.subtle_effects.ticking.tickers.ChestBlockEntityTicker;
 import einstein.subtle_effects.ticking.tickers.TickerManager;
 import einstein.subtle_effects.ticking.tickers.WaterfallTicker;
 import einstein.subtle_effects.ticking.tickers.entity.EntityTickerManager;
+import einstein.subtle_effects.util.ConfigDumpCommand;
 import einstein.subtle_effects.util.FrustumGetter;
 import einstein.subtle_effects.util.ParticleAccessor;
 import einstein.subtle_effects.util.Util;
@@ -210,10 +212,17 @@ public class SubtleEffectsClient {
         LiteralArgumentBuilder<T> tickers = LiteralArgumentBuilder.<T>literal("tickers")
                 .then(tickersClear);
 
+        LiteralArgumentBuilder<T> dumpConfigs = LiteralArgumentBuilder.<T>literal("dumb_configs")
+                .executes(context -> ConfigDumpCommand.execute(player));
+
         // SE Command
         LiteralArgumentBuilder<T> subtleEffects = LiteralArgumentBuilder.<T>literal("subtle_effects")
                 .then(particles)
                 .then(tickers);
+
+        if (Services.PLATFORM.isDevelopmentEnvironment()) {
+            subtleEffects.then(dumpConfigs);
+        }
 
         LiteralCommandNode<T> subtleEffectsNode = dispatcher.register(subtleEffects);
         dispatcher.register(LiteralArgumentBuilder.<T>literal("se").redirect(subtleEffectsNode));
@@ -239,7 +248,7 @@ public class SubtleEffectsClient {
         return Component.translatable("commands.subtle_effects." + string);
     }
 
-    private static void sendSystemMsg(Player player, Component component) {
+    public static void sendSystemMsg(Player player, Component component) {
         if (player != null) {
             player.sendSystemMessage(component);
         }

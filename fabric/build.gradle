@@ -32,6 +32,7 @@ dependencies {
     modCompileOnly "fuzs.neoforgedatapackextensions:neoforgedatapackextensions-fabric:${neoforgedatapackextensions_version}"
     modCompileOnly "fuzs.puzzleslib:puzzleslib-fabric:${puzzleslib_version}"
     include(implementation("com.moulberry:mixinconstraints:${mixin_constraints_version}"))
+    implementation("com.electronwill.night-config:toml:3.8.4")
 }
 
 loom {
