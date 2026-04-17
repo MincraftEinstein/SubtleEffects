@@ -1,0 +1,54 @@
+---
+title: Configuration Guide
+---
+
+This is meant to help with understanding the config files and pages.
+
+<Callout>
+    All configs can be configured through an in-game menu provided by [Fzzy Config](https://modrinth.com/mod/fzzy-config)
+    it is recommended to use the menu rather than manually changing config values through the files.
+</Callout>
+
+All configs are broken up into different categories,
+e.g., Blocks, Items, etc. Each category is a separate `.toml` file, located in the `/config/subtle_effects` folder of a
+game instance, and has a separate page within the "Configuration" folder of this wiki, that lists all configs stored inside
+the corresponding file.
+
+<Callout>
+    All configs are powered by [Fzzy Config](https://modrinth.com/mod/fzzy-config) which is a strictly validated
+    configuration library. Meaning there is no wiggle room for custom values through changing the config files, such as
+    setting number values above or below the maximum and minimum specified on the config pages.
+</Callout>
+
+## Page Layout
+At the top of every config page the corresponding file name is listed.
+Config pages are made up of tables, the first table, or top level table, is the primary table that configs are stored in.
+All other tables represent sections, or sub categories, of the primary category. Each of these section tables is labeled
+with the corresponding in-game name followed on the next line by label used within the config file itself.
+
+<Callout>
+    The collapsable config groups in menus is purely visual and does not affect how configs are saved or what tables they
+    are listed in on the config pages
+</Callout>
+
+## Custom Config Objects
+Below is an explanation of custom objects used as values for certain configs
+
+### Colors
+Colors are defined as an object containing three fields, `r`, `g`, and `b`. Each value represents the RGB values of
+the desired color and are in the 255 integer format
+
+**Example:** `{ r = 255, g = 0, b = 0 }`
+
+### Ingredients
+Ingredients are similar to tags, they contain a list of item and/or item tag IDs. They are defined as an object with a
+`type` and `value` field. The `type` field is a string and must be one of `"stack"`, `"stacks"`, or `"tag"`. If `"stack"`
+then the `value` is a string ID of an item. If `"tag"` then `value` is a string ID of an item tag, prefixed with a `#`.
+If `"stacks"` then `value` is a list that can contain both item and item tag string IDs.
+
+**Examples:**
+- `{ type = "stack", value = "minecraft:diamond"}`
+- `{ type = "tag", value = "#c:gems"}`
+- `{ type = "stacks", value = [ "minecraft:diamond", "minecraft:emerald" ] }`
+- `{ type = "stacks", value = [ "#c:gems/amethyst", "#c:gems/quartz" ] }`
+- `{ type = "stacks", value = [ "minecraft:diamond", "minecraft:emerald", "#c:gems/amethyst", "#c:gems/quartz" ] }`

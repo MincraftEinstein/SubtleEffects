@@ -38,8 +38,7 @@ public class ConfigDumpCommand {
         map.put("blocks.redstoneDustEmittingBlocks", blockList);
         map.put("blocks.glowstoneDustEmittingBlocks", blockList);
         map.put("blocks.amethystSparkleEmittingBlocks", blockList);
-        // TODO add links to where ever color objects and ingredient objects get explained
-        map.put("blocks.eyeColors", "A list of lists, each sublist must contain the String ID of an Eye of Ender either from vanilla or from End Remastered, and a color object");
+        map.put("blocks.eyeColors", "A list of lists, each sublist must contain the String ID of an Eye of Ender either from vanilla or from End Remastered, and a [Color](config_guide#colors) object");
         map.put("blocks.fallingBlocks.dustyBlocks", "A list containing any block String ID, however non falling blocks will not be affected in average gameplay. List can be empty");
         map.put("entities.humanoids.frostyBreath.additionalBiomes", biomeList);
         map.put("entities.burning.entityBlocklist", entityList);
@@ -55,8 +54,7 @@ public class ConfigDumpCommand {
         map.put("environment.fireflies.biomesAllowlist", biomeList);
         map.put("environment.fireflies.spawnableBlocks", "A list containing any block String ID, however solid blocks will be ignored. List can be empty");
         map.put("environment.fireflies.habitatBiomes", biomeList);
-        // TODO add links to where ever color objects and ingredient objects get explained
-        map.put("items.itemRarity.colorOverrides", "A list of lists, each sublist must contain an ingredient object and a color object");
+        map.put("items.itemRarity.colorOverrides", "A list of lists, each sublist must contain an [Ingredient](config_guide#ingredients) object and a [color](config_guide#colors) object");
     });
 
     public static int execute(Player player) {

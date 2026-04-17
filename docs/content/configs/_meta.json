@@ -1,4 +1,5 @@
 {
+  "config_guide.mdx": "Configuration Guide",
   "general.mdx": "General Configs",
   "blocks.mdx": "Block Configs",
   "entities.mdx": "Entity Configs",
