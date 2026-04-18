@@ -29,6 +29,29 @@ import java.util.Map;
 
 public class ConfigDumpCommand {
 
+    private static final Map<String, String> MANUAL_DEFAULT_VALUES = Util.make(new HashMap<>(), map -> {
+        map.put("general.particleCullingBlocklist", "`[ ]` or if Particle Rain is installed `[ \"particlerain:mist\" ]`");
+        map.put("blocks.eyeColors", "`[ [ minecraft:ender_eye, { r = 122, g = 186, b = 171 } ] ]`" +
+                "<br/>or if End Remastered is installed<br/>```[" +
+                "[\"minecraft:ender_eye\",{r=122,g=186,b=171}]," +
+                "[\"endrem:evil_eye\",{r=74,g=59,b=200}]," +
+                "[\"endrem:nether_eye\",{r=107,g=72,b=46}]," +
+                "[\"endrem:undead_eye\",{r=192,g=213,b=197}]," +
+                "[\"endrem:rogue_eye\",{r=15,g=234,b=85}]," +
+                "[\"endrem:cursed_eye\",{r=60,g=13,b=106}]," +
+                "[\"endrem:magical_eye\",{r=0,g=124,b=134}]," +
+                "[\"endrem:witch_eye\",{r=194,g=141,b=204}]," +
+                "[\"endrem:cold_eye\",{r=64,g=181,b=192}]," +
+                "[\"endrem:wither_eye\",{r=197,g=207,b=229}]," +
+                "[\"endrem:exotic_eye\",{r=185,g=236,b=247}]," +
+                "[\"endrem:guardian_eye\",{r=220,g=140,b=140}]," +
+                "[\"endrem:lost_eye\",{r=166,g=8,b=40}]," +
+                "[\"endrem:old_eye\",{r=203,g=154,b=24}]," +
+                "[\"endrem:cryptic_eye\",{r=183,g=228,b=90}]," +
+                "[\"endrem:corrupted_eye\",{r=87,g=95,b=91}]," +
+                "[\"endrem:black_eye\",{r=2,g=12,b=38}]]```");
+        map.put("environment.fireflies.dimensionBlocklist", "`[ ]` or if TwilightForest is installed `[ \"twilightforest:twilight_forest_type\" ]`");
+    });
     private static final Map<String, String> MANUAL_ALLOWED_VALUES = Util.make(new HashMap<>(), map -> {
         String blockList = "A list containing any block String ID. List can be empty";
         String entityList = "A list containing any entity String ID. List can be empty";
@@ -91,30 +114,30 @@ public class ConfigDumpCommand {
         CommentedConfig commentedConfig = new TomlParser().parse(configPath.resolve(configName + ".toml"), FileNotFoundAction.THROW_ERROR, StandardCharsets.UTF_8);
         StringBuilder builder = new StringBuilder()
                 .append("---")
-                .append("\ntitle: ").append(getName(configName))
+                .append("\ntitle: ").append(getPageTitle(configName))
                 .append("\n---")
-                .append("\n\n**File name:** `").append(configName).append(".toml`");
+                .append("\n\n**File name:** `").append(configName).append(".toml`")
+                .append("\n\n## Main");
 
         List<Field> sections = new ArrayList<>();
         createTable(builder, () -> fillTableRows(config, configClass, commentedConfig, sections, configName, builder));
 
-        printSections(configName, config, sections, builder, commentedConfig);
+        printSections(configName, config, sections, builder, commentedConfig, 2);
         Files.writeString(filePath, builder, StandardCharsets.UTF_8);
     }
 
-    private static void printSections(String path, Object instance, List<Field> sections, StringBuilder builder, CommentedConfig commentedConfig) throws Exception {
+    private static void printSections(String path, Object instance, List<Field> sections, StringBuilder builder, CommentedConfig commentedConfig, int depth) throws Exception {
         for (Field section : sections) {
             Object fieldValue = section.get(instance);
             String sectionName = section.getName();
             String sectionPath = path + "." + sectionName;
+            CommentedConfig sectionConfig = commentedConfig.get(sectionName);
+            List<Field> subSections = new ArrayList<>();
 
-            builder.append("\n### ").append(getName(sectionPath));
-            createTable(builder, () -> {
-                List<Field> subSections = new ArrayList<>();
-                CommentedConfig sectionConfig = commentedConfig.get(sectionName);
-                fillTableRows(fieldValue, fieldValue.getClass(), sectionConfig, subSections, sectionPath, builder);
-                printSections(sectionPath, fieldValue, subSections, builder, sectionConfig);
-            });
+            builder.append("\n").repeat("#", Math.min(depth, 6)).append(" ").append(getName(sectionPath))
+                    .append("\n**Section ID:** `").append(sectionPath.substring(sectionPath.indexOf(".") + 1)).append("`");
+            createTable(builder, () -> fillTableRows(fieldValue, fieldValue.getClass(), sectionConfig, subSections, sectionPath, builder));
+            printSections(sectionPath, fieldValue, subSections, builder, sectionConfig, depth + 1);
         }
     }
 
@@ -156,6 +179,10 @@ public class ConfigDumpCommand {
 
     @SuppressWarnings({"unchecked", "rawtypes"})
     private static String getDefaultValue(Object object, String path) {
+        if (MANUAL_DEFAULT_VALUES.containsKey(path)) {
+            return MANUAL_DEFAULT_VALUES.get(path);
+        }
+
         if (object instanceof ValidatedField validated) {
             return "```" + removeTrailingDecimal(validated.serialize(validated.getDefault()).get().toString()) + "```";
         }
@@ -168,6 +195,10 @@ public class ConfigDumpCommand {
     }
 
     private static String getAllowedValues(Object object, String path) throws Exception {
+        if (MANUAL_ALLOWED_VALUES.containsKey(path)) {
+            return MANUAL_ALLOWED_VALUES.get(path);
+        }
+
         Class<?> clazz = object.getClass();
         Class<?> superclass = clazz.getSuperclass();
 
@@ -205,9 +236,6 @@ public class ConfigDumpCommand {
             enumList.append("</ul>");
             return enumList.toString();
         }
-        else if (MANUAL_ALLOWED_VALUES.containsKey(path)) {
-            return MANUAL_ALLOWED_VALUES.get(path);
-        }
 
         SubtleEffects.LOGGER.warn("Unknown config type for allowed values: {}", path);
         return object.toString();
@@ -238,6 +266,7 @@ public class ConfigDumpCommand {
     private static String getDescription(String path) {
         String descPath = path + ".desc";
         String s = getTranslation(descPath);
+
         if (s.equals(ModConfigs.BASE_KEY + descPath) || s.isBlank()) {
             return "";
         }
@@ -248,6 +277,19 @@ public class ConfigDumpCommand {
             s = s.substring(0, i) + s.substring(i + 2);
         }
         return s;
+    }
+
+    private static String getPageTitle(String configName) {
+        String s = getName(configName);
+        int length = s.length();
+
+        if (s.endsWith("ies")) {
+            s = s.substring(0, length - 3) + "y";
+        }
+        else if (s.endsWith("s")) {
+            s = s.substring(0, length - 1);
+        }
+        return s + " Configs";
     }
 
     private static String getName(String path) {

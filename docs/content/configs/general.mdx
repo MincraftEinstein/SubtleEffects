@@ -1,8 +1,10 @@
 ---
-title: General
+title: General Configs
 ---
 
 **File name:** `general.toml`
+
+ ## Main
 
 <table>
     <tr>
@@ -29,7 +31,7 @@ title: General
     <tr>
         <td>Particle Culling Blocklist</td>
         <td>List of particles that will not be culled by the particle culling system. <br/>This list should be kept at a minimum and used mainly for particles that break when culled.<br/>Particles already spawned in a world will not be affected by changes to this config</td>
-        <td>```[  ]```</td>
+        <td>`[ ]` or if Particle Rain is installed `[ "particlerain:mist" ]`</td>
         <td>A list containing any particle String ID. List can be empty</td>
         <td>particleCullingBlocklist</td>
     </tr>
