@@ -10,7 +10,6 @@
     "client.FluidTypeMixin",
     "client.ModListScreenMixin",
     "client.NeoForgeClientEntityMixin",
-    "client.NeoForgeClientEntityMixin$InterimCalculationMixin",
     "client.NeoForgeMultiPlayerGameModeMixin",
     "client.NeoForgeParticleEngineMixin",
     "client.NeoForgeSpawnEggItemAccessor"
