@@ -12,9 +12,11 @@ import einstein.subtle_effects.util.InterimCalculationAccessor;
 import it.unimi.dsi.fastutil.objects.Object2DoubleArrayMap;
 import it.unimi.dsi.fastutil.objects.Object2DoubleMap;
 import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.animal.SnowGolem;
 import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
 import net.neoforged.neoforge.fluids.FluidType;
 import org.spongepowered.asm.mixin.Mixin;
@@ -30,6 +32,8 @@ import java.util.Map;
 @Mixin(Entity.class)
 public abstract class NeoForgeClientEntityMixin implements FluidLogicAccessor {
 
+    @Shadow
+    protected Object2DoubleMap<FluidType> forgeFluidTypeHeight;
     @Unique
     private final Object2DoubleMap<FluidDefinition> subtleEffects$fluidPairHeight = new Object2DoubleArrayMap<>();
 
@@ -60,20 +64,19 @@ public abstract class NeoForgeClientEntityMixin implements FluidLogicAccessor {
         fluidPairsRef.set(fluidTypePairs);
     }
 
-    @Inject(method = "updateFluidHeightAndDoFluidPushing()V", at = @At(value = "INVOKE", target = "Lit/unimi/dsi/fastutil/objects/Object2ObjectMap;forEach(Ljava/util/function/BiConsumer;)V", remap = false))
-    private void updateFluidPairHeight(CallbackInfo ci, @Local Object2ObjectMap<FluidType, Object> interimCalcs, @Share("fluidPairs") LocalRef<Map<FluidType, FluidDefinition>> fluidPairsRef) {
-        interimCalcs.forEach((type, interim) -> {
-            FluidDefinition fluidDefinition = fluidPairsRef.get().get(type);
-
+    @Inject(method = "updateFluidHeightAndDoFluidPushing()V", at = @At("TAIL"))
+    private void updateFluidPairHeight(CallbackInfo ci, @Share("fluidPairs") LocalRef<Map<FluidType, FluidDefinition>> fluidPairsRef) {
+        for (Object2DoubleMap.Entry<FluidType> entry : this.forgeFluidTypeHeight.object2DoubleEntrySet()) {
+            FluidDefinition fluidDefinition = fluidPairsRef.get().get(entry.getKey());
             if (fluidDefinition != null) {
-                subtleEffects$fluidPairHeight.put(fluidDefinition, ((InterimCalculationAccessor) interim).subtleEffects$getFluidHeight());
+                subtleEffects$fluidPairHeight.put(fluidDefinition, entry.getDoubleValue());
             }
-        });
+        }
     }
 
     @Override
     public Object2DoubleMap<FluidDefinition> subtleEffects$getFluidDefinitionHeight() {
-        return subtleEffects$fluidPairHeight;
+        return this.subtleEffects$fluidPairHeight;
     }
 
     // For some reason using an actual mixin accessor didn't work, idk why
