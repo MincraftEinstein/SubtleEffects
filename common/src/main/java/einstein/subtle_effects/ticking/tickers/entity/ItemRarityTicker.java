@@ -42,7 +42,7 @@ public class ItemRarityTicker extends EntityTicker<ItemEntity> {
         getItemNameColors();
 
         if (isCommon) {
-            if (ITEMS.itemRarity.particlesDisplayType == ItemRarityConfigs.DisplayType.NOT_COMMON) {
+            if (ITEMS.itemRarity.particlesDisplayType.get() == ItemRarityConfigs.DisplayType.NOT_COMMON) {
                 if (nameColors.size() == 1 && nameColors.get(0).equals(WHITE_TEXT)) {
                     nameColors.clear();
                 }
@@ -55,23 +55,23 @@ public class ItemRarityTicker extends EntityTicker<ItemEntity> {
             return;
         }
 
-        if (!ITEMS.itemRarity.colorOverrides.isEmpty()) {
-            for (Map.Entry<ValidatedIngredient.IngredientProvider, ValidatedColor.ColorHolder> entry : ITEMS.itemRarity.colorOverrides.entrySet()) {
+        if (!ITEMS.itemRarity.colorOverrides.get().isEmpty()) {
+            for (Map.Entry<ValidatedIngredient.IngredientProvider, ? extends ValidatedColor.ColorHolder> entry : ITEMS.itemRarity.colorOverrides.get().entrySet()) {
                 if (entry.getKey().provide().test(stack)) {
                     nameColors.add(TextColor.fromRgb(entry.getValue().argb()));
 
-                    if (!ITEMS.itemRarity.mixedColorName) {
+                    if (!ITEMS.itemRarity.mixedColorName.get()) {
                         break;
                     }
                 }
             }
 
-            if (ITEMS.itemRarity.particleColorType == ItemRarityConfigs.ParticleColorType.ONLY_COLOR_OVERRIDES) {
+            if (ITEMS.itemRarity.particleColorType.get() == ItemRarityConfigs.ParticleColorType.ONLY_COLOR_OVERRIDES) {
                 return;
             }
         }
 
-        if (ITEMS.itemRarity.particleColorType == ItemRarityConfigs.ParticleColorType.NAME_COLOR) {
+        if (ITEMS.itemRarity.particleColorType.get() == ItemRarityConfigs.ParticleColorType.NAME_COLOR) {
             Component hoverName = stack.getHoverName();
             TextColor baseColor = hoverName.getStyle().getColor();
             List<TextColor> colors = new ArrayList<>(hoverName.getSiblings().stream().map(component -> component.getStyle().getColor()).filter(Objects::nonNull).toList());
@@ -80,7 +80,7 @@ public class ItemRarityTicker extends EntityTicker<ItemEntity> {
             TextColor dispColor = displayName.getStyle().getColor();
             if (baseColor == null && dispColor != null && !dispColor.equals(WHITE_TEXT)) baseColor = dispColor;
 
-            boolean usesSingleColor = colors.isEmpty() || !ITEMS.itemRarity.mixedColorName; // isEmpty needs to be stored before adding the baseColor to the 'colors' list
+            boolean usesSingleColor = colors.isEmpty() || !ITEMS.itemRarity.mixedColorName.get(); // isEmpty needs to be stored before adding the baseColor to the 'colors' list
 
             if (baseColor != null) {
                 colors.add(baseColor);
@@ -99,7 +99,7 @@ public class ItemRarityTicker extends EntityTicker<ItemEntity> {
             }
         }
 
-        if (ITEMS.itemRarity.useItemBorder && CompatHelper.IS_ITEM_BORDERS_LOADED.get()) {
+        if (ITEMS.itemRarity.useItemBorder.get() && CompatHelper.IS_ITEM_BORDERS_LOADED.get()) {
             TextColor borderColor = ItemBordersCompat.getManualBorderColor(stack);
             if (borderColor != null) {
                 nameColors.add(borderColor);

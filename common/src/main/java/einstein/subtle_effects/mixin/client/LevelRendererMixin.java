@@ -103,7 +103,7 @@ public abstract class LevelRendererMixin implements FrustumGetter {
 
     @WrapOperation(method = "tickRain", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/multiplayer/ClientLevel;addParticle(Lnet/minecraft/core/particles/ParticleOptions;DDDDDD)V"))
     private void modifyCauldronRippleParticlePos(ClientLevel level, ParticleOptions options, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, Operation<Void> original, @Local BlockState state, @Local FluidState fluidState, @Local RandomSource random, @Local(ordinal = 1) BlockPos pos) {
-        if (BLOCKS.rainWaterRipples) {
+        if (BLOCKS.rainWaterRipples.get()) {
             boolean isCauldron = state.is(Blocks.WATER_CAULDRON);
 
             if ((fluidState.is(FluidTags.WATER) || isCauldron)) {
@@ -250,13 +250,13 @@ public abstract class LevelRendererMixin implements FrustumGetter {
         RandomSource random = level.getRandom();
 
         if (type == LevelEvent.PARTICLES_SCRAPE) {
-            if (ModConfigs.ITEMS.axeScrapeParticlesDisplayType != ReplacedParticlesDisplayType.DEFAULT) {
+            if (ModConfigs.ITEMS.axeScrapeParticlesDisplayType.get() != ReplacedParticlesDisplayType.DEFAULT) {
                 subtleEffects$spawnCopperParticles(level, pos, count, state, random);
             }
             return;
         }
         else if (type == LevelEvent.PARTICLES_WAX_OFF) {
-            if (ModConfigs.ITEMS.axeWaxOffParticlesDisplayType != ReplacedParticlesDisplayType.DEFAULT) {
+            if (ModConfigs.ITEMS.axeWaxOffParticlesDisplayType.get() != ReplacedParticlesDisplayType.DEFAULT) {
                 subtleEffects$spawnCopperParticles(level, pos, count, state, random);
             }
             return;
@@ -281,7 +281,7 @@ public abstract class LevelRendererMixin implements FrustumGetter {
     @WrapWithCondition(method = "levelEvent", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/multiplayer/ClientLevel;addParticle(Lnet/minecraft/core/particles/ParticleOptions;DDDDDD)V"))
     private boolean shouldSpawnEndPortalFrameSmoke(ClientLevel level, ParticleOptions options, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, @Local(argsOnly = true, ordinal = 0) int type) {
         if (type == LevelEvent.END_PORTAL_FRAME_FILL) {
-            return BLOCKS.enderEyePlacedParticlesDisplayType != ModBlockConfigs.EnderEyePlacedParticlesDisplayType.DOTS;
+            return BLOCKS.enderEyePlacedParticlesDisplayType.get() != ModBlockConfigs.EnderEyePlacedParticlesDisplayType.DOTS;
         }
         return true;
     }

@@ -39,6 +39,7 @@
     "client.block.entity.CampfireBlockEntityMixin",
     "client.block.entity.ChestBlockEntityMixin",
     "client.block.entity.EnderChestBlockEntityMixin",
+    "client.block.entity.LootrChestBlockEntityMixin",
     "client.entity.AbstractHorseAccessor",
     "client.entity.AbstractMinecartMixin",
     "client.entity.AreaEffectCloudMixin",
@@ -111,5 +112,6 @@
   ],
   "injectors": {
     "defaultRequire": 1
-  }
+  },
+  "plugin": "com.moulberry.mixinconstraints.ConstraintsMixinPlugin"
 }

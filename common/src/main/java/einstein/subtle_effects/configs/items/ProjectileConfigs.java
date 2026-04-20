@@ -5,6 +5,8 @@ import einstein.subtle_effects.init.ModConfigs;
 import me.fzzyhmstrs.fzzy_config.annotations.Translation;
 import me.fzzyhmstrs.fzzy_config.config.ConfigGroup;
 import me.fzzyhmstrs.fzzy_config.config.ConfigSection;
+import me.fzzyhmstrs.fzzy_config.validation.misc.ValidatedCondition;
+import me.fzzyhmstrs.fzzy_config.validation.misc.ValidatedEnum;
 import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedDouble;
 import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedFloat;
 import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedInt;
@@ -13,8 +15,9 @@ import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedInt;
 public class ProjectileConfigs extends ConfigSection {
 
     public ValidatedFloat enderPearlTrailDensity = new ValidatedFloat(0.5F, 1, 0);
-    public ReplacedParticlesDisplayType xpBottleParticlesDisplayType = ReplacedParticlesDisplayType.DEFAULT;
-    public ValidatedInt xpBottleParticlesDensity = new ValidatedInt(10, 200, 5);
+    public ValidatedEnum<ReplacedParticlesDisplayType> xpBottleParticlesDisplayType = new ValidatedEnum<>(ReplacedParticlesDisplayType.DEFAULT);
+    public ValidatedCondition<Integer> xpBottleParticlesDensity = ModConfigs.conditional(new ValidatedInt(10, 200, 5),
+            xpBottleParticlesDisplayType, ReplacedParticlesDisplayType.VANILLA);
     public ValidatedFloat eggSmashSoundVolume = new ValidatedFloat(0.5F, 1, 0);
     public boolean eggSplatParticles = true;
     public ConfigGroup snowballGroup = new ConfigGroup("snowball");

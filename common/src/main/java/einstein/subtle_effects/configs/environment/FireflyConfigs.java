@@ -9,6 +9,9 @@ import me.fzzyhmstrs.fzzy_config.config.ConfigSection;
 import me.fzzyhmstrs.fzzy_config.util.EnumTranslatable;
 import me.fzzyhmstrs.fzzy_config.validation.collection.ValidatedList;
 import me.fzzyhmstrs.fzzy_config.validation.minecraft.ValidatedRegistryType;
+import me.fzzyhmstrs.fzzy_config.validation.misc.ValidatedBoolean;
+import me.fzzyhmstrs.fzzy_config.validation.misc.ValidatedCondition;
+import me.fzzyhmstrs.fzzy_config.validation.misc.ValidatedEnum;
 import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedFloat;
 import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedInt;
 import net.minecraft.Util;
@@ -25,6 +28,7 @@ import java.util.List;
 import java.util.function.Supplier;
 
 import static einstein.subtle_effects.init.ModConfigs.biomeList;
+import static einstein.subtle_effects.init.ModConfigs.conditional;
 
 @Translation(prefix = ModConfigs.BASE_KEY + "environment.fireflies")
 public class FireflyConfigs extends ConfigSection {
@@ -55,21 +59,21 @@ public class FireflyConfigs extends ConfigSection {
         dimensions.add(new ResourceLocation("twilightforest", "twilight_forest_type"));
     });
 
-    public boolean firefliesEnabled = true;
-    public ValidatedList<ResourceLocation> dimensionBlocklist = ModConfigs.registryList(Registries.DIMENSION_TYPE, DEFAULT_BLOCKED_DIMENSIONS);
-    public ValidatedList<ResourceLocation> biomesBlocklist = biomeList();
-    public ValidatedList<ResourceLocation> biomesAllowlist = biomeList("lush_caves");
-    public ValidatedList<Block> spawnableBlocks = ValidatedRegistryType.of(BuiltInRegistries.BLOCK).toList(DEFAULT_SPAWNABLE_BLOCKS);
-    public ValidatedInt defaultDensity = new ValidatedInt(3, 10, 1);
-    public ColdSeasonsType ignoredSeasons = ColdSeasonsType.DEFAULT;
-    public FireflyType fireflyType = FireflyType.ORIGINAL;
+    public ValidatedBoolean firefliesEnabled = new ValidatedBoolean();
+    public ValidatedCondition<List<? extends ResourceLocation>> dimensionBlocklist = conditional(ModConfigs.registryList(Registries.DIMENSION_TYPE, DEFAULT_BLOCKED_DIMENSIONS), firefliesEnabled);
+    public ValidatedCondition<List<? extends ResourceLocation>> biomesBlocklist = conditional(biomeList(), firefliesEnabled);
+    public ValidatedCondition<List<? extends ResourceLocation>> biomesAllowlist = conditional(biomeList("lush_caves"), firefliesEnabled);
+    public ValidatedCondition<List<? extends Block>> spawnableBlocks = conditional(ValidatedRegistryType.of(BuiltInRegistries.BLOCK).toList(DEFAULT_SPAWNABLE_BLOCKS), firefliesEnabled);
+    public ValidatedCondition<Integer> defaultDensity = conditional(new ValidatedInt(3, 10, 1), firefliesEnabled);
+    public ValidatedCondition<ColdSeasonsType> ignoredSeasons = conditional(new ValidatedEnum<>(ColdSeasonsType.DEFAULT), firefliesEnabled);
+    public ValidatedCondition<FireflyType> fireflyType = conditional(new ValidatedEnum<>(FireflyType.ORIGINAL), firefliesEnabled);
     public ValidatedFloat fireflySoundVolume = new ValidatedFloat(1, 2, 0);
 
     public ConfigGroup habitatBiomesGroup = new ConfigGroup("habitat_biomes");
-    public boolean onlyAllowInHabitatBiomes = false;
-    public ValidatedList<ResourceLocation> habitatBiomes = biomeList("swamp", "mangrove_swamp");
+    public ValidatedCondition<Boolean> onlyAllowInHabitatBiomes = conditional(new ValidatedBoolean(), firefliesEnabled);
+    public ValidatedCondition<List<? extends ResourceLocation>> habitatBiomes = conditional(biomeList("swamp", "mangrove_swamp"), firefliesEnabled);
     @ConfigGroup.Pop
-    public ValidatedInt habitatBiomeDensity = new ValidatedInt(3, 10, 1);
+    public ValidatedCondition<Integer> habitatBiomeDensity = conditional(new ValidatedInt(3, 10, 1), firefliesEnabled);
 
     public enum FireflyType implements EnumTranslatable {
         ORIGINAL(() -> ModParticles.FIREFLY),

@@ -94,7 +94,7 @@ public class ChestBlockEntityTicker extends BlockPosTicker {
             return;
         }
 
-        if (BLOCKS.randomChestOpeningNeedsSoulSand) {
+        if (BLOCKS.randomChestOpeningNeedsSoulSand.get()) {
             if (isNotUpwardsBubbleColumn(level, pos) || (isDoubleChest && isNotUpwardsBubbleColumn(level, oppositePos))) {
                 return;
             }

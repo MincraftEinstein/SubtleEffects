@@ -24,7 +24,7 @@ public class EndRemasteredCompat {
 
     public static void init() {
         ModBlockTickers.REGISTERED_SPECIAL.put(state -> state.is(BuiltInRegistries.BLOCK.get(CompatHelper.endRemLoc("ancient_portal_frame"))), (state, level, pos, random) -> {
-            if (BLOCKS.endPortalFrameParticlesDisplayType == ModBlockConfigs.EndPortalFrameParticlesDisplayType.OFF) {
+            if (BLOCKS.endPortalFrameParticlesDisplayType.get() == ModBlockConfigs.EndPortalFrameParticlesDisplayType.OFF) {
                 return;
             }
 
@@ -33,7 +33,7 @@ public class EndRemasteredCompat {
                     return;
                 }
 
-                ParticleSpawnUtil.spawnEndPortalParticles(level, pos, random, BLOCKS.endPortalFrameParticlesDisplayType.particle.apply(level, pos), BLOCKS.endPortalFrameParticlesDisplayType.count);
+                ParticleSpawnUtil.spawnEndPortalParticles(level, pos, random, BLOCKS.endPortalFrameParticlesDisplayType.get().particle.apply(level, pos), BLOCKS.endPortalFrameParticlesDisplayType.get().count);
             }
         });
     }
@@ -44,7 +44,7 @@ public class EndRemasteredCompat {
         if (state.hasProperty(AncientPortalFrame.EYE)) {
             ERFrameProperties eyeType = state.getValue(AncientPortalFrame.EYE);
             if (eyeType != ERFrameProperties.EMPTY) {
-                return ModConfigs.BLOCKS.eyeColors.get(endRemLoc(eyeType.getSerializedName()));
+                return ModConfigs.BLOCKS.eyeColors.get().get(endRemLoc(eyeType.getSerializedName()));
             }
         }
         return null;

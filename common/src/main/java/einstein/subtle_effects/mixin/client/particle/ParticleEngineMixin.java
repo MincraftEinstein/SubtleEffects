@@ -27,7 +27,7 @@ public class ParticleEngineMixin {
     @Inject(method = "createParticle", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/particle/ParticleEngine;add(Lnet/minecraft/client/particle/Particle;)V"))
     private void modifyParticle(ParticleOptions options, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, CallbackInfoReturnable<Particle> cir, @Local Particle particle) {
         ParticleType<?> type = options.getType();
-        if (ModConfigs.GENERAL.particleCullingBlocklist.contains(type)) {
+        if (ModConfigs.GENERAL.particleCullingBlocklist.get().contains(type)) {
             ((ParticleAccessor) particle).subtleEffects$ignoresCulling();
         }
 

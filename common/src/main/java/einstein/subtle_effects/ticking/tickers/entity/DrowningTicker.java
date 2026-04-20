@@ -24,7 +24,7 @@ public class DrowningTicker extends EntityTicker<LivingEntity> {
 
         Minecraft minecraft = Minecraft.getInstance();
         if (entity instanceof Player player) {
-            if (player.equals(minecraft.player) && !ENTITIES.humanoids.drowningBubblesDisplayType.test(minecraft)) {
+            if (player.equals(minecraft.player) && !ENTITIES.humanoids.drowningBubblesDisplayType.get().test(minecraft)) {
                 return;
             }
 

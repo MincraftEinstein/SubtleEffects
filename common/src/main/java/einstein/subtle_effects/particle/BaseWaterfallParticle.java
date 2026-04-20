@@ -21,7 +21,7 @@ public abstract class BaseWaterfallParticle extends TextureSheetParticle {
         alpha = lifetimeAlpha.startAlpha();
         pos = BlockPos.containing(x, y, z).mutable();
 
-        if (ModConfigs.ENVIRONMENT.waterfalls.randomizeWaterfallParticleRotation) {
+        if (ModConfigs.ENVIRONMENT.waterfalls.randomizeWaterfallParticleRotation.get()) {
             roll = random.nextInt();
             oRoll = roll;
         }

@@ -182,7 +182,7 @@ public class Util {
             }
         }
 
-        ValidatedColor.ColorHolder vanillaColor = BLOCKS.eyeColors.get(VANILLA_EYE);
+        ValidatedColor.ColorHolder vanillaColor = BLOCKS.eyeColors.get().get(VANILLA_EYE);
         if (vanillaColor != null) {
             return vanillaColor;
         }

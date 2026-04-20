@@ -19,11 +19,13 @@ import me.fzzyhmstrs.fzzy_config.config.Config;
 import me.fzzyhmstrs.fzzy_config.config.ConfigGroup;
 import me.fzzyhmstrs.fzzy_config.util.AllowableIdentifiers;
 import me.fzzyhmstrs.fzzy_config.util.EnumTranslatable;
-import me.fzzyhmstrs.fzzy_config.validation.collection.ValidatedList;
 import me.fzzyhmstrs.fzzy_config.validation.collection.ValidatedMap;
 import me.fzzyhmstrs.fzzy_config.validation.minecraft.ValidatedIdentifier;
 import me.fzzyhmstrs.fzzy_config.validation.minecraft.ValidatedRegistryType;
+import me.fzzyhmstrs.fzzy_config.validation.misc.ValidatedBoolean;
 import me.fzzyhmstrs.fzzy_config.validation.misc.ValidatedColor;
+import me.fzzyhmstrs.fzzy_config.validation.misc.ValidatedCondition;
+import me.fzzyhmstrs.fzzy_config.validation.misc.ValidatedEnum;
 import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedDouble;
 import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedFloat;
 import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedInt;
@@ -46,6 +48,7 @@ import java.util.Map;
 import java.util.function.BiFunction;
 
 import static einstein.subtle_effects.init.ModConfigs.BASE_KEY;
+import static einstein.subtle_effects.init.ModConfigs.conditional;
 import static einstein.subtle_effects.util.Util.VANILLA_EYE;
 
 @Translation(prefix = ModConfigs.BASE_KEY + "blocks")
@@ -65,14 +68,19 @@ public class ModBlockConfigs extends Config {
     public FallingBlocksConfigs fallingBlocks = new FallingBlocksConfigs();
 
     public ConfigGroup dustyBlocksGroup = new ConfigGroup("dusty_blocks");
-    public boolean redstoneBlockDust = true;
-    public BlockDustDensity redstoneBlockDustDensity = BlockDustDensity.DEFAULT;
-    public ValidatedList<Block> redstoneDustEmittingBlocks = ValidatedRegistryType.of(BuiltInRegistries.BLOCK).toList(List.of(Blocks.REDSTONE_BLOCK));
-    public boolean glowstoneBlockDust = true;
-    public BlockDustDensity glowstoneBlockDustDensity = BlockDustDensity.DEFAULT;
-    public ValidatedList<Block> glowstoneDustEmittingBlocks = ValidatedRegistryType.of(BuiltInRegistries.BLOCK).toList(List.of(Blocks.GLOWSTONE));
+    public ValidatedBoolean redstoneBlockDust = new ValidatedBoolean();
+    public ValidatedCondition<BlockDustDensity> redstoneBlockDustDensity
+            = conditional(new ValidatedEnum<>(BlockDustDensity.DEFAULT), redstoneBlockDust);
+    public ValidatedCondition<List<? extends Block>> redstoneDustEmittingBlocks =
+            conditional(ValidatedRegistryType.of(BuiltInRegistries.BLOCK).toList(List.of(Blocks.REDSTONE_BLOCK)), redstoneBlockDust);
+    public ValidatedBoolean glowstoneBlockDust = new ValidatedBoolean();
+    public ValidatedCondition<BlockDustDensity> glowstoneBlockDustDensity =
+            conditional(new ValidatedEnum<>(BlockDustDensity.class), glowstoneBlockDust);
+    public ValidatedCondition<List<? extends Block>> glowstoneDustEmittingBlocks =
+            conditional(ValidatedRegistryType.of(BuiltInRegistries.BLOCK).toList(List.of(Blocks.GLOWSTONE)), glowstoneBlockDust);
     @ConfigGroup.Pop
-    public boolean netherOnlyGlowstoneBlockDust = false;
+    public ValidatedCondition<Boolean> netherOnlyGlowstoneBlockDust =
+            conditional(new ValidatedBoolean(false), glowstoneBlockDust);
     public boolean beehivesHaveSleepingZs = true;
     public SmokeType torchflowerSmoke = SmokeType.DEFAULT;
     public boolean torchflowerFlames = true;
@@ -92,14 +100,17 @@ public class ModBlockConfigs extends Config {
     @ConfigGroup.Pop
     public boolean compostingItemParticles = true;
 
-    public CommandBlockSpawnType commandBlockParticles = CommandBlockSpawnType.ON;
-    public ValidatedDouble commandBlockParticlesDensity = new ValidatedDouble(1, 1, 0.1);
+    public ValidatedEnum<CommandBlockSpawnType> commandBlockParticles = new ValidatedEnum<>(CommandBlockSpawnType.ON);
+    public ValidatedCondition<Double> commandBlockParticlesDensity = conditional(new ValidatedDouble(1, 1, 0.1),
+            commandBlockParticles, CommandBlockSpawnType.OFF);
     public boolean slimeBlockBounceSounds = true;
     public ConfigGroup beaconParticlesGroup = new ConfigGroup("beacon_particles");
-    public BeaconParticlesDisplayType beaconParticlesDisplayType = BeaconParticlesDisplayType.ON;
-    public ValidatedInt beaconParticlesDensity = new ValidatedInt(10, 20, 1);
+    public ValidatedEnum<BeaconParticlesDisplayType> beaconParticlesDisplayType = new ValidatedEnum<>(BeaconParticlesDisplayType.ON);
+    public ValidatedCondition<Integer> beaconParticlesDensity = conditional(new ValidatedInt(10, 20, 1),
+            beaconParticlesDisplayType, BeaconParticlesDisplayType.OFF);
     @ConfigGroup.Pop
-    public ValidatedFloat beaconParticlesSpeed = new ValidatedFloat(1, 2, 0.5F);
+    public ValidatedCondition<Float> beaconParticlesSpeed = conditional(new ValidatedFloat(1, 2, 0.5F),
+            beaconParticlesDisplayType, BeaconParticlesDisplayType.OFF);
     public boolean respawnAnchorParticles = true;
     public boolean beehiveShearParticles = true;
     public boolean endPortalParticles = true;
@@ -107,8 +118,10 @@ public class ModBlockConfigs extends Config {
     public boolean farmlandDestroyEffects = true;
 
     public ConfigGroup amethystGroup = new ConfigGroup("amethyst");
-    public AmethystSparkleDisplayType amethystSparkleDisplayType = AmethystSparkleDisplayType.ON;
-    public ValidatedList<Block> amethystSparkleEmittingBlocks = ValidatedRegistryType.of(BuiltInRegistries.BLOCK).toList(List.of(Blocks.AMETHYST_BLOCK, Blocks.BUDDING_AMETHYST));
+    public ValidatedEnum<AmethystSparkleDisplayType> amethystSparkleDisplayType = new ValidatedEnum<>(AmethystSparkleDisplayType.ON);
+    public ValidatedCondition<List<? extends Block>> amethystSparkleEmittingBlocks =
+            conditional(ValidatedRegistryType.of(BuiltInRegistries.BLOCK).toList(List.of(Blocks.AMETHYST_BLOCK, Blocks.BUDDING_AMETHYST)),
+                    amethystSparkleDisplayType, AmethystSparkleDisplayType.CRYSTALS_ONLY, AmethystSparkleDisplayType.OFF);
     @ConfigGroup.Pop
     public boolean amethystSparkleSounds = true;
 
@@ -125,28 +138,29 @@ public class ModBlockConfigs extends Config {
     public boolean lavaCauldronEffects = true;
 
     public ConfigGroup endPortalFrameGroup = new ConfigGroup("end_portal_frame");
-    public boolean enderEyePlacedRings = true;
-    public ValidatedInt enderEyePlacedRingsDuration = new ValidatedInt(10, 60, 5);
-    public EnderEyePlacedParticlesDisplayType enderEyePlacedParticlesDisplayType = EnderEyePlacedParticlesDisplayType.BOTH;
-    public ValidatedMap<ResourceLocation, ValidatedColor.ColorHolder> eyeColors = new ValidatedMap<>(DEFAULT_EYE_COLORS,
-            getEyeHandler(), new ValidatedColor(new Color(EnderEyePlacedRingParticle.DEFAULT_COLOR), false));
-    public EndPortalFrameParticlesDisplayType endPortalFrameParticlesDisplayType = EndPortalFrameParticlesDisplayType.SMOKE;
+    public ValidatedBoolean enderEyePlacedRings = new ValidatedBoolean();
+    public ValidatedCondition<Integer> enderEyePlacedRingsDuration = conditional(new ValidatedInt(10, 60, 5), enderEyePlacedRings);
+    public ValidatedCondition<EnderEyePlacedParticlesDisplayType> enderEyePlacedParticlesDisplayType = conditional(new ValidatedEnum<>(EnderEyePlacedParticlesDisplayType.BOTH), enderEyePlacedRings);
+    public ValidatedCondition<Map<ResourceLocation, ? extends ValidatedColor.ColorHolder>> eyeColors = conditional(new ValidatedMap<>(DEFAULT_EYE_COLORS,
+            getEyeHandler(), new ValidatedColor(new Color(EnderEyePlacedRingParticle.DEFAULT_COLOR), false)), enderEyePlacedRings);
+    public ValidatedEnum<EndPortalFrameParticlesDisplayType> endPortalFrameParticlesDisplayType = new ValidatedEnum<>(EndPortalFrameParticlesDisplayType.SMOKE);
     @ConfigGroup.Pop
-    public ValidatedFloat endPortalFrameParticlesDensity = new ValidatedFloat(1, 1, 0);
+    public ValidatedCondition<Float> endPortalFrameParticlesDensity = conditional(new ValidatedFloat(1, 1, 0),
+            endPortalFrameParticlesDisplayType, EndPortalFrameParticlesDisplayType.OFF);
 
     public boolean replaceOminousVaultConnection = true;
     public boolean cobwebMovementSounds = true;
     public boolean cakeEatParticles = true;
     public boolean cakeEatSounds = true;
-    public boolean rainWaterRipples = true;
-    public ValidatedFloat rainWaterRipplesDensity = new ValidatedFloat(0.35F, 1, 0);
+    public ValidatedBoolean rainWaterRipples = new ValidatedBoolean();
+    public ValidatedCondition<Float> rainWaterRipplesDensity = conditional(new ValidatedFloat(0.35F, 1, 0), rainWaterRipples);
     public boolean underwaterBlockBreakBubbles = true;
     public ConfigGroup underwaterContainerBubblingGroup = new ConfigGroup("underwater_container_bubbling");
     public boolean decoratedPotsSpawnBubbles = true;
     public boolean openingBarrelsSpawnsBubbles = true;
     public boolean openingChestsSpawnsBubbles = true;
     public ValidatedInt chestsOpenRandomlyUnderwaterFrequency = new ValidatedInt(5, 60, 0);
-    public boolean randomChestOpeningNeedsSoulSand = false;
+    public ValidatedCondition<Boolean> randomChestOpeningNeedsSoulSand = conditional(new ValidatedBoolean(false), chestsOpenRandomlyUnderwaterFrequency);
     @ConfigGroup.Pop
     public boolean dispenseItemBubbles = true;
     public boolean rainIncreasesLeavesSpawningParticles = true;

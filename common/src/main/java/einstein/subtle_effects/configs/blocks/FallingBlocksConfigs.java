@@ -5,6 +5,8 @@ import me.fzzyhmstrs.fzzy_config.annotations.Translation;
 import me.fzzyhmstrs.fzzy_config.config.ConfigSection;
 import me.fzzyhmstrs.fzzy_config.validation.collection.ValidatedList;
 import me.fzzyhmstrs.fzzy_config.validation.minecraft.ValidatedRegistryType;
+import me.fzzyhmstrs.fzzy_config.validation.misc.ValidatedBoolean;
+import me.fzzyhmstrs.fzzy_config.validation.misc.ValidatedCondition;
 import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedInt;
 import net.minecraft.Util;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -32,8 +34,8 @@ public class FallingBlocksConfigs extends ConfigSection {
     });
 
     public ValidatedList<Block> dustyBlocks = ValidatedRegistryType.of(BuiltInRegistries.BLOCK).toList(DEFAULT_DUSTY_BLOCKS);
-    public boolean whileFallingDust = true;
-    public ValidatedInt whileFallingDustStartDistance = new ValidatedInt(3, 20, 0);
+    public ValidatedBoolean whileFallingDust = new ValidatedBoolean();
+    public ValidatedCondition<Integer> whileFallingDustStartDistance = ModConfigs.conditional(new ValidatedInt(3, 20, 0), whileFallingDust);
     public boolean onLandDust = true;
     public boolean onLandSound = true;
     public boolean weakSupportDust = true;

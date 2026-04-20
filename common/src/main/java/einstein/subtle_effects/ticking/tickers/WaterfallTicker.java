@@ -36,7 +36,7 @@ public class WaterfallTicker extends BlockPosTicker {
     }
 
     public static void trySpawn(Level level, FluidState fluidState, BlockPos pos) {
-        if (!ENVIRONMENT.waterfalls.waterfallsEnabled) {
+        if (!ENVIRONMENT.waterfalls.waterfallsEnabled.get()) {
             return;
         }
 
@@ -78,7 +78,7 @@ public class WaterfallTicker extends BlockPosTicker {
 
             if (type == WaterfallType.NORMAL) {
                 if (random.nextDouble() < ENVIRONMENT.waterfalls.mediumWaterfallParticleDensity.get()) {
-                    level.addAlwaysVisibleParticle(ModParticles.WATERFALL_CLOUD.get(), ENVIRONMENT.waterfalls.forceSpawnMediumWaterfallParticles,
+                    level.addAlwaysVisibleParticle(ModParticles.WATERFALL_CLOUD.get(), ENVIRONMENT.waterfalls.forceSpawnMediumWaterfallParticles.get(),
                             x + xOffset + nextDouble(random, 0.2),
                             y + 0.2F,
                             z + zOffset + nextDouble(random, 0.2),
@@ -99,7 +99,7 @@ public class WaterfallTicker extends BlockPosTicker {
                 );
             }
             else if (isLarge) {
-                boolean forceSpawn = ENVIRONMENT.waterfalls.forceSpawnLargeWaterfallParticles;
+                boolean forceSpawn = ENVIRONMENT.waterfalls.forceSpawnLargeWaterfallParticles.get();
                 for (int i = 0; i < 6; i++) {
                     if (random.nextDouble() < ENVIRONMENT.waterfalls.largeWaterfallParticleDensity.get()) {
                         level.addAlwaysVisibleParticle(ModParticles.WATERFALL_CLOUD.get(), forceSpawn,
@@ -147,14 +147,14 @@ public class WaterfallTicker extends BlockPosTicker {
     @Override
     protected boolean shouldCheckDistance() {
         WaterfallType type = data.type();
-        if (type == WaterfallType.NORMAL && ENVIRONMENT.waterfalls.forceSpawnMediumWaterfallParticles) {
+        if (type == WaterfallType.NORMAL && ENVIRONMENT.waterfalls.forceSpawnMediumWaterfallParticles.get()) {
             return false;
         }
-        return !(type == WaterfallType.LARGE && ENVIRONMENT.waterfalls.forceSpawnLargeWaterfallParticles);
+        return !(type == WaterfallType.LARGE && ENVIRONMENT.waterfalls.forceSpawnLargeWaterfallParticles.get());
     }
 
     private static WaterfallData evaluateWaterfall(Level level, BlockPos lakePos, BlockPos waterfallPos) {
-        if (!ENVIRONMENT.waterfalls.waterfallsEnabled || !Util.isChunkLoaded(level, waterfallPos.getX(), waterfallPos.getZ())) {
+        if (!ENVIRONMENT.waterfalls.waterfallsEnabled.get() || !Util.isChunkLoaded(level, waterfallPos.getX(), waterfallPos.getZ())) {
             return EMPTY_WATERFALL_DATA;
         }
 
@@ -224,9 +224,9 @@ public class WaterfallTicker extends BlockPosTicker {
                     // LARGE is 8
 
                     if (distance >= 0 && distance <= ENVIRONMENT.waterfalls.mediumWaterfallHeightThreshold.get() - 2) {
-                        type = ENVIRONMENT.waterfalls.smallWaterfallsEnabled ? WaterfallType.SMALL : null;
+                        type = ENVIRONMENT.waterfalls.smallWaterfallsEnabled.get() ? WaterfallType.SMALL : null;
                     }
-                    else if (ENVIRONMENT.waterfalls.largeWaterfallsEnabled && distance > ENVIRONMENT.waterfalls.largeWaterfallHeightThreshold.get() - 2) {
+                    else if (ENVIRONMENT.waterfalls.largeWaterfallsEnabled.get() && distance > ENVIRONMENT.waterfalls.largeWaterfallHeightThreshold.get() - 2) {
                         int size = 0;
                         canBeLarge = true;
 

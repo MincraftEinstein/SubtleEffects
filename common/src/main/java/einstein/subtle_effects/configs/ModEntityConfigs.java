@@ -9,6 +9,8 @@ import me.fzzyhmstrs.fzzy_config.annotations.Translation;
 import me.fzzyhmstrs.fzzy_config.config.Config;
 import me.fzzyhmstrs.fzzy_config.config.ConfigGroup;
 import me.fzzyhmstrs.fzzy_config.util.EnumTranslatable;
+import me.fzzyhmstrs.fzzy_config.validation.misc.ValidatedCondition;
+import me.fzzyhmstrs.fzzy_config.validation.misc.ValidatedEnum;
 import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedDouble;
 import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedFloat;
 import net.minecraft.client.Minecraft;
@@ -39,8 +41,8 @@ public class ModEntityConfigs extends Config {
     public boolean dragonsBreathClouds = true;
     public CommandBlockSpawnType commandBlockMinecartParticles = CommandBlockSpawnType.ON;
     public boolean endCrystalParticles = true;
-    public MinecartSparksDisplayType minecartSparksDisplayType = MinecartSparksDisplayType.DEFAULT;
-    public ValidatedFloat minecartSparksDensity = new ValidatedFloat(0.5F, 1, 0);
+    public ValidatedEnum<MinecartSparksDisplayType> minecartSparksDisplayType = new ValidatedEnum<>(MinecartSparksDisplayType.DEFAULT);
+    public ValidatedCondition<Float> minecartSparksDensity = ModConfigs.conditional(new ValidatedFloat(0.5F, 1, 0), minecartSparksDisplayType, MinecartSparksDisplayType.OFF);
     public boolean slimeTrails = true;
     public boolean magmaCubeTrails = true;
     public boolean replaceSlimeSquishParticles = true;
@@ -72,26 +74,6 @@ public class ModEntityConfigs extends Config {
     public void onUpdateClient() {
         SubtleEffectsClient.clear(Minecraft.getInstance().level);
         ModAnimalFedEffectSettings.init();
-    }
-
-    public enum PerspectiveDisplayType implements EnumTranslatable {
-        OFF,
-        DEFAULT,
-        THIRD_PERSON_ONLY;
-
-        public boolean isEnabled() {
-            return this != OFF;
-        }
-
-        public boolean test(Minecraft minecraft) {
-            return this == DEFAULT || (this == THIRD_PERSON_ONLY && !minecraft.options.getCameraType().isFirstPerson());
-        }
-
-        @NotNull
-        @Override
-        public String prefix() {
-            return ModConfigs.BASE_KEY + "entities.perspectiveDisplayType";
-        }
     }
 
     public enum MinecartSparksDisplayType implements EnumTranslatable {

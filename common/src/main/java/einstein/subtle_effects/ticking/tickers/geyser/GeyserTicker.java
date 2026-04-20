@@ -77,7 +77,7 @@ public abstract class GeyserTicker extends BlockPosTicker {
     public static boolean isSpawnableBlock(GeyserType type, Level level, BlockPos pos, SupportType supportType) {
         BlockState state = level.getBlockState(pos);
         FluidState fluidState = level.getFluidState(pos);
-        return type.spawnableBlocks.contains(state.getBlock()) && state.isFaceSturdy(level, pos, Direction.UP, supportType) || type.spawnableBlocks.contains(fluidState.createLegacyBlock().getBlock());
+        return type.spawnableBlocks.get().contains(state.getBlock()) && state.isFaceSturdy(level, pos, Direction.UP, supportType) || type.spawnableBlocks.get().contains(fluidState.createLegacyBlock().getBlock());
     }
 
     @Override

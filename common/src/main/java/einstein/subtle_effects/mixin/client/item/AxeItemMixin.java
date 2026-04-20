@@ -31,17 +31,17 @@ public class AxeItemMixin {
     private void evaluateNewBlockState(Level level, Player player, BlockPos pos, SoundEvent sound, SoundSource source, float volume, float pitch, Operation<Void> original, @Local BlockState state) {
         if (level.isClientSide) {
             if (sound.equals(SoundEvents.AXE_STRIP)) {
-                if (ITEMS.axeStripParticles) {
+                if (ITEMS.axeStripParticles.get()) {
                     level.addDestroyBlockEffect(pos, state);
                 }
             }
             else if (sound.equals(SoundEvents.AXE_SCRAPE)) {
-                if (ITEMS.axeScrapeParticlesDisplayType != ReplacedParticlesDisplayType.VANILLA) {
+                if (ITEMS.axeScrapeParticlesDisplayType.get() != ReplacedParticlesDisplayType.VANILLA) {
                     subtleEffects$spawnCopperParticles(level, pos, state, state);
                 }
             }
             else if (sound.equals(SoundEvents.AXE_WAX_OFF)) {
-                if (ITEMS.axeWaxOffParticlesDisplayType != ReplacedParticlesDisplayType.VANILLA) {
+                if (ITEMS.axeWaxOffParticlesDisplayType.get() != ReplacedParticlesDisplayType.VANILLA) {
                     subtleEffects$spawnCopperParticles(level, pos, state, Blocks.HONEY_BLOCK.defaultBlockState());
                 }
             }

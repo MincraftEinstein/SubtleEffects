@@ -14,6 +14,8 @@ import einstein.subtle_effects.util.ParticleSpawnUtil;
 import it.unimi.dsi.fastutil.objects.Object2DoubleArrayMap;
 import it.unimi.dsi.fastutil.objects.Object2DoubleMap;
 import it.unimi.dsi.fastutil.objects.Object2ObjectArrayMap;
+import it.unimi.dsi.fastutil.objects.Object2DoubleArrayMap;
+import it.unimi.dsi.fastutil.objects.Object2DoubleMap;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.animal.SnowGolem;
 import net.minecraft.world.level.block.SoundType;
@@ -36,8 +38,11 @@ public abstract class ForgeClientEntityMixin implements FluidLogicAccessor {
     @Shadow
     protected boolean firstTick;
 
+    @Shadow
+    protected Object2DoubleMap<FluidType> forgeFluidTypeHeight;
+
     @Unique
-    private final Object2DoubleMap<FluidDefinition> subtleEffects$fluidPairHeight = new Object2DoubleArrayMap<>();
+    private final Object2DoubleMap<FluidDefinition> subtleEffects$fluidDefHeight = new Object2DoubleArrayMap<>();
 
     @Unique
     private final Entity subtleEffects$me = (Entity) (Object) this;
@@ -66,35 +71,36 @@ public abstract class ForgeClientEntityMixin implements FluidLogicAccessor {
     }
 
     @Inject(method = "updateFluidHeightAndDoFluidPushing(Ljava/util/function/Predicate;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/material/FluidState;getHeight(Lnet/minecraft/world/level/BlockGetter;Lnet/minecraft/core/BlockPos;)F", remap = true), remap = false)
-    private void storeFluidPairHeight(CallbackInfo ci, @Local FluidState fluidState, @Share("fluidPairs") LocalRef<Map<FluidType, FluidDefinition>> fluidPairsRef) {
+    private void storeFluidPairHeight(CallbackInfo ci, @Local FluidState fluidState, @Share("fluidDefs") LocalRef<Map<FluidType, FluidDefinition>> fluidDefsRef) {
         FluidDefinition fluidDefinition = ((FluidDefinitionAccessor) fluidState.getType()).subtleEffects$getFluidDefinition();
         FluidType type = fluidState.getFluidType();
-        Map<FluidType, FluidDefinition> fluidTypePairs = fluidPairsRef.get();
-        if (fluidTypePairs == null) {
-            fluidTypePairs = new HashMap<>();
+        Map<FluidType, FluidDefinition> fluidDefs = fluidDefsRef.get();
+        if (fluidDefs == null) {
+            fluidDefs = new HashMap<>();
         }
 
-        if (!fluidTypePairs.containsKey(type) && fluidDefinition != null) {
-            fluidTypePairs.put(type, fluidDefinition);
+        if (!fluidDefs.containsKey(type) && fluidDefinition != null) {
+            fluidDefs.put(type, fluidDefinition);
         }
 
-        fluidPairsRef.set(fluidTypePairs);
+        fluidDefsRef.set(fluidDefs);
     }
 
-    @Inject(method = "updateFluidHeightAndDoFluidPushing(Ljava/util/function/Predicate;)V", at = @At(value = "INVOKE", target = "Lit/unimi/dsi/fastutil/objects/Object2ObjectArrayMap;forEach(Ljava/util/function/BiConsumer;)V"), remap = false)
-    private void updateFluidPairHeight(CallbackInfo ci, @Local Object2ObjectArrayMap<FluidType, Object> fluidCalcs, @Share("fluidPairs") LocalRef<Map<FluidType, FluidDefinition>> fluidPairsRef) {
-        fluidCalcs.forEach((type, fluidCalc) -> {
-            FluidDefinition fluidDefinition = fluidPairsRef.get().get(type);
-
-            if (fluidDefinition != null) {
-                // if intellij says the FluidCalcsAccessor can't be accessed, it's crazy
-                subtleEffects$fluidPairHeight.put(fluidDefinition, ((FluidCalcsAccessor) fluidCalc).getHeight());
+    @Inject(method = "updateFluidHeightAndDoFluidPushing(Ljava/util/function/Predicate;)V", at = @At("TAIL"))
+    private void updateFluidPairHeight(CallbackInfo ci, @Share("fluidDefs") LocalRef<Map<FluidType, FluidDefinition>> fluidDefsRef) {
+        for (Object2DoubleMap.Entry<FluidType> entry : forgeFluidTypeHeight.object2DoubleEntrySet()) {
+            Map<FluidType, FluidDefinition> fluidDefs = fluidDefsRef.get();
+            if (fluidDefs != null) {
+                FluidDefinition fluidDefinition = fluidDefs.get(entry.getKey());
+                if (fluidDefinition != null) {
+                    subtleEffects$fluidDefHeight.put(fluidDefinition, entry.getDoubleValue());
+                }
             }
-        });
+        }
     }
 
     @Override
     public Object2DoubleMap<FluidDefinition> subtleEffects$getFluidDefinitionHeight() {
-        return subtleEffects$fluidPairHeight;
+        return subtleEffects$fluidDefHeight;
     }
 }
