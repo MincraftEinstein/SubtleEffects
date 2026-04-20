@@ -1,17 +1,26 @@
 package einstein.subtle_effects.init;
 
 import einstein.subtle_effects.SubtleEffects;
+import einstein.subtle_effects.platform.Services;
+import einstein.subtle_effects.util.SuppliedComponent;
 import einstein.subtle_effects.configs.*;
 import me.fzzyhmstrs.fzzy_config.api.ConfigApiJava;
 import me.fzzyhmstrs.fzzy_config.api.RegisterType;
 import me.fzzyhmstrs.fzzy_config.config.Config;
 import me.fzzyhmstrs.fzzy_config.util.AllowableIdentifiers;
+import me.fzzyhmstrs.fzzy_config.util.Translatable;
+import me.fzzyhmstrs.fzzy_config.validation.ValidatedField;
 import me.fzzyhmstrs.fzzy_config.validation.collection.ValidatedList;
 import me.fzzyhmstrs.fzzy_config.validation.minecraft.ValidatedIdentifier;
+import me.fzzyhmstrs.fzzy_config.validation.misc.ValidatedBoolean;
+import me.fzzyhmstrs.fzzy_config.validation.misc.ValidatedCondition;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.Identifier;
 
@@ -36,6 +45,55 @@ public class ModConfigs {
 
     private static <T extends Config> T register(Supplier<T> supplier) {
         return ConfigApiJava.registerAndLoadConfig(supplier, RegisterType.CLIENT);
+    }
+
+    public static <T extends ValidatedField<V>, V> ValidatedCondition<V> conditional(T config, ValidatedField<Integer> dependencyConfig) {
+        return conditional(config, () -> dependencyConfig.get() > 0, dependencyConfig);
+    }
+
+    public static <T extends ValidatedField<V>, V, M extends Enum<?>> ValidatedCondition<V> conditional(T config, ValidatedField<M> dependencyConfig, Object... disabled) {
+        if (disabled.length == 0) {
+            throw new IllegalArgumentException();
+        }
+        return conditional(config, () -> (disabled.length == 1 ? dependencyConfig.get() != disabled[0] : Arrays.stream(disabled).allMatch(object -> dependencyConfig.get() != object)), dependencyConfig);
+    }
+
+    public static <T extends ValidatedField<V>, V> ValidatedCondition<V> conditional(T config, ValidatedBoolean dependencyConfig) {
+        return conditional(config, dependencyConfig, dependencyConfig);
+    }
+
+    public static <T extends ValidatedField<V>, V> ValidatedCondition<V> conditional(T config, Supplier<Boolean> condition, Translatable dependencyConfig) {
+        return conditional(config, condition, () -> dependencyConfig);
+    }
+
+    public static <T extends ValidatedField<V>, V> ValidatedCondition<V> conditional(T config, Supplier<Boolean> condition, Supplier<Translatable> dependencyConfig) {
+        return conditional(config, condition, dependencyConfig, true);
+    }
+
+    public static <T extends ValidatedField<V>, V> ValidatedCondition<V> conditional(T config, Supplier<Boolean> condition, Supplier<Translatable> dependencyConfig, boolean memoize) {
+        return config.toCondition(condition, createFailMessage(dependencyConfig, memoize), config::getDefault);
+    }
+
+    public static <T extends ValidatedField<V>, V> ValidatedCondition<V> conditional(T config, String modId) {
+        return config.toCondition(() -> Services.PLATFORM.isModLoaded(modId), new SuppliedComponent(true,
+                () -> styleFailMessage(Component.translatable("config.subtle_effects.conditions.mod_not_loaded", modId))
+        ), config::getDefault);
+    }
+
+    public static SuppliedComponent createFailMessage(Supplier<Translatable> dependencyConfig, boolean memoize) {
+        return new SuppliedComponent(memoize,
+                () -> {
+                    Translatable translatable = dependencyConfig.get();
+                    return styleFailMessage(
+                            Component.translatable("config.subtle_effects.conditions.config_disabled",
+                            translatable.translation(translatable.translationKey()))
+                    );
+                }
+        );
+    }
+
+    private static Component styleFailMessage(MutableComponent component) {
+        return component.withStyle(style -> style.withColor(ChatFormatting.RED));
     }
 
     public static ValidatedList<Identifier> biomeList(String... biomeIds) {

@@ -62,7 +62,7 @@ public abstract class SpellParticleMixin extends SingleQuadParticle {
 
     @ModifyReturnValue(method = "getLayer", at = @At("RETURN"))
     private Layer replaceRenderType(Layer original) {
-        if (GENERAL.spellParticlesUseBlendedRenderType) {
+        if (GENERAL.spellParticlesUseBlendedRenderType.get()) {
             return ModParticleLayers.getBlendedOrTransparent();
         }
         return original;

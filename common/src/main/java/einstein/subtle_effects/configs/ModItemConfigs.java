@@ -10,6 +10,9 @@ import me.fzzyhmstrs.fzzy_config.annotations.RequiresAction;
 import me.fzzyhmstrs.fzzy_config.annotations.Translation;
 import me.fzzyhmstrs.fzzy_config.config.Config;
 import me.fzzyhmstrs.fzzy_config.config.ConfigGroup;
+import me.fzzyhmstrs.fzzy_config.validation.misc.ValidatedBoolean;
+import me.fzzyhmstrs.fzzy_config.validation.misc.ValidatedCondition;
+import me.fzzyhmstrs.fzzy_config.validation.misc.ValidatedEnum;
 import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedFloat;
 import net.minecraft.client.Minecraft;
 
@@ -20,10 +23,12 @@ public class ModItemConfigs extends Config {
     public ProjectileConfigs projectiles = new ProjectileConfigs();
 
     public ConfigGroup axeGroup = new ConfigGroup("axe");
-    public boolean axeStripParticles = true;
-    public ReplacedParticlesDisplayType axeScrapeParticlesDisplayType = ReplacedParticlesDisplayType.DEFAULT;
+    public ValidatedBoolean axeStripParticles = new ValidatedBoolean();
+    public ValidatedCondition<ReplacedParticlesDisplayType> axeScrapeParticlesDisplayType
+            = ModConfigs.conditional(new ValidatedEnum<>(ReplacedParticlesDisplayType.DEFAULT), axeStripParticles);
     @ConfigGroup.Pop
-    public ReplacedParticlesDisplayType axeWaxOffParticlesDisplayType = ReplacedParticlesDisplayType.DEFAULT;
+    public ValidatedCondition<ReplacedParticlesDisplayType> axeWaxOffParticlesDisplayType
+            = ModConfigs.conditional(new ValidatedEnum<>(ReplacedParticlesDisplayType.DEFAULT), axeStripParticles);
 
     public boolean boneMealUsingParticles = true;
     public boolean flintAndSteelParticles = true;

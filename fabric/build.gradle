@@ -11,6 +11,7 @@ repositories {
 
 dependencies {
     minecraft "com.mojang:minecraft:${minecraft_version}"
+    include(implementation("com.moulberry:mixinconstraints:${mixin_constraints_version}"))
 
     implementation "net.fabricmc:fabric-loader:${fabric_version}"
     implementation "net.fabricmc.fabric-api:fabric-api:${fabric_api_version}"
@@ -29,6 +30,7 @@ dependencies {
     compileOnly "maven.modrinth:dyed-flames:${fabric_dyed_flames_version}"
     compileOnly "fuzs.neoforgedatapackextensions:neoforgedatapackextensions-fabric:${neoforgedatapackextensions_version}"
     compileOnly "fuzs.puzzleslib:puzzleslib-fabric:${puzzleslib_version}"
+    compileOnly("maven.modrinth:lootr:${fabric_lootr_version}")
 }
 
 loom {

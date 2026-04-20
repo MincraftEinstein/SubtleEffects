@@ -96,7 +96,7 @@ public class SplashEmitter extends NoRenderParticle {
             spawnSplashParticles(baseHorizontalScale, baseVerticalScale, ((baseVerticalScale * 0.5F) / widthModifier) * 0.3F, baseHorizontalScale);
             firstSplash = false;
 
-            if (ENTITIES.splashes.waterSplashBubbles && entity != null) {
+            if (ENTITIES.splashes.waterSplashBubbles.get() && entity != null) {
                 if (level.getFluidState(pos.below()).is(Fluids.WATER)) {
                     for (int i = 0; i < 8 * (widthModifier * 5); i++) {
                         int xSign = nextSign(random);
@@ -114,7 +114,7 @@ public class SplashEmitter extends NoRenderParticle {
                 }
             }
 
-            if (!ENTITIES.splashes.secondarySplash || velocity > -ENTITIES.splashes.secondarySplashVelocityThreshold.get()) {
+            if (!ENTITIES.splashes.secondarySplash.get() || velocity > -ENTITIES.splashes.secondarySplashVelocityThreshold.get()) {
                 remove();
             }
             return;
@@ -137,7 +137,7 @@ public class SplashEmitter extends NoRenderParticle {
             );
         }
 
-        if (!ENTITIES.splashes.splashDroplets) {
+        if (!ENTITIES.splashes.splashDroplets.get()) {
             return;
         }
 
@@ -167,8 +167,8 @@ public class SplashEmitter extends NoRenderParticle {
     }
 
     private boolean hasRipple() {
-        if (ENTITIES.splashes.splashRipples) {
-            if (firstSplash || (secondSplash && ENTITIES.splashes.secondarySplashRipples)) {
+        if (ENTITIES.splashes.splashRipples.get()) {
+            if (firstSplash || (secondSplash && ENTITIES.splashes.secondarySplashRipples.get())) {
                 return SplashParticle.alpha(type.splashRippleOptions()) > 0;
             }
         }

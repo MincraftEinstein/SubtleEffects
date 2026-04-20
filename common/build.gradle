@@ -7,35 +7,32 @@ neoForge {
     neoFormVersion = neo_form_version
 
     accessTransformers.from('src/main/resources/META-INF/accesstransformer.cfg')
-
- /*   parchment {
-        minecraftVersion = parchment_minecraft_version
-        mappingsVersion = parchment_version
-    }*/
 }
 
 dependencies {
-    compileOnly group: 'org.spongepowered', name: 'mixin', version: '0.8.5'
-    compileOnly group: 'io.github.llamalad7', name: 'mixinextras-common', version: '0.3.5'
-    annotationProcessor group: 'io.github.llamalad7', name: 'mixinextras-common', version: '0.3.5'
+    compileOnly("org.spongepowered:mixin:0.8.5")
+    compileOnly("io.github.llamalad7:mixinextras-common:0.3.5")
+    compileOnly("com.moulberry:mixinconstraints:${mixin_constraints_version}")
+    annotationProcessor("io.github.llamalad7:mixinextras-common:0.3.5")
 
-    compileOnly group: 'me.fzzyhmstrs', name: 'fzzy_config', version: "${fzzy_config_version}+neoforge"
-    compileOnly group: 'com.electronwill.night-config', name : 'toml', version: '3.6.0'
-    compileOnly group: 'com.github.glitchfiend', name: 'GlitchCore-common', version: "${glitchcore_version}"
-    compileOnly group: 'com.github.glitchfiend', name: 'SereneSeasons-common', version: "${serene_seasons_version}"
-    compileOnly group: "it.crystalnest", name: "cobweb-common", version: "${cobweb_version}"
-    compileOnly group: "it.crystalnest", name: "prometheus-common", version: "${prometheus_version}"
-    compileOnly group: "maven.modrinth", name: "iceberg", version: "${neoforge_iceberg_version}"
-    compileOnly group: "maven.modrinth", name: "prism-lib", version: "${neoforge_prism_version}"
-    compileOnly group: "maven.modrinth", name: "item-borders", version: "${neoforge_item_borders_version}"
-    compileOnly group: "maven.modrinth", name: "endrem", version: "${neoforge_endrem_version}"
-    compileOnly group: "maven.modrinth", name: "sodium", version: "${neoforge_sodium_version}"
-    compileOnly group: "maven.modrinth", name: "iris", version: "${neoforge_iris_version}"
-    compileOnly group: "maven.modrinth", name: "dyed-flames", version: "${neoforge_dyed_flames_version}"
-    compileOnly group: "fuzs.neoforgedatapackextensions", name: "neoforgedatapackextensions-common", version: "${neoforgedatapackextensions_version}"
-    compileOnly (group: "fuzs.puzzleslib", name: "puzzleslib-common", version: "${puzzleslib_version}") {
+    compileOnly "me.fzzyhmstrs:fzzy_config:$fzzy_config_version+neoforge"
+    compileOnly "com.electronwill.night-config:toml:3.6.0"
+    compileOnly "com.github.glitchfiend:GlitchCore-common:$glitchcore_version"
+    compileOnly "com.github.glitchfiend:SereneSeasons-common:$serene_seasons_version"
+    compileOnly "it.crystalnest:cobweb-common:$cobweb_version"
+    compileOnly "it.crystalnest:prometheus-common:$prometheus_version"
+    compileOnly "maven.modrinth:iceberg:$neoforge_iceberg_version"
+    compileOnly "maven.modrinth:prism-lib:$neoforge_prism_version"
+    compileOnly "maven.modrinth:item-borders:$neoforge_item_borders_version"
+    compileOnly "maven.modrinth:endrem:$neoforge_endrem_version"
+    compileOnly "maven.modrinth:sodium:$neoforge_sodium_version"
+    compileOnly "maven.modrinth:iris:$neoforge_iris_version"
+    compileOnly "maven.modrinth:dyed-flames:$neoforge_dyed_flames_version"
+    compileOnly "fuzs.neoforgedatapackextensions:neoforgedatapackextensions-common:$neoforgedatapackextensions_version"
+    compileOnly ("fuzs.puzzleslib:puzzleslib-common:$puzzleslib_version") {
         exclude group: "net.fabricmc.fabric-api"
     }
+    compileOnly("maven.modrinth:lootr:${neoforge_lootr_version}")
 }
 
 configurations {

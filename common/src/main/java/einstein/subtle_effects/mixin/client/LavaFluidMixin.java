@@ -30,7 +30,7 @@ public abstract class LavaFluidMixin {
 
     @Inject(method = "animateTick", at = @At("TAIL"))
     private void animateTick(Level level, BlockPos pos, FluidState state, RandomSource random, CallbackInfo ci) {
-        SparksConfigs.LavaSparksDisplayType type = ModConfigs.BLOCKS.sparks.lavaSparksDisplayType;
+        SparksConfigs.LavaSparksDisplayType type = ModConfigs.BLOCKS.sparks.lavaSparksDisplayType.get();
         if (type.equals(SparksConfigs.LavaSparksDisplayType.OFF)
                 || (type.equals(SparksConfigs.LavaSparksDisplayType.NOT_NETHER)
                 && level.dimension().equals(Level.NETHER))) {

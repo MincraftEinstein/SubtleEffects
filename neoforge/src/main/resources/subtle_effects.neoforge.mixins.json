@@ -9,7 +9,6 @@
     "client.FluidTypeMixin",
     "client.ModListScreenMixin",
     "client.NeoForgeClientEntityMixin",
-    "client.NeoForgeClientEntityMixin$InterimCalculationMixin",
     "client.NeoForgeMultiPlayerGameModeMixin"
   ],
   "mixins": [
@@ -18,5 +17,6 @@
   ],
   "injectors": {
     "defaultRequire": 1
-  }
+  },
+  "plugin": "com.moulberry.mixinconstraints.ConstraintsMixinPlugin"
 }

@@ -64,17 +64,17 @@ public class ModBlockTickers {
             EndRemasteredCompat.init();
         }
 
-        register(state -> BLOCKS.redstoneDustEmittingBlocks.contains(state.getBlock()), () -> BLOCKS.redstoneBlockDust && !BLOCKS.redstoneDustEmittingBlocks.isEmpty(),
+        register(state -> BLOCKS.redstoneDustEmittingBlocks.get().contains(state.getBlock()), () -> BLOCKS.redstoneBlockDust.get() && !BLOCKS.redstoneDustEmittingBlocks.get().isEmpty(),
                 (state, level, pos, random) ->
-                        ParticleSpawnUtil.spawnParticlesAroundBlock(DustParticleOptions.REDSTONE, level, pos, random, BLOCKS.redstoneBlockDustDensity.getPerSideChance())
+                        ParticleSpawnUtil.spawnParticlesAroundBlock(DustParticleOptions.REDSTONE, level, pos, random, BLOCKS.redstoneBlockDustDensity.get().getPerSideChance())
         );
-        register(state -> BLOCKS.glowstoneDustEmittingBlocks.contains(state.getBlock()), () -> BLOCKS.glowstoneBlockDust && !BLOCKS.glowstoneDustEmittingBlocks.isEmpty(),
+        register(state -> BLOCKS.glowstoneDustEmittingBlocks.get().contains(state.getBlock()), () -> BLOCKS.glowstoneBlockDust.get() && !BLOCKS.glowstoneDustEmittingBlocks.get().isEmpty(),
                 (state, level, pos, random) -> {
-                    if (BLOCKS.netherOnlyGlowstoneBlockDust && !level.dimension().equals(Level.NETHER)) {
+                    if (BLOCKS.netherOnlyGlowstoneBlockDust.get() && !level.dimension().equals(Level.NETHER)) {
                         return;
                     }
 
-                    ParticleSpawnUtil.spawnParticlesAroundBlock(Util.GLOWSTONE_DUST_PARTICLES, level, pos, random, BLOCKS.glowstoneBlockDustDensity.getPerSideChance());
+                    ParticleSpawnUtil.spawnParticlesAroundBlock(Util.GLOWSTONE_DUST_PARTICLES, level, pos, random, BLOCKS.glowstoneBlockDustDensity.get().getPerSideChance());
                 });
         register(Blocks.TORCHFLOWER, () -> BLOCKS.torchflowerSmoke.isEnabled() || BLOCKS.torchflowerFlames,
                 (state, level, pos, random) -> {
@@ -122,14 +122,14 @@ public class ModBlockTickers {
 
             ((LavaFluid.Source) Fluids.LAVA).animateTick(level, pos, Fluids.LAVA.defaultFluidState().setValue(BlockStateProperties.FALLING, false), random);
         });
-        register(Blocks.BEACON, () -> BLOCKS.beaconParticlesDisplayType != ModBlockConfigs.BeaconParticlesDisplayType.OFF,
+        register(Blocks.BEACON, () -> BLOCKS.beaconParticlesDisplayType.get() != ModBlockConfigs.BeaconParticlesDisplayType.OFF,
                 (state, level, pos, random) -> {
                     BlockEntity blockEntity = level.getBlockEntity(pos);
 
                     if (blockEntity instanceof BeaconBlockEntity beaconBlockEntity) {
                         List<BeaconBeamOwner.Section> sections = beaconBlockEntity.getBeamSections();
 
-                        if (!sections.isEmpty() && !(sections.size() > 1 && BLOCKS.beaconParticlesDisplayType == ModBlockConfigs.BeaconParticlesDisplayType.NOT_COLORED)) {
+                        if (!sections.isEmpty() && !(sections.size() > 1 && BLOCKS.beaconParticlesDisplayType.get() == ModBlockConfigs.BeaconParticlesDisplayType.NOT_COLORED)) {
                             PositionParticleOptions options = new PositionParticleOptions(ModParticles.BEACON.get(), beaconBlockEntity.getBlockPos());
 
                             for (int i = 0; i < BLOCKS.beaconParticlesDensity.get(); i++) {
@@ -157,11 +157,11 @@ public class ModBlockTickers {
                 }
             }
         });
-        register(Blocks.WATER_CAULDRON, () -> BLOCKS.steam.steamingWaterCauldron || BLOCKS.steam.boilingWaterCauldron,
+        register(Blocks.WATER_CAULDRON, () -> BLOCKS.steam.steamingWaterCauldron.get() || BLOCKS.steam.boilingWaterCauldron.get(),
                 (state, level, pos, random) -> {
                     ParticleSpawnUtil.spawnHeatedWaterParticles(level, pos, random, false,
                             0.5625 + (state.getValue(LayeredCauldronBlock.LEVEL) * 0.1875),
-                            BLOCKS.steam.steamingWaterCauldron, BLOCKS.steam.boilingWaterCauldron
+                            BLOCKS.steam.steamingWaterCauldron.get(), BLOCKS.steam.boilingWaterCauldron.get()
                     );
                 });
         register(Blocks.END_GATEWAY, () -> BLOCKS.endPortalParticles, (state, level, pos, random) -> {
@@ -187,17 +187,17 @@ public class ModBlockTickers {
                         }
                     }
                 });
-        register(state -> state.getBlock() instanceof CommandBlock, () -> BLOCKS.commandBlockParticles != CommandBlockSpawnType.OFF,
+        register(state -> state.getBlock() instanceof CommandBlock, () -> BLOCKS.commandBlockParticles.get() != CommandBlockSpawnType.OFF,
                 (state, level, pos, random) -> {
-                    if (BLOCKS.commandBlockParticles == CommandBlockSpawnType.NOT_CREATIVE && Minecraft.getInstance().player.isCreative()) {
+                    if (BLOCKS.commandBlockParticles.get() == CommandBlockSpawnType.NOT_CREATIVE && Minecraft.getInstance().player.isCreative()) {
                         return;
                     }
 
                     ParticleSpawnUtil.spawnCmdBlockParticles(level, Vec3.atCenterOf(pos), random, (direction, relativePos) ->
                             !Util.isSolidOrNotEmpty(level, BlockPos.containing(relativePos)));
                 });
-        register(state -> BLOCKS.amethystSparkleEmittingBlocks.contains(state.getBlock()),
-                () -> BLOCKS.amethystSparkleDisplayType == ModBlockConfigs.AmethystSparkleDisplayType.ON && !BLOCKS.amethystSparkleEmittingBlocks.isEmpty(),
+        register(state -> BLOCKS.amethystSparkleEmittingBlocks.get().contains(state.getBlock()),
+                () -> BLOCKS.amethystSparkleDisplayType.get() == ModBlockConfigs.AmethystSparkleDisplayType.ON && !BLOCKS.amethystSparkleEmittingBlocks.get().isEmpty(),
                 (state, level, pos, random) -> {
                     ParticleSpawnUtil.spawnParticlesAroundBlock(ModParticles.AMETHYST_SPARKLE.get(), level, pos, random, 5);
                 });
@@ -215,7 +215,7 @@ public class ModBlockTickers {
                     }
                 });
         register(state -> state.is(Blocks.LARGE_AMETHYST_BUD) || state.is(Blocks.AMETHYST_CLUSTER),
-                () -> BLOCKS.amethystSparkleDisplayType != ModBlockConfigs.AmethystSparkleDisplayType.OFF,
+                () -> BLOCKS.amethystSparkleDisplayType.get() != ModBlockConfigs.AmethystSparkleDisplayType.OFF,
                 (state, level, pos, random) -> {
                     AmethystClusterBlockAccessor block = (AmethystClusterBlockAccessor) state.getBlock();
                     float height = block.getHeight();
@@ -299,12 +299,12 @@ public class ModBlockTickers {
                 );
             }
         });
-        register(Blocks.END_PORTAL_FRAME, () -> BLOCKS.endPortalFrameParticlesDisplayType != ModBlockConfigs.EndPortalFrameParticlesDisplayType.OFF, (state, level, pos, random) -> {
+        register(Blocks.END_PORTAL_FRAME, () -> BLOCKS.endPortalFrameParticlesDisplayType.get() != ModBlockConfigs.EndPortalFrameParticlesDisplayType.OFF, (state, level, pos, random) -> {
             if (!state.getValue(EndPortalFrameBlock.HAS_EYE)) {
                 return;
             }
 
-            ParticleSpawnUtil.spawnEndPortalParticles(level, pos, random, BLOCKS.endPortalFrameParticlesDisplayType.particle.apply(level, pos), BLOCKS.endPortalFrameParticlesDisplayType.count);
+            ParticleSpawnUtil.spawnEndPortalParticles(level, pos, random, BLOCKS.endPortalFrameParticlesDisplayType.get().particle.apply(level, pos), BLOCKS.endPortalFrameParticlesDisplayType.get().count);
         });
         register(state -> state.getBlock() instanceof FallingBlock, () -> BLOCKS.fallingBlocks.weakSupportDust, (state, level, pos, random) -> {
             if (random.nextInt(16) < BLOCKS.fallingBlocks.weakSupportDustDensity.get()) {
@@ -332,7 +332,7 @@ public class ModBlockTickers {
                 );
             }
         });
-        register(Blocks.DECORATED_POT, () -> BLOCKS.decoratedPotsSpawnBubbles, (state, level, pos, random) -> {
+        register(state -> state.getBlock() instanceof DecoratedPotBlock, () -> BLOCKS.decoratedPotsSpawnBubbles, (state, level, pos, random) -> {
             if (ChestBlockEntityTicker.isUnderwater(level, pos)) {
                 if (ChestBlockEntityTicker.isDownwardsBubbleColumn(level, pos)) {
                     return;

@@ -96,7 +96,8 @@ public class ClientPacketHandlers {
         BlockPos pos = payload.pos();
         Vec3 vec3 = Vec3.atBottomCenterOf(pos);
         RandomSource random = level.getRandom();
-        if (ITEMS.projectiles.xpBottleParticlesDisplayType == ReplacedParticlesDisplayType.BOTH || ITEMS.projectiles.xpBottleParticlesDisplayType == ReplacedParticlesDisplayType.VANILLA) {
+        ReplacedParticlesDisplayType type = ITEMS.projectiles.xpBottleParticlesDisplayType.get();
+        if (type == ReplacedParticlesDisplayType.BOTH || type == ReplacedParticlesDisplayType.VANILLA) {
             level.levelEvent(
                     LevelEvent.PARTICLES_SPELL_POTION_SPLASH,
                     pos,
@@ -104,7 +105,7 @@ public class ClientPacketHandlers {
             );
         }
 
-        if (ITEMS.projectiles.xpBottleParticlesDisplayType == ReplacedParticlesDisplayType.BOTH || ITEMS.projectiles.xpBottleParticlesDisplayType == ReplacedParticlesDisplayType.DEFAULT) {
+        if (type == ReplacedParticlesDisplayType.BOTH || type == ReplacedParticlesDisplayType.DEFAULT) {
             for (int i = 0; i < ITEMS.projectiles.xpBottleParticlesDensity.get(); ++i) {
                 double d = random.nextDouble() * 4;
                 double d1 = random.nextDouble() * Math.PI * 2;
@@ -123,7 +124,7 @@ public class ClientPacketHandlers {
             }
         }
 
-        if (ITEMS.projectiles.xpBottleParticlesDisplayType == ReplacedParticlesDisplayType.DEFAULT) {
+        if (type == ReplacedParticlesDisplayType.DEFAULT) {
             for (int i = 0; i < 8; ++i) {
                 level.addParticle(
                         new ItemParticleOption(ParticleTypes.ITEM, Items.SPLASH_POTION),
@@ -407,7 +408,7 @@ public class ClientPacketHandlers {
     }
 
     public static void handle(ClientLevel level, ClientBoundExplosionPayload payload) {
-        if (ModConfigs.ENTITIES.splashes.explosionsCauseSplashes) {
+        if (ModConfigs.ENTITIES.splashes.explosionsCauseSplashes.get()) {
             float radius = payload.radius();
             Vec3 position = payload.position();
             BlockPos pos = BlockPos.containing(position);
@@ -511,13 +512,13 @@ public class ClientPacketHandlers {
                 }).defaultBlockState()
         );
 
-        if (action == ClientBoundCopperGolemPayload.Action.SCRAPE && ITEMS.axeScrapeParticlesDisplayType != ReplacedParticlesDisplayType.DEFAULT) {
+        if (action == ClientBoundCopperGolemPayload.Action.SCRAPE && ITEMS.axeScrapeParticlesDisplayType.get() != ReplacedParticlesDisplayType.DEFAULT) {
             level.levelEvent(copperGolem, LevelEvent.PARTICLES_SCRAPE, pos, stateId);
-            return ITEMS.axeScrapeParticlesDisplayType == ReplacedParticlesDisplayType.VANILLA;
+            return ITEMS.axeScrapeParticlesDisplayType.get() == ReplacedParticlesDisplayType.VANILLA;
         }
-        else if (action == ClientBoundCopperGolemPayload.Action.WAX_OFF && ITEMS.axeWaxOffParticlesDisplayType != ReplacedParticlesDisplayType.DEFAULT) {
+        else if (action == ClientBoundCopperGolemPayload.Action.WAX_OFF && ITEMS.axeWaxOffParticlesDisplayType.get() != ReplacedParticlesDisplayType.DEFAULT) {
             level.levelEvent(copperGolem, LevelEvent.PARTICLES_WAX_OFF, pos, stateId);
-            return ITEMS.axeWaxOffParticlesDisplayType == ReplacedParticlesDisplayType.VANILLA;
+            return ITEMS.axeWaxOffParticlesDisplayType.get() == ReplacedParticlesDisplayType.VANILLA;
         }
         return false;
     }

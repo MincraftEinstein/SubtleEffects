@@ -152,13 +152,13 @@ public class LevelEventHandlerMixin {
         RandomSource random = level.getRandom();
 
         if (type == LevelEvent.PARTICLES_SCRAPE) {
-            if (ModConfigs.ITEMS.axeScrapeParticlesDisplayType != ReplacedParticlesDisplayType.DEFAULT) {
+            if (ModConfigs.ITEMS.axeScrapeParticlesDisplayType.get() != ReplacedParticlesDisplayType.DEFAULT) {
                 subtleEffects$spawnCopperParticles(level, pos, count, state, random);
             }
             return;
         }
         else if (type == LevelEvent.PARTICLES_WAX_OFF) {
-            if (ModConfigs.ITEMS.axeWaxOffParticlesDisplayType != ReplacedParticlesDisplayType.DEFAULT) {
+            if (ModConfigs.ITEMS.axeWaxOffParticlesDisplayType.get() != ReplacedParticlesDisplayType.DEFAULT) {
                 subtleEffects$spawnCopperParticles(level, pos, count, state, random);
             }
             return;
@@ -183,7 +183,7 @@ public class LevelEventHandlerMixin {
     @WrapWithCondition(method = "levelEvent", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/multiplayer/ClientLevel;addParticle(Lnet/minecraft/core/particles/ParticleOptions;DDDDDD)V"))
     private boolean shouldSpawnEndPortalFrameSmoke(ClientLevel level, ParticleOptions particleData, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, @Local(argsOnly = true, ordinal = 0) int type) {
         if (type == LevelEvent.END_PORTAL_FRAME_FILL) {
-            return BLOCKS.enderEyePlacedParticlesDisplayType != ModBlockConfigs.EnderEyePlacedParticlesDisplayType.DOTS;
+            return BLOCKS.enderEyePlacedParticlesDisplayType.get() != ModBlockConfigs.EnderEyePlacedParticlesDisplayType.DOTS;
         }
         return true;
     }

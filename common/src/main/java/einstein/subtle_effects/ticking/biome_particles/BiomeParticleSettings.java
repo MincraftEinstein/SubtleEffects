@@ -1,7 +1,6 @@
 package einstein.subtle_effects.ticking.biome_particles;
 
-import me.fzzyhmstrs.fzzy_config.validation.collection.ValidatedList;
-import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedInt;
+import me.fzzyhmstrs.fzzy_config.validation.ValidatedField;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.registries.Registries;
@@ -17,16 +16,16 @@ import java.util.function.Supplier;
 
 public class BiomeParticleSettings {
 
-    private final ValidatedList<Identifier> biomesConfig;
-    private final ValidatedInt density;
+    private final ValidatedField<List<? extends Identifier>> biomesConfig;
+    private final ValidatedField<Integer> density;
     private final int maxSpawnHeight;
     private final Supplier<? extends ParticleOptions> particle;
     private final BiPredicate<Level, BlockPos> spawnConditions;
     private final boolean ignoreHeight;
     private final List<Biome> biomes = new ArrayList<>();
 
-    public BiomeParticleSettings(ValidatedList<Identifier> biomesConfig,
-                                 ValidatedInt density, int maxSpawnHeight,
+    public BiomeParticleSettings(ValidatedField<List<? extends Identifier>> biomesConfig,
+                                 ValidatedField<Integer> density, int maxSpawnHeight,
                                  Supplier<? extends ParticleOptions> particle,
                                  BiPredicate<Level, BlockPos> spawnConditions, boolean ignoreHeight) {
         this.biomesConfig = biomesConfig;
@@ -38,7 +37,7 @@ public class BiomeParticleSettings {
     }
 
     public void update(Level level) {
-        biomes.addAll(biomesConfig.stream().map(location ->
+        biomes.addAll(biomesConfig.get().stream().map(location ->
                 level.registryAccess().lookupOrThrow(Registries.BIOME).get(location)
         ).filter(Optional::isPresent).map(biomeReference -> biomeReference.get().value()).toList());
     }

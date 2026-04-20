@@ -43,7 +43,7 @@ public class MinecartSparksTicker extends EntityTicker<AbstractMinecart> {
         }
 
         deltaMovement = currentDeltaMovement;
-        if (ModConfigs.ENTITIES.minecartSparksDisplayType == ModEntityConfigs.MinecartSparksDisplayType.DEFAULT) {
+        if (ModConfigs.ENTITIES.minecartSparksDisplayType.get() == ModEntityConfigs.MinecartSparksDisplayType.DEFAULT) {
             spawnSparks(10);
             return;
         }

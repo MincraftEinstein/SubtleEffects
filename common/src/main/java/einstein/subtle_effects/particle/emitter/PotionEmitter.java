@@ -45,7 +45,8 @@ public class PotionEmitter extends NoRenderParticle {
             z = entity.getZ();
         }
 
-        if (ModConfigs.ENTITIES.humanoids.potionRingsParticleType == HumanoidConfigs.PotionRingsParticleType.BOTH || ModConfigs.ENTITIES.humanoids.potionRingsParticleType == HumanoidConfigs.PotionRingsParticleType.RINGS_ONLY) {
+        HumanoidConfigs.PotionRingsParticleType type = ModConfigs.ENTITIES.humanoids.potionRingsParticleType.get();
+        if (type == HumanoidConfigs.PotionRingsParticleType.BOTH || type == HumanoidConfigs.PotionRingsParticleType.RINGS_ONLY) {
             for (int i = 0; i < 3; i++) {
                 level.addParticle(new ColorAndIntegerParticleOptions(ModParticles.POTION_RING.get(), color, entityId),
                         x, y - 0.1 + (0.4 * i), z,
@@ -54,7 +55,7 @@ public class PotionEmitter extends NoRenderParticle {
             }
         }
 
-        if (ModConfigs.ENTITIES.humanoids.potionRingsParticleType == HumanoidConfigs.PotionRingsParticleType.BOTH || ModConfigs.ENTITIES.humanoids.potionRingsParticleType == HumanoidConfigs.PotionRingsParticleType.DOTS_ONLY) {
+        if (type == HumanoidConfigs.PotionRingsParticleType.BOTH || type == HumanoidConfigs.PotionRingsParticleType.DOTS_ONLY) {
             float scale = ModConfigs.ENTITIES.humanoids.potionRingsScale.get();
             for (int i = 0; i < 20; i++) {
                 level.addParticle(new ColorAndIntegerParticleOptions(ModParticles.POTION_DOT.get(), color, entityId),

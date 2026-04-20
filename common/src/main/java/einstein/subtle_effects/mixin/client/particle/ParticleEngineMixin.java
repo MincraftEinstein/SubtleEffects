@@ -29,7 +29,7 @@ public class ParticleEngineMixin {
     private void modifyColor(ParticleOptions options, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, CallbackInfoReturnable<Particle> cir, @Local Particle particle) {
         if (particle instanceof SingleQuadParticle sqParticle) {
             ParticleType<?> type = options.getType();
-            if (ModConfigs.GENERAL.particleCullingBlocklist.contains(type)) {
+            if (ModConfigs.GENERAL.particleCullingBlocklist.get().contains(type)) {
                 ((ParticleAccessor) particle).subtleEffects$ignoresCulling();
             }
 

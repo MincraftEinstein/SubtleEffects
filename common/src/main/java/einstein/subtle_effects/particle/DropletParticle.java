@@ -93,7 +93,7 @@ public class DropletParticle extends DripParticle.FallAndLandParticle implements
 
             // noinspection ConstantConditions
             DropletParticle particle = new DropletParticle(level, x, y, z, xSpeed, ySpeed, zSpeed, options.scale(), sprites.get(random), fluidDefinition.lightEmission(), fluidDefinition.source(),
-                    dropletOptions.landParticle().orElse(null), fromSplash ? ModConfigs.ENTITIES.splashes.splashDropletSounds : options.isSilent(),
+                    dropletOptions.landParticle().orElse(null), fromSplash ? ModConfigs.ENTITIES.splashes.splashDropletSounds.get() : options.isSilent(),
                     fluidDefinition, fromSplash);
             particle.setColor(color.x(), color.y(), color.z());
             return particle;

@@ -1,5 +1,6 @@
 package einstein.subtle_effects.mixin.client;
 
+import com.moulberry.mixinconstraints.annotations.IfModLoaded;
 import com.terraformersmc.modmenu.ModMenu;
 import com.terraformersmc.modmenu.gui.ModsScreen;
 import com.terraformersmc.modmenu.util.mod.Mod;
@@ -11,6 +12,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+@IfModLoaded(value = "modmenu", aliases = "mod_menu")
 @Mixin(ModSearch.class)
 public class BetterModListModSearchMixin {
 

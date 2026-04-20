@@ -1,11 +1,5 @@
 package einstein.subtle_effects.compat;
 
-import com.teamremastered.endrem.block.AncientPortalFrameEntity;
-import com.teamremastered.endrem.item.JsonEye;
-import com.teamremastered.endrem.registry.CommonBlockRegistry;
-import einstein.subtle_effects.configs.ModBlockConfigs;
-import einstein.subtle_effects.init.ModBlockTickers;
-import einstein.subtle_effects.util.ParticleSpawnUtil;
 import me.fzzyhmstrs.fzzy_config.validation.misc.ValidatedColor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.Identifier;
@@ -15,9 +9,6 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static einstein.subtle_effects.compat.CompatHelper.endRemLoc;
-import static einstein.subtle_effects.init.ModConfigs.BLOCKS;
 
 public class EndRemasteredCompat {
     // TODO fix when it matters
