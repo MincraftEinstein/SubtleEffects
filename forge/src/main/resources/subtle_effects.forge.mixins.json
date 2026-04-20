@@ -10,6 +10,7 @@
     "client.FluidCalcsAccessor",
     "client.FluidTypeMixin",
     "client.ForgeClientEntityMixin",
+    "client.ForgeLootrChestBlockEntityMixin",
     "client.ForgeMultiPlayerGameModeMixin",
     "client.ForgeParticleEngineMixin",
     "client.ForgeSpawnEggItemAccessor",
@@ -25,5 +26,6 @@
   ],
   "injectors": {
     "defaultRequire": 1
-  }
+  },
+  "plugin": "com.moulberry.mixinconstraints.ConstraintsMixinPlugin"
 }

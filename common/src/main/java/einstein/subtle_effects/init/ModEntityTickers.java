@@ -14,6 +14,7 @@ import me.fzzyhmstrs.fzzy_config.validation.ValidatedField;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
@@ -85,7 +86,7 @@ public class ModEntityTickers {
                         if (random.nextBoolean()) {
                             level.addParticle(ModParticles.SMALL_DUST_CLOUD.get(),
                                     entity.getRandomX(1),
-                                    entity.getY() + Math.clamp(random.nextFloat(), 0.2, 0.3),
+                                    entity.getY() + Mth.clamp(random.nextFloat(), 0.2, 0.3),
                                     entity.getRandomZ(1),
                                     0,
                                     random.nextDouble(),

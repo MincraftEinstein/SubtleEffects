@@ -36,6 +36,7 @@ dependencies {
     modCompileOnly "maven.modrinth:endrem:${fabric_endrem_version}"
     modCompileOnly "maven.modrinth:moonlight:${fabric_moonlight_version}"
     modCompileOnly "maven.modrinth:immersive-weathering:${fabric_immersive_weathering_version}"
+    modCompileOnly("maven.modrinth:lootr:${fabric_lootr_version}")
 
     // when testing don't implement this, it's far easier just to go put the mod in the mods folder
     modCompileOnly "maven.modrinth:iris:${fabric_iris_version}"

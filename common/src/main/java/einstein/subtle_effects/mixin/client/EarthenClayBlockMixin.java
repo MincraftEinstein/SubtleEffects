@@ -1,5 +1,6 @@
 package einstein.subtle_effects.mixin.client;
 
+import com.moulberry.mixinconstraints.annotations.IfModLoaded;
 import com.ordana.immersive_weathering.blocks.soil_types.EarthenClayBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
@@ -10,6 +11,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+@IfModLoaded("immersive_weathering")
 @Mixin(EarthenClayBlock.class)
 public class EarthenClayBlockMixin {
 

@@ -22,7 +22,7 @@ public class CommonMixinLogic {
     }
 
     public static boolean shouldRenderParticle(Particle particle, Camera camera) {
-        if (!GENERAL.enableParticleCulling) {
+        if (!GENERAL.enableParticleCulling.get()) {
             return true;
         }
 
@@ -38,7 +38,8 @@ public class CommonMixinLogic {
         Minecraft minecraft = Minecraft.getInstance();
         Frustum frustum = ((FrustumGetter) minecraft.levelRenderer).subtleEffects$getCullingFrustum();
         if (frustum != null && frustum.isVisible(particle.getBoundingBox())) {
-            if (GENERAL.cullParticlesInUnloadedChunks && !Util.isChunkLoaded(minecraft.level, accessor.getX(), accessor.getZ())) {
+            // noinspection ConstantConditions
+            if (GENERAL.cullParticlesInUnloadedChunks.get() && !Util.isChunkLoaded(minecraft.level, accessor.getX(), accessor.getZ())) {
                 return false;
             }
 

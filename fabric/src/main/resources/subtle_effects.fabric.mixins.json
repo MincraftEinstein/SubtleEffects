@@ -7,12 +7,13 @@
   "client": [
     "client.FabricClientEntityMixin",
     "client.FabricLevelRendererMixin",
+    "client.FabricLootrChestBlockEntityMixin",
     "client.FabricMultiPlayerGameModeMixin",
+    "client.FabricParticleEngineMixin",
+    "client.ModMenuModSearchMixin",
     "client.item.FabricBucketItemAccessor",
     "client.item.FabricBucketItemMixin",
-    "client.particle.FabricParticleEngineMixin",
-    "client.FabricParticleEngineMixin",
-    "client.ModMenuModSearchMixin"
+    "client.particle.FabricParticleEngineMixin"
   ],
   "mixins": [
     "common.FabricStonecutterMenu$2Mixin",

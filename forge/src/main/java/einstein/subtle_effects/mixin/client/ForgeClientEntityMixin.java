@@ -86,7 +86,7 @@ public abstract class ForgeClientEntityMixin implements FluidLogicAccessor {
         fluidDefsRef.set(fluidDefs);
     }
 
-    @Inject(method = "updateFluidHeightAndDoFluidPushing(Ljava/util/function/Predicate;)V", at = @At("TAIL"))
+    @Inject(method = "updateFluidHeightAndDoFluidPushing(Ljava/util/function/Predicate;)V", at = @At("TAIL"), remap = false)
     private void updateFluidPairHeight(CallbackInfo ci, @Share("fluidDefs") LocalRef<Map<FluidType, FluidDefinition>> fluidDefsRef) {
         for (Object2DoubleMap.Entry<FluidType> entry : forgeFluidTypeHeight.object2DoubleEntrySet()) {
             Map<FluidType, FluidDefinition> fluidDefs = fluidDefsRef.get();
