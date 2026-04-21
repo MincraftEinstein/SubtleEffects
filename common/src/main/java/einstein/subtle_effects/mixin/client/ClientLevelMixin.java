@@ -110,7 +110,7 @@ public abstract class ClientLevelMixin extends Level {
 
     @Inject(method = "doAddParticle", at = @At("HEAD"), cancellable = true)
     void cullNotLoaded(ParticleOptions particle, boolean overrideLimiter, boolean alwaysShow, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, CallbackInfo ci) {
-        if (GENERAL.enableParticleCulling && GENERAL.cullParticlesInUnloadedChunks && !Util.isChunkLoaded(this, x, z)) {
+        if (GENERAL.enableParticleCulling.get() && GENERAL.cullParticlesInUnloadedChunks.get() && !Util.isChunkLoaded(this, x, z)) {
             ci.cancel();
         }
     }

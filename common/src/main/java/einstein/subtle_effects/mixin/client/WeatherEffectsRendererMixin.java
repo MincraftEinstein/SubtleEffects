@@ -59,7 +59,7 @@ public abstract class WeatherEffectsRendererMixin {
 
     @WrapOperation(method = "tickRainParticles", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/multiplayer/ClientLevel;addParticle(Lnet/minecraft/core/particles/ParticleOptions;DDDDDD)V"))
     private void modifyCauldronRippleParticlePos(ClientLevel level, ParticleOptions options, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, Operation<Void> original, @Local BlockState state, @Local FluidState fluidState, @Local RandomSource random, @Local(ordinal = 1) BlockPos pos) {
-        if (BLOCKS.rainWaterRipples) {
+        if (BLOCKS.rainWaterRipples.get()) {
             boolean isCauldron = state.is(Blocks.WATER_CAULDRON);
 
             if ((fluidState.is(FluidTags.WATER) || isCauldron)) {

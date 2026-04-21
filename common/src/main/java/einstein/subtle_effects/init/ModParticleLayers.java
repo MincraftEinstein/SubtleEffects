@@ -14,7 +14,7 @@ public class ModParticleLayers {
     }
 
     public static SingleQuadParticle.Layer getBlendedOrTransparent() {
-        if (ModConfigs.GENERAL.allowUsingBlendedRenderType) {
+        if (ModConfigs.GENERAL.allowUsingBlendedRenderType.get()) {
             return BLENDED;
         }
         return SingleQuadParticle.Layer.TRANSLUCENT;

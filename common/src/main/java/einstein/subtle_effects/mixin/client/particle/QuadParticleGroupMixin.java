@@ -17,7 +17,7 @@ public class QuadParticleGroupMixin {
 
     @ModifyExpressionValue(method = "extractRenderState", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/culling/Frustum;pointInFrustum(DDD)Z"))
     boolean enhancedFrustumCull(boolean original, Frustum frustum, Camera camera, float partialTick, @Local SingleQuadParticle particle) {
-        if (!original && GENERAL.enableParticleCulling) {
+        if (!original && GENERAL.enableParticleCulling.get()) {
             ParticleAccessor accessor = ((ParticleAccessor) particle);
             if (!accessor.subtleEffects$shouldIgnoreCulling()) {
                 return frustum != null && frustum.isVisible(particle.getBoundingBox());
