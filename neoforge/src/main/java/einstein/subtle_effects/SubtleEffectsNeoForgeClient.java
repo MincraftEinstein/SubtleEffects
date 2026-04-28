@@ -31,9 +31,12 @@ public class SubtleEffectsNeoForgeClient {
         modEventBus.addListener((RegisterParticleProvidersEvent event) ->
                 NeoForgeRegistryHelper.PARTICLE_PROVIDERS.forEach((particle, provider) -> registerParticle(event, particle, provider))
         );
-        modEventBus.addListener((AddPackFindersEvent event) ->
+        modEventBus.addListener((AddPackFindersEvent event) -> {
+            if (event.getPackType() == PackType.CLIENT_RESOURCES) {
                 event.addPackFinders(BCWPPackManager.PACK_LOCATION.get(), PackType.CLIENT_RESOURCES,
-                        BCWPPackManager.PACK_NAME, PackSource.BUILT_IN, false, Pack.Position.TOP));
+                        BCWPPackManager.PACK_NAME, PackSource.BUILT_IN, false, Pack.Position.TOP);
+            }
+        });
         modEventBus.addListener((RegisterClientReloadListenersEvent event) ->
                 SubtleEffectsClient.registerReloadListeners().forEach(event::registerReloadListener)
         );
