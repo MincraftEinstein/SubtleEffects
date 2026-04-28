@@ -80,6 +80,12 @@ public class ModConfigs {
         ), config::getDefault);
     }
 
+    public static <T extends ValidatedField<V>, V> ValidatedCondition<V> conditionalModLoaded(T config, String modId) {
+        return config.toCondition(() -> !Services.PLATFORM.isModLoaded(modId), new SuppliedComponent(true,
+                () -> styleFailMessage(Component.translatable("config.subtle_effects.conditions.mod_loaded", modId))
+        ), config::getDefault);
+    }
+
     public static SuppliedComponent createFailMessage(Supplier<Translatable> dependencyConfig, boolean memoize) {
         return new SuppliedComponent(memoize,
                 () -> {

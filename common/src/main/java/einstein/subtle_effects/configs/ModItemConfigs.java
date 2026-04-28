@@ -2,6 +2,7 @@ package einstein.subtle_effects.configs;
 
 import einstein.subtle_effects.SubtleEffects;
 import einstein.subtle_effects.SubtleEffectsClient;
+import einstein.subtle_effects.compat.CompatHelper;
 import einstein.subtle_effects.configs.items.ItemRarityConfigs;
 import einstein.subtle_effects.configs.items.ProjectileConfigs;
 import einstein.subtle_effects.init.ModConfigs;
@@ -43,7 +44,7 @@ public class ModItemConfigs extends Config {
     public boolean splashPotionClouds = true;
     @RequiresAction(action = Action.RESTART)
     public boolean structureVoidItemMarker = true;
-    public boolean armadilloBrushParticles = true;
+    public ValidatedCondition<Boolean> armadilloBrushParticles = ModConfigs.conditionalModLoaded(new ValidatedBoolean(), CompatHelper.HARDENED_ARMADILLOS_MOD_ID);
     public ValidatedFloat spawnEggUseSoundVolume = new ValidatedFloat(0.5F, 1, 0);
     public boolean spawnEggUseParticles = true;
 
