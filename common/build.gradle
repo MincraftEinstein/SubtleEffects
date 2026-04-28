@@ -28,7 +28,7 @@ dependencies {
     compileOnly "maven.modrinth:sodium:$neoforge_sodium_version"
     compileOnly "maven.modrinth:iris:$neoforge_iris_version"
     compileOnly "maven.modrinth:dyed-flames:$neoforge_dyed_flames_version"
-    compileOnly "fuzs.neoforgedatapackextensions:neoforgedatapackextensions-common:$neoforgedatapackextensions_version"
+    compileOnly "fuzs.multiloaderdataextensions:multiloaderdataextensions-common:$multiloaderdataextensions_version"
     compileOnly ("fuzs.puzzleslib:puzzleslib-common:$puzzleslib_version") {
         exclude group: "net.fabricmc.fabric-api"
     }

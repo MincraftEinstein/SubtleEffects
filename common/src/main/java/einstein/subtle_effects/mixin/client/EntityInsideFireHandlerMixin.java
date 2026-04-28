@@ -4,7 +4,7 @@ import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.moulberry.mixinconstraints.annotations.IfModLoaded;
 import einstein.subtle_effects.compat.CompatHelper;
 import einstein.subtle_effects.init.ModConfigs;
-import fuzs.dyedflames.handler.EntityInsideFireHandler;
+import fuzs.dyedflames.common.handler.EntityInsideFireHandler;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 

@@ -3,6 +3,8 @@ package einstein.subtle_effects.compat;
 import einstein.subtle_effects.data.BurningEffects;
 import einstein.subtle_effects.data.BurningEffectsReloadListener;
 import einstein.subtle_effects.data.color_providers.ColorProviderType;
+import fuzs.dyedflames.common.init.ModRegistry;
+import fuzs.dyedflames.common.world.level.block.FireType;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -15,8 +17,7 @@ import java.util.Optional;
 public class DyedFlamesCompat {
 
     public static ParticleOptions getFlameParticle(Entity entity) {
-//        Block block = ModRegistry.LAST_FIRE_SOURCE_ATTACHMENT_TYPE.get(entity);
-        Block block = null;
+        Block block = ModRegistry.LAST_FIRE_SOURCE_ATTACHMENT_TYPE.get(entity);
         if (block != null) {
             BurningEffects burningEffects = getBurningEffects(block);
             if (burningEffects != null) {
@@ -26,18 +27,17 @@ public class DyedFlamesCompat {
                 }
             }
 
-//            Optional<FireType> fireType = FireType.getFireType(block);
-//            if (fireType.isPresent()) {
-//                return fireType.get().particleType().orElse(null);
-//            }
+            Optional<FireType> fireType = FireType.getFireType(block);
+            if (fireType.isPresent()) {
+                return fireType.get().particleType().orElse(null);
+            }
         }
         return null;
     }
 
     @Nullable
     public static ColorProviderType.ColorProvider getSparkColors(Entity entity) {
-//        Block block = ModRegistry.LAST_FIRE_SOURCE_ATTACHMENT_TYPE.get(entity);
-        Block block = null;
+        Block block = ModRegistry.LAST_FIRE_SOURCE_ATTACHMENT_TYPE.get(entity);
         if (block != null) {
             BurningEffects burningEffects = getBurningEffects(block);
             if (burningEffects != null) {
