@@ -1,5 +1,7 @@
 package einstein.subtle_effects.mixin.client.entity;
 
+import com.moulberry.mixinconstraints.annotations.IfModAbsent;
+import einstein.subtle_effects.compat.CompatHelper;
 import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.init.ModParticles;
 import net.minecraft.util.RandomSource;
@@ -14,6 +16,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import static einstein.subtle_effects.util.MathUtil.nextDouble;
 import static einstein.subtle_effects.util.MathUtil.nextSign;
 
+@IfModAbsent(value = CompatHelper.HARDENED_ARMADILLOS_MOD_ID)
 @Mixin(Armadillo.class)
 public class ArmadilloMixin {
 
@@ -23,7 +26,7 @@ public class ArmadilloMixin {
     @Inject(method = "brushOffScute", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/animal/armadillo/Armadillo;gameEvent(Lnet/minecraft/core/Holder;)V"))
     private void addBrushEffects(CallbackInfoReturnable<Boolean> cir) {
         Level level = subtleEffects$me.level();
-        if (level.isClientSide() && ModConfigs.ITEMS.armadilloBrushParticles) {
+        if (level.isClientSide() && ModConfigs.ITEMS.armadilloBrushParticles.get()) {
             RandomSource random = subtleEffects$me.getRandom();
 
             for (int i = 0; i < 10; i++) {
