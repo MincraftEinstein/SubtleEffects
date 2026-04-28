@@ -8,7 +8,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Accessor;
 
 @IfModLoaded("lootr")
-@Mixin(LootrChestBlockEntity.class)
+@Mixin(value = LootrChestBlockEntity.class, remap = false)
 public abstract class ForgeLootrChestBlockEntityMixin implements ChestAccessor {
 
     @Override
