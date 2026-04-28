@@ -32,7 +32,6 @@ dependencies {
     compileOnly ("fuzs.puzzleslib:puzzleslib-common:$puzzleslib_version") {
         exclude group: "net.fabricmc.fabric-api"
     }
-    compileOnly("maven.modrinth:lootr:${neoforge_lootr_version}")
 }
 
 configurations {
