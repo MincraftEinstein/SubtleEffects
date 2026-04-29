@@ -56,7 +56,8 @@ dependencies {
     compileOnly("com.github.glitchfiend:GlitchCore-neoforge:${glitchcore_version}")
     compileOnly("com.github.glitchfiend:SereneSeasons-neoforge:${serene_seasons_version}")
     compileOnly("it.crystalnest:cobweb-neoforge:${cobweb_version}")
-    compileOnly("it.crystalnest:prometheus-neoforge:${prometheus_version}")
+//    compileOnly("it.crystalnest:prometheus-neoforge:${prometheus_version}") TODO reimplement
+    compileOnly("maven.modrinth:prometheus-api:Is5lqplQ")
     compileOnly("maven.modrinth:iceberg:${neoforge_iceberg_version}")
     compileOnly("maven.modrinth:prism-lib:${neoforge_prism_version}")
     compileOnly("maven.modrinth:item-borders:${neoforge_item_borders_version}")

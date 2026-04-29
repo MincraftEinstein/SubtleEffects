@@ -19,8 +19,9 @@ dependencies {
     implementation "me.fzzyhmstrs:fzzy_config:${fzzy_config_version}"
     compileOnly "com.github.glitchfiend:GlitchCore-fabric:${glitchcore_version}"
     compileOnly "com.github.glitchfiend:SereneSeasons-fabric:${serene_seasons_version}"
-//    compileOnly "it.crystalnest:cobweb-fabric:${cobweb_version}"
-//    compileOnly "it.crystalnest:prometheus-fabric:${prometheus_version}"
+    compileOnly "it.crystalnest:cobweb-fabric:${cobweb_version}"
+//    compileOnly "it.crystalnest:prometheus-fabric:${prometheus_version}" TODO reimplement
+    compileOnly "maven.modrinth:prometheus-api:Z1OpPHuo"
     compileOnly "maven.modrinth:iceberg:${fabric_iceberg_version}"
     compileOnly "maven.modrinth:prism-lib:${fabric_prism_version}"
     compileOnly "maven.modrinth:item-borders:${fabric_item_borders_version}"
