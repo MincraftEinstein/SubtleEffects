@@ -14,21 +14,21 @@ public class SereneSeasonsCompat {
             return false;
         }
 
-       /* if (!ModConfig.seasons.isDimensionWhitelisted(level.dimension())) {
+        if (!ModConfig.seasons.isDimensionWhitelisted(level.dimension())) {
             return false;
-        }*/
+        }
 
-//        ISeasonState seasonState = SeasonHelper.getSeasonState(level);
-//        Season season = seasonState.getSeason();
-//
-//        if (season == Season.WINTER) {
-//            return true;
-//        }
-//
-//        if (seasonsConfig == ColdSeasonsType.DEFAULT) {
-//            Season.SubSeason subSeason = seasonState.getSubSeason();
-//            return subSeason == Season.SubSeason.LATE_AUTUMN || subSeason == Season.SubSeason.EARLY_SPRING;
-//        }
+        ISeasonState seasonState = SeasonHelper.getSeasonState(level);
+        Season season = seasonState.getSeason();
+
+        if (season == Season.WINTER) {
+            return true;
+        }
+
+        if (seasonsConfig == ColdSeasonsType.DEFAULT) {
+            Season.SubSeason subSeason = seasonState.getSubSeason();
+            return subSeason == Season.SubSeason.LATE_AUTUMN || subSeason == Season.SubSeason.EARLY_SPRING;
+        }
         return false;
     }
 }
