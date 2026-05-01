@@ -88,6 +88,10 @@ public class ModParticles {
     public static final Supplier<ParticleType<FallenLeafParticleOptions>> FALLEN_LEAF = register("fallen_leaf", type -> FallenLeafParticleOptions.CODEC, type -> FallenLeafParticleOptions.STREAM_CODEC, sprites -> new FallenLeafParticle.Provider());
     public static final Supplier<SimpleParticleType> ARMADILLO = register("armadillo", CustomTerrainParticle.Provider::new);
     public static final Supplier<SimpleParticleType> PURPLE_FLAME = register("purple_flame", FlameParticle.Provider::new);
+    public static final Supplier<SimpleParticleType> SKELETON_BONE = register("skeleton_bone", FeatherParticle.BoneProvider::new);
+    public static final Supplier<SimpleParticleType> WITHER_BONE = register("wither_bone", FeatherParticle.BoneProvider::new);
+    public static final Supplier<SimpleParticleType> STRAY_BONE = register("stray_bone", FeatherParticle.BoneProvider::new);
+    public static final Supplier<SimpleParticleType> BOGGED_BONE = register("bogged_bone", FeatherParticle.BoneProvider::new);
 
     public static void init() {
     }

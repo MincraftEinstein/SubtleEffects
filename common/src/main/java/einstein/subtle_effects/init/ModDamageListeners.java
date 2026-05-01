@@ -102,6 +102,41 @@ public class ModDamageListeners {
                 }
             }
         });
+        register(EntityType.SKELETON, (entity, level, random) ->
+                spawnBones(entity, level, random, ModParticles.SKELETON_BONE.get()));
+        register(EntityType.WITHER_SKELETON, (entity, level, random) ->
+                spawnBones(entity, level, random, ModParticles.WITHER_BONE.get()));
+        register(EntityType.STRAY, (entity, level, random) ->
+                spawnBones(entity, level, random, ModParticles.STRAY_BONE.get()));
+        register(EntityType.BOGGED, (entity, level, random) ->
+                spawnBones(entity, level, random, ModParticles.BOGGED_BONE.get()));
+        register(EntityType.SKELETON_HORSE, (entity, level, random) -> {
+            for (int i = 0; i < 7; i++) {
+                level.addParticle(ModParticles.SKELETON_BONE.get(),
+                        entity.getRandomX(0.3),
+                        entity.getY(0.5 + nextDouble(random, 0.5)),
+                        entity.getRandomZ(0.3),
+                        nextNonAbsDouble(random, 0.7),
+                        nextNonAbsDouble(random) * 2,
+                        nextNonAbsDouble(random, 0.7)
+                );
+            }
+        });
+    }
+
+    private static void spawnBones(Entity entity, Level level, RandomSource random, ParticleOptions particle) {
+        if (ENTITIES.attackedSkeletonBones) {
+            for (int i = 0; i < 5; i++) {
+                level.addParticle(particle,
+                        entity.getX(),
+                        entity.getY(0.5 + nextDouble(random, 0.5)),
+                        entity.getZ(),
+                        nextNonAbsDouble(random, 0.7),
+                        nextNonAbsDouble(random) * 2,
+                        nextNonAbsDouble(random, 0.7)
+                );
+            }
+        }
     }
 
     private static <T extends Entity> void register(EntityType<T> type, EntityProvider<T> provider) {
