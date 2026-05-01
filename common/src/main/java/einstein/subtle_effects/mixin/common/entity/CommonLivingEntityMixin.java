@@ -6,6 +6,7 @@ import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.networking.clientbound.ClientBoundDrankPotionPayload;
+import einstein.subtle_effects.networking.clientbound.ClientBoundEntityDamagedPayload;
 import einstein.subtle_effects.networking.clientbound.ClientBoundEntityFellPayload;
 import einstein.subtle_effects.networking.clientbound.ClientBoundEntitySpawnSprintingDustCloudsPayload;
 import einstein.subtle_effects.platform.Services;
@@ -13,6 +14,7 @@ import einstein.subtle_effects.util.ParticleSpawnUtil;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
@@ -29,6 +31,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.Vec3;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -37,6 +40,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(LivingEntity.class)
 public abstract class CommonLivingEntityMixin extends Entity {
 
+    @Shadow
+    public int hurtTime;
     @Unique
     private boolean subtleEffects$validEntity;
 
@@ -155,5 +160,19 @@ public abstract class CommonLivingEntityMixin extends Entity {
             return;
         }
         ParticleSpawnUtil.spawnPotionRings(subtleEffects$me);
+    }
+
+    @Inject(method = "actuallyHurt", at = @At("HEAD"))
+    private void actuallyHurt(DamageSource source, float amount, CallbackInfo ci) {
+        if (level() instanceof ServerLevel level) {
+            if (isAlive() && hurtTime == 0) {
+                if (!isInvulnerableTo(source) && amount > 0) {
+                    Services.NETWORK.sendToClientsTracking(source.getEntity() instanceof ServerPlayer player ? player : null,
+                            level, blockPosition(), new ClientBoundEntityDamagedPayload(getId(),
+                                    source.typeHolder().unwrapKey().map(ResourceKey::location))
+                    );
+                }
+            }
+        }
     }
 }

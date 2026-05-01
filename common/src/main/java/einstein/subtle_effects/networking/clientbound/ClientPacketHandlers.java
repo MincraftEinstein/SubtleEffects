@@ -2,10 +2,7 @@ package einstein.subtle_effects.networking.clientbound;
 
 import einstein.subtle_effects.configs.ReplacedParticlesDisplayType;
 import einstein.subtle_effects.data.FluidDefinition;
-import einstein.subtle_effects.init.ModAnimalFedEffectSettings;
-import einstein.subtle_effects.init.ModConfigs;
-import einstein.subtle_effects.init.ModParticles;
-import einstein.subtle_effects.init.ModSounds;
+import einstein.subtle_effects.init.*;
 import einstein.subtle_effects.mixin.client.entity.AbstractHorseAccessor;
 import einstein.subtle_effects.particle.option.FloatParticleOptions;
 import einstein.subtle_effects.particle.option.SheepFluffParticleOptions;
@@ -16,6 +13,7 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.*;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -44,6 +42,7 @@ import net.minecraft.world.phys.Vec3;
 import org.joml.Vector3f;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Supplier;
 
 import static einstein.subtle_effects.init.ModConfigs.*;
@@ -401,6 +400,16 @@ public class ClientPacketHandlers {
         if (volume > 0) {
             RandomSource random = level.getRandom();
             level.playLocalSound(payload.pos(), ModSounds.MONSTER_SPAWNER_SPAWN_MOB.get(), SoundSource.BLOCKS, volume, (random.nextFloat() - random.nextFloat()) * 0.2F + 1, true);
+        }
+    }
+
+    public static void handle(ClientLevel level, ClientBoundEntityDamagedPayload payload) {
+        Entity entity = level.getEntity(payload.entityId());
+        if (entity instanceof LivingEntity livingEntity && livingEntity.isAlive()) {
+            Optional<ResourceLocation> damageType = payload.damageType();
+            if (damageType.isPresent() && ENTITIES.damageTypes.contains(damageType.get())) {
+                ModDamageListeners.spawnParticles(entity, level, entity.getRandom());
+            }
         }
     }
 

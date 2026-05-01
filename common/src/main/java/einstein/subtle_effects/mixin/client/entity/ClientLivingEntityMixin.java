@@ -4,7 +4,6 @@ import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.init.ModDamageListeners;
-import einstein.subtle_effects.util.EntityProvider;
 import einstein.subtle_effects.util.MathUtil;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.tags.FluidTags;
@@ -78,15 +77,11 @@ public abstract class ClientLivingEntityMixin<T extends Entity> extends Entity {
         }
     }
 
-    @SuppressWarnings("unchecked")
     @Inject(method = "hurt", at = @At("HEAD"))
     private void hurt(DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
         if (level().isClientSide && !isInvulnerableTo(source) && amount > 0) {
             if (source.getEntity() instanceof LivingEntity && isAlive() && hurtTime == 0) {
-                EntityType<T> type = (EntityType<T>) getType();
-                if (ModDamageListeners.REGISTERED.containsKey(type)) {
-                    ((EntityProvider<T>) ModDamageListeners.REGISTERED.get(type)).apply((T) this, level(), random);
-                }
+                ModDamageListeners.spawnParticles(this, level(), random);
             }
         }
     }

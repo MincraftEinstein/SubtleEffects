@@ -399,6 +399,8 @@
   "config.subtle_effects.entities.perspectiveDisplayType.THIRD_PERSON_ONLY": "Only in Third Person",
   "config.subtle_effects.entities.attackedGroup": "Attacked",
   "config.subtle_effects.entities.attackedGroup.desc": "Particles emitted from a mob when it takes damage from a another mob or player",
+  "config.subtle_effects.enttiies.damageTypes": "Damage Types",
+  "config.subtle_effects.enttiies.damageTypes.desc": "List of damage types that cause mob damaged effects",
   "config.subtle_effects.entities.attackedChickenFeathers": "Attacked Chicken Feathers",
   "config.subtle_effects.entities.attackedParrotFeathers": "Attacked Parrot Feathers",
   "config.subtle_effects.entities.attackedSnowGolemSnowflakes": "Attacked Snow Golem Snowflakes",

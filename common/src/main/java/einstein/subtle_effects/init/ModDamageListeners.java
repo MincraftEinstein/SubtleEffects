@@ -6,9 +6,11 @@ import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 
 import java.util.HashMap;
@@ -104,5 +106,13 @@ public class ModDamageListeners {
 
     private static <T extends Entity> void register(EntityType<T> type, EntityProvider<T> provider) {
         REGISTERED.put(type, provider);
+    }
+
+    @SuppressWarnings("unchecked")
+    public static <T extends Entity> void spawnParticles(T entity, Level level, RandomSource random) {
+        EntityType<T> type = (EntityType<T>) entity.getType();
+        if (REGISTERED.containsKey(type)) {
+            ((EntityProvider<T>) REGISTERED.get(type)).apply(entity, level, random);
+        }
     }
 }
