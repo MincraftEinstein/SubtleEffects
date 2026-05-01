@@ -51,6 +51,7 @@ public class DamageTakenConfigs extends ConfigSection {
     public boolean damagedSheepFluff = true;
     public boolean damagedSlimeSlime = true;
     public boolean damagedSkeletonBones = true;
+    public boolean damagedSkeletonHorseBones = true;
 
     private static void add(List<ResourceLocation> list, ResourceKey<DamageType> key) {
         list.add(key.location());

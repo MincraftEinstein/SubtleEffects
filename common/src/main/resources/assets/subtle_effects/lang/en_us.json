@@ -407,6 +407,7 @@
   "config.subtle_effects.entities.damageTaken.damagedSheepFluff": "Damaged Sheep Fluff",
   "config.subtle_effects.entities.damageTaken.damagedSlimeSlime": "Damaged Slime Slime",
   "config.subtle_effects.entities.damageTaken.damagedSkeletonBones": "Damaged Skeleton Bones",
+  "config.subtle_effects.entities.damageTaken.damagedSkeletonHorseBones": "Damaged Skeleton Horse Bones",
   "config.subtle_effects.entities.allayMagicDensity": "Allay Magic Density",
   "config.subtle_effects.entities.allayMagicDensity.desc": "The density of particles spawning around an allay\n0 to disable",
   "config.subtle_effects.entities.vexMagicDensity": "Vex Magic Density",
