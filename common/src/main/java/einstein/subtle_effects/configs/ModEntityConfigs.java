@@ -29,49 +29,13 @@ import java.util.List;
 @Translation(prefix = ModConfigs.BASE_KEY + "entities")
 public class ModEntityConfigs extends Config {
 
-    private static final List<ResourceLocation> LIST = Util.make(new ArrayList<>(), list -> {
-        add(list, DamageTypes.GENERIC);
-        add(list, DamageTypes.STALAGMITE);
-        add(list, DamageTypes.TRIDENT);
-        add(list, DamageTypes.FALL);
-        add(list, DamageTypes.FALLING_STALACTITE);
-        add(list, DamageTypes.MOB_PROJECTILE);
-        add(list, DamageTypes.WIND_CHARGE);
-        add(list, DamageTypes.ARROW);
-        add(list, DamageTypes.BAD_RESPAWN_POINT);
-        add(list, DamageTypes.EXPLOSION);
-        add(list, DamageTypes.FALLING_ANVIL);
-        add(list, DamageTypes.FALLING_BLOCK);
-        add(list, DamageTypes.FIREBALL);
-        add(list, DamageTypes.FLY_INTO_WALL);
-        add(list, DamageTypes.LIGHTNING_BOLT);
-        add(list, DamageTypes.MOB_ATTACK);
-        add(list, DamageTypes.MOB_ATTACK_NO_AGGRO);
-        add(list, DamageTypes.PLAYER_ATTACK);
-        add(list, DamageTypes.PLAYER_EXPLOSION);
-        add(list, DamageTypes.SONIC_BOOM);
-        add(list, DamageTypes.STING);
-        add(list, DamageTypes.THROWN);
-        add(list, DamageTypes.UNATTRIBUTED_FIREBALL);
-        add(list, DamageTypes.WITHER_SKULL);
-    });
-
     public SleepingConfigs sleeping = new SleepingConfigs();
     public HumanoidConfigs humanoids = new HumanoidConfigs();
     public DustCloudsConfig dustClouds = new DustCloudsConfig();
     public BurningEntityConfigs burning = new BurningEntityConfigs();
     public ExplosivesConfigs explosives = new ExplosivesConfigs();
     public SplashConfigs splashes = new SplashConfigs();
-
-    public ConfigGroup attackedGroup = new ConfigGroup("attacked");
-    public ValidatedList<ResourceLocation> damageTypes = ModConfigs.registryList(Registries.DAMAGE_TYPE, LIST);
-    public boolean attackedChickenFeathers = true;
-    public boolean attackedParrotFeathers = true;
-    public boolean attackedSnowGolemSnowflakes = true;
-    public boolean attackedSheepFluff = true;
-    public boolean attackedSlimeSlime = true;
-    @ConfigGroup.Pop
-    public boolean attackedSkeletonBones = true;
+    public DamageTakenConfigs damageTaken = new DamageTakenConfigs();
 
     public ValidatedDouble allayMagicDensity = new ValidatedDouble(0.2, 1, 0);
     public ValidatedDouble vexMagicDensity = new ValidatedDouble(0.2, 1, 0);
@@ -107,10 +71,6 @@ public class ModEntityConfigs extends Config {
 
     public ModEntityConfigs() {
         super(SubtleEffects.loc("entities"));
-    }
-
-    private static void add(List<ResourceLocation> list, ResourceKey<DamageType> key) {
-        list.add(key.location());
     }
 
     @Override

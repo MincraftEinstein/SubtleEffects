@@ -407,7 +407,7 @@ public class ClientPacketHandlers {
         Entity entity = level.getEntity(payload.entityId());
         if (entity instanceof LivingEntity livingEntity && livingEntity.isAlive()) {
             Optional<ResourceLocation> damageType = payload.damageType();
-            if (damageType.isPresent() && ENTITIES.damageTypes.contains(damageType.get())) {
+            if (damageType.isPresent() && ENTITIES.damageTaken.damageTypes.contains(damageType.get())) {
                 ModDamageListeners.spawnParticles(entity, level, entity.getRandom());
             }
         }

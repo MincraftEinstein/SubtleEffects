@@ -25,7 +25,7 @@ public class ModDamageListeners {
 
     public static void init() {
         register(EntityType.CHICKEN, (entity, level, random) -> {
-            if (ENTITIES.attackedChickenFeathers) {
+            if (ENTITIES.damageTaken.damagedChickenFeathers) {
                 for (int i = 0; i < 10; i++) {
                     level.addParticle(ModParticles.CHICKEN_FEATHER.get(),
                             entity.getX(),
@@ -39,7 +39,7 @@ public class ModDamageListeners {
             }
         });
         register(EntityType.PARROT, (entity, level, random) -> {
-            if (ENTITIES.attackedParrotFeathers) {
+            if (ENTITIES.damageTaken.damagedParrotFeathers) {
                 ParticleOptions particle = switch (entity.getVariant()) {
                     case BLUE -> ModParticles.BLUE_PARROT_FEATHER.get();
                     case GRAY -> ModParticles.GRAY_PARROT_FEATHER.get();
@@ -61,7 +61,7 @@ public class ModDamageListeners {
             }
         });
         register(EntityType.SNOW_GOLEM, (entity, level, random) -> {
-            if (ENTITIES.attackedSnowGolemSnowflakes) {
+            if (ENTITIES.damageTaken.damagedSnowGolemSnowflakes) {
                 for (int i = 0; i < 20; i++) {
                     level.addParticle(ModParticles.SNOW.get(),
                             entity.getX(),
@@ -75,12 +75,12 @@ public class ModDamageListeners {
             }
         });
         register(EntityType.SHEEP, (entity, level, random) -> {
-            if (ENTITIES.attackedSheepFluff) {
+            if (ENTITIES.damageTaken.damagedSheepFluff) {
                 ParticleSpawnUtil.spawnSheepFluff(entity, random.nextInt(3));
             }
         });
         register(EntityType.SLIME, (entity, level, random) -> {
-            if (ENTITIES.attackedSlimeSlime) {
+            if (ENTITIES.damageTaken.damagedSlimeSlime) {
                 boolean replaceSlimeSquishParticles = ENTITIES.replaceSlimeSquishParticles;
                 ParticleOptions options = replaceSlimeSquishParticles
                         ? new BlockParticleOption(ParticleTypes.BLOCK, Blocks.SLIME_BLOCK.defaultBlockState())
@@ -125,7 +125,7 @@ public class ModDamageListeners {
     }
 
     private static void spawnBones(Entity entity, Level level, RandomSource random, ParticleOptions particle) {
-        if (ENTITIES.attackedSkeletonBones) {
+        if (ENTITIES.damageTaken.damagedSkeletonBones) {
             for (int i = 0; i < 5; i++) {
                 level.addParticle(particle,
                         entity.getX(),
