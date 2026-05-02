@@ -60,8 +60,9 @@ public class EinsteinSolarSystemLayer<T extends AbstractClientPlayer, V extends 
         if (shouldRender(player)) {
             int headCount = HEAD_ROTATIONS.length;
             model.hat.visible = player.isModelPartShown(PlayerModelPart.HAT);
+            float healthPercentage = player.getHealth() / player.getMaxHealth();
 
-            for (int i = 0; i < headCount; i++) {
+            for (int i = 0; i < headCount * healthPercentage; i++) {
                 float i1 = i + 1;
                 float spin = getSpin(partialTicks, player, i) * (headCount / i1);
                 Vector3f rotation = HEAD_ROTATIONS[i];
