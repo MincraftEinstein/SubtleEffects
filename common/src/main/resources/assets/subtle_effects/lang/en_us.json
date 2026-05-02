@@ -244,6 +244,8 @@
   "config.subtle_effects.blocks.chestsOpenRandomlyUnderwaterFrequency": "Chests Open Randomly Underwater Frequency",
   "config.subtle_effects.blocks.chestsOpenRandomlyUnderwaterFrequency.desc": "How often should chests open randomly underwater in seconds.\n0 to disable chests randomly opening underwater",
   "config.subtle_effects.blocks.randomChestOpeningNeedsSoulSand": "Random Chest Opening Needs Soul Sand",
+  "config.subtle_effects.blocks.randomChestOpeningSoundVolume": "Random Chest Opening Sound Volume",
+  "config.subtle_effects.blocks.randomChestOpeningSoundVolume.desc": "Volume of chests that randomly open underwater. Vanilla chest sound volume is 0.5",
   "config.subtle_effects.blocks.dispenseItemBubbles": "Dispense Item Bubbles",
   "config.subtle_effects.blocks.dispenseItemBubbles.desc": "Should bubbles be spawned when items are dispensed underwater from dispensers/droppers/crafters",
   "config.subtle_effects.blocks.rainIncreasesLeavesSpawningParticles": "Rain Increases Leaves Spawning Particles",

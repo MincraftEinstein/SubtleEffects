@@ -160,6 +160,7 @@ public class ModBlockConfigs extends Config {
     public boolean openingChestsSpawnsBubbles = true;
     public ValidatedInt chestsOpenRandomlyUnderwaterFrequency = new ValidatedInt(5, 60, 0);
     public ValidatedCondition<Boolean> randomChestOpeningNeedsSoulSand = conditional(new ValidatedBoolean(false), chestsOpenRandomlyUnderwaterFrequency);
+    public ValidatedCondition<Float> randomChestOpeningSoundVolume = conditional(new ValidatedFloat(0.25F, 1, 0), chestsOpenRandomlyUnderwaterFrequency);
     @ConfigGroup.Pop
     public boolean dispenseItemBubbles = true;
     public boolean rainIncreasesLeavesSpawningParticles = true;

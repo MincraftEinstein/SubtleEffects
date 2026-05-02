@@ -208,7 +208,7 @@ public class ChestBlockEntityTicker extends BlockPosTicker {
         }
 
         level.playSound(Minecraft.getInstance().player,
-                x, y, z, sound, SoundSource.BLOCKS, 0.5F,
+                x, y, z, sound, SoundSource.BLOCKS, BLOCKS.randomChestOpeningSoundVolume.get(),
                 level.getRandom().nextFloat() * 0.1F + 0.9F
         );
     }
