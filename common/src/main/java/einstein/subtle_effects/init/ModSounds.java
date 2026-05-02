@@ -24,6 +24,7 @@ public class ModSounds {
     public static final Supplier<SoundEvent> TURTLE_EAT = register("entity.turtle.eat");
     public static final Supplier<SoundEvent> HOGLIN_EAT = register("entity.hoglin.eat");
     public static final Supplier<SoundEvent> ALLAY_TWINKLE = register("entity.allay.twinkle");
+    public static final Supplier<SoundEvent> ALLAY_DUPLICATE = register("entity.allay.duplicate");
     public static final Supplier<SoundEvent> AMETHYST_CLUSTER_CHIME = register("block.amethyst_cluster.chime");
     public static final Supplier<SoundEvent> CAMPFIRE_SIZZLE = register("block.campfire.sizzle");
     public static final Supplier<SoundEvent> DRIP_WATER = register("block.water.drip");

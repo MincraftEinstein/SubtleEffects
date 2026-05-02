@@ -157,6 +157,17 @@
       }
     ]
   },
+  "entity.allay.duplicate": {
+    "subtitles": "subtitles.subtle_effects.entity.allay.duplicate",
+    "sounds": [
+      {
+        "name": "entity.zombie_villager.converted",
+        "type": "event",
+        "volume": 0.3,
+        "pitch": 2
+      }
+    ]
+  },
   "block.amethyst_cluster.chime": {
     "subtitle": "subtitles.block.amethyst_block.chime",
     "sounds": [
