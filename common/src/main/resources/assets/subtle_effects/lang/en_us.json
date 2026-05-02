@@ -472,6 +472,7 @@
   "config.subtle_effects.entities.magmaCubeLandSparks.desc": "Should magma cubes spawn sparks when they land on the ground",
   "config.subtle_effects.entities.snowGolemStepSounds": "Snow Golem Step Sounds",
   "config.subtle_effects.entities.snowGolemStepSounds.desc": "Replaces step sounds for snow golems with snow block step sounds",
+  "config.subtle_effects.entities.chargedCreeperParticlesDensity": "Charged Creeper Particles Density",
   "config.subtle_effects.environment": "Environment",
   "config.subtle_effects.environment.biomeColorRain": "Biome Color Rain",
   "config.subtle_effects.environment.biomes": "Biomes",

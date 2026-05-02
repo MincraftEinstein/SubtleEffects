@@ -92,6 +92,7 @@ public class ModParticles {
     public static final Supplier<SimpleParticleType> WITHER_BONE = register("wither_bone", FeatherParticle.BoneProvider::new);
     public static final Supplier<SimpleParticleType> STRAY_BONE = register("stray_bone", FeatherParticle.BoneProvider::new);
     public static final Supplier<SimpleParticleType> BOGGED_BONE = register("bogged_bone", FeatherParticle.BoneProvider::new);
+    public static final Supplier<SimpleParticleType> CHARGED = register("charged", ElectricityParticle.Provider::new);
 
     public static void init() {
     }

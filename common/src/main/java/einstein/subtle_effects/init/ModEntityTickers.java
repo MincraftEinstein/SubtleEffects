@@ -24,10 +24,7 @@ import net.minecraft.world.entity.animal.Cat;
 import net.minecraft.world.entity.animal.Fox;
 import net.minecraft.world.entity.item.FallingBlockEntity;
 import net.minecraft.world.entity.item.ItemEntity;
-import net.minecraft.world.entity.monster.AbstractIllager;
-import net.minecraft.world.entity.monster.MagmaCube;
-import net.minecraft.world.entity.monster.Slime;
-import net.minecraft.world.entity.monster.Witch;
+import net.minecraft.world.entity.monster.*;
 import net.minecraft.world.entity.monster.piglin.AbstractPiglin;
 import net.minecraft.world.entity.npc.AbstractVillager;
 import net.minecraft.world.entity.player.Player;
@@ -295,6 +292,16 @@ public class ModEntityTickers {
         registerSimple(entity -> entity instanceof LivingEntity && entity.canFreeze() && ENTITIES.freezingSnowFlakes, false, (entity, level, random) -> {
             if (entity.isFreezing() || entity.getTicksFrozen() > 0 || entity.getInBlockState().is(Blocks.POWDER_SNOW_CAULDRON)) {
                 level.addParticle(ModParticles.FREEZING.get(),
+                        entity.getRandomX(1),
+                        entity.getRandomY(),
+                        entity.getRandomZ(1),
+                        0, 0, 0
+                );
+            }
+        });
+        registerSimple(entity -> entity instanceof Creeper creeper && creeper.isPowered() && ENTITIES.chargedCreeperParticlesDensity.get() > 0, true, (entity, level, random) -> {
+            if (shouldSpawn(random, ENTITIES.chargedCreeperParticlesDensity)) {
+                level.addParticle(ModParticles.CHARGED.get(),
                         entity.getRandomX(1),
                         entity.getRandomY(),
                         entity.getRandomZ(1),
