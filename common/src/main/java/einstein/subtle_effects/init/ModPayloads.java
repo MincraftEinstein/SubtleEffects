@@ -24,6 +24,7 @@ public class ModPayloads {
         NETWORK.registerToClient(ClientBoundEntityLandInFluidPayload.TYPE, ClientBoundEntityLandInFluidPayload.STREAM_CODEC);
         NETWORK.registerToClient(ClientBoundMobSpawnerSpawnPayload.TYPE, ClientBoundMobSpawnerSpawnPayload.STREAM_CODEC);
         NETWORK.registerToClient(ClientBoundEntityDamagedPayload.TYPE, ClientBoundEntityDamagedPayload.STREAM_CODEC);
+        NETWORK.registerToClient(ClientBoundChargedCreeperExplosionPayload.TYPE, ClientBoundChargedCreeperExplosionPayload.STREAM_CODEC);
     }
 
     public static void initClientHandlers() {
@@ -44,5 +45,6 @@ public class ModPayloads {
         NETWORK.registerClientHandler(ClientBoundEntityLandInFluidPayload.TYPE, ClientPacketHandlers::handle);
         NETWORK.registerClientHandler(ClientBoundMobSpawnerSpawnPayload.TYPE, ClientPacketHandlers::handle);
         NETWORK.registerClientHandler(ClientBoundEntityDamagedPayload.TYPE, ClientPacketHandlers::handle);
+        NETWORK.registerClientHandler(ClientBoundChargedCreeperExplosionPayload.TYPE, ClientPacketHandlers::handle);
     }
 }

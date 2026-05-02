@@ -7,7 +7,7 @@
   "client": [
     "client.ClientLevelMixin",
     "client.EntityInsideFireHandlerMixin",
-    "client.ExplosionMixin",
+    "client.ClientExplosionMixin",
     "client.FluidMixin",
     "client.GameRendererAccessor",
     "client.GameRendererMixin",
@@ -92,6 +92,7 @@
   ],
   "mixins": [
     "common.BaseSpawnerMixin",
+    "common.CommonExplosionMixin",
     "common.StonecutterMenuAccessor",
     "common.block.BeehiveBlockEntityMixin",
     "common.block.CommonComposterMixin",

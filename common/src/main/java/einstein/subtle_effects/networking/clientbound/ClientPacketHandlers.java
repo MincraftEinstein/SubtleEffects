@@ -413,6 +413,24 @@ public class ClientPacketHandlers {
         }
     }
 
+    public static void handle(ClientLevel level, ClientBoundChargedCreeperExplosionPayload payload) {
+        if (!ENTITIES.chargedCreeperExplosionParticles) {
+            return;
+        }
+
+        RandomSource random = level.random;
+        double x = payload.x();
+        double y = payload.y();
+        double z = payload.z();
+
+        for (int i = 0; i < 20; i++) {
+            double xOffset = x + (random.nextDouble() - random.nextDouble()) * 4;
+            double yOffset = y + (random.nextDouble() - random.nextDouble()) * 4;
+            double zOffset = z + (random.nextDouble() - random.nextDouble()) * 4;
+            level.addParticle(ModParticles.CHARGED.get(), xOffset, yOffset, zOffset, 0, 0, 0);
+        }
+    }
+
     private static SoundEvent getEatSound(LivingEntity entity, ItemStack stack, ModAnimalFedEffectSettings.Settings settings) {
         Supplier<SoundEvent> overrideSound = settings.sound();
         if (overrideSound != null) {
