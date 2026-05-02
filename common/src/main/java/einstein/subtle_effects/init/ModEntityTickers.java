@@ -46,6 +46,7 @@ import static einstein.subtle_effects.init.ModConfigs.*;
 import static einstein.subtle_effects.ticking.tickers.entity.EntityTickerManager.register;
 import static einstein.subtle_effects.ticking.tickers.entity.EntityTickerManager.registerSimple;
 import static einstein.subtle_effects.util.MathUtil.nextNonAbsDouble;
+import static net.minecraft.util.Mth.nextFloat;
 
 public class ModEntityTickers {
 
@@ -160,6 +161,14 @@ public class ModEntityTickers {
                         nextNonAbsDouble(random, 0.04),
                         0,
                         nextNonAbsDouble(random, 0.04)
+                );
+            }
+        });
+        registerSimple(EntityType.ALLAY, false, () -> ENTITIES.allayTwinklingSounds, (entity, level, random) -> {
+            if (random.nextDouble() < 0.015) {
+                Util.playClientSound(entity, ModSounds.ALLAY_TWINKLE.get(), entity.getSoundSource(),
+                        nextFloat(random, 0.07F, 1.5F),
+                        nextFloat(random, 0.07F, 1.3F)
                 );
             }
         });

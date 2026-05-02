@@ -148,6 +148,15 @@
       }
     ]
   },
+  "entity.allay.twinkle": {
+    "subtitle": "subtitles.subtle_effects.entity.allay.twinkle",
+    "sounds": [
+      {
+        "name": "block.amethyst_block.chime",
+        "type": "event"
+      }
+    ]
+  },
   "block.amethyst_cluster.chime": {
     "subtitle": "subtitles.block.amethyst_block.chime",
     "sounds": [
