@@ -427,7 +427,13 @@ public class ClientPacketHandlers {
             double xOffset = x + (random.nextDouble() - random.nextDouble()) * 4;
             double yOffset = y + (random.nextDouble() - random.nextDouble()) * 4;
             double zOffset = z + (random.nextDouble() - random.nextDouble()) * 4;
-            level.addParticle(ModParticles.CHARGED.get(), xOffset, yOffset, zOffset, 0, 0, 0);
+
+            level.addParticle(ModParticles.CHARGED.get(),
+                    xOffset, yOffset, zOffset,
+                    nextNonAbsDouble(random, 0.5),
+                    nextNonAbsDouble(random, 0.5),
+                    nextNonAbsDouble(random, 0.5)
+            );
         }
     }
 

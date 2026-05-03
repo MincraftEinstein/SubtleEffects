@@ -306,7 +306,9 @@ public class ModEntityTickers {
                         entity.getRandomX(1),
                         entity.getRandomY(),
                         entity.getRandomZ(1),
-                        0, 0, 0
+                        nextNonAbsDouble(random, 0.5),
+                        nextNonAbsDouble(random, 0.5),
+                        nextNonAbsDouble(random, 0.5)
                 );
             }
         });
@@ -317,7 +319,9 @@ public class ModEntityTickers {
                             entity.getX() + (nextNonAbsDouble(random) * 3),
                             entity.getY() + (random.nextDouble() * 3),
                             entity.getZ() + (nextNonAbsDouble(random) * 3),
-                            0, 0, 0
+                            nextNonAbsDouble(random, 0.5),
+                            nextNonAbsDouble(random, 0.5),
+                            nextNonAbsDouble(random, 0.5)
                     );
                 }
             }
