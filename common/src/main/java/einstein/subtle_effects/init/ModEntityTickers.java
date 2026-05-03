@@ -3,6 +3,7 @@ package einstein.subtle_effects.init;
 import einstein.subtle_effects.configs.CommandBlockSpawnType;
 import einstein.subtle_effects.configs.ModEntityConfigs;
 import einstein.subtle_effects.configs.items.ItemRarityConfigs;
+import einstein.subtle_effects.mixin.client.entity.LightningBoltAccessor;
 import einstein.subtle_effects.particle.SparkParticle;
 import einstein.subtle_effects.particle.option.BooleanParticleOptions;
 import einstein.subtle_effects.ticking.tickers.entity.*;
@@ -307,6 +308,18 @@ public class ModEntityTickers {
                         entity.getRandomZ(1),
                         0, 0, 0
                 );
+            }
+        });
+        registerSimple(EntityType.LIGHTNING_BOLT, false, () -> ENTITIES.lightningStrikeParticles, (entity, level, random) -> {
+            if (((LightningBoltAccessor) entity).getLife() == 0) {
+                for (int i = 0; i < 5; i++) {
+                    level.addParticle(ModParticles.ELECTRICITY.get(),
+                            entity.getX() + (nextNonAbsDouble(random) * 3),
+                            entity.getY() + (random.nextDouble() * 3),
+                            entity.getZ() + (nextNonAbsDouble(random) * 3),
+                            0, 0, 0
+                    );
+                }
             }
         });
     }

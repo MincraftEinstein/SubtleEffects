@@ -166,6 +166,14 @@ public abstract class LevelRendererMixin implements FrustumGetter {
         }
     }
 
+    @ModifyExpressionValue(method = "levelEvent", at = @At(value = "FIELD", target = "Lnet/minecraft/core/particles/ParticleTypes;ELECTRIC_SPARK:Lnet/minecraft/core/particles/SimpleParticleType;"))
+    private SimpleParticleType replaceElectricSpark(SimpleParticleType original) {
+        if (BLOCKS.replaceCopperElectricitySparks) {
+            return ModParticles.ELECTRICITY.get();
+        }
+        return original;
+    }
+
     @ModifyExpressionValue(method = "levelEvent", at = @At(value = "FIELD", target = "Lnet/minecraft/core/particles/ParticleTypes;FLAME:Lnet/minecraft/core/particles/SimpleParticleType;"))
     private SimpleParticleType replaceFlame(SimpleParticleType original, int type) {
         if (BLOCKS.purpleMonsterSpawnerParticles && type == LevelEvent.PARTICLES_MOBBLOCK_SPAWN) {

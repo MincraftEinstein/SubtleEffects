@@ -167,6 +167,7 @@ public class ModBlockConfigs extends Config {
     public boolean purpleMonsterSpawnerParticles = false;
     public ValidatedFloat monsterSpawnerSpawnMobSoundVolume = new ValidatedFloat(1, 1, 0);
     public ValidatedFloat monsterSpawnerAmbientSoundVolume = new ValidatedFloat(1, 1, 0);
+    public boolean replaceCopperElectricitySparks = true;
 
     private static ValidatedIdentifier getEyeHandler() {
         List<ResourceLocation> eyes = CompatHelper.IS_END_REMASTERED_LOADED.get()
