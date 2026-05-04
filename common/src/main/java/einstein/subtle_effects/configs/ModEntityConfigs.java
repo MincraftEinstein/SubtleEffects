@@ -62,6 +62,7 @@ public class ModEntityConfigs extends Config {
     public ValidatedDouble chargedCreeperParticlesDensity = new ValidatedDouble(0.2, 1, 0);
     public boolean chargedCreeperExplosionParticles = true;
     public boolean lightningStrikeParticles = true;
+    public boolean shulkerTeleportParticles = true;
 
     public ModEntityConfigs() {
         super(SubtleEffects.loc("entities"));

@@ -477,6 +477,7 @@
   "config.subtle_effects.entities.chargedCreeperExplosionParticles": "Charged Creeper Explosion Particles",
   "config.subtle_effects.entities.lightningStrikeParticles": "Lightning Strike Particles",
   "config.subtle_effects.entities.lightningStrikeParticles.desc": "Should electricity particles be spawned in the air around a lightning bolt",
+  "config.subtle_effects.entities.shulkerTeleportParticles": "Shulker Teleport Particles",
   "config.subtle_effects.environment": "Environment",
   "config.subtle_effects.environment.biomeColorRain": "Biome Color Rain",
   "config.subtle_effects.environment.biomes": "Biomes",
