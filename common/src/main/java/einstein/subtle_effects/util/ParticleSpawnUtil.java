@@ -476,14 +476,16 @@ public class ParticleSpawnUtil {
             return null;
         }
 
-        FluidState fluidState = level.getFluidState(entity.blockPosition());
+        BlockPos pos = entity.blockPosition();
+        FluidState fluidState = level.getFluidState(pos);
         FluidDefinition fluidDefinition = ((FluidDefinitionAccessor) fluidState.getType()).subtleEffects$getFluidDefinition();
 
         if (fluidDefinition != null) {
             FluidLogicAccessor accessor = (FluidLogicAccessor) entity;
             double fluidDefinitionHeight = accessor.subtleEffects$getFluidDefinitionHeight().getDouble(fluidDefinition);
 
-            if (fluidDefinitionHeight > 0) {
+            BlockPos abovePos = pos.above();
+            if (fluidDefinitionHeight > 0 && level.getBlockState(abovePos).isAir() && level.getFluidState(abovePos).isEmpty()) {
                 boolean isWater = fluidDefinition.is(FluidTags.WATER);
 
                 if (waterOnly == isWater || allFluids) {
