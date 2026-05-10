@@ -258,6 +258,8 @@
   "config.subtle_effects.blocks.monsterSpawnerSpawnMobSoundVolume.desc": "The volume of the sound played when a monster spawner spawns a mob",
   "config.subtle_effects.blocks.monsterSpawnerAmbientSoundVolume": "Monster Spawner Ambient Sound Volume",
   "config.subtle_effects.blocks.replaceCopperElectricitySparks": "Replace Copper Electricity Sparks",
+  "config.subtle_effects.blocks.comparatorRedstoneDust": "Comparator Redstone Dust",
+  "config.subtle_effects.blocks.comparatorRedstoneDust.desc": "Should comparators spawn redstone dust particles around the lit redstone torches like repeaters",
   "config.subtle_effects.entities.sleeping": "Sleeping",
   "config.subtle_effects.entities.sleeping.playerSnoreChance": "Player Snore Chance",
   "config.subtle_effects.entities.sleeping.playerSnoreChance.desc": "A percentage based chance for a player to snore. This is UUID based so it doesn't change every night.\n0 to disable",

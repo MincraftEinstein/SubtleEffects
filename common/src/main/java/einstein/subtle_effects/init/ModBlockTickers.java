@@ -31,6 +31,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.CampfireBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.ComparatorMode;
 import net.minecraft.world.level.block.state.properties.SculkSensorPhase;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.material.LavaFluid;
@@ -310,6 +311,30 @@ public class ModBlockTickers {
                             0, 0, 0
                     );
                 }
+            }
+        });
+        register(Blocks.COMPARATOR, () -> BLOCKS.comparatorRedstoneDust, (state, level, pos, random) -> {
+            boolean isPowered = state.getValue(BlockStateProperties.POWERED);
+            boolean isCompare = state.getValue(BlockStateProperties.MODE_COMPARATOR) == ComparatorMode.COMPARE;
+
+            if (isPowered || !isCompare) {
+                Direction direction = state.getValue(BlockStateProperties.HORIZONTAL_FACING);
+                double x = pos.getX() + 0.5 + (random.nextDouble() - 0.5) * 0.2;
+                double y = pos.getY() + 0.4 + (random.nextDouble() - 0.5) * 0.2;
+                double z = pos.getZ() + 0.5 + (random.nextDouble() - 0.5) * 0.2;
+
+                boolean isFront = isPowered && (isCompare || random.nextBoolean());
+                int axisDirection = direction.getOpposite().getAxisDirection().getStep();
+                double forwardOffset = (isFront ? 0.1875 * nextSign(random) : 0) * axisDirection;
+                double sideOffset = (isFront ? -0.25 : 0.3125) * axisDirection;
+                boolean isZAxis = direction.getAxis() == Direction.Axis.Z;
+
+                level.addParticle(DustParticleOptions.REDSTONE,
+                        x + (isZAxis ? forwardOffset : sideOffset),
+                        y,
+                        z + (isZAxis ? sideOffset : forwardOffset),
+                        0, 0, 0
+                );
             }
         });
     }
