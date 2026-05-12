@@ -28,7 +28,6 @@ import me.fzzyhmstrs.fzzy_config.validation.misc.ValidatedEnum;
 import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedDouble;
 import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedFloat;
 import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedInt;
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ColorParticleOption;
 import net.minecraft.core.particles.ParticleOptions;
@@ -193,7 +192,7 @@ public class ModBlockConfigs extends Config {
 
     @Override
     public void onUpdateClient() {
-        SubtleEffectsClient.clear(Minecraft.getInstance().level);
+        SubtleEffectsClient.clear();
         ModBlockTickers.init();
     }
 

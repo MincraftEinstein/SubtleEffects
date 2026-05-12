@@ -1,24 +1,19 @@
 package einstein.subtle_effects.mixin.client.entity;
 
-import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import einstein.subtle_effects.data.FluidDefinition;
 import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.init.ModParticles;
-import einstein.subtle_effects.ticking.tickers.entity.EntityTicker;
-import einstein.subtle_effects.util.EntityTickerAccessor;
+import einstein.subtle_effects.util.EntityAccessor;
 import einstein.subtle_effects.util.FluidLogicAccessor;
 import einstein.subtle_effects.util.ParticleSpawnUtil;
 import einstein.subtle_effects.util.Util;
-import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
-import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.animal.SnowGolem;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SoundType;
@@ -33,6 +28,7 @@ import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
+import org.spongepowered.asm.mixin.gen.Accessor;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -41,13 +37,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import static einstein.subtle_effects.util.MathUtil.nextDouble;
 
 @Mixin(Entity.class)
-public abstract class ClientEntityMixin implements EntityTickerAccessor, FluidLogicAccessor {
+public abstract class ClientEntityMixin implements EntityAccessor, FluidLogicAccessor {
 
     @Unique
     private final Entity subtleEffects$me = (Entity) (Object) this;
-
-    @Unique
-    private final Int2ObjectMap<EntityTicker<?>> subtleEffects$tickers = new Int2ObjectOpenHashMap<>();
 
     @Unique
     private double subtleEffects$nextCobwebSound = 0.5;
@@ -173,7 +166,6 @@ public abstract class ClientEntityMixin implements EntityTickerAccessor, FluidLo
     }
 
     @Override
-    public Int2ObjectMap<EntityTicker<?>> subtleEffects$getTickers() {
-        return subtleEffects$tickers;
-    }
+    @Accessor("firstTick")
+    public abstract boolean subtleEffects$isFirstTick();
 }

@@ -11,7 +11,6 @@ import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.ticking.biome_particles.BiomeParticleManager;
 import me.fzzyhmstrs.fzzy_config.annotations.Translation;
 import me.fzzyhmstrs.fzzy_config.config.Config;
-import net.minecraft.client.Minecraft;
 
 @Translation(prefix = ModConfigs.BASE_KEY + "environment")
 public class ModEnvironmentConfigs extends Config {
@@ -30,6 +29,6 @@ public class ModEnvironmentConfigs extends Config {
     public void onUpdateClient() {
         BiomeParticleManager.clear();
         ModBlockTickers.init();
-        SubtleEffectsClient.clear(Minecraft.getInstance().level);
+        SubtleEffectsClient.clear();
     }
 }

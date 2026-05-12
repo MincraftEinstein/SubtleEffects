@@ -56,7 +56,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
 
 import java.time.LocalDate;
@@ -94,7 +93,7 @@ public class SubtleEffectsClient {
             LEVEL = level;
 
             if (!HAS_CLEARED) {
-                clear(level);
+                clear();
                 BiomeParticleManager.clear();
                 HAS_CLEARED = true;
             }
@@ -128,6 +127,7 @@ public class SubtleEffectsClient {
         profiler.pop();
 
         profiler.push("tickers");
+        EntityTickerManager.tick();
         TickerManager.tick();
         profiler.pop();
 
@@ -194,7 +194,7 @@ public class SubtleEffectsClient {
         // Ticker Args
         LiteralArgumentBuilder<T> tickersClear = LiteralArgumentBuilder.<T>literal("clear")
                 .executes(context -> {
-                    clear(minecraft.level);
+                    clear();
                     sendSystemMsg(player, getMsgTranslation("subtle_effects.tickers.clear.success"));
                     return 1;
                 });
@@ -245,9 +245,9 @@ public class SubtleEffectsClient {
         }
     }
 
-    public static void clear(@Nullable Level level) {
+    public static void clear() {
         TickerManager.clear();
-        EntityTickerManager.clear(level);
+        EntityTickerManager.clear();
         GeyserManager.ACTIVE_GEYSERS.clear();
         GeyserManager.INACTIVE_GEYSERS.clear();
         WaterfallTicker.WATERFALLS.clear();

@@ -12,7 +12,7 @@ import me.fzzyhmstrs.fzzy_config.validation.misc.ValidatedCondition;
 import me.fzzyhmstrs.fzzy_config.validation.misc.ValidatedEnum;
 import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedDouble;
 import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedFloat;
-import net.minecraft.client.Minecraft;
+import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedInt;
 import org.jetbrains.annotations.NotNull;
 
 @Translation(prefix = ModConfigs.BASE_KEY + "entities")
@@ -63,6 +63,7 @@ public class ModEntityConfigs extends Config {
     public boolean chargedCreeperExplosionParticles = true;
     public boolean lightningStrikeParticles = true;
     public boolean shulkerTeleportParticles = true;
+    public ValidatedInt entityUpdateFrequency = new ValidatedInt(20, 40, 1);
 
     public ModEntityConfigs() {
         super(SubtleEffects.loc("entities"));
@@ -70,7 +71,7 @@ public class ModEntityConfigs extends Config {
 
     @Override
     public void onUpdateClient() {
-        SubtleEffectsClient.clear(Minecraft.getInstance().level);
+        SubtleEffectsClient.clear();
         ModAnimalFedEffectSettings.init();
     }
 

@@ -15,7 +15,6 @@ import me.fzzyhmstrs.fzzy_config.validation.misc.ValidatedBoolean;
 import me.fzzyhmstrs.fzzy_config.validation.misc.ValidatedCondition;
 import me.fzzyhmstrs.fzzy_config.validation.misc.ValidatedEnum;
 import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedFloat;
-import net.minecraft.client.Minecraft;
 
 @Translation(prefix = ModConfigs.BASE_KEY + "items")
 public class ModItemConfigs extends Config {
@@ -54,6 +53,6 @@ public class ModItemConfigs extends Config {
 
     @Override
     public void onUpdateClient() {
-        SubtleEffectsClient.clear(Minecraft.getInstance().level);
+        SubtleEffectsClient.clear();
     }
 }

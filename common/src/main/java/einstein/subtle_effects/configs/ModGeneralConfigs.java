@@ -99,7 +99,7 @@ public class ModGeneralConfigs extends Config {
     @Override
     public void onUpdateClient() {
         Minecraft minecraft = Minecraft.getInstance();
-        SubtleEffectsClient.clear(minecraft.level);
+        SubtleEffectsClient.clear();
 
         if (minecraft.level != null && minecraft.options.getCameraType().isFirstPerson()) {
             if (!mobSkullShaders) {
