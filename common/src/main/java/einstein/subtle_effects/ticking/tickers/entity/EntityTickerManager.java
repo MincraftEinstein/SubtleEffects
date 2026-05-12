@@ -131,10 +131,12 @@ public class EntityTickerManager {
     }
 
     @Nullable
-    public static List<EntityTicker<?>> getTickersForEntity(Entity entity) {
-        Int2ObjectMap<EntityTicker<?>> tickers = TRACKED_ENTITIES.get(entity.getId());
-        if (tickers != null) {
-            return tickers.values().stream().toList();
+    public static List<EntityTicker<?>> getTickersForEntity(@Nullable Entity entity) {
+        if (entity != null) {
+            Int2ObjectMap<EntityTicker<?>> tickers = TRACKED_ENTITIES.get(entity.getId());
+            if (tickers != null) {
+                return tickers.values().stream().toList();
+            }
         }
         return null;
     }

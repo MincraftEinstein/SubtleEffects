@@ -22,6 +22,7 @@ import einstein.subtle_effects.ticking.biome_particles.BiomeParticleManager;
 import einstein.subtle_effects.ticking.tickers.ChestBlockEntityTicker;
 import einstein.subtle_effects.ticking.tickers.TickerManager;
 import einstein.subtle_effects.ticking.tickers.WaterfallTicker;
+import einstein.subtle_effects.ticking.tickers.entity.EntityTicker;
 import einstein.subtle_effects.ticking.tickers.entity.EntityTickerManager;
 import einstein.subtle_effects.util.FrustumGetter;
 import einstein.subtle_effects.util.ParticleAccessor;
@@ -47,11 +48,13 @@ import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.SharedSuggestionProvider;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.*;
 import net.minecraft.server.packs.resources.PreparableReloadListener;
 import net.minecraft.util.FastColor;
 import net.minecraft.util.Mth;
 import net.minecraft.util.profiling.ProfilerFiller;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
@@ -302,22 +305,45 @@ public class SubtleEffectsClient {
         }
 
         Minecraft minecraft = Minecraft.getInstance();
-        List<Component> lines = new ArrayList<>();
+        Font font = minecraft.font;
         Map<ParticleRenderType, Queue<Particle>> particles = ((ParticleEngineAccessor) minecraft.particleEngine).getParticles();
         Queue<Particle> particleQueue = particles.get(ParticleRenderType.PARTICLE_SHEET_OPAQUE);
         int maxParticlesPerLayer = (particleQueue instanceof EvictingQueue<Particle> queue ? queue.remainingCapacity() + particleQueue.size() : 16384);
         int layers = particles.size();
 
-        lines.add(Component.translatable("ui.subtle_effects.debug_overlay.particle_count", minecraft.particleEngine.countParticles(), layers * maxParticlesPerLayer, layers + " x " + maxParticlesPerLayer));
-        lines.add(null);
-        TickerManager.addDebugInfo(lines);
+        List<Component> leftLines = new ArrayList<>();
+        leftLines.add(Component.translatable("ui.subtle_effects.debug_overlay.particle_count", minecraft.particleEngine.countParticles(), layers * maxParticlesPerLayer, layers + " x " + maxParticlesPerLayer));
+        leftLines.add(null);
+        TickerManager.addDebugInfo(leftLines);
 
+        List<Component> rightLines = new ArrayList<>();
+        addEntityInfo(rightLines, minecraft.player, "Player");
+        rightLines.add(null);
+        addEntityInfo(rightLines, minecraft.crosshairPickEntity, "Targeted Entity");
+
+        renderLines(guiGraphics, leftLines, font, true);
+        renderLines(guiGraphics, rightLines, font, false);
+    }
+
+    private static void addEntityInfo(List<Component> lines, Entity entity, String title) {
+        List<EntityTicker<?>> tickers = EntityTickerManager.getTickersForEntity(entity);
+        if (tickers != null && !tickers.isEmpty()) {
+            lines.add(Component.literal("[" + title + " Tickers]").withStyle(ChatFormatting.GREEN));
+            lines.add(Component.literal("ID: " + BuiltInRegistries.ENTITY_TYPE.getKey(entity.getType())));
+            lines.add(Component.literal("Count: " + tickers.size()));
+
+            for (EntityTicker<?> ticker : tickers) {
+                lines.add(Component.literal(ticker.getClass().getSimpleName()));
+            }
+        }
+    }
+
+    private static void renderLines(GuiGraphics guiGraphics, List<Component> lines, Font font, boolean left) {
         for (int i = 0; i < lines.size(); i++) {
             Component component = lines.get(i);
             if (component != null) {
-                Font font = minecraft.font;
                 int width = font.width(component);
-                int x = 2;
+                int x = left ? 2 : guiGraphics.guiWidth() - 2 - width;
                 int y = 2 + font.lineHeight * i;
                 guiGraphics.fill(x - 1, y - 1, x + width + 1, y + font.lineHeight - 1, 0x90505050);
                 guiGraphics.drawString(font, component, x, y, -1, false);
