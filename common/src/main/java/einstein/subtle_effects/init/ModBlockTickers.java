@@ -20,10 +20,16 @@ import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.ParticleUtils;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BeaconBlockEntity;
@@ -35,6 +41,7 @@ import net.minecraft.world.level.block.state.properties.ComparatorMode;
 import net.minecraft.world.level.block.state.properties.SculkSensorPhase;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.material.LavaFluid;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
 import java.util.HashMap;
@@ -333,6 +340,17 @@ public class ModBlockTickers {
                         x + (isZAxis ? forwardOffset : sideOffset),
                         y,
                         z + (isZAxis ? sideOffset : forwardOffset),
+                        0, 0, 0
+                );
+            }
+        });
+        register(Blocks.MAGMA_BLOCK, () -> BLOCKS.magmaSmoke.isEnabled(), (state, level, pos, random) -> {
+            if (random.nextDouble() < 0.05) {
+                // noinspection ConstantConditions
+                level.addParticle(BLOCKS.magmaSmoke.getParticle().get(),
+                        pos.getX() + random.nextDouble(),
+                        pos.getY() + 1,
+                        pos.getZ() + random.nextDouble(),
                         0, 0, 0
                 );
             }

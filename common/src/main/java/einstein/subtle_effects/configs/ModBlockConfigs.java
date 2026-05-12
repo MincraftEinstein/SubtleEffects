@@ -169,6 +169,10 @@ public class ModBlockConfigs extends Config {
     public ValidatedFloat monsterSpawnerAmbientSoundVolume = new ValidatedFloat(1, 1, 0);
     public boolean replaceCopperElectricitySparks = true;
     public boolean comparatorRedstoneDust = true;
+    public ConfigGroup magmaBlocks = new ConfigGroup("magma_blocks");
+    public SmokeType magmaSmoke = SmokeType.UPDATED;
+    public boolean magmaFrostWalkerSteam = true;
+    public boolean magmaFrostWalkerSounds = true;
 
     private static ValidatedIdentifier getEyeHandler() {
         List<ResourceLocation> eyes = CompatHelper.IS_END_REMASTERED_LOADED.get()

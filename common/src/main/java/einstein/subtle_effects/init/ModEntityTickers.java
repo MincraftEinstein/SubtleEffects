@@ -15,6 +15,9 @@ import me.fzzyhmstrs.fzzy_config.validation.ValidatedField;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
@@ -23,6 +26,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ambient.Bat;
 import net.minecraft.world.entity.animal.Cat;
 import net.minecraft.world.entity.animal.Fox;
+import net.minecraft.world.entity.decoration.ArmorStand;
 import net.minecraft.world.entity.item.FallingBlockEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.*;
@@ -30,6 +34,8 @@ import net.minecraft.world.entity.monster.piglin.AbstractPiglin;
 import net.minecraft.world.entity.npc.AbstractVillager;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseFireBlock;
 import net.minecraft.world.level.block.Block;
@@ -323,6 +329,24 @@ public class ModEntityTickers {
                             nextNonAbsDouble(random, 0.5),
                             nextNonAbsDouble(random, 0.5)
                     );
+                }
+            }
+        });
+        registerSimple(entity -> entity instanceof LivingEntity && !(entity instanceof ArmorStand) && (BLOCKS.magmaFrostWalkerSounds || BLOCKS.magmaFrostWalkerSteam), false, (LivingEntity entity, Level level, RandomSource random) -> {
+            if (random.nextDouble() < 0.3 && entity.getBlockStateOn().is(Blocks.MAGMA_BLOCK)) {
+                if (EnchantmentHelper.getEnchantmentLevel(level.registryAccess().lookupOrThrow(Registries.ENCHANTMENT).getOrThrow(Enchantments.FROST_WALKER), entity) > 0) {
+                    if (BLOCKS.magmaFrostWalkerSounds && random.nextDouble() < 0.045) {
+                        Util.playClientSound(entity.blockPosition(), SoundEvents.FIRE_EXTINGUISH, SoundSource.BLOCKS, 0.1F, nextFloat(random, 0.6F, 1));
+                    }
+
+                    if (BLOCKS.magmaFrostWalkerSteam) {
+                        level.addParticle(ModParticles.STEAM.get(),
+                                entity.getRandomX(1),
+                                entity.getY(),
+                                entity.getRandomZ(1),
+                                0, 0, 0
+                        );
+                    }
                 }
             }
         });
