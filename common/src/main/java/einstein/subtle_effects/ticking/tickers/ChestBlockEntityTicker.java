@@ -44,8 +44,12 @@ public class ChestBlockEntityTicker extends BlockPosTicker {
         this.lidController = lidController;
     }
 
-    public static void trySpawn(Level level, BlockPos pos) {
+    public static void trySpawn(Level level, BlockPos pos, BlockState state) {
         if (BLOCKS.chestsOpenRandomlyUnderwaterFrequency.get() <= 0 && !BLOCKS.openingChestsSpawnsBubbles) {
+            return;
+        }
+
+        if (state.hasProperty(TYPE) && state.getValue(TYPE) == ChestType.LEFT) {
             return;
         }
 

@@ -84,7 +84,7 @@ public abstract class ClientLevelMixin extends Level {
             }
 
             GeyserManager.tick(this, state, pos);
-            ChestBlockEntityTicker.trySpawn(this, pos);
+            ChestBlockEntityTicker.trySpawn(this, pos, state);
 
             FluidState fluidState = getFluidState(pos);
             if (!fluidState.isEmpty()) {
