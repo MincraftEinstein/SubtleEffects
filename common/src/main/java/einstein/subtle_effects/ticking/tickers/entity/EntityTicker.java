@@ -6,7 +6,7 @@ import net.minecraft.world.entity.Entity;
 
 public abstract class EntityTicker<T extends Entity> extends LevelTicker {
 
-    protected final T entity;
+    public final T entity;
     private int id;
     private final boolean checkVisibility;
 

@@ -17,6 +17,7 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.client.event.*;
+import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.AddPackFindersEvent;
 
@@ -53,6 +54,9 @@ public class SubtleEffectsNeoForgeClient {
                 }
             }
         });
+        modEventBus.addListener((RegisterGuiLayersEvent event) ->
+                event.registerBelowAll(SubtleEffects.loc("debug_overlay"), SubtleEffectsClient::renderDebugScreenOverlay)
+        );
         NeoForge.EVENT_BUS.addListener((ClientTickEvent.Post event) -> {
             Minecraft minecraft = Minecraft.getInstance();
             SubtleEffectsClient.clientTick(minecraft, minecraft.level);

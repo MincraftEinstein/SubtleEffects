@@ -1,5 +1,6 @@
 package einstein.subtle_effects;
 
+import com.google.common.collect.EvictingQueue;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.brigadier.CommandDispatcher;
@@ -27,10 +28,15 @@ import einstein.subtle_effects.util.ParticleAccessor;
 import einstein.subtle_effects.util.Util;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Camera;
+import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
+import net.minecraft.client.particle.Particle;
+import net.minecraft.client.particle.ParticleRenderType;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -56,16 +62,13 @@ import org.joml.Vector3f;
 import java.time.LocalDate;
 import java.time.Month;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Supplier;
 
 public class SubtleEffectsClient {
 
     private static boolean HAS_CLEARED = false;
-    private static boolean DISPLAY_PARTICLE_COUNT = false;
+    private static boolean DISPLAY_DEBUG_OVERLAY = false;
     private static boolean HAS_DISPLAYED_BIRTHDAY_NOTIFICATION = false;
     private static boolean DISPLAY_PARTICLE_BOUNDING_BOXES = false;
     private static Level LEVEL;
@@ -115,10 +118,6 @@ public class SubtleEffectsClient {
                     ))
             );
             HAS_DISPLAYED_BIRTHDAY_NOTIFICATION = true;
-        }
-
-        if (DISPLAY_PARTICLE_COUNT) {
-            player.displayClientMessage(Component.translatable("ui.subtle_effects.hud.particle_count", minecraft.particleEngine.countParticles()), true);
         }
 
         ProfilerFiller profiler = minecraft.getProfiler();
@@ -181,13 +180,6 @@ public class SubtleEffectsClient {
                     return 1;
                 });
 
-        RequiredArgumentBuilder<T, Boolean> particlesCountEnabled = RequiredArgumentBuilder.<T, Boolean>argument("enabled", BoolArgumentType.bool())
-                .executes(context -> toggleParticleCount(player, BoolArgumentType.getBool(context, "enabled")));
-
-        LiteralArgumentBuilder<T> particlesCount = LiteralArgumentBuilder.<T>literal("count")
-                .executes(context -> toggleParticleCount(player, true))
-                .then(particlesCountEnabled);
-
         RequiredArgumentBuilder<T, Boolean> particlesBoundingBoxesEnabled = RequiredArgumentBuilder.<T, Boolean>argument("enabled", BoolArgumentType.bool())
                 .executes(context -> toggleParticleBoundingBoxes(player, BoolArgumentType.getBool(context, "enabled")));
 
@@ -197,7 +189,6 @@ public class SubtleEffectsClient {
 
         LiteralArgumentBuilder<T> particles = LiteralArgumentBuilder.<T>literal("particles")
                 .then(particlesClear)
-                .then(particlesCount)
                 .then(particlesBoundingBoxes);
 
         // Ticker Args
@@ -210,17 +201,26 @@ public class SubtleEffectsClient {
         LiteralArgumentBuilder<T> tickers = LiteralArgumentBuilder.<T>literal("tickers")
                 .then(tickersClear);
 
+        // Debug Args
+        RequiredArgumentBuilder<T, Boolean> debugOverlayEnabled = RequiredArgumentBuilder.<T, Boolean>argument("enabled", BoolArgumentType.bool())
+                .executes(context -> toggleDebugOverlay(player, BoolArgumentType.getBool(context, "enabled")));
+
+        LiteralArgumentBuilder<T> debugOverlay = LiteralArgumentBuilder.<T>literal("debug_screen")
+                .executes(context -> toggleDebugOverlay(player, !DISPLAY_DEBUG_OVERLAY))
+                .then(debugOverlayEnabled);
+
         // SE Command
         LiteralArgumentBuilder<T> subtleEffects = LiteralArgumentBuilder.<T>literal("subtle_effects")
                 .then(particles)
-                .then(tickers);
+                .then(tickers)
+                .then(debugOverlay);
 
         LiteralCommandNode<T> subtleEffectsNode = dispatcher.register(subtleEffects);
         dispatcher.register(LiteralArgumentBuilder.<T>literal("se").redirect(subtleEffectsNode));
     }
 
-    private static int toggleParticleCount(Player player, boolean enabled) {
-        DISPLAY_PARTICLE_COUNT = enabled;
+    private static int toggleDebugOverlay(Player player, boolean enabled) {
+        DISPLAY_DEBUG_OVERLAY = enabled;
 
         String enabledString = enabled ? "enable" : "disable";
         sendSystemMsg(player, getMsgTranslation("subtle_effects.particles.count." + enabledString + ".success"));
@@ -293,6 +293,35 @@ public class SubtleEffectsClient {
 
             bufferSource.endBatch(RenderType.lines());
             poseStack.popPose();
+        }
+    }
+
+    public static void renderDebugScreenOverlay(GuiGraphics guiGraphics, DeltaTracker deltaTracker) {
+        if (!DISPLAY_DEBUG_OVERLAY) {
+            return;
+        }
+
+        Minecraft minecraft = Minecraft.getInstance();
+        List<Component> lines = new ArrayList<>();
+        Map<ParticleRenderType, Queue<Particle>> particles = ((ParticleEngineAccessor) minecraft.particleEngine).getParticles();
+        Queue<Particle> particleQueue = particles.get(ParticleRenderType.PARTICLE_SHEET_OPAQUE);
+        int maxParticlesPerLayer = (particleQueue instanceof EvictingQueue<Particle> queue ? queue.remainingCapacity() + particleQueue.size() : 16384);
+        int layers = particles.size();
+
+        lines.add(Component.translatable("ui.subtle_effects.debug_overlay.particle_count", minecraft.particleEngine.countParticles(), layers * maxParticlesPerLayer, layers + " x " + maxParticlesPerLayer));
+        lines.add(null);
+        TickerManager.addDebugInfo(lines);
+
+        for (int i = 0; i < lines.size(); i++) {
+            Component component = lines.get(i);
+            if (component != null) {
+                Font font = minecraft.font;
+                int width = font.width(component);
+                int x = 2;
+                int y = 2 + font.lineHeight * i;
+                guiGraphics.fill(x - 1, y - 1, x + width + 1, y + font.lineHeight - 1, 0x90505050);
+                guiGraphics.drawString(font, component, x, y, -1, false);
+            }
         }
     }
 }
