@@ -1,0 +1,66 @@
+name: General Issue
+description: Any issue or problem not involving a crash
+title: "[Bug]: "
+labels: [ "bug" ]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for taking the time to submit an issue!
+        Please be aware that you may or may not receive a response.
+        If you do please make sure to be sure to answer any additional questions,
+        otherwise this issue may not be able to be fixed.
+  - type: checkbox
+    attributes:
+      label: ""
+      options:
+        - label: "I am using the latest Fzzy Config version"
+  - type: dropdown
+    attributes:
+      label: "Mod Loader"
+      description: "What mod loader are you using to play the mod?"
+      options:
+        - "Fabric"
+        - "NeoForge"
+        - "Forge"
+    validations:
+      required: true
+  - type: input
+    attributes:
+      label: "Mod Loader Version"
+      description: "What mod loader version are you using to play the mod? For Fabric please also include the Fabric API version"
+    validations:
+      required: true
+  - type: input
+    attributes:
+      label: "Minecraft Version"
+      description: "What Minecraft version are you using to play the mod?"
+      placeholder: "Example: 1.21.1"
+    validations:
+      required: true
+  - type: input
+    attributes:
+      label: "Mod Version"
+      description: "What mod version are you playing with?"
+      placeholder: "Example: 1.14.3"
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: "Description"
+      description: "Please list steps to reproduce the issue and/or explain what you were doing when issue occurred, as well as any additional info you think may be necessary"
+      placeholder: ""
+    validations:
+      required: true
+  - type: input
+    attributes:
+      label: "Logs File (Optional, but recommended)"
+      description: "Please provide a link to a your latest.log file uploaded to [mclogs](https://mclo.gs/) (recommended) / [Gist](https://gist.github.com/) / [pastebin](https://pastebin.com/) / etc. Please make sure it isn't set to expire"
+      placeholder: "Example: https://mclo.gs/"
+    validations:
+      required: false
+  - type: upload
+    attributes:
+      label: "Additional Files"
+    validations:
+      required: false
