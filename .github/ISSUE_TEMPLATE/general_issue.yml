@@ -49,7 +49,6 @@ body:
     attributes:
       label: "Description"
       description: "Please list steps to reproduce the issue and/or explain what you were doing when issue occurred, as well as any additional info you think may be necessary"
-      placeholder: ""
     validations:
       required: true
   - type: input
