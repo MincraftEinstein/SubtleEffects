@@ -12,7 +12,7 @@ body:
         otherwise this issue may not be able to be fixed.
   - type: checkboxes
     attributes:
-      label: "  "
+      label: "Dependency mods"
       options:
         - label: "I am using the latest Fzzy Config version"
   - type: dropdown
