@@ -10,7 +10,7 @@ body:
         Please be aware that you may or may not receive a response.
         If you do please make sure to be sure to answer any additional questions,
         otherwise this issue may not be able to be fixed.
-  - type: checkbox
+  - type: checkboxes
     attributes:
       label: ""
       options:
