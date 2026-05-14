@@ -1,7 +1,7 @@
 package einstein.subtle_effects.mixin.common.block;
 
 import einstein.subtle_effects.networking.clientbound.ClientBoundBlockDestroyEffectsPayload;
-import einstein.subtle_effects.platform.Services;
+import einstein.subtle_effects.networking.PayloadSender;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
@@ -19,7 +19,7 @@ public class FarmBlockMixin {
     @Inject(method = "turnToDirt", at = @At("TAIL"))
     private static void turnToDirt(Entity entity, BlockState state, Level level, BlockPos pos, CallbackInfo ci) {
         if (level instanceof ServerLevel serverLevel) {
-            Services.NETWORK.sendToClientsTracking(serverLevel, pos, new ClientBoundBlockDestroyEffectsPayload(state, pos, ClientBoundBlockDestroyEffectsPayload.TypeConfig.FARMLAND_DESTROY));
+            PayloadSender.sendToClientsTracking(serverLevel, pos, new ClientBoundBlockDestroyEffectsPayload(state, pos, ClientBoundBlockDestroyEffectsPayload.TypeConfig.FARMLAND_DESTROY));
         }
     }
 }

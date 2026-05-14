@@ -1,7 +1,7 @@
 package einstein.subtle_effects.mixin.common;
 
 import einstein.subtle_effects.networking.clientbound.ClientBoundChargedCreeperExplosionPayload;
-import einstein.subtle_effects.platform.Services;
+import einstein.subtle_effects.networking.PayloadSender;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
@@ -49,7 +49,7 @@ public class CommonExplosionMixin {
     private void spawnChargedCreeperParticles(boolean spawnParticles, CallbackInfo ci) {
         if (level instanceof ServerLevel serverLevel) {
             if (source instanceof Creeper creeper && creeper.isPowered()) {
-                Services.NETWORK.sendToClientsTracking(serverLevel, BlockPos.containing(x, y, z), new ClientBoundChargedCreeperExplosionPayload(x, y, z, radius));
+                PayloadSender.sendToClientsTracking(serverLevel, BlockPos.containing(x, y, z), new ClientBoundChargedCreeperExplosionPayload(x, y, z, radius));
             }
         }
     }

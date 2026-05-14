@@ -9,8 +9,8 @@ import einstein.subtle_effects.networking.clientbound.ClientBoundDrankPotionPayl
 import einstein.subtle_effects.networking.clientbound.ClientBoundEntityDamagedPayload;
 import einstein.subtle_effects.networking.clientbound.ClientBoundEntityFellPayload;
 import einstein.subtle_effects.networking.clientbound.ClientBoundEntitySpawnSprintingDustCloudsPayload;
-import einstein.subtle_effects.platform.Services;
 import einstein.subtle_effects.util.ParticleSpawnUtil;
+import einstein.subtle_effects.networking.PayloadSender;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
@@ -89,7 +89,7 @@ public abstract class CommonLivingEntityMixin extends Entity {
             if (subtleEffects$canStart || position().distanceToSqr(subtleEffects$lastCheckedPos) > 0.5) {
                 if (subtleEffects$validEntity) {
                     if (onGround() && subtleEffects$me.getSpeed() > subtleEffects$minSpeed) {
-                        Services.NETWORK.sendToClientsTracking((ServerLevel) level(), subtleEffects$me.blockPosition(), new ClientBoundEntitySpawnSprintingDustCloudsPayload(getId()));
+                        PayloadSender.sendToClientsTracking((ServerLevel) level(), subtleEffects$me.blockPosition(), new ClientBoundEntitySpawnSprintingDustCloudsPayload(getId()));
                         subtleEffects$lastCheckedPos = position();
                         subtleEffects$canStart = false;
                         return;
@@ -154,7 +154,7 @@ public abstract class CommonLivingEntityMixin extends Entity {
         }
 
         if (subtleEffects$me.level() instanceof ServerLevel level) {
-            Services.NETWORK.sendToClientsTracking(subtleEffects$me instanceof ServerPlayer player ? player : null,
+            PayloadSender.sendToClientsTracking(subtleEffects$me instanceof ServerPlayer player ? player : null,
                     level, subtleEffects$me.blockPosition(), new ClientBoundDrankPotionPayload(subtleEffects$me.getId())
             );
             return;
@@ -167,7 +167,7 @@ public abstract class CommonLivingEntityMixin extends Entity {
         if (level() instanceof ServerLevel level) {
             if (isAlive() && hurtTime == 0) {
                 if (!isInvulnerableTo(source) && amount > 0) {
-                    Services.NETWORK.sendToClientsTracking(source.getEntity() instanceof ServerPlayer player ? player : null,
+                    PayloadSender.sendToClientsTracking(source.getEntity() instanceof ServerPlayer player ? player : null,
                             level, blockPosition(), new ClientBoundEntityDamagedPayload(getId(),
                                     source.typeHolder().unwrapKey().map(ResourceKey::location))
                     );

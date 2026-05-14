@@ -3,7 +3,7 @@ package einstein.subtle_effects.mixin.common.item;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import einstein.subtle_effects.networking.clientbound.ClientBoundDispenseBucketPayload;
-import einstein.subtle_effects.platform.Services;
+import einstein.subtle_effects.networking.PayloadSender;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
@@ -34,7 +34,7 @@ public class PotionItemMixin {
         if (level instanceof ServerLevel serverLevel) {
             BlockPos pos = context.getClickedPos();
 
-            Services.NETWORK.sendToClientsTracking(null, serverLevel, pos, new ClientBoundDispenseBucketPayload(new ItemStack(Items.WATER_BUCKET), pos), (serverPlayer) -> {
+            PayloadSender.sendToClientsTracking(null, serverLevel, pos, new ClientBoundDispenseBucketPayload(new ItemStack(Items.WATER_BUCKET), pos), (serverPlayer) -> {
                 RandomSource random = level.getRandom();
 
                 for (int i = 0; i < 5; i++) {

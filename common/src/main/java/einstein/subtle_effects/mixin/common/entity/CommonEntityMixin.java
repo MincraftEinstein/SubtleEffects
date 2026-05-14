@@ -1,7 +1,7 @@
 package einstein.subtle_effects.mixin.common.entity;
 
 import einstein.subtle_effects.networking.clientbound.ClientBoundEntityLandInFluidPayload;
-import einstein.subtle_effects.platform.Services;
+import einstein.subtle_effects.networking.PayloadSender;
 import it.unimi.dsi.fastutil.objects.Object2DoubleMap;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -35,7 +35,7 @@ public class CommonEntityMixin {
                 if (height > 0) {
                     FluidState fluidState = subtleEffects$me.level().getFluidState(subtleEffects$me.blockPosition());
                     if (!fluidState.isEmpty() && fluidState.getTags().toList().contains(fluidTag)) {
-                        Services.NETWORK.sendToClientsTracking(serverPlayer, (ServerLevel) subtleEffects$me.level(), subtleEffects$me.blockPosition(),
+                        PayloadSender.sendToClientsTracking(serverPlayer, (ServerLevel) subtleEffects$me.level(), subtleEffects$me.blockPosition(),
                                 new ClientBoundEntityLandInFluidPayload(subtleEffects$me.getId(), subtleEffects$me.getY() + height,
                                         subtleEffects$me.getDeltaMovement().y(), fluidState.getType())
                         );

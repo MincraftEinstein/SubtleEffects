@@ -2,7 +2,7 @@ package einstein.subtle_effects.mixin.common.block.dispenser;
 
 import com.llamalad7.mixinextras.sugar.Local;
 import einstein.subtle_effects.networking.clientbound.ClientBoundDispenseBucketPayload;
-import einstein.subtle_effects.platform.Services;
+import einstein.subtle_effects.networking.PayloadSender;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.dispenser.BlockSource;
 import net.minecraft.world.item.Item;
@@ -20,7 +20,7 @@ public class EmptyBucketDispenseItemBehaviorMixin {
         ItemStack pickupStack = new ItemStack(pickupItem);
         if (!pickupStack.isEmpty()) {
             BlockPos pos = source.pos();
-            Services.NETWORK.sendToClientsTracking(source.level(), pos, new ClientBoundDispenseBucketPayload(pickupStack, pos));
+            PayloadSender.sendToClientsTracking(source.level(), pos, new ClientBoundDispenseBucketPayload(pickupStack, pos));
         }
     }
 }

@@ -9,7 +9,6 @@ import einstein.subtle_effects.particle.option.SheepFluffParticleOptions;
 import einstein.subtle_effects.ticking.tickers.TickerManager;
 import einstein.subtle_effects.util.*;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.*;
@@ -33,6 +32,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.PotionContents;
 import net.minecraft.world.item.alchemy.Potions;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -53,13 +53,13 @@ public class ClientPacketHandlers {
     private static final List<Block> MASON_STONECUTTER_USE_BLOCKS = List.of(Blocks.STONE, Blocks.CHISELED_STONE_BRICKS, Blocks.QUARTZ_BLOCK, Blocks.ANDESITE, Blocks.DIORITE, Blocks.GRANITE);
     private static final List<DyeColor> COMMON_SHEPHERD_WOOL_COLORS = List.of(DyeColor.WHITE, DyeColor.GRAY, DyeColor.BLACK, DyeColor.BROWN);
 
-    public static void handle(ClientLevel level, ClientBoundEntityFellPayload payload) {
+    public static void handle(Level level, ClientBoundEntityFellPayload payload) {
         if (level.getEntity(payload.entityId()) instanceof LivingEntity livingEntity) {
             ParticleSpawnUtil.spawnEntityFellParticles(livingEntity, payload.y(), payload.distance(), payload.fallDamage(), getEntityFellConfig(payload));
         }
     }
 
-    public static void handle(ClientLevel level, ClientBoundEntitySpawnSprintingDustCloudsPayload payload) {
+    public static void handle(Level level, ClientBoundEntitySpawnSprintingDustCloudsPayload payload) {
         if (level.getEntity(payload.entityId()) instanceof LivingEntity livingEntity) {
             int ySpeedModifier = 5;
             if (livingEntity instanceof Ravager) {
@@ -70,13 +70,13 @@ public class ClientPacketHandlers {
         }
     }
 
-    public static void handle(ClientLevel level, ClientBoundSpawnSnoreParticlePayload payload) {
+    public static void handle(Level level, ClientBoundSpawnSnoreParticlePayload payload) {
         if (ModConfigs.BLOCKS.beehivesHaveSleepingZs) {
             level.addParticle(ModParticles.SNORING.get(), payload.x(), payload.y(), payload.z(), 0, 0, 0);
         }
     }
 
-    public static void handle(ClientLevel level, ClientBoundBlockDestroyEffectsPayload payload) {
+    public static void handle(Level level, ClientBoundBlockDestroyEffectsPayload payload) {
         if (getBlockDestroyEffectConfig(payload)) {
             BlockPos pos = payload.pos();
             BlockState state = Block.stateById(payload.stateId());
@@ -87,7 +87,7 @@ public class ClientPacketHandlers {
         }
     }
 
-    public static void handle(ClientLevel level, ClientBoundXPBottleEffectsPayload payload) {
+    public static void handle(Level level, ClientBoundXPBottleEffectsPayload payload) {
         BlockPos pos = payload.pos();
         Vec3 vec3 = Vec3.atBottomCenterOf(pos);
         RandomSource random = level.getRandom();
@@ -140,7 +140,7 @@ public class ClientPacketHandlers {
         }
     }
 
-    public static void handle(ClientLevel level, ClientBoundFallingBlockLandPayload payload) {
+    public static void handle(Level level, ClientBoundFallingBlockLandPayload payload) {
         BlockPos pos = payload.pos();
         BlockState state = Block.stateById(payload.stateId());
         Block block = state.getBlock();
@@ -178,7 +178,7 @@ public class ClientPacketHandlers {
         }
     }
 
-    public static void handle(ClientLevel level, ClientBoundCompostItemPayload payload) {
+    public static void handle(Level level, ClientBoundCompostItemPayload payload) {
         if (BLOCKS.compostingItemParticles && (!payload.wasFarmer() || ENTITIES.villagerWorkAtWorkstationParticles)) {
             RandomSource random = level.getRandom();
             ParticleSpawnUtil.spawnCompostParticles(level, payload.pos(),
@@ -190,12 +190,12 @@ public class ClientPacketHandlers {
         }
     }
 
-    public static void handle(ClientLevel level, ClientBoundStonecutterUsedPayload payload) {
+    public static void handle(Level level, ClientBoundStonecutterUsedPayload payload) {
         BlockPos pos = payload.pos();
         ParticleSpawnUtil.spawnStonecutterParticles(level, payload.stack(), pos, level.getBlockState(pos));
     }
 
-    public static void handle(ClientLevel level, ClientBoundVillagerWorkPayload payload) {
+    public static void handle(Level level, ClientBoundVillagerWorkPayload payload) {
         if (!ENTITIES.villagerWorkAtWorkstationParticles) {
             return;
         }
@@ -291,7 +291,7 @@ public class ClientPacketHandlers {
         }
     }
 
-    public static void handle(ClientLevel level, ClientBoundMooshroomShearedPayload payload) {
+    public static void handle(Level level, ClientBoundMooshroomShearedPayload payload) {
         Entity entity = level.getEntity(payload.entityId());
         if (entity instanceof MushroomCow mooshroom) {
             if (!ENTITIES.improvedMooshroomShearingEffects) {
@@ -320,7 +320,7 @@ public class ClientPacketHandlers {
         }
     }
 
-    public static void handle(ClientLevel level, ClientBoundAnimalFedPayload payload) {
+    public static void handle(Level level, ClientBoundAnimalFedPayload payload) {
         Entity entity = level.getEntity(payload.animalId());
         ItemStack stack = payload.stack();
 
@@ -345,7 +345,7 @@ public class ClientPacketHandlers {
         }
     }
 
-    public static void handle(ClientLevel level, ClientBoundDrankPotionPayload payload) {
+    public static void handle(Level level, ClientBoundDrankPotionPayload payload) {
         Entity entity = level.getEntity(payload.entityId());
 
         if (entity instanceof LivingEntity livingEntity && livingEntity.isAlive()) {
@@ -353,7 +353,7 @@ public class ClientPacketHandlers {
         }
     }
 
-    public static void handle(ClientLevel level, ClientBoundDispenseBucketPayload payload) {
+    public static void handle(Level level, ClientBoundDispenseBucketPayload payload) {
         BlockPos pos = payload.pos();
         BlockState state = level.getBlockState(pos);
 
@@ -365,14 +365,14 @@ public class ClientPacketHandlers {
         ParticleSpawnUtil.spawnBucketParticles(level, pos, payload.stack());
     }
 
-    public static void handle(ClientLevel level, ClientBoundSheepShearPayload payload) {
+    public static void handle(Level level, ClientBoundSheepShearPayload payload) {
         Entity entity = level.getEntity(payload.entityId());
         if (entity instanceof Sheep sheep && ENTITIES.sheepShearFluff) {
             ParticleSpawnUtil.spawnSheepFluff(sheep, 7);
         }
     }
 
-    public static void handle(ClientLevel level, ClientBoundEntityLandInFluidPayload payload) {
+    public static void handle(Level level, ClientBoundEntityLandInFluidPayload payload) {
         Entity entity = level.getEntity(payload.entityId());
         if (entity != null) {
             Fluid fluid = payload.fluid();
@@ -395,7 +395,7 @@ public class ClientPacketHandlers {
         }
     }
 
-    public static void handle(ClientLevel level, ClientBoundMobSpawnerSpawnPayload payload) {
+    public static void handle(Level level, ClientBoundMobSpawnerSpawnPayload payload) {
         float volume = BLOCKS.monsterSpawnerSpawnMobSoundVolume.get();
         if (volume > 0) {
             RandomSource random = level.getRandom();
@@ -403,7 +403,7 @@ public class ClientPacketHandlers {
         }
     }
 
-    public static void handle(ClientLevel level, ClientBoundEntityDamagedPayload payload) {
+    public static void handle(Level level, ClientBoundEntityDamagedPayload payload) {
         Entity entity = level.getEntity(payload.entityId());
         if (entity instanceof LivingEntity livingEntity && livingEntity.isAlive()) {
             Optional<ResourceLocation> damageType = payload.damageType();
@@ -413,7 +413,7 @@ public class ClientPacketHandlers {
         }
     }
 
-    public static void handle(ClientLevel level, ClientBoundChargedCreeperExplosionPayload payload) {
+    public static void handle(Level level, ClientBoundChargedCreeperExplosionPayload payload) {
         if (!ENTITIES.chargedCreeperExplosionParticles) {
             return;
         }
@@ -471,7 +471,7 @@ public class ClientPacketHandlers {
         return COMMON_SHEPHERD_WOOL_COLORS.get(random.nextInt(COMMON_SHEPHERD_WOOL_COLORS.size()));
     }
 
-    private static ParticleOptions getParticleForFallingBlock(ClientLevel level, BlockPos pos, BlockState state) {
+    private static ParticleOptions getParticleForFallingBlock(Level level, BlockPos pos, BlockState state) {
         if (Block.canSupportRigidBlock(level, pos.below())) {
             int color = getFallingBlockDustColor(level, state.getBlock(), state, pos);
             return new DustParticleOptions(
@@ -485,7 +485,7 @@ public class ClientPacketHandlers {
         return new BlockParticleOption(ParticleTypes.FALLING_DUST, state);
     }
 
-    private static int getFallingBlockDustColor(ClientLevel level, Block block, BlockState state, BlockPos pos) {
+    private static int getFallingBlockDustColor(Level level, Block block, BlockState state, BlockPos pos) {
         if (block instanceof FallingBlock fallingBlock) {
             return fallingBlock.getDustColor(state, level, pos);
         }

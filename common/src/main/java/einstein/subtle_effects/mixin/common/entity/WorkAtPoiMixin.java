@@ -1,7 +1,7 @@
 package einstein.subtle_effects.mixin.common.entity;
 
 import einstein.subtle_effects.networking.clientbound.ClientBoundVillagerWorkPayload;
-import einstein.subtle_effects.platform.Services;
+import einstein.subtle_effects.networking.PayloadSender;
 import net.minecraft.core.GlobalPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.ai.behavior.WorkAtPoi;
@@ -20,7 +20,7 @@ public class WorkAtPoiMixin {
     @Inject(method = "start(Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/world/entity/npc/Villager;J)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/npc/Villager;playWorkSound()V"))
     private void spawnWorkEffects(ServerLevel level, Villager villager, long gameTime, CallbackInfo ci) {
         Optional<GlobalPos> memory = villager.getBrain().getMemory(MemoryModuleType.JOB_SITE);
-        memory.ifPresent(globalPos -> Services.NETWORK.sendToClientsTracking(level, villager.blockPosition(),
+        memory.ifPresent(globalPos -> PayloadSender.sendToClientsTracking(level, villager.blockPosition(),
                 new ClientBoundVillagerWorkPayload(villager.getId(), globalPos.pos())
         ));
     }

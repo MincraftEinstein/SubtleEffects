@@ -1,50 +1,38 @@
 package einstein.subtle_effects.init;
 
 import einstein.subtle_effects.networking.clientbound.*;
+import me.fzzyhmstrs.fzzy_config.api.ConfigApiJava;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.world.level.Level;
 
-import static einstein.subtle_effects.platform.Services.NETWORK;
+import java.util.function.BiConsumer;
 
 public class ModPayloads {
 
     public static void init() {
-        NETWORK.registerToClient(ClientBoundSpawnSnoreParticlePayload.TYPE, ClientBoundSpawnSnoreParticlePayload.STREAM_CODEC);
-        NETWORK.registerToClient(ClientBoundEntityFellPayload.TYPE, ClientBoundEntityFellPayload.STREAM_CODEC);
-        NETWORK.registerToClient(ClientBoundEntitySpawnSprintingDustCloudsPayload.TYPE, ClientBoundEntitySpawnSprintingDustCloudsPayload.STREAM_CODEC);
-        NETWORK.registerToClient(ClientBoundBlockDestroyEffectsPayload.TYPE, ClientBoundBlockDestroyEffectsPayload.STREAM_CODEC);
-        NETWORK.registerToClient(ClientBoundXPBottleEffectsPayload.TYPE, ClientBoundXPBottleEffectsPayload.STREAM_CODEC);
-        NETWORK.registerToClient(ClientBoundFallingBlockLandPayload.TYPE, ClientBoundFallingBlockLandPayload.STREAM_CODEC);
-        NETWORK.registerToClient(ClientBoundCompostItemPayload.TYPE, ClientBoundCompostItemPayload.STREAM_CODEC);
-        NETWORK.registerToClient(ClientBoundStonecutterUsedPayload.TYPE, ClientBoundStonecutterUsedPayload.STREAM_CODEC);
-        NETWORK.registerToClient(ClientBoundVillagerWorkPayload.TYPE, ClientBoundVillagerWorkPayload.STREAM_CODEC);
-        NETWORK.registerToClient(ClientBoundMooshroomShearedPayload.TYPE, ClientBoundMooshroomShearedPayload.STREAM_CODEC);
-        NETWORK.registerToClient(ClientBoundAnimalFedPayload.TYPE, ClientBoundAnimalFedPayload.STREAM_CODEC);
-        NETWORK.registerToClient(ClientBoundDrankPotionPayload.TYPE, ClientBoundDrankPotionPayload.STREAM_CODEC);
-        NETWORK.registerToClient(ClientBoundDispenseBucketPayload.TYPE, ClientBoundDispenseBucketPayload.STREAM_CODEC);
-        NETWORK.registerToClient(ClientBoundSheepShearPayload.TYPE, ClientBoundSheepShearPayload.STREAM_CODEC);
-        NETWORK.registerToClient(ClientBoundEntityLandInFluidPayload.TYPE, ClientBoundEntityLandInFluidPayload.STREAM_CODEC);
-        NETWORK.registerToClient(ClientBoundMobSpawnerSpawnPayload.TYPE, ClientBoundMobSpawnerSpawnPayload.STREAM_CODEC);
-        NETWORK.registerToClient(ClientBoundEntityDamagedPayload.TYPE, ClientBoundEntityDamagedPayload.STREAM_CODEC);
-        NETWORK.registerToClient(ClientBoundChargedCreeperExplosionPayload.TYPE, ClientBoundChargedCreeperExplosionPayload.STREAM_CODEC);
+        registerToClient(ClientBoundSpawnSnoreParticlePayload.TYPE, ClientBoundSpawnSnoreParticlePayload.STREAM_CODEC, ClientPacketHandlers::handle);
+        registerToClient(ClientBoundEntityFellPayload.TYPE, ClientBoundEntityFellPayload.STREAM_CODEC, ClientPacketHandlers::handle);
+        registerToClient(ClientBoundEntitySpawnSprintingDustCloudsPayload.TYPE, ClientBoundEntitySpawnSprintingDustCloudsPayload.STREAM_CODEC, ClientPacketHandlers::handle);
+        registerToClient(ClientBoundBlockDestroyEffectsPayload.TYPE, ClientBoundBlockDestroyEffectsPayload.STREAM_CODEC, ClientPacketHandlers::handle);
+        registerToClient(ClientBoundXPBottleEffectsPayload.TYPE, ClientBoundXPBottleEffectsPayload.STREAM_CODEC, ClientPacketHandlers::handle);
+        registerToClient(ClientBoundFallingBlockLandPayload.TYPE, ClientBoundFallingBlockLandPayload.STREAM_CODEC, ClientPacketHandlers::handle);
+        registerToClient(ClientBoundCompostItemPayload.TYPE, ClientBoundCompostItemPayload.STREAM_CODEC, ClientPacketHandlers::handle);
+        registerToClient(ClientBoundStonecutterUsedPayload.TYPE, ClientBoundStonecutterUsedPayload.STREAM_CODEC, ClientPacketHandlers::handle);
+        registerToClient(ClientBoundVillagerWorkPayload.TYPE, ClientBoundVillagerWorkPayload.STREAM_CODEC, ClientPacketHandlers::handle);
+        registerToClient(ClientBoundMooshroomShearedPayload.TYPE, ClientBoundMooshroomShearedPayload.STREAM_CODEC, ClientPacketHandlers::handle);
+        registerToClient(ClientBoundAnimalFedPayload.TYPE, ClientBoundAnimalFedPayload.STREAM_CODEC, ClientPacketHandlers::handle);
+        registerToClient(ClientBoundDrankPotionPayload.TYPE, ClientBoundDrankPotionPayload.STREAM_CODEC, ClientPacketHandlers::handle);
+        registerToClient(ClientBoundDispenseBucketPayload.TYPE, ClientBoundDispenseBucketPayload.STREAM_CODEC, ClientPacketHandlers::handle);
+        registerToClient(ClientBoundSheepShearPayload.TYPE, ClientBoundSheepShearPayload.STREAM_CODEC, ClientPacketHandlers::handle);
+        registerToClient(ClientBoundEntityLandInFluidPayload.TYPE, ClientBoundEntityLandInFluidPayload.STREAM_CODEC, ClientPacketHandlers::handle);
+        registerToClient(ClientBoundMobSpawnerSpawnPayload.TYPE, ClientBoundMobSpawnerSpawnPayload.STREAM_CODEC, ClientPacketHandlers::handle);
+        registerToClient(ClientBoundEntityDamagedPayload.TYPE, ClientBoundEntityDamagedPayload.STREAM_CODEC, ClientPacketHandlers::handle);
+        registerToClient(ClientBoundChargedCreeperExplosionPayload.TYPE, ClientBoundChargedCreeperExplosionPayload.STREAM_CODEC, ClientPacketHandlers::handle);
     }
 
-    public static void initClientHandlers() {
-        NETWORK.registerClientHandler(ClientBoundSpawnSnoreParticlePayload.TYPE, ClientPacketHandlers::handle);
-        NETWORK.registerClientHandler(ClientBoundEntityFellPayload.TYPE, ClientPacketHandlers::handle);
-        NETWORK.registerClientHandler(ClientBoundEntitySpawnSprintingDustCloudsPayload.TYPE, ClientPacketHandlers::handle);
-        NETWORK.registerClientHandler(ClientBoundBlockDestroyEffectsPayload.TYPE, ClientPacketHandlers::handle);
-        NETWORK.registerClientHandler(ClientBoundXPBottleEffectsPayload.TYPE, ClientPacketHandlers::handle);
-        NETWORK.registerClientHandler(ClientBoundFallingBlockLandPayload.TYPE, ClientPacketHandlers::handle);
-        NETWORK.registerClientHandler(ClientBoundCompostItemPayload.TYPE, ClientPacketHandlers::handle);
-        NETWORK.registerClientHandler(ClientBoundStonecutterUsedPayload.TYPE, ClientPacketHandlers::handle);
-        NETWORK.registerClientHandler(ClientBoundVillagerWorkPayload.TYPE, ClientPacketHandlers::handle);
-        NETWORK.registerClientHandler(ClientBoundMooshroomShearedPayload.TYPE, ClientPacketHandlers::handle);
-        NETWORK.registerClientHandler(ClientBoundAnimalFedPayload.TYPE, ClientPacketHandlers::handle);
-        NETWORK.registerClientHandler(ClientBoundDrankPotionPayload.TYPE, ClientPacketHandlers::handle);
-        NETWORK.registerClientHandler(ClientBoundDispenseBucketPayload.TYPE, ClientPacketHandlers::handle);
-        NETWORK.registerClientHandler(ClientBoundSheepShearPayload.TYPE, ClientPacketHandlers::handle);
-        NETWORK.registerClientHandler(ClientBoundEntityLandInFluidPayload.TYPE, ClientPacketHandlers::handle);
-        NETWORK.registerClientHandler(ClientBoundMobSpawnerSpawnPayload.TYPE, ClientPacketHandlers::handle);
-        NETWORK.registerClientHandler(ClientBoundEntityDamagedPayload.TYPE, ClientPacketHandlers::handle);
-        NETWORK.registerClientHandler(ClientBoundChargedCreeperExplosionPayload.TYPE, ClientPacketHandlers::handle);
+    private static <T extends CustomPacketPayload> void registerToClient(CustomPacketPayload.Type<T> type, StreamCodec<RegistryFriendlyByteBuf, T> streamCodec, BiConsumer<Level, T> handler) {
+        ConfigApiJava.network().registerLenientS2C(type, streamCodec, (payload, context) -> context.execute(() -> handler.accept(context.player().level(), payload)));
     }
 }

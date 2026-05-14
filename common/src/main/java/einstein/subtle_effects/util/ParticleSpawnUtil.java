@@ -5,6 +5,7 @@ import einstein.subtle_effects.data.FluidDefinition;
 import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.init.ModParticles;
 import einstein.subtle_effects.mixin.client.item.BucketItemAccessor;
+import einstein.subtle_effects.networking.PayloadSender;
 import einstein.subtle_effects.networking.clientbound.ClientBoundEntityFellPayload;
 import einstein.subtle_effects.particle.EnderEyePlacedRingParticle;
 import einstein.subtle_effects.particle.SparkParticle;
@@ -12,7 +13,6 @@ import einstein.subtle_effects.particle.emitter.SplashEmitter;
 import einstein.subtle_effects.particle.option.ColorAndIntegerParticleOptions;
 import einstein.subtle_effects.particle.option.DirectionParticleOptions;
 import einstein.subtle_effects.particle.option.SheepFluffParticleOptions;
-import einstein.subtle_effects.platform.Services;
 import einstein.subtle_effects.ticking.tickers.TickerManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
@@ -95,7 +95,7 @@ public class ParticleSpawnUtil {
             spawnEntityFellParticles(entity, entity.getY(), distance, fallDamage, ENTITIES.dustClouds.playerFell);
         }
         else if (level instanceof ServerLevel serverLevel) {
-            Services.NETWORK.sendToClientsTracking(
+            PayloadSender.sendToClientsTracking(
                     entity instanceof ServerPlayer player ? player : null,
                     serverLevel, entity.blockPosition(),
                     new ClientBoundEntityFellPayload(entity.getId(), entity.getY(), distance, fallDamage, config)
