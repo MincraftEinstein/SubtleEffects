@@ -1,0 +1,101 @@
+package einstein.subtle_effects.init;
+
+import einstein.subtle_effects.particle.*;
+import einstein.subtle_effects.particle.SplashParticle;
+import einstein.subtle_effects.particle.emitter.FireFlyEmitter;
+import einstein.subtle_effects.particle.emitter.PotionEmitter;
+import einstein.subtle_effects.particle.emitter.SplashEmitter;
+import einstein.subtle_effects.particle.provider.*;
+import einstein.subtle_effects.platform.Services;
+import net.minecraft.client.particle.*;
+import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.core.particles.ParticleType;
+
+import java.util.function.Function;
+import java.util.function.Supplier;
+
+import static einstein.subtle_effects.init.ModParticles.*;
+
+public class ModParticleProviders {
+
+    public static void init() {
+        register(SNORING, SnoringParticle.Provider::new);
+        register(FALLING_SNORING, SnoringParticle.FallingProvider::new);
+        register(LONG_SPARK, SparkParticle.LongLifeProvider::new);
+        register(SHORT_SPARK, SparkParticle.ShortLifeProvider::new);
+        register(FLOATING_SPARK, SparkParticle.FloatingProvider::new);
+        register(METAL_SPARK, SparkParticle.MetalProvider::new);
+        register(SNOW, SnowParticle.Provider::new);
+        register(SNOWBALL_TRAIL, SnowParticle.SnowballTrailProvider::new);
+        register(FREEZING, SnowParticle.FreezingProvider::new);
+        register(CHICKEN_FEATHER, FeatherParticle.Provider::new);
+        register(BLUE_PARROT_FEATHER, FeatherParticle.Provider::new);
+        register(GRAY_PARROT_FEATHER, FeatherParticle.Provider::new);
+        register(GREEN_PARROT_FEATHER, FeatherParticle.Provider::new);
+        register(RED_BLUE_PARROT_FEATHER, FeatherParticle.Provider::new);
+        register(YELLOW_BLUE_PARROT_FEATHER, FeatherParticle.Provider::new);
+        register(ALLAY_MAGIC, AllayMagicParticle.Provider::new);
+        register(VEX_MAGIC, AllayMagicParticle.VexProvider::new);
+        register(SMALL_DUST_CLOUD, DustCloudParticle.SmallProvider::new);
+        register(LARGE_DUST_CLOUD, DustCloudParticle.LargeProvider::new);
+        register(SHEEP_FLUFF, SheepFluffParticle.Provider::new);
+        register(MUSHROOM_SPORE, MushroomSporeProvider::new);
+        register(FIREFLY, FireflyParticle.Provider::new);
+        register(VANILLA_FIREFLY, VanillaFireflyParticle.FireflyProvider::new);
+        register(FIREFLY_EMITTER, sprites -> new FireFlyEmitter.Provider());
+        register(SMOKE, SmokeParticleProvider::new);
+        register(POLLEN, PollenProvider::new);
+        register(COMMAND_BLOCK, CommandBlockParticle.Provider::new);
+        register(ITEM_RARITY, ItemRarityParticle.Provider::new);
+        register(BEACON, BeaconParticle.Provider::new);
+        register(COMPOST, CustomTerrainParticle.CompostProvider::new);
+        register(STEAM, SteamParticle.Provider::new);
+        register(END_PORTAL, EndPortalParticle.Provider::new);
+        register(END_CRYSTAL, EndCrystalParticle.Provider::new);
+        register(SCULK_DUST, SculkDustParticle.Provider::new);
+        register(SLIME_TRAIL, SlimeTrailParticle.Provider::new);
+        register(MAGMA_CUBE_TRAIL, SlimeTrailParticle.Provider::new);
+        register(SPELL_CASTER_MAGIC, SpellCasterMagicProvider::new);
+        register(AMETHYST_SPARKLE, SuspendedTownParticle.HappyVillagerProvider::new);
+        register(AZALEA_PETAL, AzaleaParticleProvider::new);
+        register(FROSTY_BREATH, SteamParticle.FrostyBreathProvider::new);
+        register(EXPERIENCE, ExperienceParticle.Provider::new);
+        register(HEART_POP, HeartPopParticle.Provider::new);
+        register(POTION_RING, PotionRingParticle.Provider::new);
+        register(POTION_DOT, PotionDotParticle.PotionDotProvider::new);
+        register(POTION_EMITTER, sprites -> new PotionEmitter.Provider());
+        register(IRON_GOLEM, CustomTerrainParticle.Provider::new);
+        register(DROWNING_BUBBLE, DrowningBubbleParticle.Provider::new);
+        register(DROWNING_BUBBLE_POP, DrowningBubblePopParticle.Provider::new);
+        register(EGG_SPLAT, EggSplatParticle.Provider::new);
+        register(ENDER_EYE_PLACED_RING, EnderEyePlacedRingParticle.Provider::new);
+        register(BLOCK_NO_MOMENTUM, sprites -> new TerrainNoMomentumParticleProvider());
+        register(OMINOUS_VAULT_CONNECTION, FlyTowardsPositionParticle.VaultConnectionProvider::new);
+        register(GEYSER_SPOUT, GeyserSpoutParticle.Provider::new);
+        register(SNEEZE, SneezeParticle.Provider::new);
+        register(GEYSER_SMOKE, GeyserSmokeParticleProvider::new);
+        register(POTION_CLOUD, PotionCloudParticle.Provider::new);
+        register(POTION_POOF_CLOUD, PotionPoofCloudProvider::new);
+        register(RIPPLE, RippleParticle.Provider::new);
+        register(DROPLET, DropletParticle.SplashProvider::new);
+        register(SPLASH, sprites -> new SplashParticle.Provider());
+        register(SPLASH_RIPPLE, sprites -> new SplashRippleParticle.Provider());
+        register(SPLASH_EMITTER, sprites -> new SplashEmitter.Provider());
+        register(WATERFALL_CLOUD, WaterfallCloud.Provider::new);
+        register(WATERFALL_DROPLET, WaterfallDropletParticle.Provider::new);
+        register(WATERFALL_MIST, WaterfallMistParticle.Provider::new);
+        register(FALLEN_LEAF, sprites -> new FallenLeafParticle.Provider());
+        register(ARMADILLO, CustomTerrainParticle.Provider::new);
+        register(PURPLE_FLAME, FlameParticle.Provider::new);
+        register(SKELETON_BONE, FeatherParticle.BoneProvider::new);
+        register(WITHER_BONE, FeatherParticle.BoneProvider::new);
+        register(STRAY_BONE, FeatherParticle.BoneProvider::new);
+        register(BOGGED_BONE, FeatherParticle.BoneProvider::new);
+        register(CHARGED, ElectricityParticle.Provider::new);
+        register(ELECTRICITY, ElectricityParticle.Provider::new);
+    }
+
+    private static <T extends ParticleType<V>, V extends ParticleOptions> void register(Supplier<T> particleType, Function<SpriteSet, ParticleProvider<V>> provider) {
+        Services.REGISTRY.registerParticleProvider(particleType, provider);
+    }
+}
