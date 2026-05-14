@@ -1,9 +1,10 @@
-package einstein.subtle_effects.networking.clientbound;
+package einstein.subtle_effects.networking;
 
 import einstein.subtle_effects.configs.ReplacedParticlesDisplayType;
 import einstein.subtle_effects.data.FluidDefinition;
 import einstein.subtle_effects.init.*;
 import einstein.subtle_effects.mixin.client.entity.AbstractHorseAccessor;
+import einstein.subtle_effects.networking.clientbound.*;
 import einstein.subtle_effects.particle.option.FloatParticleOptions;
 import einstein.subtle_effects.particle.option.SheepFluffParticleOptions;
 import einstein.subtle_effects.ticking.tickers.TickerManager;
@@ -48,7 +49,7 @@ import java.util.function.Supplier;
 import static einstein.subtle_effects.init.ModConfigs.*;
 import static einstein.subtle_effects.util.MathUtil.*;
 
-public class ClientPacketHandlers {
+public class ClientPayloadHandlers {
 
     private static final List<Block> MASON_STONECUTTER_USE_BLOCKS = List.of(Blocks.STONE, Blocks.CHISELED_STONE_BRICKS, Blocks.QUARTZ_BLOCK, Blocks.ANDESITE, Blocks.DIORITE, Blocks.GRANITE);
     private static final List<DyeColor> COMMON_SHEPHERD_WOOL_COLORS = List.of(DyeColor.WHITE, DyeColor.GRAY, DyeColor.BLACK, DyeColor.BROWN);
