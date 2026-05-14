@@ -18,6 +18,8 @@ public class FarmBlockMixin {
 
     @Inject(method = "turnToDirt", at = @At("TAIL"))
     private static void turnToDirt(Entity entity, BlockState state, Level level, BlockPos pos, CallbackInfo ci) {
-        Services.NETWORK.sendToClientsTracking((ServerLevel) level, pos, new ClientBoundBlockDestroyEffectsPayload(state, pos, ClientBoundBlockDestroyEffectsPayload.TypeConfig.FARMLAND_DESTROY));
+        if (level instanceof ServerLevel serverLevel) {
+            Services.NETWORK.sendToClientsTracking(serverLevel, pos, new ClientBoundBlockDestroyEffectsPayload(state, pos, ClientBoundBlockDestroyEffectsPayload.TypeConfig.FARMLAND_DESTROY));
+        }
     }
 }
