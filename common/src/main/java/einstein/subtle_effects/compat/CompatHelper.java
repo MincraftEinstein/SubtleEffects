@@ -1,8 +1,8 @@
 package einstein.subtle_effects.compat;
 
 import com.google.common.base.Suppliers;
-import einstein.subtle_effects.platform.Services;
 import einstein.subtle_effects.util.Util;
+import me.fzzyhmstrs.fzzy_config.api.ConfigApiJava;
 import me.fzzyhmstrs.fzzy_config.validation.misc.ValidatedColor;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
@@ -26,7 +26,7 @@ public class CompatHelper {
     public static final Supplier<Boolean> IS_ITEM_BORDERS_LOADED = isLoaded(ITEMBORDERS_MOD_ID);
     public static final Supplier<Boolean> IS_LEGENDARY_TOOLTIPS_LOADED = isLoaded("legendarytooltips");
     public static final Supplier<Boolean> IS_END_REMASTERED_LOADED = isLoaded("endrem");
-    public static final Supplier<Boolean> IS_PARTICLE_EFFECTS_LOADED = Suppliers.memoize(() -> Services.PLATFORM.isModLoaded(PARTICLE_EFFECTS_MOD_ID) || Services.PLATFORM.isModLoaded(PARTICLE_EFFECTS_MOD_ID_NEW));
+    public static final Supplier<Boolean> IS_PARTICLE_EFFECTS_LOADED = Suppliers.memoize(() -> ConfigApiJava.platform().isModLoaded(PARTICLE_EFFECTS_MOD_ID) || ConfigApiJava.platform().isModLoaded(PARTICLE_EFFECTS_MOD_ID_NEW));
     public static final Supplier<Boolean> IS_PARTICLE_RAIN_LOADED = isLoaded(PARTICLE_RAIN_MOD_ID);
     public static final Supplier<Boolean> IS_DYED_FLAMES_LOADED = isLoaded(DYED_FLAMES_MOD_ID);
 
@@ -35,7 +35,7 @@ public class CompatHelper {
     public static final IntegerProperty JMC_THREE_TIERED_CAKE_BITES = IntegerProperty.create("bites", 0, 15);
 
     private static Supplier<Boolean> isLoaded(String modId) {
-        return Suppliers.memoize(() -> Services.PLATFORM.isModLoaded(modId));
+        return Suppliers.memoize(() -> ConfigApiJava.platform().isModLoaded(modId));
     }
 
     public static Map<ResourceLocation, ValidatedColor.ColorHolder> getDefaultEyes() {

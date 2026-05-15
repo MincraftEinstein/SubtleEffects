@@ -5,8 +5,8 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import einstein.subtle_effects.client.model.entity.EinsteinSolarSystemModel;
 import einstein.subtle_effects.init.ModConfigs;
-import einstein.subtle_effects.platform.Services;
 import einstein.subtle_effects.util.Util;
+import me.fzzyhmstrs.fzzy_config.api.ConfigApiJava;
 import net.minecraft.client.model.HumanoidArmorModel;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.PlayerModel;
@@ -113,7 +113,7 @@ public class EinsteinSolarSystemLayer<T extends AbstractClientPlayer, V extends 
 
     public static boolean shouldRender(AbstractClientPlayer player) {
         return ModConfigs.GENERAL.enableEasterEggs
-                && (Util.isMincraftEinstein(player) || Services.PLATFORM.isDevelopmentEnvironment())
+                && (Util.isMincraftEinstein(player) || ConfigApiJava.platform().isDev())
                 && !player.isInvisible();
     }
 

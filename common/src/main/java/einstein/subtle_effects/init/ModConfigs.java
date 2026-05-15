@@ -1,9 +1,8 @@
 package einstein.subtle_effects.init;
 
 import einstein.subtle_effects.SubtleEffects;
-import einstein.subtle_effects.platform.Services;
-import einstein.subtle_effects.util.SuppliedComponent;
 import einstein.subtle_effects.configs.*;
+import einstein.subtle_effects.util.SuppliedComponent;
 import me.fzzyhmstrs.fzzy_config.api.ConfigApiJava;
 import me.fzzyhmstrs.fzzy_config.api.RegisterType;
 import me.fzzyhmstrs.fzzy_config.config.Config;
@@ -75,13 +74,13 @@ public class ModConfigs {
     }
 
     public static <T extends ValidatedField<V>, V> ValidatedCondition<V> conditional(T config, String modId) {
-        return config.toCondition(() -> Services.PLATFORM.isModLoaded(modId), new SuppliedComponent(true,
+        return config.toCondition(() -> ConfigApiJava.platform().isModLoaded(modId), new SuppliedComponent(true,
                 () -> styleFailMessage(Component.translatable("config.subtle_effects.conditions.mod_not_loaded", modId))
         ), config::getDefault);
     }
 
     public static <T extends ValidatedField<V>, V> ValidatedCondition<V> conditionalModLoaded(T config, String modId) {
-        return config.toCondition(() -> !Services.PLATFORM.isModLoaded(modId), new SuppliedComponent(true,
+        return config.toCondition(() -> !ConfigApiJava.platform().isModLoaded(modId), new SuppliedComponent(true,
                 () -> styleFailMessage(Component.translatable("config.subtle_effects.conditions.mod_loaded", modId))
         ), config::getDefault);
     }
