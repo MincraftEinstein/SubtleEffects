@@ -172,6 +172,7 @@ public class ModBlockConfigs extends Config {
     public SmokeType magmaSmoke = SmokeType.UPDATED;
     public boolean magmaFrostWalkerSteam = true;
     public boolean magmaFrostWalkerSounds = true;
+    public boolean redstoneRailDustParticles = true;
 
     private static ValidatedIdentifier getEyeHandler() {
         List<ResourceLocation> eyes = CompatHelper.IS_END_REMASTERED_LOADED.get()

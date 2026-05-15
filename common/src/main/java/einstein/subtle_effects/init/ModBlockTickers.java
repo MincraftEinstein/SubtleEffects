@@ -20,16 +20,10 @@ import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.ParticleUtils;
-import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
-import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BeaconBlockEntity;
@@ -38,10 +32,10 @@ import net.minecraft.world.level.block.entity.CampfireBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.ComparatorMode;
+import net.minecraft.world.level.block.state.properties.RailShape;
 import net.minecraft.world.level.block.state.properties.SculkSensorPhase;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.material.LavaFluid;
-import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
 import java.util.HashMap;
@@ -351,6 +345,26 @@ public class ModBlockTickers {
                         pos.getX() + random.nextDouble(),
                         pos.getY() + 1,
                         pos.getZ() + random.nextDouble(),
+                        0, 0, 0
+                );
+            }
+        });
+        register(state -> state.getBlock() instanceof BaseRailBlock && state.hasProperty(BlockStateProperties.POWERED), () -> BLOCKS.redstoneRailDustParticles, (state, level, pos, random) -> {
+            if (state.getValue(BlockStateProperties.POWERED) && random.nextDouble() < 0.1) {
+                RailShape shape = state.getValue(((BaseRailBlock) state.getBlock()).getShapeProperty());
+                double x = random.nextDouble();
+                double z = random.nextDouble();
+                double y = 0.0625;
+                if (shape.isAscending()) {
+                    boolean isNorth = shape == RailShape.ASCENDING_NORTH;
+                    y = isNorth || shape == RailShape.ASCENDING_SOUTH ? z : x;
+                    y = isNorth || shape == RailShape.ASCENDING_WEST ? 1 - y : y;
+                }
+
+                level.addParticle(DustParticleOptions.REDSTONE,
+                        pos.getX() + x,
+                        pos.getY() + y,
+                        pos.getZ() + z,
                         0, 0, 0
                 );
             }

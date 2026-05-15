@@ -273,6 +273,8 @@
   "config.subtle_effects.blocks.magmaFrostWalkerSteam.desc": "When an entity wearing Frost Walker stands on Magma Blocks the magma will emit steam particles",
   "config.subtle_effects.blocks.magmaFrostWalkerSounds": "Magma Frost Walker Sounds",
   "config.subtle_effects.blocks.magmaFrostWalkerSounds.desc": "When an entity wearing Frost Walker stands on Magma blocks the magma will make hissing sounds",
+  "config.subtle_effects.blocks.redstoneRailDustParticles": "Redstone Rail Dust Particles",
+  "config.subtle_effects.blocks.redstoneRailDustParticles.desc": "Should redstone dust particles spawn around powerable rails, e.g. Powered Rails, Detector Rails, Activator Rails",
   "config.subtle_effects.entities.sleeping": "Sleeping",
   "config.subtle_effects.entities.sleeping.playerSnoreChance": "Player Snore Chance",
   "config.subtle_effects.entities.sleeping.playerSnoreChance.desc": "A percentage based chance for a player to snore. This is UUID based so it doesn't change every night.\n0 to disable",
