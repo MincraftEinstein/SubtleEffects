@@ -76,7 +76,7 @@ public class DropletParticle extends DripParticle.FallAndLandParticle implements
         return fromSplash;
     }
 
-    public record SplashProvider(SpriteSet sprites) implements ParticleProvider<DropletParticleOptions> {
+    public record Provider(SpriteSet sprites) implements ParticleProvider<DropletParticleOptions> {
 
         @Override
         public Particle createParticle(DropletParticleOptions options, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {

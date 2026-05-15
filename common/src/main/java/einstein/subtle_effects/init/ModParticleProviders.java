@@ -11,7 +11,6 @@ import net.minecraft.client.particle.*;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
 
-import java.util.function.Function;
 import java.util.function.Supplier;
 
 import static einstein.subtle_effects.init.ModParticles.*;
@@ -77,7 +76,7 @@ public class ModParticleProviders {
         register(POTION_CLOUD, PotionCloudParticle.Provider::new);
         register(POTION_POOF_CLOUD, PotionPoofCloudProvider::new);
         register(RIPPLE, RippleParticle.Provider::new);
-        register(DROPLET, DropletParticle.SplashProvider::new);
+        register(DROPLET, DropletParticle.Provider::new);
         register(SPLASH, new SplashParticle.Provider());
         register(SPLASH_RIPPLE, new SplashRippleParticle.Provider());
         register(SPLASH_EMITTER, new SplashEmitter.Provider());
