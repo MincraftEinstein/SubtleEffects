@@ -2,15 +2,12 @@ package einstein.subtle_effects;
 
 import einstein.subtle_effects.client.renderer.DebugRenderers;
 import einstein.subtle_effects.data.BCWPPackManager;
+import einstein.subtle_effects.platform.NeoForgeParticleHelper;
 import einstein.subtle_effects.platform.NeoForgeRegistryHelper;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.particle.ParticleProvider;
-import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.client.resources.PlayerSkin;
-import net.minecraft.core.particles.ParticleOptions;
-import net.minecraft.core.particles.ParticleType;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.repository.Pack;
 import net.minecraft.server.packs.repository.PackSource;
@@ -21,16 +18,14 @@ import net.neoforged.neoforge.client.event.*;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.AddPackFindersEvent;
 
-import java.util.function.Function;
-import java.util.function.Supplier;
-
 @Mod(value = SubtleEffects.MOD_ID, dist = Dist.CLIENT)
 public class SubtleEffectsNeoForgeClient {
 
     public SubtleEffectsNeoForgeClient(IEventBus modEventBus) {
         SubtleEffectsClient.clientSetup();
         modEventBus.addListener((RegisterParticleProvidersEvent event) ->
-                NeoForgeRegistryHelper.PARTICLE_PROVIDERS.forEach((particle, provider) -> registerParticle(event, particle, provider))
+                NeoForgeParticleHelper.PARTICLE_PROVIDERS.forEach(
+                        consumer -> consumer.accept(event))
         );
         modEventBus.addListener((AddPackFindersEvent event) -> {
             if (event.getPackType() == PackType.CLIENT_RESOURCES) {
@@ -68,12 +63,5 @@ public class SubtleEffectsNeoForgeClient {
                 DebugRenderers.renderParticleBoundingBoxes(event.getPoseStack(), event.getCamera());
             }
         });
-    }
-
-    @SuppressWarnings("unchecked")
-    private static <T extends ParticleType<V>, V extends ParticleOptions> void registerParticle(RegisterParticleProvidersEvent event, Supplier<? extends ParticleType<?>> particle, Function<SpriteSet, ? extends ParticleProvider<?>> provider) {
-        Supplier<T> t = (Supplier<T>) particle;
-        Function<SpriteSet, V> v = (Function<SpriteSet, V>) provider;
-        event.registerSpriteSet(t.get(), sprites -> (ParticleProvider<V>) v.apply(sprites));
     }
 }

@@ -42,7 +42,7 @@ public class ModParticleProviders {
         register(MUSHROOM_SPORE, MushroomSporeProvider::new);
         register(FIREFLY, FireflyParticle.Provider::new);
         register(VANILLA_FIREFLY, VanillaFireflyParticle.FireflyProvider::new);
-        register(FIREFLY_EMITTER, sprites -> new FireFlyEmitter.Provider());
+        register(FIREFLY_EMITTER, new FireFlyEmitter.Provider());
         register(SMOKE, SmokeParticleProvider::new);
         register(POLLEN, PollenProvider::new);
         register(COMMAND_BLOCK, CommandBlockParticle.Provider::new);
@@ -63,13 +63,13 @@ public class ModParticleProviders {
         register(HEART_POP, HeartPopParticle.Provider::new);
         register(POTION_RING, PotionRingParticle.Provider::new);
         register(POTION_DOT, PotionDotParticle.PotionDotProvider::new);
-        register(POTION_EMITTER, sprites -> new PotionEmitter.Provider());
+        register(POTION_EMITTER, new PotionEmitter.Provider());
         register(IRON_GOLEM, CustomTerrainParticle.Provider::new);
         register(DROWNING_BUBBLE, DrowningBubbleParticle.Provider::new);
         register(DROWNING_BUBBLE_POP, DrowningBubblePopParticle.Provider::new);
         register(EGG_SPLAT, EggSplatParticle.Provider::new);
         register(ENDER_EYE_PLACED_RING, EnderEyePlacedRingParticle.Provider::new);
-        register(BLOCK_NO_MOMENTUM, sprites -> new TerrainNoMomentumParticleProvider());
+        register(BLOCK_NO_MOMENTUM, new TerrainNoMomentumParticleProvider());
         register(OMINOUS_VAULT_CONNECTION, FlyTowardsPositionParticle.VaultConnectionProvider::new);
         register(GEYSER_SPOUT, GeyserSpoutParticle.Provider::new);
         register(SNEEZE, SneezeParticle.Provider::new);
@@ -78,13 +78,13 @@ public class ModParticleProviders {
         register(POTION_POOF_CLOUD, PotionPoofCloudProvider::new);
         register(RIPPLE, RippleParticle.Provider::new);
         register(DROPLET, DropletParticle.SplashProvider::new);
-        register(SPLASH, sprites -> new SplashParticle.Provider());
-        register(SPLASH_RIPPLE, sprites -> new SplashRippleParticle.Provider());
-        register(SPLASH_EMITTER, sprites -> new SplashEmitter.Provider());
+        register(SPLASH, new SplashParticle.Provider());
+        register(SPLASH_RIPPLE, new SplashRippleParticle.Provider());
+        register(SPLASH_EMITTER, new SplashEmitter.Provider());
         register(WATERFALL_CLOUD, WaterfallCloud.Provider::new);
         register(WATERFALL_DROPLET, WaterfallDropletParticle.Provider::new);
         register(WATERFALL_MIST, WaterfallMistParticle.Provider::new);
-        register(FALLEN_LEAF, sprites -> new FallenLeafParticle.Provider());
+        register(FALLEN_LEAF, new FallenLeafParticle.Provider());
         register(ARMADILLO, CustomTerrainParticle.Provider::new);
         register(PURPLE_FLAME, FlameParticle.Provider::new);
         register(SKELETON_BONE, FeatherParticle.BoneProvider::new);
@@ -95,7 +95,11 @@ public class ModParticleProviders {
         register(ELECTRICITY, ElectricityParticle.Provider::new);
     }
 
-    private static <T extends ParticleType<V>, V extends ParticleOptions> void register(Supplier<T> particleType, Function<SpriteSet, ParticleProvider<V>> provider) {
-        Services.REGISTRY.registerParticleProvider(particleType, provider);
+    private static <T extends ParticleType<V>, V extends ParticleOptions> void register(Supplier<T> particleType, ParticleEngine.SpriteParticleRegistration<V> provider) {
+        Services.PARTICLE_HELPER.registerParticleProvider(particleType, provider);
+    }
+
+    private static <T extends ParticleType<V>, V extends ParticleOptions> void register(Supplier<T> particleType, ParticleProvider<V> provider) {
+        Services.PARTICLE_HELPER.registerParticleProvider(particleType, provider);
     }
 }
