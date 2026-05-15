@@ -308,7 +308,7 @@ public class ModEntityTickers {
         });
         registerSimple(entity -> entity instanceof Creeper creeper && creeper.isPowered() && ENTITIES.chargedCreeperParticlesDensity.get() > 0, true, (entity, level, random) -> {
             if (shouldSpawn(random, ENTITIES.chargedCreeperParticlesDensity)) {
-                level.addParticle(ModParticles.CHARGED.get(),
+                level.addParticle(ModParticles.CHARGED_ELECTRICITY.get(),
                         entity.getRandomX(1),
                         entity.getRandomY(),
                         entity.getRandomZ(1),

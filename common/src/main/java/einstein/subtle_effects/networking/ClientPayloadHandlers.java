@@ -429,7 +429,7 @@ public class ClientPayloadHandlers {
             double yOffset = y + (random.nextDouble() - random.nextDouble()) * 4;
             double zOffset = z + (random.nextDouble() - random.nextDouble()) * 4;
 
-            level.addParticle(ModParticles.CHARGED.get(),
+            level.addParticle(ModParticles.CHARGED_ELECTRICITY.get(),
                     xOffset, yOffset, zOffset,
                     nextNonAbsDouble(random, 0.5),
                     nextNonAbsDouble(random, 0.5),

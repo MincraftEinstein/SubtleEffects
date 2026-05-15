@@ -85,7 +85,7 @@ public class ModParticles {
     public static final Supplier<SimpleParticleType> WITHER_BONE = register("wither_bone");
     public static final Supplier<SimpleParticleType> STRAY_BONE = register("stray_bone");
     public static final Supplier<SimpleParticleType> BOGGED_BONE = register("bogged_bone");
-    public static final Supplier<SimpleParticleType> CHARGED = register("charged");
+    public static final Supplier<SimpleParticleType> CHARGED_ELECTRICITY = register("charged_electricity");
     public static final Supplier<SimpleParticleType> ELECTRICITY = register("electricity");
 
     public static void init() {
