@@ -13,8 +13,8 @@ import einstein.subtle_effects.client.renderer.entity.PartyHatLayer;
 import einstein.subtle_effects.data.*;
 import einstein.subtle_effects.data.color_providers.ColorProviderType;
 import einstein.subtle_effects.init.*;
+import einstein.subtle_effects.ticking.BiomeEffectsManager;
 import einstein.subtle_effects.ticking.GeyserManager;
-import einstein.subtle_effects.ticking.biome_particles.BiomeParticleManager;
 import einstein.subtle_effects.ticking.tickers.ChestBlockEntityTicker;
 import einstein.subtle_effects.ticking.tickers.TickerManager;
 import einstein.subtle_effects.ticking.tickers.WaterfallTicker;
@@ -60,7 +60,7 @@ public class SubtleEffectsClient {
         ModParticleRenderTypes.init();
         ModEntityTickers.init();
         ModBlockTickers.init();
-        BiomeParticleManager.init();
+        BiomeEffectsManager.init();
         ModDamageListeners.init();
         ModParticles.init();
         ModParticleProviders.init();
@@ -76,7 +76,6 @@ public class SubtleEffectsClient {
 
             if (!HAS_CLEARED) {
                 clear();
-                BiomeParticleManager.clear();
                 HAS_CLEARED = true;
             }
             return;
@@ -103,10 +102,6 @@ public class SubtleEffectsClient {
 
         ProfilerFiller profiler = minecraft.getProfiler();
         profiler.push("subtle_effects");
-
-        profiler.push("biome_particles");
-        BiomeParticleManager.tickBiomeParticles(level, player);
-        profiler.pop();
 
         profiler.push("tickers");
         EntityTickerManager.tick();
@@ -234,5 +229,6 @@ public class SubtleEffectsClient {
         GeyserManager.INACTIVE_GEYSERS.clear();
         WaterfallTicker.WATERFALLS.clear();
         ChestBlockEntityTicker.clear();
+        BiomeEffectsManager.init();
     }
 }

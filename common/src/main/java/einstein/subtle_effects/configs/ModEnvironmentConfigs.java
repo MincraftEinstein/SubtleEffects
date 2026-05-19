@@ -8,10 +8,13 @@ import einstein.subtle_effects.configs.environment.GeyserConfigs;
 import einstein.subtle_effects.configs.environment.WaterfallConfigs;
 import einstein.subtle_effects.init.ModBlockTickers;
 import einstein.subtle_effects.init.ModConfigs;
-import einstein.subtle_effects.ticking.biome_particles.BiomeParticleManager;
 import me.fzzyhmstrs.fzzy_config.annotations.Translation;
+import me.fzzyhmstrs.fzzy_config.annotations.Version;
 import me.fzzyhmstrs.fzzy_config.config.Config;
 
+import static einstein.subtle_effects.init.ModConfigs.restoreDefault;
+
+@Version(version = 1)
 @Translation(prefix = ModConfigs.BASE_KEY + "environment")
 public class ModEnvironmentConfigs extends Config {
 
@@ -27,8 +30,16 @@ public class ModEnvironmentConfigs extends Config {
 
     @Override
     public void onUpdateClient() {
-        BiomeParticleManager.clear();
         ModBlockTickers.init();
         SubtleEffectsClient.clear();
+    }
+
+    @Override
+    public void update(int deserializedVersion) {
+        if (deserializedVersion == 0) {
+            restoreDefault(biomes.mushroomSporeDensity);
+            restoreDefault(biomes.pollenDensity);
+            restoreDefault(biomes.sculkDustDensity);
+        }
     }
 }

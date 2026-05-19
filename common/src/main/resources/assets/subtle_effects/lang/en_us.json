@@ -499,8 +499,6 @@
   "config.subtle_effects.environment": "Environment",
   "config.subtle_effects.environment.biomeColorRain": "Biome Color Rain",
   "config.subtle_effects.environment.biomes": "Biomes",
-  "config.subtle_effects.environment.biomes.biomeParticlesRadius": "Biome Particles Radius",
-  "config.subtle_effects.environment.biomes.biomeParticlesRadius.desc": "The radius around the player that biome particles will spawn in\n0 to disable all biome particles (vanilla not included)",
   "config.subtle_effects.environment.biomes.mushroomSporeBiomes": "Mushroom Spore Biomes",
   "config.subtle_effects.environment.biomes.mushroomSporeBiomes.desc": "A list of biome IDs that mushroom spore particles will spawn in",
   "config.subtle_effects.environment.biomes.mushroomSporeDensity": "Mushroom Spore Density",

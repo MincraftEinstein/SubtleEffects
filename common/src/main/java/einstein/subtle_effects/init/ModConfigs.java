@@ -46,6 +46,15 @@ public class ModConfigs {
         return ConfigApiJava.registerAndLoadConfig(supplier, RegisterType.CLIENT);
     }
 
+    public static <T> void restoreDefault(ValidatedField<T> field) {
+        if (field.getDefault() instanceof Number number) {
+            if (number.doubleValue() == 0) {
+                return;
+            }
+        }
+        field.accept(field.getDefault());
+    }
+
     public static <T extends ValidatedField<V>, V> ValidatedCondition<V> conditional(T config, ValidatedField<Integer> dependencyConfig) {
         return conditional(config, () -> dependencyConfig.get() > 0, dependencyConfig);
     }
