@@ -3,7 +3,6 @@ package einstein.subtle_effects;
 import einstein.subtle_effects.client.renderer.DebugRenderers;
 import einstein.subtle_effects.data.BCWPPackManager;
 import einstein.subtle_effects.platform.NeoForgeParticleHelper;
-import einstein.subtle_effects.platform.NeoForgeRegistryHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
