@@ -1,4 +1,4 @@
-package einstein.subtle_effects.mixin.client;
+package einstein.subtle_effects.mixin.client.compat;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.moulberry.mixinconstraints.annotations.IfModLoaded;

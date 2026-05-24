@@ -1,4 +1,4 @@
-package einstein.subtle_effects.mixin.client;
+package einstein.subtle_effects.mixin.client.fluid;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;

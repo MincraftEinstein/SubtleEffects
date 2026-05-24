@@ -1,12 +1,10 @@
-package einstein.subtle_effects.mixin.client;
+package einstein.subtle_effects.mixin.client.item;
 
 import einstein.subtle_effects.util.SpawnEggItemAccessor;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.SpawnEggItem;
 import org.jetbrains.annotations.Nullable;
-import org.spongepowered.asm.mixin.Debug;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.gen.Accessor;
 import org.spongepowered.asm.mixin.gen.Invoker;
 
 @Mixin(value = SpawnEggItem.class, priority = 1001, remap = false)

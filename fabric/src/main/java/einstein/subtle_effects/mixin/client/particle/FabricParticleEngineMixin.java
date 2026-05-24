@@ -1,4 +1,4 @@
-package einstein.subtle_effects.mixin.client;
+package einstein.subtle_effects.mixin.client.particle;
 
 import einstein.subtle_effects.data.DynamicSpriteSetsManager;
 import net.minecraft.client.particle.ParticleEngine;

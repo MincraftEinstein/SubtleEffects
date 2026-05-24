@@ -1,4 +1,4 @@
-package einstein.subtle_effects.mixin.client;
+package einstein.subtle_effects.mixin.client.fluid;
 
 import einstein.subtle_effects.util.ParticleSpawnUtil;
 import net.minecraft.core.BlockPos;

@@ -1,4 +1,4 @@
-package einstein.subtle_effects.mixin.client;
+package einstein.subtle_effects.mixin.client.compat;
 
 import com.moulberry.mixinconstraints.annotations.IfModLoaded;
 import com.terraformersmc.mod_menu.ModMenu;
