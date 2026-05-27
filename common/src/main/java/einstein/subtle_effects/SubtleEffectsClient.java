@@ -231,7 +231,7 @@ public class SubtleEffectsClient {
     }
 
     private static void sendSystemMsg(Minecraft minecraft, Component component) {
-        minecraft.gui.getChat().addClientSystemMessage(component);
+        minecraft.gui.hud.getChat().addClientSystemMessage(component);
     }
 
     public static void clear(@Nullable Level level) {
