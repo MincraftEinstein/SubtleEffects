@@ -1,7 +1,4 @@
-@MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
 package einstein.subtle_effects.particle.provider;
-
-import com.mojang.logging.annotations.MethodsReturnNonnullByDefault;
 
 import javax.annotation.ParametersAreNonnullByDefault;

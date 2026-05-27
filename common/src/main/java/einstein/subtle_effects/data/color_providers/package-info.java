@@ -1,7 +1,4 @@
-@MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
 package einstein.subtle_effects.data.color_providers;
-
-import com.mojang.logging.annotations.MethodsReturnNonnullByDefault;
 
 import javax.annotation.ParametersAreNonnullByDefault;
