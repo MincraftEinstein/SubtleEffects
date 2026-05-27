@@ -13,7 +13,7 @@
     "client.ItemBordersConfigAccessor",
     "client.LavaFluidMixin",
     "client.LevelEventHandlerMixin",
-    "client.MinecraftMixin",
+    "client.GuiMixin",
     "client.ParticleResourcesMixin",
     "client.RenderStatesMixin",
     "client.ScreenEffectRendererMixin",
