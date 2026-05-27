@@ -4,9 +4,8 @@ import com.mojang.blaze3d.pipeline.BlendFunction;
 import com.mojang.blaze3d.pipeline.ColorTargetState;
 import com.mojang.blaze3d.pipeline.DepthStencilState;
 import com.mojang.blaze3d.pipeline.RenderPipeline;
+import com.mojang.blaze3d.platform.BlendFactor;
 import com.mojang.blaze3d.platform.CompareOp;
-import com.mojang.blaze3d.platform.DestFactor;
-import com.mojang.blaze3d.platform.SourceFactor;
 import net.minecraft.client.renderer.RenderPipelines;
 
 import static einstein.subtle_effects.SubtleEffects.loc;
@@ -14,7 +13,8 @@ import static einstein.subtle_effects.SubtleEffects.loc;
 
 public class ModPipelines {
 
-    private static final BlendFunction ALPHA_BLEND = new BlendFunction(SourceFactor.SRC_ALPHA, DestFactor.ONE_MINUS_SRC_ALPHA);
+    // TODO this seams to be a bit broken
+    private static final BlendFunction ALPHA_BLEND = new BlendFunction(BlendFactor.SRC_ALPHA, BlendFactor.ONE_MINUS_SRC_ALPHA);
 
     public static final RenderPipeline CUSTOM_TRANSLUCENT_PARTICLE_PIPELINE = RenderPipelines.register(
             RenderPipeline.builder(RenderPipelines.PARTICLE_SNIPPET)
@@ -27,7 +27,7 @@ public class ModPipelines {
             RenderPipeline.builder(RenderPipelines.PARTICLE_SNIPPET)
                     .withLocation(loc("pipeline/alpha_blend"))
                     .withColorTargetState(new ColorTargetState(ALPHA_BLEND))
-                    .withDepthStencilState(new DepthStencilState(CompareOp.LESS_THAN_OR_EQUAL, false))
+                    .withDepthStencilState(new DepthStencilState(CompareOp.GREATER_THAN_OR_EQUAL, true))
                     .build()
     );
 
