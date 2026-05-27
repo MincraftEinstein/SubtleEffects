@@ -59,7 +59,7 @@ public record BiomeColorProvider(ColorType colorType) implements ColorProviderTy
 
         ColorType(String name, EnvironmentAttribute<Integer> attribute) {
             this(name, (level, pos) ->
-                    Minecraft.getInstance().gameRenderer.getMainCamera()
+                    Minecraft.getInstance().gameRenderer.mainCamera()
                             .attributeProbe().getValue(attribute, Util.getPartialTicks())
             );
         }
