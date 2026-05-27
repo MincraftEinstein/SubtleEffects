@@ -12,8 +12,8 @@ import static einstein.subtle_effects.init.ModConfigs.GENERAL;
 @Mixin(GameRenderer.class)
 public class GameRendererMixin {
 
-    @ModifyReturnValue(method = "getNightVisionScale", at = @At("RETURN"))
-    private static float getNightVisionScale(float original, @Local MobEffectInstance instance) {
+    @ModifyReturnValue(method = "nightVisionScale", at = @At("RETURN"))
+    private static float nightVisionScale(float original, @Local MobEffectInstance instance) {
         if (GENERAL.nightVisionFading.get() && instance != null) {
             float brightness = 1;
             int duration = instance.getDuration();
