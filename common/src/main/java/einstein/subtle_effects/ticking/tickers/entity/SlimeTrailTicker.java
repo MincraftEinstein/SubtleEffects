@@ -7,10 +7,11 @@ import einstein.subtle_effects.util.SparkType;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.monster.Slime;
+import net.minecraft.world.entity.monster.cubemob.AbstractCubeMob;
 
 import java.util.function.Supplier;
 
-public class SlimeTrailTicker<T extends Slime> extends EntityTicker<T> {
+public class SlimeTrailTicker<T extends AbstractCubeMob> extends EntityTicker<T> {
 
     private final boolean isMagma;
     private final Supplier<ParticleType<FloatParticleOptions>> type;
