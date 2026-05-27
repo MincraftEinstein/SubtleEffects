@@ -9,6 +9,7 @@ import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.entity.animal.chicken.Chicken;
@@ -26,7 +27,7 @@ public class ModDamageListeners {
     public static final Map<EntityType<?>, EntityProvider<?>> REGISTERED = new HashMap<>();
 
     public static void init() {
-        register(EntityType.CHICKEN, (entity, level, random) -> {
+        register(EntityTypes.CHICKEN, (entity, level, random) -> {
             if (ENTITIES.attackedChickenFeathers) {
                 ParticleOptions particle = getChickenFeatherParticle(entity);
                 for (int i = 0; i < 10; i++) {
@@ -41,7 +42,7 @@ public class ModDamageListeners {
                 }
             }
         });
-        register(EntityType.PARROT, (entity, level, random) -> {
+        register(EntityTypes.PARROT, (entity, level, random) -> {
             if (ENTITIES.attackedParrotFeathers) {
                 ParticleOptions particle = switch (entity.getVariant()) {
                     case BLUE -> ModParticles.BLUE_PARROT_FEATHER.get();
@@ -63,7 +64,7 @@ public class ModDamageListeners {
                 }
             }
         });
-        register(EntityType.SNOW_GOLEM, (entity, level, random) -> {
+        register(EntityTypes.SNOW_GOLEM, (entity, level, random) -> {
             if (ENTITIES.attackedSnowGolemSnowflakes) {
                 for (int i = 0; i < 20; i++) {
                     level.addParticle(ModParticles.SNOW.get(),
@@ -77,12 +78,12 @@ public class ModDamageListeners {
                 }
             }
         });
-        register(EntityType.SHEEP, (entity, level, random) -> {
+        register(EntityTypes.SHEEP, (entity, level, random) -> {
             if (ENTITIES.attackedSheepFluff) {
                 ParticleSpawnUtil.spawnSheepFluff(entity, random.nextInt(3));
             }
         });
-        register(EntityType.SLIME, (entity, level, random) -> {
+        register(EntityTypes.SLIME, (entity, level, random) -> {
             if (ENTITIES.attackedSlimeSlime) {
                 boolean replaceSlimeSquishParticles = ENTITIES.replaceSlimeSquishParticles;
                 ParticleOptions options = replaceSlimeSquishParticles

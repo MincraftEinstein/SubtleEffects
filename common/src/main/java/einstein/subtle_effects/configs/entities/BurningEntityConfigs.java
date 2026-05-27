@@ -9,13 +9,14 @@ import me.fzzyhmstrs.fzzy_config.validation.minecraft.ValidatedRegistryType;
 import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedFloat;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityTypes;
 
 import java.util.List;
 
 @Translation(prefix = ModConfigs.BASE_KEY + "entities.burning")
 public class BurningEntityConfigs extends ConfigSection {
 
-    private static final List<EntityType<?>> DEFAULT_ENTITY_BLOCKLIST = List.of(EntityType.LIGHTNING_BOLT);
+    private static final List<EntityType<?>> DEFAULT_ENTITY_BLOCKLIST = List.of(EntityTypes.LIGHTNING_BOLT);
 
     public SmokeType smokeType = SmokeType.DEFAULT;
     public ValidatedFloat smokeDensity = new ValidatedFloat(1, 1, 0);

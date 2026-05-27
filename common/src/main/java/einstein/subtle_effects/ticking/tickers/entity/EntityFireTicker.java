@@ -12,10 +12,8 @@ import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityTypes;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.List;
 
 import static einstein.subtle_effects.init.ModConfigs.ENTITIES;
 import static einstein.subtle_effects.util.MathUtil.nextNonAbsDouble;
@@ -24,7 +22,7 @@ public class EntityFireTicker extends EntityTicker<Entity> {
 
     private final float bbWidth;
     private final float bbHeight;
-    private final boolean isBlaze = entity.getType().equals(EntityType.BLAZE);
+    private final boolean isBlaze = entity.getType().equals(EntityTypes.BLAZE);
 
     public EntityFireTicker(Entity entity) {
         super(entity);

@@ -9,6 +9,7 @@ import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -45,7 +46,7 @@ public abstract class ClientLivingEntityMixin<T extends Entity> extends Entity {
             return;
         }
 
-        if (ENTITIES.wardenDeathSoulParticles && getType().equals(EntityType.WARDEN)) {
+        if (ENTITIES.wardenDeathSoulParticles && getType().equals(EntityTypes.WARDEN)) {
             if (deathTime == 1 && !isRemoved()) {
                 for (int i = 0; i < random.nextIntBetweenInclusive(3, 5); i++) {
                     level().addParticle(ParticleTypes.SCULK_SOUL,

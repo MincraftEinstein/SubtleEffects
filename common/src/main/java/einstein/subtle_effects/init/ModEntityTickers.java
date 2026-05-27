@@ -19,7 +19,7 @@ import net.minecraft.core.particles.PowerParticleOption;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ambient.Bat;
 import net.minecraft.world.entity.animal.feline.Cat;
@@ -61,9 +61,9 @@ public class ModEntityTickers {
         register(LOCAL_PLAYER.and(entity -> ENTITIES.humanoids.player.heartBeatingThreshold.get() > 0), HeartbeatTicker::new);
         register(entity -> isHumanoid(entity, !entity.level().dimension().equals(Level.NETHER)) && ENTITIES.humanoids.drowningBubblesDisplayType.get().isEnabled(), DrowningTicker::new);
         register(entity -> isHumanoid(entity, !entity.level().dimension().equals(Level.NETHER)) && ENTITIES.humanoids.frostyBreath.displayType.get().isEnabled(), FrostyBreathTicker::new);
-        register(entity -> entity.getType().equals(EntityType.SLIME) && ENTITIES.slimeTrails, (Slime entity) -> new SlimeTrailTicker<>(entity, ModParticles.SLIME_TRAIL));
-        register(entity -> entity.getType().equals(EntityType.MAGMA_CUBE) && ENTITIES.magmaCubeTrails, (MagmaCube entity) -> new SlimeTrailTicker<>(entity, ModParticles.MAGMA_CUBE_TRAIL));
-        register(entity -> entity.getType().equals(EntityType.IRON_GOLEM) && ENTITIES.ironGolemCrackParticles, IronGolemTicker::new);
+        register(entity -> entity.getType().equals(EntityTypes.SLIME) && ENTITIES.slimeTrails, (Slime entity) -> new SlimeTrailTicker<>(entity, ModParticles.SLIME_TRAIL));
+        register(entity -> entity.getType().equals(EntityTypes.MAGMA_CUBE) && ENTITIES.magmaCubeTrails, (MagmaCube entity) -> new SlimeTrailTicker<>(entity, ModParticles.MAGMA_CUBE_TRAIL));
+        register(entity -> entity.getType().equals(EntityTypes.IRON_GOLEM) && ENTITIES.ironGolemCrackParticles, IronGolemTicker::new);
         register(entity -> entity instanceof ItemEntity && ITEMS.itemRarity.particlesDisplayType.get() != ItemRarityConfigs.DisplayType.OFF, ItemRarityTicker::new);
         register(entity -> entity instanceof Witch && ENTITIES.humanoids.NPCsHavePotionRings.get() && ENTITIES.humanoids.potionRingsDisplayType.get().isEnabled(), WitchPotionRingTicker::new);
         register(entity -> isNPC(entity, true) && ENTITIES.humanoids.NPCsHavePotionRings.get() && ENTITIES.humanoids.potionRingsDisplayType.get().isEnabled(), (LivingEntity entity) -> new HumanoidPotionRingTicker<>(entity));
@@ -126,7 +126,7 @@ public class ModEntityTickers {
                 }
             }
         });
-        registerSimple(EntityType.SNOWBALL, false, () -> ITEMS.projectiles.snowballTrailDensity.get() > 0, (entity, level, random) -> {
+        registerSimple(EntityTypes.SNOWBALL, false, () -> ITEMS.projectiles.snowballTrailDensity.get() > 0, (entity, level, random) -> {
             if (shouldSpawn(random, ITEMS.projectiles.snowballTrailDensity)) {
                 Vec3 deltaMovement = entity.getDeltaMovement();
                 level.addParticle(ModParticles.SNOWBALL_TRAIL.get(),
@@ -139,7 +139,7 @@ public class ModEntityTickers {
                 );
             }
         });
-        registerSimple(EntityType.ENDER_PEARL, false, () -> ITEMS.projectiles.enderPearlTrailDensity.get() > 0, (entity, level, random) -> {
+        registerSimple(EntityTypes.ENDER_PEARL, false, () -> ITEMS.projectiles.enderPearlTrailDensity.get() > 0, (entity, level, random) -> {
             for (int i = 0; i < 20; i++) {
                 if (random.nextDouble() < ITEMS.projectiles.enderPearlTrailDensity.get()) {
                     level.addParticle(ParticleTypes.PORTAL,
@@ -151,7 +151,7 @@ public class ModEntityTickers {
                 }
             }
         });
-        registerSimple(EntityType.ALLAY, true, () -> ENTITIES.allayMagicDensity.get() > 0, (entity, level, random) -> {
+        registerSimple(EntityTypes.ALLAY, true, () -> ENTITIES.allayMagicDensity.get() > 0, (entity, level, random) -> {
             if (shouldSpawn(random, ENTITIES.allayMagicDensity)) {
                 level.addParticle(ModParticles.ALLAY_MAGIC.get(),
                         entity.getRandomX(1),
@@ -163,7 +163,7 @@ public class ModEntityTickers {
                 );
             }
         });
-        registerSimple(EntityType.VEX, true, () -> ENTITIES.vexMagicDensity.get() > 0, (entity, level, random) -> {
+        registerSimple(EntityTypes.VEX, true, () -> ENTITIES.vexMagicDensity.get() > 0, (entity, level, random) -> {
             if (shouldSpawn(random, ENTITIES.vexMagicDensity)) {
                 level.addParticle(new BooleanParticleOptions(ModParticles.VEX_MAGIC.get(), entity.isCharging()),
                         entity.getRandomX(1),
@@ -175,14 +175,14 @@ public class ModEntityTickers {
                 );
             }
         });
-        registerSimple(EntityType.CAMEL, true, () -> ENTITIES.dustClouds.mobRunning, (entity, level, random) -> {
+        registerSimple(EntityTypes.CAMEL, true, () -> ENTITIES.dustClouds.mobRunning, (entity, level, random) -> {
             if (entity.isDashing() && entity.onGround()) {
                 for (int i = 0; i < 10; i++) {
                     ParticleSpawnUtil.spawnCreatureMovementDustCloudsNoConfig(entity, level, random, 5);
                 }
             }
         });
-        registerSimple(EntityType.DRAGON_FIREBALL, false, () -> ENTITIES.improvedDragonFireballTrail, (entity, level, random) -> {
+        registerSimple(EntityTypes.DRAGON_FIREBALL, false, () -> ENTITIES.improvedDragonFireballTrail, (entity, level, random) -> {
             for (int i = 0; i < 10; i++) {
                 level.addParticle(PowerParticleOption.create(ParticleTypes.DRAGON_BREATH, 1f),
                         entity.getRandomX(2),
@@ -192,7 +192,7 @@ public class ModEntityTickers {
                 );
             }
         });
-        registerSimple(EntityType.COMMAND_BLOCK_MINECART, false, () -> ENTITIES.commandBlockMinecartParticles != CommandBlockSpawnType.OFF,
+        registerSimple(EntityTypes.COMMAND_BLOCK_MINECART, false, () -> ENTITIES.commandBlockMinecartParticles != CommandBlockSpawnType.OFF,
                 (entity, level, random) -> {
                     if (ENTITIES.commandBlockMinecartParticles.canTick()) {
                         if (random.nextInt(10) == 0) {
@@ -204,7 +204,7 @@ public class ModEntityTickers {
                         }
                     }
                 });
-        registerSimple(EntityType.TNT, false, () -> ENTITIES.explosives.tntSparks, (entity, level, random) ->
+        registerSimple(EntityTypes.TNT, false, () -> ENTITIES.explosives.tntSparks, (entity, level, random) ->
                 level.addParticle(SparkParticle.create(SparkType.SHORT_LIFE, random),
                         entity.getRandomX(0.5),
                         entity.getY(1),
@@ -213,7 +213,7 @@ public class ModEntityTickers {
                         nextNonAbsDouble(random, 0.01),
                         nextNonAbsDouble(random, 0.01)
                 ));
-        registerSimple(EntityType.TNT, false, () -> ENTITIES.explosives.tntFlamesDensity.get() > 0, (entity, level, random) -> {
+        registerSimple(EntityTypes.TNT, false, () -> ENTITIES.explosives.tntFlamesDensity.get() > 0, (entity, level, random) -> {
             if (random.nextInt(10) == 0) {
                 int density = ENTITIES.explosives.tntFlamesDensity.get();
                 if (density == 1) {
@@ -236,7 +236,7 @@ public class ModEntityTickers {
                 }
             }
         });
-        registerSimple(EntityType.END_CRYSTAL, false, () -> ENTITIES.endCrystalParticles, (entity, level, random) -> {
+        registerSimple(EntityTypes.END_CRYSTAL, false, () -> ENTITIES.endCrystalParticles, (entity, level, random) -> {
             if (level.getBlockState(entity.blockPosition()).getBlock() instanceof BaseFireBlock || random.nextInt(3) == 0) {
                 level.addParticle(ModParticles.END_CRYSTAL.get(),
                         entity.getRandomX(1),
@@ -246,7 +246,7 @@ public class ModEntityTickers {
                 );
             }
         });
-        registerSimple(EntityType.SPECTRAL_ARROW, false, () -> ENTITIES.spectralArrowParticles, (entity, level, random) -> {
+        registerSimple(EntityTypes.SPECTRAL_ARROW, false, () -> ENTITIES.spectralArrowParticles, (entity, level, random) -> {
             if (random.nextInt(3) == 0) {
                 level.addParticle(Util.GLOWSTONE_DUST_PARTICLES,
                         entity.getRandomX(1),
@@ -256,7 +256,7 @@ public class ModEntityTickers {
                 );
             }
         });
-        registerSimple(EntityType.CREEPER, true, () -> ENTITIES.explosives.creeperSparks, (entity, level, random) -> {
+        registerSimple(EntityTypes.CREEPER, true, () -> ENTITIES.explosives.creeperSparks, (entity, level, random) -> {
             if (entity.isIgnited()) {
                 for (int i = 0; i < 3; i++) {
                     level.addParticle(SparkParticle.create(SparkType.SHORT_LIFE, random),
@@ -270,7 +270,7 @@ public class ModEntityTickers {
                 }
             }
         });
-        registerSimple(EntityType.CREEPER, true, () -> ENTITIES.explosives.creeperSmoke.isEnabled(), (entity, level, random) -> {
+        registerSimple(EntityTypes.CREEPER, true, () -> ENTITIES.explosives.creeperSmoke.isEnabled(), (entity, level, random) -> {
             if (entity.isIgnited()) {
                 // noinspection ConstantConditions
                 level.addParticle(ENTITIES.explosives.creeperSmoke.getParticle().get(),
