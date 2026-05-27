@@ -503,14 +503,7 @@ public class ClientPacketHandlers {
     }
 
     private static boolean tryDoVanillaEffects(ClientLevel level, CopperGolem copperGolem, ClientBoundCopperGolemPayload.Action action, BlockPos pos, WeatheringCopper.WeatherState weatherState) {
-        int stateId = Block.getId((
-                switch (weatherState) {
-                    case UNAFFECTED -> Blocks.COPPER_BLOCK;
-                    case EXPOSED -> Blocks.EXPOSED_COPPER;
-                    case WEATHERED -> Blocks.WEATHERED_COPPER;
-                    case OXIDIZED -> Blocks.OXIDIZED_COPPER;
-                }).defaultBlockState()
-        );
+        int stateId = Block.getId(Blocks.COPPER_BLOCK.weathering().pick(weatherState).defaultBlockState());
 
         if (action == ClientBoundCopperGolemPayload.Action.SCRAPE && ITEMS.axeScrapeParticlesDisplayType.get() != ReplacedParticlesDisplayType.DEFAULT) {
             level.levelEvent(copperGolem, LevelEvent.PARTICLES_SCRAPE, pos, stateId);
@@ -525,12 +518,7 @@ public class ClientPacketHandlers {
 
     private static BlockState getStateForAction(ClientBoundCopperGolemPayload.Action action, WeatheringCopper.WeatherState weatherState) {
         if (action == ClientBoundCopperGolemPayload.Action.SCRAPE) {
-            return (switch (weatherState) {
-                case UNAFFECTED -> Blocks.COPPER_GOLEM_STATUE;
-                case EXPOSED -> Blocks.EXPOSED_COPPER_GOLEM_STATUE;
-                case WEATHERED -> Blocks.WEATHERED_COPPER_GOLEM_STATUE;
-                case OXIDIZED -> Blocks.OXIDIZED_COPPER_GOLEM_STATUE;
-            }).defaultBlockState();
+            return Blocks.COPPER_GOLEM_STATUE.weathering().pick(weatherState).defaultBlockState();
         }
         return Blocks.HONEY_BLOCK.defaultBlockState();
     }
