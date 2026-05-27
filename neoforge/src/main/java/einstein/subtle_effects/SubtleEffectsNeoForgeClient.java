@@ -73,9 +73,9 @@ public class SubtleEffectsNeoForgeClient {
         NeoForge.EVENT_BUS.addListener((RegisterClientCommandsEvent event) ->
                 SubtleEffectsClient.registerClientCommands(event.getDispatcher(), event.getBuildContext()));
         NeoForge.EVENT_BUS.addListener((ExtractLevelRenderStateEvent event) ->
-                ParticleBoundingBoxesRenderer.extractParticleBoundingBoxes(event.getRenderState(), event.getCamera(), event.getFrustum()));
+                ParticleBoundingBoxesRenderer.extractParticleBoundingBoxes(event.getRenderState(), event.getRenderState().cameraRenderState));
         NeoForge.EVENT_BUS.addListener((RenderLevelStageEvent.AfterTranslucentParticles event) ->
-                ParticleBoundingBoxesRenderer.renderParticleBoundingBoxes(event.getPoseStack(), event.getLevelRenderState()));
+                ParticleBoundingBoxesRenderer.renderParticleBoundingBoxes(event.getLevelRenderState()));
     }
 
     private static <T extends PreparableReloadListener & NamedReloadListener> void addReloadListener(AddClientReloadListenersEvent event, T listener) {

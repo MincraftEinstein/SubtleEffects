@@ -1,6 +1,5 @@
 package einstein.subtle_effects.client.renderer;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import einstein.subtle_effects.SubtleEffectsClient;
 import einstein.subtle_effects.init.ModRenderStateAttachmentKeys;
 import einstein.subtle_effects.mixin.client.particle.ParticleEngineAccessor;
@@ -8,10 +7,10 @@ import einstein.subtle_effects.util.ParticleAccessor;
 import einstein.subtle_effects.util.RenderStateAttachmentAccessor;
 import einstein.subtle_effects.util.SingleQuadParticleAccessor;
 import einstein.subtle_effects.util.Util;
-import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.SingleQuadParticle;
 import net.minecraft.client.renderer.culling.Frustum;
+import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.client.renderer.state.level.LevelRenderState;
 import net.minecraft.gizmos.GizmoStyle;
 import net.minecraft.gizmos.Gizmos;
@@ -40,13 +39,13 @@ public class ParticleBoundingBoxesRenderer {
         return color.hashCode();
     }
 
-    public static void extractParticleBoundingBoxes(LevelRenderState levelRenderState, Camera camera, Frustum frustum) {
+    public static void extractParticleBoundingBoxes(LevelRenderState levelRenderState, CameraRenderState camera) {
         if (SubtleEffectsClient.DISPLAY_PARTICLE_BOUNDING_BOXES) {
-            Vec3 cameraPos = camera.position();
+            Vec3 cameraPos = camera.pos;
             Minecraft minecraft = Minecraft.getInstance();
             List<ParticleBoundingBoxRenderState> renderStates = new ArrayList<>();
             float partialTicks = Util.getPartialTicks();
-            Frustum particleFrustum = frustum.offset(-3); // offset to match the frustum used by the particle engine
+            Frustum particleFrustum = camera.cullFrustum.offset(-3); // offset to match the frustum used by the particle engine
 
             ((ParticleEngineAccessor) minecraft.particleEngine).getParticles().forEach((renderType, particleGroup) -> {
                 if (particleGroup == null || particleGroup.isEmpty()) {
@@ -78,7 +77,7 @@ public class ParticleBoundingBoxesRenderer {
         }
     }
 
-    public static void renderParticleBoundingBoxes(PoseStack poseStack, LevelRenderState levelRenderState) {
+    public static void renderParticleBoundingBoxes(LevelRenderState levelRenderState) {
         if (SubtleEffectsClient.DISPLAY_PARTICLE_BOUNDING_BOXES) {
             List<ParticleBoundingBoxRenderState> renderStates = ((RenderStateAttachmentAccessor) levelRenderState).subtleEffects$get(ModRenderStateAttachmentKeys.PARTICLE_BOUNDING_BOXES);
             if (renderStates == null) return;

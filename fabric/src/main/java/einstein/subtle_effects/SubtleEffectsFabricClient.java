@@ -1,5 +1,6 @@
 package einstein.subtle_effects;
 
+import einstein.subtle_effects.client.renderer.ParticleBoundingBoxesRenderer;
 import einstein.subtle_effects.data.BCWPPackManager;
 import einstein.subtle_effects.data.NamedReloadListener;
 import net.fabricmc.api.ClientModInitializer;
@@ -7,6 +8,8 @@ import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallba
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.rendering.v1.LivingEntityRenderLayerRegistrationCallback;
 import net.fabricmc.fabric.api.client.rendering.v1.ModelLayerRegistry;
+import net.fabricmc.fabric.api.client.rendering.v1.level.LevelRenderContext;
+import net.fabricmc.fabric.api.client.rendering.v1.level.LevelRenderEvents;
 import net.fabricmc.fabric.api.resource.v1.ResourceLoader;
 import net.fabricmc.fabric.api.resource.v1.pack.PackActivationType;
 import net.fabricmc.loader.api.FabricLoader;
@@ -27,10 +30,16 @@ public class SubtleEffectsFabricClient implements ClientModInitializer {
         SubtleEffectsClient.registerModelLayers().forEach((modelLayerLocation, layerDefinitionSupplier) ->
                 ModelLayerRegistry.registerModelLayer(modelLayerLocation, layerDefinitionSupplier::get)
         );
-        LivingEntityRenderLayerRegistrationCallback.EVENT.register((type, renderer, registrationHelper, context) -> {
+        LivingEntityRenderLayerRegistrationCallback.EVENT.register((_, renderer, registrationHelper, context) -> {
             if (renderer instanceof AvatarRenderer<?> playerRenderer) {
                 SubtleEffectsClient.registerPlayerRenderLayers(playerRenderer, context).forEach(registrationHelper::register);
             }
+        });
+
+        LevelRenderEvents.BEFORE_GIZMOS.register((LevelRenderContext context)-> {
+            var levelState = context.levelState();
+            ParticleBoundingBoxesRenderer.extractParticleBoundingBoxes(levelState, levelState.cameraRenderState);
+            ParticleBoundingBoxesRenderer.renderParticleBoundingBoxes(levelState);
         });
     }
 
