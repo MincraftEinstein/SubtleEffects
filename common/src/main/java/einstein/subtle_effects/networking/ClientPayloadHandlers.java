@@ -1,5 +1,6 @@
 package einstein.subtle_effects.networking;
 
+import einstein.subtle_effects.configs.ModBlockConfigs;
 import einstein.subtle_effects.configs.ReplacedParticlesDisplayType;
 import einstein.subtle_effects.data.FluidDefinition;
 import einstein.subtle_effects.init.*;
@@ -434,6 +435,25 @@ public class ClientPayloadHandlers {
                     nextNonAbsDouble(random, 0.5),
                     nextNonAbsDouble(random, 0.5),
                     nextNonAbsDouble(random, 0.5)
+            );
+        }
+    }
+
+    public static void handle(Level level, ClientBoundItemEnchantedPayload payload) {
+        ModBlockConfigs.ItemEnchantedParticlesDisplayType type = BLOCKS.itemEnchantedParticlesDisplayType;
+        if (type == ModBlockConfigs.ItemEnchantedParticlesDisplayType.OFF) {
+            return;
+        }
+
+        BlockPos pos = payload.pos();
+        RandomSource random = level.getRandom();
+
+        for (int i = 0; i < 10; i++) {
+            level.addParticle(type.particle.get(),
+                    pos.getX() + 0.5 + nextNonAbsDouble(random, 0.3),
+                    pos.getY() + 1 + nextNonAbsDouble(random, 0.2),
+                    pos.getZ() + 0.5 + nextNonAbsDouble(random, 0.3),
+                    0, 0, 0
             );
         }
     }

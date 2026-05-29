@@ -31,6 +31,7 @@ public class ModPayloads {
         registerToClient(ClientBoundMobSpawnerSpawnPayload.TYPE, ClientBoundMobSpawnerSpawnPayload.STREAM_CODEC, ClientPayloadHandlers::handle);
         registerToClient(ClientBoundEntityDamagedPayload.TYPE, ClientBoundEntityDamagedPayload.STREAM_CODEC, ClientPayloadHandlers::handle);
         registerToClient(ClientBoundChargedCreeperExplosionPayload.TYPE, ClientBoundChargedCreeperExplosionPayload.STREAM_CODEC, ClientPayloadHandlers::handle);
+        registerToClient(ClientBoundItemEnchantedPayload.TYPE, ClientBoundItemEnchantedPayload.STREAM_CODEC, ClientPayloadHandlers::handle);
     }
 
     private static <T extends CustomPacketPayload> void registerToClient(CustomPacketPayload.Type<T> type, StreamCodec<RegistryFriendlyByteBuf, T> streamCodec, BiConsumer<Level, T> handler) {

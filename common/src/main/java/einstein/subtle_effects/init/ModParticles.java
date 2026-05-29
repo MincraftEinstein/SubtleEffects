@@ -91,6 +91,8 @@ public class ModParticles {
     public static final RegistrySupplier<SimpleParticleType> BOGGED_BONE = register("bogged_bone");
     public static final RegistrySupplier<SimpleParticleType> CHARGED_ELECTRICITY = register("charged_electricity");
     public static final RegistrySupplier<SimpleParticleType> ELECTRICITY = register("electricity");
+    public static final RegistrySupplier<SimpleParticleType> ENCHANT_MAGIC = register("enchant_magic");
+    public static final RegistrySupplier<SimpleParticleType> RISING_ENCHANT_GLYPHS = register("rising_enchant_glyphs");
 
     public static void init() {
         PARTICLE_TYPES.init();

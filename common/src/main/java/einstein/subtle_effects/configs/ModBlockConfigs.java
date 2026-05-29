@@ -44,6 +44,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiFunction;
+import java.util.function.Supplier;
 
 import static einstein.subtle_effects.init.ModConfigs.BASE_KEY;
 import static einstein.subtle_effects.init.ModConfigs.conditional;
@@ -171,8 +172,10 @@ public class ModBlockConfigs extends Config {
     public ConfigGroup magmaBlocks = new ConfigGroup("magma_blocks");
     public SmokeType magmaSmoke = SmokeType.UPDATED;
     public boolean magmaFrostWalkerSteam = true;
+    @ConfigGroup.Pop
     public boolean magmaFrostWalkerSounds = true;
     public boolean redstoneRailDustParticles = true;
+    public ItemEnchantedParticlesDisplayType itemEnchantedParticlesDisplayType = ItemEnchantedParticlesDisplayType.GLYPHS;
 
     private static ValidatedIdentifier getEyeHandler() {
         List<ResourceLocation> eyes = CompatHelper.IS_END_REMASTERED_LOADED.get()
@@ -268,6 +271,25 @@ public class ModBlockConfigs extends Config {
         @Override
         public @NotNull String prefix() {
             return BASE_KEY + "blocks.endPortalFrameParticlesDisplayType";
+        }
+    }
+
+    public enum ItemEnchantedParticlesDisplayType implements EnumTranslatable {
+        OFF(0, null),
+        GLYPHS(10, ModParticles.RISING_ENCHANT_GLYPHS),
+        MAGIC(5, ModParticles.ENCHANT_MAGIC);
+
+        public final int count;
+        public final Supplier<? extends ParticleOptions> particle;
+
+        ItemEnchantedParticlesDisplayType(int count, Supplier<? extends ParticleOptions> particle) {
+            this.count = count;
+            this.particle = particle;
+        }
+
+        @Override
+        public @NotNull String prefix() {
+            return BASE_KEY + "blocks.itemEnchantedParticlesDisplayType";
         }
     }
 }

@@ -92,6 +92,8 @@ public class ModParticleProviders {
         register(BOGGED_BONE, FeatherParticle.BoneProvider::new);
         register(CHARGED_ELECTRICITY, ElectricityParticle.Provider::new);
         register(ELECTRICITY, ElectricityParticle.Provider::new);
+        register(ENCHANT_MAGIC, EnchantMagicProvider::new);
+        register(RISING_ENCHANT_GLYPHS, RisingEnchantGlyphParticle.Provider::new);
     }
 
     private static <T extends ParticleType<V>, V extends ParticleOptions> void register(Supplier<T> particleType, ParticleEngine.SpriteParticleRegistration<V> provider) {

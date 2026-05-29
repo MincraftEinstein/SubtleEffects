@@ -15,6 +15,7 @@
     "client.particle.NeoForgeParticleEngineMixin"
   ],
   "mixins": [
+    "common.NeoForgeEnchantmentMenuMixin",
     "common.NeoForgeStonecutterMenu$2Mixin",
     "common.block.dispenser.NeoForgeShearsDispenseItemBehaviorMixin"
   ],
