@@ -24,11 +24,11 @@ public class RisingEnchantGlyphParticle extends TextureSheetParticle {
         quadSize = 0.1F * (random.nextFloat() * 0.5F + 0.2F);
         pickSprite(sprites);
 
-        if (GENERAL.translucentEnchantmentParticles) {
+        if (GENERAL.translucentEnchantmentGlyphParticles) {
             alpha = 0.5F;
         }
 
-        if (!GENERAL.disableRandomizedShading) {
+        if (!GENERAL.disableRandomizedEnchantmentGlyphShading) {
             float f = random.nextFloat() * 0.6F + 0.4F;
             rCol = 0.9F * f;
             gCol = 0.9F * f;
@@ -39,14 +39,14 @@ public class RisingEnchantGlyphParticle extends TextureSheetParticle {
     @Override
     public void render(VertexConsumer buffer, Camera renderInfo, float partialTicks) {
         super.render(buffer, renderInfo, partialTicks);
-        if (GENERAL.translucentEnchantmentParticles) {
+        if (GENERAL.translucentEnchantmentGlyphParticles) {
             alpha = lifetimeAlpha.currentAlphaForAge(age, lifetime, partialTicks);
         }
     }
 
     @Override
     public int getLightColor(float partialTick) {
-        if (GENERAL.glowingEnchantmentParticles) {
+        if (GENERAL.glowingEnchantmentGlyphParticles) {
             return PARTICLE_LIGHT_COLOR;
         }
 

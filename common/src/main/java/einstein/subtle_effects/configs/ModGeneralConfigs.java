@@ -63,11 +63,11 @@ public class ModGeneralConfigs extends Config {
     public boolean poppingHearts = true;
     public boolean poppingBubbles = true;
     public ValidatedFloat poppingBubblesVolume = new ValidatedFloat(0.2F, 1, 0);
-    public ConfigGroup enchantmentParticlesGroup = new ConfigGroup("enchant_particles");
-    public boolean glowingEnchantmentParticles = true;
-    public boolean translucentEnchantmentParticles = true;
+    public ConfigGroup enchantmentGlyphParticlesGroup = new ConfigGroup("enchantment_glyph_particles");
+    public boolean glowingEnchantmentGlyphParticles = true;
+    public boolean translucentEnchantmentGlyphParticles = true;
     @ConfigGroup.Pop
-    public boolean disableRandomizedShading = true;
+    public boolean disableRandomizedEnchantmentGlyphShading = true;
     public ValidatedFloat potionParticleAlpha = new ValidatedFloat(0.7F, 1, 0.3F);
     public ValidatedFloat potionParticleAlphaNearPlayer = new ValidatedFloat(0.2F, 1, 0);
     public ConfigGroup leavesGroup = new ConfigGroup("leaves");
