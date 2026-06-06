@@ -2,7 +2,7 @@ package einstein.subtle_effects.mixin.client;
 
 import com.llamalad7.mixinextras.sugar.Local;
 import com.mojang.blaze3d.vertex.PoseStack;
-import einstein.subtle_effects.client.renderer.DebugRenderers;
+import einstein.subtle_effects.client.renderer.ParticleBoundingBoxesRenderer;
 import net.minecraft.client.Camera;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.renderer.GameRenderer;
@@ -19,6 +19,6 @@ public class FabricLevelRendererMixin {
 
     @Inject(method = "renderLevel", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/particle/ParticleEngine;render(Lnet/minecraft/client/renderer/LightTexture;Lnet/minecraft/client/Camera;F)V", shift = At.Shift.AFTER))
     private void afterRenderParticles(DeltaTracker deltaTracker, boolean renderBlockOutline, Camera camera, GameRenderer gameRenderer, LightTexture lightTexture, Matrix4f frustumMatrix, Matrix4f projectionMatrix, CallbackInfo ci, @Local PoseStack poseStack) {
-        DebugRenderers.renderParticleBoundingBoxes(poseStack, camera);
+        ParticleBoundingBoxesRenderer.render(poseStack, camera);
     }
 }

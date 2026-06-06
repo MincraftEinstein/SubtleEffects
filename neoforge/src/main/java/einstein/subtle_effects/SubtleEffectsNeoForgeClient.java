@@ -1,6 +1,7 @@
 package einstein.subtle_effects;
 
-import einstein.subtle_effects.client.renderer.DebugRenderers;
+import einstein.subtle_effects.client.renderer.DebugScreenOverlayRenderer;
+import einstein.subtle_effects.client.renderer.ParticleBoundingBoxesRenderer;
 import einstein.subtle_effects.data.BCWPPackManager;
 import einstein.subtle_effects.platform.NeoForgeParticleHelper;
 import net.minecraft.client.Minecraft;
@@ -50,7 +51,7 @@ public class SubtleEffectsNeoForgeClient {
             }
         });
         modEventBus.addListener((RegisterGuiLayersEvent event) ->
-                event.registerBelowAll(SubtleEffects.loc("debug_overlay"), DebugRenderers::renderDebugScreenOverlay)
+                event.registerBelowAll(SubtleEffects.loc("debug_overlay"), DebugScreenOverlayRenderer::render)
         );
         NeoForge.EVENT_BUS.addListener((ClientTickEvent.Post event) -> {
             Minecraft minecraft = Minecraft.getInstance();
@@ -61,7 +62,7 @@ public class SubtleEffectsNeoForgeClient {
         );
         NeoForge.EVENT_BUS.addListener((RenderLevelStageEvent event) -> {
             if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_PARTICLES) {
-                DebugRenderers.renderParticleBoundingBoxes(event.getPoseStack(), event.getCamera());
+                ParticleBoundingBoxesRenderer.render(event.getPoseStack(), event.getCamera());
             }
         });
     }
