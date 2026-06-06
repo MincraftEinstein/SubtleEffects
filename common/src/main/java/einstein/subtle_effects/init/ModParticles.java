@@ -49,7 +49,7 @@ public class ModParticles {
     public static final RegistrySupplier<SimpleParticleType> COMPOST = register("compost");
     public static final RegistrySupplier<SimpleParticleType> STEAM = register("steam");
     public static final RegistrySupplier<SimpleParticleType> END_PORTAL = register("end_portal");
-    public static final RegistrySupplier<SimpleParticleType> END_CRYSTAL = register("end_crystal");
+    public static final RegistrySupplier<SimpleParticleType> END_CRYSTAL_MAGIC = register("end_crystal_magic");
     public static final RegistrySupplier<SimpleParticleType> SCULK_DUST = register("sculk_dust");
     public static final RegistrySupplier<ParticleType<FloatParticleOptions>> SLIME_TRAIL = register("slime_trail", FloatParticleOptions::codec, FloatParticleOptions::streamCodec);
     public static final RegistrySupplier<ParticleType<FloatParticleOptions>> MAGMA_CUBE_TRAIL = register("magma_cube_trail", FloatParticleOptions::codec, FloatParticleOptions::streamCodec);

@@ -249,14 +249,16 @@ public class ModEntityTickers {
                 }
             }
         });
-        registerSimple(EntityType.END_CRYSTAL, false, () -> ENTITIES.endCrystalParticles, (entity, level, random) -> {
-            if (level.getBlockState(entity.blockPosition()).getBlock() instanceof BaseFireBlock || random.nextInt(3) == 0) {
-                level.addParticle(ModParticles.END_CRYSTAL.get(),
-                        entity.getRandomX(1),
-                        entity.getRandomY() + nextNonAbsDouble(random),
-                        entity.getRandomZ(1),
-                        0, 0, 0
-                );
+        registerSimple(EntityType.END_CRYSTAL, false, () -> ENTITIES.endCrystalMagicDensity.get() > 0, (entity, level, random) -> {
+            if (shouldSpawn(random, ENTITIES.endCrystalMagicDensity)) {
+                if (!ENTITIES.endCrystalMagicNeedsFire.get() || level.getBlockState(entity.blockPosition()).getBlock() instanceof BaseFireBlock) {
+                    level.addParticle(ModParticles.END_CRYSTAL_MAGIC.get(),
+                            entity.blockPosition().getX() + 0.5,
+                            entity.getRandomY() + nextNonAbsDouble(random) - 0.2,
+                            entity.blockPosition().getZ() + 0.5,
+                            0, 0, 0
+                    );
+                }
             }
         });
         registerSimple(EntityType.SPECTRAL_ARROW, false, () -> ENTITIES.spectralArrowParticles, (entity, level, random) -> {

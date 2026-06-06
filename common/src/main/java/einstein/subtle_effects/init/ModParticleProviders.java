@@ -50,7 +50,7 @@ public class ModParticleProviders {
         register(COMPOST, CustomTerrainParticle.CompostProvider::new);
         register(STEAM, SteamParticle.Provider::new);
         register(END_PORTAL, EndPortalParticle.Provider::new);
-        register(END_CRYSTAL, EndCrystalParticle.Provider::new);
+        register(END_CRYSTAL_MAGIC, EndCrystalMagicParticle.Provider::new);
         register(SCULK_DUST, SculkDustParticle.Provider::new);
         register(SLIME_TRAIL, SlimeTrailParticle.Provider::new);
         register(MAGMA_CUBE_TRAIL, SlimeTrailParticle.Provider::new);
