@@ -56,20 +56,38 @@ public class DebugRenderers {
 
                 Vector3f renderTypeColor = Vec3.fromRGB24(FastColor.ARGB32.color(255, renderType.toString().hashCode())).toVector3f();
                 particles.forEach(particle -> {
-                    AABB aabb = particle.getBoundingBox();
-                    if (frustum.isVisible(aabb)) {
+                    AABB collisionAABB = particle.getBoundingBox();
+                    if (frustum.isVisible(collisionAABB)) {
+                        poseStack.pushPose();
+
+                        // Collision/Culling Box
+                        poseStack.pushPose();
+                        double bbX = (collisionAABB.minX + collisionAABB.maxX) / 2;
+                        double bbY = (collisionAABB.minY + collisionAABB.maxY) / 2;
+                        double bbZ = (collisionAABB.minZ + collisionAABB.maxZ) / 2;
+                        poseStack.translate(bbX - cameraPos.x(), bbY - cameraPos.y(), bbZ - cameraPos.z());
+
+                        collisionAABB = collisionAABB.move(-bbX, -bbY, -bbZ);
+                        LevelRenderer.renderLineBox(poseStack, consumer, collisionAABB, 1, 1, 1, 1);
+
+                        // Render Type Box
+                        AABB renderTypeAABB = new AABB(collisionAABB.minX, collisionAABB.maxY - 0.02, collisionAABB.minZ, collisionAABB.maxX, collisionAABB.maxY + 0.02, collisionAABB.maxZ);
+                        LevelRenderer.renderLineBox(poseStack, consumer, renderTypeAABB, renderTypeColor.x(), renderTypeColor.y(), renderTypeColor.z(), 1);
+
+                        poseStack.popPose();
+
+                        // Actual Position Box
                         poseStack.pushPose();
                         ParticleAccessor accessor = (ParticleAccessor) particle;
                         double x = Mth.lerp(partialTicks, accessor.getOldX(), accessor.getX()) - cameraPos.x();
                         double y = Mth.lerp(partialTicks, accessor.getOldY(), accessor.getY()) - cameraPos.y();
                         double z = Mth.lerp(partialTicks, accessor.getOldZ(), accessor.getZ()) - cameraPos.z();
+                        AABB posAABB = new AABB(-0.05, -0.05, -0.05, 0.05, 0.05, 0.05);
+                        posAABB = posAABB.intersect(collisionAABB);
+
                         poseStack.translate(x, y, z);
-
-                        aabb = aabb.move(-accessor.getX(), -accessor.getY(), -accessor.getZ());
-                        LevelRenderer.renderLineBox(poseStack, consumer, aabb, 1, 1, 1, 1);
-
-                        AABB renderTypeAABB = new AABB(aabb.minX, aabb.maxY - 0.02, aabb.minZ, aabb.maxX, aabb.maxY + 0.02, aabb.maxZ);
-                        LevelRenderer.renderLineBox(poseStack, consumer, renderTypeAABB, renderTypeColor.x(), renderTypeColor.y(), renderTypeColor.z(), 1);
+                        LevelRenderer.renderLineBox(poseStack, consumer, posAABB, 0, 0, 1, 1);
+                        poseStack.popPose();
 
                         poseStack.popPose();
                     }
