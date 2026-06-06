@@ -160,7 +160,7 @@ public class SubtleEffectsClient {
                 .executes(context -> toggleParticleBoundingBoxes(player, BoolArgumentType.getBool(context, "enabled")));
 
         LiteralArgumentBuilder<T> particlesBoundingBoxes = LiteralArgumentBuilder.<T>literal("display_bounding_boxes")
-                .executes(context -> toggleParticleBoundingBoxes(player, true))
+                .executes(context -> toggleParticleBoundingBoxes(player, !DISPLAY_PARTICLE_BOUNDING_BOXES))
                 .then(particlesBoundingBoxesEnabled);
 
         LiteralArgumentBuilder<T> particles = LiteralArgumentBuilder.<T>literal("particles")
