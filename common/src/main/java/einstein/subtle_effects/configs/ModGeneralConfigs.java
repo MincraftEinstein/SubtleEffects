@@ -6,6 +6,7 @@ import einstein.subtle_effects.compat.CompatHelper;
 import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.util.Util;
 import me.fzzyhmstrs.fzzy_config.annotations.Translation;
+import me.fzzyhmstrs.fzzy_config.annotations.Version;
 import me.fzzyhmstrs.fzzy_config.config.Config;
 import me.fzzyhmstrs.fzzy_config.config.ConfigGroup;
 import me.fzzyhmstrs.fzzy_config.validation.minecraft.ValidatedRegistryType;
@@ -25,10 +26,18 @@ import java.util.List;
 
 import static einstein.subtle_effects.init.ModConfigs.conditional;
 
+@Version(version = 1)
 @Translation(prefix = ModConfigs.BASE_KEY + "general")
 public class ModGeneralConfigs extends Config {
 
     private static final List<ParticleType<?>> DEFAULT_CULLING_BLOCKLIST = net.minecraft.Util.make(new ArrayList<>(), list -> {
+        list.add(ParticleTypes.PORTAL);
+        list.add(ParticleTypes.REVERSE_PORTAL);
+        list.add(ParticleTypes.VAULT_CONNECTION);
+        list.add(ParticleTypes.ENCHANT);
+        list.add(ParticleTypes.NAUTILUS);
+        list.add(ParticleTypes.OMINOUS_SPAWNING);
+
         if (CompatHelper.IS_PARTICLE_RAIN_LOADED.get()) {
             ParticleType<?> mistType = BuiltInRegistries.PARTICLE_TYPE.get(ResourceLocation.fromNamespaceAndPath(CompatHelper.PARTICLE_RAIN_MOD_ID, "mist"));
 
@@ -111,6 +120,16 @@ public class ModGeneralConfigs extends Config {
             if (player != null) {
                 Util.applyHelmetShader(player.getInventory().getArmor(3), minecraft.options.getCameraType());
             }
+        }
+    }
+
+    @Override
+    public void update(int deserializedVersion) {
+        if (deserializedVersion == 0) {
+            List<ParticleType<?>> list = new ArrayList<>();
+            list.addAll(particleCullingBlocklist.get());
+            list.addAll(DEFAULT_CULLING_BLOCKLIST);
+            particleCullingBlocklist.accept(list);
         }
     }
 }
