@@ -28,9 +28,11 @@ public class ModEntityConfigs extends Config {
     public SplashConfigs splashes = new SplashConfigs();
     public DamageTakenConfigs damageTaken = new DamageTakenConfigs();
 
+    public ConfigGroup fairiesGroup =  new ConfigGroup("fairies");
     public ValidatedDouble allayMagicDensity = new ValidatedDouble(0.2, 1, 0);
     public ValidatedDouble vexMagicDensity = new ValidatedDouble(0.2, 1, 0);
     public boolean allayTwinklingSounds = true;
+    @ConfigGroup.Pop
     public boolean allayDuplicatedSounds = true;
     public boolean sheepShearFluff = true;
     public boolean improvedDragonFireballTrail = true;
