@@ -7,6 +7,7 @@ import einstein.subtle_effects.init.ModAnimalFedEffectSettings;
 import einstein.subtle_effects.init.ModConfigs;
 import me.fzzyhmstrs.fzzy_config.annotations.Translation;
 import me.fzzyhmstrs.fzzy_config.config.Config;
+import me.fzzyhmstrs.fzzy_config.config.ConfigGroup;
 import me.fzzyhmstrs.fzzy_config.util.EnumTranslatable;
 import me.fzzyhmstrs.fzzy_config.validation.misc.ValidatedBoolean;
 import me.fzzyhmstrs.fzzy_config.validation.misc.ValidatedCondition;
@@ -35,8 +36,11 @@ public class ModEntityConfigs extends Config {
     public boolean improvedDragonFireballTrail = true;
     public boolean dragonsBreathClouds = true;
     public CommandBlockSpawnType commandBlockMinecartParticles = CommandBlockSpawnType.ON;
+    public ConfigGroup endCrystalsGroup = new ConfigGroup("end_crystals");
     public ValidatedDouble endCrystalMagicDensity = new ValidatedDouble(1, 1, 0);
     public ValidatedCondition<Boolean> endCrystalMagicNeedsFire = ModConfigs.conditional(new ValidatedBoolean(false), () -> endCrystalMagicDensity.get() > 0, endCrystalMagicDensity);
+    @ConfigGroup.Pop
+    public boolean endCrystalsDisableFireEffects = true;
     public ValidatedEnum<MinecartSparksDisplayType> minecartSparksDisplayType = new ValidatedEnum<>(MinecartSparksDisplayType.DEFAULT);
     public ValidatedCondition<Float> minecartSparksDensity = ModConfigs.conditional(new ValidatedFloat(0.5F, 1, 0), minecartSparksDisplayType, MinecartSparksDisplayType.OFF);
     public boolean slimeTrails = true;
