@@ -40,6 +40,7 @@ public class ModEnvironmentConfigs extends Config {
             restoreDefault(biomes.mushroomSporeDensity);
             restoreDefault(biomes.pollenDensity);
             restoreDefault(biomes.sculkDustDensity);
+            restoreDefault(fireflies.onlyAllowInHabitatBiomes);
         }
     }
 }
