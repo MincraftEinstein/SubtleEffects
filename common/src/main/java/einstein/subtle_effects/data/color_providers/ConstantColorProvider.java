@@ -3,7 +3,10 @@ package einstein.subtle_effects.data.color_providers;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import einstein.subtle_effects.util.Util;
+import io.netty.buffer.ByteBuf;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
@@ -14,6 +17,11 @@ public record ConstantColorProvider(int color) implements ColorProviderType.Colo
     public static final MapCodec<ConstantColorProvider> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
             Util.RGB_COLOR_CODEC.fieldOf("color").forGetter(ConstantColorProvider::color)
     ).apply(instance, ConstantColorProvider::new));
+
+    public static final StreamCodec<ByteBuf, ConstantColorProvider> STREAM_CODEC = StreamCodec.composite(
+            ByteBufCodecs.INT, ConstantColorProvider::color,
+            ConstantColorProvider::new
+    );
 
     @Override
     public ColorProviderType<?> getType() {

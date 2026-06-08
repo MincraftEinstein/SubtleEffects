@@ -1,5 +1,6 @@
 package einstein.subtle_effects;
 
+import einstein.subtle_effects.data.color_providers.ColorProviderType;
 import einstein.subtle_effects.init.ModParticles;
 import einstein.subtle_effects.init.ModPayloads;
 import einstein.subtle_effects.init.ModSounds;
@@ -17,6 +18,7 @@ public class SubtleEffects {
         ModSounds.init();
         ModPayloads.init();
         ModParticles.init();
+        ColorProviderType.init();
     }
 
     public static ResourceLocation loc(String path) {

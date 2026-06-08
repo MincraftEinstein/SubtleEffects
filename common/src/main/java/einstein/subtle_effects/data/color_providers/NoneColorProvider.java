@@ -1,7 +1,9 @@
 package einstein.subtle_effects.data.color_providers;
 
 import com.mojang.serialization.MapCodec;
+import io.netty.buffer.ByteBuf;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
 import org.joml.Vector3f;
@@ -10,6 +12,10 @@ public class NoneColorProvider implements ColorProviderType.ColorProvider {
 
     public static final NoneColorProvider INSTANCE = new NoneColorProvider();
     public static final MapCodec<NoneColorProvider> CODEC = MapCodec.unit(INSTANCE);
+    public static final StreamCodec<ByteBuf, NoneColorProvider> STREAM_CODEC = StreamCodec.unit(INSTANCE);
+
+    private NoneColorProvider() {
+    }
 
     @Override
     public ColorProviderType<?> getType() {

@@ -4,13 +4,18 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import einstein.subtle_effects.particle.SparkParticle;
+import io.netty.buffer.ByteBuf;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.util.ByIdMap;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.level.Level;
 import org.joml.Vector3f;
 
 import java.util.List;
+import java.util.function.IntFunction;
 
 import static einstein.subtle_effects.data.color_providers.ListColorProvider.fromIntList;
 
@@ -19,6 +24,11 @@ public record PresetColorProvider(Preset preset) implements ColorProviderType.Co
     public static final MapCodec<PresetColorProvider> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
             Preset.CODEC.fieldOf("preset").forGetter(PresetColorProvider::preset)
     ).apply(instance, PresetColorProvider::new));
+
+    public static final StreamCodec<ByteBuf, PresetColorProvider> STREAM_CODEC = StreamCodec.composite(
+            Preset.STREAM_CODEC, PresetColorProvider::preset,
+            PresetColorProvider::new
+    );
 
     @Override
     public ColorProviderType<?> getType() {
@@ -39,7 +49,9 @@ public record PresetColorProvider(Preset preset) implements ColorProviderType.Co
         LAVA_DROPLET("lava_droplet", fromIntList(List.of(0xEEBA4E, 0xE48F30, 0xD96415))),
         LAVA_RIPPLE("lava_ripple", new ConstantColorProvider(0xDE7A22));
 
+        public static final IntFunction<Preset> BY_ID = ByIdMap.continuous(Preset::ordinal, values(), ByIdMap.OutOfBoundsStrategy.ZERO);
         public static final Codec<Preset> CODEC = StringRepresentable.fromValues(Preset::values);
+        public static final StreamCodec<ByteBuf, Preset> STREAM_CODEC = ByteBufCodecs.idMapper(BY_ID, Preset::ordinal);
 
         private final String name;
         private final ColorProviderType.ColorProvider color;
