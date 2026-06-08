@@ -5,11 +5,11 @@ import einstein.subtle_effects.data.SparkProviderReloadListener;
 import einstein.subtle_effects.data.color_providers.ColorProviderType;
 import einstein.subtle_effects.data.color_providers.PresetColorProvider;
 import einstein.subtle_effects.particle.SparkParticle;
+import einstein.subtle_effects.particle.option.ColorProviderParticleOptions;
 import einstein.subtle_effects.util.Box;
 import einstein.subtle_effects.util.SparkType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.particles.ColorParticleOption;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.valueproviders.ConstantInt;
@@ -90,7 +90,7 @@ public class SparkProviderManager {
                         for (int i = 0; i < BLOCKS.sparks.lanternSparksDensity.get(); i++) {
                             int xSign = nextSign(random);
                             int zSign = nextSign(random);
-                            level.addParticle(SparkParticle.create(SparkType.FLOATING, colorProvider, level, pos, random),
+                            level.addParticle(SparkParticle.create(SparkType.FLOATING, colorProvider),
                                     pos.getX() + 0.5 + (nextDouble(random, 0.5) * xSign),
                                     pos.getY() + random.nextInt(5) / 10D,
                                     pos.getZ() + 0.5 + (nextDouble(random, 0.5) * zSign),
@@ -131,7 +131,7 @@ public class SparkProviderManager {
                         Direction.Axis axis = direction.getAxis();
 
                         for (int i = 0; i < 3; i++) {
-                            level.addParticle(SparkParticle.create(SparkType.SHORT_LIFE, colorProvider, level, pos, random),
+                            level.addParticle(SparkParticle.create(SparkType.SHORT_LIFE, colorProvider),
                                     pos.getX() + 0.5 + (0.6 * direction.getStepX()) + random.nextDouble()
                                             / (axis == Direction.Axis.X ? 10 : 3) * nextSign(random),
                                     pos.getY() + (random.nextDouble() * 6 / 16),
@@ -163,7 +163,7 @@ public class SparkProviderManager {
         if (random.nextBoolean()) {
             Vec3 start = box.min();
             Vec3 end = box.max();
-            ColorParticleOption options = SparkParticle.create(sparkType, colorProvider, level, pos, random);
+            ColorProviderParticleOptions options = SparkParticle.create(sparkType, colorProvider);
 
             for (int i = 0; i < count; i++) {
                 level.addParticle(options,
@@ -179,7 +179,7 @@ public class SparkProviderManager {
     }
 
     private static void spawnFireSparks(Level level, RandomSource random, BlockPos pos, ColorProviderType.ColorProvider colorProvider, double xOffset, double zOffset) {
-        ColorParticleOption options = SparkParticle.create(SparkType.LONG_LIFE, colorProvider, level, pos, random);
+        ColorProviderParticleOptions options = SparkParticle.create(SparkType.LONG_LIFE, colorProvider);
 
         for (int i = 0; i < 5; i++) {
             level.addParticle(options,

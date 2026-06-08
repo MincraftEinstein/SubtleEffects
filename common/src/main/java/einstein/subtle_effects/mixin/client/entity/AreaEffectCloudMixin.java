@@ -5,6 +5,7 @@ import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import einstein.subtle_effects.compat.CompatHelper;
 import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.init.ModParticles;
+import einstein.subtle_effects.particle.option.ColorProviderParticleOptions;
 import net.minecraft.core.particles.ColorParticleOption;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
@@ -142,7 +143,7 @@ public abstract class AreaEffectCloudMixin {
                 }
 
                 level.addAlwaysVisibleParticle(
-                        ColorParticleOption.create(ModParticles.POTION_CLOUD.get(), red, green, blue),
+                        new ColorProviderParticleOptions(ModParticles.POTION_CLOUD.get(), red, green, blue),
                         x, subtleEffects$me.getY() + (random.nextDouble() / 10), z, 0, 0, 0
                 );
             }

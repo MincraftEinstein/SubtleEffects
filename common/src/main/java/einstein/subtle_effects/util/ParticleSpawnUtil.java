@@ -2,6 +2,7 @@ package einstein.subtle_effects.util;
 
 import einstein.subtle_effects.configs.ModBlockConfigs;
 import einstein.subtle_effects.data.FluidDefinition;
+import einstein.subtle_effects.data.color_providers.ConstantColorProvider;
 import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.init.ModParticles;
 import einstein.subtle_effects.mixin.client.item.BucketItemAccessor;
@@ -10,7 +11,8 @@ import einstein.subtle_effects.networking.clientbound.ClientBoundEntityFellPaylo
 import einstein.subtle_effects.particle.EnderEyePlacedRingParticle;
 import einstein.subtle_effects.particle.SparkParticle;
 import einstein.subtle_effects.particle.emitter.SplashEmitter;
-import einstein.subtle_effects.particle.option.ColorAndIntegerParticleOptions;
+import einstein.subtle_effects.particle.option.PotionRingParticleOptions;
+import einstein.subtle_effects.particle.option.ColorProviderParticleOptions;
 import einstein.subtle_effects.particle.option.DirectionParticleOptions;
 import einstein.subtle_effects.particle.option.SheepFluffParticleOptions;
 import einstein.subtle_effects.ticking.tickers.TickerManager;
@@ -18,7 +20,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.component.DataComponents;
-import net.minecraft.core.particles.ColorParticleOption;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
@@ -269,14 +270,14 @@ public class ParticleSpawnUtil {
 
     public static void spawnEnderEyePlacementParticles(BlockPos pos, RandomSource random, Level level, int color) {
         if (BLOCKS.enderEyePlacedRings.get()) {
-            level.addParticle(ColorParticleOption.create(ModParticles.ENDER_EYE_PLACED_RING.get(), color),
+            level.addParticle(new ColorProviderParticleOptions(ModParticles.ENDER_EYE_PLACED_RING.get(), color),
                     pos.getX() + 0.5, pos.getY() + 0.8125 + EnderEyePlacedRingParticle.SIZE, pos.getZ() + 0.5,
                     0, 0, 0
             );
         }
 
         if (BLOCKS.enderEyePlacedParticlesDisplayType.get() != ModBlockConfigs.EnderEyePlacedParticlesDisplayType.VANILLA) {
-            spawnEndPortalParticles(level, pos, random, ColorParticleOption.create(ModParticles.SHORT_SPARK.get(), color), 16);
+            spawnEndPortalParticles(level, pos, random, new ColorProviderParticleOptions(ModParticles.SHORT_SPARK.get(), color), 16);
         }
     }
 
@@ -583,7 +584,7 @@ public class ParticleSpawnUtil {
             // noinspection all
             if (contents.hasEffects()) {
                 int color = contents.getColor();
-                level.addParticle(new ColorAndIntegerParticleOptions(ModParticles.POTION_EMITTER.get(), color, entity.getId()),
+                level.addParticle(new PotionRingParticleOptions(ModParticles.POTION_EMITTER.get(), new ConstantColorProvider(color), entity.getId()),
                         entity.getX(),
                         entity.getY(),
                         entity.getZ(),

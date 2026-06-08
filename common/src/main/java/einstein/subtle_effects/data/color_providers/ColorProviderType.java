@@ -61,5 +61,9 @@ public record ColorProviderType<T extends ColorProviderType.ColorProvider>(Resou
         ColorProviderType<?> getType();
 
         Vector3f provideColor(Level level, BlockPos pos, RandomSource random);
+
+        default Vector3f provideColor(Level level, double x, double y, double z, RandomSource random) {
+            return provideColor(level, BlockPos.containing(x, y, z), random);
+        }
     }
 }

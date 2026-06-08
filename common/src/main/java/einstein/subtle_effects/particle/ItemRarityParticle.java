@@ -1,9 +1,11 @@
 package einstein.subtle_effects.particle;
 
-import einstein.subtle_effects.particle.option.IntegerParticleOptions;
+import einstein.subtle_effects.particle.option.ColorProviderParticleOptions;
 import einstein.subtle_effects.util.Util;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
+import org.jetbrains.annotations.UnknownNullability;
+import org.joml.Vector3f;
 
 import static einstein.subtle_effects.init.ModConfigs.ITEMS;
 
@@ -11,12 +13,10 @@ public class ItemRarityParticle extends TextureSheetParticle {
 
     private final double maxY;
 
-    protected ItemRarityParticle(ClientLevel level, SpriteSet sprites, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, int color) {
+    protected ItemRarityParticle(ClientLevel level, SpriteSet sprites, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, ColorProviderParticleOptions options) {
         super(level, x, y, z, xSpeed, ySpeed, zSpeed);
-        color = (((color >> 24) & 255) != 0 ? color : 0xFF000000 | color);
-        rCol = ((color >> 16) & 255) / 255F;
-        gCol = ((color >> 8) & 255) / 255F;
-        bCol = (color & 255) / 255F;
+        Vector3f color = options.provider().provideColor(level, x, y, z, random);
+        setColor(color.x(), color.y(), color.z());
         pickSprite(sprites);
         maxY = y + ITEMS.itemRarity.particleMaxHeight.get();
         gravity = -0.1F;
@@ -48,11 +48,11 @@ public class ItemRarityParticle extends TextureSheetParticle {
         return Util.PARTICLE_LIGHT_COLOR;
     }
 
-    public record Provider(SpriteSet sprites) implements ParticleProvider<IntegerParticleOptions> {
+    public record Provider(SpriteSet sprites) implements ParticleProvider<ColorProviderParticleOptions> {
 
         @Override
-        public Particle createParticle(IntegerParticleOptions options, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
-            return new ItemRarityParticle(level, sprites, x, y, z, xSpeed, ySpeed, zSpeed, options.integer());
+        public Particle createParticle(ColorProviderParticleOptions options, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+            return new ItemRarityParticle(level, sprites, x, y, z, xSpeed, ySpeed, zSpeed, options);
         }
     }
 }

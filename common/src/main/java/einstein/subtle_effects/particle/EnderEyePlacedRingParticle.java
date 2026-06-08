@@ -3,16 +3,17 @@ package einstein.subtle_effects.particle;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.init.ModParticleRenderTypes;
+import einstein.subtle_effects.particle.option.ColorProviderParticleOptions;
 import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.client.particle.ParticleRenderType;
 import net.minecraft.client.particle.SpriteSet;
-import net.minecraft.core.particles.ColorParticleOption;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
 import org.joml.Quaternionf;
+import org.joml.Vector3f;
 
 public class EnderEyePlacedRingParticle extends FlatPlaneParticle {
 
@@ -20,12 +21,15 @@ public class EnderEyePlacedRingParticle extends FlatPlaneParticle {
     public static final float SIZE = 0.2501F;
     private final LifetimeAlpha lifetimeAlpha = new LifetimeAlpha(1, 0, 0, 1);
 
-    protected EnderEyePlacedRingParticle(ClientLevel level, double x, double y, double z) {
+    protected EnderEyePlacedRingParticle(ClientLevel level, double x, double y, double z, ColorProviderParticleOptions options) {
         super(level, x, y, z);
         lifetime = ModConfigs.BLOCKS.enderEyePlacedRingsDuration.get();
         quadSize = SIZE;
         setSize(SIZE, SIZE);
         alpha = lifetimeAlpha.startAlpha();
+
+        Vector3f color = options.provider().provideColor(level, x, y, z, random);
+        setColor(color.x(), color.y(), color.z());
     }
 
     @Override
@@ -57,13 +61,12 @@ public class EnderEyePlacedRingParticle extends FlatPlaneParticle {
         return ModParticleRenderTypes.getBlendedOrTransparent();
     }
 
-    public record Provider(SpriteSet sprites) implements ParticleProvider<ColorParticleOption> {
+    public record Provider(SpriteSet sprites) implements ParticleProvider<ColorProviderParticleOptions> {
 
         @Override
-        public Particle createParticle(ColorParticleOption options, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
-            EnderEyePlacedRingParticle particle = new EnderEyePlacedRingParticle(level, x, y, z);
+        public Particle createParticle(ColorProviderParticleOptions options, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+            EnderEyePlacedRingParticle particle = new EnderEyePlacedRingParticle(level, x, y, z, options);
             particle.pickSprite(sprites);
-            particle.setColor(options.getRed(), options.getGreen(), options.getBlue());
             return particle;
         }
     }

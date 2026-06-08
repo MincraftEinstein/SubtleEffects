@@ -2,14 +2,15 @@ package einstein.subtle_effects.particle;
 
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import einstein.subtle_effects.init.ModParticleRenderTypes;
+import einstein.subtle_effects.particle.option.ColorProviderParticleOptions;
 import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.client.particle.ParticleRenderType;
 import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.client.particle.TextureSheetParticle;
-import net.minecraft.core.particles.ColorParticleOption;
 import net.minecraft.util.Mth;
+import org.joml.Vector3f;
 
 import static einstein.subtle_effects.util.MathUtil.nextNonAbsDouble;
 
@@ -17,7 +18,7 @@ public class PotionCloudParticle extends FlatPlaneParticle {
 
     private final LifetimeAlpha lifetimeAlpha = new LifetimeAlpha(0.5F, 0, 0.5F, 1);
 
-    protected PotionCloudParticle(ClientLevel level, double x, double y, double z, SpriteSet sprites, ColorParticleOption option) {
+    protected PotionCloudParticle(ClientLevel level, double x, double y, double z, SpriteSet sprites, ColorProviderParticleOptions options) {
         super(level, x, y, z);
         xd = nextNonAbsDouble(random, 0, 0.03);
         zd = nextNonAbsDouble(random, 0, 0.03);
@@ -26,8 +27,10 @@ public class PotionCloudParticle extends FlatPlaneParticle {
         alpha = lifetimeAlpha.startAlpha();
         quadSize = 1;
         setSize(2, 0.1F);
-        setColor(option.getRed(), option.getGreen(), option.getBlue());
         pickSprite(sprites);
+
+        Vector3f color = options.provider().provideColor(level, x, y, z, random);
+        setColor(color.x(), color.y(), color.z());
     }
 
     @Override
@@ -41,11 +44,11 @@ public class PotionCloudParticle extends FlatPlaneParticle {
         return ModParticleRenderTypes.getBlendedOrTransparent();
     }
 
-    public record Provider(SpriteSet sprites) implements ParticleProvider<ColorParticleOption> {
+    public record Provider(SpriteSet sprites) implements ParticleProvider<ColorProviderParticleOptions> {
 
         @Override
-        public TextureSheetParticle createParticle(ColorParticleOption option, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
-            return new PotionCloudParticle(level, x, y, z, sprites, option);
+        public TextureSheetParticle createParticle(ColorProviderParticleOptions options, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+            return new PotionCloudParticle(level, x, y, z, sprites, options);
         }
     }
 }

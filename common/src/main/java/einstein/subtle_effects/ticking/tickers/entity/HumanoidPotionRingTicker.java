@@ -1,7 +1,8 @@
 package einstein.subtle_effects.ticking.tickers.entity;
 
+import einstein.subtle_effects.data.color_providers.ConstantColorProvider;
 import einstein.subtle_effects.init.ModParticles;
-import einstein.subtle_effects.particle.option.ColorAndIntegerParticleOptions;
+import einstein.subtle_effects.particle.option.PotionRingParticleOptions;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
@@ -28,7 +29,7 @@ public class HumanoidPotionRingTicker<T extends LivingEntity> extends EntityTick
                 if (contents.hasEffects()) {
                     int color = contents.getColor();
 
-                    level.addParticle(new ColorAndIntegerParticleOptions(ModParticles.POTION_EMITTER.get(), color, entity.getId()),
+                    level.addParticle(new PotionRingParticleOptions(ModParticles.POTION_EMITTER.get(), new ConstantColorProvider(color), entity.getId()),
                             entity.getX(),
                             entity.getY(),
                             entity.getZ(),
