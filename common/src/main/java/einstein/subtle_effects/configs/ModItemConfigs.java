@@ -41,6 +41,7 @@ public class ModItemConfigs extends Config {
     public boolean powderSnowBucketBlockPlaceSound = true;
     public boolean lingeringPotionClouds = true;
     public boolean splashPotionClouds = true;
+    public boolean tippedArrowPotionClouds = true;
     @RequiresAction(action = Action.RESTART)
     public boolean structureVoidItemMarker = true;
     public ValidatedCondition<Boolean> armadilloBrushParticles = ModConfigs.conditionalModLoaded(new ValidatedBoolean(), CompatHelper.HARDENED_ARMADILLOS_MOD_ID);

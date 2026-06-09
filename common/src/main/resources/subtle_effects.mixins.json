@@ -44,6 +44,7 @@
     "client.entity.AllayMixin",
     "client.entity.AreaEffectCloudMixin",
     "client.entity.ArmadilloMixin",
+    "client.entity.ArrowMixin",
     "client.entity.BlazeMixin",
     "client.entity.ClientEntityMixin",
     "client.entity.ClientLivingEntityMixin",
