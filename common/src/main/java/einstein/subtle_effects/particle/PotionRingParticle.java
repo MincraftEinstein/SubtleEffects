@@ -3,6 +3,7 @@ package einstein.subtle_effects.particle;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.particle.option.PotionRingParticleOptions;
+import einstein.subtle_effects.util.Util;
 import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
@@ -19,6 +20,7 @@ public class PotionRingParticle extends FlatPlaneParticle {
     @Nullable
     private final Entity entity;
     private final boolean hasEntity;
+    private final boolean isHarmful;
     private double yDistance;
     private final LifetimeAlpha fadeInLifetimeAlpha = new LifetimeAlpha(0, ModConfigs.ENTITIES.humanoids.potionRingsAlpha.get(), 0, 0.5F);
     private final LifetimeAlpha fadeOutLifetimeAlpha = new LifetimeAlpha(ModConfigs.ENTITIES.humanoids.potionRingsAlpha.get(), 0, 0.5F, 1);
@@ -27,13 +29,16 @@ public class PotionRingParticle extends FlatPlaneParticle {
         super(level, x, y, z);
         this.entity = level.getEntity(options.entityId());
         hasEntity = entity != null;
+        isHarmful = options.isHarmful();
         yDistance = hasEntity ? y - entity.getY() : 0;
         lifetime = 10;
         alpha = 0;
         quadSize = 0.2F;
         rotation.rotateX(-90 * Mth.DEG_TO_RAD);
         pickSprite(sprites);
-        scale(3 * ModConfigs.ENTITIES.humanoids.potionRingsScale.get());
+        float scale = ModConfigs.ENTITIES.humanoids.potionRingsScale.get();
+        quadSize = 0.5F * scale;
+        setSize(1 * scale, 0.1F);
 
         Vector3f color = options.provider().provideColor(level, x, y, z, random);
         setColor(color.x(), color.y(), color.z());
@@ -53,7 +58,7 @@ public class PotionRingParticle extends FlatPlaneParticle {
         }
 
         float halfLife = lifetime / 2F;
-        yd += (0.25 / halfLife) * (age > halfLife ? -1 : 1);
+        yd += (0.25 / halfLife) * (age > halfLife ? -1 : 1) * (isHarmful ? -1 : 1);
 
         xo = x;
         yo = y;
@@ -75,6 +80,11 @@ public class PotionRingParticle extends FlatPlaneParticle {
             setBoundingBox(getBoundingBox().move(x, y, z));
             setLocationFromBoundingbox();
         }
+    }
+
+    @Override
+    protected int getLightColor(float partialTick) {
+        return ModConfigs.ENTITIES.humanoids.glowingPotionRings.get() ? Util.PARTICLE_LIGHT_COLOR : super.getLightColor(partialTick);
     }
 
     @Override

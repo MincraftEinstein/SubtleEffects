@@ -16,13 +16,15 @@ import org.jetbrains.annotations.Nullable;
 public class PotionEmitter extends NoRenderParticle {
 
     private final ColorProviderType.ColorProvider colorProvider;
+    private final boolean isHarmful;
     private final int entityId;
     @Nullable
     private final Entity entity;
 
-    protected PotionEmitter(ClientLevel level, double x, double y, double z, ColorProviderType.ColorProvider colorProvider, int entityId) {
+    protected PotionEmitter(ClientLevel level, double x, double y, double z, ColorProviderType.ColorProvider colorProvider, boolean isHarmful, int entityId) {
         super(level, x, y, z);
         this.colorProvider = colorProvider;
+        this.isHarmful = isHarmful && ModConfigs.ENTITIES.humanoids.reverseDirectionForHarmfulEffects.get();
         this.entityId = entityId;
         entity = level.getEntity(entityId);
         lifetime = 1;
@@ -41,15 +43,15 @@ public class PotionEmitter extends NoRenderParticle {
 
         if (entity != null) {
             x = entity.getX();
-            y = entity.getY();
+            y = entity.getY() + (isHarmful ? entity.getBbHeight() : 0);
             z = entity.getZ();
         }
 
         HumanoidConfigs.PotionRingsParticleType type = ModConfigs.ENTITIES.humanoids.potionRingsParticleType.get();
         if (type == HumanoidConfigs.PotionRingsParticleType.BOTH || type == HumanoidConfigs.PotionRingsParticleType.RINGS_ONLY) {
             for (int i = 0; i < 3; i++) {
-                level.addParticle(new PotionRingParticleOptions(ModParticles.POTION_RING.get(), colorProvider, entityId),
-                        x, y - 0.1 + (0.4 * i), z,
+                level.addParticle(new PotionRingParticleOptions(ModParticles.POTION_RING.get(), colorProvider, isHarmful, entityId),
+                        x, y - (isHarmful ? 0.5 : 0) - 0.1 + (0.4 * i), z,
                         0, 0, 0
                 );
             }
@@ -58,9 +60,9 @@ public class PotionEmitter extends NoRenderParticle {
         if (type == HumanoidConfigs.PotionRingsParticleType.BOTH || type == HumanoidConfigs.PotionRingsParticleType.DOTS_ONLY) {
             float scale = ModConfigs.ENTITIES.humanoids.potionRingsScale.get();
             for (int i = 0; i < 20; i++) {
-                level.addParticle(new PotionRingParticleOptions(ModParticles.POTION_DOT.get(), colorProvider, entityId),
+                level.addParticle(new PotionRingParticleOptions(ModParticles.POTION_DOT.get(), colorProvider, isHarmful, entityId),
                         x + MathUtil.nextNonAbsDouble(random, 0.75 * scale),
-                        y + random.nextDouble() - 0.5,
+                        y + random.nextDouble() + (isHarmful ? 0.5 : -0.5),
                         z + MathUtil.nextNonAbsDouble(random, 0.75 * scale),
                         0, 0, 0
                 );
@@ -72,7 +74,7 @@ public class PotionEmitter extends NoRenderParticle {
 
         @Override
         public Particle createParticle(PotionRingParticleOptions options, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
-            return new PotionEmitter(level, x, y, z, options.provider(), options.entityId());
+            return new PotionEmitter(level, x, y, z, options.provider(), options.isHarmful(), options.entityId());
         }
     }
 }

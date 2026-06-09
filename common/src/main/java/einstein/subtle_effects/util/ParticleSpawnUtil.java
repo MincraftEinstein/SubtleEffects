@@ -11,9 +11,9 @@ import einstein.subtle_effects.networking.clientbound.ClientBoundEntityFellPaylo
 import einstein.subtle_effects.particle.EnderEyePlacedRingParticle;
 import einstein.subtle_effects.particle.SparkParticle;
 import einstein.subtle_effects.particle.emitter.SplashEmitter;
-import einstein.subtle_effects.particle.option.PotionRingParticleOptions;
 import einstein.subtle_effects.particle.option.ColorProviderParticleOptions;
 import einstein.subtle_effects.particle.option.DirectionParticleOptions;
+import einstein.subtle_effects.particle.option.PotionRingParticleOptions;
 import einstein.subtle_effects.particle.option.SheepFluffParticleOptions;
 import einstein.subtle_effects.ticking.tickers.TickerManager;
 import net.minecraft.client.Minecraft;
@@ -583,8 +583,8 @@ public class ParticleSpawnUtil {
 
             // noinspection all
             if (contents.hasEffects()) {
-                int color = contents.getColor();
-                level.addParticle(new PotionRingParticleOptions(ModParticles.POTION_EMITTER.get(), new ConstantColorProvider(color), entity.getId()),
+                level.addParticle(new PotionRingParticleOptions(ModParticles.POTION_EMITTER.get(),
+                                new ConstantColorProvider(contents.getColor()), Util.isHarmful(contents), entity.getId()),
                         entity.getX(),
                         entity.getY(),
                         entity.getZ(),

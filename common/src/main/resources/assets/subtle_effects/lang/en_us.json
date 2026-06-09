@@ -349,6 +349,8 @@
   "config.subtle_effects.entities.humanoids.potionRingsAlpha": "Potion Rings Alpha",
   "config.subtle_effects.entities.humanoids.NPCsHavePotionRings": "NPCs Have Potion Rings",
   "config.subtle_effects.entities.humanoids.NPCsHavePotionRings.desc": "Should NPCs, like witches and wandering traders, have potion rings",
+  "config.subtle_effects.entities.humanoids.reverseDirectionForHarmfulEffects": "Reverse Direction For Harmful Effects",
+  "config.subtle_effects.entities.humanoids.glowingPotionRings": "Glowing Potion Rings",
   "config.subtle_effects.entities.dustClouds": "Dust Clouds",
   "config.subtle_effects.entities.dustClouds.scale": "Scale",
   "config.subtle_effects.entities.dustClouds.alpha": "Alpha",

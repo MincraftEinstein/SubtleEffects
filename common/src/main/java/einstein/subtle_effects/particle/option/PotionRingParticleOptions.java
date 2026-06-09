@@ -12,20 +12,22 @@ import net.minecraft.network.codec.StreamCodec;
 
 public record PotionRingParticleOptions(ParticleType<PotionRingParticleOptions> type,
                                         ColorProviderType.ColorProvider provider,
-                                        int entityId) implements ParticleOptions {
+                                        boolean isHarmful, int entityId) implements ParticleOptions {
 
     public static MapCodec<PotionRingParticleOptions> codec(ParticleType<PotionRingParticleOptions> type) {
         return RecordCodecBuilder.mapCodec(instance -> instance.group(
                 ColorProviderType.CODEC.fieldOf("color").forGetter(PotionRingParticleOptions::provider),
-                Codec.INT.fieldOf("entityId").forGetter(PotionRingParticleOptions::entityId)
-        ).apply(instance, (color, entityId) -> new PotionRingParticleOptions(type, color, entityId)));
+                Codec.BOOL.fieldOf("is_harmful").forGetter(PotionRingParticleOptions::isHarmful),
+                Codec.INT.fieldOf("entity_id").forGetter(PotionRingParticleOptions::entityId)
+        ).apply(instance, (color, isHarmful, entityId) -> new PotionRingParticleOptions(type, color, isHarmful, entityId)));
     }
 
     public static StreamCodec<? super ByteBuf, PotionRingParticleOptions> streamCodec(ParticleType<PotionRingParticleOptions> type) {
         return StreamCodec.composite(
                 ColorProviderType.STREAM_CODEC, PotionRingParticleOptions::provider,
+                ByteBufCodecs.BOOL, PotionRingParticleOptions::isHarmful,
                 ByteBufCodecs.INT, PotionRingParticleOptions::entityId,
-                (color, entityId) -> new PotionRingParticleOptions(type, color, entityId)
+                (color, isHarmful, entityId) -> new PotionRingParticleOptions(type, color, isHarmful, entityId)
         );
     }
 

@@ -36,8 +36,10 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.ExtraCodecs;
 import net.minecraft.util.FastColor;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.alchemy.PotionContents;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.AbstractCauldronBlock;
@@ -249,5 +251,20 @@ public class Util {
 
     public static boolean isSouthEast(CharSequence searchQuery) {
         return "south east".contains(searchQuery) || "south_east".contains(searchQuery);
+    }
+
+    public static boolean isHarmful(PotionContents contents) {
+        final int[] harmful = {0};
+        final int[] notHarmful = {0};
+
+        contents.forEachEffect(effect -> {
+            if (effect.getEffect().value().getCategory() == MobEffectCategory.HARMFUL) {
+                harmful[0]++;
+                return;
+            }
+            notHarmful[0]++;
+        });
+
+        return harmful[0] > notHarmful[0];
     }
 }
