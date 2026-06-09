@@ -39,8 +39,10 @@ public class ModItemConfigs extends Config {
     public boolean powderSnowBucketUseParticles = true;
     @ConfigGroup.Pop
     public boolean powderSnowBucketBlockPlaceSound = true;
+    public ConfigGroup potionCloudsGroup = new ConfigGroup("potion_clouds");
     public boolean lingeringPotionClouds = true;
     public boolean splashPotionClouds = true;
+    @ConfigGroup.Pop
     public boolean tippedArrowPotionClouds = true;
     @RequiresAction(action = Action.RESTART)
     public boolean structureVoidItemMarker = true;

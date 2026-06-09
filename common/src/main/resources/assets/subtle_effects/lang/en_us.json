@@ -658,6 +658,7 @@
   "config.subtle_effects.items.powderSnowBucketUseParticles": "Powder Snow Bucket Use Particles",
   "config.subtle_effects.items.powderSnowBucketBlockPlaceSound": "Powder Snow Bucket Block Place Sound",
   "config.subtle_effects.items.powderSnowBucketBlockPlaceSound.desc": "Should the powder snow block place sound be played in addition to the powder snow bucket empty sound",
+  "config.subtle_effects.items.potionCloudsGroup": "Potion Clouds",
   "config.subtle_effects.items.lingeringPotionClouds": "Lingering Potion Clouds",
   "config.subtle_effects.items.lingeringPotionClouds.desc": "Replaces the vanilla bubble swirl particles with wispy clouds",
   "config.subtle_effects.items.splashPotionClouds": "Splash Potion Clouds",
