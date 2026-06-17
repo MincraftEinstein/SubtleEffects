@@ -22,7 +22,7 @@ import static einstein.subtle_effects.init.ModConfigs.ENVIRONMENT;
 @Mixin(WeatherEffectRenderer.class)
 public abstract class WeatherEffectsRendererMixin {
 
-    @WrapOperation(method = "render", at = @At(value = "FIELD", target = "Lnet/minecraft/client/renderer/WeatherEffectRenderer;RAIN_LOCATION:Lnet/minecraft/resources/Identifier;"))
+    @WrapOperation(method = "render*", at = @At(value = "FIELD", target = "Lnet/minecraft/client/renderer/WeatherEffectRenderer;RAIN_LOCATION:Lnet/minecraft/resources/Identifier;"))
     private Identifier replaceRainTexture(Operation<Identifier> original) {
         if (ENVIRONMENT.biomeColorRain) {
             return Util.COLORLESS_RAIN_TEXTURE;
