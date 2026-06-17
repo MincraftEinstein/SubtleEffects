@@ -13,7 +13,6 @@ import static einstein.subtle_effects.SubtleEffects.loc;
 
 public class ModPipelines {
 
-    // TODO this seams to be a bit broken
     private static final BlendFunction ALPHA_BLEND = new BlendFunction(BlendFactor.SRC_ALPHA, BlendFactor.ONE_MINUS_SRC_ALPHA);
 
     public static final RenderPipeline CUSTOM_TRANSLUCENT_PARTICLE_PIPELINE = RenderPipelines.register(
@@ -27,7 +26,7 @@ public class ModPipelines {
             RenderPipeline.builder(RenderPipelines.PARTICLE_SNIPPET)
                     .withLocation(loc("pipeline/alpha_blend"))
                     .withColorTargetState(new ColorTargetState(ALPHA_BLEND))
-                    .withDepthStencilState(new DepthStencilState(CompareOp.GREATER_THAN_OR_EQUAL, true))
+                    .withDepthStencilState(new DepthStencilState(CompareOp.GREATER_THAN_OR_EQUAL, false))
                     .build()
     );
 
