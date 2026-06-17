@@ -53,7 +53,7 @@ public class ParticleBoundingBoxesRenderer {
                 }
 
                 var renderTypeColor = stringToColor(renderType.name());
-                particleGroup.getAll().forEach(particle -> {
+                particleGroup.particles.forEach(particle -> {
                     AABB aabb = particle.getBoundingBox();
                     if (particleFrustum.isVisible(aabb)) {
                         ParticleAccessor accessor = (ParticleAccessor) particle;
