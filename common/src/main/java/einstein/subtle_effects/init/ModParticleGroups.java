@@ -12,13 +12,13 @@ import static einstein.subtle_effects.platform.Services.REGISTRY;
 
 public class ModParticleGroups {
 
-    public static final ParticleRenderType MODEL = register("model", ModelParticleGroup::new);
+    public static final ParticleRenderType MODEL = register("model", "SE_M",ModelParticleGroup::new);
 
     public static void init() {
     }
 
-    private static ParticleRenderType register(String name, Function<ParticleEngine, ParticleGroup<?>> factory) {
-        var group = new ParticleRenderType(loc(name).toString());
+    private static ParticleRenderType register(String name, String shorthand, Function<ParticleEngine, ParticleGroup<?>> factory) {
+        var group = new ParticleRenderType(loc(name).toString(), shorthand);
         REGISTRY.registerParticleGroup(group, factory);
         return group;
     }
