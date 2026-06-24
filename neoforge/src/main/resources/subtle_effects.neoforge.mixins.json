@@ -11,6 +11,7 @@
     "client.NeoForgeMultiPlayerGameModeMixin"
   ],
   "mixins": [
+    "client.BetterModListModSearchMixin",
     "common.NeoForgeCommonMooshroomMixin",
     "common.NeoForgeShearsDispenseItemBehaviorMixin"
   ],
