@@ -48,7 +48,7 @@ import static einstein.subtle_effects.util.MathUtil.nextNonAbsDouble;
 
 public class ModEntityTickers {
 
-    private static final Predicate<Entity> LOCAL_PLAYER = entity -> entity.equals(Minecraft.getInstance().player);
+    private static final Predicate<Entity> LOCAL_PLAYER = entity -> entity == Minecraft.getInstance().player;
 
 
     public static void init() {
