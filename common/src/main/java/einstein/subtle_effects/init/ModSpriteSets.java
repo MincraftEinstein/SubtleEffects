@@ -11,6 +11,9 @@ public class ModSpriteSets {
     public static final SpriteSetHolder WATER_SPLASH_OVERLAY = register("water_splash_overlay");
     public static final SpriteSetHolder WATER_SPLASH_RIPPLE = register("water_splash_ripple");
 
+    public static final SpriteSetHolder LAVA_SPLASH = register("lava_splash");
+    public static final SpriteSetHolder LAVA_SPLASH_RIPPLE = register("lava_splash_ripple");
+
     public static void init() {
     }
 
