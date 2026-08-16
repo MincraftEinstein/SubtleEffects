@@ -1,6 +1,6 @@
 package einstein.subtle_effects.particle.emitter;
 
-import einstein.subtle_effects.init.ModConfigs;
+import einstein.subtle_effects.configs.cache.FireflyConfigCache;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleProvider;
@@ -17,7 +17,7 @@ public class FireFlyEmitter extends AbstractParticleEmitter {
 
     @Override
     protected void spawnParticle(double x, double y, double z) {
-        level.addParticle(ModConfigs.ENVIRONMENT.fireflies.fireflyType.get().getParticle().get(),
+        level.addParticle(FireflyConfigCache.particle,
                 x, y, z,
                 nextNonAbsDouble(random, 0.001),
                 nextNonAbsDouble(random, 0.001),

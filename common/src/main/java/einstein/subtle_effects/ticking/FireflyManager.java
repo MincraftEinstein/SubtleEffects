@@ -2,7 +2,7 @@ package einstein.subtle_effects.ticking;
 
 import einstein.subtle_effects.compat.CompatHelper;
 import einstein.subtle_effects.compat.SereneSeasonsCompat;
-import einstein.subtle_effects.configs.environment.FireflyConfigs;
+import einstein.subtle_effects.configs.cache.FireflyConfigCache;
 import einstein.subtle_effects.init.ModSounds;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
@@ -20,13 +20,12 @@ import net.minecraft.world.level.levelgen.Heightmap;
 
 import java.util.Optional;
 
-import static einstein.subtle_effects.init.ModConfigs.ENVIRONMENT;
 import static einstein.subtle_effects.util.MathUtil.nextNonAbsDouble;
 
 public class FireflyManager {
 
     public static void tick(Level level, BlockPos pos, BlockState state, RandomSource random) {
-        if (!ENVIRONMENT.fireflies.firefliesEnabled.get()) {
+        if (!FireflyConfigCache.enabled) {
             return;
         }
 
@@ -36,11 +35,11 @@ public class FireflyManager {
         }
 
         Optional<ResourceKey<DimensionType>> dimensionKey = level.dimensionTypeRegistration().unwrapKey();
-        if (dimensionKey.isEmpty() || ENVIRONMENT.fireflies.dimensionBlocklist.get().contains(dimensionKey.get().location())) {
+        if (dimensionKey.isEmpty() || FireflyConfigCache.dimensionBlocklist.contains(dimensionKey.get().location())) {
             return;
         }
 
-        if (CompatHelper.IS_SERENE_SEANSONS_LOADED.get() && SereneSeasonsCompat.isColdSeason(level, ENVIRONMENT.fireflies.ignoredSeasons.get())) {
+        if (CompatHelper.IS_SERENE_SEANSONS_LOADED.get() && SereneSeasonsCompat.isColdSeason(level, FireflyConfigCache.ignoredSeasons)) {
             return;
         }
 
@@ -51,72 +50,70 @@ public class FireflyManager {
         }
 
         ResourceLocation biomeId = biomeKey.get().location();
-        if (!ENVIRONMENT.fireflies.biomesBlocklist.get().contains(biomeId)) {
-            boolean isHabitatBiome = ENVIRONMENT.fireflies.habitatBiomes.get().contains(biomeId);
-            boolean isSpawnable = ENVIRONMENT.fireflies.spawnableBlocks.get().contains(state.getBlock());
-            if (!isHabitatBiome && (ENVIRONMENT.fireflies.onlyAllowInHabitatBiomes.get() || !isSpawnable)) {
+        if (FireflyConfigCache.biomesBlocklist.contains(biomeId)) {
+            return;
+        }
+
+        boolean isHabitatBiome = FireflyConfigCache.habitatBiomes.contains(biomeId);
+        boolean isSpawnable = FireflyConfigCache.spawnableBlocks.contains(state.getBlock());
+        if (!isHabitatBiome && (FireflyConfigCache.onlyAllowInHabitatBiomes || !isSpawnable)) {
+            return;
+        }
+
+        boolean canSeeSky = level.canSeeSky(pos);
+        int surfaceLevel = level.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING, pos).getY();
+        if (isHabitatBiome) {
+            if (!canSeeSky && !isSpawnable) {
                 return;
             }
 
-            boolean canSeeSky = level.canSeeSky(pos);
-            int surfaceLevel = level.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING, pos).getY();
-            if (isHabitatBiome) {
-                if (!canSeeSky && !isSpawnable) {
-                    return;
-                }
-
-                if (canSeeSky && surfaceLevel + 10 < pos.getY()) {
-                    return;
-                }
+            if (canSeeSky && surfaceLevel + 10 < pos.getY()) {
+                return;
             }
+        }
 
-            if (biome.value().warmEnoughToRain(pos) || ENVIRONMENT.fireflies.biomesAllowlist.get().contains(biomeId)) {
-                float time = level.getDayTime() % 24000F;
+        if (!biome.value().warmEnoughToRain(pos) && !FireflyConfigCache.biomesAllowlist.contains(biomeId)) {
+            return;
+        }
 
-                if (((time > 13000 && time < 23000) || level.getBrightness(LightLayer.SKY, pos) == 0) && level.getBrightness(LightLayer.BLOCK, pos) <= 5) {
-                    if (!level.isRaining() || !canSeeSky || surfaceLevel > pos.getY()) {
-                        if (!state.isCollisionShapeFullBlock(level, pos) && level.getFluidState(pos).isEmpty()) {
+        float time = level.getDayTime() % 24000F;
+        if (!((time > 13000 && time < 23000) || level.getBrightness(LightLayer.SKY, pos) == 0) || level.getBrightness(LightLayer.BLOCK, pos) > 5) {
+            return;
+        }
 
-                            if (canSpawn(random, isHabitatBiome)) {
-                                level.addParticle(ENVIRONMENT.fireflies.fireflyType.get().getParticle().get(),
-                                        pos.getX() + 0.5 + nextNonAbsDouble(random, 0.4375),
-                                        pos.getY() + 0.5 + nextNonAbsDouble(random, 0.4375),
-                                        pos.getZ() + 0.5 + nextNonAbsDouble(random, 0.4375),
-                                        0, 0, 0
-                                );
-                            }
+        if (level.isRaining() && canSeeSky && surfaceLevel <= pos.getY()) {
+            return;
+        }
 
-                            if (ENVIRONMENT.fireflies.fireflySoundVolume.get() > 0) {
-                                if (canPlaySound(random, isHabitatBiome)) {
-                                    level.playLocalSound(
-                                            pos.getX(), pos.getY(), pos.getZ(),
-                                            ModSounds.FIREFLY_BUZZ.get(),
-                                            SoundSource.AMBIENT,
-                                            ENVIRONMENT.fireflies.fireflySoundVolume.get(),
-                                            1, false
-                                    );
-                                }
-                            }
-                        }
-                    }
-                }
-            }
+        if (state.isCollisionShapeFullBlock(level, pos) || !level.getFluidState(pos).isEmpty()) {
+            return;
+        }
+
+        if (canSpawn(random, isHabitatBiome)) {
+            level.addParticle(FireflyConfigCache.particle,
+                    pos.getX() + 0.5 + nextNonAbsDouble(random, 0.4375),
+                    pos.getY() + 0.5 + nextNonAbsDouble(random, 0.4375),
+                    pos.getZ() + 0.5 + nextNonAbsDouble(random, 0.4375),
+                    0, 0, 0
+            );
+        }
+
+        if (FireflyConfigCache.soundsEnabled && canPlaySound(random, isHabitatBiome)) {
+            level.playLocalSound(
+                    pos.getX(), pos.getY(), pos.getZ(),
+                    ModSounds.FIREFLY_BUZZ.get(),
+                    SoundSource.AMBIENT,
+                    FireflyConfigCache.soundVolume,
+                    1, false
+            );
         }
     }
 
     private static boolean canPlaySound(RandomSource random, boolean isHabitatBiome) {
-        if (isHabitatBiome) {
-            return random.nextDouble() < (0.00001 * ENVIRONMENT.fireflies.habitatBiomeDensity.get());
-        }
-        return random.nextDouble() < (0.0003 * ENVIRONMENT.fireflies.defaultDensity.get());
+        return random.nextDouble() < (isHabitatBiome ? FireflyConfigCache.habitatSoundChance : FireflyConfigCache.defaultSoundChance);
     }
 
     private static boolean canSpawn(RandomSource random, boolean isHabitatBiome) {
-        if (isHabitatBiome) {
-            return random.nextDouble() < (0.0005 * ENVIRONMENT.fireflies.habitatBiomeDensity.get());
-        }
-
-        int spawnRate = ENVIRONMENT.fireflies.fireflyType.get() == FireflyConfigs.FireflyType.VANILLA ? 170 : 1;
-        return random.nextDouble() < (0.008 * ENVIRONMENT.fireflies.defaultDensity.get() * spawnRate);
+        return random.nextDouble() < (isHabitatBiome ? FireflyConfigCache.habitatSpawnChance : FireflyConfigCache.defaultSpawnChance);
     }
 }

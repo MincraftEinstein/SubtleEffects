@@ -10,6 +10,7 @@ import einstein.subtle_effects.client.model.entity.PartyHatModel;
 import einstein.subtle_effects.client.model.particle.SplashParticleModel;
 import einstein.subtle_effects.client.renderer.entity.EinsteinSolarSystemLayer;
 import einstein.subtle_effects.client.renderer.entity.PartyHatLayer;
+import einstein.subtle_effects.configs.cache.HotPathConfigCaches;
 import einstein.subtle_effects.data.*;
 import einstein.subtle_effects.init.*;
 import einstein.subtle_effects.ticking.BiomeEffectsManager;
@@ -55,6 +56,7 @@ public class SubtleEffectsClient {
 
     public static void clientSetup() {
         ModConfigs.init();
+        HotPathConfigCaches.refreshAll();
         ModRenderTypes.init();
         ModParticleRenderTypes.init();
         ModEntityTickers.init();
