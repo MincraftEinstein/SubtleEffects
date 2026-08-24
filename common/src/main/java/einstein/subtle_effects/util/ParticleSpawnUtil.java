@@ -22,6 +22,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
@@ -36,9 +37,11 @@ import net.minecraft.world.entity.animal.Sheep;
 import net.minecraft.world.entity.animal.camel.Camel;
 import net.minecraft.world.entity.animal.horse.AbstractHorse;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.PotionContents;
+import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.block.*;
@@ -48,6 +51,8 @@ import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
@@ -607,6 +612,37 @@ public class ParticleSpawnUtil {
                     random.nextDouble(),
                     nextNonAbsDouble(random)
             );
+        }
+    }
+
+    public static void spawnProjectileSplat(Projectile projectile, Level level, RandomSource random, ParticleType<DirectionParticleOptions> particle) {
+        Vec3 delta = projectile.getDeltaMovement();
+        Vec3 position = projectile.position();
+        BlockHitResult result = level.clip(new ClipContext(position,
+                position.add(delta),
+                ClipContext.Block.COLLIDER,
+                ClipContext.Fluid.NONE,
+                projectile)
+        );
+
+        if (result.getType() != HitResult.Type.MISS) {
+            Direction direction = result.getDirection();
+            BlockPos pos = result.getBlockPos();
+            BlockState state = level.getBlockState(pos);
+            Vec3 location = result.getLocation();
+
+            if (!state.isAir() && !Util.isSolidOrNotEmpty(level, pos.above())) {
+                Direction opposite = direction.getOpposite();
+                Direction.Axis axis = opposite.getAxis();
+                double offset = direction.getAxisDirection().getStep() * Mth.nextDouble(random, 0.001, 0.002);
+
+                level.addParticle(new DirectionParticleOptions(particle, opposite),
+                        axis == Direction.Axis.X ? Math.round(location.x()) + offset : location.x(),
+                        axis == Direction.Axis.Y ? Math.round(location.y()) + offset : location.y(),
+                        axis == Direction.Axis.Z ? Math.round(location.z()) + offset : location.z(),
+                        0, 0, 0
+                );
+            }
         }
     }
 }

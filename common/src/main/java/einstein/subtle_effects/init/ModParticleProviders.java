@@ -66,7 +66,7 @@ public class ModParticleProviders {
         register(IRON_GOLEM, CustomTerrainParticle.Provider::new);
         register(DROWNING_BUBBLE, DrowningBubbleParticle.Provider::new);
         register(DROWNING_BUBBLE_POP, DrowningBubblePopParticle.Provider::new);
-        register(EGG_SPLAT, EggSplatParticle.Provider::new);
+        register(EGG_SPLAT, ProjectileSplatParticle.Provider::new);
         register(ENDER_EYE_PLACED_RING, EnderEyePlacedRingParticle.Provider::new);
         register(BLOCK_NO_MOMENTUM, new TerrainNoMomentumParticleProvider());
         register(OMINOUS_VAULT_CONNECTION, FlyTowardsPositionParticle.VaultConnectionProvider::new);
@@ -94,6 +94,7 @@ public class ModParticleProviders {
         register(ELECTRICITY, ElectricityParticle.Provider::new);
         register(ENCHANT_MAGIC, EnchantMagicProvider::new);
         register(RISING_ENCHANT_GLYPHS, RisingEnchantGlyphParticle.Provider::new);
+        register(SNOWBALL_SPLAT, ProjectileSplatParticle.SnowballProvider::new);
     }
 
     private static <T extends ParticleType<V>, V extends ParticleOptions> void register(Supplier<T> particleType, ParticleEngine.SpriteParticleRegistration<V> provider) {

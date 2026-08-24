@@ -3,6 +3,7 @@ package einstein.subtle_effects.mixin.client.entity;
 import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.init.ModParticles;
 import einstein.subtle_effects.init.ModSounds;
+import einstein.subtle_effects.util.ParticleSpawnUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
@@ -50,6 +51,10 @@ public class SnowballMixin {
                         volume,
                         Mth.nextFloat(random, 0.7F, 1.2F)
                 );
+            }
+
+            if (ModConfigs.ITEMS.projectiles.snowballSplatParticles) {
+                ParticleSpawnUtil.spawnProjectileSplat(subtleEffects$me, level, random, ModParticles.SNOWBALL_SPLAT.get());
             }
         }
     }

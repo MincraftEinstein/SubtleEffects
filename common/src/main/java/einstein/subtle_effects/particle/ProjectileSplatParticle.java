@@ -14,11 +14,11 @@ import net.minecraft.util.Mth;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
-public class EggSplatParticle extends FlatPlaneParticle {
+public class ProjectileSplatParticle extends FlatPlaneParticle {
 
     private final Direction direction;
 
-    protected EggSplatParticle(ClientLevel level, double x, double y, double z, SpriteSet sprites, Direction direction) {
+    protected ProjectileSplatParticle(ClientLevel level, double x, double y, double z, SpriteSet sprites, Direction direction) {
         super(level, x, y, z);
         this.direction = direction;
         rotation = direction.getRotation().rotateX(180 * Mth.DEG_TO_RAD);
@@ -73,7 +73,17 @@ public class EggSplatParticle extends FlatPlaneParticle {
 
         @Override
         public Particle createParticle(DirectionParticleOptions options, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
-            return new EggSplatParticle(level, x, y, z, sprites, options.direction());
+            return new ProjectileSplatParticle(level, x, y, z, sprites, options.direction());
+        }
+    }
+
+    public record SnowballProvider(SpriteSet sprites) implements ParticleProvider<DirectionParticleOptions> {
+
+        @Override
+        public Particle createParticle(DirectionParticleOptions options, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+            ProjectileSplatParticle particle = new ProjectileSplatParticle(level, x, y, z, sprites, options.direction());
+            particle.scale(1.5F);
+            return particle;
         }
     }
 }
