@@ -11,10 +11,7 @@ import einstein.subtle_effects.networking.clientbound.ClientBoundEntityFellPaylo
 import einstein.subtle_effects.particle.EnderEyePlacedRingParticle;
 import einstein.subtle_effects.particle.SparkParticle;
 import einstein.subtle_effects.particle.emitter.SplashEmitter;
-import einstein.subtle_effects.particle.option.ColorProviderParticleOptions;
-import einstein.subtle_effects.particle.option.DirectionParticleOptions;
-import einstein.subtle_effects.particle.option.PotionRingParticleOptions;
-import einstein.subtle_effects.particle.option.SheepFluffParticleOptions;
+import einstein.subtle_effects.particle.option.*;
 import einstein.subtle_effects.ticking.tickers.TickerManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
@@ -615,15 +612,15 @@ public class ParticleSpawnUtil {
         }
     }
 
-    public static void spawnProjectileSplat(Projectile projectile, Level level, RandomSource random, ParticleType<DirectionParticleOptions> particle) {
+    public static void spawnProjectileSplat(Projectile projectile, Level level, RandomSource random, ParticleType<ProjectileSplatParticleOptions> particle) {
         Vec3 delta = projectile.getDeltaMovement();
         Vec3 position = projectile.position();
         BlockHitResult result = level.clip(new ClipContext(position,
                 position.add(delta),
                 ClipContext.Block.COLLIDER,
                 ClipContext.Fluid.NONE,
-                projectile)
-        );
+                projectile
+        ));
 
         if (result.getType() != HitResult.Type.MISS) {
             Direction direction = result.getDirection();
@@ -631,15 +628,15 @@ public class ParticleSpawnUtil {
             BlockState state = level.getBlockState(pos);
             Vec3 location = result.getLocation();
 
-            if (!state.isAir() && !Util.isSolidOrNotEmpty(level, pos.above())) {
+            if (!state.getCollisionShape(level, pos).isEmpty()) {
                 Direction opposite = direction.getOpposite();
                 Direction.Axis axis = opposite.getAxis();
                 double offset = direction.getAxisDirection().getStep() * Mth.nextDouble(random, 0.001, 0.002);
 
-                level.addParticle(new DirectionParticleOptions(particle, opposite),
-                        axis == Direction.Axis.X ? Math.round(location.x()) + offset : location.x(),
-                        axis == Direction.Axis.Y ? Math.round(location.y()) + offset : location.y(),
-                        axis == Direction.Axis.Z ? Math.round(location.z()) + offset : location.z(),
+                level.addParticle(new ProjectileSplatParticleOptions(particle, opposite, pos),
+                        axis == Direction.Axis.X ? location.x() + offset : location.x(),
+                        axis == Direction.Axis.Y ? location.y() + offset : location.y(),
+                        axis == Direction.Axis.Z ? location.z() + offset : location.z(),
                         0, 0, 0
                 );
             }

@@ -65,7 +65,7 @@ public class ModParticles {
     public static final RegistrySupplier<SimpleParticleType> IRON_GOLEM = register("iron_golem");
     public static final RegistrySupplier<SimpleParticleType> DROWNING_BUBBLE = register("drowning_bubble");
     public static final RegistrySupplier<SimpleParticleType> DROWNING_BUBBLE_POP = register("drowning_bubble_pop");
-    public static final RegistrySupplier<ParticleType<DirectionParticleOptions>> EGG_SPLAT = register("egg_splat", DirectionParticleOptions::codec, DirectionParticleOptions::streamCodec);
+    public static final RegistrySupplier<ParticleType<ProjectileSplatParticleOptions>> EGG_SPLAT = register("egg_splat", ProjectileSplatParticleOptions::codec, ProjectileSplatParticleOptions::streamCodec);
     public static final RegistrySupplier<ParticleType<ColorProviderParticleOptions>> ENDER_EYE_PLACED_RING = register("ender_eye_placed_ring", ColorProviderParticleOptions::codec, ColorProviderParticleOptions::streamCodec);
     public static final RegistrySupplier<ParticleType<BlockParticleOption>> BLOCK_NO_MOMENTUM = register("block_no_momentum", BlockParticleOption::codec, BlockParticleOption::streamCodec);
     public static final RegistrySupplier<SimpleParticleType> OMINOUS_VAULT_CONNECTION = register("ominous_vault_connection");
@@ -93,7 +93,7 @@ public class ModParticles {
     public static final RegistrySupplier<SimpleParticleType> ELECTRICITY = register("electricity");
     public static final RegistrySupplier<SimpleParticleType> ENCHANT_MAGIC = register("enchant_magic");
     public static final RegistrySupplier<SimpleParticleType> RISING_ENCHANT_GLYPHS = register("rising_enchant_glyphs");
-    public static final RegistrySupplier<ParticleType<DirectionParticleOptions>> SNOWBALL_SPLAT = register("snow_splat", DirectionParticleOptions::codec, DirectionParticleOptions::streamCodec);
+    public static final RegistrySupplier<ParticleType<ProjectileSplatParticleOptions>> SNOWBALL_SPLAT = register("snow_splat", ProjectileSplatParticleOptions::codec, ProjectileSplatParticleOptions::streamCodec);
 
     public static void init() {
         PARTICLE_TYPES.init();

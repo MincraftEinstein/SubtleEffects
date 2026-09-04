@@ -1,8 +1,7 @@
 package einstein.subtle_effects.particle;
 
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import einstein.subtle_effects.particle.option.DirectionParticleOptions;
-import einstein.subtle_effects.util.Util;
+import einstein.subtle_effects.particle.option.ProjectileSplatParticleOptions;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleProvider;
@@ -11,16 +10,20 @@ import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
+import net.minecraft.world.level.block.state.BlockState;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
 public class ProjectileSplatParticle extends FlatPlaneParticle {
 
     private final Direction direction;
+    private final BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
+    private final BlockPos blockPos;
 
-    protected ProjectileSplatParticle(ClientLevel level, double x, double y, double z, SpriteSet sprites, Direction direction) {
+    protected ProjectileSplatParticle(ClientLevel level, double x, double y, double z, SpriteSet sprites, ProjectileSplatParticleOptions options) {
         super(level, x, y, z);
-        this.direction = direction;
+        direction = options.direction();
+        blockPos = options.pos();
         rotation = direction.getRotation().rotateX(180 * Mth.DEG_TO_RAD);
         pickSprite(sprites);
         lifetime = 120;
@@ -35,20 +38,16 @@ public class ProjectileSplatParticle extends FlatPlaneParticle {
     public void tick() {
         super.tick();
 
-        BlockPos pos = BlockPos.containing(x, y, z);
-        if (level.getBlockState(pos.relative(direction)).isAir()) {
-            remove();
-            return;
-        }
-
-        if (Util.isSolidOrNotEmpty(level, pos)) {
+        pos.set(x, y, z);
+        BlockState state = level.getBlockState(blockPos);
+        if (state.isAir() || (blockPos.equals(pos) && state.isCollisionShapeFullBlock(level, pos))) {
             remove();
             return;
         }
 
         int i = (lifetime / 3) * 2;
         if (age == i) {
-            if (direction.getAxis().isHorizontal()) {
+            if (direction.getAxis().isHorizontal() && level.getFluidState(pos).isEmpty()) {
                 gravity = 0.05F;
             }
         }
@@ -69,19 +68,19 @@ public class ProjectileSplatParticle extends FlatPlaneParticle {
         return ParticleRenderType.PARTICLE_SHEET_TRANSLUCENT;
     }
 
-    public record Provider(SpriteSet sprites) implements ParticleProvider<DirectionParticleOptions> {
+    public record Provider(SpriteSet sprites) implements ParticleProvider<ProjectileSplatParticleOptions> {
 
         @Override
-        public Particle createParticle(DirectionParticleOptions options, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
-            return new ProjectileSplatParticle(level, x, y, z, sprites, options.direction());
+        public Particle createParticle(ProjectileSplatParticleOptions options, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+            return new ProjectileSplatParticle(level, x, y, z, sprites, options);
         }
     }
 
-    public record SnowballProvider(SpriteSet sprites) implements ParticleProvider<DirectionParticleOptions> {
+    public record SnowballProvider(SpriteSet sprites) implements ParticleProvider<ProjectileSplatParticleOptions> {
 
         @Override
-        public Particle createParticle(DirectionParticleOptions options, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
-            ProjectileSplatParticle particle = new ProjectileSplatParticle(level, x, y, z, sprites, options.direction());
+        public Particle createParticle(ProjectileSplatParticleOptions options, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+            ProjectileSplatParticle particle = new ProjectileSplatParticle(level, x, y, z, sprites, options);
             particle.scale(1.5F);
             return particle;
         }
