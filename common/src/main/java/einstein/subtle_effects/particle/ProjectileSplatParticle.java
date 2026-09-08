@@ -28,6 +28,7 @@ public class ProjectileSplatParticle extends FlatPlaneParticle {
         pickSprite(sprites);
         lifetime = 120;
         quadSize = 0.2F;
+        scale(1.5F);
 
         if (direction.getAxis().isVertical()) {
             rotation.rotateY(90 * random.nextInt(3) * Mth.DEG_TO_RAD);
@@ -73,16 +74,6 @@ public class ProjectileSplatParticle extends FlatPlaneParticle {
         @Override
         public Particle createParticle(ProjectileSplatParticleOptions options, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
             return new ProjectileSplatParticle(level, x, y, z, sprites, options);
-        }
-    }
-
-    public record SnowballProvider(SpriteSet sprites) implements ParticleProvider<ProjectileSplatParticleOptions> {
-
-        @Override
-        public Particle createParticle(ProjectileSplatParticleOptions options, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
-            ProjectileSplatParticle particle = new ProjectileSplatParticle(level, x, y, z, sprites, options);
-            particle.scale(1.5F);
-            return particle;
         }
     }
 }

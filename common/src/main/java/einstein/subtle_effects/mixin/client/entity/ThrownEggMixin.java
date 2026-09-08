@@ -3,6 +3,7 @@ package einstein.subtle_effects.mixin.client.entity;
 import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.init.ModParticles;
 import einstein.subtle_effects.init.ModSounds;
+import einstein.subtle_effects.ticking.tickers.TickerManager;
 import einstein.subtle_effects.util.ParticleSpawnUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.sounds.SoundSource;
@@ -10,6 +11,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityEvent;
 import net.minecraft.world.entity.projectile.ThrownEgg;
 import net.minecraft.world.level.Level;
 import org.spongepowered.asm.mixin.Mixin;
@@ -28,7 +30,7 @@ public abstract class ThrownEggMixin {
 
     @Inject(method = "handleEntityEvent", at = @At("TAIL"))
     private void handle(byte id, CallbackInfo ci) {
-        if (id == 3) {
+        if (id == EntityEvent.DEATH) {
             Level level = subtleEffects$me.level();
             RandomSource random = subtleEffects$me.getRandom();
             float volume = ModConfigs.ITEMS.projectiles.eggSmashSoundVolume.get();
@@ -47,16 +49,19 @@ public abstract class ThrownEggMixin {
             }
 
             if (ModConfigs.ITEMS.projectiles.eggSplatParticles) {
-                List<Entity> spawnedEntities = level.getEntities((Entity) null, subtleEffects$me.getBoundingBox(), (Entity entity) -> {
-                    if (entity instanceof AgeableMob ageableMob) {
-                        return ageableMob.isBaby();
-                    }
-                    return false;
-                });
+                // Delaying a tick to help ensure the entity has had time to spawn
+                TickerManager.scheduleNext(() -> {
+                    List<Entity> spawnedEntities = level.getEntities((Entity) null, subtleEffects$me.getBoundingBox(), (Entity entity) -> {
+                        if (entity instanceof AgeableMob ageableMob) {
+                            return ageableMob.isBaby();
+                        }
+                        return false;
+                    });
 
-                if (spawnedEntities.isEmpty()) {
-                    ParticleSpawnUtil.spawnProjectileSplat(subtleEffects$me, level, random, ModParticles.EGG_SPLAT.get());
-                }
+                    if (spawnedEntities.isEmpty()) {
+                        ParticleSpawnUtil.spawnProjectileSplat(subtleEffects$me, level, random, ModParticles.EGG_SPLAT.get());
+                    }
+                });
             }
         }
     }
