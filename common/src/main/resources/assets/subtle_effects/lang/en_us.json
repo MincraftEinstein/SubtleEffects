@@ -415,6 +415,8 @@
   "config.subtle_effects.entities.splashes.splashVelocityThreshold.desc": "The velocity threshold needed to trigger a splash",
   "config.subtle_effects.entities.splashes.entityBlocklist": "Entity Blocklist",
   "config.subtle_effects.entities.splashes.entityBlocklist.desc": "List of entities that will not have splash effects",
+  "config.subtle_effects.entities.splashes.ignoreWaterloggedBlocks": "Ignore Waterlogged Blocks",
+  "config.subtle_effects.entities.splashes.ignoreWaterloggedBlocks.desc": "Whether splashes should be spawned for waterlogged blocks",
   "config.subtle_effects.entities.splashes.secondarySplashesGroup": "Secondary Splashes",
   "config.subtle_effects.entities.splashes.secondarySplash": "Secondary Splash",
   "config.subtle_effects.entities.splashes.secondarySplash.desc": "Plays a second splash effect after the initial splash",

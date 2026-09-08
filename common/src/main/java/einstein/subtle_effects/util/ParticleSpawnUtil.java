@@ -44,6 +44,7 @@ import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.AttachFace;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
@@ -484,6 +485,13 @@ public class ParticleSpawnUtil {
         FluidDefinition fluidDefinition = ((FluidDefinitionAccessor) fluidState.getType()).subtleEffects$getFluidDefinition();
 
         if (fluidDefinition != null) {
+            if (ENTITIES.splashes.ignoreWaterloggedBlocks.get()) {
+                BlockState state = level.getBlockState(pos);
+                if (state.hasProperty(BlockStateProperties.WATERLOGGED) && state.getValue(BlockStateProperties.WATERLOGGED)) {
+                    return null;
+                }
+            }
+
             FluidLogicAccessor accessor = (FluidLogicAccessor) entity;
             double fluidDefinitionHeight = accessor.subtleEffects$getFluidDefinitionHeight().getDouble(fluidDefinition);
 
