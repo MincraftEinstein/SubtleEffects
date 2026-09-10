@@ -5,6 +5,7 @@ import com.llamalad7.mixinextras.sugar.Local;
 import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.init.ModParticles;
 import einstein.subtle_effects.util.HeartParticleAccessor;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.HeartParticle;
 import net.minecraft.client.particle.Particle;
@@ -38,7 +39,10 @@ public abstract class HeartParticleMixin extends TextureSheetParticle implements
 
         if (subtleEffects$isHeart) {
             if (ModConfigs.GENERAL.poppingHearts && !isAlive()) {
-                level.addParticle(ModParticles.HEART_POP.get(), x, y, z, 0, yd, 0);
+                Particle particle = Minecraft.getInstance().particleEngine.createParticle(ModParticles.HEART_POP.get(), x, y, z, 0, 0, 0);
+                if (particle != null) {
+                    ((SingleQuadParticleAccessor) particle).setQuadSize(quadSize);
+                }
             }
         }
     }

@@ -94,6 +94,7 @@ public class ModParticles {
     public static final RegistrySupplier<SimpleParticleType> ENCHANT_MAGIC = register("enchant_magic");
     public static final RegistrySupplier<SimpleParticleType> RISING_ENCHANT_GLYPHS = register("rising_enchant_glyphs");
     public static final RegistrySupplier<ParticleType<ProjectileSplatParticleOptions>> SNOWBALL_SPLAT = register("snow_splat", ProjectileSplatParticleOptions::codec, ProjectileSplatParticleOptions::streamCodec);
+    public static final RegistrySupplier<SimpleParticleType> HEART_GROWTH = register("heart_growth");
 
     public static void init() {
         PARTICLE_TYPES.init();

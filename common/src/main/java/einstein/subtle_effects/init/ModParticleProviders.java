@@ -95,6 +95,7 @@ public class ModParticleProviders {
         register(ENCHANT_MAGIC, EnchantMagicProvider::new);
         register(RISING_ENCHANT_GLYPHS, RisingEnchantGlyphParticle.Provider::new);
         register(SNOWBALL_SPLAT, ProjectileSplatParticle.Provider::new);
+        register(HEART_GROWTH, HeartGrowthParticle.Provider::new);
     }
 
     private static <T extends ParticleType<V>, V extends ParticleOptions> void register(Supplier<T> particleType, ParticleEngine.SpriteParticleRegistration<V> provider) {

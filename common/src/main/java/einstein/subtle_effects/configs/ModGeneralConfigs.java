@@ -69,6 +69,7 @@ public class ModGeneralConfigs extends Config {
 
     public boolean lavaSparkSmoke = true;
     public ValidatedFloat sparksScale = new ValidatedFloat(1, 2, 1);
+    public boolean growingHearts = true;
     public boolean poppingHearts = true;
     public boolean poppingBubbles = true;
     public ValidatedFloat poppingBubblesVolume = new ValidatedFloat(0.2F, 1, 0);

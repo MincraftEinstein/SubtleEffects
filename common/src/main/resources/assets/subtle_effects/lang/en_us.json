@@ -702,6 +702,8 @@
   "config.subtle_effects.general.dropLandSoundVolume.desc": "Volume of the drip sound played when a drop particle lands on the ground or in a fluid. Note, vanilla has sounds for dripstone drop particles and this config will not affect that.\n0 to disable",
   "config.subtle_effects.general.lavaSparkSmoke": "Lava Spark Smoke",
   "config.subtle_effects.general.sparksScale": "Sparks Scale",
+  "config.subtle_effects.general.growingHearts": "Growing Hearts",
+  "config.subtle_effects.general.growingHearts.desc": "Should heart particles play a growing/expanding animation when spawned",
   "config.subtle_effects.general.poppingHearts": "Popping Hearts",
   "config.subtle_effects.general.poppingHearts.desc": "Should heart particles play a popping animation before disappearing",
   "config.subtle_effects.general.poppingBubbles": "Popping Bubbles",
