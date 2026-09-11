@@ -2,23 +2,23 @@ package einstein.subtle_effects.util;
 
 import einstein.subtle_effects.configs.ModBlockConfigs;
 import einstein.subtle_effects.data.FluidDefinition;
+import einstein.subtle_effects.data.color_providers.ConstantColorProvider;
 import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.init.ModParticles;
+import einstein.subtle_effects.mixin.client.item.BucketItemAccessor;
+import einstein.subtle_effects.networking.PayloadSender;
 import einstein.subtle_effects.networking.clientbound.ClientBoundEntityFellPacket;
 import einstein.subtle_effects.particle.EnderEyePlacedRingParticle;
 import einstein.subtle_effects.particle.SparkParticle;
 import einstein.subtle_effects.particle.emitter.SplashEmitter;
-import einstein.subtle_effects.particle.option.ColorAndIntegerParticleOptions;
-import einstein.subtle_effects.particle.option.ColorParticleOptions;
-import einstein.subtle_effects.particle.option.DirectionParticleOptions;
-import einstein.subtle_effects.particle.option.SheepFluffParticleOptions;
-import einstein.subtle_effects.platform.Services;
+import einstein.subtle_effects.particle.option.*;
 import einstein.subtle_effects.ticking.tickers.TickerManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
@@ -33,19 +33,25 @@ import net.minecraft.world.entity.animal.Sheep;
 import net.minecraft.world.entity.animal.camel.Camel;
 import net.minecraft.world.entity.animal.horse.AbstractHorse;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.PotionItem;
 import net.minecraft.world.item.alchemy.PotionUtils;
+import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.AttachFace;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.entity.projectile.Projectile;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
@@ -94,7 +100,7 @@ public class ParticleSpawnUtil {
             spawnEntityFellParticles(entity, entity.getY(), distance, fallDamage, ENTITIES.dustClouds.playerFell);
         }
         else if (level instanceof ServerLevel serverLevel) {
-            Services.NETWORK.sendToClientsTracking(
+            PayloadSender.sendToClientsTracking(
                     entity instanceof ServerPlayer player ? player : null,
                     serverLevel, entity.blockPosition(),
                     new ClientBoundEntityFellPacket(entity.getId(), entity.getY(), distance, fallDamage, config)
@@ -268,14 +274,14 @@ public class ParticleSpawnUtil {
 
     public static void spawnEnderEyePlacementParticles(BlockPos pos, RandomSource random, Level level, int color) {
         if (BLOCKS.enderEyePlacedRings.get()) {
-            level.addParticle(new ColorParticleOptions(ModParticles.ENDER_EYE_PLACED_RING.get(), Vec3.fromRGB24(color).toVector3f()),
+            level.addParticle(new ColorProviderParticleOptions(ModParticles.ENDER_EYE_PLACED_RING.get(), color),
                     pos.getX() + 0.5, pos.getY() + 0.8125 + EnderEyePlacedRingParticle.SIZE, pos.getZ() + 0.5,
                     0, 0, 0
             );
         }
 
         if (BLOCKS.enderEyePlacedParticlesDisplayType.get() != ModBlockConfigs.EnderEyePlacedParticlesDisplayType.VANILLA) {
-            spawnEndPortalParticles(level, pos, random, new ColorParticleOptions(ModParticles.SHORT_SPARK.get(), Vec3.fromRGB24(color).toVector3f()), 16);
+            spawnEndPortalParticles(level, pos, random, new ColorProviderParticleOptions(ModParticles.SHORT_SPARK.get(), color), 16);
         }
     }
 
@@ -476,14 +482,23 @@ public class ParticleSpawnUtil {
             return null;
         }
 
-        FluidState fluidState = level.getFluidState(entity.blockPosition());
+        BlockPos pos = entity.blockPosition();
+        FluidState fluidState = level.getFluidState(pos);
         FluidDefinition fluidDefinition = ((FluidDefinitionAccessor) fluidState.getType()).subtleEffects$getFluidDefinition();
 
         if (fluidDefinition != null) {
+            if (ENTITIES.splashes.ignoreWaterloggedBlocks.get()) {
+                BlockState state = level.getBlockState(pos);
+                if (state.hasProperty(BlockStateProperties.WATERLOGGED) && state.getValue(BlockStateProperties.WATERLOGGED)) {
+                    return null;
+                }
+            }
+
             FluidLogicAccessor accessor = (FluidLogicAccessor) entity;
             double fluidDefinitionHeight = accessor.subtleEffects$getFluidDefinitionHeight().getDouble(fluidDefinition);
 
-            if (fluidDefinitionHeight > 0) {
+            BlockPos abovePos = pos.above();
+            if (fluidDefinitionHeight > 0 && level.getBlockState(abovePos).isAir() && level.getFluidState(abovePos).isEmpty()) {
                 boolean isWater = fluidDefinition.is(FluidTags.WATER);
 
                 if (waterOnly == isWater || allFluids) {
@@ -580,7 +595,8 @@ public class ParticleSpawnUtil {
             // noinspection all
             if (!PotionUtils.getMobEffects(useItem).isEmpty()) {
                 int color = PotionUtils.getColor(useItem);
-                level.addParticle(new ColorAndIntegerParticleOptions(ModParticles.POTION_EMITTER.get(), color, entity.getId()),
+                level.addParticle(new PotionRingParticleOptions(ModParticles.POTION_EMITTER.get(),
+                                new ConstantColorProvider(color), Util.isHarmful(contents), entity.getId()),
                         entity.getX(),
                         entity.getY(),
                         entity.getZ(),
@@ -603,6 +619,37 @@ public class ParticleSpawnUtil {
                     random.nextDouble(),
                     nextNonAbsDouble(random)
             );
+        }
+    }
+
+    public static void spawnProjectileSplat(Projectile projectile, Level level, RandomSource random, ParticleType<ProjectileSplatParticleOptions> particle) {
+        Vec3 delta = projectile.getDeltaMovement();
+        Vec3 position = projectile.position();
+        BlockHitResult result = level.clip(new ClipContext(position,
+                position.add(delta),
+                ClipContext.Block.COLLIDER,
+                ClipContext.Fluid.NONE,
+                projectile
+        ));
+
+        if (result.getType() != HitResult.Type.MISS) {
+            Direction direction = result.getDirection();
+            BlockPos pos = result.getBlockPos();
+            BlockState state = level.getBlockState(pos);
+            Vec3 location = result.getLocation();
+
+            if (!state.getCollisionShape(level, pos).isEmpty()) {
+                Direction opposite = direction.getOpposite();
+                Direction.Axis axis = opposite.getAxis();
+                double offset = direction.getAxisDirection().getStep() * Mth.nextDouble(random, 0.001, 0.002);
+
+                level.addParticle(new ProjectileSplatParticleOptions(particle, opposite, pos),
+                        axis == Direction.Axis.X ? location.x() + offset : location.x(),
+                        axis == Direction.Axis.Y ? location.y() + offset : location.y(),
+                        axis == Direction.Axis.Z ? location.z() + offset : location.z(),
+                        0, 0, 0
+                );
+            }
         }
     }
 }

@@ -4,7 +4,7 @@ import com.anthonyhilyard.iceberg.util.Selectors;
 import com.anthonyhilyard.itemborders.ItemBordersConfig;
 import com.anthonyhilyard.itemborders.compat.LegendaryTooltipsHandler;
 import com.mojang.datafixers.util.Pair;
-import einstein.subtle_effects.mixin.client.ItemBordersConfigAccessor;
+import einstein.subtle_effects.mixin.client.compat.ItemBordersConfigAccessor;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.TextColor;

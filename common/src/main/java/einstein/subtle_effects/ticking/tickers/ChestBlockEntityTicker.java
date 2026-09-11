@@ -20,6 +20,7 @@ import net.minecraft.world.level.block.ChestBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.minecraft.world.level.block.entity.ChestLidController;
+import net.minecraft.world.level.block.entity.EnderChestBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.ChestType;
 
@@ -43,8 +44,12 @@ public class ChestBlockEntityTicker extends BlockPosTicker {
         this.lidController = lidController;
     }
 
-    public static void trySpawn(Level level, BlockPos pos) {
+    public static void trySpawn(Level level, BlockPos pos, BlockState state) {
         if (BLOCKS.chestsOpenRandomlyUnderwaterFrequency.get() <= 0 && !BLOCKS.openingChestsSpawnsBubbles) {
+            return;
+        }
+
+        if (state.hasProperty(TYPE) && state.getValue(TYPE) == ChestType.LEFT) {
             return;
         }
 
@@ -75,7 +80,7 @@ public class ChestBlockEntityTicker extends BlockPosTicker {
         }
 
         BlockEntity blockEntity = level.getBlockEntity(pos);
-        if (!(blockEntity instanceof ChestBlockEntity)) {
+        if (!(blockEntity instanceof ChestBlockEntity) && !(blockEntity instanceof EnderChestBlockEntity)) {
             return;
         }
 
@@ -208,7 +213,7 @@ public class ChestBlockEntityTicker extends BlockPosTicker {
         }
 
         level.playSound(Minecraft.getInstance().player,
-                x, y, z, sound, SoundSource.BLOCKS, 0.5F,
+                x, y, z, sound, SoundSource.BLOCKS, BLOCKS.randomChestOpeningSoundVolume.get(),
                 level.getRandom().nextFloat() * 0.1F + 0.9F
         );
     }

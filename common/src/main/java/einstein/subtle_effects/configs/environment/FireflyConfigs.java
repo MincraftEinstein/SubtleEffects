@@ -70,7 +70,7 @@ public class FireflyConfigs extends ConfigSection {
     public ValidatedFloat fireflySoundVolume = new ValidatedFloat(1, 2, 0);
 
     public ConfigGroup habitatBiomesGroup = new ConfigGroup("habitat_biomes");
-    public ValidatedCondition<Boolean> onlyAllowInHabitatBiomes = conditional(new ValidatedBoolean(), firefliesEnabled);
+    public ValidatedCondition<Boolean> onlyAllowInHabitatBiomes = conditional(new ValidatedBoolean(false), firefliesEnabled);
     public ValidatedCondition<List<? extends ResourceLocation>> habitatBiomes = conditional(biomeList("swamp", "mangrove_swamp"), firefliesEnabled);
     @ConfigGroup.Pop
     public ValidatedCondition<Integer> habitatBiomeDensity = conditional(new ValidatedInt(3, 10, 1), firefliesEnabled);

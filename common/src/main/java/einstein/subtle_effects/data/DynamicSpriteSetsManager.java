@@ -11,9 +11,10 @@ import java.util.Map;
 
 public class DynamicSpriteSetsManager {
 
-    private static final Map<ResourceLocation, SpriteSetHolder> SPRITE_SETS = new HashMap<>();
-    private static final Map<ResourceLocation, SpriteSetHolder> REGISTERED_SPRITE_SETS = new HashMap<>();
     public static final Map<ResourceLocation, SpriteSetHolder> STATIC_SPRITE_SETS = new HashMap<>();
+    private static final Map<ResourceLocation, SpriteSetHolder> REGISTERED_SPRITE_SETS = new HashMap<>();
+    private static final Map<ResourceLocation, SpriteSetHolder> SPRITE_SETS = new HashMap<>();
+    private static final List<ResourceLocation> REMOVED_SPRITE_SETS = new ArrayList<>();
 
     public static SpriteSetHolder getOrCreate(ResourceLocation id) {
         if (REGISTERED_SPRITE_SETS.containsKey(id)) {
@@ -22,21 +23,17 @@ public class DynamicSpriteSetsManager {
         else if (STATIC_SPRITE_SETS.containsKey(id)) {
             return STATIC_SPRITE_SETS.get(id);
         }
+        else if (SPRITE_SETS.containsKey(id)) {
+            return SPRITE_SETS.get(id);
+        }
 
-        SpriteSetHolder holder = new SpriteSetHolder(id);
+        SpriteSetHolder holder = new SpriteSetHolder();
         REGISTERED_SPRITE_SETS.put(id, holder);
         return holder;
     }
 
-    public static void reload(Map<ResourceLocation, ParticleEngine.MutableSpriteSet> spriteSets) {
-        List<ResourceLocation> oldSpriteSets = new ArrayList<>(SPRITE_SETS.keySet());
-        oldSpriteSets.forEach(location -> {
-            SpriteSetHolder holder = SPRITE_SETS.get(location);
-            if (!holder.referencesPreExisting()) {
-                spriteSets.remove(location);
-            }
-        });
-
+    public static void beginReload(Map<ResourceLocation, ParticleEngine.MutableSpriteSet> spriteSets) {
+        SubtleEffects.LOGGER.info("Began loading dynamic sprite sets");
         Map<ResourceLocation, SpriteSetHolder> preparedHolders = new HashMap<>(STATIC_SPRITE_SETS);
         REGISTERED_SPRITE_SETS.forEach((id, holder) -> {
             if (preparedHolders.containsKey(id)) {
@@ -46,7 +43,13 @@ public class DynamicSpriteSetsManager {
 
             preparedHolders.put(id, holder);
         });
+        REGISTERED_SPRITE_SETS.clear();
 
+        SPRITE_SETS.forEach((id, holder) -> {
+            if (!preparedHolders.containsKey(id) && !holder.referencesPreExisting()) {
+                REMOVED_SPRITE_SETS.add(id);
+            }
+        });
         SPRITE_SETS.clear();
         SPRITE_SETS.putAll(preparedHolders);
         SPRITE_SETS.forEach((id, holder) -> {
@@ -59,7 +62,11 @@ public class DynamicSpriteSetsManager {
 
             holder.set(spriteSets.get(id), true);
         });
+    }
 
-        REGISTERED_SPRITE_SETS.clear();
+    public static void finishReload(Map<ResourceLocation, ParticleEngine.MutableSpriteSet> spriteSets) {
+        REMOVED_SPRITE_SETS.forEach(spriteSets::remove);
+        REMOVED_SPRITE_SETS.clear();
+        SubtleEffects.LOGGER.info("Finished loading dynamic sprite sets");
     }
 }

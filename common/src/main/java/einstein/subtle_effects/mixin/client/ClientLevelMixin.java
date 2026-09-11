@@ -1,7 +1,9 @@
 package einstein.subtle_effects.mixin.client;
 
+import com.google.common.base.Predicates;
 import einstein.subtle_effects.init.ModBlockTickers;
 import einstein.subtle_effects.init.ModConfigs;
+import einstein.subtle_effects.ticking.BiomeEffectsManager;
 import einstein.subtle_effects.ticking.FireflyManager;
 import einstein.subtle_effects.ticking.GeyserManager;
 import einstein.subtle_effects.ticking.SparkProviderManager;
@@ -17,14 +19,18 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.boss.enderdragon.EndCrystal;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.BaseFireBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.storage.WritableLevelData;
+import net.minecraft.world.phys.AABB;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Mutable;
@@ -33,7 +39,9 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.function.Supplier;
 
@@ -60,12 +68,12 @@ public abstract class ClientLevelMixin extends Level {
 
     @Inject(method = "tickNonPassenger", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;tick()V"))
     private void entityTick(Entity entity, CallbackInfo ci) {
-        EntityTickerManager.createTickersForEntity(entity);
+        EntityTickerManager.updateTickersForEntity(entity);
     }
 
     @Inject(method = "tickPassenger", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;rideTick()V"))
     private void entityRideTick(Entity vehicleEntity, Entity entity, CallbackInfo ci) {
-        EntityTickerManager.createTickersForEntity(entity);
+        EntityTickerManager.updateTickersForEntity(entity);
     }
 
     @Inject(method = "doAnimateTick", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/Block;animateTick(Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;Lnet/minecraft/util/RandomSource;)V"))
@@ -74,7 +82,19 @@ public abstract class ClientLevelMixin extends Level {
         BlockState state = getBlockState(pos);
         Block block = state.getBlock();
 
+        if (block instanceof BaseFireBlock) {
+            if (ModConfigs.ENTITIES.endCrystalsDisableFireEffects) {
+                List<EndCrystal> endCrystals = new ArrayList<>();
+                getEntities(EntityType.END_CRYSTAL, new AABB(pos), Predicates.alwaysTrue(), endCrystals);
+
+                if (!endCrystals.isEmpty()) {
+                    return;
+                }
+            }
+        }
+
         FireflyManager.tick(this, pos, state, random);
+        BiomeEffectsManager.tick(this, pos, state, random);
 
         if (!state.isAir()) {
             BlockTickerProvider tickerProvider = ModBlockTickers.REGISTERED.get(block);
@@ -84,7 +104,7 @@ public abstract class ClientLevelMixin extends Level {
             }
 
             GeyserManager.tick(this, state, pos);
-            ChestBlockEntityTicker.trySpawn(this, pos);
+            ChestBlockEntityTicker.trySpawn(this, pos, state);
 
             FluidState fluidState = getFluidState(pos);
             if (!fluidState.isEmpty()) {

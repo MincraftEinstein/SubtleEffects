@@ -16,7 +16,7 @@ public class ModSpriteSets {
 
     private static SpriteSetHolder register(String name) {
         ResourceLocation id = SubtleEffects.loc(name);
-        SpriteSetHolder holder = new SpriteSetHolder(id);
+        SpriteSetHolder holder = new SpriteSetHolder();
         DynamicSpriteSetsManager.STATIC_SPRITE_SETS.put(id, holder);
         return holder;
     }

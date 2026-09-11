@@ -2,7 +2,7 @@ package einstein.subtle_effects.mixin.common.block;
 
 import com.llamalad7.mixinextras.sugar.Local;
 import einstein.subtle_effects.networking.clientbound.ClientBoundCompostItemPayload;
-import einstein.subtle_effects.platform.Services;
+import einstein.subtle_effects.networking.PayloadSender;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
@@ -32,7 +32,7 @@ public class CommonComposterMixin {
             ItemStack copiedStack = stack.copy();
 
             if (!copiedStack.isEmpty()) {
-                Services.NETWORK.sendToClientsTracking(serverLevel, pos, new ClientBoundCompostItemPayload(copiedStack, pos, false));
+                PayloadSender.sendToClientsTracking(serverLevel, pos, new ClientBoundCompostItemPayload(copiedStack, pos, false));
             }
         }
     }
@@ -54,7 +54,7 @@ public class CommonComposterMixin {
                 ItemStack stack = getItem(0).copy();
 
                 if (!stack.isEmpty()) {
-                    Services.NETWORK.sendToClientsTracking(serverLevel, pos, new ClientBoundCompostItemPayload(stack, pos, false));
+                    PayloadSender.sendToClientsTracking(serverLevel, pos, new ClientBoundCompostItemPayload(stack, pos, false));
                 }
             }
         }

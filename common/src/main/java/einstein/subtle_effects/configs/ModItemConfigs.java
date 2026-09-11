@@ -14,7 +14,6 @@ import me.fzzyhmstrs.fzzy_config.validation.misc.ValidatedBoolean;
 import me.fzzyhmstrs.fzzy_config.validation.misc.ValidatedCondition;
 import me.fzzyhmstrs.fzzy_config.validation.misc.ValidatedEnum;
 import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedFloat;
-import net.minecraft.client.Minecraft;
 
 @Translation(prefix = ModConfigs.BASE_KEY + "items")
 public class ModItemConfigs extends Config {
@@ -39,8 +38,11 @@ public class ModItemConfigs extends Config {
     public boolean powderSnowBucketUseParticles = true;
     @ConfigGroup.Pop
     public boolean powderSnowBucketBlockPlaceSound = true;
+    public ConfigGroup potionCloudsGroup = new ConfigGroup("potion_clouds");
     public boolean lingeringPotionClouds = true;
     public boolean splashPotionClouds = true;
+    @ConfigGroup.Pop
+    public boolean tippedArrowPotionClouds = true;
     @RequiresAction(action = Action.RESTART)
     public boolean structureVoidItemMarker = true;
     public ValidatedFloat spawnEggUseSoundVolume = new ValidatedFloat(0.5F, 1, 0);
@@ -52,6 +54,6 @@ public class ModItemConfigs extends Config {
 
     @Override
     public void onUpdateClient() {
-        SubtleEffectsClient.clear(Minecraft.getInstance().level);
+        SubtleEffectsClient.clear();
     }
 }

@@ -5,17 +5,18 @@
   "refmap": "subtle_effects.refmap.json",
   "compatibilityLevel": "JAVA_17",
   "client": [
-    "client.FabricClientEntityMixin",
+    "client.FabricGuiMixin",
     "client.FabricLevelRendererMixin",
     "client.FabricLootrChestBlockEntityMixin",
     "client.FabricMultiPlayerGameModeMixin",
-    "client.FabricParticleEngineMixin",
-    "client.ModMenuModSearchMixin",
+    "client.compat.ModMenuModSearchMixin",
+    "client.entity.FabricClientEntityMixin",
     "client.item.FabricBucketItemAccessor",
     "client.item.FabricBucketItemMixin",
     "client.particle.FabricParticleEngineMixin"
   ],
   "mixins": [
+    "common.FabricEnchantmentMenuMixin",
     "common.FabricStonecutterMenu$2Mixin",
     "common.block.dispenser.FabricShearsDispenseItemBehaviorMixin"
   ],

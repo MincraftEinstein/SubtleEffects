@@ -14,6 +14,12 @@ public interface ParticleAccessor {
 
     double getOldZ();
 
+    double getXSpeed();
+
+    double getYSpeed();
+
+    double getZSpeed();
+
     float getAlpha();
 
     void setAlpha(float alpha);

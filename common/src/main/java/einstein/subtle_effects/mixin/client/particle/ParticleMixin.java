@@ -45,6 +45,18 @@ public abstract class ParticleMixin implements ParticleAccessor {
     public abstract float getAlpha();
 
     @Override
+    @Accessor("xd")
+    public abstract double getXSpeed();
+
+    @Override
+    @Accessor("yd")
+    public abstract double getYSpeed();
+
+    @Override
+    @Accessor("zd")
+    public abstract double getZSpeed();
+
+    @Override
     @Accessor("alpha")
     public abstract void setAlpha(float alpha);
 

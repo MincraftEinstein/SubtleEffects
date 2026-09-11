@@ -1,0 +1,37 @@
+name: Suggestion
+description: Request new features or suggest changes
+title: "[Suggestion]: "
+labels: [ "enhancement" ]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for taking the time to submit a suggestion!
+        Please be aware that you may or may not receive a response.
+  - type: dropdown
+    attributes:
+      label: "Mod Loader"
+      description: "What mod loader are you using to play the mod?"
+      options:
+        - "Fabric"
+        - "NeoForge"
+        - "Forge"
+    validations:
+      required: false
+  - type: input
+    attributes:
+      label: "Minecraft Version"
+      description: "What Minecraft version are you using to play the mod?"
+      placeholder: "Example: 1.21.1"
+    validations:
+      required: false
+  - type: textarea
+    attributes:
+      label: "Description"
+    validations:
+      required: true
+  - type: upload
+    attributes:
+      label: "Additional Files"
+    validations:
+      required: false

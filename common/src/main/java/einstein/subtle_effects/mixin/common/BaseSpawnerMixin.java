@@ -7,8 +7,8 @@ import einstein.subtle_effects.init.ModParticles;
 import einstein.subtle_effects.init.ModSounds;
 import einstein.subtle_effects.networking.clientbound.ClientBoundMobSpawnerSpawnPayload;
 import einstein.subtle_effects.particle.SparkParticle;
-import einstein.subtle_effects.platform.Services;
 import einstein.subtle_effects.util.MathUtil;
+import einstein.subtle_effects.networking.PayloadSender;
 import einstein.subtle_effects.util.SparkType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.SimpleParticleType;
@@ -60,6 +60,6 @@ public class BaseSpawnerMixin {
 
     @Inject(method = "serverTick", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Mob;spawnAnim()V"))
     private void onMobSpawn(ServerLevel level, BlockPos pos, CallbackInfo ci, @Local(ordinal = 1) BlockPos spawnPos) {
-        Services.NETWORK.sendToClientsTracking(level, pos, new ClientBoundMobSpawnerSpawnPayload(spawnPos));
+        PayloadSender.sendToClientsTracking(level, pos, new ClientBoundMobSpawnerSpawnPayload(spawnPos));
     }
 }
