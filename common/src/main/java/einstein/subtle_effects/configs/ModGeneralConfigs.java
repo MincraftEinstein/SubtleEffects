@@ -3,6 +3,7 @@ package einstein.subtle_effects.configs;
 import einstein.subtle_effects.SubtleEffects;
 import einstein.subtle_effects.SubtleEffectsClient;
 import einstein.subtle_effects.compat.CompatHelper;
+import einstein.subtle_effects.configs.cache.ParticleCullingCache;
 import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.util.Util;
 import me.fzzyhmstrs.fzzy_config.annotations.Translation;
@@ -107,6 +108,8 @@ public class ModGeneralConfigs extends Config {
 
     @Override
     public void onUpdateClient() {
+        ParticleCullingCache.refresh();
+
         Minecraft minecraft = Minecraft.getInstance();
         SubtleEffectsClient.clear();
 

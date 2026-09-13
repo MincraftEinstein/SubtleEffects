@@ -3,6 +3,7 @@ package einstein.subtle_effects.mixin.client.particle;
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import einstein.subtle_effects.configs.cache.ParticleCullingCache;
 import einstein.subtle_effects.data.BCWPPackManager;
 import einstein.subtle_effects.util.FrustumGetter;
 import einstein.subtle_effects.util.ParticleAccessor;
@@ -20,11 +21,11 @@ import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-
-import static einstein.subtle_effects.init.ModConfigs.GENERAL;
 
 @Mixin(ParticleEngine.class)
 public class ParticleEngineMixin {
@@ -32,10 +33,18 @@ public class ParticleEngineMixin {
     @Shadow
     protected ClientLevel level;
 
+    @Unique
+    private Frustum subtleEffects$frustum;
+
+    @Inject(method = "render*", at = @At("HEAD"))
+    private void cacheFrustumForRenderPass(CallbackInfo ci) {
+        subtleEffects$frustum = ((FrustumGetter) Minecraft.getInstance().levelRenderer).subtleEffects$getCullingFrustum();
+    }
+
     @Inject(method = "createParticle", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/particle/ParticleEngine;add(Lnet/minecraft/client/particle/Particle;)V"))
     private void modifyParticle(ParticleOptions options, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, CallbackInfoReturnable<Particle> cir, @Local Particle particle) {
         ParticleType<?> type = options.getType();
-        if (GENERAL.particleCullingBlocklist.get().contains(type)) {
+        if (ParticleCullingCache.cullingBlocklist.contains(type)) {
             ((ParticleAccessor) particle).subtleEffects$ignoresCulling();
         }
 
@@ -46,7 +55,7 @@ public class ParticleEngineMixin {
 
     @WrapWithCondition(method = "render*", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/particle/Particle;render(Lcom/mojang/blaze3d/vertex/VertexConsumer;Lnet/minecraft/client/Camera;F)V"))
     private boolean shouldRenderParticle(Particle particle, VertexConsumer consumer, Camera camera, float partialTick) {
-        if (!GENERAL.enableParticleCulling.get()) {
+        if (!ParticleCullingCache.enabled) {
             return true;
         }
 
@@ -54,19 +63,19 @@ public class ParticleEngineMixin {
             return true;
         }
 
-        ParticleAccessor accessor = ((ParticleAccessor) particle);
+        ParticleAccessor accessor = (ParticleAccessor) particle;
         if (accessor.subtleEffects$shouldIgnoreCulling()) {
             return true;
         }
 
-        Frustum frustum = ((FrustumGetter) Minecraft.getInstance().levelRenderer).subtleEffects$getCullingFrustum();
+        Frustum frustum = subtleEffects$frustum;
         if (frustum != null && frustum.isVisible(particle.getBoundingBox())) {
-            if (GENERAL.cullParticlesInUnloadedChunks.get() && !Util.isChunkLoaded(level, accessor.getX(), accessor.getZ())) {
+            if (ParticleCullingCache.cullInUnloadedChunks && !Util.isChunkLoaded(level, accessor.getX(), accessor.getZ())) {
                 return false;
             }
 
-            int distance = GENERAL.particleRenderDistance.get() * 16;
-            return accessor.subtleEffects$wasForced() || camera.getPosition().distanceToSqr(accessor.getX(), accessor.getY(), accessor.getZ()) < distance * distance;
+            return accessor.subtleEffects$wasForced()
+                    || camera.getPosition().distanceToSqr(accessor.getX(), accessor.getY(), accessor.getZ()) < ParticleCullingCache.renderDistanceSquared;
         }
         return false;
     }

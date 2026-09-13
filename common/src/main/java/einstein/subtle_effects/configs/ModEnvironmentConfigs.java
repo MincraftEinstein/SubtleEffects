@@ -2,12 +2,14 @@ package einstein.subtle_effects.configs;
 
 import einstein.subtle_effects.SubtleEffects;
 import einstein.subtle_effects.SubtleEffectsClient;
+import einstein.subtle_effects.configs.cache.FireflyConfigCache;
 import einstein.subtle_effects.configs.environment.BiomeConfigs;
 import einstein.subtle_effects.configs.environment.FireflyConfigs;
 import einstein.subtle_effects.configs.environment.GeyserConfigs;
 import einstein.subtle_effects.configs.environment.WaterfallConfigs;
 import einstein.subtle_effects.init.ModBlockTickers;
 import einstein.subtle_effects.init.ModConfigs;
+import einstein.subtle_effects.ticking.BiomeEffectsManager;
 import me.fzzyhmstrs.fzzy_config.annotations.Translation;
 import me.fzzyhmstrs.fzzy_config.annotations.Version;
 import me.fzzyhmstrs.fzzy_config.config.Config;
@@ -30,6 +32,8 @@ public class ModEnvironmentConfigs extends Config {
 
     @Override
     public void onUpdateClient() {
+        FireflyConfigCache.refresh();
+        BiomeEffectsManager.init();
         ModBlockTickers.init();
         SubtleEffectsClient.clear();
     }
