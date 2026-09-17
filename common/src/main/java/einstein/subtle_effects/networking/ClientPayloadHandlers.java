@@ -523,15 +523,15 @@ public class ClientPayloadHandlers {
     }
 
     // Don't convert to enum parameters, because the server will crash trying to access the client configs
-    private static boolean getBlockDestroyEffectConfig(ClientBoundBlockDestroyEffectsPayload packet) {
-        return switch (packet.config()) {
+    private static boolean getBlockDestroyEffectConfig(ClientBoundBlockDestroyEffectsPayload payload) {
+        return switch (payload.config()) {
             case LEAVES_DECAY -> ModConfigs.BLOCKS.leavesDecayEffects;
             case FARMLAND_DESTROY -> ModConfigs.BLOCKS.farmlandDestroyEffects;
         };
     }
 
-    private static boolean getEntityFellConfig(ClientBoundEntityFellPayload packet) {
-        return switch (packet.config()) {
+    private static boolean getEntityFellConfig(ClientBoundEntityFellPayload payload) {
+        return switch (payload.config()) {
             case ENTITY -> ENTITIES.dustClouds.mobFell;
             case PLAYER -> ENTITIES.dustClouds.playerFell;
             case MACE -> ENTITIES.dustClouds.landMaceAttack;
