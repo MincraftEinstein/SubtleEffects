@@ -66,16 +66,17 @@ public abstract class EnchantmentTableParticleMixin extends TextureSheetParticle
         @ModifyReturnValue(method = "createParticle(Lnet/minecraft/core/particles/SimpleParticleType;Lnet/minecraft/client/multiplayer/ClientLevel;DDDDDD)Lnet/minecraft/client/particle/Particle;", at = @At("RETURN"))
         private Particle init(Particle particle) {
             EnchantmentTableParticleAccessor accessor = (EnchantmentTableParticleAccessor) particle;
-            if (ModConfigs.GENERAL.glowingEnchantmentParticles) {
+            if (ModConfigs.GENERAL.glowingEnchantmentGlyphParticles) {
                 accessor.subtleEffects$setGlowing(true);
             }
 
-            if (ModConfigs.GENERAL.translucentEnchantmentParticles) {
-                accessor.subtleEffects$setLifetimeAlpha(new LifetimeAlpha(0, 0.5F, 0, 1));
-                ((ParticleAccessor) particle).setAlpha(0.5F);
+            if (ModConfigs.GENERAL.translucentEnchantmentGlyphParticles) {
+                LifetimeAlpha lifetimeAlpha = new LifetimeAlpha(0, 0.5F, 0, 1);
+                accessor.subtleEffects$setLifetimeAlpha(lifetimeAlpha);
+                ((ParticleAccessor) particle).setAlpha(lifetimeAlpha.startAlpha());
             }
 
-            if (ModConfigs.GENERAL.disableRandomizedShading) {
+            if (ModConfigs.GENERAL.disableRandomizedEnchantmentGlyphShading) {
                 particle.setColor(1, 1, 1);
             }
             return particle;

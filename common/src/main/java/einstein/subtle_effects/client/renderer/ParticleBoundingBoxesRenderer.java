@@ -5,6 +5,7 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import einstein.subtle_effects.SubtleEffectsClient;
 import einstein.subtle_effects.mixin.client.particle.ParticleEngineAccessor;
 import einstein.subtle_effects.util.FrustumGetter;
+import einstein.subtle_effects.util.MathUtil;
 import einstein.subtle_effects.util.ParticleAccessor;
 import einstein.subtle_effects.util.Util;
 import net.minecraft.client.Camera;
@@ -35,7 +36,7 @@ public class ParticleBoundingBoxesRenderer {
                     return;
                 }
 
-                Vector3f renderTypeColor = Vec3.fromRGB24(FastColor.ARGB32.color(255, renderType.toString().hashCode())).toVector3f();
+                Vector3f renderTypeColor = Vec3.fromRGB24(MathUtil.color(255, renderType.toString().hashCode())).toVector3f();
                 particles.forEach(particle -> {
                     poseStack.pushPose();
 

@@ -8,8 +8,6 @@
     "client.ClientExplosionMixin",
     "client.ClientLevelMixin",
     "client.EarthenClayBlockMixin",
-    "client.ExplosionMixin",
-    "client.FluidMixin",
     "client.GameRendererAccessor",
     "client.GameRendererMixin",
     "client.LevelRendererMixin",

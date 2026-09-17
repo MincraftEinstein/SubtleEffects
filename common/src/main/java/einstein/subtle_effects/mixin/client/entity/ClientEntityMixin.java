@@ -129,21 +129,6 @@ public abstract class ClientEntityMixin implements EntityAccessor, FluidLogicAcc
         });
     }
 
-    @WrapOperation(method = "updateInWaterStateAndDoWaterCurrentPushing", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;updateFluidHeightAndDoFluidPushing(Lnet/minecraft/tags/TagKey;D)Z"))
-    private boolean preformWaterSplash(Entity instance, TagKey<Fluid> fluidTag, double motionScale, Operation<Boolean> original) {
-        boolean result = original.call(instance, fluidTag, motionScale);
-
-        if (result) {
-            subtleEffects$lastTouchedFluid = ParticleSpawnUtil.preformSplash(true, false, subtleEffects$me, firstTick, isWater -> {
-                if (isWater) {
-                    subtleEffects$cancelWaterSplash = true;
-                }
-            });
-        }
-
-        return result;
-    }
-
     @Inject(method = "doWaterSplashEffect", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/Mth;floor(D)I"), cancellable = true)
     private void cancelWaterSplash(CallbackInfo ci) {
         if (level().isClientSide() && subtleEffects$cancelWaterSplash) {

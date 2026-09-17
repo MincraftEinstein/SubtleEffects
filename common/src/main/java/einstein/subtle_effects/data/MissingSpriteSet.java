@@ -36,7 +36,7 @@ public class MissingSpriteSet extends ParticleEngine.MutableSpriteSet {
 
     @Override
     public void rebind(List<TextureAtlasSprite> sprites) {
-        rebind(sprites.getFirst());
+        rebind(sprites.get(0));
     }
 
     public void rebind(TextureAtlasSprite sprite) {

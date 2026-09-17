@@ -1,7 +1,7 @@
 package einstein.subtle_effects.networking.clientbound;
 
 import einstein.subtle_effects.SubtleEffects;
-import einstein.subtle_effects.networking.Packet;
+import me.fzzyhmstrs.fzzy_config.networking.FzzyPayload;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
@@ -11,7 +11,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 
 public record ClientBoundFallingBlockLandPayload(int stateId, BlockPos pos,
-                                                 boolean isInWater) implements Packet {
+                                                 boolean isInWater) implements FzzyPayload {
 
     public static final ResourceLocation ID = SubtleEffects.loc("falling_block_land");
 
@@ -20,22 +20,17 @@ public record ClientBoundFallingBlockLandPayload(int stateId, BlockPos pos,
     }
 
     @Override
-    public void encode(FriendlyByteBuf buf) {
+    public void write(FriendlyByteBuf buf) {
         buf.writeInt(stateId);
         buf.writeBlockPos(pos);
         buf.writeBoolean(isInWater);
     }
 
-    public static ClientBoundFallingBlockLandPayload decode(FriendlyByteBuf buf) {
+    public static ClientBoundFallingBlockLandPayload read(FriendlyByteBuf buf) {
         return new ClientBoundFallingBlockLandPayload(buf.readInt(), buf.readBlockPos(), buf.readBoolean());
     }
 
-    @Override
-    public void handle(@Nullable ServerPlayer player) {
-        ClientPacketHandlers.handle(this);
-    }
-
-    public ResourceLocation id() {
+    public ResourceLocation getId() {
         return ID;
     }
 }

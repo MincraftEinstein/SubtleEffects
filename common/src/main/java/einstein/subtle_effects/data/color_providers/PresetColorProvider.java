@@ -4,10 +4,8 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import einstein.subtle_effects.particle.SparkParticle;
-import io.netty.buffer.ByteBuf;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.codec.ByteBufCodecs;
-import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.util.ByIdMap;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.StringRepresentable;
@@ -25,11 +23,6 @@ public record PresetColorProvider(Preset preset) implements ColorProviderType.Co
             Preset.CODEC.fieldOf("preset").forGetter(PresetColorProvider::preset)
     ).apply(instance, PresetColorProvider::new));
 
-    public static final StreamCodec<ByteBuf, PresetColorProvider> STREAM_CODEC = StreamCodec.composite(
-            Preset.STREAM_CODEC, PresetColorProvider::preset,
-            PresetColorProvider::new
-    );
-
     @Override
     public ColorProviderType<?> getType() {
         return ColorProviderType.PRESET;
@@ -38,6 +31,15 @@ public record PresetColorProvider(Preset preset) implements ColorProviderType.Co
     @Override
     public Vector3f provideColor(Level level, BlockPos pos, RandomSource random) {
         return preset.color.provideColor(level, pos, random);
+    }
+
+    @Override
+    public void write(FriendlyByteBuf buf) {
+        buf.writeEnum(preset);
+    }
+
+    public static ColorProviderType.ColorProvider read(FriendlyByteBuf buf) {
+        return new PresetColorProvider(buf.readEnum(Preset.class));
     }
 
     public enum Preset implements StringRepresentable {
@@ -51,7 +53,6 @@ public record PresetColorProvider(Preset preset) implements ColorProviderType.Co
 
         public static final IntFunction<Preset> BY_ID = ByIdMap.continuous(Preset::ordinal, values(), ByIdMap.OutOfBoundsStrategy.ZERO);
         public static final Codec<Preset> CODEC = StringRepresentable.fromEnum(Preset::values);
-        public static final StreamCodec<ByteBuf, Preset> STREAM_CODEC = ByteBufCodecs.idMapper(BY_ID, Preset::ordinal);
 
         private final String name;
         private final ColorProviderType.ColorProvider color;

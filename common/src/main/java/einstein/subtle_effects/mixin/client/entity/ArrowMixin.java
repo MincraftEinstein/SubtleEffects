@@ -5,13 +5,14 @@ import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
 import einstein.subtle_effects.init.ModParticles;
-import net.minecraft.core.particles.ColorParticleOption;
+import einstein.subtle_effects.particle.option.ColorParticleOptions;
 import net.minecraft.core.particles.ParticleOptions;
-import net.minecraft.core.particles.ParticleType;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.entity.projectile.Arrow;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
+import org.joml.Vector3f;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 
@@ -29,18 +30,18 @@ public abstract class ArrowMixin extends AbstractArrow {
     private void replaceEffectParticles(Level level, ParticleOptions particleData, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, Operation<Void> original, @Local(ordinal = 1) int color) {
         if (ITEMS.tippedArrowPotionClouds) {
             if (inGround ? random.nextInt(3) > 0 : random.nextBoolean()) {
-                particleData = ColorParticleOption.create(ModParticles.POTION_POOF_CLOUD.get(), color);
+                particleData = new ColorParticleOptions(ModParticles.POTION_POOF_CLOUD.get(), Vec3.fromRGB24(color).toVector3f());
             }
         }
         original.call(level, particleData, x, y, z, xSpeed, ySpeed, zSpeed);
     }
 
-    @ModifyExpressionValue(method = "handleEntityEvent", at = @At(value = "FIELD", target = "Lnet/minecraft/core/particles/ParticleTypes;ENTITY_EFFECT:Lnet/minecraft/core/particles/ParticleType;"))
-    private ParticleType<ColorParticleOption> replaceEffectExpirationParticles(ParticleType<ColorParticleOption> original) {
+    @WrapOperation(method = "handleEntityEvent", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/Level;addParticle(Lnet/minecraft/core/particles/ParticleOptions;DDDDDD)V"))
+    private void replaceEffectExpirationParticles(Level level, ParticleOptions options, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, Operation<Void> original) {
         if (ITEMS.tippedArrowPotionClouds && random.nextBoolean()) {
-            return ModParticles.POTION_POOF_CLOUD.get();
+            options = new ColorParticleOptions(ModParticles.POTION_POOF_CLOUD.get(), new Vec3(xSpeed, ySpeed, zSpeed).toVector3f());
         }
-        return original;
+        original.call(level, options, x, y, z, xSpeed, ySpeed, zSpeed);
     }
 
     @ModifyExpressionValue(method = {"makeParticle", "handleEntityEvent"}, at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/projectile/Arrow;getRandomY()D"))

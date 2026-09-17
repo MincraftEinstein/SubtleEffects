@@ -33,10 +33,8 @@ public class ModGeneralConfigs extends Config {
     private static final List<ParticleType<?>> DEFAULT_CULLING_BLOCKLIST = net.minecraft.Util.make(new ArrayList<>(), list -> {
         list.add(ParticleTypes.PORTAL);
         list.add(ParticleTypes.REVERSE_PORTAL);
-        list.add(ParticleTypes.VAULT_CONNECTION);
         list.add(ParticleTypes.ENCHANT);
         list.add(ParticleTypes.NAUTILUS);
-        list.add(ParticleTypes.OMINOUS_SPAWNING);
 
         if (CompatHelper.IS_PARTICLE_RAIN_LOADED.get()) {
             ParticleType<?> mistType = BuiltInRegistries.PARTICLE_TYPE.get(new ResourceLocation(CompatHelper.PARTICLE_RAIN_MOD_ID, "mist"));

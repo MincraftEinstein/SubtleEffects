@@ -108,8 +108,6 @@ public class ModDamageListeners {
                 spawnBones(entity, level, random, ModParticles.WITHER_BONE.get()));
         register(EntityType.STRAY, (entity, level, random) ->
                 spawnBones(entity, level, random, ModParticles.STRAY_BONE.get()));
-        register(EntityType.BOGGED, (entity, level, random) ->
-                spawnBones(entity, level, random, ModParticles.BOGGED_BONE.get()));
         register(EntityType.SKELETON_HORSE, (entity, level, random) -> {
             if (ENTITIES.damageTaken.damagedSkeletonHorseBones) {
                 for (int i = 0; i < 7; i++) {

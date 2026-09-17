@@ -3,12 +3,9 @@ package einstein.subtle_effects.data.color_providers;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import io.netty.buffer.ByteBuf;
 import net.minecraft.client.renderer.BiomeColors;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.codec.ByteBufCodecs;
-import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.util.ByIdMap;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.level.Level;
@@ -16,18 +13,12 @@ import net.minecraft.world.phys.Vec3;
 import org.joml.Vector3f;
 
 import java.util.function.BiFunction;
-import java.util.function.IntFunction;
 
 public record BiomeColorProvider(ColorType colorType) implements ColorProviderType.ColorProvider {
 
     public static final MapCodec<BiomeColorProvider> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
             ColorType.CODEC.fieldOf("color_type").forGetter(BiomeColorProvider::colorType)
     ).apply(instance, BiomeColorProvider::new));
-
-    public static final StreamCodec<ByteBuf, BiomeColorProvider> STREAM_CODEC = StreamCodec.composite(
-            ColorType.STREAM_CODEC, BiomeColorProvider::colorType,
-            BiomeColorProvider::new
-    );
 
     @Override
     public ColorProviderType<?> getType() {
@@ -39,6 +30,15 @@ public record BiomeColorProvider(ColorType colorType) implements ColorProviderTy
         return Vec3.fromRGB24(colorType.colorGetter.apply(level, pos)).toVector3f();
     }
 
+    @Override
+    public void write(FriendlyByteBuf buf) {
+        buf.writeEnum(colorType);
+    }
+
+    public static ColorProviderType.ColorProvider read(FriendlyByteBuf buf) {
+        return new BiomeColorProvider(buf.readEnum(ColorType.class));
+    }
+
     public enum ColorType implements StringRepresentable {
         WATER_COLOR("water_color", BiomeColors::getAverageWaterColor),
         WATER_FOG_COLOR("water_fog_color", (level, pos) -> level.getBiome(pos).value().getWaterFogColor()),
@@ -47,9 +47,7 @@ public record BiomeColorProvider(ColorType colorType) implements ColorProviderTy
         FOLIAGE_COLOR("foliage_color", BiomeColors::getAverageFoliageColor),
         GRASS_COLOR("grass_color", BiomeColors::getAverageGrassColor);
 
-        public static final IntFunction<ColorType> BY_ID = ByIdMap.continuous(ColorType::ordinal, values(), ByIdMap.OutOfBoundsStrategy.ZERO);
         public static final Codec<ColorType> CODEC = StringRepresentable.fromEnum(ColorType::values);
-        public static final StreamCodec<ByteBuf, ColorType> STREAM_CODEC = ByteBufCodecs.idMapper(BY_ID, ColorType::ordinal);
 
         private final String name;
         private final BiFunction<Level, BlockPos, Integer> colorGetter;

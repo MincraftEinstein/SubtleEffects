@@ -1,6 +1,7 @@
 package einstein.subtle_effects.particle;
 
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import einstein.subtle_effects.util.LifetimeAlpha;
 import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
@@ -12,7 +13,7 @@ import static einstein.subtle_effects.util.Util.PARTICLE_LIGHT_COLOR;
 
 public class RisingEnchantGlyphParticle extends TextureSheetParticle {
 
-    private final LifetimeAlpha lifetimeAlpha = new Particle.LifetimeAlpha(0.5F, 0, 0, 1);
+    private final LifetimeAlpha lifetimeAlpha = new LifetimeAlpha(0.5F, 0, 0, 1);
 
     protected RisingEnchantGlyphParticle(ClientLevel level, double x, double y, double z, SpriteSet sprites) {
         super(level, x, y, z);

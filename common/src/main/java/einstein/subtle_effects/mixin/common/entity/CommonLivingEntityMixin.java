@@ -7,9 +7,8 @@ import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.networking.clientbound.ClientBoundDrankPotionPayload;
 import einstein.subtle_effects.networking.clientbound.ClientBoundEntityDamagedPayload;
-import einstein.subtle_effects.networking.clientbound.ClientBoundEntityFellPacket;
-import einstein.subtle_effects.networking.clientbound.ClientBoundEntitySpawnSprintingDustCloudsPacket;
-import einstein.subtle_effects.platform.Services;
+import einstein.subtle_effects.networking.clientbound.ClientBoundEntityFellPayload;
+import einstein.subtle_effects.networking.clientbound.ClientBoundEntitySpawnSprintingDustCloudsPayload;
 import einstein.subtle_effects.util.ParticleSpawnUtil;
 import einstein.subtle_effects.networking.PayloadSender;
 import net.minecraft.core.particles.BlockParticleOption;
@@ -107,8 +106,8 @@ public abstract class CommonLivingEntityMixin extends Entity {
         if (!subtleEffects$me.isInvisible()) {
             ParticleSpawnUtil.spawnFallDustClouds(subtleEffects$me, damageMultiplier, damage,
                     subtleEffects$me instanceof Player
-                            ? ClientBoundEntityFellPacket.TypeConfig.PLAYER
-                            : ClientBoundEntityFellPacket.TypeConfig.ENTITY
+                            ? ClientBoundEntityFellPayload.TypeConfig.PLAYER
+                            : ClientBoundEntityFellPayload.TypeConfig.ENTITY
             );
         }
         return damage;
@@ -128,7 +127,7 @@ public abstract class CommonLivingEntityMixin extends Entity {
     private boolean cancelFlyIntoWallClientHurt(LivingEntity entity, DamageSource source, float amount) {
         if (!(entity instanceof Player player && player.isCreative())) {
             if (!entity.isInvisible()) {
-                ParticleSpawnUtil.spawnFallDustClouds(entity, 10, 10, ClientBoundEntityFellPacket.TypeConfig.ELYTRA);
+                ParticleSpawnUtil.spawnFallDustClouds(entity, 10, 10, ClientBoundEntityFellPayload.TypeConfig.ELYTRA);
             }
         }
         return !level().isClientSide;

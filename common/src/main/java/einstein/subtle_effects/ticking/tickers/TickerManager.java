@@ -60,17 +60,21 @@ public class TickerManager {
 
         for (Ticker ticker : TICKERS) {
             if (!ticker.isRemoved()) {
-                switch (ticker) {
-                    case ScheduledTicker scheduledTicker -> scheduledTickerCount++;
-                    case EntityTicker<?> entityTicker -> {
-                        if (entityTicker.entity instanceof Player) {
-                            playerTickerCount++;
-                            continue;
-                        }
-                        entityTickerCount++;
+                if (ticker instanceof ScheduledTicker) {
+                    scheduledTickerCount++;
+                }
+                else if (ticker instanceof EntityTicker<?> entityTicker) {
+                    if (entityTicker.entity instanceof Player) {
+                        playerTickerCount++;
+                        continue;
                     }
-                    case BlockPosTicker blockPosTicker -> worldTickerCount++;
-                    default -> otherTickerCount++;
+                    entityTickerCount++;
+                }
+                else if (ticker instanceof BlockPosTicker) {
+                    worldTickerCount++;
+                }
+                else {
+                    otherTickerCount++;
                 }
             }
         }

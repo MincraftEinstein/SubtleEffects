@@ -1,5 +1,6 @@
 package einstein.subtle_effects.mixin.common.block.dispenser;
 
+import einstein.subtle_effects.networking.PayloadSender;
 import einstein.subtle_effects.networking.clientbound.ClientBoundDispenseBucketPayload;
 import einstein.subtle_effects.platform.Services;
 import net.minecraft.core.BlockPos;
@@ -17,6 +18,6 @@ public class GlassBottleDispenseItemBehaviorMixin {
     @Inject(method = "execute", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/alchemy/PotionUtils;setPotion(Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/item/alchemy/Potion;)Lnet/minecraft/world/item/ItemStack;"))
     private void execute(BlockSource source, ItemStack stack, CallbackInfoReturnable<ItemStack> cir) {
         BlockPos pos = source.getPos();
-        Services.NETWORK.sendToClientsTracking(source.getLevel(), pos, new ClientBoundDispenseBucketPayload(new ItemStack(Items.WATER_BUCKET), pos));
+        PayloadSender.sendToClientsTracking(source.getLevel(), pos, new ClientBoundDispenseBucketPayload(new ItemStack(Items.WATER_BUCKET), pos));
     }
 }

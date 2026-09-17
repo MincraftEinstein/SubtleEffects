@@ -1,7 +1,6 @@
 package einstein.subtle_effects;
 
 import einstein.subtle_effects.data.color_providers.ColorProviderType;
-import einstein.subtle_effects.init.ModParticles;
 import einstein.subtle_effects.init.ModPackets;
 import einstein.subtle_effects.init.ModSounds;
 import net.minecraft.resources.ResourceLocation;
@@ -16,8 +15,6 @@ public class SubtleEffects {
 
     public static void init() {
         ModSounds.init();
-        ModPackets.init();
-        ModParticles.init();
         ColorProviderType.init();
     }
 

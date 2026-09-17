@@ -1,26 +1,29 @@
 package einstein.subtle_effects.networking.clientbound;
 
 import einstein.subtle_effects.SubtleEffects;
-import net.minecraft.network.RegistryFriendlyByteBuf;
-import net.minecraft.network.codec.ByteBufCodecs;
-import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import me.fzzyhmstrs.fzzy_config.networking.FzzyPayload;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 
 import java.util.Optional;
 
 public record ClientBoundEntityDamagedPayload(int entityId,
-                                              Optional<ResourceLocation> damageType) implements CustomPacketPayload {
+                                              Optional<ResourceLocation> damageType) implements FzzyPayload {
 
-    public static final Type<ClientBoundEntityDamagedPayload> TYPE = new Type<>(SubtleEffects.loc("entity_damaged"));
-    public static final StreamCodec<RegistryFriendlyByteBuf, ClientBoundEntityDamagedPayload> STREAM_CODEC = StreamCodec.composite(
-            ByteBufCodecs.INT, ClientBoundEntityDamagedPayload::entityId,
-            ByteBufCodecs.optional(ResourceLocation.STREAM_CODEC), ClientBoundEntityDamagedPayload::damageType,
-            ClientBoundEntityDamagedPayload::new
-    );
+    public static final ResourceLocation ID = SubtleEffects.loc("entity_damaged");
 
     @Override
-    public Type<? extends CustomPacketPayload> type() {
-        return TYPE;
+    public void write(FriendlyByteBuf buf) {
+        buf.writeInt(entityId);
+        buf.writeOptional(damageType, (buf1, resourceLocation) -> buf.writeResourceLocation(resourceLocation));
+    }
+
+    public static ClientBoundEntityDamagedPayload read(FriendlyByteBuf buf) {
+        return new ClientBoundEntityDamagedPayload(buf.readInt(), buf.readOptional(buf1 -> buf.readResourceLocation()));
+    }
+
+    @Override
+    public ResourceLocation getId() {
+        return ID;
     }
 }

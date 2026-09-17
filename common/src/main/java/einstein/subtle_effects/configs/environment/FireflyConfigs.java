@@ -76,17 +76,17 @@ public class FireflyConfigs extends ConfigSection {
     public ValidatedCondition<Integer> habitatBiomeDensity = conditional(new ValidatedInt(3, 10, 1), firefliesEnabled);
 
     public enum FireflyType implements EnumTranslatable {
-        ORIGINAL(() -> ModParticles.FIREFLY),
-        VANILLA(() -> ModParticles.VANILLA_FIREFLY);
+        ORIGINAL(ModParticles.FIREFLY),
+        VANILLA(ModParticles.VANILLA_FIREFLY);
 
-        private final Supplier<Supplier<SimpleParticleType>> particle;
+        private final Supplier<SimpleParticleType> particle;
 
-        FireflyType(Supplier<Supplier<SimpleParticleType>> particle) {
+        FireflyType(Supplier<SimpleParticleType> particle) {
             this.particle = particle;
         }
 
         public Supplier<SimpleParticleType> getParticle() {
-            return particle.get();
+            return particle;
         }
 
         @Override

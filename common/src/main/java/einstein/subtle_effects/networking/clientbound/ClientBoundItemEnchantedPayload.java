@@ -1,21 +1,26 @@
 package einstein.subtle_effects.networking.clientbound;
 
 import einstein.subtle_effects.SubtleEffects;
+import me.fzzyhmstrs.fzzy_config.networking.FzzyPayload;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.RegistryFriendlyByteBuf;
-import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
 
-public record ClientBoundItemEnchantedPayload(BlockPos pos) implements CustomPacketPayload {
+public record ClientBoundItemEnchantedPayload(BlockPos pos) implements FzzyPayload {
 
-    public static final Type<ClientBoundItemEnchantedPayload> TYPE = new Type<>(SubtleEffects.loc("item_enchanted"));
-    public static final StreamCodec<RegistryFriendlyByteBuf, ClientBoundItemEnchantedPayload> STREAM_CODEC = StreamCodec.composite(
-            BlockPos.STREAM_CODEC, ClientBoundItemEnchantedPayload::pos,
-            ClientBoundItemEnchantedPayload::new
-    );
+    public static final ResourceLocation ID = SubtleEffects.loc("item_enchanted");
 
     @Override
-    public Type<? extends CustomPacketPayload> type() {
-        return TYPE;
+    public void write(FriendlyByteBuf buf) {
+        buf.writeBlockPos(pos);
+    }
+
+    public static ClientBoundItemEnchantedPayload read(FriendlyByteBuf buf) {
+        return new ClientBoundItemEnchantedPayload(buf.readBlockPos());
+    }
+
+    @Override
+    public ResourceLocation getId() {
+        return ID;
     }
 }

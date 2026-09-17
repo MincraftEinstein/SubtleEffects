@@ -2,14 +2,13 @@ package einstein.subtle_effects.data.color_providers;
 
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import io.netty.buffer.ByteBuf;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.codec.ByteBufCodecs;
-import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
 import org.joml.Vector3f;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public record ListColorProvider(List<? extends ColorProviderType.ColorProvider> providers)
@@ -19,12 +18,6 @@ public record ListColorProvider(List<? extends ColorProviderType.ColorProvider> 
     public static final MapCodec<ListColorProvider> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
             ColorProviderType.CODEC.listOf().fieldOf("providers").forGetter(listColorProvider -> (List<ColorProviderType.ColorProvider>) listColorProvider.providers)
     ).apply(instance, ListColorProvider::new));
-
-    @SuppressWarnings("unchecked")
-    public static final StreamCodec<ByteBuf, ListColorProvider> STREAM_CODEC = StreamCodec.composite(
-            ByteBufCodecs.<ByteBuf, ColorProviderType.ColorProvider>list().apply(ColorProviderType.STREAM_CODEC), listColorProvider -> (List<ColorProviderType.ColorProvider>) listColorProvider.providers,
-            ListColorProvider::new
-    );
 
     public static ListColorProvider fromIntList(List<Integer> colors) {
         return new ListColorProvider(colors.stream().map(ConstantColorProvider::new).toList());
@@ -38,5 +31,23 @@ public record ListColorProvider(List<? extends ColorProviderType.ColorProvider> 
     @Override
     public Vector3f provideColor(Level level, BlockPos pos, RandomSource random) {
         return providers.get(random.nextInt(providers.size())).provideColor(level, pos, random);
+    }
+
+    @Override
+    public void write(FriendlyByteBuf buf) {
+        buf.writeInt(providers.size());
+        for (ColorProviderType.ColorProvider provider : providers) {
+            buf.writeResourceLocation(provider.getType().registryName());
+            provider.write(buf);
+        }
+    }
+
+    public static ColorProviderType.ColorProvider read(FriendlyByteBuf buf) {
+        int size = buf.readInt();
+        List<ColorProviderType.ColorProvider> providers = new ArrayList<>(size);
+        for (int i = 0; i < size; i++) {
+            providers.add(ColorProviderType.read(buf));
+        }
+        return new ListColorProvider(providers);
     }
 }

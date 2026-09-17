@@ -4,7 +4,6 @@ import einstein.subtle_effects.util.ParticleAccessor;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.SpriteSet;
-import net.minecraft.client.particle.TrialSpawnerDetectionParticle;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.util.Mth;
 

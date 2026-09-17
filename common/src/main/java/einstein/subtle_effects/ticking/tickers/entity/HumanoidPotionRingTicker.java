@@ -4,10 +4,13 @@ import einstein.subtle_effects.data.color_providers.ConstantColorProvider;
 import einstein.subtle_effects.init.ModParticles;
 import einstein.subtle_effects.particle.option.PotionRingParticleOptions;
 import einstein.subtle_effects.util.Util;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.PotionItem;
 import net.minecraft.world.item.alchemy.PotionUtils;
+
+import java.util.List;
 
 public class HumanoidPotionRingTicker<T extends LivingEntity> extends EntityTicker<T> {
 
@@ -25,11 +28,12 @@ public class HumanoidPotionRingTicker<T extends LivingEntity> extends EntityTick
 
             if (!stack.isEmpty() && stack.getItem() instanceof PotionItem) {
                 // noinspection all
-                if (!PotionUtils.getMobEffects(stack).isEmpty()) {
+                List<MobEffectInstance> effects = PotionUtils.getMobEffects(stack);
+                if (!effects.isEmpty()) {
                     int color = PotionUtils.getColor(stack);
 
                     level.addParticle(new PotionRingParticleOptions(ModParticles.POTION_EMITTER.get(),
-                                    new ConstantColorProvider(color), Util.isHarmful(contents), entity.getId()),
+                                    new ConstantColorProvider(color), Util.isHarmful(effects), entity.getId()),
                             entity.getX(),
                             entity.getY(),
                             entity.getZ(),

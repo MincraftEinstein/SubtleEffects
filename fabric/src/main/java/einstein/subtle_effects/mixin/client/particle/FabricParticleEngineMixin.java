@@ -33,11 +33,6 @@ public abstract class FabricParticleEngineMixin {
     @Final
     private Map<ResourceLocation, ParticleEngine.MutableSpriteSet> spriteSets;
 
-    @WrapWithCondition(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/particle/Particle;render(Lcom/mojang/blaze3d/vertex/VertexConsumer;Lnet/minecraft/client/Camera;F)V"))
-    private boolean shouldRenderParticle(Particle particle, VertexConsumer consumer, Camera camera, float partialTick) {
-        return CommonMixinLogic.shouldRenderParticle(particle, camera);
-    }
-
     @Inject(method = "<init>", at = @At("TAIL"))
     private void init(ClientLevel level, TextureManager textureManager, CallbackInfo ci) {
         spriteSets.put(MissingSpriteSet.ID, MissingSpriteSet.INSTANCE);
@@ -52,5 +47,10 @@ public abstract class FabricParticleEngineMixin {
     private void finishReloadingDynamicSpriteSets(CallbackInfo ci, @Local TextureAtlasSprite missingSprite) {
         MissingSpriteSet.INSTANCE.rebind(missingSprite);
         DynamicSpriteSetsManager.finishReload(spriteSets);
+    }
+
+    @WrapWithCondition(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/particle/Particle;render(Lcom/mojang/blaze3d/vertex/VertexConsumer;Lnet/minecraft/client/Camera;F)V"))
+    private boolean shouldRenderParticle(Particle particle, VertexConsumer consumer, Camera camera, float partialTick) {
+        return CommonMixinLogic.shouldRenderParticle(particle, camera);
     }
 }

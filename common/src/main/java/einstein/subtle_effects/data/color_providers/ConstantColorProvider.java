@@ -3,10 +3,8 @@ package einstein.subtle_effects.data.color_providers;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import einstein.subtle_effects.util.Util;
-import io.netty.buffer.ByteBuf;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.codec.ByteBufCodecs;
-import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
@@ -18,11 +16,6 @@ public record ConstantColorProvider(int color) implements ColorProviderType.Colo
             Util.RGB_COLOR_CODEC.fieldOf("color").forGetter(ConstantColorProvider::color)
     ).apply(instance, ConstantColorProvider::new));
 
-    public static final StreamCodec<ByteBuf, ConstantColorProvider> STREAM_CODEC = StreamCodec.composite(
-            ByteBufCodecs.INT, ConstantColorProvider::color,
-            ConstantColorProvider::new
-    );
-
     @Override
     public ColorProviderType<?> getType() {
         return ColorProviderType.CONSTANT;
@@ -31,5 +24,14 @@ public record ConstantColorProvider(int color) implements ColorProviderType.Colo
     @Override
     public Vector3f provideColor(Level level, BlockPos pos, RandomSource random) {
         return Vec3.fromRGB24(color).toVector3f();
+    }
+
+    @Override
+    public void write(FriendlyByteBuf buf) {
+        buf.writeInt(color);
+    }
+
+    public static ColorProviderType.ColorProvider read(FriendlyByteBuf buf) {
+        return new ConstantColorProvider(buf.readInt());
     }
 }

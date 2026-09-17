@@ -1,7 +1,7 @@
 package einstein.subtle_effects;
 
-import einstein.subtle_effects.platform.FabricNetworkHelper;
-import einstein.subtle_effects.platform.services.NetworkHelper;
+import einstein.subtle_effects.init.ModPackets;
+import einstein.subtle_effects.init.ModParticles;
 import net.fabricmc.api.ModInitializer;
 
 public class SubtleEffectsFabric implements ModInitializer {
@@ -9,6 +9,7 @@ public class SubtleEffectsFabric implements ModInitializer {
     @Override
     public void onInitialize() {
         SubtleEffects.init();
-        FabricNetworkHelper.init(NetworkHelper.Direction.TO_SERVER);
+        ModParticles.init();
+        ModPackets.init();
     }
 }

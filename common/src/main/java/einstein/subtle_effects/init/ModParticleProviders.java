@@ -7,7 +7,10 @@ import einstein.subtle_effects.particle.emitter.PotionEmitter;
 import einstein.subtle_effects.particle.emitter.SplashEmitter;
 import einstein.subtle_effects.particle.provider.*;
 import einstein.subtle_effects.platform.Services;
-import net.minecraft.client.particle.*;
+import net.minecraft.client.particle.FlameParticle;
+import net.minecraft.client.particle.ParticleEngine;
+import net.minecraft.client.particle.ParticleProvider;
+import net.minecraft.client.particle.SuspendedTownParticle;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
 

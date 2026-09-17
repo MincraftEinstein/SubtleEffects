@@ -38,9 +38,9 @@ import net.minecraft.util.FastColor;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.effect.MobEffectCategory;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.alchemy.PotionContents;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.AbstractCauldronBlock;
@@ -51,6 +51,8 @@ import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
 
 import static einstein.subtle_effects.init.ModConfigs.BLOCKS;
 
@@ -253,12 +255,12 @@ public class Util {
         return "south east".contains(searchQuery) || "south_east".contains(searchQuery);
     }
 
-    public static boolean isHarmful(PotionContents contents) {
+    public static boolean isHarmful(List<MobEffectInstance> effects) {
         final int[] harmful = {0};
         final int[] notHarmful = {0};
 
-        contents.forEachEffect(effect -> {
-            if (effect.getEffect().value().getCategory() == MobEffectCategory.HARMFUL) {
+        effects.forEach(effect -> {
+            if (effect.getEffect().getCategory() == MobEffectCategory.HARMFUL) {
                 harmful[0]++;
                 return;
             }

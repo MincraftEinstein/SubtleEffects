@@ -4,7 +4,7 @@ import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.init.ModSounds;
-import einstein.subtle_effects.networking.clientbound.ClientBoundAnimalFedPacket;
+import einstein.subtle_effects.networking.clientbound.ClientBoundAnimalFedPayload;
 import einstein.subtle_effects.ticking.tickers.TickerManager;
 import einstein.subtle_effects.networking.PayloadSender;
 import net.minecraft.core.particles.ParticleTypes;
@@ -125,7 +125,7 @@ public class MobMixin {
                 if (!stackCopy.isEmpty()) {
                     if ((ItemStack.isSameItemSameTags(stack, handStack) && stack.getCount() == handStack.getCount())
                             || player.isCreative()) {
-                        PayloadSender.sendToClientsTracking(serverLevel, mob.blockPosition(), new ClientBoundAnimalFedPacket(mob.getId(), stack.isEmpty() ? stackCopy : stack));
+                        PayloadSender.sendToClientsTracking(serverLevel, mob.blockPosition(), new ClientBoundAnimalFedPayload(mob.getId(), stack.isEmpty() ? stackCopy : stack));
                     }
                 }
             }

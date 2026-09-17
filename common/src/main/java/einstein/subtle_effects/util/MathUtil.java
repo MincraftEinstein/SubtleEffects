@@ -24,4 +24,12 @@ public class MathUtil {
     public static int nextSign(RandomSource random) {
         return random.nextBoolean() ? 1 : -1;
     }
+
+    public static int as8BitChannel(float value) {
+        return Mth.floor(value * 255.0F);
+    }
+
+    public static int color(int alpha, int rgb) {
+        return alpha << 24 | rgb & 16777215;
+    }
 }

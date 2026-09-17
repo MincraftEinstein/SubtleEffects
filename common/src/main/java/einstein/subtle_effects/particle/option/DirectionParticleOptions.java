@@ -30,7 +30,7 @@ public record DirectionParticleOptions(ParticleType<DirectionParticleOptions> ty
         public DirectionParticleOptions fromCommand(ParticleType<DirectionParticleOptions> type, StringReader reader) throws CommandSyntaxException {
             reader.expect(' ');
             String string = reader.readString();
-            Direction direction = net.minecraft.core.Direction.byName(string);
+            Direction direction = Direction.byName(string);
             if (direction != null) {
                 return new DirectionParticleOptions(type, direction);
             }

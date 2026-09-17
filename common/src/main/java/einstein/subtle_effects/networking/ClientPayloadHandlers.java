@@ -55,24 +55,14 @@ public class ClientPayloadHandlers {
     private static final List<Block> MASON_STONECUTTER_USE_BLOCKS = List.of(Blocks.STONE, Blocks.CHISELED_STONE_BRICKS, Blocks.QUARTZ_BLOCK, Blocks.ANDESITE, Blocks.DIORITE, Blocks.GRANITE);
     private static final List<DyeColor> COMMON_SHEPHERD_WOOL_COLORS = List.of(DyeColor.WHITE, DyeColor.GRAY, DyeColor.BLACK, DyeColor.BROWN);
 
-    public static void handle(ClientBoundEntityFellPacket packet) {
-        Level level = Minecraft.getInstance().level;
-        if (level == null) {
-            return;
-        }
-
-        if (level.getEntity(packet.entityId()) instanceof LivingEntity livingEntity) {
-            ParticleSpawnUtil.spawnEntityFellParticles(livingEntity, packet.y(), packet.distance(), packet.fallDamage(), getEntityFellConfig(packet));
+    public static void handle(Level level, ClientBoundEntityFellPayload payload) {
+        if (level.getEntity(payload.entityId()) instanceof LivingEntity livingEntity) {
+            ParticleSpawnUtil.spawnEntityFellParticles(livingEntity, payload.y(), payload.distance(), payload.fallDamage(), getEntityFellConfig(payload));
         }
     }
 
-    public static void handle(ClientBoundEntitySpawnSprintingDustCloudsPacket packet) {
-        Level level = Minecraft.getInstance().level;
-        if (level == null) {
-            return;
-        }
-
-        if (level.getEntity(packet.entityId()) instanceof LivingEntity livingEntity) {
+    public static void handle(Level level, ClientBoundEntitySpawnSprintingDustCloudsPayload payload) {
+        if (level.getEntity(payload.entityId()) instanceof LivingEntity livingEntity) {
             int ySpeedModifier = 5;
             if (livingEntity instanceof Ravager) {
                 ySpeedModifier = 20;
@@ -82,26 +72,16 @@ public class ClientPayloadHandlers {
         }
     }
 
-    public static void handle(ClientBoundSpawnSnoreParticlePacket packet) {
-        Level level = Minecraft.getInstance().level;
-        if (level == null) {
-            return;
-        }
-
+    public static void handle(Level level, ClientBoundSpawnSnoreParticlePayload payload) {
         if (ModConfigs.BLOCKS.beehivesHaveSleepingZs) {
-            level.addParticle(ModParticles.SNORING.get(), packet.x(), packet.y(), packet.z(), 0, 0, 0);
+            level.addParticle(ModParticles.SNORING.get(), payload.x(), payload.y(), payload.z(), 0, 0, 0);
         }
     }
 
-    public static void handle(ClientBoundBlockDestroyEffectsPacket packet) {
-        Level level = Minecraft.getInstance().level;
-        if (level == null) {
-            return;
-        }
-
-        if (getBlockDestroyEffectConfig(packet)) {
-            BlockPos pos = packet.pos();
-            BlockState state = Block.stateById(packet.stateId());
+    public static void handle(Level level, ClientBoundBlockDestroyEffectsPayload payload) {
+        if (getBlockDestroyEffectConfig(payload)) {
+            BlockPos pos = payload.pos();
+            BlockState state = Block.stateById(payload.stateId());
             SoundType soundType = state.getSoundType();
 
             level.addDestroyBlockEffect(pos, state);
@@ -109,13 +89,8 @@ public class ClientPayloadHandlers {
         }
     }
 
-    public static void handle(ClientBoundXPBottleEffectsPacket packet) {
-        Level level = Minecraft.getInstance().level;
-        if (level == null) {
-            return;
-        }
-
-        BlockPos pos = packet.pos();
+    public static void handle(Level level, ClientBoundXPBottleEffectsPayload payload) {
+        BlockPos pos = payload.pos();
         Vec3 vec3 = Vec3.atBottomCenterOf(pos);
         RandomSource random = level.getRandom();
         ReplacedParticlesDisplayType type = ITEMS.projectiles.xpBottleParticlesDisplayType.get();
@@ -167,12 +142,7 @@ public class ClientPayloadHandlers {
         }
     }
 
-    public static void handle(ClientBoundFallingBlockLandPayload payload) {
-        Level level = Minecraft.getInstance().level;
-        if (level == null) {
-            return;
-        }
-
+    public static void handle(Level level, ClientBoundFallingBlockLandPayload payload) {
         BlockPos pos = payload.pos();
         BlockState state = Block.stateById(payload.stateId());
         Block block = state.getBlock();
@@ -210,13 +180,8 @@ public class ClientPayloadHandlers {
         }
     }
 
-    public static void handle(ClientBoundCompostItemPayload payload) {
+    public static void handle(Level level, ClientBoundCompostItemPayload payload) {
         if (BLOCKS.compostingItemParticles && (!payload.wasFarmer() || ENTITIES.villagerWorkAtWorkstationParticles)) {
-            Level level = Minecraft.getInstance().level;
-            if (level == null) {
-                return;
-            }
-
             RandomSource random = level.getRandom();
             ParticleSpawnUtil.spawnCompostParticles(level, payload.pos(),
                     new ItemParticleOption(ParticleTypes.ITEM, payload.stack()),
@@ -227,23 +192,13 @@ public class ClientPayloadHandlers {
         }
     }
 
-    public static void handle(ClientBoundStonecutterUsedPayload payload) {
-        Level level = Minecraft.getInstance().level;
-        if (level == null) {
-            return;
-        }
-
+    public static void handle(Level level, ClientBoundStonecutterUsedPayload payload) {
         BlockPos pos = payload.pos();
         ParticleSpawnUtil.spawnStonecutterParticles(level, payload.stack(), pos, level.getBlockState(pos));
     }
 
-    public static void handle(ClientBoundVillagerWorkPacket payload) {
+    public static void handle(Level level, ClientBoundVillagerWorkPayload payload) {
         if (!ENTITIES.villagerWorkAtWorkstationParticles) {
-            return;
-        }
-
-        Level level = Minecraft.getInstance().level;
-        if (level == null) {
             return;
         }
 
@@ -338,12 +293,7 @@ public class ClientPayloadHandlers {
         }
     }
 
-    public static void handle(ClientBoundMooshroomShearedPacket payload) {
-        Level level = Minecraft.getInstance().level;
-        if (level == null) {
-            return;
-        }
-
+    public static void handle(Level level, ClientBoundMooshroomShearedPayload payload) {
         Entity entity = level.getEntity(payload.entityId());
         if (entity instanceof MushroomCow mooshroom) {
             if (!ENTITIES.improvedMooshroomShearingEffects) {
@@ -372,12 +322,7 @@ public class ClientPayloadHandlers {
         }
     }
 
-    public static void handle(ClientBoundAnimalFedPacket payload) {
-        Level level = Minecraft.getInstance().level;
-        if (level == null) {
-            return;
-        }
-
+    public static void handle(Level level, ClientBoundAnimalFedPayload payload) {
         Entity entity = level.getEntity(payload.animalId());
         ItemStack stack = payload.stack();
 
@@ -402,12 +347,7 @@ public class ClientPayloadHandlers {
         }
     }
 
-    public static void handle(ClientBoundDrankPotionPayload payload) {
-        Level level = Minecraft.getInstance().level;
-        if (level == null) {
-            return;
-        }
-
+    public static void handle(Level level, ClientBoundDrankPotionPayload payload) {
         Entity entity = level.getEntity(payload.entityId());
 
         if (entity instanceof LivingEntity livingEntity && livingEntity.isAlive()) {
@@ -415,12 +355,7 @@ public class ClientPayloadHandlers {
         }
     }
 
-    public static void handle(ClientBoundDispenseBucketPayload payload) {
-        Level level = Minecraft.getInstance().level;
-        if (level == null) {
-            return;
-        }
-
+    public static void handle(Level level, ClientBoundDispenseBucketPayload payload) {
         BlockPos pos = payload.pos();
         BlockState state = level.getBlockState(pos);
 
@@ -432,24 +367,14 @@ public class ClientPayloadHandlers {
         ParticleSpawnUtil.spawnBucketParticles(level, pos, payload.stack());
     }
 
-    public static void handle(ClientBoundSheepShearPayload payload) {
-        Level level = Minecraft.getInstance().level;
-        if (level == null) {
-            return;
-        }
-
+    public static void handle(Level level, ClientBoundSheepShearPayload payload) {
         Entity entity = level.getEntity(payload.entityId());
         if (entity instanceof Sheep sheep && ENTITIES.sheepShearFluff) {
             ParticleSpawnUtil.spawnSheepFluff(sheep, 7);
         }
     }
 
-    public static void handle(ClientBoundEntityLandInFluidPayload payload) {
-        Level level = Minecraft.getInstance().level;
-        if (level == null) {
-            return;
-        }
-
+    public static void handle(Level level, ClientBoundEntityLandInFluidPayload payload) {
         Entity entity = level.getEntity(payload.entityId());
         if (entity != null) {
             Fluid fluid = payload.fluid();
@@ -472,12 +397,7 @@ public class ClientPayloadHandlers {
         }
     }
 
-    public static void handle(ClientBoundMobSpawnerSpawnPayload payload) {
-        Level level = Minecraft.getInstance().level;
-        if (level == null) {
-            return;
-        }
-
+    public static void handle(Level level, ClientBoundMobSpawnerSpawnPayload payload) {
         float volume = BLOCKS.monsterSpawnerSpawnMobSoundVolume.get();
         if (volume > 0) {
             RandomSource random = level.getRandom();
@@ -490,7 +410,7 @@ public class ClientPayloadHandlers {
         if (entity instanceof LivingEntity livingEntity && livingEntity.isAlive()) {
             Optional<ResourceLocation> damageType = payload.damageType();
             if (damageType.isPresent() && ENTITIES.damageTaken.damageTypes.contains(damageType.get())) {
-                ModDamageListeners.spawnParticles(entity, level, entity.getRandom());
+                ModDamageListeners.spawnParticles(entity, level, livingEntity.getRandom());
             }
         }
     }
@@ -603,14 +523,14 @@ public class ClientPayloadHandlers {
     }
 
     // Don't convert to enum parameters, because the server will crash trying to access the client configs
-    private static boolean getBlockDestroyEffectConfig(ClientBoundBlockDestroyEffectsPacket packet) {
+    private static boolean getBlockDestroyEffectConfig(ClientBoundBlockDestroyEffectsPayload packet) {
         return switch (packet.config()) {
             case LEAVES_DECAY -> ModConfigs.BLOCKS.leavesDecayEffects;
             case FARMLAND_DESTROY -> ModConfigs.BLOCKS.farmlandDestroyEffects;
         };
     }
 
-    private static boolean getEntityFellConfig(ClientBoundEntityFellPacket packet) {
+    private static boolean getEntityFellConfig(ClientBoundEntityFellPayload packet) {
         return switch (packet.config()) {
             case ENTITY -> ENTITIES.dustClouds.mobFell;
             case PLAYER -> ENTITIES.dustClouds.playerFell;

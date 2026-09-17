@@ -337,7 +337,7 @@ public class ModEntityTickers {
         });
         registerSimple(entity -> entity instanceof LivingEntity && !(entity instanceof ArmorStand) && (BLOCKS.magmaFrostWalkerSounds || BLOCKS.magmaFrostWalkerSteam), false, (LivingEntity entity, Level level, RandomSource random) -> {
             if (random.nextDouble() < 0.3 && entity.getBlockStateOn().is(Blocks.MAGMA_BLOCK)) {
-                if (EnchantmentHelper.getEnchantmentLevel(level.registryAccess().lookupOrThrow(Registries.ENCHANTMENT).getOrThrow(Enchantments.FROST_WALKER), entity) > 0) {
+                if (EnchantmentHelper.getEnchantmentLevel(Enchantments.FROST_WALKER, entity) > 0) {
                     if (BLOCKS.magmaFrostWalkerSounds && random.nextDouble() < 0.045) {
                         Util.playClientSound(entity.blockPosition(), SoundEvents.FIRE_EXTINGUISH, SoundSource.BLOCKS, 0.1F, nextFloat(random, 0.6F, 1));
                     }

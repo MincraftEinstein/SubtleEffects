@@ -5,9 +5,8 @@ import einstein.subtle_effects.data.FluidDefinition;
 import einstein.subtle_effects.data.color_providers.ConstantColorProvider;
 import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.init.ModParticles;
-import einstein.subtle_effects.mixin.client.item.BucketItemAccessor;
 import einstein.subtle_effects.networking.PayloadSender;
-import einstein.subtle_effects.networking.clientbound.ClientBoundEntityFellPacket;
+import einstein.subtle_effects.networking.clientbound.ClientBoundEntityFellPayload;
 import einstein.subtle_effects.particle.EnderEyePlacedRingParticle;
 import einstein.subtle_effects.particle.SparkParticle;
 import einstein.subtle_effects.particle.emitter.SplashEmitter;
@@ -27,6 +26,7 @@ import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.animal.Sheep;
@@ -49,12 +49,12 @@ import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.List;
 import java.util.function.BiPredicate;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
@@ -94,7 +94,7 @@ public class ParticleSpawnUtil {
         level.addParticle(particle, pos.getX() + xOffset, pos.getY() + yOffset, pos.getZ() + zOffset, xSpeed, ySpeed, zSpeed);
     }
 
-    public static void spawnFallDustClouds(LivingEntity entity, float distance, int fallDamage, ClientBoundEntityFellPacket.TypeConfig config) {
+    public static void spawnFallDustClouds(LivingEntity entity, float distance, int fallDamage, ClientBoundEntityFellPayload.TypeConfig config) {
         Level level = entity.level();
         if (level.isClientSide && entity.equals(Minecraft.getInstance().player)) {
             spawnEntityFellParticles(entity, entity.getY(), distance, fallDamage, ENTITIES.dustClouds.playerFell);
@@ -103,7 +103,7 @@ public class ParticleSpawnUtil {
             PayloadSender.sendToClientsTracking(
                     entity instanceof ServerPlayer player ? player : null,
                     serverLevel, entity.blockPosition(),
-                    new ClientBoundEntityFellPacket(entity.getId(), entity.getY(), distance, fallDamage, config)
+                    new ClientBoundEntityFellPayload(entity.getId(), entity.getY(), distance, fallDamage, config)
             );
         }
     }
@@ -593,10 +593,11 @@ public class ParticleSpawnUtil {
             Level level = entity.level();
 
             // noinspection all
-            if (!PotionUtils.getMobEffects(useItem).isEmpty()) {
+            List<MobEffectInstance> effects = PotionUtils.getMobEffects(useItem);
+            if (!effects.isEmpty()) {
                 int color = PotionUtils.getColor(useItem);
                 level.addParticle(new PotionRingParticleOptions(ModParticles.POTION_EMITTER.get(),
-                                new ConstantColorProvider(color), Util.isHarmful(contents), entity.getId()),
+                                new ConstantColorProvider(color), Util.isHarmful(effects), entity.getId()),
                         entity.getX(),
                         entity.getY(),
                         entity.getZ(),

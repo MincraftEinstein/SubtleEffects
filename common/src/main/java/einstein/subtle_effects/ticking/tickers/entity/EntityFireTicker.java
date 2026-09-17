@@ -2,6 +2,8 @@ package einstein.subtle_effects.ticking.tickers.entity;
 
 import einstein.subtle_effects.compat.CompatHelper;
 import einstein.subtle_effects.compat.SoulFiredCompat;
+import einstein.subtle_effects.data.color_providers.ColorProviderType;
+import einstein.subtle_effects.data.color_providers.PresetColorProvider;
 import einstein.subtle_effects.particle.SparkParticle;
 import einstein.subtle_effects.util.SparkType;
 import einstein.subtle_effects.util.Util;
@@ -50,7 +52,7 @@ public class EntityFireTicker extends EntityTicker<Entity> {
                                         SparkParticle.create(SparkType.SHORT_LIFE, random, SparkParticle.BLAZE_COLORS) :
                                         getParticleForFireType(
                                                 SparkParticle.create(SparkType.SHORT_LIFE, random),
-                                                SparkParticle.createSoul(SparkType.SHORT_LIFE, random)
+                                                SparkParticle.create(SparkType.SHORT_LIFE, new PresetColorProvider(PresetColorProvider.Preset.SOUL_SPARKS))
                                         ),
                                 entity.getRandomX(1),
                                 entity.getRandomY(),

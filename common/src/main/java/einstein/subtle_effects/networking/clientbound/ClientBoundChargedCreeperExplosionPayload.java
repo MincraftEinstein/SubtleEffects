@@ -1,24 +1,29 @@
 package einstein.subtle_effects.networking.clientbound;
 
 import einstein.subtle_effects.SubtleEffects;
-import net.minecraft.network.RegistryFriendlyByteBuf;
-import net.minecraft.network.codec.ByteBufCodecs;
-import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import me.fzzyhmstrs.fzzy_config.networking.FzzyPayload;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
 
-public record ClientBoundChargedCreeperExplosionPayload(double x, double y, double z, float radius) implements CustomPacketPayload {
+public record ClientBoundChargedCreeperExplosionPayload(double x, double y, double z,
+                                                        float radius) implements FzzyPayload {
 
-    public static final Type<ClientBoundChargedCreeperExplosionPayload> TYPE = new Type<>(SubtleEffects.loc("charged_creeper_explosion"));
-    public static final StreamCodec<RegistryFriendlyByteBuf, ClientBoundChargedCreeperExplosionPayload> STREAM_CODEC = StreamCodec.composite(
-            ByteBufCodecs.DOUBLE, ClientBoundChargedCreeperExplosionPayload::x,
-            ByteBufCodecs.DOUBLE, ClientBoundChargedCreeperExplosionPayload::y,
-            ByteBufCodecs.DOUBLE, ClientBoundChargedCreeperExplosionPayload::z,
-            ByteBufCodecs.FLOAT, ClientBoundChargedCreeperExplosionPayload::radius,
-            ClientBoundChargedCreeperExplosionPayload::new
-    );
+    public static final ResourceLocation ID = SubtleEffects.loc("charged_creeper_explosion");
 
     @Override
-    public Type<? extends CustomPacketPayload> type() {
-        return TYPE;
+    public void write(FriendlyByteBuf buf) {
+        buf.writeDouble(x);
+        buf.writeDouble(y);
+        buf.writeDouble(z);
+        buf.writeFloat(radius);
+    }
+
+    public static ClientBoundChargedCreeperExplosionPayload read(FriendlyByteBuf buf) {
+        return new ClientBoundChargedCreeperExplosionPayload(buf.readDouble(), buf.readDouble(), buf.readDouble(), buf.readFloat());
+    }
+
+    @Override
+    public ResourceLocation getId() {
+        return ID;
     }
 }

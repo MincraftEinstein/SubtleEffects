@@ -1,19 +1,15 @@
 package einstein.subtle_effects;
 
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
+import einstein.subtle_effects.client.renderer.DebugScreenOverlayRenderer;
+import einstein.subtle_effects.client.renderer.ParticleBoundingBoxesRenderer;
 import einstein.subtle_effects.data.BCWPPackManager;
-import einstein.subtle_effects.data.MobSkullShaderReloadListener;
-import einstein.subtle_effects.data.SparkProviderReloadListener;
 import einstein.subtle_effects.init.ModRenderTypes;
-import einstein.subtle_effects.platform.ForgeRegistryHelper;
+import einstein.subtle_effects.platform.ForgeParticleHelper;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.particle.ParticleProvider;
-import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.client.renderer.ShaderInstance;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
-import net.minecraft.core.particles.ParticleOptions;
-import net.minecraft.core.particles.ParticleType;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.PathPackResources;
 import net.minecraft.server.packs.repository.Pack;
@@ -29,13 +25,13 @@ import net.minecraftforge.forgespi.language.IModInfo;
 
 import java.io.IOException;
 import java.util.function.Consumer;
-import java.util.function.Function;
-import java.util.function.Supplier;
+
+import static einstein.subtle_effects.SubtleEffectsClient.*;
 
 public class SubtleEffectsForgeClient {
 
     public SubtleEffectsForgeClient(IEventBus modEventBus) {
-        SubtleEffectsClient.clientSetup();
+        clientSetup();
 
         try {
             Class.forName("net.optifine.Config");
@@ -45,23 +41,23 @@ public class SubtleEffectsForgeClient {
         }
 
         modEventBus.addListener((RegisterParticleProvidersEvent event) ->
-                ForgeRegistryHelper.PARTICLE_PROVIDERS.forEach((particle, provider) -> registerParticle(event, particle, provider))
+                ForgeParticleHelper.PARTICLE_PROVIDERS.forEach(consumer -> consumer.accept(event))
         );
         modEventBus.addListener((AddPackFindersEvent event) -> {
             if (event.getPackType() == PackType.CLIENT_RESOURCES) {
                 event.addRepositorySource(new BCWPSource());
             }
         });
-        modEventBus.addListener((RegisterClientReloadListenersEvent event) -> SubtleEffectsClient.registerReloadListeners().forEach(event::registerReloadListener));
+        modEventBus.addListener((RegisterClientReloadListenersEvent event) -> registerReloadListeners().forEach(event::registerReloadListener));
         modEventBus.addListener((EntityRenderersEvent.RegisterLayerDefinitions event) ->
-                SubtleEffectsClient.registerModelLayers().forEach(event::registerLayerDefinition)
+                registerModelLayers().forEach(event::registerLayerDefinition)
         );
         modEventBus.addListener((EntityRenderersEvent.AddLayers event) -> {
             for (String model : event.getSkins()) {
                 EntityRenderer<?> renderer = event.getSkin(model);
 
                 if (renderer instanceof PlayerRenderer playerRenderer) {
-                    SubtleEffectsClient.registerPlayerRenderLayers(playerRenderer, event.getContext())
+                    registerPlayerRenderLayers(playerRenderer, event.getContext())
                             .forEach(playerRenderer::addLayer);
                 }
             }
@@ -76,26 +72,21 @@ public class SubtleEffectsForgeClient {
                     }
                 }
         );
+        modEventBus.addListener((RegisterGuiOverlaysEvent event) ->
+                event.registerBelowAll("debug_overlay", (gui, guiGraphics, partialTick, screenWidth, screenHeight) -> DebugScreenOverlayRenderer.render(guiGraphics)));
         MinecraftForge.EVENT_BUS.addListener((TickEvent.ClientTickEvent event) -> {
             if (event.phase == TickEvent.Phase.END) {
                 Minecraft minecraft = Minecraft.getInstance();
-                SubtleEffectsClient.clientTick(minecraft, minecraft.level);
+                clientTick(minecraft, minecraft.level);
             }
         });
         MinecraftForge.EVENT_BUS.addListener((RegisterClientCommandsEvent event) ->
-                SubtleEffectsClient.registerClientCommands(event.getDispatcher(), event.getBuildContext()));
+                registerClientCommands(event.getDispatcher(), event.getBuildContext()));
         MinecraftForge.EVENT_BUS.addListener((RenderLevelStageEvent event) -> {
             if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_PARTICLES) {
-                SubtleEffectsClient.renderParticleBoundingBoxes(event.getPoseStack(), event.getCamera());
+                ParticleBoundingBoxesRenderer.render(event.getPoseStack(), event.getCamera());
             }
         });
-    }
-
-    @SuppressWarnings("unchecked")
-    private static <T extends ParticleType<V>, V extends ParticleOptions> void registerParticle(RegisterParticleProvidersEvent event, Supplier<? extends ParticleType<?>> particle, Function<SpriteSet, ? extends ParticleProvider<?>> provider) {
-        Supplier<T> t = (Supplier<T>) particle;
-        Function<SpriteSet, V> v = (Function<SpriteSet, V>) provider;
-        event.registerSpriteSet(t.get(), sprites -> (ParticleProvider<V>) v.apply(sprites));
     }
 
     public static class BCWPSource implements RepositorySource {

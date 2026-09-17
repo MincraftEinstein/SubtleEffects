@@ -1,27 +1,41 @@
 package einstein.subtle_effects.init;
 
+import einstein.subtle_effects.networking.ClientPayloadHandlers;
 import einstein.subtle_effects.networking.clientbound.*;
+import me.fzzyhmstrs.fzzy_config.api.ConfigApiJava;
+import me.fzzyhmstrs.fzzy_config.networking.FzzyPayload;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.Level;
 
-import static einstein.subtle_effects.platform.Services.NETWORK;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 public class ModPackets {
 
     public static void init() {
-        NETWORK.registerToClient(ClientBoundSpawnSnoreParticlePacket.ID, ClientBoundSpawnSnoreParticlePacket.class, ClientBoundSpawnSnoreParticlePacket::decode);
-        NETWORK.registerToClient(ClientBoundEntityFellPacket.ID, ClientBoundEntityFellPacket.class, ClientBoundEntityFellPacket::decode);
-        NETWORK.registerToClient(ClientBoundEntitySpawnSprintingDustCloudsPacket.ID, ClientBoundEntitySpawnSprintingDustCloudsPacket.class, ClientBoundEntitySpawnSprintingDustCloudsPacket::decode);
-        NETWORK.registerToClient(ClientBoundBlockDestroyEffectsPacket.ID, ClientBoundBlockDestroyEffectsPacket.class, ClientBoundBlockDestroyEffectsPacket::decode);
-        NETWORK.registerToClient(ClientBoundXPBottleEffectsPacket.ID, ClientBoundXPBottleEffectsPacket.class, ClientBoundXPBottleEffectsPacket::decode);
-        NETWORK.registerToClient(ClientBoundFallingBlockLandPayload.ID, ClientBoundFallingBlockLandPayload.class, ClientBoundFallingBlockLandPayload::decode);
-        NETWORK.registerToClient(ClientBoundCompostItemPayload.ID, ClientBoundCompostItemPayload.class, ClientBoundCompostItemPayload::decode);
-        NETWORK.registerToClient(ClientBoundStonecutterUsedPayload.ID, ClientBoundStonecutterUsedPayload.class, ClientBoundStonecutterUsedPayload::decode);
-        NETWORK.registerToClient(ClientBoundVillagerWorkPacket.ID, ClientBoundVillagerWorkPacket.class, ClientBoundVillagerWorkPacket::decode);
-        NETWORK.registerToClient(ClientBoundAnimalFedPacket.ID, ClientBoundAnimalFedPacket.class, ClientBoundAnimalFedPacket::decode);
-        NETWORK.registerToClient(ClientBoundMooshroomShearedPacket.ID, ClientBoundMooshroomShearedPacket.class, ClientBoundMooshroomShearedPacket::decode);
-        NETWORK.registerToClient(ClientBoundSheepShearPayload.ID, ClientBoundSheepShearPayload.class, ClientBoundSheepShearPayload::decode);
-        NETWORK.registerToClient(ClientBoundDrankPotionPayload.ID, ClientBoundDrankPotionPayload.class, ClientBoundDrankPotionPayload::decode);
-        NETWORK.registerToClient(ClientBoundDispenseBucketPayload.ID, ClientBoundDispenseBucketPayload.class, ClientBoundDispenseBucketPayload::decode);
-        NETWORK.registerToClient(ClientBoundEntityLandInFluidPayload.ID, ClientBoundEntityLandInFluidPayload.class, ClientBoundEntityLandInFluidPayload::decode);
-        NETWORK.registerToClient(ClientBoundMobSpawnerSpawnPayload.ID, ClientBoundMobSpawnerSpawnPayload.class, ClientBoundMobSpawnerSpawnPayload::decode);
+        registerToClient(ClientBoundSpawnSnoreParticlePayload.ID, ClientBoundSpawnSnoreParticlePayload.class, ClientBoundSpawnSnoreParticlePayload::read, ClientPayloadHandlers::handle);
+        registerToClient(ClientBoundEntityFellPayload.ID, ClientBoundEntityFellPayload.class, ClientBoundEntityFellPayload::read, ClientPayloadHandlers::handle);
+        registerToClient(ClientBoundEntitySpawnSprintingDustCloudsPayload.ID, ClientBoundEntitySpawnSprintingDustCloudsPayload.class, ClientBoundEntitySpawnSprintingDustCloudsPayload::read, ClientPayloadHandlers::handle);
+        registerToClient(ClientBoundBlockDestroyEffectsPayload.ID, ClientBoundBlockDestroyEffectsPayload.class, ClientBoundBlockDestroyEffectsPayload::read, ClientPayloadHandlers::handle);
+        registerToClient(ClientBoundXPBottleEffectsPayload.ID, ClientBoundXPBottleEffectsPayload.class, ClientBoundXPBottleEffectsPayload::read, ClientPayloadHandlers::handle);
+        registerToClient(ClientBoundFallingBlockLandPayload.ID, ClientBoundFallingBlockLandPayload.class, ClientBoundFallingBlockLandPayload::read, ClientPayloadHandlers::handle);
+        registerToClient(ClientBoundCompostItemPayload.ID, ClientBoundCompostItemPayload.class, ClientBoundCompostItemPayload::read, ClientPayloadHandlers::handle);
+        registerToClient(ClientBoundStonecutterUsedPayload.ID, ClientBoundStonecutterUsedPayload.class, ClientBoundStonecutterUsedPayload::read, ClientPayloadHandlers::handle);
+        registerToClient(ClientBoundVillagerWorkPayload.ID, ClientBoundVillagerWorkPayload.class, ClientBoundVillagerWorkPayload::read, ClientPayloadHandlers::handle);
+        registerToClient(ClientBoundAnimalFedPayload.ID, ClientBoundAnimalFedPayload.class, ClientBoundAnimalFedPayload::read, ClientPayloadHandlers::handle);
+        registerToClient(ClientBoundMooshroomShearedPayload.ID, ClientBoundMooshroomShearedPayload.class, ClientBoundMooshroomShearedPayload::read, ClientPayloadHandlers::handle);
+        registerToClient(ClientBoundSheepShearPayload.ID, ClientBoundSheepShearPayload.class, ClientBoundSheepShearPayload::read, ClientPayloadHandlers::handle);
+        registerToClient(ClientBoundDrankPotionPayload.ID, ClientBoundDrankPotionPayload.class, ClientBoundDrankPotionPayload::read, ClientPayloadHandlers::handle);
+        registerToClient(ClientBoundDispenseBucketPayload.ID, ClientBoundDispenseBucketPayload.class, ClientBoundDispenseBucketPayload::read, ClientPayloadHandlers::handle);
+        registerToClient(ClientBoundEntityLandInFluidPayload.ID, ClientBoundEntityLandInFluidPayload.class, ClientBoundEntityLandInFluidPayload::read, ClientPayloadHandlers::handle);
+        registerToClient(ClientBoundMobSpawnerSpawnPayload.ID, ClientBoundMobSpawnerSpawnPayload.class, ClientBoundMobSpawnerSpawnPayload::read, ClientPayloadHandlers::handle);
+        registerToClient(ClientBoundEntityDamagedPayload.ID, ClientBoundEntityDamagedPayload.class, ClientBoundEntityDamagedPayload::read, ClientPayloadHandlers::handle);
+        registerToClient(ClientBoundChargedCreeperExplosionPayload.ID, ClientBoundChargedCreeperExplosionPayload.class, ClientBoundChargedCreeperExplosionPayload::read, ClientPayloadHandlers::handle);
+        registerToClient(ClientBoundItemEnchantedPayload.ID, ClientBoundItemEnchantedPayload.class, ClientBoundItemEnchantedPayload::read, ClientPayloadHandlers::handle);
+    }
+
+    private static <T extends FzzyPayload> void registerToClient(ResourceLocation id, Class<T> clazz, Function<FriendlyByteBuf, T> reader, BiConsumer<Level, T> handler) {
+        ConfigApiJava.network().registerLenientS2C(id, clazz, reader, (payload, context) -> context.execute(() -> handler.accept(context.player().level(), payload)));
     }
 }

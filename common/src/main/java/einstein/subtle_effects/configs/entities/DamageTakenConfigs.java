@@ -24,7 +24,6 @@ public class DamageTakenConfigs extends ConfigSection {
         add(list, DamageTypes.FALL);
         add(list, DamageTypes.FALLING_STALACTITE);
         add(list, DamageTypes.MOB_PROJECTILE);
-        add(list, DamageTypes.WIND_CHARGE);
         add(list, DamageTypes.ARROW);
         add(list, DamageTypes.BAD_RESPAWN_POINT);
         add(list, DamageTypes.EXPLOSION);

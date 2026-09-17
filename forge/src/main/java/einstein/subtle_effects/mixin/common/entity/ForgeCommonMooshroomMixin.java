@@ -2,8 +2,8 @@ package einstein.subtle_effects.mixin.common.entity;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
-import einstein.subtle_effects.networking.clientbound.ClientBoundMooshroomShearedPacket;
-import einstein.subtle_effects.platform.Services;
+import einstein.subtle_effects.networking.PayloadSender;
+import einstein.subtle_effects.networking.clientbound.ClientBoundMooshroomShearedPayload;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.server.level.ServerLevel;
@@ -20,7 +20,7 @@ public class ForgeCommonMooshroomMixin {
 
     @WrapOperation(method = "shearInternal", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/level/ServerLevel;sendParticles(Lnet/minecraft/core/particles/ParticleOptions;DDDIDDDD)I"))
     private <T extends ParticleOptions> int replaceShearingParticles(ServerLevel level, T particle, double x, double y, double z, int count, double xOffset, double yOffset, double zOffset, double speed, Operation<Integer> original) {
-        Services.NETWORK.sendToClientsTracking(null, level, BlockPos.containing(x, y, z), new ClientBoundMooshroomShearedPacket(subtleEffects$me.getId()), serverPlayer ->
+        PayloadSender.sendToClientsTracking(null, level, BlockPos.containing(x, y, z), new ClientBoundMooshroomShearedPayload(subtleEffects$me.getId()), serverPlayer ->
                 level.sendParticles(serverPlayer, particle, false, x, y, z, count, xOffset, yOffset, zOffset, speed)
         );
         return -1;

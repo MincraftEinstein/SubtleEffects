@@ -7,7 +7,6 @@ import einstein.subtle_effects.ticking.tickers.TickerManager;
 import einstein.subtle_effects.ticking.tickers.entity.EntityTicker;
 import einstein.subtle_effects.ticking.tickers.entity.EntityTickerManager;
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
@@ -24,7 +23,7 @@ import java.util.Queue;
 
 public class DebugScreenOverlayRenderer {
 
-    public static void render(GuiGraphics guiGraphics, DeltaTracker deltaTracker) {
+    public static void render(GuiGraphics guiGraphics) {
         if (!SubtleEffectsClient.DISPLAY_DEBUG_OVERLAY) {
             return;
         }
