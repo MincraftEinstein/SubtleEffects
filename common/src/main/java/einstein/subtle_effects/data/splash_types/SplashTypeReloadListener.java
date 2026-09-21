@@ -27,6 +27,7 @@ public class SplashTypeReloadListener extends SimplePreparableReloadListener<Map
     private static final String DIRECTORY = "subtle_effects/splash_types";
     public static final Map<ResourceLocation, SplashType> SPLASH_TYPES = new HashMap<>();
 
+    // TODO need to fix sometimes being called after the dynamic sprite set reloading has begun
     @Override
     protected Map<ResourceLocation, SplashType> prepare(ResourceManager resourceManager, ProfilerFiller profiler) {
         Map<ResourceLocation, JsonElement> resources = new HashMap<>();
@@ -38,6 +39,7 @@ public class SplashTypeReloadListener extends SimplePreparableReloadListener<Map
                         .resultOrPartial(error -> LOGGER.error("Failed to decode splash type with ID {} - Error: {}", id, error))
                         .ifPresent(typeData -> load(id, typeData, splashTypes))
         );
+        LOGGER.info("Loaded {} splash types", splashTypes.size());
         return splashTypes;
     }
 
