@@ -7,7 +7,7 @@ import einstein.subtle_effects.data.SpriteSetHolder;
 import einstein.subtle_effects.data.color_providers.ColorProviderType;
 import einstein.subtle_effects.data.color_providers.Colorable;
 import einstein.subtle_effects.data.color_providers.NoneColorProvider;
-import einstein.subtle_effects.util.Util;
+import einstein.subtle_effects.util.CodecUtil;
 import net.minecraft.resources.ResourceLocation;
 
 import java.util.Optional;
@@ -27,8 +27,8 @@ public record SplashOptions(SpriteSetHolder holder, ColorProviderType.ColorProvi
         public static final Codec<Data> CODEC = RecordCodecBuilder.create(instance -> instance.group(
                 ResourceLocation.CODEC.optionalFieldOf("sprite_set").forGetter(Data::spriteSetId),
                 ColorProviderType.CODEC.optionalFieldOf("color").forGetter(Data::colorProvider),
-                Util.configurableFloatCodec("intensity").optionalFieldOf("tinting").forGetter(Data::tinting),
-                Util.configurableFloatCodec("alpha").optionalFieldOf("transparency").forGetter(Data::transparency)
+                CodecUtil.configurableFloatCodec("intensity").optionalFieldOf("tinting").forGetter(Data::tinting),
+                CodecUtil.configurableFloatCodec("alpha").optionalFieldOf("transparency").forGetter(Data::transparency)
         ).apply(instance, (location, colorProvider, tinting, alpha) -> {
             if (location.isEmpty() && colorProvider.isEmpty() && alpha.isEmpty()) {
                 return EMPTY;
