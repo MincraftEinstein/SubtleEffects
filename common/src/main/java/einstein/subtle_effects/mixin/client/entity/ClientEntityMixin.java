@@ -123,7 +123,7 @@ public abstract class ClientEntityMixin implements EntityAccessor, FluidLogicAcc
 
     @Inject(method = "updateInWaterStateAndDoFluidPushing", at = @At("TAIL"))
     private void preformSplash(CallbackInfoReturnable<Boolean> cir) {
-        subtleEffects$lastTouchedFluid = ParticleSpawnUtil.preformSplash(false, false, subtleEffects$me, firstTick, Consumers.nop());
+        subtleEffects$lastTouchedFluid = ParticleSpawnUtil.preformSplash(false, false, subtleEffects$me, firstTick, Consumers.nop(), subtleEffects$me.getDeltaMovement().y(), subtleEffects$me.getY(), subtleEffects$me.blockPosition());
     }
 
     @WrapOperation(method = "updateInWaterStateAndDoWaterCurrentPushing", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;updateFluidHeightAndDoFluidPushing(Lnet/minecraft/tags/TagKey;D)Z"))
@@ -133,9 +133,9 @@ public abstract class ClientEntityMixin implements EntityAccessor, FluidLogicAcc
         if (result) {
             subtleEffects$lastTouchedFluid = ParticleSpawnUtil.preformSplash(true, false, subtleEffects$me, firstTick, isWater -> {
                 if (isWater) {
-                    subtleEffects$cancelWaterSplash = true;
+                    subtleEffects$cancelNextWaterSplash();
                 }
-            });
+            }, subtleEffects$me.getDeltaMovement().y(), subtleEffects$me.getY(), subtleEffects$me.blockPosition());
         }
 
         return result;
