@@ -60,6 +60,13 @@ public class SplashTypeReloadListener extends SimplePreparableReloadListener<Map
                 createOptions(typeData.splashRippleOptions(), WATER_SPLASH_RIPPLE),
                 typeData.dropletOptions()
         ));
+
+        
+        splashTypes.put(id, new SplashType(createOptions(typeData.splashOptions(), LAVA_SPLASH),
+                createOptions(overlayOptions, null),
+                createOptions(typeData.splashRippleOptions(), LAVA_SPLASH_RIPPLE),
+                typeData.dropletOptions()
+        ));
     }
 
     private static SplashOptions createOptions(SplashOptions.Data optionsData, @Nullable SpriteSetHolder defaultSprites) {
