@@ -2,12 +2,9 @@ package einstein.subtle_effects.networking.clientbound;
 
 import einstein.subtle_effects.SubtleEffects;
 import me.fzzyhmstrs.fzzy_config.networking.FzzyPayload;
-import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.level.material.Fluid;
-import org.jetbrains.annotations.Nullable;
 
 public record ClientBoundEntityLandInFluidPayload(int entityId, double y, double yVelocity,
                                                   BlockPos pos, boolean isCauldron) implements FzzyPayload {
@@ -19,11 +16,12 @@ public record ClientBoundEntityLandInFluidPayload(int entityId, double y, double
         buf.writeInt(entityId);
         buf.writeDouble(y);
         buf.writeDouble(yVelocity);
-        buf.writeResourceLocation(BuiltInRegistries.FLUID.getKey(fluid));
+        buf.writeBlockPos(pos);
+        buf.writeBoolean(isCauldron);
     }
 
     public static ClientBoundEntityLandInFluidPayload read(FriendlyByteBuf buf) {
-        return new ClientBoundEntityLandInFluidPayload(buf.readInt(), buf.readDouble(), buf.readDouble(), BuiltInRegistries.FLUID.get(buf.readResourceLocation()));
+        return new ClientBoundEntityLandInFluidPayload(buf.readInt(), buf.readDouble(), buf.readDouble(), buf.readBlockPos(), buf.readBoolean());
     }
 
     @Override

@@ -61,7 +61,7 @@ public abstract class ForgeClientEntityMixin implements FluidLogicAccessor {
                 if (isWater) {
                     subtleEffects$cancelNextWaterSplash();
                 }
-            }));
+            }, subtleEffects$me.getDeltaMovement().y(), subtleEffects$me.getY(), subtleEffects$me.blockPosition()));
         }
 
         return result;
