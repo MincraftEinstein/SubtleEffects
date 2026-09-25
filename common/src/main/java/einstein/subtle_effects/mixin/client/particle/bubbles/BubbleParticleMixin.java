@@ -7,7 +7,6 @@ import einstein.subtle_effects.init.ModParticles;
 import einstein.subtle_effects.particle.DrowningBubbleParticle;
 import einstein.subtle_effects.platform.Services;
 import einstein.subtle_effects.util.BubbleSetter;
-import einstein.subtle_effects.util.Util;
 import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
@@ -77,6 +76,17 @@ public abstract class BubbleParticleMixin extends TextureSheetParticle implement
     public void render(VertexConsumer buffer, Camera camera, float partialTicks) {
         super.render(buffer, camera, partialTicks);
         if (subtleEffects$overlaySprite != null) {
+            Quaternionf rotation = new Quaternionf();
+
+            if (roll != 0) {
+                rotation.rotateZ(Mth.lerp(partialTicks, oRoll, roll));
+            }
+
+            Vec3 cameraPos = camera.getPosition();
+            float x = (float) (Mth.lerp(partialTicks, xo, this.x) - cameraPos.x());
+            float y = (float) (Mth.lerp(partialTicks, yo, this.y) - cameraPos.y());
+            float z = (float) (Mth.lerp(partialTicks, zo, this.z) - cameraPos.z());
+
             int lightColor = getLightColor(partialTicks);
             float quadSize = getQuadSize(partialTicks);
             float u0 = subtleEffects$overlaySprite.getU0();
@@ -84,24 +94,10 @@ public abstract class BubbleParticleMixin extends TextureSheetParticle implement
             float v0 = subtleEffects$overlaySprite.getV0();
             float v1 = subtleEffects$overlaySprite.getV1();
 
-            Vec3 cameraPos = camera.getPosition();
-            float x = (float) (Mth.lerp(partialTicks, xo, this.x) - cameraPos.x());
-            float y = (float) (Mth.lerp(partialTicks, yo, this.y) - cameraPos.y());
-            float z = (float) (Mth.lerp(partialTicks, zo, this.z) - cameraPos.z());
-
-            Quaternionf quaternion;
-            if (roll == 0) {
-                quaternion = camera.rotation();
-            }
-            else {
-                quaternion = new Quaternionf(camera.rotation());
-                quaternion.rotateZ(Mth.lerp(partialTicks, oRoll, roll));
-            }
-
-            subtleEffects$renderVertex(buffer, quaternion, x, y, z, -1, -1, quadSize, u0, v1, lightColor);
-            subtleEffects$renderVertex(buffer, quaternion, x, y, z, -1, 1, quadSize, u0, v0, lightColor);
-            subtleEffects$renderVertex(buffer, quaternion, x, y, z, 1, 1, quadSize, u1, v0, lightColor);
-            subtleEffects$renderVertex(buffer, quaternion, x, y, z, 1, -1, quadSize, u1, v1, lightColor);
+            subtleEffects$renderVertex(buffer, rotation, x, y, z, 1, -1, quadSize, u1, v1, lightColor);
+            subtleEffects$renderVertex(buffer, rotation, x, y, z, 1, 1, quadSize, u1, v0, lightColor);
+            subtleEffects$renderVertex(buffer, rotation, x, y, z, -1, 1, quadSize, u0, v0, lightColor);
+            subtleEffects$renderVertex(buffer, rotation, x, y, z, -1, -1, quadSize, u0, v1, lightColor);
         }
     }
 

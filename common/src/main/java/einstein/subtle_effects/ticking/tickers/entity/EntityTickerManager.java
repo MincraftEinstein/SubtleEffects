@@ -141,6 +141,20 @@ public class EntityTickerManager {
         return null;
     }
 
+    @SuppressWarnings("unchecked")
+    @Nullable
+    public static <T extends EntityTicker<?>> T getTicker(@Nullable Entity entity, Class<T> type) {
+        List<EntityTicker<?>> tickers = getTickersForEntity(entity);
+        if (tickers != null) {
+            for (EntityTicker<?> ticker : tickers) {
+                if (ticker.getClass().equals(type)) {
+                    return (T) ticker;
+                }
+            }
+        }
+        return null;
+    }
+
     public static void clear() {
         TRACKED_ENTITIES.clear();
         TRACKED_ENTITIES_REMOVE_QUEUE.clear();

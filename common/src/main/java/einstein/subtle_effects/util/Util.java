@@ -2,10 +2,6 @@ package einstein.subtle_effects.util;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.mojang.datafixers.util.Either;
-import com.mojang.serialization.Codec;
-import com.mojang.serialization.DataResult;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
 import einstein.subtle_effects.SubtleEffects;
 import einstein.subtle_effects.compat.CompatHelper;
 import einstein.subtle_effects.compat.EndRemasteredCompat;
@@ -14,7 +10,7 @@ import einstein.subtle_effects.data.MobSkullShaderData;
 import einstein.subtle_effects.data.MobSkullShaderReloadListener;
 import einstein.subtle_effects.init.ModParticles;
 import einstein.subtle_effects.mixin.client.GameRendererAccessor;
-import einstein.subtle_effects.mixin.client.block.AbstractCauldronBlockAccessor;
+import einstein.subtle_effects.mixin.common.block.AbstractCauldronBlockAccessor;
 import einstein.subtle_effects.particle.EnderEyePlacedRingParticle;
 import einstein.subtle_effects.particle.option.DropletParticleOptions;
 import me.fzzyhmstrs.fzzy_config.validation.misc.ValidatedColor;
@@ -28,8 +24,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.SectionPos;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.core.particles.ParticleOptions;
-import net.minecraft.core.particles.SimpleParticleType;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
@@ -67,25 +61,6 @@ public class Util {
     public static final Gson GSON = new GsonBuilder().create();
     public static final ResourceLocation VANILLA_EYE = new ResourceLocation("ender_eye");
     private static final String UUID = "d71e4b41-9315-499f-a934-ca925421fb38";
-    public static final Codec<Integer> RGB_COLOR_CODEC = Codec.either(Codec.either(Codec.INT, ExtraCodecs.VECTOR3F).xmap(either ->
-            either.map(
-                    i -> i,
-                    color -> FastColor.ARGB32.color(255, Mth.floor(color.x() * 255), Mth.floor(color.y() * 255), Mth.floor(color.z() * 255))
-            ), Either::left
-    ), Codec.STRING).comapFlatMap(either -> either.map(DataResult::success, string -> {
-        try {
-            return DataResult.success(Integer.decode(string));
-        }
-        catch (NumberFormatException e) {
-            return DataResult.error(() -> "String '" + string + "' is not a valid integer color");
-        }
-    }), Either::left);
-    public static final Codec<SimpleParticleType> SIMPLE_PARTICLE_TYPE_CODEC = BuiltInRegistries.PARTICLE_TYPE.byNameCodec().comapFlatMap(options -> {
-        if (options instanceof SimpleParticleType particle) {
-            return DataResult.success(particle);
-        }
-        return DataResult.error(() -> "Particle type is not a simple particle type: " + options);
-    }, particle -> particle);
 
     public static void playClientSound(Entity entity, SoundEvent sound, SoundSource source, float volume, float pitch) {
         Minecraft minecraft = Minecraft.getInstance();
@@ -238,17 +213,6 @@ public class Util {
             return level.getBiome(pos).value().getPrecipitationAt(pos) == Biome.Precipitation.RAIN;
         }
         return false;
-    }
-
-    public static Codec<Either<Float, Boolean>> configurableFloatCodec(String floatName) {
-        return Codec.either(
-                RecordCodecBuilder.create(instance -> instance.group(
-                        Codec.floatRange(0, 1).fieldOf(floatName).forGetter(Float::floatValue)
-                ).apply(instance, Float::floatValue)),
-                RecordCodecBuilder.create(instance -> instance.group(
-                        Codec.BOOL.fieldOf("use_config").forGetter(Boolean::booleanValue)
-                ).apply(instance, Boolean::booleanValue))
-        );
     }
 
     public static boolean isSouthEast(CharSequence searchQuery) {

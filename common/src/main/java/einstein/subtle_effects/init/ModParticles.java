@@ -100,9 +100,8 @@ public class ModParticles {
         PARTICLE_TYPES.init();
     }
 
-    @SuppressWarnings("unchecked")
     private static RegistrySupplier<SimpleParticleType> register(String name) {
-        return (RegistrySupplier<SimpleParticleType>) (Object) PARTICLE_TYPES.register(name, () -> new SimpleParticleType(false));
+        return PARTICLE_TYPES.register(name, () -> new SimpleParticleType(false));
     }
 
     @SuppressWarnings({"unchecked", "deprecation"})

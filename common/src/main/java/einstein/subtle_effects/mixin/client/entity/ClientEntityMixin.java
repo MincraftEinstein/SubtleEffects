@@ -126,7 +126,7 @@ public abstract class ClientEntityMixin implements EntityAccessor, FluidLogicAcc
     @Inject(method = "updateInWaterStateAndDoFluidPushing", at = @At("TAIL"))
     private void preformSplash(CallbackInfoReturnable<Boolean> cir) {
         subtleEffects$lastTouchedFluid = ParticleSpawnUtil.preformSplash(false, false, subtleEffects$me, firstTick, isWater -> {
-        });
+        }, subtleEffects$me.getDeltaMovement().y(), subtleEffects$me.getY(), subtleEffects$me.blockPosition());
     }
 
     @Inject(method = "doWaterSplashEffect", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/Mth;floor(D)I"), cancellable = true)

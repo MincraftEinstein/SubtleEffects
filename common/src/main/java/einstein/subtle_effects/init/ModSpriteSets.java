@@ -7,6 +7,7 @@ import net.minecraft.resources.ResourceLocation;
 
 public class ModSpriteSets {
 
+    // These are used as defaults/fallbacks for splash types
     public static final SpriteSetHolder WATER_SPLASH = register("water_splash");
     public static final SpriteSetHolder WATER_SPLASH_OVERLAY = register("water_splash_overlay");
     public static final SpriteSetHolder WATER_SPLASH_RIPPLE = register("water_splash_ripple");

@@ -476,16 +476,18 @@ public class ParticleSpawnUtil {
         }
     }
 
-    public static FluidDefinition preformSplash(boolean waterOnly, boolean allFluids, Entity entity, boolean firstTick, Consumer<Boolean> successConsumer) {
+    public static FluidDefinition preformSplash(boolean waterOnly, boolean allFluids, Entity entity, boolean firstTick, Consumer<Boolean> successConsumer, double yVelocity, double entityY, BlockPos pos) {
         Level level = entity.level();
-        if (!level.isClientSide) {
+        if (!level.isClientSide || firstTick) {
             return null;
         }
 
-        BlockPos pos = entity.blockPosition();
         FluidState fluidState = level.getFluidState(pos);
-        FluidDefinition fluidDefinition = ((FluidDefinitionAccessor) fluidState.getType()).subtleEffects$getFluidDefinition();
+        if (fluidState.isEmpty()) {
+            return null;
+        }
 
+        FluidDefinition fluidDefinition = ((FluidDefinitionAccessor) fluidState.getType()).subtleEffects$getFluidDefinition();
         if (fluidDefinition != null) {
             if (ENTITIES.splashes.ignoreWaterloggedBlocks.get()) {
                 BlockState state = level.getBlockState(pos);
@@ -502,9 +504,9 @@ public class ParticleSpawnUtil {
                 boolean isWater = fluidDefinition.is(FluidTags.WATER);
 
                 if (waterOnly == isWater || allFluids) {
-                    if (!fluidDefinition.is(accessor.subtleEffects$getLastTouchedFluid()) && !firstTick) {
+                    if (!fluidDefinition.is(accessor.subtleEffects$getLastTouchedFluid())) {
                         fluidDefinition.splashType().ifPresent(splashType -> {
-                            if (spawnSplashEffects(entity, level, fluidDefinition.id(), entity.getY() + fluidDefinitionHeight, entity.getDeltaMovement().y())) {
+                            if (spawnSplashEffects(entity, level, fluidDefinition.id(), entityY + fluidDefinitionHeight, yVelocity)) {
                                 successConsumer.accept(isWater);
                             }
                         });

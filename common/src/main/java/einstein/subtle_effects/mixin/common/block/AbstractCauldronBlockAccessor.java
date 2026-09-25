@@ -1,4 +1,4 @@
-package einstein.subtle_effects.mixin.client.block;
+package einstein.subtle_effects.mixin.common.block;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;

@@ -5,7 +5,8 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import einstein.subtle_effects.SubtleEffects;
 import einstein.subtle_effects.util.StringRepresentableUtil;
-import einstein.subtle_effects.util.Util;
+import einstein.subtle_effects.util.CodecUtil;
+import io.netty.buffer.ByteBuf;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
@@ -32,7 +33,7 @@ public record ColorProviderType<T extends ColorProviderType.ColorProvider>(Resou
     public static final ColorProviderType<PresetColorProvider> PRESET = register("preset", () -> PresetColorProvider.CODEC, PresetColorProvider::read);
 
     public static final Codec<ColorProviderType<?>> REGISTRY_CODEC = StringRepresentableUtil.fromValues(() -> ColorProviderType.TYPES.values().toArray(new ColorProviderType<?>[0]));
-    private static final Codec<Either<Integer, ColorProvider>> CONSTANT_OR_DISPATCH_CODEC = Codec.either(Util.RGB_COLOR_CODEC, REGISTRY_CODEC.dispatch(ColorProvider::getType, type -> type.codec().get().codec()));
+    private static final Codec<Either<Integer, ColorProvider>> CONSTANT_OR_DISPATCH_CODEC = Codec.either(CodecUtil.RGB_COLOR_CODEC, REGISTRY_CODEC.dispatch(ColorProvider::getType, type -> type.codec().get().codec()));
     public static final Codec<ColorProvider> CODEC = CONSTANT_OR_DISPATCH_CODEC.xmap(
             either -> either.map(ConstantColorProvider::new, colorProvider -> colorProvider),
             colorProvider -> colorProvider.getType() == NONE ? Either.left(1) : Either.right(colorProvider)

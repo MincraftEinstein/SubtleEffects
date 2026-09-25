@@ -10,7 +10,7 @@ import net.minecraft.world.level.material.Fluid;
 import org.jetbrains.annotations.Nullable;
 
 public record ClientBoundEntityLandInFluidPayload(int entityId, double y, double yVelocity,
-                                                  Fluid fluid) implements FzzyPayload {
+                                                  BlockPos pos, boolean isCauldron) implements FzzyPayload {
 
     public static final ResourceLocation ID = SubtleEffects.loc("entity_land_in_fluid");
 

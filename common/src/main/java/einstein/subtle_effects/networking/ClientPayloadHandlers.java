@@ -2,13 +2,14 @@ package einstein.subtle_effects.networking;
 
 import einstein.subtle_effects.configs.ModBlockConfigs;
 import einstein.subtle_effects.configs.ReplacedParticlesDisplayType;
-import einstein.subtle_effects.data.FluidDefinition;
 import einstein.subtle_effects.init.*;
 import einstein.subtle_effects.mixin.client.entity.AbstractHorseAccessor;
 import einstein.subtle_effects.networking.clientbound.*;
 import einstein.subtle_effects.particle.option.FloatParticleOptions;
 import einstein.subtle_effects.particle.option.SheepFluffParticleOptions;
 import einstein.subtle_effects.ticking.tickers.TickerManager;
+import einstein.subtle_effects.ticking.tickers.entity.EntityCauldronTicker;
+import einstein.subtle_effects.ticking.tickers.entity.EntityTickerManager;
 import einstein.subtle_effects.util.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
@@ -38,8 +39,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.world.level.material.Fluid;
-import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.Vec3;
 import org.joml.Vector3f;
 
@@ -377,23 +376,28 @@ public class ClientPayloadHandlers {
     public static void handle(Level level, ClientBoundEntityLandInFluidPayload payload) {
         Entity entity = level.getEntity(payload.entityId());
         if (entity != null) {
-            Fluid fluid = payload.fluid();
+            double y = payload.y();
+            double yVelocity = payload.yVelocity();
+            BlockPos pos = payload.pos();
 
-            if (fluid.isSame(Fluids.EMPTY)) {
+            if (payload.isCauldron()) {
+                EntityCauldronTicker ticker = EntityTickerManager.getTicker(entity, EntityCauldronTicker.class);
+                if (ticker != null) {
+                    // Using a min velocity because the synced velocity is, with default configs, too low
+                    // to spawn splashes for jumping in a cauldron, which is inconsistent with the local player
+                    ticker.interact(pos, Math.min(-0.3739040364667221, yVelocity), true, level.getBlockState(pos));
+                }
                 return;
             }
 
-            FluidDefinition lastTouchedFluid = ((FluidLogicAccessor) entity).subtleEffects$getLastTouchedFluid();
-            if (lastTouchedFluid == null || !lastTouchedFluid.is(fluid)) {
-
-                FluidDefinition fluidDefinition = ((FluidDefinitionAccessor) fluid).subtleEffects$getFluidDefinition();
-                if (fluidDefinition != null) {
-
-                    fluidDefinition.splashType().ifPresent(splashType ->
-                            ParticleSpawnUtil.spawnSplashEffects(entity, level, fluidDefinition.id(), payload.y(), payload.yVelocity())
-                    );
+            FluidLogicAccessor accessor = (FluidLogicAccessor) entity;
+            accessor.subtleEffects$getFluidDefinitionHeight().clear();
+            FluidLogicAccessor.subtleEffects$updateFluidDefinitionHeight(entity, entity.getDimensions(entity.getPose()).makeBoundingBox(entity.getX(), y, entity.getZ()));
+            accessor.subtleEffects$setLastTouchedFluid(ParticleSpawnUtil.preformSplash(false, true, entity, ((EntityAccessor) entity).subtleEffects$isFirstTick(), isWater -> {
+                if (isWater) {
+                    accessor.subtleEffects$cancelNextWaterSplash();
                 }
-            }
+            }, yVelocity, y, pos));
         }
     }
 
@@ -523,15 +527,15 @@ public class ClientPayloadHandlers {
     }
 
     // Don't convert to enum parameters, because the server will crash trying to access the client configs
-    private static boolean getBlockDestroyEffectConfig(ClientBoundBlockDestroyEffectsPayload packet) {
-        return switch (packet.config()) {
+    private static boolean getBlockDestroyEffectConfig(ClientBoundBlockDestroyEffectsPayload payload) {
+        return switch (payload.config()) {
             case LEAVES_DECAY -> ModConfigs.BLOCKS.leavesDecayEffects;
             case FARMLAND_DESTROY -> ModConfigs.BLOCKS.farmlandDestroyEffects;
         };
     }
 
-    private static boolean getEntityFellConfig(ClientBoundEntityFellPayload packet) {
-        return switch (packet.config()) {
+    private static boolean getEntityFellConfig(ClientBoundEntityFellPayload payload) {
+        return switch (payload.config()) {
             case ENTITY -> ENTITIES.dustClouds.mobFell;
             case PLAYER -> ENTITIES.dustClouds.playerFell;
             case MACE -> ENTITIES.dustClouds.landMaceAttack;

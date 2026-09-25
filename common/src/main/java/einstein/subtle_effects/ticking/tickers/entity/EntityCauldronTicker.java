@@ -1,7 +1,7 @@
 package einstein.subtle_effects.ticking.tickers.entity;
 
 import einstein.subtle_effects.data.FluidDefinition;
-import einstein.subtle_effects.mixin.client.block.AbstractCauldronBlockAccessor;
+import einstein.subtle_effects.mixin.common.block.AbstractCauldronBlockAccessor;
 import einstein.subtle_effects.mixin.common.entity.EntityAccessor;
 import einstein.subtle_effects.util.FluidDefinitionAccessor;
 import einstein.subtle_effects.util.FluidLogicAccessor;
@@ -26,11 +26,15 @@ public class EntityCauldronTicker extends EntityTicker<Entity> {
     public void entityTick() {
         BlockPos pos = entity.blockPosition();
         BlockState state = level.getBlockState(pos);
+        interact(entity.blockPosition(), entity.getDeltaMovement().y(), state.getBlock() instanceof AbstractCauldronBlockAccessor accessor && accessor.isEntityInside(state, entity.blockPosition(), entity), state);
+    }
+
+    public void interact(BlockPos pos, double yVelocity, boolean isEntityInside, BlockState state) {
         double height = Util.getCauldronFillHeight(state);
         boolean isWater = state.is(Blocks.WATER_CAULDRON);
         Block block = state.getBlock();
 
-        if (height > 0 && ((AbstractCauldronBlockAccessor) block).isEntityInside(state, pos, entity)) {
+        if (height > 0 && isEntityInside) {
             if (entity.isOnFire() && (state.is(Blocks.POWDER_SNOW_CAULDRON) || isWater)) {
                 ((EntityAccessor) entity).playExtinguishedSound();
             }
@@ -39,7 +43,7 @@ public class EntityCauldronTicker extends EntityTicker<Entity> {
             if (fluidDefinition != null) {
                 if (!fluidDefinition.is(lastTouchedFluid)) {
                     fluidDefinition.splashType().ifPresent(splashType -> {
-                        if (ParticleSpawnUtil.spawnSplashEffects(entity, level, fluidDefinition.id(), pos.getY() + height, entity.getDeltaMovement().y())) {
+                        if (ParticleSpawnUtil.spawnSplashEffects(entity, level, fluidDefinition.id(), pos.getY() + height, yVelocity)) {
                             if (isWater) {
                                 ((FluidLogicAccessor) entity).subtleEffects$cancelNextWaterSplash();
                             }
