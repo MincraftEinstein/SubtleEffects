@@ -5,13 +5,17 @@
   "refmap": "subtle_effects.refmap.json",
   "compatibilityLevel": "JAVA_17",
   "client": [
-    "client.FabricClientEntityMixin",
+    "client.FabricGuiMixin",
     "client.FabricLevelRendererMixin",
     "client.FabricMultiPlayerGameModeMixin",
+    "client.compat.ModMenuModSearchMixin",
+    "client.entity.FabricClientEntityMixin",
+    "client.particle.FabricParticleEngineMixin"
     "client.FabricReloadableResourceManagerMixin",
-    "client.ModMenuModSearchMixin"
   ],
   "mixins": [
+    "common.FabricEnchantmentMenuMixin",
+    "common.block.dispenser.FabricShearsDispenseItemBehaviorMixin"
     "common.block.dispenser.FabricShearsDispenseItemBehaviorMixin",
     "common.entity.FabricCommonMooshroomMixin"
   ],

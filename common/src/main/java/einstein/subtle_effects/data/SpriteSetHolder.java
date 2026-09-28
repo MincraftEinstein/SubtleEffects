@@ -25,7 +25,7 @@ public class SpriteSetHolder implements Supplier<ParticleResources.MutableSprite
     @Override
     public ParticleResources.MutableSpriteSet get() {
         if (spriteSet == null) {
-            throw new IllegalStateException("No sprite set is set for sprite set holder '" + id + "'");
+            spriteSet = MissingSpriteSet.INSTANCE;
         }
 
         return spriteSet;

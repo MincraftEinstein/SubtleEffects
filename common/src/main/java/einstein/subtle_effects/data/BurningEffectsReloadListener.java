@@ -23,6 +23,8 @@ public class BurningEffectsReloadListener extends SimpleJsonResourceReloadListen
     @Override
     protected void apply(Map<Identifier, BurningEffects.Data> resources, ResourceManager manager, ProfilerFiller profiler) {
         PROMETHEUS_BURNING_EFFECTS.clear();
+        DYED_FLAMES_BURNING_EFFECTS.clear();
+
         resources.forEach((id, data) -> load(data));
     }
 

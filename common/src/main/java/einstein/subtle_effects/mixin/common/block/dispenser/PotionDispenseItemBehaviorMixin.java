@@ -3,7 +3,7 @@ package einstein.subtle_effects.mixin.common.block.dispenser;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import einstein.subtle_effects.networking.clientbound.ClientBoundDispenseBucketPayload;
-import einstein.subtle_effects.platform.Services;
+import einstein.subtle_effects.networking.PayloadSender;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.dispenser.BlockSource;
 import net.minecraft.core.particles.ParticleOptions;
@@ -33,7 +33,7 @@ public class PotionDispenseItemBehaviorMixin {
         BlockPos pos = source.pos();
 
         level.playSound(null, pos, SoundEvents.GENERIC_SPLASH, SoundSource.BLOCKS); // Fixes inconsistency with Item.useOn behavior vs dispenser behavior. (there's probably a bug report for this, but I'm too lazy to find it)
-        Services.NETWORK.sendToClientsTracking(null, level, pos, new ClientBoundDispenseBucketPayload(new ItemStack(Items.WATER_BUCKET), pos), (serverPlayer) -> {
+        PayloadSender.sendToClientsTracking(null, level, pos, new ClientBoundDispenseBucketPayload(new ItemStack(Items.WATER_BUCKET), pos), (serverPlayer) -> {
             RandomSource random = level.getRandom();
 
             for (int i = 0; i < 5; i++) {

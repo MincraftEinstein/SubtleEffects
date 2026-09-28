@@ -3,7 +3,6 @@ package einstein.subtle_effects.mixin.client.particle;
 import einstein.subtle_effects.util.ParticleAccessor;
 import net.minecraft.client.particle.Particle;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.gen.Accessor;
 import org.spongepowered.asm.mixin.gen.Invoker;
@@ -40,6 +39,18 @@ public abstract class ParticleMixin implements ParticleAccessor {
     @Override
     @Accessor("zo")
     public abstract double getOldZ();
+
+    @Override
+    @Accessor("xd")
+    public abstract double getXSpeed();
+
+    @Override
+    @Accessor("yd")
+    public abstract double getYSpeed();
+
+    @Override
+    @Accessor("zd")
+    public abstract double getZSpeed();
 
     @Override
     @Accessor("gravity")

@@ -4,12 +4,16 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import einstein.subtle_effects.util.Util;
+import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.BiomeColors;
 import net.minecraft.client.renderer.block.BlockAndTintGetter;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.util.ARGB;
+import net.minecraft.util.ByIdMap;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.attribute.EnvironmentAttribute;
@@ -18,6 +22,7 @@ import net.minecraft.world.level.Level;
 import org.joml.Vector3f;
 
 import java.util.function.BiFunction;
+import java.util.function.IntFunction;
 
 public record BiomeColorProvider(ColorType colorType) implements ColorProviderType.ColorProvider {
 
@@ -25,9 +30,14 @@ public record BiomeColorProvider(ColorType colorType) implements ColorProviderTy
             ColorType.CODEC.fieldOf("color_type").forGetter(BiomeColorProvider::colorType)
     ).apply(instance, BiomeColorProvider::new));
 
+    public static final StreamCodec<ByteBuf, BiomeColorProvider> STREAM_CODEC = StreamCodec.composite(
+            ColorType.STREAM_CODEC, BiomeColorProvider::colorType,
+            BiomeColorProvider::new
+    );
+
     @Override
     public ColorProviderType<?> getType() {
-        return ColorProviderType.BIOME_WATER;
+        return ColorProviderType.BIOME_COLOR;
     }
 
     @Override
@@ -47,7 +57,9 @@ public record BiomeColorProvider(ColorType colorType) implements ColorProviderTy
         DRY_FOLIAGE_COLOR("dry_foliage_color", BiomeColors::getAverageDryFoliageColor),
         GRASS_COLOR("grass_color", BiomeColors::getAverageGrassColor);
 
+        public static final IntFunction<ColorType> BY_ID = ByIdMap.continuous(ColorType::ordinal, values(), ByIdMap.OutOfBoundsStrategy.ZERO);
         public static final Codec<ColorType> CODEC = StringRepresentable.fromEnum(ColorType::values);
+        public static final StreamCodec<ByteBuf, ColorType> STREAM_CODEC = ByteBufCodecs.idMapper(BY_ID, ColorType::ordinal);
 
         private final String name;
         private final BiFunction<BlockAndTintGetter, BlockPos, Integer> colorGetter;
