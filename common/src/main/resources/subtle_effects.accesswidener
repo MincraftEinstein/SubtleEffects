@@ -1,9 +1,10 @@
 accessWidener   v2 official
 
 # Fields
-accessible field net/minecraft/client/renderer/RenderPipelines PARTICLE_SNIPPET Lcom/mojang/blaze3d/pipeline/RenderPipeline$Snippet;
-accessible field net/minecraft/world/entity/EntityFluidInteraction$Tracker height D
-accessible field net/minecraft/world/entity/EntityFluidInteraction trackerByFluid Ljava/util/Map;
+accessible field net/minecraft/client/renderer/RenderPipelines PARTICLE_SNIPPET Lcom/mojang/renderpearl/api/pipeline/RenderPipeline$Snippet;
+accessible field net/minecraft/client/renderer/RenderPipelines OIT_PARTICLE_SNIPPET Lcom/mojang/renderpearl/api/pipeline/RenderPipeline$Snippet;
+accessible field net/minecraft/world/entity/EntityFluidInteraction currentAccumulators Lit/unimi/dsi/fastutil/objects/Reference2ObjectMap;
+accessible field net/minecraft/world/entity/EntityFluidInteraction$CurrentAccumulator height D
 accessible field net/minecraft/client/particle/ParticleGroup particles Ljava/util/Queue;
 
 # Classes
@@ -11,7 +12,7 @@ accessible class net/minecraft/client/particle/ParticleResources$MutableSpriteSe
 accessible class net/minecraft/client/particle/DripParticle$FallAndLandParticle
 accessible class net/minecraft/client/particle/DripParticle$DripHangParticle
 accessible class net/minecraft/client/particle/DripParticle$DripLandParticle
-accessible class net/minecraft/world/entity/EntityFluidInteraction$Tracker
+accessible class net/minecraft/world/entity/EntityFluidInteraction$CurrentAccumulator
 
 # <init>'s
 accessible method net/minecraft/client/particle/ParticleResources$MutableSpriteSet <init> ()V
@@ -24,5 +25,7 @@ accessible method net/minecraft/client/particle/DripParticle$DripHangParticle <i
 accessible method net/minecraft/client/particle/DripParticle$DripLandParticle <init> (Lnet/minecraft/client/multiplayer/ClientLevel;DDDLnet/minecraft/world/level/material/Fluid;Lnet/minecraft/client/renderer/texture/TextureAtlasSprite;)V
 
 # Functions
-accessible method net/minecraft/client/renderer/RenderPipelines register (Lcom/mojang/blaze3d/pipeline/RenderPipeline;)Lcom/mojang/blaze3d/pipeline/RenderPipeline;
+accessible method net/minecraft/client/renderer/RenderPipelines register (Lcom/mojang/renderpearl/api/pipeline/RenderPipeline;)Lcom/mojang/renderpearl/api/pipeline/RenderPipeline;
+accessible method net/minecraft/client/renderer/RenderPipelines register (Lnet/minecraft/client/renderer/oit/OitPipelineSet;)Lnet/minecraft/client/renderer/oit/OitPipelineSet;
+accessible method net/minecraft/client/renderer/GameRenderer setSpectatedEntityPostEffect (Lnet/minecraft/resources/Identifier;)V
 accessible method net/minecraft/client/particle/DripParticle getType ()Lnet/minecraft/world/level/material/Fluid;
