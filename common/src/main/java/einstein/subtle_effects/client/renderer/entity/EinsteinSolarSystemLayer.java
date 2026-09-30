@@ -66,18 +66,18 @@ public class EinsteinSolarSystemLayer<T extends AvatarRenderState, V extends Hum
                 Vector3f rotation = HEAD_ROTATIONS[i];
 
                 poseStack.pushPose();
-                poseStack.mulPose(Axis.YP.rotationDegrees(-180 - renderState.bodyRot));
-                poseStack.mulPose(Axis.YP.rotation(spin)); // Spins the head around the player
+                poseStack.rotate(Axis.YP.rotationDegrees(-180 - renderState.bodyRot));
+                poseStack.rotate(Axis.YP.rotation(spin)); // Spins the head around the player
 
                 poseStack.translate(0.7 * i1, renderState.isCrouching ? 0 : -0.25, 0);
                 poseStack.scale(0.8F, 0.8F, 0.8F);
 
                 poseStack.pushPose();
-                poseStack.mulPose(Axis.XP.rotationDegrees(rotation.x()));
-                poseStack.mulPose(Axis.YP.rotationDegrees(rotation.y()));
-                poseStack.mulPose(Axis.ZP.rotationDegrees(rotation.z()));
+                poseStack.rotate(Axis.XP.rotationDegrees(rotation.x()));
+                poseStack.rotate(Axis.YP.rotationDegrees(rotation.y()));
+                poseStack.rotate(Axis.ZP.rotationDegrees(rotation.z()));
 
-                poseStack.mulPose(Axis.YP.rotation(spin)); // Spins the head itself
+                poseStack.rotate(Axis.YP.rotation(spin)); // Spins the head itself
 
                 var renderType = RenderTypes.entityCutout(renderState.skin.body().texturePath());
                 int packedOverlay = LivingEntityRenderer.getOverlayCoords(renderState, 0);
