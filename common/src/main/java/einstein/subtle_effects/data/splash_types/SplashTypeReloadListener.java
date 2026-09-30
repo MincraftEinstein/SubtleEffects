@@ -1,6 +1,10 @@
 package einstein.subtle_effects.data.splash_types;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParseException;
 import com.mojang.datafixers.util.Either;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.DynamicOps;
 import com.mojang.serialization.JsonOps;
 import einstein.subtle_effects.SubtleEffects;
 import einstein.subtle_effects.data.DynamicSpriteSetsManager;
@@ -9,12 +13,15 @@ import einstein.subtle_effects.data.SpriteSetHolder;
 import einstein.subtle_effects.data.color_providers.NoneColorProvider;
 import net.minecraft.resources.FileToIdConverter;
 import net.minecraft.resources.Identifier;
+import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
-import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.server.packs.resources.SimplePreparableReloadListener;
+import net.minecraft.util.StrictJsonParser;
 import net.minecraft.util.profiling.ProfilerFiller;
 import org.jetbrains.annotations.Nullable;
 
+import java.io.IOException;
+import java.io.Reader;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -31,7 +38,7 @@ public class SplashTypeReloadListener extends SimplePreparableReloadListener<Map
         Map<Identifier, SplashType.Data> splashTypes = new HashMap<>();
         Map<Identifier, SplashType> validSplashTypes = new HashMap<>();
 
-        SimpleJsonResourceReloadListener.scanDirectory(resourceManager, DIRECTORY, JsonOps.INSTANCE, SplashType.Data.CODEC, splashTypes);
+        scanDirectory(resourceManager, DIRECTORY, JsonOps.INSTANCE, SplashType.Data.CODEC, splashTypes);
         splashTypes.forEach((id, typeData) -> load(id, typeData, validSplashTypes));
         return validSplashTypes;
     }
@@ -63,4 +70,42 @@ public class SplashTypeReloadListener extends SimplePreparableReloadListener<Map
     public Identifier getId() {
         return ID;
     }
+
+    public static <T> void scanDirectory(
+            final ResourceManager manager, final FileToIdConverter lister, final DynamicOps<JsonElement> ops, final Codec<T> codec, final Map<Identifier, T> result
+    ) {
+        for (Map.Entry<Identifier, Resource> entry : lister.listMatchingResources(manager).entrySet()) {
+            Identifier location = entry.getKey();
+            Identifier id = lister.fileToId(location);
+
+            try {
+                Reader reader = entry.getValue().openAsReader();
+
+                try {
+                    codec.parse(ops, StrictJsonParser.parse(reader)).ifSuccess(parsed -> {
+                        if (result.putIfAbsent(id, parsed) != null) {
+                            throw new IllegalStateException("Duplicate data file ignored with ID " + id);
+                        }
+                    }).ifError(error -> SubtleEffects.LOGGER.error("Couldn't parse data file '{}' from '{}': {}", id, location, error));
+                } catch (Throwable var13) {
+                    if (reader != null) {
+                        try {
+                            reader.close();
+                        } catch (Throwable var12) {
+                            var13.addSuppressed(var12);
+                        }
+                    }
+
+                    throw var13;
+                }
+
+                if (reader != null) {
+                    reader.close();
+                }
+            } catch (IllegalArgumentException | IOException | JsonParseException var14) {
+                SubtleEffects.LOGGER.error("Couldn't parse data file '{}' from '{}'", id, location, var14);
+            }
+        }
+    }
+
 }
