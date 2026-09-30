@@ -21,9 +21,9 @@ public class CopperGolemMixin {
     private void cancelGolemInteractParticles(Level level, Entity entity, int event, BlockPos pos, int data, Operation<Void> original) {
         if (level instanceof ServerLevel serverLevel) {
             ClientBoundCopperGolemPayload.Action action = switch (event) {
-                case LevelEvent.PARTICLES_SCRAPE -> ClientBoundCopperGolemPayload.Action.SCRAPE;
+                case LevelEvent.PARTICLES_WAX_ON -> ClientBoundCopperGolemPayload.Action.WAX_ON;
                 case LevelEvent.PARTICLES_WAX_OFF -> ClientBoundCopperGolemPayload.Action.WAX_OFF;
-                case LevelEvent.PARTICLES_AND_SOUND_WAX_ON -> ClientBoundCopperGolemPayload.Action.WAX_ON;
+                case LevelEvent.PARTICLES_SCRAPE -> ClientBoundCopperGolemPayload.Action.SCRAPE;
                 default -> null;
             };
 
