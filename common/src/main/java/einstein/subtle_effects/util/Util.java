@@ -13,7 +13,6 @@ import einstein.subtle_effects.data.FluidDefinition;
 import einstein.subtle_effects.data.MobSkullShaderData;
 import einstein.subtle_effects.data.MobSkullShaderReloadListener;
 import einstein.subtle_effects.init.ModParticles;
-import einstein.subtle_effects.mixin.client.GameRendererAccessor;
 import einstein.subtle_effects.mixin.client.block.AbstractCauldronBlockAccessor;
 import einstein.subtle_effects.mixin.client.entity.AbstractHorseAccessor;
 import einstein.subtle_effects.particle.EnderEyePlacedRingParticle;
@@ -126,13 +125,13 @@ public class Util {
                 return;
             }
         }
-        gameRenderer.clearPostEffect();
+        gameRenderer.clearSpectatedEntityPostEffect();
     }
 
     private static void loadShaderEffect(Identifier shaderId, GameRenderer gameRenderer) {
-        Identifier effect = gameRenderer.currentPostEffect();
+        Identifier effect = gameRenderer.spectatedEntityPostEffect();
         if (effect == null || !effect.equals(shaderId)) {
-            ((GameRendererAccessor) gameRenderer).setShaderEffect(shaderId);
+            gameRenderer.setSpectatedEntityPostEffect(shaderId);
         }
     }
 

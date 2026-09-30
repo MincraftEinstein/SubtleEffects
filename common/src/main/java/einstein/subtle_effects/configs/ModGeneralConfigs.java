@@ -101,7 +101,7 @@ public class ModGeneralConfigs extends Config {
 
         if (minecraft.level != null && minecraft.options.getCameraType().isFirstPerson()) {
             if (!mobSkullShaders) {
-                minecraft.gameRenderer.clearPostEffect();
+                minecraft.gameRenderer.clearSpectatedEntityPostEffect();
                 return;
             }
 
