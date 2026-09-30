@@ -12,6 +12,7 @@
   ],
   "mixins": [
     "client.BetterModListModSearchMixin",
+    "common.NeoEntityFluidInteractionMixin",
     "common.NeoForgeCommonMooshroomMixin",
     "common.NeoForgeShearsDispenseItemBehaviorMixin"
   ],

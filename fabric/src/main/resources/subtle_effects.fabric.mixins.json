@@ -12,7 +12,8 @@
   ],
   "mixins": [
     "common.block.dispenser.FabricShearsDispenseItemBehaviorMixin",
-    "common.entity.FabricCommonMooshroomMixin"
+    "common.entity.FabricCommonMooshroomMixin",
+    "common.entity.FabricEntityFluidInteractionMixin"
   ],
   "injectors": {
     "defaultRequire": 1
