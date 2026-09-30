@@ -82,7 +82,7 @@ public class EinsteinSolarSystemLayer<T extends AvatarRenderState, V extends Hum
                 var renderType = RenderTypes.entityCutout(renderState.skin.body().texturePath());
                 int packedOverlay = LivingEntityRenderer.getOverlayCoords(renderState, 0);
                 model.setAllVisible(true);
-                nodeCollector.submitModel(model, renderState, poseStack, renderType, packedLight, packedOverlay, renderState.outlineColor, null);
+                nodeCollector.submitModel(model, renderState, poseStack, renderType, packedLight, packedOverlay, renderState.outlineColor);
 
                 poseStack.translate(0, 0.25, 0); // Adjusts the renders to align with the lower head model
                 headLayer.submit(poseStack, nodeCollector, packedLight, renderState, yRot, xRot);

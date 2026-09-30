@@ -40,10 +40,10 @@ public class ModelParticleGroup extends ParticleGroup<ModelParticle<?>> {
 
         public void submit(SubmitNodeCollector collector, CameraRenderState cameraState) {
             for (ModelParticleRenderState state : states) {
-                collector.submitModel(state.model, Unit.INSTANCE, state.poseStack, state.renderType, state.lightColor, OverlayTexture.NO_OVERLAY, state.color, null, 0, null);
+                collector.submitModel(state.model, Unit.INSTANCE, state.poseStack, state.renderType, state.lightColor, OverlayTexture.NO_OVERLAY, state.color, null, 0);
 
                 if (state.overlay != null) {
-                    collector.submitModel(state.model, Unit.INSTANCE, state.poseStack, state.overlay.renderType, state.lightColor, OverlayTexture.NO_OVERLAY, state.overlay.color, null, 0, null);
+                    collector.submitModel(state.model, Unit.INSTANCE, state.poseStack, state.overlay.renderType, state.lightColor, OverlayTexture.NO_OVERLAY, state.overlay.color, null, 0);
                 }
             }
         }

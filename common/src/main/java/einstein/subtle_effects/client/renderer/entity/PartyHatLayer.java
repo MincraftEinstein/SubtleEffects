@@ -66,7 +66,7 @@ public class PartyHatLayer<T extends AvatarRenderState, V extends HumanoidModel<
             poseStack.rotateAround(Axis.ZP.rotationDegrees(id * 22.5F), 0, 0.25F, 0);
 
             var renderType = model.renderType(getHatTexture(id, uuid));
-            collector.submitModel(model, renderState, poseStack, renderType, packedLight, OverlayTexture.NO_OVERLAY, renderState.outlineColor, null);
+            collector.submitModel(model, renderState, poseStack, renderType, packedLight, OverlayTexture.NO_OVERLAY, renderState.outlineColor);
 
             poseStack.popPose();
         }
