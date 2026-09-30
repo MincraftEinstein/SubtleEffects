@@ -16,6 +16,8 @@ import net.minecraft.world.attribute.EnvironmentAttribute;
 import net.minecraft.world.attribute.EnvironmentAttributes;
 import net.minecraft.world.level.Level;
 import org.joml.Vector3f;
+import org.joml.Vector3fc;
+import org.joml.Vector4fc;
 
 import java.util.function.BiFunction;
 
@@ -57,11 +59,17 @@ public record BiomeColorProvider(ColorType colorType) implements ColorProviderTy
             this.colorGetter = colorGetter;
         }
 
-        ColorType(String name, EnvironmentAttribute<Integer> attribute) {
-            this(name, (level, pos) ->
-                    Minecraft.getInstance().gameRenderer.mainCamera()
-                            .attributeProbe().getValue(attribute, Util.getPartialTicks())
-            );
+        ColorType(String name, EnvironmentAttribute<?> attribute) {
+            this(name, (level, pos) -> {
+                var value = Minecraft.getInstance().gameRenderer.mainCamera().attributeProbe().getValue(attribute, Util.getPartialTicks());
+                if (value instanceof Vector3fc vec) {
+                    return ARGB.colorFromVector3f(vec);
+                }
+                if (value instanceof Vector4fc vec) {
+                    return ARGB.colorFromVector4f(vec);
+                }
+                return -1;
+            });
         }
 
         @Override
