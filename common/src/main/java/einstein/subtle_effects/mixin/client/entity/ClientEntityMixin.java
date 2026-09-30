@@ -144,19 +144,6 @@ public abstract class ClientEntityMixin implements EntityTickerAccessor, FluidLo
         subtleEffects$getFluidDefinitionHeight().clear();
     }
 
-    @Inject(method = "updateFluidInteraction", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/EntityFluidInteraction;isInFluid(Lnet/minecraft/tags/TagKey;)Z", ordinal = 0))
-    private void preformWaterSplash(CallbackInfoReturnable<Boolean> cir) {
-        fluidInteraction.trackerByFluid.forEach((tag, _) -> {
-            if (fluidInteraction.isInFluid(tag)) {
-                subtleEffects$setLastTouchedFluid(ParticleSpawnUtil.preformSplash(true, false, subtleEffects$me, firstTick, isWater -> {
-                    if (isWater) {
-                        subtleEffects$cancelNextWaterSplash();
-                    }
-                }));
-            }
-        });
-    }
-
     @Inject(method = "updateFluidInteraction", at = @At("TAIL"))
     private void preformSplash(CallbackInfoReturnable<Boolean> cir) {
         subtleEffects$lastTouchedFluid = ParticleSpawnUtil.preformSplash(false, false, subtleEffects$me, firstTick, Consumers.nop());
