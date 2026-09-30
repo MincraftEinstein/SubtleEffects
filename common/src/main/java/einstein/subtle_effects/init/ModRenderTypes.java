@@ -14,6 +14,7 @@ public class ModRenderTypes {
 
     public static final Function<Identifier, RenderType> ENTITY_PARTICLE_TRANSLUCENT_RENDER_TYPE = Util.memoize((texture) -> {
         var builder = RenderSetup.builder(CUSTOM_TRANSLUCENT_PARTICLE_PIPELINE)
+                .setOitPipelines(ModPipelines.OIT_PARTICLE)
                 .withTexture("Sampler0", texture)
                 .useLightmap()
                 .useOverlay()
