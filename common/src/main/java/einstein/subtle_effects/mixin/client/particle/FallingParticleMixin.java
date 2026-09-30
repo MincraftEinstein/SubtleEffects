@@ -7,7 +7,7 @@ import einstein.subtle_effects.particle.option.FallenLeafParticleOptions;
 import einstein.subtle_effects.particle.option.RippleParticleOptions;
 import einstein.subtle_effects.util.Util;
 import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.client.particle.FallingLeavesParticle;
+import net.minecraft.client.particle.FallingParticle;
 import net.minecraft.client.particle.SingleQuadParticle;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.BlockPos;
@@ -26,13 +26,13 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import static einstein.subtle_effects.init.ModConfigs.GENERAL;
 
-@Mixin(FallingLeavesParticle.class)
-public abstract class FallingLeavesParticleMixin extends SingleQuadParticle {
+@Mixin(FallingParticle.class)
+public abstract class FallingParticleMixin extends SingleQuadParticle {
 
     @Unique
     private final BlockPos.MutableBlockPos subtleEffects$pos = new BlockPos.MutableBlockPos();
 
-    protected FallingLeavesParticleMixin(ClientLevel level, double x, double y, double z, TextureAtlasSprite sprite) {
+    protected FallingParticleMixin(ClientLevel level, double x, double y, double z, TextureAtlasSprite sprite) {
         super(level, x, y, z, sprite);
     }
 
