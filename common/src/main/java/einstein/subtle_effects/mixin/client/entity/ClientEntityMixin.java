@@ -4,7 +4,7 @@ import einstein.subtle_effects.data.FluidDefinition;
 import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.init.ModDamageListeners;
 import einstein.subtle_effects.init.ModParticles;
-import einstein.subtle_effects.util.EntityAccessor;
+import einstein.subtle_effects.util.FirstTickAccessor;
 import einstein.subtle_effects.util.FluidLogicAccessor;
 import einstein.subtle_effects.util.ParticleSpawnUtil;
 import einstein.subtle_effects.util.Util;
@@ -38,7 +38,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import static einstein.subtle_effects.util.MathUtil.nextDouble;
 
 @Mixin(Entity.class)
-public abstract class ClientEntityMixin implements EntityAccessor, FluidLogicAccessor {
+public abstract class ClientEntityMixin implements FirstTickAccessor, FluidLogicAccessor {
 
     @Unique
     private final Entity subtleEffects$me = (Entity) (Object) this;

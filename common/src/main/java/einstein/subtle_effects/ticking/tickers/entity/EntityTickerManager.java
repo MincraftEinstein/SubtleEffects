@@ -2,8 +2,8 @@ package einstein.subtle_effects.ticking.tickers.entity;
 
 import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.ticking.tickers.TickerManager;
-import einstein.subtle_effects.util.EntityAccessor;
 import einstein.subtle_effects.util.EntityProvider;
+import einstein.subtle_effects.util.FirstTickAccessor;
 import einstein.subtle_effects.util.Util;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
@@ -78,7 +78,7 @@ public class EntityTickerManager {
         }
 
         if (isEntityInRange(entity, INNER_RANGE)) {
-            EntityAccessor accessor = (EntityAccessor) entity;
+            FirstTickAccessor accessor = (FirstTickAccessor) entity;
             Int2ObjectMap<EntityTicker<?>> tickers = TRACKED_ENTITIES.get(entityId);
 
             if (accessor.subtleEffects$isFirstTick() || TICKS_SINCE_LAST_UPDATE >= ModConfigs.ENTITIES.entityUpdateFrequency.get()) {
