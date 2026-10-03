@@ -2,13 +2,13 @@ package einstein.subtle_effects.ticking.tickers.entity;
 
 import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.ticking.tickers.TickerManager;
-import einstein.subtle_effects.util.FirstTickAccessor;
 import einstein.subtle_effects.util.EntityProvider;
+import einstein.subtle_effects.util.FirstTickAccessor;
 import einstein.subtle_effects.util.Util;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
-import it.unimi.dsi.fastutil.ints.IntArrayList;
-import it.unimi.dsi.fastutil.ints.IntList;
+import it.unimi.dsi.fastutil.ints.IntArraySet;
+import it.unimi.dsi.fastutil.ints.IntSet;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -26,7 +26,7 @@ public class EntityTickerManager {
 
     private static final List<EntityTickerProvider<?>> REGISTERED = new ArrayList<>();
     private static final Int2ObjectMap<Int2ObjectMap<EntityTicker<?>>> TRACKED_ENTITIES = new Int2ObjectOpenHashMap<>();
-    private static final Int2ObjectMap<IntList> TRACKED_ENTITIES_REMOVE_QUEUE = new Int2ObjectOpenHashMap<>();
+    private static final Int2ObjectMap<IntSet> TRACKED_ENTITIES_REMOVE_QUEUE = new Int2ObjectOpenHashMap<>();
     public static final int INNER_RANGE = 128;
     public static final int OUTER_RANGE = 144;
     private static int REGISTRATION_ID = 0;
@@ -127,7 +127,7 @@ public class EntityTickerManager {
     }
 
     public static void removeTickerFromEntity(Entity entity, EntityTicker<?> ticker) {
-        TRACKED_ENTITIES_REMOVE_QUEUE.computeIfAbsent(entity.getId(), entityId -> new IntArrayList()).add(ticker.getId());
+        TRACKED_ENTITIES_REMOVE_QUEUE.computeIfAbsent(entity.getId(), entityId -> new IntArraySet()).add(ticker.getId());
     }
 
     @Nullable
