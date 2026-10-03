@@ -393,7 +393,7 @@ public class ClientPayloadHandlers {
             FluidLogicAccessor accessor = (FluidLogicAccessor) entity;
             accessor.subtleEffects$getFluidDefinitionHeight().clear();
             FluidLogicAccessor.subtleEffects$updateFluidDefinitionHeight(entity, entity.getDimensions(entity.getPose()).makeBoundingBox(entity.getX(), y, entity.getZ()));
-            accessor.subtleEffects$setLastTouchedFluid(ParticleSpawnUtil.preformSplash(false, true, entity, ((EntityAccessor) entity).subtleEffects$isFirstTick(), isWater -> {
+            accessor.subtleEffects$setLastTouchedFluid(ParticleSpawnUtil.preformSplash(false, true, entity, ((FirstTickAccessor) entity).subtleEffects$isFirstTick(), isWater -> {
                 if (isWater) {
                     accessor.subtleEffects$cancelNextWaterSplash();
                 }
