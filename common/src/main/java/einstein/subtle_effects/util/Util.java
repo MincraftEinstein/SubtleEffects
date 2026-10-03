@@ -45,6 +45,7 @@ import net.minecraft.world.item.component.Consumable;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.AbstractCauldronBlock;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.Heightmap;
@@ -314,8 +315,16 @@ public class Util {
                 return;
             }
             notHarmful[0]++;
-        });
+        }, 0);
 
         return harmful[0] > notHarmful[0];
+    }
+
+    public static boolean isEntityInsideContent(BlockState state, BlockPos pos, Entity entity) {
+        Block block = state.getBlock();
+        if (block instanceof AbstractCauldronBlockAccessor cauldronBlock) {
+            return entity.getY() < pos.getY() + cauldronBlock.getFillHeight(state) && entity.getBoundingBox().maxY > pos.getY() + 0.25;
+        }
+        return false;
     }
 }

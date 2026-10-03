@@ -8,7 +8,7 @@ import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.util.FastColor;
+import net.minecraft.util.ARGB;
 
 public record ColorProviderParticleOptions(ParticleType<? extends ColorProviderParticleOptions> type,
                                            ColorProviderType.ColorProvider provider) implements ParticleOptions {
@@ -18,7 +18,7 @@ public record ColorProviderParticleOptions(ParticleType<? extends ColorProviderP
     }
 
     public ColorProviderParticleOptions(ParticleType<? extends ColorProviderParticleOptions> type, float red, float green, float blue) {
-        this(type, FastColor.as8BitChannel(red) << 16 | FastColor.as8BitChannel(green) << 8 | FastColor.as8BitChannel(blue));
+        this(type, ARGB.as8BitChannel(red) << 16 | ARGB.as8BitChannel(green) << 8 | ARGB.as8BitChannel(blue));
     }
 
     public static MapCodec<ColorProviderParticleOptions> codec(ParticleType<? extends ColorProviderParticleOptions> type) {

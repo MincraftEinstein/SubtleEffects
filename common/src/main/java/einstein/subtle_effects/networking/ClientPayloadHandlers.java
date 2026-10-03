@@ -13,11 +13,14 @@ import einstein.subtle_effects.ticking.tickers.entity.EntityCauldronTicker;
 import einstein.subtle_effects.ticking.tickers.entity.EntityTickerManager;
 import einstein.subtle_effects.util.*;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.color.block.BlockTintSource;
 import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.client.renderer.block.BlockAndTintGetter;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
 import net.minecraft.core.particles.*;
+import net.minecraft.resources.Identifier;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -184,7 +187,7 @@ public class ClientPayloadHandlers {
         }
     }
 
-    public static void handle(ClientLevel level, ClientBoundFallingBlockTickPayload payload) {
+    public static void handle(Level level, ClientBoundFallingBlockTickPayload payload) {
         Entity entity = level.getEntity(payload.entityId());
         if (entity instanceof FallingBlockEntity) {
             entity.fallDistance = payload.fallDistance();
@@ -413,7 +416,8 @@ public class ClientPayloadHandlers {
         }
     }
 
-    public static void handle(ClientLevel level, ClientBoundExplosionPayload payload) {
+    // TODO this should be able to be client sided by mixing into the ClientExplosionTracker instead of the ServerLevel
+    public static void handle(Level level, ClientBoundExplosionPayload payload) {
         if (ModConfigs.ENTITIES.splashes.explosionsCauseSplashes.get()) {
             float radius = payload.radius();
             Vec3 position = payload.position();
@@ -455,7 +459,7 @@ public class ClientPayloadHandlers {
         }
     }
 
-    public static void handle(ClientLevel level, ClientBoundCopperGolemPayload payload) {
+    public static void handle(Level level, ClientBoundCopperGolemPayload payload) {
         Entity entity = level.getEntity(payload.entityId());
         if (entity instanceof CopperGolem copperGolem) {
             RandomSource random = copperGolem.getRandom();
@@ -511,7 +515,7 @@ public class ClientPayloadHandlers {
     public static void handle(Level level, ClientBoundEntityDamagedPayload payload) {
         Entity entity = level.getEntity(payload.entityId());
         if (entity instanceof LivingEntity livingEntity && livingEntity.isAlive()) {
-            Optional<ResourceLocation> damageType = payload.damageType();
+            Optional<Identifier> damageType = payload.damageType();
             if (damageType.isPresent() && ENTITIES.damageTaken.damageTypes.contains(damageType.get())) {
                 ModDamageListeners.spawnParticles(entity, level, entity.getRandom());
             }
@@ -523,10 +527,11 @@ public class ClientPayloadHandlers {
             return;
         }
 
-        RandomSource random = level.random;
-        double x = payload.x();
-        double y = payload.y();
-        double z = payload.z();
+        RandomSource random = level.getRandom();
+        Vec3 center = payload.center();
+        double x = center.x();
+        double y = center.y();
+        double z = center.z();
 
         for (int i = 0; i < 20; i++) {
             double xOffset = x + (random.nextDouble() - random.nextDouble()) * 4;
@@ -561,7 +566,7 @@ public class ClientPayloadHandlers {
         }
     }
 
-    private static boolean tryDoVanillaEffects(ClientLevel level, CopperGolem copperGolem, ClientBoundCopperGolemPayload.Action action, BlockPos pos, WeatheringCopper.WeatherState weatherState) {
+    private static boolean tryDoVanillaEffects(Level level, CopperGolem copperGolem, ClientBoundCopperGolemPayload.Action action, BlockPos pos, WeatheringCopper.WeatherState weatherState) {
         int stateId = Block.getId((
                 switch (weatherState) {
                     case UNAFFECTED -> Blocks.COPPER_BLOCK;
@@ -630,7 +635,11 @@ public class ClientPayloadHandlers {
             }
         }
 
-        return Minecraft.getInstance().getBlockColors().getTintSource(state, 0).colorAsTerrainParticle(state, level, pos);
+        BlockTintSource tintSource = Minecraft.getInstance().getBlockColors().getTintSource(state, 0);
+        if (tintSource != null) {
+            return tintSource.colorAsTerrainParticle(state, (BlockAndTintGetter) level, pos);
+        }
+        return -1;
     }
 
     // Don't convert to enum parameters, because the server will crash trying to access the client configs

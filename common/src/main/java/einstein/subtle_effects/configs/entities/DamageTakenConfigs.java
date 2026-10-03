@@ -4,10 +4,10 @@ import einstein.subtle_effects.init.ModConfigs;
 import me.fzzyhmstrs.fzzy_config.annotations.Translation;
 import me.fzzyhmstrs.fzzy_config.config.ConfigSection;
 import me.fzzyhmstrs.fzzy_config.validation.collection.ValidatedList;
-import net.minecraft.Util;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Util;
 import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.damagesource.DamageTypes;
 
@@ -17,7 +17,7 @@ import java.util.List;
 @Translation(prefix = ModConfigs.BASE_KEY + "entities.damageTaken")
 public class DamageTakenConfigs extends ConfigSection {
 
-    private static final List<ResourceLocation> DEFAULT_DAMAGE_TYPES = Util.make(new ArrayList<>(), list -> {
+    private static final List<Identifier> DEFAULT_DAMAGE_TYPES = Util.make(new ArrayList<>(), list -> {
         add(list, DamageTypes.GENERIC);
         add(list, DamageTypes.STALAGMITE);
         add(list, DamageTypes.TRIDENT);
@@ -44,7 +44,7 @@ public class DamageTakenConfigs extends ConfigSection {
         add(list, DamageTypes.WITHER_SKULL);
     });
 
-    public ValidatedList<ResourceLocation> damageTypes = ModConfigs.registryList(Registries.DAMAGE_TYPE, DEFAULT_DAMAGE_TYPES);
+    public ValidatedList<Identifier> damageTypes = ModConfigs.registryList(Registries.DAMAGE_TYPE, DEFAULT_DAMAGE_TYPES);
     public boolean damagedChickenFeathers = true;
     public boolean damagedParrotFeathers = true;
     public boolean damagedSnowGolemSnowflakes = true;
@@ -53,7 +53,7 @@ public class DamageTakenConfigs extends ConfigSection {
     public boolean damagedSkeletonBones = true;
     public boolean damagedSkeletonHorseBones = true;
 
-    private static void add(List<ResourceLocation> list, ResourceKey<DamageType> key) {
-        list.add(key.location());
+    private static void add(List<Identifier> list, ResourceKey<DamageType> key) {
+        list.add(key.identifier());
     }
 }

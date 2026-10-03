@@ -6,7 +6,6 @@ import einstein.subtle_effects.data.BCWPPackManager;
 import einstein.subtle_effects.data.NamedReloadListener;
 import einstein.subtle_effects.data.splash_types.SplashTypeReloadListener;
 import einstein.subtle_effects.platform.NeoForgeParticleHelper;
-import it.crystalnest.cobweb.platform.NeoForgeRegistryHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.entity.player.AvatarRenderer;
@@ -34,7 +33,7 @@ public class SubtleEffectsNeoForgeClient {
                 NeoForgeParticleHelper.PARTICLE_PROVIDERS.forEach(consumer -> consumer.accept(event))
         );
         modEventBus.addListener((RegisterParticleGroupsEvent event) ->
-                NeoForgeRegistryHelper.PARTICLE_GROUP_FACTORIES.forEach(event::register)
+                NeoForgeParticleHelper.PARTICLE_GROUPS.forEach(consumer -> consumer.accept(event))
         );
         modEventBus.addListener((AddPackFindersEvent event) -> {
             if (event.getPackType() == PackType.CLIENT_RESOURCES) {
@@ -64,7 +63,7 @@ public class SubtleEffectsNeoForgeClient {
             }
         });
         modEventBus.addListener((RegisterGuiLayersEvent event) ->
-                event.registerBelowAll(SubtleEffects.loc("debug_overlay"), DebugScreenOverlayRenderer::render)
+                event.registerBelowAll(SubtleEffects.loc("debug_overlay"), DebugScreenOverlayRenderer::extract)
         );
         NeoForge.EVENT_BUS.addListener((ClientTickEvent.Post event) -> {
             Minecraft minecraft = Minecraft.getInstance();
@@ -73,9 +72,9 @@ public class SubtleEffectsNeoForgeClient {
         NeoForge.EVENT_BUS.addListener((RegisterClientCommandsEvent event) ->
                 registerClientCommands(event.getDispatcher(), event.getBuildContext()));
         NeoForge.EVENT_BUS.addListener((ExtractLevelRenderStateEvent event) ->
-                ParticleBoundingBoxesRenderer.extractParticleBoundingBoxes(event.getRenderState(), event.getCamera(), event.getFrustum()));
+                ParticleBoundingBoxesRenderer.extract(event.getRenderState(), event.getCamera(), event.getFrustum()));
         NeoForge.EVENT_BUS.addListener((RenderLevelStageEvent.AfterTranslucentParticles event) ->
-                ParticleBoundingBoxesRenderer.renderParticleBoundingBoxes(event.getPoseStack(), event.getLevelRenderState()));
+                ParticleBoundingBoxesRenderer.render(event.getLevelRenderState()));
     }
 
     private static <T extends PreparableReloadListener & NamedReloadListener> void addReloadListener(AddClientReloadListenersEvent event, T listener) {

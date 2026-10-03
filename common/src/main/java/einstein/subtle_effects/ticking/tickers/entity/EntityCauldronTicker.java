@@ -25,7 +25,7 @@ public class EntityCauldronTicker extends EntityTicker<Entity> {
     @Override
     public void entityTick() {
         BlockState state = entity.getInBlockState();
-        interact(entity.blockPosition(), entity.getDeltaMovement().y(), state.getBlock() instanceof AbstractCauldronBlockAccessor && isEntityInsideContent(state, entity.blockPosition(), entity), state);
+        interact(entity.blockPosition(), entity.getDeltaMovement().y(), state.getBlock() instanceof AbstractCauldronBlockAccessor && Util.isEntityInsideContent(state, entity.blockPosition(), entity), state);
     }
 
     public void interact(BlockPos pos, double yVelocity, boolean isEntityInside, BlockState state) {
@@ -67,13 +67,5 @@ public class EntityCauldronTicker extends EntityTicker<Entity> {
         }
 
         lastTouchedFluid = null;
-    }
-
-    private static boolean isEntityInsideContent(BlockState state, BlockPos pos, Entity entity) {
-        Block block = state.getBlock();
-        if (block instanceof AbstractCauldronBlockAccessor cauldronBlock) {
-            return entity.getY() < pos.getY() + cauldronBlock.getFillHeight(state) && entity.getBoundingBox().maxY > pos.getY() + 0.25;
-        }
-        return false;
     }
 }

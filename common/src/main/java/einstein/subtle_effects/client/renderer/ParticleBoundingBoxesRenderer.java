@@ -1,81 +1,117 @@
 package einstein.subtle_effects.client.renderer;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import einstein.subtle_effects.SubtleEffectsClient;
+import einstein.subtle_effects.init.ModParticleLayers;
+import einstein.subtle_effects.init.ModRenderStateAttachmentKeys;
 import einstein.subtle_effects.mixin.client.particle.ParticleEngineAccessor;
-import einstein.subtle_effects.util.FrustumGetter;
 import einstein.subtle_effects.util.ParticleAccessor;
+import einstein.subtle_effects.util.RenderStateAttachmentAccessor;
+import einstein.subtle_effects.util.SingleQuadParticleAccessor;
 import einstein.subtle_effects.util.Util;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.LevelRenderer;
-import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.particle.Particle;
+import net.minecraft.client.particle.SingleQuadParticle;
 import net.minecraft.client.renderer.culling.Frustum;
-import net.minecraft.util.FastColor;
+import net.minecraft.client.renderer.state.level.LevelRenderState;
+import net.minecraft.gizmos.GizmoStyle;
+import net.minecraft.gizmos.Gizmos;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import org.joml.Vector3f;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class ParticleBoundingBoxesRenderer {
 
-    public static void render(PoseStack poseStack, Camera camera) {
-        if (SubtleEffectsClient.DISPLAY_PARTICLE_BOUNDING_BOXES) {
-            poseStack.pushPose();
-            Minecraft minecraft = Minecraft.getInstance();
-            MultiBufferSource.BufferSource bufferSource = minecraft.renderBuffers().bufferSource();
-            VertexConsumer consumer = bufferSource.getBuffer(RenderType.lines());
-            Vec3 cameraPos = camera.getPosition();
-            float partialTicks = Util.getPartialTicks();
+    private static final Map<SingleQuadParticle.Layer, Integer> LAYER_TO_COLOR = net.minecraft.util.Util.make(new HashMap<>(), map -> {
+        map.put(SingleQuadParticle.Layer.OPAQUE_TERRAIN, 0xff_00ff00);
+        map.put(SingleQuadParticle.Layer.TRANSLUCENT_TERRAIN, 0xff_00ff00);
+        map.put(SingleQuadParticle.Layer.OPAQUE_ITEMS, 0xff_f0ff00);
+        map.put(SingleQuadParticle.Layer.TRANSLUCENT_ITEMS, 0xff_0ffff0);
+        map.put(SingleQuadParticle.Layer.OPAQUE, 0xff_ffff00);
+        map.put(SingleQuadParticle.Layer.TRANSLUCENT, 0xff_00ffff);
+        map.put(ModParticleLayers.BLENDED, 0xff_ff00ff);
+    });
 
-            ((ParticleEngineAccessor) minecraft.particleEngine).getParticles().forEach((renderType, particles) -> {
-                if (particles == null || particles.isEmpty()) {
+    public static void extract(LevelRenderState levelRenderState, Camera camera, Frustum frustum) {
+        if (SubtleEffectsClient.DISPLAY_PARTICLE_BOUNDING_BOXES) {
+            Minecraft minecraft = Minecraft.getInstance();
+            List<RenderState> renderStates = new ArrayList<>();
+            float partialTicks = Util.getPartialTicks();
+            Frustum particleFrustum = frustum.offset(-3); // offset to match the frustum used by the particle engine
+
+            ((ParticleEngineAccessor) minecraft.particleEngine).getParticles().forEach((renderType, group) -> {
+                if (group == null || group.isEmpty()) {
                     return;
                 }
 
-                Vector3f renderTypeColor = Vec3.fromRGB24(FastColor.ARGB32.color(255, renderType.toString().hashCode())).toVector3f();
-                particles.forEach(particle -> {
-                    poseStack.pushPose();
-
-                    // Collision/Culling Box
-                    poseStack.pushPose();
+                int renderTypeColor = renderType.name().hashCode();
+                group.getAll().forEach(particle -> {
                     AABB collisionAABB = particle.getBoundingBox();
-                    double bbX = (collisionAABB.minX + collisionAABB.maxX) / 2;
-                    double bbY = (collisionAABB.minY + collisionAABB.maxY) / 2;
-                    double bbZ = (collisionAABB.minZ + collisionAABB.maxZ) / 2;
-                    poseStack.translate(bbX - cameraPos.x(), bbY - cameraPos.y(), bbZ - cameraPos.z());
+                    if (particleFrustum.isVisible(collisionAABB)) {
+                        double bbX = (collisionAABB.minX + collisionAABB.maxX) / 2;
+                        double bbY = (collisionAABB.minY + collisionAABB.maxY) / 2;
+                        double bbZ = (collisionAABB.minZ + collisionAABB.maxZ) / 2;
 
-                    collisionAABB = collisionAABB.move(-bbX, -bbY, -bbZ);
-                    LevelRenderer.renderLineBox(poseStack, consumer, collisionAABB, 1, 1, 1, 1);
+                        collisionAABB = collisionAABB.move(-bbX, -bbY, -bbZ);
 
-                    // Render Type Box
-                    double yHeight = collisionAABB.maxY * 0.2F;
-                    AABB renderTypeAABB = new AABB(collisionAABB.minX, collisionAABB.maxY - yHeight, collisionAABB.minZ, collisionAABB.maxX, collisionAABB.maxY + yHeight, collisionAABB.maxZ);
-                    LevelRenderer.renderLineBox(poseStack, consumer, renderTypeAABB, renderTypeColor.x(), renderTypeColor.y(), renderTypeColor.z(), 1);
+                        double yHeight = collisionAABB.maxY * 0.2F;
+                        AABB renderTypeAABB = new AABB(collisionAABB.minX, collisionAABB.maxY - yHeight, collisionAABB.minZ, collisionAABB.maxX, collisionAABB.maxY + yHeight, collisionAABB.maxZ);
 
-                    poseStack.popPose();
+                        ParticleAccessor accessor = (ParticleAccessor) particle;
+                        double x = Mth.lerp(partialTicks, accessor.getOldX(), accessor.getX());
+                        double y = Mth.lerp(partialTicks, accessor.getOldY(), accessor.getY());
+                        double z = Mth.lerp(partialTicks, accessor.getOldZ(), accessor.getZ());
 
-                    // Actual Position Box
-                    ParticleAccessor accessor = (ParticleAccessor) particle;
-                    double x = Mth.lerp(partialTicks, accessor.getOldX(), accessor.getX()) - cameraPos.x();
-                    double y = Mth.lerp(partialTicks, accessor.getOldY(), accessor.getY()) - cameraPos.y();
-                    double z = Mth.lerp(partialTicks, accessor.getOldZ(), accessor.getZ()) - cameraPos.z();
-                    AABB posAABB = new AABB(-0.05, -0.05, -0.05, 0.05, 0.05, 0.05);
-                    posAABB = posAABB.intersect(collisionAABB);
+                        AABB posAABB = new AABB(-0.05, -0.05, -0.05, 0.05, 0.05, 0.05);
+                        posAABB = posAABB.intersect(collisionAABB);
+                        posAABB = posAABB.move(x, y, z);
 
-                    poseStack.pushPose();
-                    poseStack.translate(x, y, z);
-                    LevelRenderer.renderLineBox(poseStack, consumer, posAABB, 1, 0, 0, 1);
-                    poseStack.popPose();
-
-                    poseStack.popPose();
+                        renderStates.add(new RenderState(posAABB,
+                                collisionAABB.move(bbX, bbY, bbZ),
+                                renderTypeAABB.move(bbX, bbY, bbZ),
+                                getLayerColor(particle, renderTypeColor)
+                        ));
+                    }
                 });
             });
 
-            bufferSource.endBatch(RenderType.lines());
-            poseStack.popPose();
+            if (!renderStates.isEmpty()) {
+                ((RenderStateAttachmentAccessor) levelRenderState).subtleEffects$set(ModRenderStateAttachmentKeys.PARTICLE_BOUNDING_BOXES, renderStates);
+            }
         }
+    }
+
+    private static int getLayerColor(Particle particle, int renderTypeColor) {
+        if (particle instanceof SingleQuadParticleAccessor accessor) {
+            Integer i = LAYER_TO_COLOR.get(accessor.subtleEffects$getLayer());
+            if (i != null) {
+                return i;
+            }
+        }
+        return renderTypeColor;
+    }
+
+    public static void render(LevelRenderState levelRenderState) {
+        if (SubtleEffectsClient.DISPLAY_PARTICLE_BOUNDING_BOXES) {
+            List<RenderState> renderStates = ((RenderStateAttachmentAccessor) levelRenderState).subtleEffects$get(ModRenderStateAttachmentKeys.PARTICLE_BOUNDING_BOXES);
+            if (renderStates == null) {
+                return;
+            }
+
+            renderStates.forEach(renderState -> {
+                Gizmos.cuboid(renderState.collisionAABB, GizmoStyle.stroke(0xFFFFFFFF));
+                Gizmos.cuboid(renderState.renderTypeAABB, GizmoStyle.stroke(renderState.renderTypeColor));
+                Gizmos.cuboid(renderState.posAABB, GizmoStyle.stroke(0xFFFF0000));
+            });
+        }
+    }
+
+    public record RenderState(AABB posAABB, AABB collisionAABB, AABB renderTypeAABB, int renderTypeColor) {
+
     }
 }

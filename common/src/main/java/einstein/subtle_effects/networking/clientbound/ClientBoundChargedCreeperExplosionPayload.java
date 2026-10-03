@@ -5,14 +5,13 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.world.phys.Vec3;
 
-public record ClientBoundChargedCreeperExplosionPayload(double x, double y, double z, float radius) implements CustomPacketPayload {
+public record ClientBoundChargedCreeperExplosionPayload(Vec3 center, float radius) implements CustomPacketPayload {
 
     public static final Type<ClientBoundChargedCreeperExplosionPayload> TYPE = new Type<>(SubtleEffects.loc("charged_creeper_explosion"));
     public static final StreamCodec<RegistryFriendlyByteBuf, ClientBoundChargedCreeperExplosionPayload> STREAM_CODEC = StreamCodec.composite(
-            ByteBufCodecs.DOUBLE, ClientBoundChargedCreeperExplosionPayload::x,
-            ByteBufCodecs.DOUBLE, ClientBoundChargedCreeperExplosionPayload::y,
-            ByteBufCodecs.DOUBLE, ClientBoundChargedCreeperExplosionPayload::z,
+            Vec3.STREAM_CODEC, ClientBoundChargedCreeperExplosionPayload::center,
             ByteBufCodecs.FLOAT, ClientBoundChargedCreeperExplosionPayload::radius,
             ClientBoundChargedCreeperExplosionPayload::new
     );

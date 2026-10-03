@@ -2,6 +2,7 @@ package einstein.subtle_effects.compat;
 
 import me.fzzyhmstrs.fzzy_config.validation.misc.ValidatedColor;
 import net.minecraft.core.BlockPos;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import org.jetbrains.annotations.Nullable;
@@ -38,7 +39,7 @@ public class EndRemasteredCompat {
         return null;
     }
 
-    public static List<ResourceLocation> getAllEyes() {
+    public static List<Identifier> getAllEyes() {
 //        return JsonEye.getEyes().stream().map(eye -> endRemLoc(getId(eye))).toList();
         return new ArrayList<>();
     }

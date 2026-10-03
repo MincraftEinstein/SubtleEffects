@@ -3,21 +3,25 @@ package einstein.subtle_effects.particle;
 import einstein.subtle_effects.platform.Services;
 import einstein.subtle_effects.util.Util;
 import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.client.particle.*;
+import net.minecraft.client.particle.Particle;
+import net.minecraft.client.particle.ParticleProvider;
+import net.minecraft.client.particle.SingleQuadParticle;
+import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ElectricityParticle extends TextureSheetParticle {
+public class ElectricityParticle extends SingleQuadParticle {
 
     private final List<TextureAtlasSprite> sprites;
     private int i;
 
     protected ElectricityParticle(ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, SpriteSet sprites) {
-        super(level, x, y, z);
+        super(level, x, y, z, null);
         xd = xSpeed * 0.03;
         yd = ySpeed * 0.03;
         zd = zSpeed * 0.03;
@@ -44,19 +48,19 @@ public class ElectricityParticle extends TextureSheetParticle {
     }
 
     @Override
-    protected int getLightColor(float partialTick) {
+    protected int getLightCoords(float partialTick) {
         return Util.PARTICLE_LIGHT_COLOR;
     }
 
     @Override
-    public ParticleRenderType getRenderType() {
-        return ParticleRenderType.PARTICLE_SHEET_TRANSLUCENT;
+    protected Layer getLayer() {
+        return Layer.TRANSLUCENT;
     }
 
     public record Provider(SpriteSet sprites) implements ParticleProvider<SimpleParticleType> {
 
         @Override
-        public Particle createParticle(SimpleParticleType type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+        public Particle createParticle(SimpleParticleType type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, RandomSource random) {
             return new ElectricityParticle(level, x, y, z, xSpeed, ySpeed, zSpeed, sprites);
         }
     }

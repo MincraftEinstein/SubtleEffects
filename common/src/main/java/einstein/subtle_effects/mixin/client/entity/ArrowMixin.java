@@ -9,8 +9,8 @@ import net.minecraft.core.particles.ColorParticleOption;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.projectile.AbstractArrow;
-import net.minecraft.world.entity.projectile.Arrow;
+import net.minecraft.world.entity.projectile.arrow.AbstractArrow;
+import net.minecraft.world.entity.projectile.arrow.Arrow;
 import net.minecraft.world.level.Level;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -28,7 +28,7 @@ public abstract class ArrowMixin extends AbstractArrow {
     @WrapOperation(method = "makeParticle", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/Level;addParticle(Lnet/minecraft/core/particles/ParticleOptions;DDDDDD)V"))
     private void replaceEffectParticles(Level level, ParticleOptions particleData, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, Operation<Void> original, @Local(ordinal = 1) int color) {
         if (ITEMS.tippedArrowPotionClouds) {
-            if (inGround ? random.nextInt(3) > 0 : random.nextBoolean()) {
+            if (isInGround() ? random.nextInt(3) > 0 : random.nextBoolean()) {
                 particleData = ColorParticleOption.create(ModParticles.POTION_POOF_CLOUD.get(), color);
             }
         }
@@ -43,7 +43,7 @@ public abstract class ArrowMixin extends AbstractArrow {
         return original;
     }
 
-    @ModifyExpressionValue(method = {"makeParticle", "handleEntityEvent"}, at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/projectile/Arrow;getRandomY()D"))
+    @ModifyExpressionValue(method = {"makeParticle", "handleEntityEvent"}, at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/projectile/arrow/Arrow;getRandomY()D"))
     private double modifyParticleY(double original) {
         return ITEMS.tippedArrowPotionClouds ? getY(0.5F) : original;
     }

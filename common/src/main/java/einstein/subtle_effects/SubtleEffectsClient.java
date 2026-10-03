@@ -69,7 +69,6 @@ public class SubtleEffectsClient {
         ModDamageListeners.init();
         ModParticleProviders.init();
         ModParticleGroups.init();
-        ModParticles.init();
         ModSpriteSets.init();
         ModAnimalFedEffectSettings.init();
         CompatHelper.init();
@@ -186,10 +185,10 @@ public class SubtleEffectsClient {
 
         // Debug Args
         RequiredArgumentBuilder<T, Boolean> debugOverlayEnabled = RequiredArgumentBuilder.<T, Boolean>argument("enabled", BoolArgumentType.bool())
-                .executes(context -> toggleDebugOverlay(player, BoolArgumentType.getBool(context, "enabled")));
+                .executes(context -> toggleDebugOverlay(minecraft, BoolArgumentType.getBool(context, "enabled")));
 
         LiteralArgumentBuilder<T> debugOverlay = LiteralArgumentBuilder.<T>literal("debug_screen")
-                .executes(context -> toggleDebugOverlay(player, !DISPLAY_DEBUG_OVERLAY))
+                .executes(context -> toggleDebugOverlay(minecraft, !DISPLAY_DEBUG_OVERLAY))
                 .then(debugOverlayEnabled);
 
         // SE Command

@@ -388,7 +388,7 @@ public class ModBlockTickers {
                 double x = random.nextDouble();
                 double z = random.nextDouble();
                 double y = 0.0625;
-                if (shape.isAscending()) {
+                if (shape.isSlope()) {
                     boolean isNorth = shape == RailShape.ASCENDING_NORTH;
                     y = isNorth || shape == RailShape.ASCENDING_SOUTH ? z : x;
                     y = isNorth || shape == RailShape.ASCENDING_WEST ? 1 - y : y;

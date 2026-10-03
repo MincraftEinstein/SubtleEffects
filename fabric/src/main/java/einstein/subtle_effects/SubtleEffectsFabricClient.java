@@ -23,16 +23,14 @@ public class SubtleEffectsFabricClient implements ClientModInitializer {
         clientSetup();
         ClientTickEvents.END_CLIENT_TICK.register(minecraft -> clientTick(minecraft, minecraft.level));
         ClientCommandRegistrationCallback.EVENT.register(SubtleEffectsClient::registerClientCommands);
-        ResourceManagerHelper.registerBuiltinResourcePack(BCWPPackManager.PACK_LOCATION.get(),
+        ResourceLoader.registerBuiltinPack(BCWPPackManager.PACK_LOCATION.get(),
                 FabricLoader.getInstance().getModContainer(SubtleEffects.MOD_ID).orElseThrow(),
-                BCWPPackManager.PACK_NAME, ResourcePackActivationType.NORMAL
+                BCWPPackManager.PACK_NAME, PackActivationType.NORMAL
         );
-        ResourceManagerHelper helper = ResourceManagerHelper.get(PackType.CLIENT_RESOURCES);
-        registerReloadListeners().forEach(listener ->
-                helper.registerReloadListener(new FabricReloadListenerWrapper<>(listener))
-        );
-        registerModelLayers().forEach((modelLayerLocation, layerDefinitionSupplier) ->
-                EntityModelLayerRegistry.registerModelLayer(modelLayerLocation, layerDefinitionSupplier::get)
+        ResourceLoader helper = ResourceLoader.get(PackType.CLIENT_RESOURCES);
+        registerReloadListeners().forEach(listener -> addReloadListener(helper, listener));
+        registerModelLayers().forEach((id, layerDefinition) ->
+                ModelLayerRegistry.registerModelLayer(id, layerDefinition::get)
         );
         LivingEntityRenderLayerRegistrationCallback.EVENT.register((type, renderer, registrationHelper, context) -> {
             if (renderer instanceof AvatarRenderer<?> playerRenderer) {

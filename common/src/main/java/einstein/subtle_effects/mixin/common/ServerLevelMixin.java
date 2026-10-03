@@ -1,8 +1,8 @@
 package einstein.subtle_effects.mixin.common;
 
 import com.llamalad7.mixinextras.sugar.Local;
+import einstein.subtle_effects.networking.PayloadSender;
 import einstein.subtle_effects.networking.clientbound.ClientBoundExplosionPayload;
-import einstein.subtle_effects.platform.Services;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.particles.ExplosionParticleInfo;
@@ -25,6 +25,6 @@ public class ServerLevelMixin {
 
     @Inject(method = "explode", at = @At(value = "TAIL"))
     private void explode(Entity source, DamageSource damageSource, ExplosionDamageCalculator damageCalculator, double x, double y, double z, float radius, boolean fire, Level.ExplosionInteraction explosionInteraction, ParticleOptions smallExplosionParticles, ParticleOptions largeExplosionParticles, WeightedList<ExplosionParticleInfo> blockParticles, Holder<SoundEvent> explosionSound, CallbackInfo ci, @Local ServerExplosion explosion) {
-        Services.NETWORK.sendToClientsTracking((ServerLevel) (Object) this, BlockPos.containing(explosion.center()), new ClientBoundExplosionPayload(explosion.center(), explosion.radius()));
+        PayloadSender.sendToClientsTracking((ServerLevel) (Object) this, BlockPos.containing(explosion.center()), new ClientBoundExplosionPayload(explosion.center(), explosion.radius()));
     }
 }

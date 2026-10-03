@@ -30,6 +30,7 @@ public class EntityRendererMixin<T extends Entity, S extends EntityRenderState> 
         if (entity instanceof AbstractClientPlayer player) {
             accessor.subtleEffects$set(SOLAR_SYSTEM_SPIN, (player.tickCount + partialTicks) / 20F);
             accessor.subtleEffects$set(STRING_UUID, player.getStringUUID());
+            accessor.subtleEffects$set(HEALTH_PERCENTAGE, player.getHealth() / player.getMaxHealth());
         }
     }
 

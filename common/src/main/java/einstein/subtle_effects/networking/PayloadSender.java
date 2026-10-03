@@ -21,7 +21,7 @@ public class PayloadSender {
     }
 
     public static <T extends CustomPacketPayload> void sendToClientsTracking(@Nullable ServerPlayer skippedPlayer, ServerLevel level, BlockPos pos, T payload, @Nullable Consumer<ServerPlayer> failedPlayersHandler) {
-        level.getChunkSource().chunkMap.getPlayers(new ChunkPos(pos), false).forEach(player -> {
+        level.getChunkSource().chunkMap.getPlayers(ChunkPos.containing(pos), false).forEach(player -> {
             if (!player.equals(skippedPlayer)) {
                 if (ConfigApiJava.network().canSend(payload.type().id(), player)) {
                     ConfigApiJava.network().send(payload, player);

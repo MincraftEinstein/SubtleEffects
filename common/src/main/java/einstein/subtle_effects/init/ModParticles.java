@@ -60,7 +60,7 @@ public class ModParticles {
     public static final RegistrySupplier<SimpleParticleType> AZALEA_PETAL = register("azalea_petal");
     public static final RegistrySupplier<SimpleParticleType> FROSTY_BREATH = register("frosty_breath");
     public static final RegistrySupplier<ParticleType<FloatParticleOptions>> EXPERIENCE = register("experience", FloatParticleOptions::codec, FloatParticleOptions::streamCodec);
-    public static final RegistrySupplier<SimpleParticleType> DRIPPING_RESIN = register("dripping_resin);
+    public static final RegistrySupplier<SimpleParticleType> DRIPPING_RESIN = register("dripping_resin");
     public static final RegistrySupplier<SimpleParticleType> FALLING_RESIN = register("falling_resin");
     public static final RegistrySupplier<SimpleParticleType> LANDING_RESIN = register("landing_resin");
     public static final RegistrySupplier<SimpleParticleType> HEART_POP = register("heart_pop");

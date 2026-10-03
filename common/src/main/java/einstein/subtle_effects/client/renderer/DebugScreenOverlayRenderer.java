@@ -10,8 +10,8 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.particle.Particle;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.particle.ParticleGroup;
 import net.minecraft.client.particle.ParticleRenderType;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
@@ -20,20 +20,19 @@ import net.minecraft.world.entity.Entity;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Queue;
 
 public class DebugScreenOverlayRenderer {
 
-    public static void render(GuiGraphics guiGraphics, DeltaTracker deltaTracker) {
+    public static void extract(GuiGraphicsExtractor guiGraphics, DeltaTracker deltaTracker) {
         if (!SubtleEffectsClient.DISPLAY_DEBUG_OVERLAY) {
             return;
         }
 
         Minecraft minecraft = Minecraft.getInstance();
         Font font = minecraft.font;
-        Map<ParticleRenderType, Queue<Particle>> particles = ((ParticleEngineAccessor) minecraft.particleEngine).getParticles();
-        Queue<Particle> particleQueue = particles.get(ParticleRenderType.PARTICLE_SHEET_OPAQUE);
-        int maxParticlesPerLayer = (particleQueue instanceof EvictingQueue<Particle> queue ? queue.remainingCapacity() + particleQueue.size() : 16384);
+        Map<ParticleRenderType, ParticleGroup<?>> particles = ((ParticleEngineAccessor) minecraft.particleEngine).getParticles();
+        ParticleGroup<?> group = particles.get(ParticleRenderType.SINGLE_QUADS);
+        int maxParticlesPerLayer = (group.getAll() instanceof EvictingQueue<?> queue ? queue.remainingCapacity() + queue.size() : 16384);
         int layers = particles.size();
 
         List<Component> leftLines = new ArrayList<>();
@@ -63,7 +62,7 @@ public class DebugScreenOverlayRenderer {
         }
     }
 
-    private static void renderLines(GuiGraphics guiGraphics, List<Component> lines, Font font, boolean left) {
+    private static void renderLines(GuiGraphicsExtractor guiGraphics, List<Component> lines, Font font, boolean left) {
         for (int i = 0; i < lines.size(); i++) {
             Component component = lines.get(i);
             if (component != null) {
@@ -71,7 +70,7 @@ public class DebugScreenOverlayRenderer {
                 int x = left ? 2 : guiGraphics.guiWidth() - 2 - width;
                 int y = 2 + font.lineHeight * i;
                 guiGraphics.fill(x - 1, y - 1, x + width + 1, y + font.lineHeight - 1, 0x90505050);
-                guiGraphics.drawString(font, component, x, y, -1, false);
+                guiGraphics.text(font, component, x, y, -1, false);
             }
         }
     }

@@ -1,6 +1,7 @@
 package einstein.subtle_effects.init;
 
 import einstein.subtle_effects.particle.*;
+import einstein.subtle_effects.particle.FireflyParticle;
 import einstein.subtle_effects.particle.SplashParticle;
 import einstein.subtle_effects.particle.emitter.FireFlyEmitter;
 import einstein.subtle_effects.particle.emitter.PotionEmitter;
@@ -11,6 +12,7 @@ import net.minecraft.client.particle.*;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
 
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 import static einstein.subtle_effects.init.ModParticles.*;
@@ -40,7 +42,6 @@ public class ModParticleProviders {
         register(SHEEP_FLUFF, SheepFluffParticle.Provider::new);
         register(MUSHROOM_SPORE, MushroomSporeProvider::new);
         register(FIREFLY, FireflyParticle.Provider::new);
-        register(VANILLA_FIREFLY, VanillaFireflyParticle.FireflyProvider::new);
         register(FIREFLY_EMITTER, new FireFlyEmitter.Provider());
         register(SMOKE, SmokeParticleProvider::new);
         register(POLLEN, PollenProvider::new);
@@ -98,7 +99,7 @@ public class ModParticleProviders {
         register(HEART_GROWTH, HeartGrowthParticle.Provider::new);
     }
 
-    private static <T extends ParticleType<V>, V extends ParticleOptions> void register(Supplier<T> particleType, ParticleEngine.SpriteParticleRegistration<V> provider) {
+    private static <T extends ParticleType<V>, V extends ParticleOptions> void register(Supplier<T> particleType, Function<SpriteSet, ParticleProvider<V>> provider) {
         Services.PARTICLE_HELPER.registerParticleProvider(particleType, provider);
     }
 

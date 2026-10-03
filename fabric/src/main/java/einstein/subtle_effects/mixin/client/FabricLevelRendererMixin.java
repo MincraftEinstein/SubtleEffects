@@ -30,11 +30,11 @@ public class FabricLevelRendererMixin {
 
     @Inject(method = "extractLevel", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/profiling/ProfilerFiller;popPush(Ljava/lang/String;)V", ordinal = 10))
     private void extractParticleBoundingBoxes(DeltaTracker deltaTracker, Camera camera, float deltaPartialTick, CallbackInfo ci, @Local(name = "cullFrustum") Frustum frustum) {
-        ParticleBoundingBoxesRenderer.extractParticleBoundingBoxes(levelRenderState, camera, frustum);
+        ParticleBoundingBoxesRenderer.extract(levelRenderState, camera, frustum);
     }
 
     @Inject(method = "renderLevel", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/LevelRenderer;addLateDebugPass(Lcom/mojang/blaze3d/framegraph/FrameGraphBuilder;Lnet/minecraft/client/renderer/state/level/CameraRenderState;Lcom/mojang/blaze3d/buffers/GpuBufferSlice;Lorg/joml/Matrix4fc;)V"))
     private void renderParticleBoundingBoxes(GraphicsResourceAllocator resourceAllocator, DeltaTracker deltaTracker, boolean renderOutline, CameraRenderState cameraState, Matrix4fc modelViewMatrix, GpuBufferSlice terrainFog, Vector4f fogColor, boolean shouldRenderSky, ChunkSectionsToRender chunkSectionsToRender, CallbackInfo ci) {
-        ParticleBoundingBoxesRenderer.renderParticleBoundingBoxes(new PoseStack(), levelRenderState);
+        ParticleBoundingBoxesRenderer.render(levelRenderState);
     }
 }

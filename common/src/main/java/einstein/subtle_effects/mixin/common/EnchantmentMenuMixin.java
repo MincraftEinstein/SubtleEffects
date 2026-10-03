@@ -14,9 +14,9 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(EnchantmentMenu.class)
-public class NeoForgeEnchantmentMenuMixin {
+public class EnchantmentMenuMixin {
 
-    @Inject(method = "lambda$clickMenuButton$1", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/Level;playSound(Lnet/minecraft/world/entity/player/Player;Lnet/minecraft/core/BlockPos;Lnet/minecraft/sounds/SoundEvent;Lnet/minecraft/sounds/SoundSource;FF)V"))
+    @Inject(method = "lambda$clickMenuButton$0", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/Level;playSound(Lnet/minecraft/world/entity/Entity;Lnet/minecraft/core/BlockPos;Lnet/minecraft/sounds/SoundEvent;Lnet/minecraft/sounds/SoundSource;FF)V"))
     private void spawnEnchantParticles(ItemStack stack, int id, Player player, int i, ItemStack lapisStack, Level level, BlockPos pos, CallbackInfo ci) {
         if (level instanceof ServerLevel serverLevel) {
             PayloadSender.sendToClientsTracking(serverLevel, pos, new ClientBoundItemEnchantedPayload(pos));

@@ -4,14 +4,16 @@ import einstein.subtle_effects.data.FluidDefinition;
 import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.init.ModDamageListeners;
 import einstein.subtle_effects.init.ModParticles;
-import einstein.subtle_effects.util.*;
+import einstein.subtle_effects.util.EntityAccessor;
+import einstein.subtle_effects.util.FluidLogicAccessor;
+import einstein.subtle_effects.util.ParticleSpawnUtil;
+import einstein.subtle_effects.util.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityFluidInteraction;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
@@ -48,7 +50,7 @@ public abstract class ClientEntityMixin implements EntityAccessor, FluidLogicAcc
     private Vec3 subtleEffects$lastPos = Vec3.ZERO;
 
     @Shadow
-    protected abstract boolean isInvulnerableToBase(DamageSource damageSource);
+    protected abstract boolean isInvulnerableToBase(DamageSource source);
 
     @Shadow
     public abstract Level level();
@@ -121,15 +123,11 @@ public abstract class ClientEntityMixin implements EntityAccessor, FluidLogicAcc
         }
     }
 
-    @SuppressWarnings("unchecked")
     @Inject(method = "hurtOrSimulate", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;hurtClient(Lnet/minecraft/world/damagesource/DamageSource;)Z"))
-    public <T extends Entity> void hurtClient(DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
-        if (subtleEffects$me instanceof LivingEntity entity && !isInvulnerableToBase(source)) {
-            if (source.getEntity() instanceof LivingEntity && entity.isAlive() && entity.hurtTime == 0) {
-                EntityType<T> type = (EntityType<T>) entity.getType();
-                if (ModDamageListeners.REGISTERED.containsKey(type)) {
-                    ((EntityProvider<T>) ModDamageListeners.REGISTERED.get(type)).apply((T) (Object) this, entity.level(), entity.getRandom());
-                }
+    public void hurtClient(DamageSource source, float damage, CallbackInfoReturnable<Boolean> cir) {
+        if (level().isClientSide() && !isInvulnerableToBase(source) && damage > 0) {
+            if (source.getEntity() instanceof LivingEntity entity && entity.isAlive() && entity.hurtTime == 0) {
+                ModDamageListeners.spawnParticles(subtleEffects$me, level(), entity.getRandom());
             }
         }
     }
@@ -147,7 +145,7 @@ public abstract class ClientEntityMixin implements EntityAccessor, FluidLogicAcc
                     if (isWater) {
                         subtleEffects$cancelNextWaterSplash();
                     }
-                }, subtleEffects$me.getDeltaMovement().y(), subtleEffects$me.getY(), subtleEffects$me.blockPosition());
+                }, subtleEffects$me.getDeltaMovement().y(), subtleEffects$me.getY(), subtleEffects$me.blockPosition()));
             }
         });
     }

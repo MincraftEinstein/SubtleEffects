@@ -5,17 +5,17 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 import java.util.Optional;
 
 public record ClientBoundEntityDamagedPayload(int entityId,
-                                              Optional<ResourceLocation> damageType) implements CustomPacketPayload {
+                                              Optional<Identifier> damageType) implements CustomPacketPayload {
 
     public static final Type<ClientBoundEntityDamagedPayload> TYPE = new Type<>(SubtleEffects.loc("entity_damaged"));
     public static final StreamCodec<RegistryFriendlyByteBuf, ClientBoundEntityDamagedPayload> STREAM_CODEC = StreamCodec.composite(
             ByteBufCodecs.INT, ClientBoundEntityDamagedPayload::entityId,
-            ByteBufCodecs.optional(ResourceLocation.STREAM_CODEC), ClientBoundEntityDamagedPayload::damageType,
+            ByteBufCodecs.optional(Identifier.STREAM_CODEC), ClientBoundEntityDamagedPayload::damageType,
             ClientBoundEntityDamagedPayload::new
     );
 

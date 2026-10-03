@@ -7,6 +7,7 @@ import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.client.particle.TrialSpawnerDetectionParticle;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 
 public class EnchantMagicProvider extends TrialSpawnerDetectionParticle.Provider {
 
@@ -15,9 +16,9 @@ public class EnchantMagicProvider extends TrialSpawnerDetectionParticle.Provider
     }
 
     @Override
-    public Particle createParticle(SimpleParticleType type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
-        Particle particle = super.createParticle(type, level, x, y, z, xSpeed, ySpeed, zSpeed);
-        particle.setLifetime(Mth.nextInt(level.random, 12, 15));
+    public Particle createParticle(SimpleParticleType type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, RandomSource random) {
+        Particle particle = super.createParticle(type, level, x, y, z, xSpeed, ySpeed, zSpeed, random);
+        particle.setLifetime(Mth.nextInt(random, 12, 15));
         particle.setParticleSpeed(0, ((ParticleAccessor) particle).getYSpeed() * 0.5F, 0);
         return particle;
     }

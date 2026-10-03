@@ -1,17 +1,17 @@
 package einstein.subtle_effects.data;
 
 import einstein.subtle_effects.SubtleEffects;
-import net.minecraft.client.particle.ParticleEngine;
+import net.minecraft.client.particle.ParticleResources;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.RandomSource;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class MissingSpriteSet extends ParticleEngine.MutableSpriteSet {
+public class MissingSpriteSet extends ParticleResources.MutableSpriteSet {
 
-    public static final ResourceLocation ID = SubtleEffects.loc("missing");
+    public static final Identifier ID = SubtleEffects.loc("missing");
     public static final MissingSpriteSet INSTANCE = new MissingSpriteSet();
 
     @Nullable

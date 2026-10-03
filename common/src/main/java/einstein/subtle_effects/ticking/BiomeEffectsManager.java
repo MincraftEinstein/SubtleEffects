@@ -5,7 +5,7 @@ import me.fzzyhmstrs.fzzy_config.validation.ValidatedField;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LightLayer;
@@ -32,7 +32,7 @@ public class BiomeEffectsManager {
         register(ModParticles.SCULK_DUST, 15, ENVIRONMENT.biomes.sculkDustDensity, ENVIRONMENT.biomes.sculkDustBiomes);
     }
 
-    private static void register(Supplier<? extends ParticleOptions> particleOptions, int maxHeight, ValidatedField<Float> chance, ValidatedField<List<? extends ResourceLocation>> biomesConfig) {
+    private static void register(Supplier<? extends ParticleOptions> particleOptions, int maxHeight, ValidatedField<Float> chance, ValidatedField<List<? extends Identifier>> biomesConfig) {
         if (!biomesConfig.get().isEmpty() && chance.get() > 0) {
             REGISTERED.add(new Options(particleOptions, maxHeight, ALWAYS, chance, biomesConfig));
         }
@@ -41,7 +41,7 @@ public class BiomeEffectsManager {
     public static void tick(Level level, BlockPos pos, BlockState state, RandomSource random) {
         if (!state.isCollisionShapeFullBlock(level, pos) && level.getFluidState(pos).isEmpty()) {
             for (Options options : REGISTERED) {
-                Optional<ResourceLocation> biomeId = level.getBiome(pos).unwrapKey().map(ResourceKey::location);
+                Optional<Identifier> biomeId = level.getBiome(pos).unwrapKey().map(ResourceKey::identifier);
                 if (biomeId.isPresent() && options.biomesConfig().get().contains(biomeId.get())) {
                     if (random.nextDouble() * 100 < options.chance().get()) {
                         boolean isRaining = level.isRaining();
@@ -50,7 +50,7 @@ public class BiomeEffectsManager {
                         int y = pos.getY();
 
                         if (y < surfaceLevel) {
-                            Optional<ResourceLocation> surfaceBiomeId = level.getBiome(surfacePos).unwrapKey().map(ResourceKey::location);
+                            Optional<Identifier> surfaceBiomeId = level.getBiome(surfacePos).unwrapKey().map(ResourceKey::identifier);
                             if (surfaceBiomeId.isPresent() && surfaceBiomeId.get().equals(biomeId.get()) && (level.getBrightness(LightLayer.SKY, pos) < 7 || isRaining)) {
                                 return;
                             }
@@ -75,7 +75,7 @@ public class BiomeEffectsManager {
 
     private record Options(Supplier<? extends ParticleOptions> particleOptions, int maxHeight,
                            BiPredicate<Level, BlockPos> conditions, ValidatedField<Float> chance,
-                           ValidatedField<List<? extends ResourceLocation>> biomesConfig) {
+                           ValidatedField<List<? extends Identifier>> biomesConfig) {
 
     }
 }

@@ -9,13 +9,14 @@ import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.particles.SimpleParticleType;
+import net.minecraft.util.RandomSource;
 
 public class HeartGrowthParticle extends HeartParticle {
 
     private final SpriteSet sprites;
 
     public HeartGrowthParticle(ClientLevel level, double x, double y, double z, SpriteSet sprites) {
-        super(level, x, y, z);
+        super(level, x, y, z, sprites.first());
         this.sprites = sprites;
         lifetime = 12;
         setSpriteFromAge(sprites);
@@ -41,7 +42,7 @@ public class HeartGrowthParticle extends HeartParticle {
     public record Provider(SpriteSet sprites) implements ParticleProvider<SimpleParticleType> {
 
         @Override
-        public Particle createParticle(SimpleParticleType type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+        public Particle createParticle(SimpleParticleType type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, RandomSource random) {
             return new HeartGrowthParticle(level, x, y, z, sprites);
         }
     }

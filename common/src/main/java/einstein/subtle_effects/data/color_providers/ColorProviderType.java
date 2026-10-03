@@ -31,7 +31,7 @@ public record ColorProviderType<T extends ColorProviderType.ColorProvider>(Ident
     public static final ColorProviderType<PresetColorProvider> PRESET = register("preset", () -> PresetColorProvider.CODEC, () -> PresetColorProvider.STREAM_CODEC);
 
     public static final Codec<ColorProviderType<?>> REGISTRY_CODEC = StringRepresentable.fromValues(() -> ColorProviderType.TYPES.values().toArray(new ColorProviderType<?>[0]));
-    public static final StreamCodec<ByteBuf, ColorProviderType<?>> REGISTRY_STREAM_CODEC = StreamCodec.composite(ResourceLocation.STREAM_CODEC, ColorProviderType::registryName, TYPES::get);
+    public static final StreamCodec<ByteBuf, ColorProviderType<?>> REGISTRY_STREAM_CODEC = StreamCodec.composite(Identifier.STREAM_CODEC, ColorProviderType::registryName, TYPES::get);
     private static final Codec<Either<Integer, ColorProvider>> CONSTANT_OR_DISPATCH_CODEC = Codec.either(CodecUtil.RGB_COLOR_CODEC, REGISTRY_CODEC.dispatch(ColorProvider::getType, type -> type.codec().get()));
     public static final Codec<ColorProvider> CODEC = CONSTANT_OR_DISPATCH_CODEC.xmap(
             either -> either.map(ConstantColorProvider::new, colorProvider -> colorProvider),

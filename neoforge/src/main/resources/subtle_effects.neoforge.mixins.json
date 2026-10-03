@@ -9,12 +9,10 @@
     "client.compat.BetterModListModSearchMixin",
     "client.compat.ModListScreenMixin",
     "client.entity.NeoForgeClientEntityMixin",
-    "client.fluid.FluidTypeMixin",
-    "client.particle.NeoForgeParticleEngineMixin"
+    "client.fluid.FluidTypeMixin"
   ],
   "mixins": [
     "common.NeoForgeCommonMooshroomMixin",
-    "common.NeoForgeEnchantmentMenuMixin",
     "common.block.dispenser.NeoForgeShearsDispenseItemBehaviorMixin"
   ],
   "injectors": {

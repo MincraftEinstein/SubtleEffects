@@ -6,13 +6,13 @@ import com.mojang.serialization.DataResult;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.util.ARGB;
 import net.minecraft.util.ExtraCodecs;
-import net.minecraft.util.FastColor;
 
 public class CodecUtil {
 
     public static final Codec<Integer> RGB_COLOR_CODEC = Codec.either(Codec.withAlternative(Codec.INT, ExtraCodecs.VECTOR3F,
-            color -> FastColor.ARGB32.colorFromFloat(1, color.x(), color.y(), color.z())
+            color -> ARGB.colorFromFloat(1, color.x(), color.y(), color.z())
     ), Codec.STRING).comapFlatMap(either -> either.map(DataResult::success, string -> {
         try {
             return DataResult.success(Integer.decode(string));

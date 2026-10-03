@@ -22,8 +22,7 @@ import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.util.Mth;
 import org.joml.Vector3f;
 
-import static einstein.subtle_effects.init.ModRenderStateAttachmentKeys.SOLAR_SYSTEM_SPIN;
-import static einstein.subtle_effects.init.ModRenderStateAttachmentKeys.STRING_UUID;
+import static einstein.subtle_effects.init.ModRenderStateAttachmentKeys.*;
 
 public class EinsteinSolarSystemLayer<T extends AvatarRenderState, V extends HumanoidModel<T>> extends RenderLayer<T, V> implements RenderLayerParent<T, EinsteinSolarSystemModel<T>> {
 
@@ -59,7 +58,7 @@ public class EinsteinSolarSystemLayer<T extends AvatarRenderState, V extends Hum
         if (shouldRender(renderState)) {
             int headCount = HEAD_ROTATIONS.length;
             model.hat.visible = renderState.showHat;
-            float healthPercentage = player.getHealth() / player.getMaxHealth();
+            float healthPercentage = accessor.subtleEffects$get(HEALTH_PERCENTAGE, 1F);
 
             for (int i = 0; i < headCount * healthPercentage; i++) {
                 float i1 = i + 1;
