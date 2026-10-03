@@ -95,6 +95,7 @@ public class ModParticles {
     public static final RegistrySupplier<SimpleParticleType> WITHER_BONE = register("wither_bone");
     public static final RegistrySupplier<SimpleParticleType> STRAY_BONE = register("stray_bone");
     public static final RegistrySupplier<SimpleParticleType> BOGGED_BONE = register("bogged_bone");
+    public static final RegistrySupplier<SimpleParticleType> PARCHED_BONE = register("parched_bone");
     public static final RegistrySupplier<SimpleParticleType> CHARGED_ELECTRICITY = register("charged_electricity");
     public static final RegistrySupplier<SimpleParticleType> ELECTRICITY = register("electricity");
     public static final RegistrySupplier<SimpleParticleType> ENCHANT_MAGIC = register("enchant_magic");

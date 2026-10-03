@@ -91,6 +91,7 @@ public class ModParticleProviders {
         register(WITHER_BONE, FeatherParticle.BoneProvider::new);
         register(STRAY_BONE, FeatherParticle.BoneProvider::new);
         register(BOGGED_BONE, FeatherParticle.BoneProvider::new);
+        register(PARCHED_BONE, FeatherParticle.BoneProvider::new);
         register(CHARGED_ELECTRICITY, ElectricityParticle.Provider::new);
         register(ELECTRICITY, ElectricityParticle.Provider::new);
         register(ENCHANT_MAGIC, EnchantMagicProvider::new);
