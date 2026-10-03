@@ -29,7 +29,6 @@ public class ModPayloads {
         registerToClient(ClientBoundDispenseBucketPayload.TYPE, ClientBoundDispenseBucketPayload.STREAM_CODEC, ClientPayloadHandlers::handle);
         registerToClient(ClientBoundSheepShearPayload.TYPE, ClientBoundSheepShearPayload.STREAM_CODEC, ClientPayloadHandlers::handle);
         registerToClient(ClientBoundEntityLandInFluidPayload.TYPE, ClientBoundEntityLandInFluidPayload.STREAM_CODEC, ClientPayloadHandlers::handle);
-        registerToClient(ClientBoundExplosionPayload.TYPE, ClientBoundExplosionPayload.STREAM_CODEC, ClientPayloadHandlers::handle);
         registerToClient(ClientBoundCopperGolemPayload.TYPE, ClientBoundCopperGolemPayload.STREAM_CODEC, ClientPayloadHandlers::handle);
         registerToClient(ClientBoundMobSpawnerSpawnPayload.TYPE, ClientBoundMobSpawnerSpawnPayload.STREAM_CODEC, ClientPayloadHandlers::handle);
         registerToClient(ClientBoundEntityDamagedPayload.TYPE, ClientBoundEntityDamagedPayload.STREAM_CODEC, ClientPayloadHandlers::handle);

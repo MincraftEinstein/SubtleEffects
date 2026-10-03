@@ -416,49 +416,6 @@ public class ClientPayloadHandlers {
         }
     }
 
-    // TODO this should be able to be client sided by mixing into the ClientExplosionTracker instead of the ServerLevel
-    public static void handle(Level level, ClientBoundExplosionPayload payload) {
-        if (ModConfigs.ENTITIES.splashes.explosionsCauseSplashes.get()) {
-            float radius = payload.radius();
-            Vec3 position = payload.position();
-            BlockPos pos = BlockPos.containing(position);
-            FluidState fluidState = level.getFluidState(pos);
-
-            if (!fluidState.isEmpty()) {
-                int blockY = pos.getY();
-
-                for (int y = blockY; y < blockY + (radius * 1.5) + 1; y++) {
-                    BlockPos currentPos = pos.atY(y);
-                    FluidState currentFluidState = level.getFluidState(currentPos);
-
-                    if (fluidState.getType().isSame(currentFluidState.getType())) {
-                        continue;
-                    }
-
-                    if (level.getBlockState(currentPos).isSolidRender()) {
-                        return;
-                    }
-
-                    FluidDefinition fluidDefinition = ((FluidDefinitionAccessor) fluidState.getType()).subtleEffects$getFluidDefinition();
-                    if (fluidDefinition != null) {
-                        if (fluidDefinition.splashType().isPresent()) {
-                            BlockPos surfacePos = currentPos.below();
-                            FluidState surfaceFluidState = level.getFluidState(surfacePos);
-                            float scale = radius - ((y - blockY) / radius);
-
-                            level.addAlwaysVisibleParticle(new SplashEmitterParticleOptions(fluidDefinition.id(), scale, scale * (scale * 0.1F), -1, -1),
-                                    true, position.x(), surfacePos.getY() + surfaceFluidState.getHeight(level, surfacePos) + 0.01, position.z(),
-                                    0, 0, 0
-                            );
-                        }
-                    }
-
-                    return;
-                }
-            }
-        }
-    }
-
     public static void handle(Level level, ClientBoundCopperGolemPayload payload) {
         Entity entity = level.getEntity(payload.entityId());
         if (entity instanceof CopperGolem copperGolem) {
