@@ -1,6 +1,6 @@
 package einstein.subtle_effects.util;
 
-public interface EntityAccessor {
+public interface FirstTickAccessor {
 
     boolean subtleEffects$isFirstTick();
 }
