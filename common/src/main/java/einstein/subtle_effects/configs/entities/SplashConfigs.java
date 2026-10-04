@@ -29,6 +29,7 @@ public class SplashConfigs extends ConfigSection {
     public ValidatedCondition<Float> splashOverlayAlpha = conditional(new ValidatedFloat(0.8F, 1, 0), splashEffects);
     public ValidatedCondition<Float> splashVelocityThreshold = conditional(new ValidatedFloat(0.35F, 1, 0), splashEffects);
     public ValidatedCondition<List<? extends EntityType<?>>> entityBlocklist = conditional(ValidatedRegistryType.of(BuiltInRegistries.ENTITY_TYPE).toList(List.of()), splashEffects);
+    public ValidatedCondition<Boolean> ignoreWaterloggedBlocks = conditional(new ValidatedBoolean(false), splashEffects);
 
     public ConfigGroup secondarySplashesGroup = new ConfigGroup("secondary_splashes");
     public ValidatedCondition<Boolean> secondarySplash = conditional(new ValidatedBoolean(), splashEffects);

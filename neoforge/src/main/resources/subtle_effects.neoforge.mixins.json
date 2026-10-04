@@ -5,15 +5,16 @@
   "refmap": "subtle_effects.refmap.json",
   "compatibilityLevel": "JAVA_17",
   "client": [
-    "client.FluidTypeMixin",
-    "client.ModListScreenMixin",
-    "client.NeoForgeClientEntityMixin",
-    "client.NeoForgeMultiPlayerGameModeMixin"
+    "client.NeoForgeMultiPlayerGameModeMixin",
+    "client.compat.BetterModListModSearchMixin",
+    "client.compat.ModListScreenMixin",
+    "client.entity.NeoForgeClientEntityMixin",
+    "client.fluid.FluidTypeMixin"
   ],
   "mixins": [
     "client.BetterModListModSearchMixin",
     "common.NeoForgeCommonMooshroomMixin",
-    "common.NeoForgeShearsDispenseItemBehaviorMixin"
+    "common.block.dispenser.NeoForgeShearsDispenseItemBehaviorMixin"
   ],
   "injectors": {
     "defaultRequire": 1

@@ -1,17 +1,14 @@
 package einstein.subtle_effects;
 
+import einstein.subtle_effects.client.renderer.DebugScreenOverlayRenderer;
 import einstein.subtle_effects.client.renderer.ParticleBoundingBoxesRenderer;
 import einstein.subtle_effects.data.BCWPPackManager;
 import einstein.subtle_effects.data.NamedReloadListener;
 import einstein.subtle_effects.data.splash_types.SplashTypeReloadListener;
-import einstein.subtle_effects.platform.NeoForgeRegistryHelper;
+import einstein.subtle_effects.platform.NeoForgeParticleHelper;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.particle.ParticleProvider;
-import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.entity.player.AvatarRenderer;
-import net.minecraft.core.particles.ParticleOptions;
-import net.minecraft.core.particles.ParticleType;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.repository.Pack;
 import net.minecraft.server.packs.repository.PackSource;
@@ -25,19 +22,18 @@ import net.neoforged.neoforge.client.resources.VanillaClientListeners;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.AddPackFindersEvent;
 
-import java.util.function.Function;
-import java.util.function.Supplier;
+import static einstein.subtle_effects.SubtleEffectsClient.*;
 
 @Mod(value = SubtleEffects.MOD_ID, dist = Dist.CLIENT)
 public class SubtleEffectsNeoForgeClient {
 
     public SubtleEffectsNeoForgeClient(IEventBus modEventBus) {
-        SubtleEffectsClient.clientSetup();
+        clientSetup();
         modEventBus.addListener((RegisterParticleProvidersEvent event) ->
-                NeoForgeRegistryHelper.PARTICLE_PROVIDERS.forEach((particle, provider) -> registerParticle(event, particle, provider))
+                NeoForgeParticleHelper.PARTICLE_PROVIDERS.forEach(consumer -> consumer.accept(event))
         );
         modEventBus.addListener((RegisterParticleGroupsEvent event) ->
-                NeoForgeRegistryHelper.PARTICLE_GROUP_FACTORIES.forEach(event::register)
+                NeoForgeParticleHelper.PARTICLE_GROUPS.forEach(consumer -> consumer.accept(event))
         );
         modEventBus.addListener((AddPackFindersEvent event) -> {
             if (event.getPackType() == PackType.CLIENT_RESOURCES) {
@@ -46,12 +42,12 @@ public class SubtleEffectsNeoForgeClient {
             }
         });
         modEventBus.addListener((AddClientReloadListenersEvent event) -> {
-            SubtleEffectsClient.registerReloadListeners().forEach(listener -> addReloadListener(event, listener));
+            registerReloadListeners().forEach(listener -> addReloadListener(event, listener));
             addReloadListener(event, new SplashTypeReloadListener());
             event.addDependency(SplashTypeReloadListener.ID, VanillaClientListeners.FIRST);
         });
         modEventBus.addListener((EntityRenderersEvent.RegisterLayerDefinitions event) ->
-                SubtleEffectsClient.registerModelLayers().forEach(event::registerLayerDefinition)
+                registerModelLayers().forEach(event::registerLayerDefinition)
         );
         modEventBus.addListener((EntityRenderersEvent.AddLayers event) -> {
             for (PlayerModelType model : event.getSkins()) {
@@ -61,31 +57,27 @@ public class SubtleEffectsNeoForgeClient {
                 }
 
                 if (renderer instanceof AvatarRenderer<?> avatarRenderer) {
-                    SubtleEffectsClient.registerPlayerRenderLayers(avatarRenderer, event.getContext())
+                    registerPlayerRenderLayers(avatarRenderer, event.getContext())
                             .forEach(avatarRenderer::addLayer);
                 }
             }
         });
+        modEventBus.addListener((RegisterGuiLayersEvent event) ->
+                event.registerBelowAll(SubtleEffects.loc("debug_overlay"), DebugScreenOverlayRenderer::extract)
+        );
         NeoForge.EVENT_BUS.addListener((ClientTickEvent.Post event) -> {
             Minecraft minecraft = Minecraft.getInstance();
-            SubtleEffectsClient.clientTick(minecraft, minecraft.level);
+            clientTick(minecraft, minecraft.level);
         });
         NeoForge.EVENT_BUS.addListener((RegisterClientCommandsEvent event) ->
-                SubtleEffectsClient.registerClientCommands(event.getDispatcher(), event.getBuildContext()));
+                registerClientCommands(event.getDispatcher(), event.getBuildContext()));
         NeoForge.EVENT_BUS.addListener((ExtractLevelRenderStateEvent event) ->
-                ParticleBoundingBoxesRenderer.extractParticleBoundingBoxes(event.getRenderState(), event.getRenderState().cameraRenderState));
+                ParticleBoundingBoxesRenderer.extract(event.getRenderState(), event.getRenderState().cameraRenderState));
         NeoForge.EVENT_BUS.addListener((RenderLevelStageEvent.AfterTranslucentParticles event) ->
-                ParticleBoundingBoxesRenderer.renderParticleBoundingBoxes(event.getLevelRenderState()));
+                ParticleBoundingBoxesRenderer.render(event.getLevelRenderState()));
     }
 
     private static <T extends PreparableReloadListener & NamedReloadListener> void addReloadListener(AddClientReloadListenersEvent event, T listener) {
         event.addListener(listener.getId(), listener);
-    }
-
-    @SuppressWarnings("unchecked")
-    private static <T extends ParticleType<V>, V extends ParticleOptions> void registerParticle(RegisterParticleProvidersEvent event, Supplier<? extends ParticleType<?>> particle, Function<SpriteSet, ? extends ParticleProvider<?>> provider) {
-        Supplier<T> t = (Supplier<T>) particle;
-        Function<SpriteSet, V> v = (Function<SpriteSet, V>) provider;
-        event.registerSpriteSet(t.get(), sprites -> (ParticleProvider<V>) v.apply(sprites));
     }
 }

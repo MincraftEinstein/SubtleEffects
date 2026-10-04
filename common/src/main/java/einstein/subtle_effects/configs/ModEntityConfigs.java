@@ -9,11 +9,12 @@ import me.fzzyhmstrs.fzzy_config.annotations.Translation;
 import me.fzzyhmstrs.fzzy_config.config.Config;
 import me.fzzyhmstrs.fzzy_config.config.ConfigGroup;
 import me.fzzyhmstrs.fzzy_config.util.EnumTranslatable;
+import me.fzzyhmstrs.fzzy_config.validation.misc.ValidatedBoolean;
 import me.fzzyhmstrs.fzzy_config.validation.misc.ValidatedCondition;
 import me.fzzyhmstrs.fzzy_config.validation.misc.ValidatedEnum;
 import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedDouble;
 import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedFloat;
-import net.minecraft.client.Minecraft;
+import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedInt;
 import org.jetbrains.annotations.NotNull;
 
 @Translation(prefix = ModConfigs.BASE_KEY + "entities")
@@ -25,22 +26,23 @@ public class ModEntityConfigs extends Config {
     public BurningEntityConfigs burning = new BurningEntityConfigs();
     public ExplosivesConfigs explosives = new ExplosivesConfigs();
     public SplashConfigs splashes = new SplashConfigs();
+    public DamageTakenConfigs damageTaken = new DamageTakenConfigs();
 
-    public ConfigGroup attackedGroup = new ConfigGroup("attacked");
-    public boolean attackedChickenFeathers = true;
-    public boolean attackedParrotFeathers = true;
-    public boolean attackedSnowGolemSnowflakes = true;
-    public boolean attackedSheepFluff = true;
-    @ConfigGroup.Pop
-    public boolean attackedSlimeSlime = true;
-
+    public ConfigGroup fairiesGroup =  new ConfigGroup("fairies");
     public ValidatedDouble allayMagicDensity = new ValidatedDouble(0.2, 1, 0);
     public ValidatedDouble vexMagicDensity = new ValidatedDouble(0.2, 1, 0);
+    public boolean allayTwinklingSounds = true;
+    @ConfigGroup.Pop
+    public boolean allayDuplicatedSounds = true;
     public boolean sheepShearFluff = true;
     public boolean improvedDragonFireballTrail = true;
     public boolean dragonsBreathClouds = true;
     public CommandBlockSpawnType commandBlockMinecartParticles = CommandBlockSpawnType.ON;
-    public boolean endCrystalParticles = true;
+    public ConfigGroup endCrystalsGroup = new ConfigGroup("end_crystals");
+    public ValidatedDouble endCrystalMagicDensity = new ValidatedDouble(1, 1, 0);
+    public ValidatedCondition<Boolean> endCrystalMagicNeedsFire = ModConfigs.conditional(new ValidatedBoolean(false), () -> endCrystalMagicDensity.get() > 0, endCrystalMagicDensity);
+    @ConfigGroup.Pop
+    public boolean endCrystalsDisableFireEffects = true;
     public ValidatedEnum<MinecartSparksDisplayType> minecartSparksDisplayType = new ValidatedEnum<>(MinecartSparksDisplayType.DEFAULT);
     public ValidatedCondition<Float> minecartSparksDensity = ModConfigs.conditional(new ValidatedFloat(0.5F, 1, 0), minecartSparksDisplayType, MinecartSparksDisplayType.OFF);
     public boolean slimeTrails = true;
@@ -65,6 +67,11 @@ public class ModEntityConfigs extends Config {
     public boolean improvedVillagerSweatingEffects = true;
     public boolean magmaCubeLandSparks = true;
     public boolean snowGolemStepSounds = true;
+    public ValidatedDouble chargedCreeperParticlesDensity = new ValidatedDouble(0.2, 1, 0);
+    public boolean chargedCreeperExplosionParticles = true;
+    public boolean lightningStrikeParticles = true;
+    public boolean shulkerTeleportParticles = true;
+    public ValidatedInt entityUpdateFrequency = new ValidatedInt(20, 40, 1);
 
     public ModEntityConfigs() {
         super(SubtleEffects.loc("entities"));
@@ -72,7 +79,7 @@ public class ModEntityConfigs extends Config {
 
     @Override
     public void onUpdateClient() {
-        SubtleEffectsClient.clear(Minecraft.getInstance().level);
+        SubtleEffectsClient.clear();
         ModAnimalFedEffectSettings.init();
     }
 

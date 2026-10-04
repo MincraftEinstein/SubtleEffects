@@ -40,7 +40,21 @@ public class EndRemasteredCompat {
     }
 
     public static List<Identifier> getAllEyes() {
-//        return JsonEye.getEyes().stream().map(eye -> endRemLoc(eye.getID()).getPath()).toList();
+//        return JsonEye.getEyes().stream().map(eye -> endRemLoc(getId(eye))).toList();
         return new ArrayList<>();
     }
+
+    // As of writing this, the "getId" method has been changed to a string
+    // on NeoForge, however, the Fabric version hasn't been updated yet and
+    // still returns a ResourceLocation
+//    private static String getId(JsonEye eye) {
+//        Object id = eye.getID();
+//        if (id instanceof String s) {
+//            return s;
+//        }
+//        else if (id instanceof ResourceLocation loc) {
+//            return loc.getPath();
+//        }
+//        throw new IllegalStateException();
+//    }
 }

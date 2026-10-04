@@ -2,7 +2,10 @@ package einstein.subtle_effects.data.color_providers;
 
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import io.netty.buffer.ByteBuf;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
 import org.joml.Vector3f;
@@ -17,8 +20,14 @@ public record ListColorProvider(List<? extends ColorProviderType.ColorProvider> 
             ColorProviderType.CODEC.listOf().fieldOf("providers").forGetter(listColorProvider -> (List<ColorProviderType.ColorProvider>) listColorProvider.providers)
     ).apply(instance, ListColorProvider::new));
 
-    public static ListColorProvider fromIntList(List<Integer> color) {
-        return new ListColorProvider(color.stream().map(ConstantColorProvider::new).toList());
+    @SuppressWarnings("unchecked")
+    public static final StreamCodec<ByteBuf, ListColorProvider> STREAM_CODEC = StreamCodec.composite(
+            ByteBufCodecs.<ByteBuf, ColorProviderType.ColorProvider>list().apply(ColorProviderType.STREAM_CODEC), listColorProvider -> (List<ColorProviderType.ColorProvider>) listColorProvider.providers,
+            ListColorProvider::new
+    );
+
+    public static ListColorProvider fromIntList(List<Integer> colors) {
+        return new ListColorProvider(colors.stream().map(ConstantColorProvider::new).toList());
     }
 
     @Override

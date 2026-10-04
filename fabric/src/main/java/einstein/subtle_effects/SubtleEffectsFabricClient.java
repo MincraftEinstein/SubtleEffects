@@ -17,22 +17,27 @@ import net.minecraft.client.renderer.entity.player.AvatarRenderer;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.resources.PreparableReloadListener;
 
+import static einstein.subtle_effects.SubtleEffectsClient.*;
+
 public class SubtleEffectsFabricClient implements ClientModInitializer {
 
     @Override
     public void onInitializeClient() {
-        SubtleEffectsClient.clientSetup();
-        ClientTickEvents.END_CLIENT_TICK.register(minecraft -> SubtleEffectsClient.clientTick(minecraft, minecraft.level));
+        clientSetup();
+        ClientTickEvents.END_CLIENT_TICK.register(minecraft -> clientTick(minecraft, minecraft.level));
         ClientCommandRegistrationCallback.EVENT.register(SubtleEffectsClient::registerClientCommands);
-        ResourceLoader.registerBuiltinPack(BCWPPackManager.PACK_LOCATION.get(), FabricLoader.getInstance().getModContainer(SubtleEffects.MOD_ID).orElseThrow(), BCWPPackManager.PACK_NAME, PackActivationType.NORMAL);
-        ResourceLoader loader = ResourceLoader.get(PackType.CLIENT_RESOURCES);
-        SubtleEffectsClient.registerReloadListeners().forEach(listener -> addReloadListener(loader, listener));
-        SubtleEffectsClient.registerModelLayers().forEach((modelLayerLocation, layerDefinitionSupplier) ->
-                ModelLayerRegistry.registerModelLayer(modelLayerLocation, layerDefinitionSupplier::get)
+        ResourceLoader.registerBuiltinPack(BCWPPackManager.PACK_LOCATION.get(),
+                FabricLoader.getInstance().getModContainer(SubtleEffects.MOD_ID).orElseThrow(),
+                BCWPPackManager.PACK_NAME, PackActivationType.NORMAL
+        );
+        ResourceLoader helper = ResourceLoader.get(PackType.CLIENT_RESOURCES);
+        registerReloadListeners().forEach(listener -> addReloadListener(helper, listener));
+        registerModelLayers().forEach((id, layerDefinition) ->
+                ModelLayerRegistry.registerModelLayer(id, layerDefinition::get)
         );
         LivingEntityRenderLayerRegistrationCallback.EVENT.register((_, renderer, registrationHelper, context) -> {
             if (renderer instanceof AvatarRenderer<?> playerRenderer) {
-                SubtleEffectsClient.registerPlayerRenderLayers(playerRenderer, context).forEach(registrationHelper::register);
+                registerPlayerRenderLayers(playerRenderer, context).forEach(registrationHelper::register);
             }
         });
 

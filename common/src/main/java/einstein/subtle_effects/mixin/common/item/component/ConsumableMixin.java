@@ -1,7 +1,7 @@
 package einstein.subtle_effects.mixin.common.item.component;
 
+import einstein.subtle_effects.networking.PayloadSender;
 import einstein.subtle_effects.networking.clientbound.ClientBoundDrankPotionPayload;
-import einstein.subtle_effects.platform.Services;
 import einstein.subtle_effects.util.ParticleSpawnUtil;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -24,7 +24,7 @@ public class ConsumableMixin {
         }
 
         if (level instanceof ServerLevel serverLevel) {
-            Services.NETWORK.sendToClientsTracking(entity instanceof ServerPlayer player ? player : null,
+            PayloadSender.sendToClientsTracking(entity instanceof ServerPlayer player ? player : null,
                     serverLevel, entity.blockPosition(), new ClientBoundDrankPotionPayload(entity.getId())
             );
             return;

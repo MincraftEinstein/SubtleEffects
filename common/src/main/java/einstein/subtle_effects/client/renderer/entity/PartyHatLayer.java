@@ -3,9 +3,9 @@ package einstein.subtle_effects.client.renderer.entity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import einstein.subtle_effects.client.model.entity.PartyHatModel;
-import einstein.subtle_effects.platform.Services;
 import einstein.subtle_effects.util.RenderStateAttachmentAccessor;
 import einstein.subtle_effects.util.Util;
+import me.fzzyhmstrs.fzzy_config.api.ConfigApiJava;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
@@ -86,7 +86,7 @@ public class PartyHatLayer<T extends AvatarRenderState, V extends HumanoidModel<
     }
 
     public static boolean isModBirthday(boolean ignoreInDev) {
-        if (!ignoreInDev && Services.PLATFORM.isDevelopmentEnvironment()) {
+        if (!ignoreInDev && ConfigApiJava.platform().isDev()) {
             return true;
         }
 

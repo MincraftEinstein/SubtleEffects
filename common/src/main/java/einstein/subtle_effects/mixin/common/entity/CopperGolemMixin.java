@@ -2,6 +2,7 @@ package einstein.subtle_effects.mixin.common.entity;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import einstein.subtle_effects.networking.PayloadSender;
 import einstein.subtle_effects.networking.clientbound.ClientBoundCopperGolemPayload;
 import einstein.subtle_effects.platform.Services;
 import net.minecraft.core.BlockPos;
@@ -28,7 +29,7 @@ public class CopperGolemMixin {
             };
 
             if (action != null) {
-                Services.NETWORK.sendToClientsTracking(null, serverLevel, pos, new ClientBoundCopperGolemPayload(entity.getId(), action), serverPlayer ->
+                PayloadSender.sendToClientsTracking(null, serverLevel, pos, new ClientBoundCopperGolemPayload(entity.getId(), action), serverPlayer ->
                         serverPlayer.connection.send(new ClientboundLevelEventPacket(event, pos, data, false))
                 );
                 return;

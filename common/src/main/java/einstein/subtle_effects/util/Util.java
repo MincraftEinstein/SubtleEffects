@@ -2,10 +2,6 @@ package einstein.subtle_effects.util;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.mojang.datafixers.util.Either;
-import com.mojang.serialization.Codec;
-import com.mojang.serialization.DataResult;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
 import einstein.subtle_effects.SubtleEffects;
 import einstein.subtle_effects.compat.CompatHelper;
 import einstein.subtle_effects.compat.EndRemasteredCompat;
@@ -14,7 +10,7 @@ import einstein.subtle_effects.data.MobSkullShaderData;
 import einstein.subtle_effects.data.MobSkullShaderReloadListener;
 import einstein.subtle_effects.init.ModParticles;
 import einstein.subtle_effects.mixin.client.GameRendererAccessor;
-import einstein.subtle_effects.mixin.client.block.AbstractCauldronBlockAccessor;
+import einstein.subtle_effects.mixin.common.block.AbstractCauldronBlockAccessor;
 import einstein.subtle_effects.mixin.client.entity.AbstractHorseAccessor;
 import einstein.subtle_effects.particle.EnderEyePlacedRingParticle;
 import einstein.subtle_effects.particle.option.DropletParticleOptions;
@@ -31,26 +27,25 @@ import net.minecraft.core.SectionPos;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.core.particles.ParticleOptions;
-import net.minecraft.core.particles.SimpleParticleType;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.util.ARGB;
-import net.minecraft.util.ExtraCodecs;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.animal.equine.AbstractHorse;
 import net.minecraft.world.entity.animal.parrot.Parrot;
 import net.minecraft.world.entity.monster.Strider;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.alchemy.PotionContents;
 import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.component.Consumable;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.AbstractCauldronBlock;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.Heightmap;
@@ -75,22 +70,6 @@ public class Util {
     public static final Gson GSON = new GsonBuilder().create();
     public static final Identifier VANILLA_EYE = Identifier.withDefaultNamespace("ender_eye");
     private static final String UUID = "d71e4b41-9315-499f-a934-ca925421fb38";
-    public static final Codec<Integer> RGB_COLOR_CODEC = Codec.either(Codec.withAlternative(Codec.INT, ExtraCodecs.VECTOR3F,
-            color -> ARGB.colorFromFloat(1, color.x(), color.y(), color.z())
-    ), Codec.STRING).comapFlatMap(either -> either.map(DataResult::success, string -> {
-        try {
-            return DataResult.success(Integer.decode(string));
-        }
-        catch (NumberFormatException e) {
-            return DataResult.error(() -> "String '" + string + "' is not a valid integer color");
-        }
-    }), Either::left);
-    public static final Codec<SimpleParticleType> SIMPLE_PARTICLE_TYPE_CODEC = BuiltInRegistries.PARTICLE_TYPE.byNameCodec().comapFlatMap(options -> {
-        if (options instanceof SimpleParticleType particle) {
-            return DataResult.success(particle);
-        }
-        return DataResult.error(() -> "Particle type is not a simple particle type: " + options);
-    }, particle -> particle);
 
     public static void playClientSound(Entity entity, SoundEvent sound, SoundSource source, float volume, float pitch) {
         Minecraft minecraft = Minecraft.getInstance();
@@ -318,22 +297,34 @@ public class Util {
         return false;
     }
 
-    public static Codec<Either<Float, Boolean>> configurableFloatCodec(String floatName) {
-        return Codec.either(
-                RecordCodecBuilder.create(instance -> instance.group(
-                        Codec.floatRange(0, 1).fieldOf(floatName).forGetter(Float::floatValue)
-                ).apply(instance, Float::floatValue)),
-                RecordCodecBuilder.create(instance -> instance.group(
-                        Codec.BOOL.fieldOf("use_config").forGetter(Boolean::booleanValue)
-                ).apply(instance, Boolean::booleanValue))
-        );
-    }
-
     public static ItemStackTemplate template(ItemStack stack) {
         return ItemStackTemplate.fromNonEmptyStack(stack);
     }
 
     public static boolean isSouthEast(CharSequence searchQuery) {
         return "south east".contains(searchQuery) || "south_east".contains(searchQuery);
+    }
+
+    public static boolean isHarmful(PotionContents contents) {
+        final int[] harmful = {0};
+        final int[] notHarmful = {0};
+
+        contents.forEachEffect(effect -> {
+            if (effect.getEffect().value().getCategory() == MobEffectCategory.HARMFUL) {
+                harmful[0]++;
+                return;
+            }
+            notHarmful[0]++;
+        }, 0);
+
+        return harmful[0] > notHarmful[0];
+    }
+
+    public static boolean isEntityInsideContent(BlockState state, BlockPos pos, Entity entity) {
+        Block block = state.getBlock();
+        if (block instanceof AbstractCauldronBlockAccessor cauldronBlock) {
+            return entity.getY() < pos.getY() + cauldronBlock.getFillHeight(state) && entity.getBoundingBox().maxY > pos.getY() + 0.25;
+        }
+        return false;
     }
 }
