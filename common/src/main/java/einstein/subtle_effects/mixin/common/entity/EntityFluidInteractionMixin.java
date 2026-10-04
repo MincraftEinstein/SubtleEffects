@@ -1,13 +1,9 @@
 package einstein.subtle_effects.mixin.common.entity;
 
-import com.llamalad7.mixinextras.sugar.Local;
-import einstein.subtle_effects.data.FluidDefinition;
 import einstein.subtle_effects.mixin.common.block.AbstractCauldronBlockAccessor;
 import einstein.subtle_effects.networking.PayloadSender;
 import einstein.subtle_effects.networking.clientbound.ClientBoundEntityLandInFluidPayload;
 import einstein.subtle_effects.util.FirstTickAccessor;
-import einstein.subtle_effects.util.FluidDefinitionAccessor;
-import einstein.subtle_effects.util.FluidLogicAccessor;
 import einstein.subtle_effects.util.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
@@ -54,16 +50,6 @@ public class EntityFluidInteractionMixin {
                                     serverPlayer.getDeltaMovement().y(), pos, isCauldron)
                     );
                 }
-            }
-        }
-    }
-
-    @Inject(method = "update", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/EntityFluidInteraction$Tracker;accumulateCurrent(Lnet/minecraft/world/phys/Vec3;)V"))
-    private void updateFluidPairHeight(Entity entity, boolean ignoreCurrent, CallbackInfo ci, @Local(name = "fluidState") FluidState fluidState, @Local(name = "tracker") EntityFluidInteraction.Tracker tracker) {
-        if (entity.level().isClientSide()) {
-            FluidDefinition fluidDefinition = ((FluidDefinitionAccessor) fluidState.getType()).subtleEffects$getFluidDefinition();
-            if (fluidDefinition != null) {
-                ((FluidLogicAccessor) entity).subtleEffects$getFluidDefinitionHeight().put(fluidDefinition, tracker.height);
             }
         }
     }

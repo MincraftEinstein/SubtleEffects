@@ -1,5 +1,7 @@
 package einstein.subtle_effects.mixin.client.entity;
 
+import com.llamalad7.mixinextras.injector.ModifyReturnValue;
+import com.llamalad7.mixinextras.sugar.Local;
 import einstein.subtle_effects.data.FluidDefinition;
 import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.init.ModDamageListeners;
@@ -137,22 +139,21 @@ public abstract class ClientEntityMixin implements FirstTickAccessor, FluidLogic
         subtleEffects$getFluidDefinitionHeight().clear();
     }
 
-    @Inject(method = "updateFluidInteraction", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/EntityFluidInteraction;isInFluid(Lnet/minecraft/tags/TagKey;)Z", ordinal = 0))
+    @Inject(method = "updateFluidInteraction", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;resetFallDistance()V"))
     private void preformWaterSplash(CallbackInfoReturnable<Boolean> cir) {
-        fluidInteraction.trackerByFluid.forEach((tag, _) -> {
-            if (fluidInteraction.isInFluid(tag)) {
-                subtleEffects$setLastTouchedFluid(ParticleSpawnUtil.preformSplash(true, false, subtleEffects$me, firstTick, isWater -> {
-                    if (isWater) {
-                        subtleEffects$cancelNextWaterSplash();
-                    }
-                }, subtleEffects$me.getDeltaMovement().y(), subtleEffects$me.getY(), subtleEffects$me.blockPosition()));
+        subtleEffects$setLastTouchedFluid(ParticleSpawnUtil.preformSplash(true, false, subtleEffects$me, firstTick, isWater -> {
+            if (isWater) {
+                subtleEffects$cancelNextWaterSplash();
             }
-        });
+        }, subtleEffects$me.getDeltaMovement().y(), subtleEffects$me.getY(), subtleEffects$me.blockPosition()));
     }
 
-    @Inject(method = "updateFluidInteraction", at = @At("TAIL"))
-    private void preformSplash(CallbackInfoReturnable<Boolean> cir) {
-        subtleEffects$lastTouchedFluid = ParticleSpawnUtil.preformSplash(false, false, subtleEffects$me, firstTick, Consumers.nop(), subtleEffects$me.getDeltaMovement().y(), subtleEffects$me.getY(), subtleEffects$me.blockPosition());
+    @ModifyReturnValue(method = "updateFluidInteraction", at = @At("RETURN"))
+    private boolean preformSplash(boolean isInFluid, @Local(name = "inWater") boolean inWater) {
+        if (isInFluid && !inWater) {
+            subtleEffects$lastTouchedFluid = ParticleSpawnUtil.preformSplash(false, false, subtleEffects$me, firstTick, Consumers.nop(), subtleEffects$me.getDeltaMovement().y(), subtleEffects$me.getY(), subtleEffects$me.blockPosition());
+        }
+        return isInFluid;
     }
 
     @Inject(method = "doWaterSplashEffect", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/Mth;floor(D)I"), cancellable = true)
