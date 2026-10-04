@@ -11,7 +11,7 @@ import net.minecraft.client.renderer.entity.ParrotRenderer;
 import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
-import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.animal.parrot.Parrot;
 import org.spongepowered.asm.mixin.Mixin;
@@ -24,7 +24,7 @@ public class LivingEntityRendererMixin<T extends LivingEntity, S extends LivingE
 
     @Inject(method = "extractRenderState(Lnet/minecraft/world/entity/LivingEntity;Lnet/minecraft/client/renderer/entity/state/LivingEntityRenderState;F)V", at = @At("TAIL"))
     private void extractRenderState(T entity, S state, float partialTicks, CallbackInfo ci) {
-        if (entity.getType() == EntityType.PARROT && ((Parrot) entity).isPartyParrot()) {
+        if (entity.getType() == EntityTypes.PARROT && ((Parrot) entity).isPartyParrot()) {
             String name = entity.getName().getString();
             String nameLowercase = name.toLowerCase();
 

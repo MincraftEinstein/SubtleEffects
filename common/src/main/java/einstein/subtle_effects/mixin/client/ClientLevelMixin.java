@@ -1,7 +1,7 @@
 package einstein.subtle_effects.mixin.client;
 
-import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.google.common.base.Predicates;
+import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
@@ -30,7 +30,7 @@ import net.minecraft.server.level.ParticleStatus;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.boss.enderdragon.EndCrystal;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
@@ -101,7 +101,7 @@ public abstract class ClientLevelMixin extends Level {
         if (block instanceof BaseFireBlock) {
             if (ModConfigs.ENTITIES.endCrystalsDisableFireEffects) {
                 List<EndCrystal> endCrystals = new ArrayList<>();
-                getEntities(EntityType.END_CRYSTAL, new AABB(pos), Predicates.alwaysTrue(), endCrystals);
+                getEntities(EntityTypes.END_CRYSTAL, new AABB(pos), Predicates.alwaysTrue(), endCrystals);
 
                 if (!endCrystals.isEmpty()) {
                     return;

@@ -24,19 +24,19 @@ import java.util.Map;
 public class DebugScreenOverlayRenderer {
 
     public static void extract(GuiGraphicsExtractor guiGraphics, DeltaTracker deltaTracker) {
-        if (!SubtleEffectsClient.DISPLAY_DEBUG_OVERLAY) {
+        Minecraft minecraft = Minecraft.getInstance();
+        if (!SubtleEffectsClient.DISPLAY_DEBUG_OVERLAY || minecraft.level == null) {
             return;
         }
 
-        Minecraft minecraft = Minecraft.getInstance();
         Font font = minecraft.font;
         Map<ParticleRenderType, ParticleGroup<?>> particles = ((ParticleEngineAccessor) minecraft.particleEngine).getParticles();
         ParticleGroup<?> group = particles.get(ParticleRenderType.SINGLE_QUADS);
-        int maxParticlesPerLayer = (group.getAll() instanceof EvictingQueue<?> queue ? queue.remainingCapacity() + queue.size() : 16384);
+        int maxParticlesPerLayer = (group.particles instanceof EvictingQueue<?> queue ? queue.remainingCapacity() + queue.size() : 16384);
         int layers = particles.size();
 
         List<Component> leftLines = new ArrayList<>();
-        leftLines.add(Component.translatable("ui.subtle_effects.debug_overlay.particle_count", minecraft.particleEngine.countParticles(), layers * maxParticlesPerLayer, layers + " x " + maxParticlesPerLayer));
+        leftLines.add(Component.translatable("ui.subtle_effects.debug_overlay.particle_count", particles.values().stream().mapToInt(ParticleGroup::size).sum(), layers * maxParticlesPerLayer, layers + " x " + maxParticlesPerLayer));
         leftLines.add(null);
         TickerManager.addDebugInfo(leftLines);
 

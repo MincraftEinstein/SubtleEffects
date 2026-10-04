@@ -110,17 +110,17 @@ public class ModDamageListeners {
                 }
             }
         });
-        register(EntityType.SKELETON, (entity, level, random) ->
+        register(EntityTypes.SKELETON, (entity, level, random) ->
                 spawnBones(entity, level, random, ModParticles.SKELETON_BONE.get()));
-        register(EntityType.WITHER_SKELETON, (entity, level, random) ->
+        register(EntityTypes.WITHER_SKELETON, (entity, level, random) ->
                 spawnBones(entity, level, random, ModParticles.WITHER_BONE.get()));
-        register(EntityType.STRAY, (entity, level, random) ->
+        register(EntityTypes.STRAY, (entity, level, random) ->
                 spawnBones(entity, level, random, ModParticles.STRAY_BONE.get()));
-        register(EntityType.BOGGED, (entity, level, random) ->
+        register(EntityTypes.BOGGED, (entity, level, random) ->
                 spawnBones(entity, level, random, ModParticles.BOGGED_BONE.get()));
-        register(EntityType.PARCHED, (entity, level, random) ->
+        register(EntityTypes.PARCHED, (entity, level, random) ->
                 spawnBones(entity, level, random, ModParticles.PARCHED_BONE.get()));
-        register(EntityType.SKELETON_HORSE, (entity, level, random) -> {
+        register(EntityTypes.SKELETON_HORSE, (entity, level, random) -> {
             if (ENTITIES.damageTaken.damagedSkeletonHorseBones) {
                 for (int i = 0; i < 7; i++) {
                     level.addParticle(ModParticles.SKELETON_BONE.get(),

@@ -32,9 +32,9 @@ import net.minecraft.world.entity.decoration.ArmorStand;
 import net.minecraft.world.entity.item.FallingBlockEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Creeper;
+import net.minecraft.world.entity.monster.Witch;
 import net.minecraft.world.entity.monster.cubemob.MagmaCube;
 import net.minecraft.world.entity.monster.cubemob.Slime;
-import net.minecraft.world.entity.monster.Witch;
 import net.minecraft.world.entity.monster.illager.AbstractIllager;
 import net.minecraft.world.entity.monster.piglin.AbstractPiglin;
 import net.minecraft.world.entity.npc.villager.AbstractVillager;
@@ -171,7 +171,7 @@ public class ModEntityTickers {
                 );
             }
         });
-        registerSimple(EntityType.ALLAY, false, () -> ENTITIES.allayTwinklingSounds, (entity, level, random) -> {
+        registerSimple(EntityTypes.ALLAY, false, () -> ENTITIES.allayTwinklingSounds, (entity, level, random) -> {
             if (random.nextDouble() < 0.015) {
                 Util.playClientSound(entity, ModSounds.ALLAY_TWINKLE.get(), entity.getSoundSource(),
                         nextFloat(random, 0.07F, 1.5F),
@@ -343,7 +343,7 @@ public class ModEntityTickers {
                 );
             }
         });
-        registerSimple(EntityType.LIGHTNING_BOLT, false, () -> ENTITIES.lightningStrikeParticles, (entity, level, random) -> {
+        registerSimple(EntityTypes.LIGHTNING_BOLT, false, () -> ENTITIES.lightningStrikeParticles, (entity, level, random) -> {
             if (((LightningBoltAccessor) entity).getLife() == 0) {
                 for (int i = 0; i < 5; i++) {
                     level.addParticle(ModParticles.ELECTRICITY.get(),

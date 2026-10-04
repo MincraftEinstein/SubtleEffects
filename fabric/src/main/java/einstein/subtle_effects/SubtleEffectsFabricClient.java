@@ -14,6 +14,7 @@ import net.fabricmc.fabric.api.resource.v1.ResourceLoader;
 import net.fabricmc.fabric.api.resource.v1.pack.PackActivationType;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.renderer.entity.player.AvatarRenderer;
+import net.minecraft.client.renderer.state.level.LevelRenderState;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.resources.PreparableReloadListener;
 
@@ -40,11 +41,10 @@ public class SubtleEffectsFabricClient implements ClientModInitializer {
                 registerPlayerRenderLayers(playerRenderer, context).forEach(registrationHelper::register);
             }
         });
-
         LevelRenderEvents.BEFORE_GIZMOS.register((LevelRenderContext context)-> {
-            var levelState = context.levelState();
-            ParticleBoundingBoxesRenderer.extractParticleBoundingBoxes(levelState, levelState.cameraRenderState);
-            ParticleBoundingBoxesRenderer.renderParticleBoundingBoxes(levelState);
+            LevelRenderState levelState = context.levelState();
+            ParticleBoundingBoxesRenderer.extract(levelState, levelState.cameraRenderState);
+            ParticleBoundingBoxesRenderer.render(levelState);
         });
     }
 

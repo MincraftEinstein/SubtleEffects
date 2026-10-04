@@ -8,7 +8,7 @@ import einstein.subtle_effects.init.ModParticles;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.boss.enderdragon.EndCrystal;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseFireBlock;
@@ -29,7 +29,7 @@ public abstract class BaseFireBlockMixin {
     private void endCrystalCancelEffects(BlockState state, Level level, BlockPos pos, RandomSource random, CallbackInfo ci) {
         if (ModConfigs.ENTITIES.endCrystalsDisableFireEffects) {
             List<EndCrystal> endCrystals = new ArrayList<>();
-            level.getEntities(EntityType.END_CRYSTAL, new AABB(pos), Predicates.alwaysTrue(), endCrystals);
+            level.getEntities(EntityTypes.END_CRYSTAL, new AABB(pos), Predicates.alwaysTrue(), endCrystals);
 
             if (!endCrystals.isEmpty()) {
                 ci.cancel();
