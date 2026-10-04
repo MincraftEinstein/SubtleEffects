@@ -302,7 +302,7 @@ public class Util {
     }
 
     public static boolean isSouthEast(CharSequence searchQuery) {
-        return "south east".contains(searchQuery) || "south_east".contains(searchQuery);
+        return "south east".contains(searchQuery) || "south_east".contains(searchQuery) || "se".contains(searchQuery);
     }
 
     public static boolean isHarmful(PotionContents contents) {
