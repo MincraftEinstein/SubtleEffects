@@ -9,6 +9,7 @@ issueTrackerURL="https://github.com/MincraftEinstein/SubtleEffects/issues"
     displayName = "Subtle Effects"
     displayURL="https://curseforge.com/minecraft/mods/subtle-effects"
     #updateJSONURL="https://change.me.example.invalid/updates.json"
+    logoFile = "pack.png" # Leaving this in for now as a fallback for projects that haven't updated to the new format
     iconFile = "pack.png"
     bannerFile = "banner.png"
     credits = ""
