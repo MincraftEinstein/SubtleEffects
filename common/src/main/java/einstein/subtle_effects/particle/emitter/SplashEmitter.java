@@ -55,7 +55,7 @@ public class SplashEmitter extends NoRenderParticle {
         heightModifier = options.heightModifier();
         float baseScale = widthModifier + 0.5F;
         baseHorizontalScale = Mth.clamp(absVelocity * baseScale * 1.5F, baseScale, widthModifier * 2.5F);
-        baseVerticalScale = Math.min(absVelocity * heightModifier * widthModifier, heightModifier);
+        baseVerticalScale = Math.min(absVelocity * heightModifier * widthModifier, heightModifier) * ENTITIES.splashes.splashHeightScaleModifier.get();
 
         int id = options.entityId();
         if (id > -1) {
