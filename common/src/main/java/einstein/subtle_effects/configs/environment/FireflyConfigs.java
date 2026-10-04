@@ -67,7 +67,7 @@ public class FireflyConfigs extends ConfigSection {
     public ValidatedCondition<Integer> defaultDensity = conditional(new ValidatedInt(3, 10, 1), firefliesEnabled);
     public ValidatedCondition<ColdSeasonsType> ignoredSeasons = conditional(new ValidatedEnum<>(ColdSeasonsType.DEFAULT), firefliesEnabled);
     public ValidatedCondition<FireflyType> fireflyType = conditional(new ValidatedEnum<>(FireflyType.ORIGINAL), firefliesEnabled);
-    public ValidatedFloat fireflySoundVolume = new ValidatedFloat(1, 2, 0);
+    public ValidatedCondition<Float> fireflySoundVolume = conditional(new ValidatedFloat(1, 2, 0), firefliesEnabled);
 
     public ConfigGroup habitatBiomesGroup = new ConfigGroup("habitat_biomes");
     public ValidatedCondition<Boolean> onlyAllowInHabitatBiomes = conditional(new ValidatedBoolean(false), firefliesEnabled);
