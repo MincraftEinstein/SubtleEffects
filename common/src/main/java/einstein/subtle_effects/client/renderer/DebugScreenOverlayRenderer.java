@@ -36,7 +36,7 @@ public class DebugScreenOverlayRenderer {
         int layers = particles.size();
 
         List<Component> leftLines = new ArrayList<>();
-        leftLines.add(Component.translatable("ui.subtle_effects.debug_overlay.particle_count", minecraft.particleEngine.countParticles(), layers * maxParticlesPerLayer, layers + " x " + maxParticlesPerLayer));
+        leftLines.add(Component.translatable("ui.subtle_effects.debug_overlay.particle_count", particles.values().stream().mapToInt(ParticleGroup::size).sum(), layers * maxParticlesPerLayer, layers + " x " + maxParticlesPerLayer));
         leftLines.add(null);
         TickerManager.addDebugInfo(leftLines);
 
