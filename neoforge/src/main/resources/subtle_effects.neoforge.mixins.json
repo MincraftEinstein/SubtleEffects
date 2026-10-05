@@ -13,8 +13,6 @@
     "client.fluid.FluidTypeMixin"
   ],
   "mixins": [
-    "client.BetterModListModSearchMixin",
-    "common.NeoEntityFluidInteractionMixin",
     "common.NeoForgeCommonMooshroomMixin",
     "common.block.dispenser.NeoForgeShearsDispenseItemBehaviorMixin"
   ],

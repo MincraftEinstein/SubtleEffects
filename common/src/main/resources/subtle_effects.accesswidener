@@ -6,6 +6,7 @@ accessible field net/minecraft/client/renderer/RenderPipelines OIT_PARTICLE_SNIP
 accessible field net/minecraft/world/entity/EntityFluidInteraction currentAccumulators Lit/unimi/dsi/fastutil/objects/Reference2ObjectMap;
 accessible field net/minecraft/world/entity/EntityFluidInteraction$CurrentAccumulator height D
 accessible field net/minecraft/client/particle/ParticleGroup particles Ljava/util/Queue;
+accessible field net/minecraft/world/entity/EntityFluidInteraction$Tracker height D
 
 # Classes
 accessible class net/minecraft/client/particle/ParticleResources$MutableSpriteSet
@@ -13,6 +14,7 @@ accessible class net/minecraft/client/particle/DripParticle$FallAndLandParticle
 accessible class net/minecraft/client/particle/DripParticle$DripHangParticle
 accessible class net/minecraft/client/particle/DripParticle$DripLandParticle
 accessible class net/minecraft/world/entity/EntityFluidInteraction$CurrentAccumulator
+accessible class net/minecraft/world/entity/EntityFluidInteraction$Tracker
 
 # <init>'s
 accessible method net/minecraft/client/particle/ParticleResources$MutableSpriteSet <init> ()V

@@ -9,8 +9,6 @@
     "client.ClientPacketListenerMixin",
     "client.GameRendererMixin",
     "client.GuiMixin",
-    "client.ItemBordersConfigAccessor",
-    "client.LavaFluidMixin",
     "client.LevelEventHandlerMixin",
     "client.ParticleResourcesMixin",
     "client.RenderStatesMixin",
