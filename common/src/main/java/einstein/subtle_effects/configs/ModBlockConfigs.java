@@ -13,6 +13,7 @@ import einstein.subtle_effects.init.ModBlockTickers;
 import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.init.ModParticles;
 import einstein.subtle_effects.particle.EnderEyePlacedRingParticle;
+import einstein.subtle_effects.particle.option.ColorProviderParticleOptions;
 import einstein.subtle_effects.util.Util;
 import me.fzzyhmstrs.fzzy_config.annotations.Translation;
 import me.fzzyhmstrs.fzzy_config.config.Config;
@@ -29,9 +30,7 @@ import me.fzzyhmstrs.fzzy_config.validation.misc.ValidatedEnum;
 import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedDouble;
 import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedFloat;
 import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedInt;
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.particles.ColorParticleOption;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -46,6 +45,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiFunction;
+import java.util.function.Supplier;
 
 import static einstein.subtle_effects.init.ModConfigs.BASE_KEY;
 import static einstein.subtle_effects.init.ModConfigs.conditional;
@@ -165,12 +165,22 @@ public class ModBlockConfigs extends Config {
     public boolean openingChestsSpawnsBubbles = true;
     public ValidatedInt chestsOpenRandomlyUnderwaterFrequency = new ValidatedInt(5, 60, 0);
     public ValidatedCondition<Boolean> randomChestOpeningNeedsSoulSand = conditional(new ValidatedBoolean(false), chestsOpenRandomlyUnderwaterFrequency);
+    public ValidatedCondition<Float> randomChestOpeningSoundVolume = conditional(new ValidatedFloat(0.25F, 1, 0), chestsOpenRandomlyUnderwaterFrequency);
     @ConfigGroup.Pop
     public boolean dispenseItemBubbles = true;
     public boolean rainIncreasesLeavesSpawningParticles = true;
     public boolean purpleMonsterSpawnerParticles = false;
     public ValidatedFloat monsterSpawnerSpawnMobSoundVolume = new ValidatedFloat(1, 1, 0);
     public ValidatedFloat monsterSpawnerAmbientSoundVolume = new ValidatedFloat(1, 1, 0);
+    public boolean replaceCopperElectricitySparks = true;
+    public boolean comparatorRedstoneDust = true;
+    public ConfigGroup magmaBlocks = new ConfigGroup("magma_blocks");
+    public SmokeType magmaSmoke = SmokeType.UPDATED;
+    public boolean magmaFrostWalkerSteam = true;
+    @ConfigGroup.Pop
+    public boolean magmaFrostWalkerSounds = true;
+    public boolean redstoneRailDustParticles = true;
+    public ItemEnchantedParticlesDisplayType itemEnchantedParticlesDisplayType = ItemEnchantedParticlesDisplayType.GLYPHS;
 
     private static ValidatedIdentifier getEyeHandler() {
         List<Identifier> eyes = CompatHelper.IS_END_REMASTERED_LOADED.get()
@@ -191,7 +201,7 @@ public class ModBlockConfigs extends Config {
 
     @Override
     public void onUpdateClient() {
-        SubtleEffectsClient.clear(Minecraft.getInstance().level);
+        SubtleEffectsClient.clear();
         ModBlockTickers.init();
     }
 
@@ -252,7 +262,7 @@ public class ModBlockConfigs extends Config {
 
     public enum EndPortalFrameParticlesDisplayType implements EnumTranslatable {
         OFF(0, null),
-        DOTS(8, (level, pos) -> ColorParticleOption.create(ModParticles.SHORT_SPARK.get(), Util.getEyeColorHolder(level, pos).toInt())),
+        DOTS(8, (level, pos) -> new ColorProviderParticleOptions(ModParticles.SHORT_SPARK.get(), Util.getEyeColorHolder(level, pos).toInt())),
         SMOKE(1, (level, pos) -> ParticleTypes.SMOKE);
 
         public final int count;
@@ -266,6 +276,25 @@ public class ModBlockConfigs extends Config {
         @Override
         public @NotNull String prefix() {
             return BASE_KEY + "blocks.endPortalFrameParticlesDisplayType";
+        }
+    }
+
+    public enum ItemEnchantedParticlesDisplayType implements EnumTranslatable {
+        OFF(0, null),
+        GLYPHS(10, ModParticles.RISING_ENCHANT_GLYPHS),
+        MAGIC(5, ModParticles.ENCHANT_MAGIC);
+
+        public final int count;
+        public final Supplier<? extends ParticleOptions> particle;
+
+        ItemEnchantedParticlesDisplayType(int count, Supplier<? extends ParticleOptions> particle) {
+            this.count = count;
+            this.particle = particle;
+        }
+
+        @Override
+        public @NotNull String prefix() {
+            return BASE_KEY + "blocks.itemEnchantedParticlesDisplayType";
         }
     }
 }

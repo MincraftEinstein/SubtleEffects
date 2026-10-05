@@ -3,6 +3,7 @@ package einstein.subtle_effects.init;
 import einstein.subtle_effects.configs.CommandBlockSpawnType;
 import einstein.subtle_effects.configs.ModEntityConfigs;
 import einstein.subtle_effects.configs.items.ItemRarityConfigs;
+import einstein.subtle_effects.mixin.client.entity.LightningBoltAccessor;
 import einstein.subtle_effects.particle.SparkParticle;
 import einstein.subtle_effects.particle.option.BooleanParticleOptions;
 import einstein.subtle_effects.ticking.tickers.entity.*;
@@ -16,6 +17,9 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.particles.PowerParticleOption;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
@@ -24,16 +28,20 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ambient.Bat;
 import net.minecraft.world.entity.animal.feline.Cat;
 import net.minecraft.world.entity.animal.fox.Fox;
+import net.minecraft.world.entity.decoration.ArmorStand;
 import net.minecraft.world.entity.item.FallingBlockEntity;
 import net.minecraft.world.entity.item.ItemEntity;
-import net.minecraft.world.entity.monster.illager.AbstractIllager;
+import net.minecraft.world.entity.monster.Creeper;
+import net.minecraft.world.entity.monster.Witch;
 import net.minecraft.world.entity.monster.cubemob.MagmaCube;
 import net.minecraft.world.entity.monster.cubemob.Slime;
-import net.minecraft.world.entity.monster.Witch;
+import net.minecraft.world.entity.monster.illager.AbstractIllager;
 import net.minecraft.world.entity.monster.piglin.AbstractPiglin;
 import net.minecraft.world.entity.npc.villager.AbstractVillager;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.minecart.AbstractMinecart;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
@@ -45,11 +53,11 @@ import static einstein.subtle_effects.init.ModConfigs.*;
 import static einstein.subtle_effects.ticking.tickers.entity.EntityTickerManager.register;
 import static einstein.subtle_effects.ticking.tickers.entity.EntityTickerManager.registerSimple;
 import static einstein.subtle_effects.util.MathUtil.nextNonAbsDouble;
+import static net.minecraft.util.Mth.nextFloat;
 
 public class ModEntityTickers {
 
     private static final Predicate<Entity> LOCAL_PLAYER = entity -> entity == Minecraft.getInstance().player;
-
 
     public static void init() {
         register(entity -> true, EntityCauldronTicker::new);
@@ -163,6 +171,14 @@ public class ModEntityTickers {
                 );
             }
         });
+        registerSimple(EntityTypes.ALLAY, false, () -> ENTITIES.allayTwinklingSounds, (entity, level, random) -> {
+            if (random.nextDouble() < 0.015) {
+                Util.playClientSound(entity, ModSounds.ALLAY_TWINKLE.get(), entity.getSoundSource(),
+                        nextFloat(random, 0.07F, 1.5F),
+                        nextFloat(random, 0.07F, 1.3F)
+                );
+            }
+        });
         registerSimple(EntityTypes.VEX, true, () -> ENTITIES.vexMagicDensity.get() > 0, (entity, level, random) -> {
             if (shouldSpawn(random, ENTITIES.vexMagicDensity)) {
                 level.addParticle(new BooleanParticleOptions(ModParticles.VEX_MAGIC.get(), entity.isCharging()),
@@ -236,14 +252,16 @@ public class ModEntityTickers {
                 }
             }
         });
-        registerSimple(EntityTypes.END_CRYSTAL, false, () -> ENTITIES.endCrystalParticles, (entity, level, random) -> {
-            if (level.getBlockState(entity.blockPosition()).getBlock() instanceof BaseFireBlock || random.nextInt(3) == 0) {
-                level.addParticle(ModParticles.END_CRYSTAL.get(),
-                        entity.getRandomX(1),
-                        entity.getRandomY() + nextNonAbsDouble(random),
-                        entity.getRandomZ(1),
-                        0, 0, 0
-                );
+        registerSimple(EntityTypes.END_CRYSTAL, false, () -> ENTITIES.endCrystalMagicDensity.get() > 0, (entity, level, random) -> {
+            if (shouldSpawn(random, ENTITIES.endCrystalMagicDensity)) {
+                if (!ENTITIES.endCrystalMagicNeedsFire.get() || level.getBlockState(entity.blockPosition()).getBlock() instanceof BaseFireBlock) {
+                    level.addParticle(ModParticles.END_CRYSTAL_MAGIC.get(),
+                            entity.blockPosition().getX() + 0.5,
+                            entity.getRandomY() + nextNonAbsDouble(random) - 0.2,
+                            entity.blockPosition().getZ() + 0.5,
+                            0, 0, 0
+                    );
+                }
             }
         });
         registerSimple(EntityTypes.SPECTRAL_ARROW, false, () -> ENTITIES.spectralArrowParticles, (entity, level, random) -> {
@@ -309,6 +327,50 @@ public class ModEntityTickers {
                                     0, 0, 0
                             );
                         }
+                    }
+                }
+            }
+        });
+        registerSimple(entity -> entity instanceof Creeper creeper && creeper.isPowered() && ENTITIES.chargedCreeperParticlesDensity.get() > 0, true, (entity, level, random) -> {
+            if (shouldSpawn(random, ENTITIES.chargedCreeperParticlesDensity)) {
+                level.addParticle(ModParticles.CHARGED_ELECTRICITY.get(),
+                        entity.getRandomX(1),
+                        entity.getRandomY(),
+                        entity.getRandomZ(1),
+                        nextNonAbsDouble(random, 0.5),
+                        nextNonAbsDouble(random, 0.5),
+                        nextNonAbsDouble(random, 0.5)
+                );
+            }
+        });
+        registerSimple(EntityTypes.LIGHTNING_BOLT, false, () -> ENTITIES.lightningStrikeParticles, (entity, level, random) -> {
+            if (((LightningBoltAccessor) entity).getLife() == 0) {
+                for (int i = 0; i < 5; i++) {
+                    level.addParticle(ModParticles.ELECTRICITY.get(),
+                            entity.getX() + (nextNonAbsDouble(random) * 3),
+                            entity.getY() + (random.nextDouble() * 3),
+                            entity.getZ() + (nextNonAbsDouble(random) * 3),
+                            nextNonAbsDouble(random, 0.5),
+                            nextNonAbsDouble(random, 0.5),
+                            nextNonAbsDouble(random, 0.5)
+                    );
+                }
+            }
+        });
+        registerSimple(entity -> entity instanceof LivingEntity && !(entity instanceof ArmorStand) && (BLOCKS.magmaFrostWalkerSounds || BLOCKS.magmaFrostWalkerSteam), false, (LivingEntity entity, Level level, RandomSource random) -> {
+            if (random.nextDouble() < 0.3 && entity.getBlockStateOn().is(Blocks.MAGMA_BLOCK)) {
+                if (EnchantmentHelper.getEnchantmentLevel(level.registryAccess().lookupOrThrow(Registries.ENCHANTMENT).getOrThrow(Enchantments.FROST_WALKER), entity) > 0) {
+                    if (BLOCKS.magmaFrostWalkerSounds && random.nextDouble() < 0.045) {
+                        Util.playClientSound(entity.blockPosition(), SoundEvents.FIRE_EXTINGUISH, SoundSource.BLOCKS, 0.1F, nextFloat(random, 0.6F, 1));
+                    }
+
+                    if (BLOCKS.magmaFrostWalkerSteam) {
+                        level.addParticle(ModParticles.STEAM.get(),
+                                entity.getRandomX(1),
+                                entity.getY(),
+                                entity.getRandomZ(1),
+                                0, 0, 0
+                        );
                     }
                 }
             }

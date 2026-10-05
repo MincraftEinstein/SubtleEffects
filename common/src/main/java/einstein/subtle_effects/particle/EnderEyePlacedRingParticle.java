@@ -2,6 +2,7 @@ package einstein.subtle_effects.particle;
 
 import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.init.ModParticleLayers;
+import einstein.subtle_effects.particle.option.ColorProviderParticleOptions;
 import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
@@ -9,11 +10,11 @@ import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.client.renderer.state.level.QuadParticleRenderState;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.core.particles.ColorParticleOption;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.phys.Vec3;
 import org.joml.Quaternionf;
+import org.joml.Vector3f;
 
 import static einstein.subtle_effects.util.Util.radians;
 
@@ -23,12 +24,15 @@ public class EnderEyePlacedRingParticle extends FlatPlaneParticle {
     public static final float SIZE = 0.2501F;
     private final LifetimeAlpha lifetimeAlpha = new LifetimeAlpha(1, 0, 0, 1);
 
-    protected EnderEyePlacedRingParticle(ClientLevel level, double x, double y, double z, TextureAtlasSprite sprite) {
+    protected EnderEyePlacedRingParticle(ClientLevel level, double x, double y, double z, TextureAtlasSprite sprite, ColorProviderParticleOptions options) {
         super(level, x, y, z, sprite);
         lifetime = ModConfigs.BLOCKS.enderEyePlacedRingsDuration.get();
         quadSize = SIZE;
         setSize(SIZE, SIZE);
         alpha = lifetimeAlpha.startAlpha();
+
+        Vector3f color = options.provider().provideColor(level, x, y, z, random);
+        setColor(color.x(), color.y(), color.z());
     }
 
     @Override
@@ -60,13 +64,11 @@ public class EnderEyePlacedRingParticle extends FlatPlaneParticle {
         return ModParticleLayers.getBlendedOrTransparent();
     }
 
-    public record Provider(SpriteSet sprites) implements ParticleProvider<ColorParticleOption> {
+    public record Provider(SpriteSet sprites) implements ParticleProvider<ColorProviderParticleOptions> {
 
         @Override
-        public Particle createParticle(ColorParticleOption options, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, RandomSource random) {
-            EnderEyePlacedRingParticle particle = new EnderEyePlacedRingParticle(level, x, y, z, sprites.get(random));
-            particle.setColor(options.getRed(), options.getGreen(), options.getBlue());
-            return particle;
+        public Particle createParticle(ColorProviderParticleOptions options, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, RandomSource random) {
+            return new EnderEyePlacedRingParticle(level, x, y, z, sprites.get(random), options);
         }
     }
 }

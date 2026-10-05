@@ -2,7 +2,7 @@ package einstein.subtle_effects.mixin.common.entity;
 
 import com.llamalad7.mixinextras.sugar.Local;
 import einstein.subtle_effects.networking.clientbound.ClientBoundCompostItemPayload;
-import einstein.subtle_effects.platform.Services;
+import einstein.subtle_effects.networking.PayloadSender;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.GlobalPos;
 import net.minecraft.server.level.ServerLevel;
@@ -32,7 +32,7 @@ public class WorkAtComposterMixin {
     @Inject(method = "compostItems", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/ai/behavior/WorkAtComposter;spawnComposterFillEffects(Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;)V", ordinal = 0))
     private void spawnComposterEffects(ServerLevel level, Villager villager, GlobalPos global, BlockState state, CallbackInfo ci, @Local ItemStack stack) {
         BlockPos pos = global.pos();
-        Services.NETWORK.sendToClientsTracking(level, pos, new ClientBoundCompostItemPayload(stack, pos, true));
+        PayloadSender.sendToClientsTracking(level, pos, new ClientBoundCompostItemPayload(stack, pos, true));
     }
 
     @Inject(method = "compostItems", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/ai/behavior/WorkAtComposter;spawnComposterFillEffects(Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;)V", ordinal = 1))
@@ -46,7 +46,7 @@ public class WorkAtComposterMixin {
 
         ItemStack stack = compostableItems.isEmpty() ? new ItemStack(Items.WHEAT_SEEDS) : compostableItems.get(level.getRandom().nextInt(compostableItems.size())).copy();
         if (!stack.isEmpty()) {
-            Services.NETWORK.sendToClientsTracking(level, pos, new ClientBoundCompostItemPayload(stack, pos, true));
+            PayloadSender.sendToClientsTracking(level, pos, new ClientBoundCompostItemPayload(stack, pos, true));
         }
     }
 }

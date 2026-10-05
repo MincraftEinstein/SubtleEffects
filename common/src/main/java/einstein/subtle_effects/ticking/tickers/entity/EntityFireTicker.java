@@ -52,7 +52,7 @@ public class EntityFireTicker extends EntityTicker<Entity> {
                     ColorProviderType.ColorProvider colors = getSparkColors();
                     if (colors != null) {
                         for (int i = 0; i < 2; i++) {
-                            level.addParticle(SparkParticle.create(SparkType.SHORT_LIFE, colors, level, entity.blockPosition(), random),
+                            level.addParticle(SparkParticle.create(SparkType.SHORT_LIFE, colors),
                                     entity.getRandomX(1),
                                     entity.getRandomY(),
                                     entity.getRandomZ(1),

@@ -2,6 +2,7 @@ package einstein.subtle_effects.particle;
 
 import einstein.subtle_effects.data.color_providers.ColorProviderType;
 import einstein.subtle_effects.init.ModConfigs;
+import einstein.subtle_effects.particle.option.ColorProviderParticleOptions;
 import einstein.subtle_effects.util.ParticleAccessor;
 import einstein.subtle_effects.util.SparkType;
 import einstein.subtle_effects.util.Util;
@@ -11,11 +12,8 @@ import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.client.particle.SingleQuadParticle;
 import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.particles.ColorParticleOption;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.level.Level;
 import org.joml.Vector3f;
 
 import java.util.List;
@@ -43,21 +41,21 @@ public class SparkParticle extends SingleQuadParticle {
         speedUpWhenYMotionIsBlocked = true;
     }
 
-    public static ColorParticleOption create(SparkType sparkType, RandomSource random) {
+    public static ColorProviderParticleOptions create(SparkType sparkType, RandomSource random) {
         return create(sparkType, random, DEFAULT_COLORS);
     }
 
-    public static ColorParticleOption create(SparkType sparkType, ColorProviderType.ColorProvider colorProvider, Level level, BlockPos pos, RandomSource random) {
-        Vector3f color = colorProvider.provideColor(level, pos, random);
-        return ColorParticleOption.create(sparkType.getType().get(), color.x(), color.y(), color.z());
+    public static ColorProviderParticleOptions create(SparkType sparkType, ColorProviderType.ColorProvider colorProvider) {
+        return new ColorProviderParticleOptions(sparkType.getType().get(), colorProvider);
     }
 
-    public static ColorParticleOption create(SparkType sparkType, RandomSource random, List<Integer> colors) {
-        return ColorParticleOption.create(sparkType.getType().get(), colors.get(random.nextInt(colors.size())));
+    public static ColorProviderParticleOptions create(SparkType sparkType, RandomSource random, List<Integer> colors) {
+        return new ColorProviderParticleOptions(sparkType.getType().get(), colors.get(random.nextInt(colors.size())));
     }
 
-    public static ColorParticleOption createSoul(SparkType sparkType, RandomSource random) {
-        return create(sparkType, random, SOUL_COLORS);
+    public void setColor(ColorProviderParticleOptions options) {
+        Vector3f color = options.provider().provideColor(level, x, y, z, random);
+        setColor(color.x(), color.y(), color.z());
     }
 
     @Override
@@ -75,44 +73,44 @@ public class SparkParticle extends SingleQuadParticle {
         return Util.PARTICLE_LIGHT_COLOR;
     }
 
-    public record LongLifeProvider(SpriteSet sprites) implements ParticleProvider<ColorParticleOption> {
+    public record LongLifeProvider(SpriteSet sprites) implements ParticleProvider<ColorProviderParticleOptions> {
 
         @Override
-        public Particle createParticle(ColorParticleOption options, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, RandomSource random) {
+        public Particle createParticle(ColorProviderParticleOptions options, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, RandomSource random) {
             SparkParticle particle = new SparkParticle(level, x, y, z, xSpeed, ySpeed, zSpeed, 10, sprites.get(random));
-            particle.setColor(options.getRed(), options.getGreen(), options.getBlue());
+            particle.setColor(options);
             return particle;
         }
     }
 
-    public record ShortLifeProvider(SpriteSet sprites) implements ParticleProvider<ColorParticleOption> {
+    public record ShortLifeProvider(SpriteSet sprites) implements ParticleProvider<ColorProviderParticleOptions> {
 
         @Override
-        public Particle createParticle(ColorParticleOption options, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, RandomSource random) {
+        public Particle createParticle(ColorProviderParticleOptions options, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, RandomSource random) {
             SparkParticle particle = new SparkParticle(level, x, y, z, xSpeed, ySpeed, zSpeed, 20, sprites.get(random));
-            particle.setColor(options.getRed(), options.getGreen(), options.getBlue());
+            particle.setColor(options);
             return particle;
         }
     }
 
-    public record FloatingProvider(SpriteSet sprites) implements ParticleProvider<ColorParticleOption> {
+    public record FloatingProvider(SpriteSet sprites) implements ParticleProvider<ColorProviderParticleOptions> {
 
         @Override
-        public Particle createParticle(ColorParticleOption options, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, RandomSource random) {
+        public Particle createParticle(ColorProviderParticleOptions options, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, RandomSource random) {
             SparkParticle particle = new SparkParticle(level, x, y, z, xSpeed, ySpeed, zSpeed, 20, sprites.get(random));
             ((ParticleAccessor) particle).setGravity(0);
-            particle.setColor(options.getRed(), options.getGreen(), options.getBlue());
+            particle.setColor(options);
             return particle;
         }
     }
 
-    public record MetalProvider(SpriteSet sprites) implements ParticleProvider<ColorParticleOption> {
+    public record MetalProvider(SpriteSet sprites) implements ParticleProvider<ColorProviderParticleOptions> {
 
         @Override
-        public Particle createParticle(ColorParticleOption options, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, RandomSource random) {
+        public Particle createParticle(ColorProviderParticleOptions options, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, RandomSource random) {
             SparkParticle particle = new SparkParticle(level, x, y, z, xSpeed, ySpeed, zSpeed, 20, sprites.get(random));
             ((ParticleAccessor) particle).setGravity(1);
-            particle.setColor(options.getRed(), options.getGreen(), options.getBlue());
+            particle.setColor(options);
             return particle;
         }
     }

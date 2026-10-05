@@ -14,8 +14,8 @@ import einstein.subtle_effects.compat.CompatHelper;
 import einstein.subtle_effects.data.*;
 import einstein.subtle_effects.data.color_providers.ColorProviderType;
 import einstein.subtle_effects.init.*;
+import einstein.subtle_effects.ticking.BiomeEffectsManager;
 import einstein.subtle_effects.ticking.GeyserManager;
-import einstein.subtle_effects.ticking.biome_particles.BiomeParticleManager;
 import einstein.subtle_effects.ticking.tickers.ChestBlockEntityTicker;
 import einstein.subtle_effects.ticking.tickers.TickerManager;
 import einstein.subtle_effects.ticking.tickers.WaterfallTicker;
@@ -40,7 +40,6 @@ import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.world.entity.Avatar;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import org.jetbrains.annotations.Nullable;
 
 import java.time.LocalDate;
 import java.time.Month;
@@ -54,7 +53,7 @@ import java.util.function.Supplier;
 public class SubtleEffectsClient {
 
     private static boolean HAS_CLEARED = false;
-    private static boolean DISPLAY_PARTICLE_COUNT = false;
+    public static boolean DISPLAY_DEBUG_OVERLAY = false;
     private static boolean HAS_DISPLAYED_BIRTHDAY_NOTIFICATION = false;
     public static boolean DISPLAY_PARTICLE_BOUNDING_BOXES = false;
     private static Level LEVEL;
@@ -64,13 +63,12 @@ public class SubtleEffectsClient {
         ModPipelines.init();
         ModRenderTypes.init();
         ModParticleLayers.init();
-        ModPayloads.initClientHandlers();
         ModEntityTickers.init();
         ModBlockTickers.init();
-        BiomeParticleManager.init();
+        BiomeEffectsManager.init();
         ModDamageListeners.init();
+        ModParticleProviders.init();
         ModParticleGroups.init();
-        ModParticles.init();
         ModSpriteSets.init();
         ModAnimalFedEffectSettings.init();
         CompatHelper.init();
@@ -83,8 +81,7 @@ public class SubtleEffectsClient {
             LEVEL = level;
 
             if (!HAS_CLEARED) {
-                clear(level);
-                BiomeParticleManager.clear();
+                clear();
                 HAS_CLEARED = true;
             }
             return;
@@ -109,18 +106,11 @@ public class SubtleEffectsClient {
             HAS_DISPLAYED_BIRTHDAY_NOTIFICATION = true;
         }
 
-        if (DISPLAY_PARTICLE_COUNT) {
-            player.sendOverlayMessage(Component.translatable("ui.subtle_effects.hud.particle_count", minecraft.particleEngine.countParticles()));
-        }
-
         ProfilerFiller profiler = Profiler.get();
         profiler.push("subtle_effects");
 
-        profiler.push("biome_particles");
-        BiomeParticleManager.tickBiomeParticles(level, player);
-        profiler.pop();
-
         profiler.push("tickers");
+        EntityTickerManager.tick();
         TickerManager.tick();
         profiler.pop();
 
@@ -172,46 +162,47 @@ public class SubtleEffectsClient {
                     return 1;
                 });
 
-        RequiredArgumentBuilder<T, Boolean> particlesCountEnabled = RequiredArgumentBuilder.<T, Boolean>argument("enabled", BoolArgumentType.bool())
-                .executes(context -> toggleParticleCount(minecraft, BoolArgumentType.getBool(context, "enabled")));
-
-        LiteralArgumentBuilder<T> particlesCount = LiteralArgumentBuilder.<T>literal("count")
-                .executes(context -> toggleParticleCount(minecraft, true))
-                .then(particlesCountEnabled);
-
         RequiredArgumentBuilder<T, Boolean> particlesBoundingBoxesEnabled = RequiredArgumentBuilder.<T, Boolean>argument("enabled", BoolArgumentType.bool())
                 .executes(context -> toggleParticleBoundingBoxes(minecraft, BoolArgumentType.getBool(context, "enabled")));
 
         LiteralArgumentBuilder<T> particlesBoundingBoxes = LiteralArgumentBuilder.<T>literal("display_bounding_boxes")
-                .executes(context -> toggleParticleBoundingBoxes(minecraft, true))
+                .executes(context -> toggleParticleBoundingBoxes(minecraft, !DISPLAY_PARTICLE_BOUNDING_BOXES))
                 .then(particlesBoundingBoxesEnabled);
 
         LiteralArgumentBuilder<T> particles = LiteralArgumentBuilder.<T>literal("particles")
                 .then(particlesClear)
-                .then(particlesCount)
                 .then(particlesBoundingBoxes);
 
         // Ticker Args
         LiteralArgumentBuilder<T> tickersClear = LiteralArgumentBuilder.<T>literal("clear")
                 .executes(context -> {
-                    clear(minecraft.level);
+                    clear();
                     sendSystemMsg(minecraft, getMsgTranslation("subtle_effects.tickers.clear.success"));
                     return 1;
                 });
         LiteralArgumentBuilder<T> tickers = LiteralArgumentBuilder.<T>literal("tickers")
                 .then(tickersClear);
 
+        // Debug Args
+        RequiredArgumentBuilder<T, Boolean> debugOverlayEnabled = RequiredArgumentBuilder.<T, Boolean>argument("enabled", BoolArgumentType.bool())
+                .executes(context -> toggleDebugOverlay(minecraft, BoolArgumentType.getBool(context, "enabled")));
+
+        LiteralArgumentBuilder<T> debugOverlay = LiteralArgumentBuilder.<T>literal("debug_screen")
+                .executes(context -> toggleDebugOverlay(minecraft, !DISPLAY_DEBUG_OVERLAY))
+                .then(debugOverlayEnabled);
+
         // SE Command
         LiteralArgumentBuilder<T> subtleEffects = LiteralArgumentBuilder.<T>literal("subtle_effects")
                 .then(particles)
-                .then(tickers);
+                .then(tickers)
+                .then(debugOverlay);
 
         LiteralCommandNode<T> subtleEffectsNode = dispatcher.register(subtleEffects);
         dispatcher.register(LiteralArgumentBuilder.<T>literal("se").redirect(subtleEffectsNode));
     }
 
-    private static int toggleParticleCount(Minecraft minecraft, boolean enabled) {
-        DISPLAY_PARTICLE_COUNT = enabled;
+    private static int toggleDebugOverlay(Minecraft minecraft, boolean enabled) {
+        DISPLAY_DEBUG_OVERLAY = enabled;
 
         String enabledString = enabled ? "enable" : "disable";
         sendSystemMsg(minecraft, getMsgTranslation("subtle_effects.particles.count." + enabledString + ".success"));
@@ -234,12 +225,13 @@ public class SubtleEffectsClient {
         minecraft.gui.hud.getChat().addClientSystemMessage(component);
     }
 
-    public static void clear(@Nullable Level level) {
+    public static void clear() {
         TickerManager.clear();
-        EntityTickerManager.clear(level);
+        EntityTickerManager.clear();
         GeyserManager.ACTIVE_GEYSERS.clear();
         GeyserManager.INACTIVE_GEYSERS.clear();
         WaterfallTicker.WATERFALLS.clear();
         ChestBlockEntityTicker.clear();
+        BiomeEffectsManager.init();
     }
 }

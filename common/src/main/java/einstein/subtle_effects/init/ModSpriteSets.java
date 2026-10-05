@@ -7,6 +7,7 @@ import net.minecraft.resources.Identifier;
 
 public class ModSpriteSets {
 
+    // These are used as defaults/fallbacks for splash types
     public static final SpriteSetHolder WATER_SPLASH = register("water_splash");
     public static final SpriteSetHolder WATER_SPLASH_OVERLAY = register("water_splash_overlay");
     public static final SpriteSetHolder WATER_SPLASH_RIPPLE = register("water_splash_ripple");
@@ -16,7 +17,7 @@ public class ModSpriteSets {
 
     private static SpriteSetHolder register(String name) {
         Identifier id = SubtleEffects.loc(name);
-        SpriteSetHolder holder = new SpriteSetHolder(id);
+        SpriteSetHolder holder = new SpriteSetHolder();
         DynamicSpriteSetsManager.STATIC_SPRITE_SETS.put(id, holder);
         return holder;
     }

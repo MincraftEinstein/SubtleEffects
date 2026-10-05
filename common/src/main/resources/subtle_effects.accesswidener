@@ -23,9 +23,12 @@ accessible method net/minecraft/client/particle/DripParticle$FallAndLandParticle
 accessible method net/minecraft/client/particle/BubblePopParticle <init> (Lnet/minecraft/client/multiplayer/ClientLevel;DDDDDDLnet/minecraft/client/particle/SpriteSet;)V
 accessible method net/minecraft/client/particle/DripParticle$DripHangParticle <init> (Lnet/minecraft/client/multiplayer/ClientLevel;DDDLnet/minecraft/world/level/material/Fluid;Lnet/minecraft/core/particles/ParticleOptions;Lnet/minecraft/client/renderer/texture/TextureAtlasSprite;)V
 accessible method net/minecraft/client/particle/DripParticle$DripLandParticle <init> (Lnet/minecraft/client/multiplayer/ClientLevel;DDDLnet/minecraft/world/level/material/Fluid;Lnet/minecraft/client/renderer/texture/TextureAtlasSprite;)V
+accessible method net/minecraft/client/particle/HeartParticle <init> (Lnet/minecraft/client/multiplayer/ClientLevel;DDDLnet/minecraft/client/renderer/texture/TextureAtlasSprite;)V
 
 # Functions
 accessible method net/minecraft/client/renderer/RenderPipelines register (Lcom/mojang/renderpearl/api/pipeline/RenderPipeline;)Lcom/mojang/renderpearl/api/pipeline/RenderPipeline;
 accessible method net/minecraft/client/renderer/RenderPipelines register (Lnet/minecraft/client/renderer/oit/OitPipelineSet;)Lnet/minecraft/client/renderer/oit/OitPipelineSet;
 accessible method net/minecraft/client/renderer/GameRenderer setSpectatedEntityPostEffect (Lnet/minecraft/resources/Identifier;)V
 accessible method net/minecraft/client/particle/DripParticle getType ()Lnet/minecraft/world/level/material/Fluid;
+accessible method net/minecraft/client/particle/ParticleEngine makeParticle (Lnet/minecraft/core/particles/ParticleOptions;DDDDDD)Lnet/minecraft/client/particle/Particle;
+extendable method net/minecraft/client/renderer/entity/layers/HumanoidArmorLayer renderArmorPiece (Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/SubmitNodeCollector;Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/entity/EquipmentSlot;ILnet/minecraft/client/renderer/entity/state/HumanoidRenderState;)V

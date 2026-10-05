@@ -5,10 +5,12 @@
   "refmap": "subtle_effects.refmap.json",
   "compatibilityLevel": "JAVA_17",
   "client": [
-    "client.FabricClientEntityMixin",
+    "client.FabricGuiMixin",
     "client.FabricMultiPlayerGameModeMixin",
     "client.FabricReloadableResourceManagerMixin",
-    "client.ModMenuModSearchMixin"
+    "client.compat.ModMenuModSearchMixin",
+    "client.entity.FabricClientEntityMixin",
+    "client.entity.FabricEntityFluidInteractionMixin"
   ],
   "mixins": [
     "common.block.dispenser.FabricShearsDispenseItemBehaviorMixin",

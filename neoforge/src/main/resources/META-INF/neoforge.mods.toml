@@ -9,6 +9,7 @@ issueTrackerURL="https://github.com/MincraftEinstein/SubtleEffects/issues"
     displayName = "Subtle Effects"
     displayURL="https://curseforge.com/minecraft/mods/subtle-effects"
     #updateJSONURL="https://change.me.example.invalid/updates.json"
+    logoFile = "pack.png" # Leaving this in for now as a fallback for projects that haven't updated to the new format
     iconFile = "pack.png"
     bannerFile = "banner.png"
     credits = ""
@@ -21,11 +22,11 @@ issueTrackerURL="https://github.com/MincraftEinstein/SubtleEffects/issues"
 [modproperties.modmenu]
     sources = "https://github.com/MincraftEinstein/SubtleEffects"
     links = [
-        "mod_menu.modrinth=https://modrinth.com/mod/subtle-effects",
-        "mod_menu.curseforge=https://curseforge.com/minecraft/mc-mods/subtle-effects",
-        "mod_menu.discord=https://discord.gg/gSsaFAvrBM",
-        "mod_menu.kofi=https://ko-fi.com/mincrafteinstein",
-        "mod_menu.wiki=https://github.com/MincraftEinstein/SubtleEffects/wiki"
+        "modmenu.modrinth=https://modrinth.com/mod/subtle-effects",
+        "modmenu.curseforge=https://curseforge.com/minecraft/mc-mods/subtle-effects",
+        "modmenu.discord=https://discord.gg/gSsaFAvrBM",
+        "modmenu.kofi=https://ko-fi.com/mincrafteinstein",
+        "modmenu.wiki=https://github.com/MincraftEinstein/SubtleEffects/wiki"
     ]
 
 [[accessTransformers]]

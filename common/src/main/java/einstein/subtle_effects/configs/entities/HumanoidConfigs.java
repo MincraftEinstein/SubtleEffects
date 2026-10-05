@@ -39,8 +39,12 @@ public class HumanoidConfigs extends ConfigSection {
             potionRingsDisplayType, PerspectiveDisplayType.OFF);
     public ValidatedCondition<Float> potionRingsAlpha = conditional(new ValidatedFloat(1, 1, 0.2F),
             potionRingsDisplayType, PerspectiveDisplayType.OFF);
-    @ConfigGroup.Pop
     public ValidatedCondition<Boolean> NPCsHavePotionRings = conditional(new ValidatedBoolean(),
+            potionRingsDisplayType, PerspectiveDisplayType.OFF);
+    public ValidatedCondition<Boolean> reverseDirectionForHarmfulEffects = conditional(new ValidatedBoolean(),
+            potionRingsDisplayType, PerspectiveDisplayType.OFF);
+    @ConfigGroup.Pop
+    public ValidatedCondition<Boolean> glowingPotionRings = conditional(new ValidatedBoolean(),
             potionRingsDisplayType, PerspectiveDisplayType.OFF);
 
     public enum PotionRingsParticleType implements EnumTranslatable {

@@ -4,9 +4,9 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import einstein.subtle_effects.client.model.entity.EinsteinSolarSystemModel;
 import einstein.subtle_effects.init.ModConfigs;
-import einstein.subtle_effects.platform.Services;
 import einstein.subtle_effects.util.RenderStateAttachmentAccessor;
 import einstein.subtle_effects.util.Util;
+import me.fzzyhmstrs.fzzy_config.api.ConfigApiJava;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.renderer.SubmitNodeCollector;
@@ -22,8 +22,7 @@ import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.util.Mth;
 import org.joml.Vector3f;
 
-import static einstein.subtle_effects.init.ModRenderStateAttachmentKeys.SOLAR_SYSTEM_SPIN;
-import static einstein.subtle_effects.init.ModRenderStateAttachmentKeys.STRING_UUID;
+import static einstein.subtle_effects.init.ModRenderStateAttachmentKeys.*;
 
 public class EinsteinSolarSystemLayer<T extends AvatarRenderState, V extends HumanoidModel<T>> extends RenderLayer<T, V> implements RenderLayerParent<T, EinsteinSolarSystemModel<T>> {
 
@@ -59,8 +58,9 @@ public class EinsteinSolarSystemLayer<T extends AvatarRenderState, V extends Hum
         if (shouldRender(renderState)) {
             int headCount = HEAD_ROTATIONS.length;
             model.hat.visible = renderState.showHat;
+            float healthPercentage = accessor.subtleEffects$get(HEALTH_PERCENTAGE, 1F);
 
-            for (int i = 0; i < headCount; i++) {
+            for (int i = 0; i < headCount * healthPercentage; i++) {
                 float i1 = i + 1;
                 float spin = getSpin(accessor, i) * (headCount / i1);
                 Vector3f rotation = HEAD_ROTATIONS[i];
@@ -110,7 +110,7 @@ public class EinsteinSolarSystemLayer<T extends AvatarRenderState, V extends Hum
         }
 
         return ModConfigs.GENERAL.enableEasterEggs
-                && (Util.isMincraftEinstein(uuid) || Services.PLATFORM.isDevelopmentEnvironment())
+                && (Util.isMincraftEinstein(uuid) || ConfigApiJava.platform().isDev())
                 && !renderState.isInvisible;
     }
 

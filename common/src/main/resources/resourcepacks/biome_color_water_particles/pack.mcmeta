@@ -1,6 +1,6 @@
 {
   "pack": {
-    "min_format": 88,
+    "min_format": 84,
     "max_format": 500,
     "description": {
       "translate": "resourcePack.subtle_effects.biome_water_color_particles.description"

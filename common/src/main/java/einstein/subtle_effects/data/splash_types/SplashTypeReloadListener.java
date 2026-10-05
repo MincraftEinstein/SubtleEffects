@@ -25,6 +25,7 @@ import java.io.Reader;
 import java.util.HashMap;
 import java.util.Map;
 
+import static einstein.subtle_effects.SubtleEffects.LOGGER;
 import static einstein.subtle_effects.init.ModSpriteSets.*;
 
 public class SplashTypeReloadListener extends SimplePreparableReloadListener<Map<Identifier, SplashType>> implements NamedReloadListener {
@@ -32,7 +33,9 @@ public class SplashTypeReloadListener extends SimplePreparableReloadListener<Map
     private static final FileToIdConverter DIRECTORY = FileToIdConverter.json("subtle_effects/splash_types");
     public static final Map<Identifier, SplashType> SPLASH_TYPES = new HashMap<>();
     public static final Identifier ID = SubtleEffects.loc("splash_types");
+    public static boolean HAS_PREPARED = false;
 
+    // TODO possibly is sometimes loaded after dynamic sprite sets have begun loading
     @Override
     protected Map<Identifier, SplashType> prepare(ResourceManager resourceManager, ProfilerFiller profiler) {
         Map<Identifier, SplashType.Data> splashTypes = new HashMap<>();
@@ -40,11 +43,14 @@ public class SplashTypeReloadListener extends SimplePreparableReloadListener<Map
 
         scanDirectory(resourceManager, DIRECTORY, JsonOps.INSTANCE, SplashType.Data.CODEC, splashTypes);
         splashTypes.forEach((id, typeData) -> load(id, typeData, validSplashTypes));
+        LOGGER.info("Loaded {} splash types", splashTypes.size());
+        HAS_PREPARED = true;
         return validSplashTypes;
     }
 
     @Override
     protected void apply(Map<Identifier, SplashType> resources, ResourceManager manager, ProfilerFiller profiler) {
+        HAS_PREPARED = false;
         SPLASH_TYPES.clear();
         SPLASH_TYPES.putAll(resources);
     }
