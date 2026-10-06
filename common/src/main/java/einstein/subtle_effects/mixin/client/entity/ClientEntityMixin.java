@@ -60,9 +60,6 @@ public abstract class ClientEntityMixin implements FirstTickAccessor, FluidLogic
     @Shadow
     protected boolean firstTick;
 
-    @Shadow
-    @Final
-    private EntityFluidInteraction fluidInteraction;
     @Unique
     @Nullable
     private FluidDefinition subtleEffects$lastTouchedFluid;

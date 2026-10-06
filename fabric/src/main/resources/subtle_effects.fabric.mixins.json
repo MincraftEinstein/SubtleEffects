@@ -9,8 +9,7 @@
     "client.FabricMultiPlayerGameModeMixin",
     "client.FabricReloadableResourceManagerMixin",
     "client.compat.ModMenuModSearchMixin",
-    "client.entity.FabricClientEntityMixin",
-    "client.entity.FabricEntityFluidInteractionMixin"
+    "client.entity.FabricClientEntityMixin"
   ],
   "mixins": [
     "common.block.dispenser.FabricShearsDispenseItemBehaviorMixin",

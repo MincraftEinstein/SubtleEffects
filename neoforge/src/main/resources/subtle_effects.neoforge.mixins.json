@@ -9,7 +9,6 @@
     "client.compat.BetterModListModSearchMixin",
     "client.compat.ModListScreenMixin",
     "client.entity.NeoForgeClientEntityMixin",
-    "client.entity.NeoForgeEntityFluidInteractionMixin",
     "client.fluid.FluidTypeMixin"
   ],
   "mixins": [
