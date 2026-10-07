@@ -135,5 +135,8 @@
   "injectors": {
     "defaultRequire": 1
   },
-  "plugin": "com.moulberry.mixinconstraints.ConstraintsMixinPlugin"
+  "plugin": "com.moulberry.mixinconstraints.ConstraintsMixinPlugin",
+  "mixinextras": {
+    "minVersion": "0.5.4"
+  }
 }

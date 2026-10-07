@@ -1,6 +1,7 @@
 package einstein.subtle_effects.mixin.client.entity;
 
-import com.llamalad7.mixinextras.injector.ModifyReturnValue;
+import com.llamalad7.mixinextras.expression.Definition;
+import com.llamalad7.mixinextras.expression.Expression;
 import com.llamalad7.mixinextras.sugar.Local;
 import einstein.subtle_effects.data.FluidDefinition;
 import einstein.subtle_effects.init.ModConfigs;
@@ -15,7 +16,6 @@ import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityFluidInteraction;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
@@ -25,9 +25,7 @@ import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import org.apache.commons.lang3.function.Consumers;
 import org.jetbrains.annotations.Nullable;
-import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -60,9 +58,6 @@ public abstract class ClientEntityMixin implements FirstTickAccessor, FluidLogic
     @Shadow
     protected boolean firstTick;
 
-    @Shadow
-    @Final
-    private EntityFluidInteraction fluidInteraction;
     @Unique
     @Nullable
     private FluidDefinition subtleEffects$lastTouchedFluid;
@@ -139,21 +134,15 @@ public abstract class ClientEntityMixin implements FirstTickAccessor, FluidLogic
         subtleEffects$getFluidDefinitionHeight().clear();
     }
 
-    @Inject(method = "updateFluidInteraction", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;resetFallDistance()V"))
-    private void preformWaterSplash(CallbackInfoReturnable<Boolean> cir) {
-        subtleEffects$setLastTouchedFluid(ParticleSpawnUtil.preformSplash(true, false, subtleEffects$me, firstTick, isWater -> {
+    @Definition(id = "inWater", local = @Local(type = boolean.class, name = "inWater"))
+    @Expression("inWater")
+    @Inject(method = "updateFluidInteraction", at = @At(value = "MIXINEXTRAS:EXPRESSION", ordinal = 0))
+    private void preformSplash(CallbackInfoReturnable<Boolean> cir, @Local(name = "inWater") boolean inWater) {
+        subtleEffects$setLastTouchedFluid(ParticleSpawnUtil.preformSplash(inWater, false, subtleEffects$me, firstTick, isWater -> {
             if (isWater) {
                 subtleEffects$cancelNextWaterSplash();
             }
         }, subtleEffects$me.getDeltaMovement().y(), subtleEffects$me.getY(), subtleEffects$me.blockPosition()));
-    }
-
-    @ModifyReturnValue(method = "updateFluidInteraction", at = @At("RETURN"))
-    private boolean preformSplash(boolean isInFluid, @Local(name = "inWater") boolean inWater) {
-        if (isInFluid && !inWater) {
-            subtleEffects$lastTouchedFluid = ParticleSpawnUtil.preformSplash(false, false, subtleEffects$me, firstTick, Consumers.nop(), subtleEffects$me.getDeltaMovement().y(), subtleEffects$me.getY(), subtleEffects$me.blockPosition());
-        }
-        return isInFluid;
     }
 
     @Inject(method = "doWaterSplashEffect", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/Mth;floor(D)I"), cancellable = true)
