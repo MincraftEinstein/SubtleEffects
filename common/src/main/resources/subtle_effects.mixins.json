@@ -56,7 +56,6 @@
     "client.entity.PandaMixin",
     "client.entity.PrimedTNTMixin",
     "client.entity.SheepMixin",
-    "client.entity.ShulkerMixin",
     "client.entity.SlimeMixin",
     "client.entity.SnowballMixin",
     "client.entity.SpellCasterIllagerMixin",
