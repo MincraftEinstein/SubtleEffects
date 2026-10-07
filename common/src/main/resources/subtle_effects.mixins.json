@@ -66,6 +66,7 @@
     "client.fluid.FluidMixin",
     "client.fluid.LavaFluidMixin",
     "client.fluid.WaterFluidMixin",
+    "client.item.BlockTransformerMixin",
     "client.item.BoneMealItemMixin",
     "client.item.BottleItemMixin",
     "client.item.BucketItemAccessor",
@@ -96,7 +97,6 @@
     "client.particle.bubbles.WaterCurrentDownParticleProviderMixin"
   ],
   "mixins": [
-    "client.item.BlockTransformerMixin",
     "common.BaseSpawnerMixin",
     "common.EnchantmentMenuMixin",
     "common.ServerExplosionMixin",

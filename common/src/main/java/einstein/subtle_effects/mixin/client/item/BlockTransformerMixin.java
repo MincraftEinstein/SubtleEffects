@@ -20,11 +20,11 @@ import static einstein.subtle_effects.init.ModConfigs.ITEMS;
 public class BlockTransformerMixin {
 
     @WrapOperation(method = "transformBlock*", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/Level;playSound(Lnet/minecraft/world/entity/Entity;Lnet/minecraft/core/BlockPos;Lnet/minecraft/sounds/SoundEvent;Lnet/minecraft/sounds/SoundSource;FF)V"))
-    private void evaluateNewBlockState(Level level, Entity entity, BlockPos pos, SoundEvent sound, SoundSource source, float volume, float pitch, Operation<Void> original, @Local(ordinal = 1) BlockState updatedShape) {
+    private void evaluateNewBlockState(Level level, Entity entity, BlockPos pos, SoundEvent sound, SoundSource source, float volume, float pitch, Operation<Void> original, @Local(name = "oldBlockState") BlockState oldBlockState) {
         if (level.isClientSide()) {
             if (sound.equals(SoundEvents.AXE_STRIP.value())) {
                 if (ITEMS.axeStripParticles.get()) {
-                    level.addDestroyBlockEffect(pos, updatedShape);
+                    level.addDestroyBlockEffect(pos, oldBlockState);
                 }
             }
         }
