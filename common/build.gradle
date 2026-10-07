@@ -11,9 +11,9 @@ neoForge {
 
 dependencies {
     compileOnly("org.spongepowered:mixin:0.8.5")
-    compileOnly("io.github.llamalad7:mixinextras-common:0.3.5")
+    compileOnly("io.github.llamalad7:mixinextras-common:0.5.4")
     compileOnly("com.moulberry:mixinconstraints:${mixin_constraints_version}")
-    annotationProcessor("io.github.llamalad7:mixinextras-common:0.3.5")
+    annotationProcessor("io.github.llamalad7:mixinextras-common:0.5.4")
 
     compileOnly "me.fzzyhmstrs:fzzy_config:$fzzy_config_version+neoforge"
     compileOnly "com.electronwill.night-config:toml:3.6.0"
