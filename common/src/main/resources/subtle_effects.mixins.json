@@ -32,6 +32,7 @@
     "client.block.SculkShriekerAndCatalystBlockMixin",
     "client.block.SlimeBlockMixin",
     "client.block.TorchBlockMixin",
+    "client.block.WitherRoseBlockMixin",
     "client.block.entity.CampfireBlockEntityMixin",
     "client.block.entity.ChestBlockEntityMixin",
     "client.block.entity.EnderChestBlockEntityMixin",

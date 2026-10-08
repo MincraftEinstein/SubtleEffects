@@ -20,7 +20,7 @@ public class EmptyBucketDispenseItemBehaviorMixin {
         ItemStack pickupStack = new ItemStack(pickupItem);
         if (!pickupStack.isEmpty()) {
             BlockPos pos = source.pos();
-            PayloadSender.sendToClientsTracking(source.level(), pos, new ClientBoundDispenseBucketPayload(pickupStack, pos));
+            PayloadSender.sendToClientsTracking(source.level(), pos, new ClientBoundDispenseBucketPayload(pickupStack, pos, false));
         }
     }
 }

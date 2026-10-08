@@ -24,7 +24,7 @@ public class ProjectileSplatParticle extends FlatPlaneParticle {
         super(level, x, y, z, sprite);
         direction = options.direction();
         blockPos = options.pos();
-        rotation = direction.getRotation().rotateX(180 * Mth.DEG_TO_RAD);
+        rotation = direction.getRotation().rotateX(radians(-90));
         lifetime = 120;
         quadSize = 0.2F;
         scale(1.5F);
