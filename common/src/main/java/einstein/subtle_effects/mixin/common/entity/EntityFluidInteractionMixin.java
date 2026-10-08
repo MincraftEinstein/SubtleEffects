@@ -3,7 +3,6 @@ package einstein.subtle_effects.mixin.common.entity;
 import einstein.subtle_effects.mixin.common.block.AbstractCauldronBlockAccessor;
 import einstein.subtle_effects.networking.PayloadSender;
 import einstein.subtle_effects.networking.clientbound.ClientBoundEntityLandInFluidPayload;
-import einstein.subtle_effects.util.FirstTickAccessor;
 import einstein.subtle_effects.util.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
@@ -31,7 +30,7 @@ public class EntityFluidInteractionMixin {
 
     @Inject(method = "update", at = @At("TAIL"))
     private void sendServerPlayerSplashes(Entity entity, boolean ignoreCurrent, CallbackInfo ci) {
-        if (entity instanceof ServerPlayer serverPlayer && !((FirstTickAccessor) entity).subtleEffects$isFirstTick()) {
+        if (entity instanceof ServerPlayer serverPlayer && !((EntityAccessor) entity).subtleEffects$isFirstTick()) {
             Level level = entity.level();
             BlockPos pos = entity.blockPosition();
             BlockState state = level.getBlockState(pos);
