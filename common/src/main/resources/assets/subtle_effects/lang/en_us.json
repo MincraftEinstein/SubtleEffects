@@ -287,6 +287,8 @@
   "config.subtle_effects.blocks.itemEnchantedParticlesDisplayType.OFF": "Off",
   "config.subtle_effects.blocks.itemEnchantedParticlesDisplayType.GLYPHS": "Glyphs",
   "config.subtle_effects.blocks.itemEnchantedParticlesDisplayType.MAGIC": "Magic",
+  "config.subtle_effects.blocks.improvedWitherRoseParticles": "Improved Wither Rose Particles",
+  "config.subtle_effects.blocks.improvedWitherRoseParticles.desc": "Fixes wither rose particles being incorrectly offset and potted wither roses not spawning particles",
   "config.subtle_effects.entities.sleeping": "Sleeping",
   "config.subtle_effects.entities.sleeping.playerSnoreChance": "Player Snore Chance",
   "config.subtle_effects.entities.sleeping.playerSnoreChance.desc": "A percentage based chance for a player to snore. This is UUID based so it doesn't change every night.\n0 to disable",
