@@ -360,6 +360,16 @@ public class ClientPayloadHandlers {
 
     public static void handle(Level level, ClientBoundDispenseBucketPayload payload) {
         BlockPos pos = payload.pos();
+        if (!ITEMS.fluidBucketUseParticles) {
+            if (payload.hasVanillaFallback()) {
+                RandomSource random = level.getRandom();
+                for (int i = 0; i < 5; i++) {
+                    ParticleSpawnUtil.sendParticles(level, ParticleTypes.SPLASH, pos.getX() + random.nextDouble(), pos.getY() + 1, pos.getZ() + random.nextDouble(), 1, 0, 0, 0, 1);
+                }
+            }
+            return;
+        }
+
         BlockState state = level.getBlockState(pos);
 
         if (state.hasProperty(BlockStateProperties.FACING)) {

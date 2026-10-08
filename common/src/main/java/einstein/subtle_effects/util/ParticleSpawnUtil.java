@@ -67,6 +67,29 @@ import static net.minecraft.world.level.block.state.properties.BlockStatePropert
 
 public class ParticleSpawnUtil {
 
+    public static void sendParticles(Level level, ParticleOptions type, double x, double y, double z, int count, double xDist, double yDist, double zDist, double speed) {
+        sendParticles(level, type, false, x, y, z, count, xDist, yDist, zDist, speed);
+    }
+
+    public static void sendParticles(Level level, ParticleOptions type, boolean overrideLimiter, double x, double y, double z, int count, double xDist, double yDist, double zDist, double speed) {
+        RandomSource random = level.getRandom();
+        if (count == 0) {
+            level.addParticle(type, overrideLimiter, x, y, z, speed * xDist, speed * yDist, speed * zDist);
+            return;
+        }
+
+        for (int i = 0; i < count; ++i) {
+            level.addParticle(type, overrideLimiter,
+                    x + random.nextGaussian() * xDist,
+                    y + random.nextGaussian() * yDist,
+                    z + random.nextGaussian() * zDist,
+                    random.nextGaussian() * speed,
+                    random.nextGaussian() * speed,
+                    random.nextGaussian() * speed
+            );
+        }
+    }
+
     public static void spawnParticlesAroundBlock(ParticleOptions particle, Level level, BlockPos pos, RandomSource random, int perSideChance) {
         spawnParticlesAroundBlock(particle, level, pos, random, 0.0625F, perSideChance > 0 ? direction -> random.nextInt(perSideChance) != 0 : null);
     }

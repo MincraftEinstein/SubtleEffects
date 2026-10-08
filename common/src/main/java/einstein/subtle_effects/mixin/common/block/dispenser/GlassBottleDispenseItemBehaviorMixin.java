@@ -17,6 +17,6 @@ public class GlassBottleDispenseItemBehaviorMixin {
     @Inject(method = "execute", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/alchemy/PotionContents;createItemStack(Lnet/minecraft/world/item/Item;Lnet/minecraft/core/Holder;)Lnet/minecraft/world/item/ItemStack;"))
     private void execute(BlockSource source, ItemStack stack, CallbackInfoReturnable<ItemStack> cir) {
         BlockPos pos = source.pos();
-        PayloadSender.sendToClientsTracking(source.level(), pos, new ClientBoundDispenseBucketPayload(new ItemStack(Items.WATER_BUCKET), pos));
+        PayloadSender.sendToClientsTracking(source.level(), pos, new ClientBoundDispenseBucketPayload(new ItemStack(Items.WATER_BUCKET), pos, false));
     }
 }
