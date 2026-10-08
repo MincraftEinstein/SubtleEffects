@@ -18,7 +18,7 @@ public class FilledBucketDispenseItemBehaviorMixin {
         ItemStack stackCopy = stack.copy();
         if (!stackCopy.isEmpty()) {
             BlockPos pos = source.pos();
-            PayloadSender.sendToClientsTracking(source.level(), pos, new ClientBoundDispenseBucketPayload(stackCopy, pos));
+            PayloadSender.sendToClientsTracking(source.level(), pos, new ClientBoundDispenseBucketPayload(stackCopy, pos, false));
         }
     }
 }

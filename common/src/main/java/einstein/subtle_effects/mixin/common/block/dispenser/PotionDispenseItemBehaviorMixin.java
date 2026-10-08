@@ -33,7 +33,7 @@ public class PotionDispenseItemBehaviorMixin {
         BlockPos pos = source.pos();
 
         level.playSound(null, pos, SoundEvents.GENERIC_SPLASH, SoundSource.BLOCKS); // Fixes inconsistency with Item.useOn behavior vs dispenser behavior. (there's probably a bug report for this, but I'm too lazy to find it)
-        PayloadSender.sendToClientsTracking(null, level, pos, new ClientBoundDispenseBucketPayload(new ItemStack(Items.WATER_BUCKET), pos), (serverPlayer) -> {
+        PayloadSender.sendToClientsTracking(null, level, pos, new ClientBoundDispenseBucketPayload(new ItemStack(Items.WATER_BUCKET), pos, true), (serverPlayer) -> {
             RandomSource random = level.getRandom();
 
             for (int i = 0; i < 5; i++) {

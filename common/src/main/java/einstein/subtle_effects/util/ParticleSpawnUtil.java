@@ -70,6 +70,29 @@ import static net.minecraft.world.level.block.state.properties.BlockStatePropert
 
 public class ParticleSpawnUtil {
 
+    public static void sendParticles(Level level, ParticleOptions type, double x, double y, double z, int count, double xDist, double yDist, double zDist, double speed) {
+        sendParticles(level, type, false, x, y, z, count, xDist, yDist, zDist, speed);
+    }
+
+    public static void sendParticles(Level level, ParticleOptions type, boolean overrideLimiter, double x, double y, double z, int count, double xDist, double yDist, double zDist, double speed) {
+        RandomSource random = level.getRandom();
+        if (count == 0) {
+            level.addParticle(type, overrideLimiter, x, y, z, speed * xDist, speed * yDist, speed * zDist);
+            return;
+        }
+
+        for (int i = 0; i < count; ++i) {
+            level.addParticle(type, overrideLimiter,
+                    x + random.nextGaussian() * xDist,
+                    y + random.nextGaussian() * yDist,
+                    z + random.nextGaussian() * zDist,
+                    random.nextGaussian() * speed,
+                    random.nextGaussian() * speed,
+                    random.nextGaussian() * speed
+            );
+        }
+    }
+
     public static void spawnParticlesAroundBlock(ParticleOptions particle, Level level, BlockPos pos, RandomSource random, int perSideChance) {
         spawnParticlesAroundBlock(particle, level, pos, random, 0.0625F, perSideChance > 0 ? direction -> random.nextInt(perSideChance) != 0 : null);
     }
@@ -668,5 +691,51 @@ public class ParticleSpawnUtil {
                 );
             }
         }
+    }
+
+    public static void torchFlowerParticles(BlockState state, Level level, BlockPos pos, RandomSource random, double yOffset, double xzOffset) {
+        Vec3 offsetPos = getFlowerPos(state, level, pos, random, 0.2, yOffset, xzOffset);
+
+        if (BLOCKS.torchflowerSmoke.isEnabled() && random.nextInt(3) == 0) {
+            // noinspection all
+            level.addParticle(BLOCKS.torchflowerSmoke.getParticle().get(),
+                    offsetPos.x(),
+                    offsetPos.y(),
+                    offsetPos.z(),
+                    0, 0, 0
+            );
+        }
+
+        if (BLOCKS.torchflowerFlames && random.nextInt(5) == 0) {
+            level.addParticle(ParticleTypes.FLAME,
+                    offsetPos.x(),
+                    offsetPos.y(),
+                    offsetPos.z(),
+                    0, 0, 0
+            );
+        }
+    }
+
+    public static void witherRoseParticles(BlockState state, Level level, BlockPos pos, RandomSource random, double yOffsetMin) {
+        Vec3 offsetPos = getFlowerPos(state, level, pos, random, yOffsetMin, 0.2, 0.125);
+
+        for (int i = 0; i < 3; i++) {
+            if (random.nextBoolean()) {
+                level.addParticle(ParticleTypes.SMOKE,
+                        offsetPos.x(),
+                        offsetPos.y(),
+                        offsetPos.z(),
+                        0, 0, 0
+                );
+            }
+        }
+    }
+
+    public static Vec3 getFlowerPos(BlockState state, Level level, BlockPos pos, RandomSource random, double yOffsetMin, double yOffset, double xzOffset) {
+        return pos.getCenter().add(state.getOffset(level, pos)).add(
+                nextNonAbsDouble(random, xzOffset),
+                Mth.nextDouble(random, yOffsetMin, yOffset),
+                nextNonAbsDouble(random, xzOffset)
+        );
     }
 }
