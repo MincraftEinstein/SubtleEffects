@@ -23,7 +23,6 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.ParticleUtils;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.*;
@@ -49,7 +48,6 @@ import static einstein.subtle_effects.init.ModConfigs.BLOCKS;
 import static einstein.subtle_effects.util.MathUtil.nextNonAbsDouble;
 import static einstein.subtle_effects.util.MathUtil.nextSign;
 import static einstein.subtle_effects.util.Util.playClientSound;
-import static net.minecraft.util.Mth.nextDouble;
 import static net.minecraft.util.Mth.nextFloat;
 
 public class ModBlockTickers {
@@ -78,9 +76,9 @@ public class ModBlockTickers {
                     ParticleSpawnUtil.spawnParticlesAroundBlock(Util.GLOWSTONE_DUST_PARTICLES, level, pos, random, BLOCKS.glowstoneBlockDustDensity.get().getPerSideChance());
                 });
         register(Blocks.TORCHFLOWER, () -> BLOCKS.torchflowerSmoke.isEnabled() || BLOCKS.torchflowerFlames,
-                (state, level, pos, random) -> torchFlowerParticles(state, level, pos, random, 0.5, 0.125));
+                (state, level, pos, random) -> ParticleSpawnUtil.torchFlowerParticles(state, level, pos, random, 0.5, 0.125));
         register(Blocks.POTTED_TORCHFLOWER, () -> BLOCKS.torchflowerSmoke.isEnabled() || BLOCKS.torchflowerFlames,
-                (state, level, pos, random) -> torchFlowerParticles(state, level, pos, random, 0.4, 0.0625));
+                (state, level, pos, random) -> ParticleSpawnUtil.torchFlowerParticles(state, level, pos, random, 0.4, 0.0625));
         register(Blocks.DRAGON_EGG, () -> BLOCKS.dragonEggParticles, (state, level, pos, random) -> {
             for (int i = 0; i < 3; ++i) {
                 level.addParticle(ParticleTypes.PORTAL,
@@ -349,53 +347,7 @@ public class ModBlockTickers {
             }
         });
         register(Blocks.POTTED_WITHER_ROSE, () -> BLOCKS.improvedWitherRoseParticles, (state, level, pos, random) ->
-                witherRoseParticles(state, level, pos, random, 0.1));
-    }
-
-    private static void torchFlowerParticles(BlockState state, Level level, BlockPos pos, RandomSource random, double yOffset, double xzOffset) {
-        Vec3 offsetPos = getFlowerPos(state, level, pos, random, 0.2, yOffset, xzOffset);
-
-        if (BLOCKS.torchflowerSmoke.isEnabled() && random.nextInt(3) == 0) {
-            // noinspection all
-            level.addParticle(BLOCKS.torchflowerSmoke.getParticle().get(),
-                    offsetPos.x(),
-                    offsetPos.y(),
-                    offsetPos.z(),
-                    0, 0, 0
-            );
-        }
-
-        if (BLOCKS.torchflowerFlames && random.nextInt(5) == 0) {
-            level.addParticle(ParticleTypes.FLAME,
-                    offsetPos.x(),
-                    offsetPos.y(),
-                    offsetPos.z(),
-                    0, 0, 0
-            );
-        }
-    }
-
-    public static void witherRoseParticles(BlockState state, Level level, BlockPos pos, RandomSource random, double yOffsetMin) {
-        Vec3 offsetPos = getFlowerPos(state, level, pos, random, yOffsetMin, 0.2, 0.125);
-
-        for (int i = 0; i < 3; i++) {
-            if (random.nextBoolean()) {
-                level.addParticle(ParticleTypes.SMOKE,
-                        offsetPos.x(),
-                        offsetPos.y(),
-                        offsetPos.z(),
-                        0, 0, 0
-                );
-            }
-        }
-    }
-
-    public static Vec3 getFlowerPos(BlockState state, Level level, BlockPos pos, RandomSource random, double yOffsetMin, double yOffset, double xzOffset) {
-        return pos.getCenter().add(state.getOffset(level, pos)).add(
-                nextNonAbsDouble(random, xzOffset),
-                nextDouble(random, yOffsetMin, yOffset),
-                nextNonAbsDouble(random, xzOffset)
-        );
+                ParticleSpawnUtil.witherRoseParticles(state, level, pos, random, 0.1));
     }
 
     private static void register(Block block, Supplier<Boolean> isEnabled, BlockTickerProvider provider) {

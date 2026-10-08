@@ -1,7 +1,7 @@
 package einstein.subtle_effects.mixin.client.block;
 
-import einstein.subtle_effects.init.ModBlockTickers;
 import einstein.subtle_effects.init.ModConfigs;
+import einstein.subtle_effects.util.ParticleSpawnUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
@@ -19,7 +19,7 @@ public class WitherRoseBlockMixin {
     private void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random, CallbackInfo ci) {
         if (ModConfigs.BLOCKS.improvedWitherRoseParticles) {
             ci.cancel();
-            ModBlockTickers.witherRoseParticles(state, level, pos, random, 0);
+            ParticleSpawnUtil.witherRoseParticles(state, level, pos, random, 0);
         }
     }
 }

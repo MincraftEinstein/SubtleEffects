@@ -652,4 +652,50 @@ public class ParticleSpawnUtil {
             }
         }
     }
+
+    public static void torchFlowerParticles(BlockState state, Level level, BlockPos pos, RandomSource random, double yOffset, double xzOffset) {
+        Vec3 offsetPos = getFlowerPos(state, level, pos, random, 0.2, yOffset, xzOffset);
+
+        if (BLOCKS.torchflowerSmoke.isEnabled() && random.nextInt(3) == 0) {
+            // noinspection all
+            level.addParticle(BLOCKS.torchflowerSmoke.getParticle().get(),
+                    offsetPos.x(),
+                    offsetPos.y(),
+                    offsetPos.z(),
+                    0, 0, 0
+            );
+        }
+
+        if (BLOCKS.torchflowerFlames && random.nextInt(5) == 0) {
+            level.addParticle(ParticleTypes.FLAME,
+                    offsetPos.x(),
+                    offsetPos.y(),
+                    offsetPos.z(),
+                    0, 0, 0
+            );
+        }
+    }
+
+    public static void witherRoseParticles(BlockState state, Level level, BlockPos pos, RandomSource random, double yOffsetMin) {
+        Vec3 offsetPos = getFlowerPos(state, level, pos, random, yOffsetMin, 0.2, 0.125);
+
+        for (int i = 0; i < 3; i++) {
+            if (random.nextBoolean()) {
+                level.addParticle(ParticleTypes.SMOKE,
+                        offsetPos.x(),
+                        offsetPos.y(),
+                        offsetPos.z(),
+                        0, 0, 0
+                );
+            }
+        }
+    }
+
+    public static Vec3 getFlowerPos(BlockState state, Level level, BlockPos pos, RandomSource random, double yOffsetMin, double yOffset, double xzOffset) {
+        return pos.getCenter().add(state.getOffset(level, pos)).add(
+                nextNonAbsDouble(random, xzOffset),
+                Mth.nextDouble(random, yOffsetMin, yOffset),
+                nextNonAbsDouble(random, xzOffset)
+        );
+    }
 }
