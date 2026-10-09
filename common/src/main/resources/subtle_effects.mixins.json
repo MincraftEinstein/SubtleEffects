@@ -90,6 +90,7 @@
     "client.particle.SingleQuadParticleAccessor",
     "client.particle.SpellParticleMixin",
     "client.particle.SpriteSetAccessor",
+    "client.particle.TerrainParticleMixin",
     "client.particle.bubbles.BubbleColumnUpParticleProviderMixin",
     "client.particle.bubbles.BubbleParticleMixin",
     "client.particle.bubbles.BubbleParticleProviderMixin",
