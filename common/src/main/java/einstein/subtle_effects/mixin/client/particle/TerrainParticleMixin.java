@@ -4,9 +4,11 @@ import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.TerrainParticle;
 import net.minecraft.client.particle.TextureSheetParticle;
+import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -25,10 +27,14 @@ abstract class TerrainParticleMixin extends TextureSheetParticle {
     @Shadow
     @Final
     private float vo;
+    @Nullable
     @Unique
-    private float subtleEffects$maxU = 1f;
+    private Float subtleEffects$maxU = null;
+    @Nullable
     @Unique
-    private float subtleEffects$maxV = 1f;
+    private Float subtleEffects$maxV = null;
+    @Unique
+    private int subtleEffects$emission = 0;
 
     protected TerrainParticleMixin(ClientLevel level, double x, double y, double z) {
         super(level, x, y, z);
@@ -57,27 +63,33 @@ abstract class TerrainParticleMixin extends TextureSheetParticle {
             vo = random.nextInt(0, spireHeight - pixelOffset) * vStep;
             subtleEffects$maxU = uo + (pixelOffset * uStep);
             subtleEffects$maxV = vo + (pixelOffset * vStep);
+            subtleEffects$emission = state.getLightEmission();
         }
+    }
+
+    @ModifyReturnValue(method = "getLightColor", at = @At("RETURN"))
+    private int emissiveLight(int original) {
+        return Math.max(original, LightTexture.pack(subtleEffects$emission, 0));
     }
 
     @ModifyReturnValue(method = "getU0", at = @At("RETURN"))
     private float u0(float original) {
-        return sprite.getU(uo);
+        return subtleEffects$maxU != null ? sprite.getU(uo) : original;
     }
 
     @ModifyReturnValue(method = "getU1", at = @At("RETURN"))
     private float u1(float original) {
-        return sprite.getU(subtleEffects$maxU);
+        return subtleEffects$maxU != null ? sprite.getU(subtleEffects$maxU) : original;
     }
 
     @ModifyReturnValue(method = "getV0", at = @At("RETURN"))
     private float v0(float original) {
-        return sprite.getV(vo);
+        return subtleEffects$maxV != null ? sprite.getV(vo) : original;
     }
 
     @ModifyReturnValue(method = "getV1", at = @At("RETURN"))
     private float v1(float original) {
-        return sprite.getV(subtleEffects$maxV);
+        return subtleEffects$maxV != null ? sprite.getV(subtleEffects$maxV) : original;
     }
 
 }
