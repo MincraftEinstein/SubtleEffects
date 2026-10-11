@@ -3,6 +3,7 @@ package einstein.subtle_effects.data.splash_types;
 import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import einstein.subtle_effects.data.Transparent;
 import einstein.subtle_effects.data.SpriteSetHolder;
 import einstein.subtle_effects.data.color_providers.ColorProviderType;
 import einstein.subtle_effects.data.color_providers.Colorable;
@@ -14,7 +15,7 @@ import java.util.Optional;
 
 public record SplashOptions(SpriteSetHolder holder, ColorProviderType.ColorProvider colorProvider,
                             Optional<Either<Float, Boolean>> tinting,
-                            Optional<Either<Float, Boolean>> transparency) implements Colorable {
+                            Optional<Either<Float, Boolean>> transparency) implements Colorable, Transparent {
 
     public record Data(Optional<ResourceLocation> spriteSetId,
                        Optional<ColorProviderType.ColorProvider> colorProvider,

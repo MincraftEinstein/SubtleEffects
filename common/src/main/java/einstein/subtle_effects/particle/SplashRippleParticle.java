@@ -33,7 +33,7 @@ public class SplashRippleParticle extends FlatPlaneParticle {
         pos = BlockPos.containing(x, y, z).mutable();
         rotation = rotation.rotateX(90 * Mth.DEG_TO_RAD);
         lifetime = 15;
-        alpha = SplashParticle.alpha(rippleOptions);
+        alpha = rippleOptions.getAlpha();
         Vector3f color = rippleOptions.getColorAndApplyTint(level, pos, random);
         rCol = color.x;
         gCol = color.y;

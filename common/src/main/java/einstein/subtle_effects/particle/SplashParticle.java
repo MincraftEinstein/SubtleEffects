@@ -2,7 +2,6 @@ package einstein.subtle_effects.particle;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.datafixers.util.Either;
 import einstein.subtle_effects.client.model.particle.SplashParticleModel;
 import einstein.subtle_effects.data.FluidDefinition;
 import einstein.subtle_effects.data.FluidDefinitionReloadListener;
@@ -23,11 +22,6 @@ import net.minecraft.util.FastColor;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
-
-import java.util.Optional;
-import java.util.function.Function;
-
-import static einstein.subtle_effects.init.ModConfigs.ENTITIES;
 
 public class SplashParticle extends ModelParticle {
 
@@ -54,7 +48,7 @@ public class SplashParticle extends ModelParticle {
         SplashType type = fluidDefinition.splashType().orElseThrow();
         SplashOptions splashOptions = type.splashOptions();
         SplashOptions overlayOptions = type.splashOverlayOptions();
-        float overlayAlpha = alpha(overlayOptions);
+        float overlayAlpha = overlayOptions.getAlpha();
 
         sprites = splashOptions.holder().get();
 
@@ -64,7 +58,7 @@ public class SplashParticle extends ModelParticle {
         // noinspection ConstantConditions
         hasOverlay = overlaySprites != null && overlayAlpha > 0;
         this.overlayAlpha = overlayAlpha;
-        alpha = alpha(splashOptions);
+        alpha = splashOptions.getAlpha();
         pos = BlockPos.containing(x, y, z).mutable();
         lifetime = 15;
         lightLevel = fluidDefinition.lightEmission();
@@ -84,17 +78,6 @@ public class SplashParticle extends ModelParticle {
             overlayGCol = overlayColor.y;
             overlayBCol = overlayColor.z;
         }
-    }
-
-    public static float alpha(SplashOptions options) {
-        return alpha(options.transparency());
-    }
-
-    public static float alpha(Optional<Either<Float, Boolean>> options) {
-        return options.map(transparency ->
-                transparency.mapRight(useConfig -> ENTITIES.splashes.splashOverlayAlpha.get())
-                        .map(Function.identity(), Function.identity())
-        ).orElse(1F);
     }
 
     public static boolean canNotSurvive(FluidDefinition fluidDefinition, Level level, BlockPos pos) {
