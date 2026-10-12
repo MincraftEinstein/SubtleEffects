@@ -734,7 +734,7 @@ public class ParticleSpawnUtil {
     }
 
     public static Vec3 getFlowerPos(BlockState state, BlockPos pos, RandomSource random, double yOffsetMin, double yOffset, double xzOffset) {
-        return pos.getCenter().add(state.getOffset(pos)).add(
+        return Vec3.atCenterOf(pos).add(state.getOffset(pos)).add(
                 nextNonAbsDouble(random, xzOffset),
                 Mth.nextDouble(random, yOffsetMin, yOffset),
                 nextNonAbsDouble(random, xzOffset)
