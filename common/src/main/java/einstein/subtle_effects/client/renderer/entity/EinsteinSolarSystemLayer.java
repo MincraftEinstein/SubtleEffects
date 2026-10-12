@@ -5,6 +5,7 @@ import com.mojang.math.Axis;
 import einstein.subtle_effects.client.model.entity.EinsteinSolarSystemModel;
 import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.util.RenderStateAttachmentAccessor;
+import einstein.subtle_effects.util.HolidayHelper;
 import einstein.subtle_effects.util.Util;
 import me.fzzyhmstrs.fzzy_config.api.ConfigApiJava;
 import net.minecraft.client.model.HumanoidModel;
@@ -45,7 +46,7 @@ public class EinsteinSolarSystemLayer<T extends AvatarRenderState, V extends Hum
                 context.getEquipmentRenderer()
         );
 
-        if (PartyHatLayer.isModBirthday(false)) {
+        if (HolidayHelper.MOD_BIRTHDAY.getEnabledInDev()) {
             partyHatLayer = new PartyHatLayer<>(this, context);
             return;
         }

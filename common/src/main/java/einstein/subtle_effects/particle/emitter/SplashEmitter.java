@@ -169,7 +169,7 @@ public class SplashEmitter extends NoRenderParticle {
     private boolean hasRipple() {
         if (ENTITIES.splashes.splashRipples.get()) {
             if (firstSplash || (secondSplash && ENTITIES.splashes.secondarySplashRipples.get())) {
-                return SplashParticle.alpha(type.splashRippleOptions()) > 0;
+                return type.splashRippleOptions().getAlpha() > 0;
             }
         }
 
