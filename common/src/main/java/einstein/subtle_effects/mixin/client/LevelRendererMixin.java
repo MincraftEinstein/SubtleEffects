@@ -229,13 +229,13 @@ public abstract class LevelRendererMixin implements FrustumGetter {
 
         if (type == LevelEvent.PARTICLES_SCRAPE) {
             if (ModConfigs.ITEMS.axeScrapeParticlesDisplayType.get() != ReplacedParticlesDisplayType.DEFAULT) {
-                subtleEffects$spawnCopperParticles(level, pos, count, state, random);
+                subtleEffects$spawnCopperParticles(level, pos, count, state, random, ParticleTypes.SCRAPE);
             }
             return;
         }
         else if (type == LevelEvent.PARTICLES_WAX_OFF) {
             if (ModConfigs.ITEMS.axeWaxOffParticlesDisplayType.get() != ReplacedParticlesDisplayType.DEFAULT) {
-                subtleEffects$spawnCopperParticles(level, pos, count, state, random);
+                subtleEffects$spawnCopperParticles(level, pos, count, state, random, ParticleTypes.WAX_OFF);
             }
             return;
         }
@@ -244,8 +244,8 @@ public abstract class LevelRendererMixin implements FrustumGetter {
     }
 
     @Unique
-    private static void subtleEffects$spawnCopperParticles(Level level, BlockPos pos, IntProvider count, BlockState state, RandomSource random) {
-        ParticleSpawnUtil.spawnParticlesAroundShape(ParticleTypes.WAX_OFF,
+    private static void subtleEffects$spawnCopperParticles(Level level, BlockPos pos, IntProvider count, BlockState state, RandomSource random, ParticleOptions particle) {
+        ParticleSpawnUtil.spawnParticlesAroundShape(particle,
                 level, pos, state, count.sample(random),
                 () -> new Vec3(
                         nextNonAbsDouble(random, 0.5),
