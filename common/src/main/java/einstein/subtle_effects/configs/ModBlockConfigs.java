@@ -176,6 +176,7 @@ public class ModBlockConfigs extends Config {
     public boolean magmaFrostWalkerSounds = true;
     public boolean redstoneRailDustParticles = true;
     public ItemEnchantedParticlesDisplayType itemEnchantedParticlesDisplayType = ItemEnchantedParticlesDisplayType.GLYPHS;
+    public boolean improvedWitherRoseParticles = true;
 
     private static ValidatedIdentifier getEyeHandler() {
         List<ResourceLocation> eyes = CompatHelper.IS_END_REMASTERED_LOADED.get()

@@ -34,7 +34,7 @@ public class PotionItemMixin {
         if (level instanceof ServerLevel serverLevel) {
             BlockPos pos = context.getClickedPos();
 
-            PayloadSender.sendToClientsTracking(null, serverLevel, pos, new ClientBoundDispenseBucketPayload(new ItemStack(Items.WATER_BUCKET), pos), (serverPlayer) -> {
+            PayloadSender.sendToClientsTracking(null, serverLevel, pos, new ClientBoundDispenseBucketPayload(new ItemStack(Items.WATER_BUCKET), pos, true), (serverPlayer) -> {
                 RandomSource random = level.getRandom();
 
                 for (int i = 0; i < 5; i++) {

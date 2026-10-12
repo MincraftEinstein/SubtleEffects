@@ -4,13 +4,17 @@ import einstein.subtle_effects.configs.ModBlockConfigs;
 import einstein.subtle_effects.configs.ReplacedParticlesDisplayType;
 import einstein.subtle_effects.init.*;
 import einstein.subtle_effects.mixin.client.entity.AbstractHorseAccessor;
+import einstein.subtle_effects.mixin.common.entity.EntityAccessor;
 import einstein.subtle_effects.networking.clientbound.*;
 import einstein.subtle_effects.particle.option.FloatParticleOptions;
 import einstein.subtle_effects.particle.option.SheepFluffParticleOptions;
 import einstein.subtle_effects.ticking.tickers.TickerManager;
 import einstein.subtle_effects.ticking.tickers.entity.EntityCauldronTicker;
 import einstein.subtle_effects.ticking.tickers.entity.EntityTickerManager;
-import einstein.subtle_effects.util.*;
+import einstein.subtle_effects.util.FluidLogicAccessor;
+import einstein.subtle_effects.util.MathUtil;
+import einstein.subtle_effects.util.ParticleSpawnUtil;
+import einstein.subtle_effects.util.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -356,6 +360,16 @@ public class ClientPayloadHandlers {
 
     public static void handle(Level level, ClientBoundDispenseBucketPayload payload) {
         BlockPos pos = payload.pos();
+        if (!ITEMS.fluidBucketUseParticles) {
+            if (payload.hasVanillaFallback()) {
+                RandomSource random = level.getRandom();
+                for (int i = 0; i < 5; i++) {
+                    ParticleSpawnUtil.sendParticles(level, ParticleTypes.SPLASH, pos.getX() + random.nextDouble(), pos.getY() + 1, pos.getZ() + random.nextDouble(), 1, 0, 0, 0, 1);
+                }
+            }
+            return;
+        }
+
         BlockState state = level.getBlockState(pos);
 
         if (state.hasProperty(BlockStateProperties.FACING)) {
@@ -393,7 +407,7 @@ public class ClientPayloadHandlers {
             FluidLogicAccessor accessor = (FluidLogicAccessor) entity;
             accessor.subtleEffects$getFluidDefinitionHeight().clear();
             FluidLogicAccessor.subtleEffects$updateFluidDefinitionHeight(entity, entity.getDimensions(entity.getPose()).makeBoundingBox(entity.getX(), y, entity.getZ()));
-            accessor.subtleEffects$setLastTouchedFluid(ParticleSpawnUtil.preformSplash(false, true, entity, ((FirstTickAccessor) entity).subtleEffects$isFirstTick(), isWater -> {
+            accessor.subtleEffects$setLastTouchedFluid(ParticleSpawnUtil.preformSplash(false, true, entity, ((EntityAccessor) entity).subtleEffects$isFirstTick(), isWater -> {
                 if (isWater) {
                     accessor.subtleEffects$cancelNextWaterSplash();
                 }

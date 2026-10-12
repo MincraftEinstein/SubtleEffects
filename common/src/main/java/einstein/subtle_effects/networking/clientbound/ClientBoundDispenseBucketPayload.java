@@ -5,11 +5,10 @@ import me.fzzyhmstrs.fzzy_config.networking.FzzyPayload;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
-import org.jetbrains.annotations.Nullable;
 
-public record ClientBoundDispenseBucketPayload(ItemStack stack, BlockPos pos) implements FzzyPayload {
+public record ClientBoundDispenseBucketPayload(ItemStack stack, BlockPos pos,
+                                               boolean hasVanillaFallback) implements FzzyPayload {
 
     public static final ResourceLocation ID = SubtleEffects.loc("dispense_bucket");
 
@@ -17,10 +16,11 @@ public record ClientBoundDispenseBucketPayload(ItemStack stack, BlockPos pos) im
     public void write(FriendlyByteBuf buf) {
         buf.writeItem(stack);
         buf.writeBlockPos(pos);
+        buf.writeBoolean(hasVanillaFallback);
     }
 
     public static ClientBoundDispenseBucketPayload read(FriendlyByteBuf buf) {
-        return new ClientBoundDispenseBucketPayload(buf.readItem(), buf.readBlockPos());
+        return new ClientBoundDispenseBucketPayload(buf.readItem(), buf.readBlockPos(), buf.readBoolean());
     }
 
     @Override

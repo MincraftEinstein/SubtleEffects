@@ -5,6 +5,7 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import einstein.subtle_effects.client.model.entity.EinsteinSolarSystemModel;
 import einstein.subtle_effects.init.ModConfigs;
+import einstein.subtle_effects.util.HolidayHelper;
 import einstein.subtle_effects.util.Util;
 import me.fzzyhmstrs.fzzy_config.api.ConfigApiJava;
 import net.minecraft.client.model.HumanoidArmorModel;
@@ -48,7 +49,7 @@ public class EinsteinSolarSystemLayer<T extends AbstractClientPlayer, V extends 
                 context.getModelManager()
         );
 
-        if (PartyHatLayer.isModBirthday(false)) {
+        if (HolidayHelper.MOD_BIRTHDAY.getEnabledInDev()) {
             partyHatLayer = new PartyHatLayer<>(renderLayerParent, context);
             return;
         }
