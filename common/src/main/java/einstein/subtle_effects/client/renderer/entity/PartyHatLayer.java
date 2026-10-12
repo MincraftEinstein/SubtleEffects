@@ -4,8 +4,8 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import einstein.subtle_effects.client.model.entity.PartyHatModel;
+import einstein.subtle_effects.util.HolidayHelper;
 import einstein.subtle_effects.util.Util;
-import me.fzzyhmstrs.fzzy_config.api.ConfigApiJava;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -16,8 +16,6 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 
-import java.time.LocalDate;
-import java.time.Month;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -78,16 +76,5 @@ public class PartyHatLayer<T extends AbstractClientPlayer, V extends HumanoidMod
 
     public static boolean shouldRender(AbstractClientPlayer player) {
         return GENERAL.enableEasterEggs && !player.isInvisible();
-    }
-
-    public static boolean isModBirthday(boolean ignoreInDev) {
-        if (!ignoreInDev && ConfigApiJava.platform().isDev()) {
-            return true;
-        }
-
-        LocalDate date = LocalDate.now();
-        Month month = date.getMonth();
-        int dayOfMonth = date.getDayOfMonth();
-        return month == Month.OCTOBER && dayOfMonth >= 3 && dayOfMonth <= 5;
     }
 }
