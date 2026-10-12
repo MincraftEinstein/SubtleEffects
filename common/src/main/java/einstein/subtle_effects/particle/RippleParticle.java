@@ -55,7 +55,7 @@ public class RippleParticle extends FlatPlaneParticle {
                 Vector3f color = rippleOptions.getColorAndApplyTint(level, BlockPos.containing(x, y, z), level.getRandom());
 
                 particle.setColor(color.x(), color.y(), color.z());
-                particle.setAlpha(SplashParticle.alpha(rippleOptions.transparency()));
+                particle.setAlpha(rippleOptions.getAlpha());
                 return particle;
             }).orElse(null);
         }

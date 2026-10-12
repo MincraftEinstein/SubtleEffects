@@ -60,6 +60,7 @@
     "client.entity.ShulkerMixin",
     "client.entity.SlimeMixin",
     "client.entity.SnowballMixin",
+    "client.entity.SnowGolemRendererMixin",
     "client.entity.SpellCasterIllagerMixin",
     "client.entity.ThrownEggMixin",
     "client.entity.VillagerMixin",

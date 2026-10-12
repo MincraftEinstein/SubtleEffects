@@ -28,7 +28,7 @@ public record DropletOptions(ColorProviderType.ColorProvider colorProvider,
     ).apply(instance, DropletOptions::new));
 
     public record RippleOptions(ColorProviderType.ColorProvider colorProvider, Optional<Either<Float, Boolean>> tinting,
-                                Optional<Either<Float, Boolean>> transparency) implements Colorable {
+                                Optional<Either<Float, Boolean>> transparency) implements Colorable, Transparent {
 
         public static final RippleOptions DEFAULT = new RippleOptions(NoneColorProvider.INSTANCE, Optional.empty(), Optional.empty());
 

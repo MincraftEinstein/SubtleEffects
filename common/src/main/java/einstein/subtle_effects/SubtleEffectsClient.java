@@ -20,6 +20,7 @@ import einstein.subtle_effects.ticking.tickers.ChestBlockEntityTicker;
 import einstein.subtle_effects.ticking.tickers.TickerManager;
 import einstein.subtle_effects.ticking.tickers.WaterfallTicker;
 import einstein.subtle_effects.ticking.tickers.entity.EntityTickerManager;
+import einstein.subtle_effects.util.HolidayHelper;
 import einstein.subtle_effects.util.Util;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
@@ -91,7 +92,7 @@ public class SubtleEffectsClient {
             return;
         }
 
-        if (!HAS_DISPLAYED_BIRTHDAY_NOTIFICATION && ModConfigs.GENERAL.enableEasterEggs && PartyHatLayer.isModBirthday(true)) {
+        if (!HAS_DISPLAYED_BIRTHDAY_NOTIFICATION && ModConfigs.GENERAL.enableEasterEggs && HolidayHelper.MOD_BIRTHDAY.get()) {
             // Day before the actual birthday so it doesn't return a negative number when the party hat is enabled the day before
             long years = ChronoUnit.YEARS.between(LocalDate.of(2024, Month.OCTOBER, 3), LocalDate.now());
             sendSystemMsg(minecraft, Component.empty()
@@ -130,7 +131,7 @@ public class SubtleEffectsClient {
         List<RenderLayer<AvatarRenderState, PlayerModel>> renderLayers = new ArrayList<>();
         renderLayers.add(new EinsteinSolarSystemLayer<>(renderer, context));
 
-        if (PartyHatLayer.isModBirthday(false)) {
+        if (HolidayHelper.MOD_BIRTHDAY.getEnabledInDev()) {
             renderLayers.add(new PartyHatLayer<>(renderer, context));
         }
         return renderLayers;
