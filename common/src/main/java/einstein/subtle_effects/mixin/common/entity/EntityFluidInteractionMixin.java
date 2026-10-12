@@ -26,7 +26,7 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Slice;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(EntityFluidInteraction.class)
 public class EntityFluidInteractionMixin {
@@ -36,7 +36,7 @@ public class EntityFluidInteractionMixin {
     private Object subtleEffects$serverLastTouchedFluid;
 
     @Inject(method = "update", at = @At("TAIL"))
-    private void sendServerPlayerSplashes(Entity entity, boolean ignoreCurrent, CallbackInfo ci) {
+    private void sendServerPlayerSplashes(Entity entity, boolean ignoreCurrent, CallbackInfoReturnable<Boolean> cir) {
         if (entity instanceof ServerPlayer serverPlayer && !((EntityAccessor) entity).subtleEffects$isFirstTick()) {
             Level level = entity.level();
             BlockPos pos = entity.blockPosition();
