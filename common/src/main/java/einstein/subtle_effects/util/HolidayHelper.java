@@ -8,6 +8,7 @@ import java.util.function.BiFunction;
 
 public enum HolidayHelper {
 
+    HALLOWEEN((month, dayOfMonth) -> month == Month.OCTOBER && dayOfMonth == 31),
     MOD_BIRTHDAY((month, dayOfMonth) -> month == Month.OCTOBER && dayOfMonth >= 3 && dayOfMonth <= 5);
 
     private final boolean function;
