@@ -88,8 +88,9 @@ public class ModGeneralConfigs extends Config {
     public ValidatedInt fallenLeavesLifeTime = new ValidatedInt(40, 100, 20);
     @ConfigGroup.Pop
     public boolean rainIncreasesLeavesMovementSpeed = true;
-    @ConfigGroup.Pop
     public boolean staticFlameBrightness = true;
+    @ConfigGroup.Pop
+    public boolean disableShriekRotation = false;
 
     public ConfigGroup fireOverlayGroup = new ConfigGroup("fireOverlay");
     public ValidatedFloat fireOverlayHeight = new ValidatedFloat(-0.15F, 0.4F, -0.5F);

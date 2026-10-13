@@ -734,6 +734,8 @@
   "config.subtle_effects.general.rainIncreasesLeavesMovementSpeed.desc": "During rain and thunder storms leaves will have increased movement speed",
   "config.subtle_effects.general.staticFlameBrightness": "Static Flame Brightness",
   "config.subtle_effects.general.staticFlameBrightness.desc": "Should flame particles always be full bright or should they dynamically change brightness based on age and light level",
+  "config.subtle_effects.general.disableShriekRotation": "Disable Shriek Rotation",
+  "config.subtle_effects.general.disableShriekRotation.desc": "Disables the slight rotation applied the the shriek particles spawned when a sculk shrieker is activated",
   "config.subtle_effects.general.mobSkullShaders": "Mob Skull Shaders",
   "config.subtle_effects.general.mobSkullShaders.desc": "Apply a mob's spectate shader when wearing its skull/head e.g Creeper head makes everything look green.\nNo new shaders are added",
   "config.subtle_effects.general.fireOverlayGroup": "Fire Overlay",

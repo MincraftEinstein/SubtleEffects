@@ -88,6 +88,7 @@
     "client.particle.ParticleEngineAccessor",
     "client.particle.ParticleEngineMixin",
     "client.particle.ParticleMixin",
+    "client.particle.ShriekParticleMixin",
     "client.particle.SingleQuadParticleAccessor",
     "client.particle.SpellParticleMixin",
     "client.particle.SpriteSetAccessor",
