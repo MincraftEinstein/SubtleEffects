@@ -385,7 +385,7 @@
   "config.subtle_effects.environment.biomes.sculkDustDensity.desc": "Bir biyomda ortaya çıkan sculk tozunun yoğunluğu\n0 devre dışı bırakmak için",
   "config.subtle_effects.items": "Öğeler",
   "config.subtle_effects.items.axeStripParticles": "Balta Şerit Parçacıkları",
-  "config.subtle_effects.items.axeStripParticles.desc": "Bir bloğu baltayla soyarken parçacık yok etme efektini göster.\in Bu, bakırdan oksidasyonu/balmumunu çıkarmayı etkilemez",
+  "config.subtle_effects.items.axeStripParticles.desc": "Bir bloğu baltayla soyarken parçacık yok etme efektini göster.\nBu, bakırdan oksidasyonu/balmumunu çıkarmayı etkilemez",
   "config.subtle_effects.items.axeScrapeParticlesDisplayType": "Balta Kazıma Parçacıkları Görüntüleme Türü",
   "config.subtle_effects.items.axeWaxOffParticlesDisplayType": "Balta Ağda Parçacıkları Görüntüleme Türü",
   "config.subtle_effects.items.waterEvaporateFromBucketSteam": "Kova Buharından Su Buharlaşır",

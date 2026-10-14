@@ -2,7 +2,7 @@ package einstein.subtle_effects.mixin.common.item;
 
 import com.llamalad7.mixinextras.sugar.Local;
 import einstein.subtle_effects.networking.clientbound.ClientBoundAnimalFedPayload;
-import einstein.subtle_effects.platform.Services;
+import einstein.subtle_effects.networking.PayloadSender;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -25,7 +25,7 @@ public class FoodOnAStickItemMixin {
         if (level instanceof ServerLevel serverLevel) {
             if (!heldItem.isEmpty()) {
                 ItemStack stack = heldItem.is(Items.CARROT_ON_A_STICK) ? new ItemStack(Items.CARROT) : (heldItem.is(Items.WARPED_FUNGUS_ON_A_STICK) ? new ItemStack(Items.WARPED_FUNGUS) : heldItem);
-                Services.NETWORK.sendToClientsTracking(serverLevel, entity.blockPosition(), new ClientBoundAnimalFedPayload(entity.getId(), stack));
+                PayloadSender.sendToClientsTracking(serverLevel, entity.blockPosition(), new ClientBoundAnimalFedPayload(entity.getId(), stack));
             }
         }
     }

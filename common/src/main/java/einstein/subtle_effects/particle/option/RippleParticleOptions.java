@@ -15,7 +15,7 @@ public record RippleParticleOptions(ParticleType<RippleParticleOptions> type, Re
 
     public static MapCodec<RippleParticleOptions> codec(ParticleType<RippleParticleOptions> type) {
         return RecordCodecBuilder.mapCodec(instance -> instance.group(
-                net.minecraft.resources.ResourceLocation.CODEC.fieldOf("fluid_definition").forGetter(RippleParticleOptions::fluidDefinitionId),
+                ResourceLocation.CODEC.fieldOf("fluid_definition").forGetter(RippleParticleOptions::fluidDefinitionId),
                 Codec.FLOAT.fieldOf("scale").forGetter(RippleParticleOptions::scale),
                 Codec.BOOL.fieldOf("from_splash").forGetter(RippleParticleOptions::fromSplash)
         ).apply(instance, (fluidDefinitionId, scale, fromSplash) -> new RippleParticleOptions(type, fluidDefinitionId, scale, fromSplash)));

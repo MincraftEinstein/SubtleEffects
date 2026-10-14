@@ -10,7 +10,6 @@ import einstein.subtle_effects.ticking.tickers.TickerManager;
 import einstein.subtle_effects.util.MathUtil;
 import einstein.subtle_effects.util.ParticleSpawnUtil;
 import einstein.subtle_effects.util.Util;
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvents;
@@ -80,7 +79,7 @@ public abstract class PandaMixin extends Animal {
 
                         Vec3 deltaMovement = subtleEffects$panda.getDeltaMovement();
                         double offset = (getBbWidth() + 1) * (isBaby ? 0.5 : 0.7);
-                        float rotation = yBodyRot * Mth.DEG_TO_RAD;
+                        float rotation = MathUtil.toRadians(yBodyRot);
 
                         level.addParticle(ParticleTypes.SNEEZE,
                                 getX() - offset * Mth.sin(rotation),

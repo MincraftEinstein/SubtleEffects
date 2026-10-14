@@ -4,7 +4,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import einstein.subtle_effects.data.color_providers.ColorProviderType;
-import einstein.subtle_effects.util.Util;
+import einstein.subtle_effects.util.CodecUtil;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.resources.ResourceLocation;
 
@@ -29,7 +29,7 @@ public record BurningEffects(ColorProviderType.ColorProvider colorProvider,
                     return DataResult.error(() -> "Invalid fire type provider '" + string + "' for burning effects, must be either 'prometheus' or 'dyed_flames'");
                 }, isPrometheus -> isPrometheus ? "prometheus" : "dyed_flames").fieldOf("provider").forGetter(Data::isPrometheus),
                 ColorProviderType.CODEC.fieldOf("color").forGetter(Data::colorProvider),
-                Util.SIMPLE_PARTICLE_TYPE_CODEC.optionalFieldOf("flame_particle").forGetter(Data::flameParticle)
+                CodecUtil.SIMPLE_PARTICLE_TYPE_CODEC.optionalFieldOf("flame_particle").forGetter(Data::flameParticle)
         ).apply(instance, Data::new));
     }
 }

@@ -8,7 +8,6 @@ import einstein.subtle_effects.configs.ModBlockConfigs;
 import einstein.subtle_effects.mixin.client.block.AmethystClusterBlockAccessor;
 import einstein.subtle_effects.particle.SparkParticle;
 import einstein.subtle_effects.particle.option.PositionParticleOptions;
-import einstein.subtle_effects.ticking.tickers.ChestBlockEntityTicker;
 import einstein.subtle_effects.util.BlockTickerProvider;
 import einstein.subtle_effects.util.ParticleSpawnUtil;
 import einstein.subtle_effects.util.SparkType;
@@ -31,6 +30,8 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.CampfireBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.ComparatorMode;
+import net.minecraft.world.level.block.state.properties.RailShape;
 import net.minecraft.world.level.block.state.properties.SculkSensorPhase;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.material.LavaFluid;
@@ -74,32 +75,9 @@ public class ModBlockTickers {
                     ParticleSpawnUtil.spawnParticlesAroundBlock(Util.GLOWSTONE_DUST_PARTICLES, level, pos, random, BLOCKS.glowstoneBlockDustDensity.get().getPerSideChance());
                 });
         register(Blocks.TORCHFLOWER, () -> BLOCKS.torchflowerSmoke.isEnabled() || BLOCKS.torchflowerFlames,
-                (state, level, pos, random) -> {
-                    Vec3 center = state.getShape(level, pos).bounds().getCenter();
-                    Vec3 offsetPos = new Vec3(
-                            pos.getX() + center.x(),
-                            pos.getY() + center.y() + 0.3,
-                            pos.getZ() + center.z()
-                    );
-
-                    if (BLOCKS.torchflowerSmoke.isEnabled() && random.nextInt(3) == 0) {
-                        level.addParticle(BLOCKS.torchflowerSmoke.getParticle().get(),
-                                offsetPos.x(),
-                                offsetPos.y(),
-                                offsetPos.z(),
-                                0, 0, 0
-                        );
-                    }
-
-                    if (BLOCKS.torchflowerFlames && random.nextInt(5) == 0) {
-                        level.addParticle(ParticleTypes.FLAME,
-                                offsetPos.x(),
-                                offsetPos.y(),
-                                offsetPos.z(),
-                                0, 0, 0
-                        );
-                    }
-                });
+                (state, level, pos, random) -> ParticleSpawnUtil.torchFlowerParticles(state, level, pos, random, 0.5, 0.125));
+        register(Blocks.POTTED_TORCHFLOWER, () -> BLOCKS.torchflowerSmoke.isEnabled() || BLOCKS.torchflowerFlames,
+                (state, level, pos, random) -> ParticleSpawnUtil.torchFlowerParticles(state, level, pos, random, 0.4, 0.0625));
         register(Blocks.DRAGON_EGG, () -> BLOCKS.dragonEggParticles, (state, level, pos, random) -> {
             for (int i = 0; i < 3; ++i) {
                 level.addParticle(ParticleTypes.PORTAL,
@@ -295,9 +273,9 @@ public class ModBlockTickers {
                 );
             }
         });
-        register(Blocks.DECORATED_POT, () -> BLOCKS.decoratedPotsSpawnBubbles, (state, level, pos, random) -> {
-            if (ChestBlockEntityTicker.isUnderwater(level, pos)) {
-                if (ChestBlockEntityTicker.isDownwardsBubbleColumn(level, pos)) {
+        register(state -> state.getBlock() instanceof DecoratedPotBlock, () -> BLOCKS.decoratedPotsSpawnBubbles, (state, level, pos, random) -> {
+            if (Util.isUnderwater(level, pos)) {
+                if (Util.isAboveDownwardsBubbleColumn(level, pos)) {
                     return;
                 }
 
@@ -312,6 +290,63 @@ public class ModBlockTickers {
                 }
             }
         });
+        register(Blocks.COMPARATOR, () -> BLOCKS.comparatorRedstoneDust, (state, level, pos, random) -> {
+            boolean isPowered = state.getValue(BlockStateProperties.POWERED);
+            boolean isCompare = state.getValue(BlockStateProperties.MODE_COMPARATOR) == ComparatorMode.COMPARE;
+
+            if (isPowered || !isCompare) {
+                Direction direction = state.getValue(BlockStateProperties.HORIZONTAL_FACING);
+                double x = pos.getX() + 0.5 + (random.nextDouble() - 0.5) * 0.2;
+                double y = pos.getY() + 0.4 + (random.nextDouble() - 0.5) * 0.2;
+                double z = pos.getZ() + 0.5 + (random.nextDouble() - 0.5) * 0.2;
+
+                boolean isFront = isPowered && (isCompare || random.nextBoolean());
+                int axisDirection = direction.getOpposite().getAxisDirection().getStep();
+                double forwardOffset = (isFront ? 0.1875 * nextSign(random) : 0) * axisDirection;
+                double sideOffset = (isFront ? -0.25 : 0.3125) * axisDirection;
+                boolean isZAxis = direction.getAxis() == Direction.Axis.Z;
+
+                level.addParticle(DustParticleOptions.REDSTONE,
+                        x + (isZAxis ? forwardOffset : sideOffset),
+                        y,
+                        z + (isZAxis ? sideOffset : forwardOffset),
+                        0, 0, 0
+                );
+            }
+        });
+        register(Blocks.MAGMA_BLOCK, () -> BLOCKS.magmaSmoke.isEnabled(), (state, level, pos, random) -> {
+            if (random.nextDouble() < 0.05) {
+                // noinspection ConstantConditions
+                level.addParticle(BLOCKS.magmaSmoke.getParticle().get(),
+                        pos.getX() + random.nextDouble(),
+                        pos.getY() + 1,
+                        pos.getZ() + random.nextDouble(),
+                        0, 0, 0
+                );
+            }
+        });
+        register(state -> state.getBlock() instanceof BaseRailBlock && state.hasProperty(BlockStateProperties.POWERED), () -> BLOCKS.redstoneRailDustParticles, (state, level, pos, random) -> {
+            if (state.getValue(BlockStateProperties.POWERED) && random.nextDouble() < 0.1) {
+                RailShape shape = state.getValue(((BaseRailBlock) state.getBlock()).getShapeProperty());
+                double x = random.nextDouble();
+                double z = random.nextDouble();
+                double y = 0.0625;
+                if (shape.isAscending()) {
+                    boolean isNorth = shape == RailShape.ASCENDING_NORTH;
+                    y = isNorth || shape == RailShape.ASCENDING_SOUTH ? z : x;
+                    y = isNorth || shape == RailShape.ASCENDING_WEST ? 1 - y : y;
+                }
+
+                level.addParticle(DustParticleOptions.REDSTONE,
+                        pos.getX() + x,
+                        pos.getY() + y,
+                        pos.getZ() + z,
+                        0, 0, 0
+                );
+            }
+        });
+        register(Blocks.POTTED_WITHER_ROSE, () -> BLOCKS.improvedWitherRoseParticles, (state, level, pos, random) ->
+                ParticleSpawnUtil.witherRoseParticles(state, level, pos, random, 0.1));
     }
 
     private static void register(Block block, Supplier<Boolean> isEnabled, BlockTickerProvider provider) {

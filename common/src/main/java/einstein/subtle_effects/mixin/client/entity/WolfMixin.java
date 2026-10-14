@@ -7,7 +7,6 @@ import einstein.subtle_effects.particle.DropletParticle;
 import einstein.subtle_effects.util.Util;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.animal.Wolf;
 import net.minecraft.world.level.Level;
@@ -16,8 +15,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 
-import static einstein.subtle_effects.util.MathUtil.nextDouble;
-import static einstein.subtle_effects.util.MathUtil.nextSign;
+import static einstein.subtle_effects.util.MathUtil.*;
 
 @Mixin(Wolf.class)
 public class WolfMixin {
@@ -35,7 +33,7 @@ public class WolfMixin {
 
             int xSign = nextSign(random);
             int zSign = nextSign(random);
-            float rotation = -subtleEffects$me.getPreciseBodyRotation(Util.getPartialTicks()) * Mth.DEG_TO_RAD;
+            float rotation = toRadians(-subtleEffects$me.getPreciseBodyRotation(Util.getPartialTicks()));
             boolean isSitting = subtleEffects$me.isInSittingPose();
             boolean isBaby = subtleEffects$me.isBaby();
 

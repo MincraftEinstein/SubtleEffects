@@ -148,6 +148,26 @@
       }
     ]
   },
+  "entity.allay.twinkle": {
+    "subtitle": "subtitles.subtle_effects.entity.allay.twinkle",
+    "sounds": [
+      {
+        "name": "block.amethyst_block.chime",
+        "type": "event"
+      }
+    ]
+  },
+  "entity.allay.duplicate": {
+    "subtitles": "subtitles.subtle_effects.entity.allay.duplicate",
+    "sounds": [
+      {
+        "name": "entity.zombie_villager.converted",
+        "type": "event",
+        "volume": 0.3,
+        "pitch": 2
+      }
+    ]
+  },
   "block.amethyst_cluster.chime": {
     "subtitle": "subtitles.block.amethyst_block.chime",
     "sounds": [

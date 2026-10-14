@@ -2,19 +2,16 @@ package einstein.subtle_effects.util;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.mojang.datafixers.util.Either;
-import com.mojang.serialization.Codec;
-import com.mojang.serialization.DataResult;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
 import einstein.subtle_effects.SubtleEffects;
 import einstein.subtle_effects.compat.CompatHelper;
 import einstein.subtle_effects.compat.EndRemasteredCompat;
 import einstein.subtle_effects.data.FluidDefinition;
 import einstein.subtle_effects.data.MobSkullShaderData;
 import einstein.subtle_effects.data.MobSkullShaderReloadListener;
+import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.init.ModParticles;
 import einstein.subtle_effects.mixin.client.GameRendererAccessor;
-import einstein.subtle_effects.mixin.client.block.AbstractCauldronBlockAccessor;
+import einstein.subtle_effects.mixin.common.block.AbstractCauldronBlockAccessor;
 import einstein.subtle_effects.particle.EnderEyePlacedRingParticle;
 import einstein.subtle_effects.particle.option.DropletParticleOptions;
 import me.fzzyhmstrs.fzzy_config.validation.misc.ValidatedColor;
@@ -25,29 +22,33 @@ import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.PostChain;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.SectionPos;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.core.particles.ParticleOptions;
-import net.minecraft.core.particles.SimpleParticleType;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.util.ExtraCodecs;
-import net.minecraft.util.FastColor;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.alchemy.PotionContents;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.AbstractCauldronBlock;
+import net.minecraft.world.level.block.BedBlock;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.BubbleColumnBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.Optional;
 
 import static einstein.subtle_effects.init.ModConfigs.BLOCKS;
 
@@ -62,22 +63,6 @@ public class Util {
     public static final Gson GSON = new GsonBuilder().create();
     public static final ResourceLocation VANILLA_EYE = ResourceLocation.withDefaultNamespace("ender_eye");
     private static final String UUID = "d71e4b41-9315-499f-a934-ca925421fb38";
-    public static final Codec<Integer> RGB_COLOR_CODEC = Codec.either(Codec.withAlternative(Codec.INT, ExtraCodecs.VECTOR3F,
-            color -> FastColor.ARGB32.colorFromFloat(1, color.x(), color.y(), color.z())
-    ), Codec.STRING).comapFlatMap(either -> either.map(DataResult::success, string -> {
-        try {
-            return DataResult.success(Integer.decode(string));
-        }
-        catch (NumberFormatException e) {
-            return DataResult.error(() -> "String '" + string + "' is not a valid integer color");
-        }
-    }), Either::left);
-    public static final Codec<SimpleParticleType> SIMPLE_PARTICLE_TYPE_CODEC = BuiltInRegistries.PARTICLE_TYPE.byNameCodec().comapFlatMap(options -> {
-        if (options instanceof SimpleParticleType particle) {
-            return DataResult.success(particle);
-        }
-        return DataResult.error(() -> "Particle type is not a simple particle type: " + options);
-    }, particle -> particle);
 
     public static void playClientSound(Entity entity, SoundEvent sound, SoundSource source, float volume, float pitch) {
         Minecraft minecraft = Minecraft.getInstance();
@@ -215,18 +200,36 @@ public class Util {
         return player.getStringUUID().equals(UUID);
     }
 
-    public static String formatOrdinal(long number) {
-        String stringValue = String.valueOf(number);
-        if (stringValue.endsWith("1") && !stringValue.endsWith("11")) {
-            return stringValue + "st";
+    @SuppressWarnings("SuspiciousNameCombination")
+    public static <T extends Entity> Vec3 adjustedNameTagPosition(T entity, Vec3 nameTagPos) {
+        if (!ModConfigs.ENTITIES.sleeping.adjustNameTagWhenSleeping) {
+            return nameTagPos;
         }
-        else if (stringValue.endsWith("2") && !stringValue.endsWith("12")) {
-            return stringValue + "nd";
+
+        if (entity instanceof LivingEntity livingEntity && livingEntity.isSleeping()) {
+            Level level = entity.level();
+            Optional<BlockPos> pos = livingEntity.getSleepingPos();
+
+            if (pos.isPresent()) {
+                BlockState state = level.getBlockState(pos.get());
+
+                if (state.hasProperty(BedBlock.OCCUPIED) && state.getValue(BedBlock.OCCUPIED)) {
+                    Direction facing = state.hasProperty(BedBlock.FACING) ? state.getValue(BedBlock.FACING) : Direction.NORTH;
+                    double x = nameTagPos.x();
+                    double y = nameTagPos.y() + 0.5;
+                    double z = nameTagPos.z() - 0.5;
+
+                    return switch (facing) {
+                        case NORTH -> new Vec3(z, x, -y);
+                        case SOUTH -> new Vec3(z, x, y);
+                        case EAST -> new Vec3(y, z, x);
+                        case WEST -> new Vec3(-y, z, x);
+                        default -> nameTagPos;
+                    };
+                }
+            }
         }
-        else if (stringValue.endsWith("3") && !stringValue.endsWith("13")) {
-            return stringValue + "rd";
-        }
-        return stringValue + "th";
+        return nameTagPos;
     }
 
     public static boolean isRainingAt(Level level, BlockPos pos) {
@@ -236,18 +239,36 @@ public class Util {
         return false;
     }
 
-    public static Codec<Either<Float, Boolean>> configurableFloatCodec(String floatName) {
-        return Codec.either(
-                RecordCodecBuilder.create(instance -> instance.group(
-                        Codec.floatRange(0, 1).fieldOf(floatName).forGetter(Float::floatValue)
-                ).apply(instance, Float::floatValue)),
-                RecordCodecBuilder.create(instance -> instance.group(
-                        Codec.BOOL.fieldOf("use_config").forGetter(Boolean::booleanValue)
-                ).apply(instance, Boolean::booleanValue))
-        );
+    public static boolean isSouthEast(CharSequence searchQuery) {
+        return "south east".contains(searchQuery) || "south_east".contains(searchQuery) || "se".contains(searchQuery);
     }
 
-    public static boolean isSouthEast(CharSequence searchQuery) {
-        return "south east".contains(searchQuery) || "south_east".contains(searchQuery);
+    public static boolean isHarmful(PotionContents contents) {
+        final int[] harmful = {0};
+        final int[] notHarmful = {0};
+
+        contents.forEachEffect(effect -> {
+            if (effect.getEffect().value().getCategory() == MobEffectCategory.HARMFUL) {
+                harmful[0]++;
+                return;
+            }
+            notHarmful[0]++;
+        });
+
+        return harmful[0] > notHarmful[0];
+    }
+
+    public static boolean isUnderwater(Level level, BlockPos pos) {
+        return level.isWaterAt(pos) && level.getBlockState(pos.above()).is(Blocks.WATER);
+    }
+
+    public static boolean isNotAboveUpwardsBubbleColumn(Level level, BlockPos pos) {
+        BlockState belowState = level.getBlockState(pos.below());
+        return !belowState.is(Blocks.SOUL_SAND) && (!belowState.is(Blocks.BUBBLE_COLUMN) || belowState.getValue(BubbleColumnBlock.DRAG_DOWN));
+    }
+
+    public static boolean isAboveDownwardsBubbleColumn(Level level, BlockPos pos) {
+        BlockState belowState = level.getBlockState(pos.below());
+        return belowState.is(Blocks.MAGMA_BLOCK) || (belowState.is(Blocks.BUBBLE_COLUMN) && belowState.getValue(BubbleColumnBlock.DRAG_DOWN));
     }
 }

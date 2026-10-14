@@ -1,24 +1,18 @@
 package einstein.subtle_effects.mixin.client.entity;
 
-import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import einstein.subtle_effects.data.FluidDefinition;
 import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.init.ModParticles;
-import einstein.subtle_effects.ticking.tickers.entity.EntityTicker;
-import einstein.subtle_effects.util.EntityTickerAccessor;
 import einstein.subtle_effects.util.FluidLogicAccessor;
 import einstein.subtle_effects.util.ParticleSpawnUtil;
 import einstein.subtle_effects.util.Util;
-import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
-import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.animal.SnowGolem;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SoundType;
@@ -41,13 +35,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import static einstein.subtle_effects.util.MathUtil.nextDouble;
 
 @Mixin(Entity.class)
-public abstract class ClientEntityMixin implements EntityTickerAccessor, FluidLogicAccessor {
+public abstract class ClientEntityMixin implements FluidLogicAccessor {
 
     @Unique
     private final Entity subtleEffects$me = (Entity) (Object) this;
-
-    @Unique
-    private final Int2ObjectMap<EntityTicker<?>> subtleEffects$tickers = new Int2ObjectOpenHashMap<>();
 
     @Unique
     private double subtleEffects$nextCobwebSound = 0.5;
@@ -130,7 +121,7 @@ public abstract class ClientEntityMixin implements EntityTickerAccessor, FluidLo
 
     @Inject(method = "updateInWaterStateAndDoFluidPushing", at = @At("TAIL"))
     private void preformSplash(CallbackInfoReturnable<Boolean> cir) {
-        subtleEffects$lastTouchedFluid = ParticleSpawnUtil.preformSplash(false, false, subtleEffects$me, firstTick, Consumers.nop());
+        subtleEffects$lastTouchedFluid = ParticleSpawnUtil.preformSplash(false, false, subtleEffects$me, firstTick, Consumers.nop(), subtleEffects$me.getDeltaMovement().y(), subtleEffects$me.getY(), subtleEffects$me.blockPosition());
     }
 
     @WrapOperation(method = "updateInWaterStateAndDoWaterCurrentPushing", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;updateFluidHeightAndDoFluidPushing(Lnet/minecraft/tags/TagKey;D)Z"))
@@ -140,9 +131,9 @@ public abstract class ClientEntityMixin implements EntityTickerAccessor, FluidLo
         if (result) {
             subtleEffects$lastTouchedFluid = ParticleSpawnUtil.preformSplash(true, false, subtleEffects$me, firstTick, isWater -> {
                 if (isWater) {
-                    subtleEffects$cancelWaterSplash = true;
+                    subtleEffects$cancelNextWaterSplash();
                 }
-            });
+            }, subtleEffects$me.getDeltaMovement().y(), subtleEffects$me.getY(), subtleEffects$me.blockPosition());
         }
 
         return result;
@@ -170,10 +161,5 @@ public abstract class ClientEntityMixin implements EntityTickerAccessor, FluidLo
     @Override
     public void subtleEffects$cancelNextWaterSplash() {
         subtleEffects$cancelWaterSplash = true;
-    }
-
-    @Override
-    public Int2ObjectMap<EntityTicker<?>> subtleEffects$getTickers() {
-        return subtleEffects$tickers;
     }
 }

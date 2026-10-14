@@ -1,7 +1,7 @@
 package einstein.subtle_effects.mixin.common;
 
 import einstein.subtle_effects.networking.clientbound.ClientBoundStonecutterUsedPayload;
-import einstein.subtle_effects.platform.Services;
+import einstein.subtle_effects.networking.PayloadSender;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.player.Player;
@@ -37,7 +37,7 @@ public class FabricStonecutterMenu$2Mixin {
     @Inject(method = "method_17868", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/Level;playSound(Lnet/minecraft/world/entity/player/Player;Lnet/minecraft/core/BlockPos;Lnet/minecraft/sounds/SoundEvent;Lnet/minecraft/sounds/SoundSource;FF)V"))
     private void spawnParticles(Level level, BlockPos pos, CallbackInfo ci) {
         if (subtleEffects$inputStack != null && !subtleEffects$inputStack.isEmpty()) {
-            Services.NETWORK.sendToClientsTracking((ServerLevel) level, pos, new ClientBoundStonecutterUsedPayload(pos, subtleEffects$inputStack));
+            PayloadSender.sendToClientsTracking((ServerLevel) level, pos, new ClientBoundStonecutterUsedPayload(pos, subtleEffects$inputStack));
             subtleEffects$inputStack = null;
         }
     }

@@ -4,7 +4,7 @@ import com.anthonyhilyard.iceberg.util.Selectors;
 import com.anthonyhilyard.itemborders.compat.LegendaryTooltipsHandler;
 import com.anthonyhilyard.itemborders.config.ItemBordersConfig;
 import com.mojang.datafixers.util.Pair;
-import einstein.subtle_effects.mixin.client.ItemBordersConfigAccessor;
+import einstein.subtle_effects.mixin.client.compat.ItemBordersConfigAccessor;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;

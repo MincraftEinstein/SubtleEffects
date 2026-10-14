@@ -16,4 +16,7 @@ public interface EntityAccessor {
 
     @Accessor("wasTouchingWater")
     void subtleEffects$setTouchingWater(boolean touchingWater);
+
+    @Accessor("firstTick")
+    boolean subtleEffects$isFirstTick();
 }

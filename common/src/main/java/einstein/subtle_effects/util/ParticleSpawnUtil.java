@@ -2,25 +2,24 @@ package einstein.subtle_effects.util;
 
 import einstein.subtle_effects.configs.ModBlockConfigs;
 import einstein.subtle_effects.data.FluidDefinition;
+import einstein.subtle_effects.data.color_providers.ConstantColorProvider;
 import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.init.ModParticles;
 import einstein.subtle_effects.mixin.client.item.BucketItemAccessor;
+import einstein.subtle_effects.networking.PayloadSender;
 import einstein.subtle_effects.networking.clientbound.ClientBoundEntityFellPayload;
 import einstein.subtle_effects.particle.EnderEyePlacedRingParticle;
 import einstein.subtle_effects.particle.SparkParticle;
 import einstein.subtle_effects.particle.emitter.SplashEmitter;
-import einstein.subtle_effects.particle.option.ColorAndIntegerParticleOptions;
-import einstein.subtle_effects.particle.option.DirectionParticleOptions;
-import einstein.subtle_effects.particle.option.SheepFluffParticleOptions;
-import einstein.subtle_effects.platform.Services;
+import einstein.subtle_effects.particle.option.*;
 import einstein.subtle_effects.ticking.tickers.TickerManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.component.DataComponents;
-import net.minecraft.core.particles.ColorParticleOption;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
@@ -35,18 +34,23 @@ import net.minecraft.world.entity.animal.Sheep;
 import net.minecraft.world.entity.animal.camel.Camel;
 import net.minecraft.world.entity.animal.horse.AbstractHorse;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.PotionContents;
+import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.AttachFace;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
@@ -57,11 +61,33 @@ import java.util.function.Supplier;
 
 import static einstein.subtle_effects.init.ModConfigs.*;
 import static einstein.subtle_effects.util.MathUtil.*;
-import static net.minecraft.util.Mth.DEG_TO_RAD;
 import static net.minecraft.util.Mth.nextFloat;
 import static net.minecraft.world.level.block.state.properties.BlockStateProperties.DOUBLE_BLOCK_HALF;
 
 public class ParticleSpawnUtil {
+
+    public static void sendParticles(Level level, ParticleOptions type, double x, double y, double z, int count, double xDist, double yDist, double zDist, double speed) {
+        sendParticles(level, type, false, x, y, z, count, xDist, yDist, zDist, speed);
+    }
+
+    public static void sendParticles(Level level, ParticleOptions type, boolean overrideLimiter, double x, double y, double z, int count, double xDist, double yDist, double zDist, double speed) {
+        RandomSource random = level.getRandom();
+        if (count == 0) {
+            level.addParticle(type, overrideLimiter, x, y, z, speed * xDist, speed * yDist, speed * zDist);
+            return;
+        }
+
+        for (int i = 0; i < count; ++i) {
+            level.addParticle(type, overrideLimiter,
+                    x + random.nextGaussian() * xDist,
+                    y + random.nextGaussian() * yDist,
+                    z + random.nextGaussian() * zDist,
+                    random.nextGaussian() * speed,
+                    random.nextGaussian() * speed,
+                    random.nextGaussian() * speed
+            );
+        }
+    }
 
     public static void spawnParticlesAroundBlock(ParticleOptions particle, Level level, BlockPos pos, RandomSource random, int perSideChance) {
         spawnParticlesAroundBlock(particle, level, pos, random, 0.0625F, perSideChance > 0 ? direction -> random.nextInt(perSideChance) != 0 : null);
@@ -95,7 +121,7 @@ public class ParticleSpawnUtil {
             spawnEntityFellParticles(entity, entity.getY(), distance, fallDamage, ENTITIES.dustClouds.playerFell);
         }
         else if (level instanceof ServerLevel serverLevel) {
-            Services.NETWORK.sendToClientsTracking(
+            PayloadSender.sendToClientsTracking(
                     entity instanceof ServerPlayer player ? player : null,
                     serverLevel, entity.blockPosition(),
                     new ClientBoundEntityFellPayload(entity.getId(), entity.getY(), distance, fallDamage, config)
@@ -251,8 +277,8 @@ public class ParticleSpawnUtil {
     }
 
     public static void spawnEntityFaceParticle(ParticleOptions options, LivingEntity entity, Level level, RandomSource random, Vec3 offset, Vec3 speed, float partialTick) {
-        speed = speed.xRot(-entity.getViewXRot(partialTick) * DEG_TO_RAD);
-        speed = speed.yRot(-entity.getViewYRot(partialTick) * DEG_TO_RAD);
+        speed = speed.xRot(toRadians(-entity.getViewXRot(partialTick)));
+        speed = speed.yRot(toRadians(-entity.getViewYRot(partialTick)));
         spawnEntityFaceParticle(options, entity, level, offset, speed, partialTick);
     }
 
@@ -261,22 +287,22 @@ public class ParticleSpawnUtil {
     }
 
     public static void spawnEntityHeadParticle(ParticleOptions options, LivingEntity entity, Level level, Vec3 pos, Vec3 speed, float partialTick) {
-        pos = pos.xRot(-entity.getViewXRot(partialTick) * DEG_TO_RAD);
-        pos = pos.yRot(-entity.getViewYRot(partialTick) * DEG_TO_RAD);
+        pos = pos.xRot(toRadians(-entity.getViewXRot(partialTick)));
+        pos = pos.yRot(toRadians(-entity.getViewYRot(partialTick)));
         pos = pos.add(entity.getX(), entity.getEyeY(), entity.getZ());
         level.addParticle(options, pos.x(), pos.y(), pos.z(), speed.x(), speed.y(), speed.z());
     }
 
     public static void spawnEnderEyePlacementParticles(BlockPos pos, RandomSource random, Level level, int color) {
         if (BLOCKS.enderEyePlacedRings.get()) {
-            level.addParticle(ColorParticleOption.create(ModParticles.ENDER_EYE_PLACED_RING.get(), color),
+            level.addParticle(new ColorProviderParticleOptions(ModParticles.ENDER_EYE_PLACED_RING.get(), color),
                     pos.getX() + 0.5, pos.getY() + 0.8125 + EnderEyePlacedRingParticle.SIZE, pos.getZ() + 0.5,
                     0, 0, 0
             );
         }
 
         if (BLOCKS.enderEyePlacedParticlesDisplayType.get() != ModBlockConfigs.EnderEyePlacedParticlesDisplayType.VANILLA) {
-            spawnEndPortalParticles(level, pos, random, ColorParticleOption.create(ModParticles.SHORT_SPARK.get(), color), 16);
+            spawnEndPortalParticles(level, pos, random, new ColorProviderParticleOptions(ModParticles.SHORT_SPARK.get(), color), 16);
         }
     }
 
@@ -470,26 +496,37 @@ public class ParticleSpawnUtil {
         }
     }
 
-    public static FluidDefinition preformSplash(boolean waterOnly, boolean allFluids, Entity entity, boolean firstTick, Consumer<Boolean> successConsumer) {
+    public static FluidDefinition preformSplash(boolean waterOnly, boolean allFluids, Entity entity, boolean firstTick, Consumer<Boolean> successConsumer, double yVelocity, double entityY, BlockPos pos) {
         Level level = entity.level();
-        if (!level.isClientSide) {
+        if (!level.isClientSide || firstTick) {
             return null;
         }
 
-        FluidState fluidState = level.getFluidState(entity.blockPosition());
-        FluidDefinition fluidDefinition = ((FluidDefinitionAccessor) fluidState.getType()).subtleEffects$getFluidDefinition();
+        FluidState fluidState = level.getFluidState(pos);
+        if (fluidState.isEmpty()) {
+            return null;
+        }
 
+        FluidDefinition fluidDefinition = ((FluidDefinitionAccessor) fluidState.getType()).subtleEffects$getFluidDefinition();
         if (fluidDefinition != null) {
+            if (ENTITIES.splashes.ignoreWaterloggedBlocks.get()) {
+                BlockState state = level.getBlockState(pos);
+                if (state.hasProperty(BlockStateProperties.WATERLOGGED) && state.getValue(BlockStateProperties.WATERLOGGED)) {
+                    return null;
+                }
+            }
+
             FluidLogicAccessor accessor = (FluidLogicAccessor) entity;
             double fluidDefinitionHeight = accessor.subtleEffects$getFluidDefinitionHeight().getDouble(fluidDefinition);
 
-            if (fluidDefinitionHeight > 0) {
+            BlockPos abovePos = pos.above();
+            if (fluidDefinitionHeight > 0 && level.getBlockState(abovePos).isAir() && level.getFluidState(abovePos).isEmpty()) {
                 boolean isWater = fluidDefinition.is(FluidTags.WATER);
 
                 if (waterOnly == isWater || allFluids) {
-                    if (!fluidDefinition.is(accessor.subtleEffects$getLastTouchedFluid()) && !firstTick) {
+                    if (!fluidDefinition.is(accessor.subtleEffects$getLastTouchedFluid())) {
                         fluidDefinition.splashType().ifPresent(splashType -> {
-                            if (spawnSplashEffects(entity, level, fluidDefinition.id(), entity.getY() + fluidDefinitionHeight, entity.getDeltaMovement().y())) {
+                            if (spawnSplashEffects(entity, level, fluidDefinition.id(), entityY + fluidDefinitionHeight, yVelocity)) {
                                 successConsumer.accept(isWater);
                             }
                         });
@@ -509,6 +546,10 @@ public class ParticleSpawnUtil {
         }
 
         if (ENTITIES.splashes.entityBlocklist.get().contains(entity.getType())) {
+            return false;
+        }
+
+        if (entity.isSpectator()) {
             return false;
         }
 
@@ -576,8 +617,8 @@ public class ParticleSpawnUtil {
 
             // noinspection all
             if (contents.hasEffects()) {
-                int color = contents.getColor();
-                level.addParticle(new ColorAndIntegerParticleOptions(ModParticles.POTION_EMITTER.get(), color, entity.getId()),
+                level.addParticle(new PotionRingParticleOptions(ModParticles.POTION_EMITTER.get(),
+                                new ConstantColorProvider(contents.getColor()), Util.isHarmful(contents), entity.getId()),
                         entity.getX(),
                         entity.getY(),
                         entity.getZ(),
@@ -601,5 +642,82 @@ public class ParticleSpawnUtil {
                     nextNonAbsDouble(random)
             );
         }
+    }
+
+    public static void spawnProjectileSplat(Projectile projectile, Level level, RandomSource random, ParticleType<ProjectileSplatParticleOptions> particle) {
+        Vec3 delta = projectile.getDeltaMovement();
+        Vec3 position = projectile.position();
+        BlockHitResult result = level.clip(new ClipContext(position,
+                position.add(delta),
+                ClipContext.Block.COLLIDER,
+                ClipContext.Fluid.NONE,
+                projectile
+        ));
+
+        if (result.getType() != HitResult.Type.MISS) {
+            Direction direction = result.getDirection();
+            BlockPos pos = result.getBlockPos();
+            BlockState state = level.getBlockState(pos);
+            Vec3 location = result.getLocation();
+
+            if (!state.getCollisionShape(level, pos).isEmpty()) {
+                Direction opposite = direction.getOpposite();
+                Direction.Axis axis = opposite.getAxis();
+                double offset = direction.getAxisDirection().getStep() * Mth.nextDouble(random, 0.001, 0.002);
+
+                level.addParticle(new ProjectileSplatParticleOptions(particle, opposite, pos),
+                        axis == Direction.Axis.X ? location.x() + offset : location.x(),
+                        axis == Direction.Axis.Y ? location.y() + offset : location.y(),
+                        axis == Direction.Axis.Z ? location.z() + offset : location.z(),
+                        0, 0, 0
+                );
+            }
+        }
+    }
+
+    public static void torchFlowerParticles(BlockState state, Level level, BlockPos pos, RandomSource random, double yOffset, double xzOffset) {
+        Vec3 offsetPos = getFlowerPos(state, level, pos, random, 0.2, yOffset, xzOffset);
+
+        if (BLOCKS.torchflowerSmoke.isEnabled() && random.nextInt(3) == 0) {
+            // noinspection all
+            level.addParticle(BLOCKS.torchflowerSmoke.getParticle().get(),
+                    offsetPos.x(),
+                    offsetPos.y(),
+                    offsetPos.z(),
+                    0, 0, 0
+            );
+        }
+
+        if (BLOCKS.torchflowerFlames && random.nextInt(5) == 0) {
+            level.addParticle(ParticleTypes.FLAME,
+                    offsetPos.x(),
+                    offsetPos.y(),
+                    offsetPos.z(),
+                    0, 0, 0
+            );
+        }
+    }
+
+    public static void witherRoseParticles(BlockState state, Level level, BlockPos pos, RandomSource random, double yOffsetMin) {
+        Vec3 offsetPos = getFlowerPos(state, level, pos, random, yOffsetMin, 0.2, 0.125);
+
+        for (int i = 0; i < 3; i++) {
+            if (random.nextBoolean()) {
+                level.addParticle(ParticleTypes.SMOKE,
+                        offsetPos.x(),
+                        offsetPos.y(),
+                        offsetPos.z(),
+                        0, 0, 0
+                );
+            }
+        }
+    }
+
+    public static Vec3 getFlowerPos(BlockState state, Level level, BlockPos pos, RandomSource random, double yOffsetMin, double yOffset, double xzOffset) {
+        return pos.getCenter().add(state.getOffset(level, pos)).add(
+                nextNonAbsDouble(random, xzOffset),
+                Mth.nextDouble(random, yOffsetMin, yOffset),
+                nextNonAbsDouble(random, xzOffset)
+        );
     }
 }

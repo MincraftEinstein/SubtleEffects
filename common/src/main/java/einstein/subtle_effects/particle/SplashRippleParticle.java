@@ -12,7 +12,6 @@ import net.minecraft.client.particle.ParticleRenderType;
 import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.core.BlockPos;
-import net.minecraft.util.Mth;
 import org.joml.Vector3f;
 
 public class SplashRippleParticle extends FlatPlaneParticle {
@@ -31,9 +30,9 @@ public class SplashRippleParticle extends FlatPlaneParticle {
         sprites = rippleOptions.holder().get();
         lightLevel = fluidDefinition.lightEmission();
         pos = BlockPos.containing(x, y, z).mutable();
-        rotation = rotation.rotateX(90 * Mth.DEG_TO_RAD);
+        horizontal();
         lifetime = 15;
-        alpha = SplashParticle.alpha(rippleOptions);
+        alpha = rippleOptions.getAlpha();
         Vector3f color = rippleOptions.getColorAndApplyTint(level, pos, random);
         rCol = color.x;
         gCol = color.y;

@@ -22,6 +22,7 @@ neoForge {
     runs {
         configureEach {
             systemProperty('neoforge.enabledGameTestNamespaces', mod_id)
+            systemProperty("terminal.ansi", "true")
             ideName = "NeoForge ${it.name.capitalize()} (${project.path})" // Unify the run config names with fabric
 
             def dir = project.getLayout().getProjectDirectory().dir('runs/' + it.name)
@@ -64,4 +65,6 @@ dependencies {
     compileOnly("maven.modrinth:dyed-flames:${neoforge_dyed_flames_version}")
     compileOnly("fuzs.neoforgedatapackextensions:neoforgedatapackextensions-neoforge:${neoforgedatapackextensions_version}")
     compileOnly("fuzs.puzzleslib:puzzleslib-neoforge:${puzzleslib_version}")
+    compileOnly("maven.modrinth:lootr:${neoforge_lootr_version}")
+    compileOnly("maven.modrinth:simple-voice-chat:${neoforge_simple_vc_version}")
 }

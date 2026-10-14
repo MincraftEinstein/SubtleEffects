@@ -23,6 +23,7 @@ public class ProjectileConfigs extends ConfigSection {
     public ConfigGroup snowballGroup = new ConfigGroup("snowball");
     public ValidatedDouble snowballTrailDensity = new ValidatedDouble(0.5, 1, 0);
     public boolean snowballPoofsHaveSnowflakes = true;
-    @ConfigGroup.Pop
     public ValidatedFloat snowballPoofSoundVolume = new ValidatedFloat(0.3F, 1, 0);
+    @ConfigGroup.Pop
+    public boolean snowballSplatParticles = true;
 }

@@ -1,7 +1,7 @@
 package einstein.subtle_effects.networking.clientbound;
 
 import einstein.subtle_effects.SubtleEffects;
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
@@ -10,7 +10,7 @@ public record ClientBoundEntityFellPayload(int entityId, double y, float distanc
                                            int fallDamage, TypeConfig config) implements CustomPacketPayload {
 
     public static final Type<ClientBoundEntityFellPayload> TYPE = new Type<>(SubtleEffects.loc("entity_fell"));
-    public static final StreamCodec<FriendlyByteBuf, ClientBoundEntityFellPayload> STREAM_CODEC = StreamCodec.composite(
+    public static final StreamCodec<RegistryFriendlyByteBuf, ClientBoundEntityFellPayload> STREAM_CODEC = StreamCodec.composite(
             ByteBufCodecs.INT, ClientBoundEntityFellPayload::entityId,
             ByteBufCodecs.DOUBLE, ClientBoundEntityFellPayload::y,
             ByteBufCodecs.FLOAT, ClientBoundEntityFellPayload::distance,
@@ -30,8 +30,8 @@ public record ClientBoundEntityFellPayload(int entityId, double y, float distanc
         MACE,
         ELYTRA;
 
-        public static final StreamCodec<FriendlyByteBuf, TypeConfig> STREAM_CODEC = StreamCodec.of(
-                FriendlyByteBuf::writeEnum,
+        public static final StreamCodec<RegistryFriendlyByteBuf, TypeConfig> STREAM_CODEC = StreamCodec.of(
+                RegistryFriendlyByteBuf::writeEnum,
                 buf -> buf.readEnum(TypeConfig.class)
         );
     }

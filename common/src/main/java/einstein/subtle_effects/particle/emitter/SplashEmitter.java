@@ -53,8 +53,8 @@ public class SplashEmitter extends NoRenderParticle {
         widthModifier = options.widthModifier();
         heightModifier = options.heightModifier();
         float baseScale = widthModifier + 0.5F;
-        baseHorizontalScale = Math.max(absVelocity * baseScale * 1.5F, baseScale);
-        baseVerticalScale = Math.min(absVelocity * heightModifier * widthModifier * 2, heightModifier * 2);
+        baseHorizontalScale = Mth.clamp(absVelocity * baseScale * 1.5F, baseScale, widthModifier * 2.5F);
+        baseVerticalScale = Math.min(absVelocity * heightModifier * widthModifier, heightModifier) * ENTITIES.splashes.splashHeightScaleModifier.get();
 
         int id = options.entityId();
         if (id > -1) {
@@ -168,7 +168,7 @@ public class SplashEmitter extends NoRenderParticle {
     private boolean hasRipple() {
         if (ENTITIES.splashes.splashRipples.get()) {
             if (firstSplash || (secondSplash && ENTITIES.splashes.secondarySplashRipples.get())) {
-                return SplashParticle.alpha(type.splashRippleOptions()) > 0;
+                return type.splashRippleOptions().getAlpha() > 0;
             }
         }
 

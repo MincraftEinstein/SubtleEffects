@@ -2,7 +2,6 @@ package einstein.subtle_effects.ticking.tickers;
 
 import einstein.subtle_effects.util.ChestAccessor;
 import einstein.subtle_effects.util.MathUtil;
-import einstein.subtle_effects.util.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -15,11 +14,11 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.AbstractChestBlock;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.BubbleColumnBlock;
 import net.minecraft.world.level.block.ChestBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.minecraft.world.level.block.entity.ChestLidController;
+import net.minecraft.world.level.block.entity.EnderChestBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.ChestType;
 
@@ -27,6 +26,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static einstein.subtle_effects.init.ModConfigs.BLOCKS;
+import static einstein.subtle_effects.util.Util.*;
 import static net.minecraft.world.level.block.ChestBlock.TYPE;
 
 public class ChestBlockEntityTicker extends BlockPosTicker {
@@ -43,8 +43,12 @@ public class ChestBlockEntityTicker extends BlockPosTicker {
         this.lidController = lidController;
     }
 
-    public static void trySpawn(Level level, BlockPos pos) {
+    public static void trySpawn(Level level, BlockPos pos, BlockState state) {
         if (BLOCKS.chestsOpenRandomlyUnderwaterFrequency.get() <= 0 && !BLOCKS.openingChestsSpawnsBubbles) {
+            return;
+        }
+
+        if (state.hasProperty(TYPE) && state.getValue(TYPE) == ChestType.LEFT) {
             return;
         }
 
@@ -75,7 +79,7 @@ public class ChestBlockEntityTicker extends BlockPosTicker {
         }
 
         BlockEntity blockEntity = level.getBlockEntity(pos);
-        if (!(blockEntity instanceof ChestBlockEntity)) {
+        if (!(blockEntity instanceof ChestBlockEntity) && !(blockEntity instanceof EnderChestBlockEntity)) {
             return;
         }
 
@@ -95,7 +99,7 @@ public class ChestBlockEntityTicker extends BlockPosTicker {
         }
 
         if (BLOCKS.randomChestOpeningNeedsSoulSand.get()) {
-            if (isNotUpwardsBubbleColumn(level, pos) || (isDoubleChest && isNotUpwardsBubbleColumn(level, oppositePos))) {
+            if (isNotAboveUpwardsBubbleColumn(level, pos) || (isDoubleChest && isNotAboveUpwardsBubbleColumn(level, oppositePos))) {
                 return;
             }
         }
@@ -105,7 +109,7 @@ public class ChestBlockEntityTicker extends BlockPosTicker {
         }
 
         RandomSource random = level.getRandom();
-        float openness = lidController.getOpenness(Util.getPartialTicks());
+        float openness = lidController.getOpenness(getPartialTicks());
         if (openness > 0 && BLOCKS.openingChestsSpawnsBubbles) {
             boolean isClosing = openness <= 0.5 && openness < oldOpenness;
             if (isClosing || random.nextInt(isDoubleChest ? 2 : 4) == 0) {
@@ -145,7 +149,7 @@ public class ChestBlockEntityTicker extends BlockPosTicker {
         }
         oldOpenness = openness;
 
-        if (isDownwardsBubbleColumn(level, pos) || (isDoubleChest && isDownwardsBubbleColumn(level, oppositePos))) {
+        if (isAboveDownwardsBubbleColumn(level, pos) || (isDoubleChest && isAboveDownwardsBubbleColumn(level, oppositePos))) {
             return;
         }
 
@@ -157,9 +161,7 @@ public class ChestBlockEntityTicker extends BlockPosTicker {
 
         boolean isEnderChest = state.is(Blocks.ENDER_CHEST);
         if ((firstOpeningTick && random.nextInt(openFrequency) == 0) || (openFrequency > 0 && openness == 0)) {
-            // Triggering the block entity event rather than calling the lid controller,
-            // because otherwise Lithium will prevent the animation from playing
-            blockEntity.triggerEvent(1, 1);
+            triggerAnimation(blockEntity, 1, isDoubleChest, oppositePos);
             playSound(connectedDirection, type, isEnderChest ? SoundEvents.ENDER_CHEST_OPEN : SoundEvents.CHEST_OPEN);
             animationTicks = Mth.nextInt(random, 50, 200);
             firstOpeningTick = false;
@@ -170,31 +172,28 @@ public class ChestBlockEntityTicker extends BlockPosTicker {
             animationTicks--;
 
             if (animationTicks <= 0) {
-                blockEntity.triggerEvent(1, 0);
+                triggerAnimation(blockEntity, 0, isDoubleChest, oppositePos);
                 playSound(connectedDirection, type, isEnderChest ? SoundEvents.ENDER_CHEST_CLOSE : SoundEvents.CHEST_CLOSE);
                 ticksSinceLastAnimation = 0;
             }
         }
     }
 
-    public static boolean isNotUpwardsBubbleColumn(Level level, BlockPos pos) {
-        BlockState belowState = level.getBlockState(pos.below());
-        return !belowState.is(Blocks.SOUL_SAND) && (!belowState.is(Blocks.BUBBLE_COLUMN) || belowState.getValue(BubbleColumnBlock.DRAG_DOWN));
-    }
-
-    public static boolean isDownwardsBubbleColumn(Level level, BlockPos pos) {
-        BlockState belowState = level.getBlockState(pos.below());
-        return belowState.is(Blocks.MAGMA_BLOCK) || (belowState.is(Blocks.BUBBLE_COLUMN) && belowState.getValue(BubbleColumnBlock.DRAG_DOWN));
+    // Triggering the block entity event rather than calling the lid controller,
+    // because otherwise Lithium will prevent the animation from playing
+    private void triggerAnimation(BlockEntity blockEntity, int type, boolean isDoubleChest, BlockPos oppositePos) {
+        blockEntity.triggerEvent(1, type);
+        if (isDoubleChest) {
+            if (level.getBlockEntity(oppositePos) instanceof ChestBlockEntity oppositeBlockEntity) {
+                oppositeBlockEntity.triggerEvent(1, type);
+            }
+        }
     }
 
     @Override
     public void remove() {
         super.remove();
         CHEST_TICKERS.remove(pos);
-    }
-
-    public static boolean isUnderwater(Level level, BlockPos pos) {
-        return level.isWaterAt(pos) && level.getBlockState(pos.above()).is(Blocks.WATER);
     }
 
     private void playSound(Direction direction, ChestType type, SoundEvent sound) {
@@ -208,7 +207,7 @@ public class ChestBlockEntityTicker extends BlockPosTicker {
         }
 
         level.playSound(Minecraft.getInstance().player,
-                x, y, z, sound, SoundSource.BLOCKS, 0.5F,
+                x, y, z, sound, SoundSource.BLOCKS, BLOCKS.randomChestOpeningSoundVolume.get(),
                 level.getRandom().nextFloat() * 0.1F + 0.9F
         );
     }

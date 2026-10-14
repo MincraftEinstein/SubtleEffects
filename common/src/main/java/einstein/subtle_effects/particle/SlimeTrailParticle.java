@@ -12,16 +12,13 @@ import net.minecraft.util.Mth;
 
 public class SlimeTrailParticle extends FlatPlaneParticle {
 
-    private final BlockPos pos;
-
     protected SlimeTrailParticle(ClientLevel level, SpriteSet sprites, double x, double y, double z, float scale) {
         super(level, x, y, z);
         pickSprite(sprites);
         quadSize = 0.5F * scale;
         setSize(quadSize + 1, 0.1F);
         lifetime = (int) Math.min(300 + (200 * scale), 1200);
-        rotation.rotateY(90 * random.nextInt(3) * Mth.DEG_TO_RAD).rotateX(-90 * Mth.DEG_TO_RAD);
-        pos = new BlockPos.MutableBlockPos(x, y, z);
+        horizontalRandomized();
         renderBackFace = true;
     }
 
@@ -32,7 +29,8 @@ public class SlimeTrailParticle extends FlatPlaneParticle {
 
     @Override
     public void tick() {
-        if (!level.getBlockState(pos).isAir() || level.getBlockState(pos.below()).isAir()) {
+        BlockPos pos = BlockPos.containing(x, y, z);
+        if (level.getBlockState(pos.below()).isAir() || level.getBlockState(pos).isCollisionShapeFullBlock(level, pos)) {
             remove();
             return;
         }
