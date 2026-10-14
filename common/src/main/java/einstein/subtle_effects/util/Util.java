@@ -2,8 +2,6 @@ package einstein.subtle_effects.util;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
-import com.mojang.blaze3d.vertex.PoseStack;
 import einstein.subtle_effects.SubtleEffects;
 import einstein.subtle_effects.compat.CompatHelper;
 import einstein.subtle_effects.compat.EndRemasteredCompat;
@@ -202,6 +200,38 @@ public class Util {
         return player.getStringUUID().equals(UUID);
     }
 
+    @SuppressWarnings("SuspiciousNameCombination")
+    public static <T extends Entity> Vec3 adjustedNameTagPosition(T entity, Vec3 nameTagPos) {
+        if (!ModConfigs.ENTITIES.sleeping.adjustNameTagWhenSleeping) {
+            return nameTagPos;
+        }
+
+        if (entity instanceof LivingEntity livingEntity && livingEntity.isSleeping()) {
+            Level level = entity.level();
+            Optional<BlockPos> pos = livingEntity.getSleepingPos();
+
+            if (pos.isPresent()) {
+                BlockState state = level.getBlockState(pos.get());
+
+                if (state.hasProperty(BedBlock.OCCUPIED) && state.getValue(BedBlock.OCCUPIED)) {
+                    Direction facing = state.hasProperty(BedBlock.FACING) ? state.getValue(BedBlock.FACING) : Direction.NORTH;
+                    double x = nameTagPos.x();
+                    double y = nameTagPos.y() + 0.5;
+                    double z = nameTagPos.z() - 0.5;
+
+                    return switch (facing) {
+                        case NORTH -> new Vec3(z, x, -y);
+                        case SOUTH -> new Vec3(z, x, y);
+                        case EAST -> new Vec3(y, z, x);
+                        case WEST -> new Vec3(-y, z, x);
+                        default -> nameTagPos;
+                    };
+                }
+            }
+        }
+        return nameTagPos;
+    }
+
     public static String formatOrdinal(long number) {
         String stringValue = String.valueOf(number);
         if (stringValue.endsWith("1") && !stringValue.endsWith("11")) {
@@ -254,36 +284,5 @@ public class Util {
     public static boolean isAboveDownwardsBubbleColumn(Level level, BlockPos pos) {
         BlockState belowState = level.getBlockState(pos.below());
         return belowState.is(Blocks.MAGMA_BLOCK) || (belowState.is(Blocks.BUBBLE_COLUMN) && belowState.getValue(BubbleColumnBlock.DRAG_DOWN));
-    }
-
-    @SuppressWarnings("SuspiciousNameCombination")
-    public static <T extends Entity> void getAdjustedNameTagPosition(PoseStack poseStack, double x, double y, double z, Operation<Void> original, T entity) {
-        if (!ModConfigs.ENTITIES.sleeping.adjustNameTagWhenSleeping) {
-            original.call(poseStack, x, y, z);
-            return;
-        }
-
-        if (entity instanceof LivingEntity livingEntity && livingEntity.isSleeping()) {
-            Level level = entity.level();
-            Optional<BlockPos> pos = livingEntity.getSleepingPos();
-
-            if (pos.isPresent()) {
-                BlockState state = level.getBlockState(pos.get());
-
-                if (state.hasProperty(BedBlock.OCCUPIED) && state.getValue(BedBlock.OCCUPIED)) {
-                    Direction facing = state.getValue(BedBlock.FACING);
-
-                    switch (facing) {
-                        case NORTH -> poseStack.translate(z, x, -y);
-                        case SOUTH -> poseStack.translate(z, x, y);
-                        case EAST -> poseStack.translate(y, z, x);
-                        case WEST -> poseStack.translate(-y, z, x);
-                        default -> original.call(poseStack, x, y, z);
-                    }
-                    return;
-                }
-            }
-        }
-        original.call(poseStack, x, y, z);
     }
 }
