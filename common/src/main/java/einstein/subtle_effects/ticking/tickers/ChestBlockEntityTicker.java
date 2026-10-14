@@ -161,9 +161,7 @@ public class ChestBlockEntityTicker extends BlockPosTicker {
 
         boolean isEnderChest = state.is(Blocks.ENDER_CHEST);
         if ((firstOpeningTick && random.nextInt(openFrequency) == 0) || (openFrequency > 0 && openness == 0)) {
-            // Triggering the block entity event rather than calling the lid controller,
-            // because otherwise Lithium will prevent the animation from playing
-            blockEntity.triggerEvent(1, 1);
+            triggerAnimation(blockEntity, 1, isDoubleChest, oppositePos);
             playSound(connectedDirection, type, isEnderChest ? SoundEvents.ENDER_CHEST_OPEN : SoundEvents.CHEST_OPEN);
             animationTicks = Mth.nextInt(random, 50, 200);
             firstOpeningTick = false;
@@ -174,9 +172,20 @@ public class ChestBlockEntityTicker extends BlockPosTicker {
             animationTicks--;
 
             if (animationTicks <= 0) {
-                blockEntity.triggerEvent(1, 0);
+                triggerAnimation(blockEntity, 0, isDoubleChest, oppositePos);
                 playSound(connectedDirection, type, isEnderChest ? SoundEvents.ENDER_CHEST_CLOSE : SoundEvents.CHEST_CLOSE);
                 ticksSinceLastAnimation = 0;
+            }
+        }
+    }
+
+    // Triggering the block entity event rather than calling the lid controller,
+    // because otherwise Lithium will prevent the animation from playing
+    private void triggerAnimation(BlockEntity blockEntity, int type, boolean isDoubleChest, BlockPos oppositePos) {
+        blockEntity.triggerEvent(1, type);
+        if (isDoubleChest) {
+            if (level.getBlockEntity(oppositePos) instanceof ChestBlockEntity oppositeBlockEntity) {
+                oppositeBlockEntity.triggerEvent(1, type);
             }
         }
     }
