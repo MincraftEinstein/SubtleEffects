@@ -10,8 +10,6 @@ import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
 
-import static einstein.subtle_effects.util.MathUtil.toRadians;
-
 public class SlimeTrailParticle extends FlatPlaneParticle {
 
     protected SlimeTrailParticle(ClientLevel level, SpriteSet sprites, double x, double y, double z, float scale) {
@@ -20,7 +18,7 @@ public class SlimeTrailParticle extends FlatPlaneParticle {
         quadSize = 0.5F * scale;
         setSize(quadSize + 1, 0.1F);
         lifetime = (int) Math.min(300 + (200 * scale), 1200);
-        rotation.rotateY(toRadians(90 * random.nextInt(3))).rotateX(toRadians(-90));
+        horizontalRandomized();
         renderBackFace = true;
     }
 

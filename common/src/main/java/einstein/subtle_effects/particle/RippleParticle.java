@@ -6,7 +6,6 @@ import einstein.subtle_effects.data.FluidDefinitionReloadListener;
 import einstein.subtle_effects.data.splash_types.SplashType;
 import einstein.subtle_effects.init.ModParticles;
 import einstein.subtle_effects.particle.option.RippleParticleOptions;
-import einstein.subtle_effects.util.MathUtil;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleProvider;
@@ -27,7 +26,7 @@ public class RippleParticle extends FlatPlaneParticle {
     protected RippleParticle(ClientLevel level, double x, double y, double z, SpriteSet sprites, float scale) {
         super(level, x, y, z);
         this.sprites = sprites;
-        rotation.rotateX(MathUtil.toRadians(90));
+        horizontal();
         setSpriteFromAge(sprites);
         scale(scale);
         lifetime = 5;

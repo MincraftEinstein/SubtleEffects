@@ -3,7 +3,6 @@ package einstein.subtle_effects.particle;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.particle.option.PotionRingParticleOptions;
-import einstein.subtle_effects.util.MathUtil;
 import einstein.subtle_effects.util.Util;
 import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -34,7 +33,7 @@ public class PotionRingParticle extends FlatPlaneParticle {
         lifetime = 10;
         alpha = 0;
         quadSize = 0.2F;
-        rotation.rotateX(MathUtil.toRadians(-90));
+        horizontal();
         pickSprite(sprites);
         float scale = ModConfigs.ENTITIES.humanoids.potionRingsScale.get();
         quadSize = 0.5F * scale;

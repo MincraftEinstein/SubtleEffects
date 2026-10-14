@@ -11,8 +11,6 @@ import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.SupportType;
 
-import static einstein.subtle_effects.util.MathUtil.toRadians;
-
 public class GeyserSpoutParticle extends FlatPlaneParticle {
 
     private static final int FADE_TIME = 60;
@@ -25,7 +23,7 @@ public class GeyserSpoutParticle extends FlatPlaneParticle {
         super(level, x, y, z);
         geyserLifeTime = options.lifeTime();
         type = options.type();
-        rotation.rotateY(toRadians(90 * random.nextInt(3))).rotateX(toRadians(90));
+        horizontalRandomized();
         lifetime = geyserLifeTime + FADE_TIME;
         hasPhysics = false;
         renderBackFace = false;

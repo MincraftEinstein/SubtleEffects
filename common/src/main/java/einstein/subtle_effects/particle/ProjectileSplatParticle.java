@@ -33,7 +33,7 @@ public class ProjectileSplatParticle extends FlatPlaneParticle {
         scale(1.5F);
 
         if (direction.getAxis().isVertical()) {
-            rotation.rotateY(toRadians(90 * random.nextInt(3)));
+            randomizedY();
         }
     }
 
