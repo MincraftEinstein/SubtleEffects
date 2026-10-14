@@ -105,6 +105,7 @@
     "common.block.BeehiveBlockEntityMixin",
     "common.block.CommonComposterMixin",
     "common.block.CommonComposterMixin$InputContainerMixin",
+    "common.block.DecoratedPotBlockMixin",
     "common.block.FarmBlockMixin",
     "common.block.LeavesBlockMixin",
     "common.block.dispenser.EmptyBucketDispenseItemBehaviorMixin",

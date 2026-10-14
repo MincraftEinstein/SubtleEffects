@@ -247,6 +247,8 @@
   "config.subtle_effects.blocks.underwaterContainerBubblingGroup": "Underwater Container Bubbling",
   "config.subtle_effects.blocks.decoratedPotsSpawnBubbles": "Decorated Pots Spawn Bubbles",
   "config.subtle_effects.blocks.decoratedPotsSpawnBubbles.desc": "Should decorated pots spawn bubbles when underwater",
+  "config.subtle_effects.blocks.decoratedPotsInteractionBubbles": "Decorated Pots Interaction Bubbles",
+  "config.subtle_effects.blocks.decoratedPotsInteractionBubbles.desc": "Should decorated pots spawn bubbles when interacting with them, e.g. putting items inside",
   "config.subtle_effects.blocks.openingBarrelsSpawnsBubbles": "Opening Barrels Spawns Bubbles",
   "config.subtle_effects.blocks.openingChestsSpawnsBubbles": "Opening Chests Spawns Bubbles",
   "config.subtle_effects.blocks.openingChestsSpawnsBubbles.desc": "When a chest is opened underwater should it spawn bubbles",

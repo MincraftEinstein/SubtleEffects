@@ -476,6 +476,13 @@ public class ClientPayloadHandlers {
         }
     }
 
+    public static void handle(Level level, ClientBoundDecoratedPotInteractionPayload payload) {
+        if (BLOCKS.decoratedPotsInteractionBubbles) {
+            BlockPos pos = payload.pos();
+            ParticleSpawnUtil.sendParticles(level, ParticleTypes.BUBBLE_COLUMN_UP, pos.getX() + 0.5, pos.getY() + 1.2, pos.getZ() + 0.5, 7, 0, 0, 0, 0.1);
+        }
+    }
+
     private static SoundEvent getEatSound(LivingEntity entity, ItemStack stack, ModAnimalFedEffectSettings.Settings settings) {
         Supplier<SoundEvent> overrideSound = settings.sound();
         if (overrideSound != null) {

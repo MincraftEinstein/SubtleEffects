@@ -8,7 +8,6 @@ import einstein.subtle_effects.configs.ModBlockConfigs;
 import einstein.subtle_effects.mixin.client.block.AmethystClusterBlockAccessor;
 import einstein.subtle_effects.particle.SparkParticle;
 import einstein.subtle_effects.particle.option.PositionParticleOptions;
-import einstein.subtle_effects.ticking.tickers.ChestBlockEntityTicker;
 import einstein.subtle_effects.util.BlockTickerProvider;
 import einstein.subtle_effects.util.ParticleSpawnUtil;
 import einstein.subtle_effects.util.SparkType;
@@ -275,8 +274,8 @@ public class ModBlockTickers {
             }
         });
         register(state -> state.getBlock() instanceof DecoratedPotBlock, () -> BLOCKS.decoratedPotsSpawnBubbles, (state, level, pos, random) -> {
-            if (ChestBlockEntityTicker.isUnderwater(level, pos)) {
-                if (ChestBlockEntityTicker.isDownwardsBubbleColumn(level, pos)) {
+            if (Util.isUnderwater(level, pos)) {
+                if (Util.isAboveDownwardsBubbleColumn(level, pos)) {
                     return;
                 }
 

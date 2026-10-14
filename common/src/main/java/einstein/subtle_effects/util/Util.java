@@ -36,6 +36,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.AbstractCauldronBlock;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.BubbleColumnBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.material.Fluid;
@@ -231,5 +232,19 @@ public class Util {
         });
 
         return harmful[0] > notHarmful[0];
+    }
+
+    public static boolean isUnderwater(Level level, BlockPos pos) {
+        return level.isWaterAt(pos) && level.getBlockState(pos.above()).is(Blocks.WATER);
+    }
+
+    public static boolean isNotAboveUpwardsBubbleColumn(Level level, BlockPos pos) {
+        BlockState belowState = level.getBlockState(pos.below());
+        return !belowState.is(Blocks.SOUL_SAND) && (!belowState.is(Blocks.BUBBLE_COLUMN) || belowState.getValue(BubbleColumnBlock.DRAG_DOWN));
+    }
+
+    public static boolean isAboveDownwardsBubbleColumn(Level level, BlockPos pos) {
+        BlockState belowState = level.getBlockState(pos.below());
+        return belowState.is(Blocks.MAGMA_BLOCK) || (belowState.is(Blocks.BUBBLE_COLUMN) && belowState.getValue(BubbleColumnBlock.DRAG_DOWN));
     }
 }
