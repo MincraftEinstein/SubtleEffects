@@ -66,4 +66,5 @@ dependencies {
     compileOnly("fuzs.neoforgedatapackextensions:neoforgedatapackextensions-neoforge:${neoforgedatapackextensions_version}")
     compileOnly("fuzs.puzzleslib:puzzleslib-neoforge:${puzzleslib_version}")
     compileOnly("maven.modrinth:lootr:${neoforge_lootr_version}")
+    compileOnly("maven.modrinth:simple-voice-chat:${neoforge_simple_vc_version}")
 }

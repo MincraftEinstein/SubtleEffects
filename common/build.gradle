@@ -36,6 +36,7 @@ dependencies {
         exclude group: "net.fabricmc.fabric-api"
     }
     compileOnly("maven.modrinth:lootr:${neoforge_lootr_version}")
+    compileOnly("maven.modrinth:simple-voice-chat:${neoforge_simple_vc_version}")
 }
 
 configurations {

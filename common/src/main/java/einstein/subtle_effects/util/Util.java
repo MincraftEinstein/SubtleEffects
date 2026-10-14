@@ -2,12 +2,15 @@ package einstein.subtle_effects.util;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.mojang.blaze3d.vertex.PoseStack;
 import einstein.subtle_effects.SubtleEffects;
 import einstein.subtle_effects.compat.CompatHelper;
 import einstein.subtle_effects.compat.EndRemasteredCompat;
 import einstein.subtle_effects.data.FluidDefinition;
 import einstein.subtle_effects.data.MobSkullShaderData;
 import einstein.subtle_effects.data.MobSkullShaderReloadListener;
+import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.init.ModParticles;
 import einstein.subtle_effects.mixin.client.GameRendererAccessor;
 import einstein.subtle_effects.mixin.common.block.AbstractCauldronBlockAccessor;
@@ -21,6 +24,7 @@ import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.PostChain;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.SectionPos;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.core.particles.ParticleOptions;
@@ -30,11 +34,13 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.alchemy.PotionContents;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.AbstractCauldronBlock;
+import net.minecraft.world.level.block.BedBlock;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.BubbleColumnBlock;
 import net.minecraft.world.level.block.state.BlockState;
@@ -43,6 +49,8 @@ import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.Optional;
 
 import static einstein.subtle_effects.init.ModConfigs.BLOCKS;
 
@@ -246,5 +254,36 @@ public class Util {
     public static boolean isAboveDownwardsBubbleColumn(Level level, BlockPos pos) {
         BlockState belowState = level.getBlockState(pos.below());
         return belowState.is(Blocks.MAGMA_BLOCK) || (belowState.is(Blocks.BUBBLE_COLUMN) && belowState.getValue(BubbleColumnBlock.DRAG_DOWN));
+    }
+
+    @SuppressWarnings("SuspiciousNameCombination")
+    public static <T extends Entity> void getAdjustedNameTagPosition(PoseStack poseStack, double x, double y, double z, Operation<Void> original, T entity) {
+        if (!ModConfigs.ENTITIES.sleeping.adjustNameTagWhenSleeping) {
+            original.call(poseStack, x, y, z);
+            return;
+        }
+
+        if (entity instanceof LivingEntity livingEntity && livingEntity.isSleeping()) {
+            Level level = entity.level();
+            Optional<BlockPos> pos = livingEntity.getSleepingPos();
+
+            if (pos.isPresent()) {
+                BlockState state = level.getBlockState(pos.get());
+
+                if (state.hasProperty(BedBlock.OCCUPIED) && state.getValue(BedBlock.OCCUPIED)) {
+                    Direction facing = state.getValue(BedBlock.FACING);
+
+                    switch (facing) {
+                        case NORTH -> poseStack.translate(z, x, -y);
+                        case SOUTH -> poseStack.translate(z, x, y);
+                        case EAST -> poseStack.translate(y, z, x);
+                        case WEST -> poseStack.translate(-y, z, x);
+                        default -> original.call(poseStack, x, y, z);
+                    }
+                    return;
+                }
+            }
+        }
+        original.call(poseStack, x, y, z);
     }
 }

@@ -33,6 +33,7 @@ dependencies {
     modCompileOnly("fuzs.neoforgedatapackextensions:neoforgedatapackextensions-fabric:${neoforgedatapackextensions_version}")
     modCompileOnly("fuzs.puzzleslib:puzzleslib-fabric:${puzzleslib_version}")
     modCompileOnly("maven.modrinth:lootr:${fabric_lootr_version}")
+    modCompileOnly("maven.modrinth:simple-voice-chat:${fabric_simple_vc_version}")
 }
 
 loom {

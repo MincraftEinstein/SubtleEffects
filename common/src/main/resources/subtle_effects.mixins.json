@@ -39,6 +39,7 @@
     "client.block.entity.VaultBlockEntityClientMixin",
     "client.compat.EntityInsideFireHandlerMixin",
     "client.compat.ItemBordersConfigAccessor",
+    "client.compat.RenderEventsMixin",
     "client.entity.AbstractHorseAccessor",
     "client.entity.AbstractMinecartMixin",
     "client.entity.AllayMixin",
