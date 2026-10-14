@@ -24,4 +24,18 @@ public class MathUtil {
     public static int nextSign(RandomSource random) {
         return random.nextBoolean() ? 1 : -1;
     }
+
+    public static String formatOrdinal(long number) {
+        String stringValue = String.valueOf(number);
+        if (stringValue.endsWith("1") && !stringValue.endsWith("11")) {
+            return stringValue + "st";
+        }
+        else if (stringValue.endsWith("2") && !stringValue.endsWith("12")) {
+            return stringValue + "nd";
+        }
+        else if (stringValue.endsWith("3") && !stringValue.endsWith("13")) {
+            return stringValue + "rd";
+        }
+        return stringValue + "th";
+    }
 }

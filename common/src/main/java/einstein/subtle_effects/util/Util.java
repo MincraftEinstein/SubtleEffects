@@ -232,20 +232,6 @@ public class Util {
         return nameTagPos;
     }
 
-    public static String formatOrdinal(long number) {
-        String stringValue = String.valueOf(number);
-        if (stringValue.endsWith("1") && !stringValue.endsWith("11")) {
-            return stringValue + "st";
-        }
-        else if (stringValue.endsWith("2") && !stringValue.endsWith("12")) {
-            return stringValue + "nd";
-        }
-        else if (stringValue.endsWith("3") && !stringValue.endsWith("13")) {
-            return stringValue + "rd";
-        }
-        return stringValue + "th";
-    }
-
     public static boolean isRainingAt(Level level, BlockPos pos) {
         if (level.isRaining() && level.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, pos.getX(), pos.getZ()) <= pos.getY()) {
             return level.getBiome(pos).value().getPrecipitationAt(pos) == Biome.Precipitation.RAIN;
