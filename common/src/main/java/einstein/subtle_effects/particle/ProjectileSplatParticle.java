@@ -14,6 +14,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
+import static einstein.subtle_effects.util.MathUtil.toRadians;
+
 public class ProjectileSplatParticle extends FlatPlaneParticle {
 
     private final Direction direction;
@@ -24,14 +26,14 @@ public class ProjectileSplatParticle extends FlatPlaneParticle {
         super(level, x, y, z);
         direction = options.direction();
         blockPos = options.pos();
-        rotation = direction.getRotation().rotateX(180 * Mth.DEG_TO_RAD);
+        rotation = direction.getRotation().rotateX(toRadians(180));
         pickSprite(sprites);
         lifetime = 120;
         quadSize = 0.2F;
         scale(1.5F);
 
         if (direction.getAxis().isVertical()) {
-            rotation.rotateY(90 * random.nextInt(3) * Mth.DEG_TO_RAD);
+            rotation.rotateY(toRadians(90 * random.nextInt(3)));
         }
     }
 

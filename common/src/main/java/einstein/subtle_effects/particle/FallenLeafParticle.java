@@ -3,15 +3,15 @@ package einstein.subtle_effects.particle;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.particle.option.FallenLeafParticleOptions;
-import einstein.subtle_effects.util.MathUtil;
 import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.client.particle.ParticleRenderType;
-import net.minecraft.util.Mth;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
+
+import static einstein.subtle_effects.util.MathUtil.*;
 
 public class FallenLeafParticle extends FlatPlaneParticle {
 
@@ -20,15 +20,15 @@ public class FallenLeafParticle extends FlatPlaneParticle {
     protected FallenLeafParticle(ClientLevel level, double x, double y, double z, double xSpeed, double zSpeed, FallenLeafParticleOptions options) {
         super(level, x, y, z);
         if (!options.onGround() && ModConfigs.GENERAL.leavesLandingOnWaterKeepMomentum.get()) {
-            xd = MathUtil.nextDouble(random, (xSpeed / 4) * 3);
-            zd = MathUtil.nextDouble(random, (zSpeed / 4) * 3);
+            xd = nextDouble(random, (xSpeed / 4) * 3);
+            zd = nextDouble(random, (zSpeed / 4) * 3);
         }
 
         int baseLifetime = ModConfigs.GENERAL.fallenLeavesLifeTime.get();
-        lifetime = baseLifetime + (random.nextInt(10) * MathUtil.nextSign(random));
+        lifetime = baseLifetime + (random.nextInt(10) * nextSign(random));
         lifetimeAlpha = new LifetimeAlpha(options.alpha(), 0, 0.5F, 1);
         alpha = lifetimeAlpha.startAlpha();
-        rotation = rotation.rotateX(90 * Mth.DEG_TO_RAD);
+        rotation = rotation.rotateX(toRadians(90));
         friction = 0.96F;
 
         // noinspection all

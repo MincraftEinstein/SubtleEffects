@@ -13,6 +13,7 @@ import net.minecraft.util.Mth;
 import org.joml.Vector3f;
 
 import static einstein.subtle_effects.util.MathUtil.nextNonAbsDouble;
+import static einstein.subtle_effects.util.MathUtil.toRadians;
 
 public class PotionCloudParticle extends FlatPlaneParticle {
 
@@ -23,7 +24,7 @@ public class PotionCloudParticle extends FlatPlaneParticle {
         xd = nextNonAbsDouble(random, 0, 0.03);
         zd = nextNonAbsDouble(random, 0, 0.03);
         lifetime = Mth.nextInt(random, 25, 30);
-        rotation.rotateY(90 * random.nextInt(3) * Mth.DEG_TO_RAD).rotateX(-90 * Mth.DEG_TO_RAD);
+        rotation.rotateY(toRadians(90 * random.nextInt(3))).rotateX(toRadians(-90));
         alpha = lifetimeAlpha.startAlpha();
         quadSize = 1;
         setSize(2, 0.1F);

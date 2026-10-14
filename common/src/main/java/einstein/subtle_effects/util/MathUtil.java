@@ -25,6 +25,10 @@ public class MathUtil {
         return random.nextBoolean() ? 1 : -1;
     }
 
+    public static float toRadians(float degrees) {
+        return degrees * Mth.DEG_TO_RAD;
+    }
+
     public static String formatOrdinal(long number) {
         String stringValue = String.valueOf(number);
         if (stringValue.endsWith("1") && !stringValue.endsWith("11")) {

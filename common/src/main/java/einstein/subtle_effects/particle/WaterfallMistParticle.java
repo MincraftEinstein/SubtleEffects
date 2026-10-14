@@ -1,13 +1,11 @@
 package einstein.subtle_effects.particle;
 
-import einstein.subtle_effects.init.ModParticleRenderTypes;
+import einstein.subtle_effects.util.MathUtil;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleProvider;
-import net.minecraft.client.particle.ParticleRenderType;
 import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.core.particles.SimpleParticleType;
-import net.minecraft.util.Mth;
 
 public class WaterfallMistParticle extends BaseWaterfallParticle {
 
@@ -19,7 +17,7 @@ public class WaterfallMistParticle extends BaseWaterfallParticle {
         pickSprite(sprites);
 
         if (random.nextBoolean()) {
-            roll = 180 * Mth.DEG_TO_RAD;
+            roll = MathUtil.toRadians(180);
             oRoll = roll;
         }
     }

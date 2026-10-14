@@ -5,6 +5,7 @@ import einstein.subtle_effects.data.FluidDefinitionReloadListener;
 import einstein.subtle_effects.data.splash_types.SplashOptions;
 import einstein.subtle_effects.data.splash_types.SplashType;
 import einstein.subtle_effects.particle.option.RippleParticleOptions;
+import einstein.subtle_effects.util.MathUtil;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleProvider;
@@ -12,7 +13,6 @@ import net.minecraft.client.particle.ParticleRenderType;
 import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.core.BlockPos;
-import net.minecraft.util.Mth;
 import org.joml.Vector3f;
 
 public class SplashRippleParticle extends FlatPlaneParticle {
@@ -31,7 +31,7 @@ public class SplashRippleParticle extends FlatPlaneParticle {
         sprites = rippleOptions.holder().get();
         lightLevel = fluidDefinition.lightEmission();
         pos = BlockPos.containing(x, y, z).mutable();
-        rotation = rotation.rotateX(90 * Mth.DEG_TO_RAD);
+        rotation = rotation.rotateX(MathUtil.toRadians(90));
         lifetime = 15;
         alpha = rippleOptions.getAlpha();
         Vector3f color = rippleOptions.getColorAndApplyTint(level, pos, random);
