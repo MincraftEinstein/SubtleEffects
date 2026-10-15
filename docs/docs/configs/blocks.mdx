@@ -4,7 +4,7 @@ title: Block Configs
 
 **File name:** `blocks.toml`
 
- ## Main
+## Main
 
 <table>
     <tr>
@@ -428,6 +428,13 @@ title: Block Configs
         <td>decoratedPotsSpawnBubbles</td>
     </tr>
     <tr>
+        <td>Decorated Pots Interaction Bubbles</td>
+        <td>Should decorated pots spawn bubbles when interacting with them, e.g. putting items inside</td>
+        <td>`true`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>decoratedPotsInteractionBubbles</td>
+    </tr>
+    <tr>
         <td>Opening Barrels Spawns Bubbles</td>
         <td></td>
         <td>`true`</td>
@@ -454,6 +461,13 @@ title: Block Configs
         <td>```false```</td>
         <td>Boolean (`true` or `false`)</td>
         <td>randomChestOpeningNeedsSoulSand</td>
+    </tr>
+    <tr>
+        <td>Random Chest Opening Sound Volume</td>
+        <td>Volume of chests that randomly open underwater. Vanilla chest sound volume is 0.5</td>
+        <td>```0.25```</td>
+        <td>Float (`0` to `1`)</td>
+        <td>randomChestOpeningSoundVolume</td>
     </tr>
     <tr>
         <td>Dispense Item Bubbles</td>
@@ -489,6 +503,62 @@ title: Block Configs
         <td>```1```</td>
         <td>Float (`0` to `1`)</td>
         <td>monsterSpawnerAmbientSoundVolume</td>
+    </tr>
+    <tr>
+        <td>Replace Copper Electricity Sparks</td>
+        <td></td>
+        <td>`true`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>replaceCopperElectricitySparks</td>
+    </tr>
+    <tr>
+        <td>Comparator Redstone Dust</td>
+        <td>Should comparators spawn redstone dust particles around the lit redstone torches like repeaters</td>
+        <td>`true`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>comparatorRedstoneDust</td>
+    </tr>
+    <tr>
+        <td>Magma Smoke</td>
+        <td></td>
+        <td>`UPDATED`</td>
+        <td><ul><li>`OFF`</li><li>`DEFAULT`</li><li>`UPDATED`</li></ul></td>
+        <td>magmaSmoke</td>
+    </tr>
+    <tr>
+        <td>Magma Frost Walker Steam</td>
+        <td>When an entity wearing Frost Walker stands on Magma Blocks the magma will emit steam particles</td>
+        <td>`true`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>magmaFrostWalkerSteam</td>
+    </tr>
+    <tr>
+        <td>Magma Frost Walker Sounds</td>
+        <td>When an entity wearing Frost Walker stands on Magma blocks the magma will make hissing sounds</td>
+        <td>`true`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>magmaFrostWalkerSounds</td>
+    </tr>
+    <tr>
+        <td>Redstone Rail Dust Particles</td>
+        <td>Should redstone dust particles spawn around powerable rails, e.g. Powered Rails, Detector Rails, Activator Rails</td>
+        <td>`true`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>redstoneRailDustParticles</td>
+    </tr>
+    <tr>
+        <td>Item Enchanted Particles Display Type</td>
+        <td>Particles spawned when an item is enchanted with an Enchantment Table</td>
+        <td>`MAGIC`</td>
+        <td><ul><li>`OFF`</li><li>`GLYPHS`</li><li>`MAGIC`</li></ul></td>
+        <td>itemEnchantedParticlesDisplayType</td>
+    </tr>
+    <tr>
+        <td>Improved Wither Rose Particles</td>
+        <td>Fixes wither rose particles being incorrectly offset and potted wither roses not spawning particles</td>
+        <td>`true`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>improvedWitherRoseParticles</td>
     </tr>
 </table>
 

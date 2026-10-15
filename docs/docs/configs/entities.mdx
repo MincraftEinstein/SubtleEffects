@@ -4,7 +4,7 @@ title: Entity Configs
 
 **File name:** `entities.toml`
 
- ## Main
+## Main
 
 <table>
     <tr>
@@ -13,41 +13,6 @@ title: Entity Configs
         <th>Default Value</th>
         <th>Allowed Values</th>
         <th>ID</th>
-    </tr>
-    <tr>
-        <td>Attacked Chicken Feathers</td>
-        <td></td>
-        <td>`true`</td>
-        <td>Boolean (`true` or `false`)</td>
-        <td>attackedChickenFeathers</td>
-    </tr>
-    <tr>
-        <td>Attacked Parrot Feathers</td>
-        <td></td>
-        <td>`true`</td>
-        <td>Boolean (`true` or `false`)</td>
-        <td>attackedParrotFeathers</td>
-    </tr>
-    <tr>
-        <td>Attacked Snow Golem Snowflakes</td>
-        <td></td>
-        <td>`true`</td>
-        <td>Boolean (`true` or `false`)</td>
-        <td>attackedSnowGolemSnowflakes</td>
-    </tr>
-    <tr>
-        <td>Attacked Sheep Fluff</td>
-        <td></td>
-        <td>`true`</td>
-        <td>Boolean (`true` or `false`)</td>
-        <td>attackedSheepFluff</td>
-    </tr>
-    <tr>
-        <td>Attacked Slime Slime</td>
-        <td></td>
-        <td>`true`</td>
-        <td>Boolean (`true` or `false`)</td>
-        <td>attackedSlimeSlime</td>
     </tr>
     <tr>
         <td>Allay Magic Density</td>
@@ -62,6 +27,20 @@ title: Entity Configs
         <td>```0.2```</td>
         <td>Double (`0` to `1`)</td>
         <td>vexMagicDensity</td>
+    </tr>
+    <tr>
+        <td>Allay Twinkling Sounds</td>
+        <td></td>
+        <td>`true`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>allayTwinklingSounds</td>
+    </tr>
+    <tr>
+        <td>Allay Duplicated Sounds</td>
+        <td></td>
+        <td>`true`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>allayDuplicatedSounds</td>
     </tr>
     <tr>
         <td>Sheep Shear Fluff</td>
@@ -92,11 +71,25 @@ title: Entity Configs
         <td>commandBlockMinecartParticles</td>
     </tr>
     <tr>
-        <td>End Crystal Particles</td>
-        <td>Should end crystals have little pink particles floating around them</td>
+        <td>End Crystal Magic Density</td>
+        <td>Density of the magenta dot particles that float around End Crystals. 0 to disable</td>
+        <td>```1```</td>
+        <td>Double (`0` to `1`)</td>
+        <td>endCrystalMagicDensity</td>
+    </tr>
+    <tr>
+        <td>End Crystal Magic Needs Fire</td>
+        <td>Forces End Crystal Magic particles to only spawn if the end crystal has fire underneath</td>
+        <td>```false```</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>endCrystalMagicNeedsFire</td>
+    </tr>
+    <tr>
+        <td>End Crystals Disable Fire Effects</td>
+        <td>When an End Crystal has fire underneath, the particles from the fire will not be spawned</td>
         <td>`true`</td>
         <td>Boolean (`true` or `false`)</td>
-        <td>endCrystalParticles</td>
+        <td>endCrystalsDisableFireEffects</td>
     </tr>
     <tr>
         <td>Minecart Sparks Display Type</td>
@@ -199,7 +192,7 @@ title: Entity Configs
     <tr>
         <td>Improved Brown Mooshroom Feeding Effects</td>
         <td>Changes the effects for feeding a brown mooshroom a flower</td>
-        <td>`true`</td>
+        <td>`false`</td>
         <td>Boolean (`true` or `false`)</td>
         <td>improvedBrownMooshroomFeedingEffects</td>
     </tr>
@@ -265,6 +258,41 @@ title: Entity Configs
         <td>`true`</td>
         <td>Boolean (`true` or `false`)</td>
         <td>snowGolemStepSounds</td>
+    </tr>
+    <tr>
+        <td>Charged Creeper Particles Density</td>
+        <td></td>
+        <td>```0.2```</td>
+        <td>Double (`0` to `1`)</td>
+        <td>chargedCreeperParticlesDensity</td>
+    </tr>
+    <tr>
+        <td>Charged Creeper Explosion Particles</td>
+        <td></td>
+        <td>`true`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>chargedCreeperExplosionParticles</td>
+    </tr>
+    <tr>
+        <td>Lightning Strike Particles</td>
+        <td>Should electricity particles be spawned in the air around a lightning bolt</td>
+        <td>`true`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>lightningStrikeParticles</td>
+    </tr>
+    <tr>
+        <td>Shulker Teleport Particles</td>
+        <td></td>
+        <td>`true`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>shulkerTeleportParticles</td>
+    </tr>
+    <tr>
+        <td>Entity Update Frequency</td>
+        <td></td>
+        <td>```20```</td>
+        <td>Integer (`1` to `40`)</td>
+        <td>entityUpdateFrequency</td>
     </tr>
 </table>
 
@@ -438,6 +466,20 @@ title: Entity Configs
         <td>```true```</td>
         <td>Boolean (`true` or `false`)</td>
         <td>NPCsHavePotionRings</td>
+    </tr>
+    <tr>
+        <td>Reverse Direction For Harmful Effects</td>
+        <td></td>
+        <td>```true```</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>reverseDirectionForHarmfulEffects</td>
+    </tr>
+    <tr>
+        <td>Glowing Potion Rings</td>
+        <td></td>
+        <td>```true```</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>glowingPotionRings</td>
     </tr>
 </table>
 
@@ -840,6 +882,20 @@ title: Entity Configs
         <td>entityBlocklist</td>
     </tr>
     <tr>
+        <td>Ignore Waterlogged Blocks</td>
+        <td>Whether splashes should be spawned for waterlogged blocks</td>
+        <td>```false```</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>ignoreWaterloggedBlocks</td>
+    </tr>
+    <tr>
+        <td>Splash Height Scale Modifier</td>
+        <td></td>
+        <td>```1```</td>
+        <td>Float (`0.3` to `2`)</td>
+        <td>splashHeightScaleModifier</td>
+    </tr>
+    <tr>
         <td>Secondary Splash</td>
         <td>Plays a second splash effect after the initial splash</td>
         <td>```true```</td>
@@ -859,5 +915,74 @@ title: Entity Configs
         <td>```0.3```</td>
         <td>Float (`0` to `1`)</td>
         <td>secondarySplashVelocityThreshold</td>
+    </tr>
+</table>
+
+## Damage Taken
+**Section ID:** `damageTaken`
+
+<table>
+    <tr>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Default Value</th>
+        <th>Allowed Values</th>
+        <th>ID</th>
+    </tr>
+    <tr>
+        <td>Damage Types</td>
+        <td>List of damage types that cause mob damaged effects</td>
+        <td>```[ minecraft:generic, minecraft:stalagmite, minecraft:trident, minecraft:fall, minecraft:falling_stalactite, minecraft:mob_projectile, minecraft:wind_charge, minecraft:arrow, minecraft:bad_respawn_point, minecraft:explosion, minecraft:falling_anvil, minecraft:falling_block, minecraft:fireball, minecraft:fly_into_wall, minecraft:lightning_bolt, minecraft:mob_attack, minecraft:mob_attack_no_aggro, minecraft:player_attack, minecraft:player_explosion, minecraft:sonic_boom, minecraft:sting, minecraft:thrown, minecraft:unattributed_fireball, minecraft:wither_skull ]```</td>
+        <td>A list containing any damage type String ID. List can be empty</td>
+        <td>damageTypes</td>
+    </tr>
+    <tr>
+        <td>Damaged Chicken Feathers</td>
+        <td></td>
+        <td>`true`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>damagedChickenFeathers</td>
+    </tr>
+    <tr>
+        <td>Damaged Parrot Feathers</td>
+        <td></td>
+        <td>`true`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>damagedParrotFeathers</td>
+    </tr>
+    <tr>
+        <td>Damaged Snow Golem Snowflakes</td>
+        <td></td>
+        <td>`true`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>damagedSnowGolemSnowflakes</td>
+    </tr>
+    <tr>
+        <td>Damaged Sheep Fluff</td>
+        <td></td>
+        <td>`true`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>damagedSheepFluff</td>
+    </tr>
+    <tr>
+        <td>Damaged Slime Slime</td>
+        <td></td>
+        <td>`true`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>damagedSlimeSlime</td>
+    </tr>
+    <tr>
+        <td>Damaged Skeleton Bones</td>
+        <td></td>
+        <td>`true`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>damagedSkeletonBones</td>
+    </tr>
+    <tr>
+        <td>Damaged Skeleton Horse Bones</td>
+        <td></td>
+        <td>`true`</td>
+        <td>Boolean (`true` or `false`)</td>
+        <td>damagedSkeletonHorseBones</td>
     </tr>
 </table>

@@ -66,6 +66,7 @@ public class ConfigDumpCommand {
         map.put("entities.humanoids.frostyBreath.additionalBiomes", biomeList);
         map.put("entities.burning.entityBlocklist", entityList);
         map.put("entities.splashes.entityBlocklist", entityList);
+        map.put("entities.damageTaken.damageTypes", "A list containing any damage type String ID. List can be empty");
         map.put("environment.biomes.mushroomSporeBiomes", biomeList);
         map.put("environment.biomes.pollenBiomes", biomeList);
         map.put("environment.biomes.sculkDustBiomes", biomeList);
