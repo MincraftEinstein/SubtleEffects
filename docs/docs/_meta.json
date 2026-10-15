@@ -3,5 +3,8 @@
   "spark_providers.mdx": "Spark Providers",
   "burning_effects.mdx": "Burning Effects",
   "mob_skull_shaders.mdx": "Mob Skull Shaders",
-  "color_providers.mdx": "Color Providers"
+  "color_providers.mdx": "Color Providers",
+  "effects.mdx": "New Effects",
+  "misc_features.mdx": "Miscellaneous Features",
+  "configs": "Configuration"
 }

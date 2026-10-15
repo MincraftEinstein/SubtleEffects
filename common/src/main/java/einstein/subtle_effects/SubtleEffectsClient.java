@@ -22,6 +22,7 @@ import einstein.subtle_effects.ticking.tickers.entity.EntityTickerManager;
 import einstein.subtle_effects.util.ConfigDumpCommand;
 import einstein.subtle_effects.util.HolidayHelper;
 import einstein.subtle_effects.util.MathUtil;
+import me.fzzyhmstrs.fzzy_config.api.ConfigApiJava;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.PlayerModel;
@@ -195,7 +196,7 @@ public class SubtleEffectsClient {
                 .then(tickers)
                 .then(debugOverlay);
 
-        if (Services.PLATFORM.isDevelopmentEnvironment()) {
+        if (ConfigApiJava.platform().isDev()) {
             subtleEffects.then(dumpConfigs);
         }
 
