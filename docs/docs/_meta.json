@@ -1,9 +1,30 @@
 {
-  "configs": "Configuration",
-  "fluids": "Fluids",
-  "spark_providers.mdx": "Spark Providers",
-  "burning_effects.mdx": "Burning Effects",
-  "mob_skull_shaders.mdx": "Mob Skull Shaders",
-  "color_providers.mdx": "Color Providers",
-  "misc_features.mdx": "Miscellaneous Features"
+  "configs": {
+    "name": "Configuration",
+    "icon": "Folder"
+  },
+  "fluids": {
+    "name": "Fluids",
+    "icon": "Folder"
+  },
+  "spark_providers.mdx": {
+    "name": "Spark Providers",
+    "icon": "Sparkles"
+  },
+  "burning_effects.mdx": {
+    "name": "Burning Effects",
+    "icon": "Flame"
+  },
+  "mob_skull_shaders.mdx": {
+    "name": "Mob Skull Shaders",
+    "icon": "Skull"
+  },
+  "color_providers.mdx": {
+    "name": "Color Providers",
+    "icon": "Palette"
+  },
+  "misc_features.mdx": {
+    "name": "Miscellaneous Features",
+    "icon": "Blocks"
+  }
 }

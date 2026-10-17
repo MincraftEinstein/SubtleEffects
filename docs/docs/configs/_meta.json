@@ -1,8 +1,26 @@
 {
-  "config_guide.mdx": "Configuration Guide",
-  "general.mdx": "General Configs",
-  "blocks.mdx": "Block Configs",
-  "entities.mdx": "Entity Configs",
-  "items.mdx": "Item Configs",
-  "environment.mdx": "Environment Configs"
+  "config_guide.mdx": {
+    "name": "Configuration Guide",
+    "icon": "MapPinned"
+  },
+  "general.mdx": {
+    "name": "General Configs",
+    "icon": "ListTodo"
+  },
+  "blocks.mdx": {
+    "name": "Block Configs",
+    "icon": "Box"
+  },
+  "entities.mdx": {
+    "name": "Entity Configs",
+    "icon": "Ghost"
+  },
+  "items.mdx": {
+    "name": "Item Configs",
+    "icon": "Sword"
+  },
+  "environment.mdx": {
+    "name": "Environment Configs",
+    "icon": "TreePine"
+  }
 }
