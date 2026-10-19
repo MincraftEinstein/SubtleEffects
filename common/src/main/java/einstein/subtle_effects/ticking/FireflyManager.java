@@ -35,6 +35,10 @@ public class FireflyManager {
             return;
         }
 
+        if (state.isCollisionShapeFullBlock(level, pos) || !level.getFluidState(pos).isEmpty()) {
+            return;
+        }
+
         Optional<ResourceKey<DimensionType>> dimensionKey = level.dimensionTypeRegistration().unwrapKey();
         if (dimensionKey.isEmpty() || ENVIRONMENT.fireflies.dimensionBlocklist.get().contains(dimensionKey.get().location())) {
             return;
@@ -44,59 +48,58 @@ public class FireflyManager {
             return;
         }
 
-        Holder<Biome> biome = level.getBiome(pos);
-        Optional<ResourceKey<Biome>> biomeKey = biome.unwrapKey();
-        if (biomeKey.isEmpty()) {
-            return;
-        }
-
-        ResourceLocation biomeId = biomeKey.get().location();
-        if (!ENVIRONMENT.fireflies.biomesBlocklist.get().contains(biomeId)) {
-            boolean isHabitatBiome = ENVIRONMENT.fireflies.habitatBiomes.get().contains(biomeId);
-            boolean isSpawnable = ENVIRONMENT.fireflies.spawnableBlocks.get().contains(state.getBlock());
-            if (!isHabitatBiome && (ENVIRONMENT.fireflies.onlyAllowInHabitatBiomes.get() || !isSpawnable)) {
-                return;
-            }
-
+        float time = level.getDayTime() % 24000F;
+        if (((time > 13000 && time < 23000) || level.getBrightness(LightLayer.SKY, pos) == 0) && level.getBrightness(LightLayer.BLOCK, pos) <= 5) {
             boolean canSeeSky = level.canSeeSky(pos);
             int surfaceLevel = level.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING, pos).getY();
-            if (isHabitatBiome) {
-                if (!canSeeSky && !isSpawnable) {
+
+            if (!level.isRaining() || !canSeeSky || surfaceLevel > pos.getY()) {
+                Holder<Biome> biome = level.getBiome(pos);
+                Optional<ResourceKey<Biome>> biomeKey = biome.unwrapKey();
+                if (biomeKey.isEmpty()) {
                     return;
                 }
 
-                if (canSeeSky && surfaceLevel + 10 < pos.getY()) {
+                ResourceLocation biomeId = biomeKey.get().location();
+                if (ENVIRONMENT.fireflies.biomesBlocklist.get().contains(biomeId)) {
                     return;
                 }
-            }
 
-            if (biome.value().warmEnoughToRain(pos) || ENVIRONMENT.fireflies.biomesAllowlist.get().contains(biomeId)) {
-                float time = level.getDayTime() % 24000F;
+                if (biome.value().warmEnoughToRain(pos) || ENVIRONMENT.fireflies.biomesAllowlist.get().contains(biomeId)) {
+                    boolean isHabitatBiome = ENVIRONMENT.fireflies.habitatBiomes.get().contains(biomeId);
+                    boolean isSpawnable = ENVIRONMENT.fireflies.spawnableBlocks.get().contains(state.getBlock());
+                    if (!isHabitatBiome && (ENVIRONMENT.fireflies.onlyAllowInHabitatBiomes.get() || !isSpawnable)) {
+                        return;
+                    }
 
-                if (((time > 13000 && time < 23000) || level.getBrightness(LightLayer.SKY, pos) == 0) && level.getBrightness(LightLayer.BLOCK, pos) <= 5) {
-                    if (!level.isRaining() || !canSeeSky || surfaceLevel > pos.getY()) {
-                        if (!state.isCollisionShapeFullBlock(level, pos) && level.getFluidState(pos).isEmpty()) {
+                    if (isHabitatBiome) {
+                        if (!canSeeSky && !isSpawnable) {
+                            return;
+                        }
 
-                            if (canSpawn(random, isHabitatBiome)) {
-                                level.addParticle(ENVIRONMENT.fireflies.fireflyType.get().getParticle().get(),
-                                        pos.getX() + 0.5 + nextNonAbsDouble(random, 0.4375),
-                                        pos.getY() + 0.5 + nextNonAbsDouble(random, 0.4375),
-                                        pos.getZ() + 0.5 + nextNonAbsDouble(random, 0.4375),
-                                        0, 0, 0
-                                );
-                            }
+                        if (canSeeSky && surfaceLevel + 10 < pos.getY()) {
+                            return;
+                        }
+                    }
 
-                            if (ENVIRONMENT.fireflies.fireflySoundVolume.get() > 0) {
-                                if (canPlaySound(random, isHabitatBiome)) {
-                                    level.playLocalSound(
-                                            pos.getX(), pos.getY(), pos.getZ(),
-                                            ModSounds.FIREFLY_BUZZ.get(),
-                                            SoundSource.AMBIENT,
-                                            ENVIRONMENT.fireflies.fireflySoundVolume.get(),
-                                            1, false
-                                    );
-                                }
-                            }
+                    if (canSpawn(random, isHabitatBiome)) {
+                        level.addParticle(ENVIRONMENT.fireflies.fireflyType.get().getParticle().get(),
+                                pos.getX() + 0.5 + nextNonAbsDouble(random, 0.4375),
+                                pos.getY() + 0.5 + nextNonAbsDouble(random, 0.4375),
+                                pos.getZ() + 0.5 + nextNonAbsDouble(random, 0.4375),
+                                0, 0, 0
+                        );
+                    }
+
+                    if (ENVIRONMENT.fireflies.fireflySoundVolume.get() > 0) {
+                        if (canPlaySound(random, isHabitatBiome)) {
+                            level.playLocalSound(
+                                    pos.getX(), pos.getY(), pos.getZ(),
+                                    ModSounds.FIREFLY_BUZZ.get(),
+                                    SoundSource.AMBIENT,
+                                    ENVIRONMENT.fireflies.fireflySoundVolume.get(),
+                                    1, false
+                            );
                         }
                     }
                 }
