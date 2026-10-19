@@ -8,13 +8,17 @@ body:
       value: |
         Thank you for taking the time to submit a crash report!
         Please be aware that you may or may not receive a response.
-        If you do please make sure to be sure to answer any additional questions,
+        If you do, please make sure to be sure to answer any additional questions,
         otherwise this issue may not be able to be fixed.
+        <br>
+        Please do not paste your logs/crash reports in the description.
+        Please do not paste an AI explanation of the logs/crash report, it isn't helpful.
   - type: checkboxes
     attributes:
-      label: "Dependency mods"
+      label: ""
       options:
         - label: "I am using the latest Fzzy Config version"
+        - label: "This post was assisted by AI (e.g. The description is AI generated, AI assisted in testing/reproducing issue)"
   - type: dropdown
     attributes:
       label: "Mod Loader"
@@ -55,14 +59,14 @@ body:
   - type: input
     attributes:
       label: "Crash Report"
-      description: "Please provide a link to a your crash report file uploaded to [mclogs](https://mclo.gs/) (recommended) / [Gist](https://gist.github.com/) / [pastebin](https://pastebin.com/) / etc. Please make sure it isn't set to expire"
+      description: "Please provide a link to a your crash report file uploaded to [mclogs](https://mclo.gs/) (highly recommended) / [Gist](https://gist.github.com/) / [pastebin](https://pastebin.com/) / etc. Please make sure it isn't set to expire"
       placeholder: "Example: https://mclo.gs/"
     validations:
       required: true
   - type: input
     attributes:
       label: "Logs File (Optional, but recommended)"
-      description: "Please provide a link to a your latest.log file uploaded to [mclogs](https://mclo.gs/) (recommended) / [Gist](https://gist.github.com/) / [pastebin](https://pastebin.com/) / etc. Please make sure it isn't set to expire"
+      description: "Please provide a link to a your latest.log file uploaded to [mclogs](https://mclo.gs/) (highly recommended) / [Gist](https://gist.github.com/) / [pastebin](https://pastebin.com/) / etc. Please make sure it isn't set to expire"
       placeholder: "Example: https://mclo.gs/"
     validations:
       required: false

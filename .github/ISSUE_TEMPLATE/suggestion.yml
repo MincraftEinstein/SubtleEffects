@@ -8,6 +8,11 @@ body:
       value: |
         Thank you for taking the time to submit a suggestion!
         Please be aware that you may or may not receive a response.
+  - type: checkboxes
+    attributes:
+      label: ""
+      options:
+        - label: "I am using the latest Fzzy Config version"
   - type: dropdown
     attributes:
       label: "Mod Loader"
