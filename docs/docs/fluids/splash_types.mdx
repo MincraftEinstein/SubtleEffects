@@ -18,17 +18,10 @@ Create a new JSON file in the `assets/{namespace}/subtle_effects/fluid_definitio
 
 | Name           | Required | Description |
 |----------------|----|------------------|
-| `sprite_set`   | No | String ID of a particle definition in `assets/{namespace}/particles` |
+| `sprite_set`   | No | String ID of a particle definition. <br/> The ID for a particle definition is the namespace defining it followed by the path relative to the `/particles` folder. For example, the path for the flame particle is: `assets/minecraft/particles/flame.json` and it's ID is: `minecraft:flame`. For a particle definition in a subfolder e.g. `assets/examplepack/particles/example_path/example.json` the ID would be: `examplepack:example_path/example` |
 | `color`        | No | A [Color Provider]($color_providers) used to determine a particle's color |
 | `tinting`      | No | An object containing either a float from 0 to 1 defined as `"intensity"`, which will change the strength that the `color` is applied to the particle, or a boolean defined as "use_config", which will use the value of the `Entities > Splashes > Splash Overlay Tint` config |
 | `transparency` | No | An object containing either a float from 0 to 1 defined as `"alpha"`, or a boolean defined as `"use_config"`, which will use the value of the `Entities > Splashes > Splash Overlay Alpha` config |
-
-{/* TODO idk what to do with this but particle definitions also need one */}
-{/* ## IDs */}
-{/* The ID for a splash type is the namespace of the resource pack defining the splash type followed by the path relative to */}
-{/* the `/subtle_effects/splash_types` folder. For example, the path of the water splash type is: */}
-{/* `assets/minecraft/subtle_effects/fluid_definitions/water.json` and it's ID is `minecraft:water`. */}
-{/* `assets/examplepack/subtle_effects/fluid_definitions/example_path/example.json` and its ID is `examplepack:example_path/example` */}
 
 ----
 

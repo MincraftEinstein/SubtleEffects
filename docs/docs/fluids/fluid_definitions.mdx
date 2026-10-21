@@ -20,9 +20,9 @@ definition and define the IDs of the source and flowing fluid types.
 | Name             | Required | Description |
 |------------------|-----|------------------|
 | `source`         | Yes | String ID of a source fluid |
-| `flowing`        | Yes | String Id of a flowing fluid |
+| `flowing`        | Yes | String ID of a flowing fluid |
 | `cauldron`       | No  | String ID of a block that inherits from the `AbstractCauldronBlock` class |
-| `splash_type`    | No  | String ID of a [Splash Type](splash_types) |
+| `splash_type`    | No  | String ID of a [Splash Type](splash_types). <br/> The ID for a splash type is the namespace defining it followed by the path relative to the `/subtle_effects/splash_types` folder. For example, the path for the water splash type is: `assets/minecraft/subtle_effects/splash_types/water_splash.json` and it's ID is: `minecraft:water`. For a splash type in a subfolder e.g. `assets/examplepack/subtle_effects/splash_types/example_path/example.json` the ID would be: `examplepack:example_path/example` |
 | `bucket_item`    | No  | String ID of an item that inherits from the `BucketItem` class |
 | `droplets`       | No  | A [Droplet Options](droplet_options) object used for bucket interaction effects and as a fallback for [Splash Types](splash_types) |
 | `light_emission` | No  | Integer from 0 to 15. Controls brightness for splash particles |
