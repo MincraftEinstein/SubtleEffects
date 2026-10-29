@@ -159,7 +159,7 @@ public class ConfigDumpCommand {
                         .append("\n        <td>").append(getDescription(fieldPath)).append("</td>")
                         .append("\n        <td>").append(getDefaultValue(fieldValue, fieldPath)).append("</td>")
                         .append("\n        <td>").append(getAllowedValues(fieldValue, fieldPath)).append("</td>")
-                        .append("\n        <td>").append(fieldName).append("</td>")
+                        .append("\n        <td>`").append(fieldName).append("`</td>")
                         .append("\n    </tr>");
             }
         }
