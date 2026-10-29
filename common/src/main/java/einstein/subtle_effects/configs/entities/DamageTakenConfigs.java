@@ -14,7 +14,7 @@ import net.minecraft.world.damagesource.DamageTypes;
 import java.util.ArrayList;
 import java.util.List;
 
-@Translation(prefix = ModConfigs.BASE_KEY + "entities.damageTaken")
+@Translation(prefix = ModConfigs.BASE_KEY + "entities.damage_taken")
 public class DamageTakenConfigs extends ConfigSection {
 
     private static final List<ResourceLocation> DEFAULT_DAMAGE_TYPES = Util.make(new ArrayList<>(), list -> {
