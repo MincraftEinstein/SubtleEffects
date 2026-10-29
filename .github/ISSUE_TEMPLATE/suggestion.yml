@@ -10,7 +10,7 @@ body:
         Please be aware that you may or may not receive a response.
   - type: checkboxes
     attributes:
-      label: ""
+      label: "Prerequisites"
       options:
         - label: "I am using the latest Fzzy Config version"
   - type: dropdown
