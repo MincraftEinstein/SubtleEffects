@@ -7,7 +7,7 @@ The information of this page relates to Spark Providers from Subtle Effects vers
 
 ## Setup
 
-Spark providers allow [resource packs](@minecraft:Resource_packs) to add, remove, and otherwise customize spark particles for blocks. To start,
+Spark providers allow [resource packs](https://minecraft.wiki/w/Resource_pack) to add, remove, and otherwise customize spark particles for blocks. To start,
 create a new JSON file in the `assets/{namespace}/subtle_effects/spark_providers` folder of a resource pack. Next,
 inside the file create a list called `states`.
 
@@ -22,7 +22,7 @@ This list is where you provide the block states that this provider will spawn sp
 parts, the block id, and an optional list of block state properties that the block must match. Any unspecified properties
 will be ignored. For example, campfires have a `waterlogged` property, but since it is not specified in the example below
 it will be ignored and sparks will spawn regardless of whether the campfire is waterlogged or not. For a full list of
-vanilla block states please refer to [this page](@minecraft:Block_states#List_of_block_states)
+vanilla block states please refer to [this page](https://minecraft.wiki/w/Block_states#List_of_block_states)
 
 <Callout>
     The block state property value must be surrounded by quotation marks, or the file will fail to load
@@ -82,7 +82,7 @@ List of all additional optional elements for customizing behavior
 - `color` A [Color Provider](color_providers) used to determine a particle's color
 
 **If `preset` is set to `custom` then the following elements may also be used**
-- `count` An integer or [Int Provider](@minecraft:Configured_feature/int_provider) specifying the number of particles spawned at a time
+- `count` An integer or [Int Provider](https://minecraft.wiki/w/Configured_feature/int_provider) specifying the number of particles spawned at a time
 - `spark` The [Spark Type](#spark-types) to use.
 - `chance` A float from 0 to 1 of the chance that particles will be spawn during a random game tick
 - `velocity` A list of exactly three doubles used for velocity of the particles. Each double representing the X, Y, and Z axises respectively
