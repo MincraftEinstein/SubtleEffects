@@ -15,7 +15,7 @@ body:
         Please do not paste an AI explanation of the logs/crash report, it isn't helpful.
   - type: checkboxes
     attributes:
-      label: ""
+      label: "Checks"
       options:
         - label: "I am using the latest Fzzy Config version"
         - label: "This post was assisted by AI (e.g. The description is AI generated, AI assisted in testing/reproducing issue)"
