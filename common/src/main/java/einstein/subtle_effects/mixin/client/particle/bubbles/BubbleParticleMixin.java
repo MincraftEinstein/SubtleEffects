@@ -76,7 +76,7 @@ public abstract class BubbleParticleMixin extends TextureSheetParticle implement
     public void render(VertexConsumer buffer, Camera camera, float partialTicks) {
         super.render(buffer, camera, partialTicks);
         if (subtleEffects$overlaySprite != null) {
-            Quaternionf rotation = new Quaternionf();
+            Quaternionf rotation = new Quaternionf(camera.rotation());
 
             if (roll != 0) {
                 rotation.rotateZ(Mth.lerp(partialTicks, oRoll, roll));
@@ -94,16 +94,16 @@ public abstract class BubbleParticleMixin extends TextureSheetParticle implement
             float v0 = subtleEffects$overlaySprite.getV0();
             float v1 = subtleEffects$overlaySprite.getV1();
 
-            subtleEffects$renderVertex(buffer, rotation, x, y, z, 1, -1, quadSize, u1, v1, lightColor);
-            subtleEffects$renderVertex(buffer, rotation, x, y, z, 1, 1, quadSize, u1, v0, lightColor);
-            subtleEffects$renderVertex(buffer, rotation, x, y, z, -1, 1, quadSize, u0, v0, lightColor);
-            subtleEffects$renderVertex(buffer, rotation, x, y, z, -1, -1, quadSize, u0, v1, lightColor);
+            subtleEffects$renderVertex(buffer, rotation, x, y, z, -1, -1, quadSize, u1, v1, lightColor);
+            subtleEffects$renderVertex(buffer, rotation, x, y, z, -1, 1, quadSize, u1, v0, lightColor);
+            subtleEffects$renderVertex(buffer, rotation, x, y, z, 1, 1, quadSize, u0, v0, lightColor);
+            subtleEffects$renderVertex(buffer, rotation, x, y, z, 1, -1, quadSize, u0, v1, lightColor);
         }
     }
 
     @Unique
     private void subtleEffects$renderVertex(VertexConsumer buffer, Quaternionf quaternion, float x, float y, float z, float xOffset, float yOffset, float quadSize, float u, float v, int packedLight) {
-        Vector3f vector3f = (new Vector3f(xOffset, yOffset, 0)).rotate(quaternion).mul(quadSize).add(x, y, z);
+        Vector3f vector3f = new Vector3f(xOffset, yOffset, 0).rotate(quaternion).mul(quadSize).add(x, y, z);
         float colorIntensity = 0.20F;
         float whiteIntensity = 1 - colorIntensity;
 
