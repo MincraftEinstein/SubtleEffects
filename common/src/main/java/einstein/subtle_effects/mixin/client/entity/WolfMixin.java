@@ -7,6 +7,7 @@ import einstein.subtle_effects.particle.DropletParticle;
 import einstein.subtle_effects.util.Util;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.animal.Wolf;
 import net.minecraft.world.level.Level;

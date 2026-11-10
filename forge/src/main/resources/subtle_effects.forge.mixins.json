@@ -16,11 +16,12 @@
     "client.item.ForgeBucketItemAccessor",
     "client.item.ForgeBucketItemMixin",
     "client.item.ForgeSpawnEggItemAccessor",
-    "client.particle.ForgeParticleEngineMixin"
+    "client.particle.ForgeParticleEngineMixin",
+    "client.particle.ForgeShriekParticleMixin"
   ],
   "mixins": [
-    "common.block.dispenser.ForgeShearsDispenseItemBehaviorMixin",
     "common.ForgeStonecutter$2Menu",
+    "common.block.dispenser.ForgeShearsDispenseItemBehaviorMixin",
     "common.entity.ForgeCommonMooshroomMixin"
   ],
   "injectors": {

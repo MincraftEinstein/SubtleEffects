@@ -88,6 +88,7 @@ dependencies {
     compileOnly fg.deobf("maven.modrinth:embeddium:${forge_embeddium_version}")
     compileOnly fg.deobf("maven.modrinth:oculus:${forge_oculus_version}")
     compileOnly("maven.modrinth:lootr:${forge_lootr_version}")
+    implementation fg.deobf("maven.modrinth:simple-voice-chat:${forge_simple_vc_version}")
 }
 
 tasks.withType(JavaCompile).configureEach {

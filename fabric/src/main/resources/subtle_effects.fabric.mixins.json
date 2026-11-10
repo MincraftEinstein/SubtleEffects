@@ -13,7 +13,8 @@
     "client.entity.FabricClientEntityMixin",
     "client.item.FabricBucketItemAccessor",
     "client.item.FabricBucketItemMixin",
-    "client.particle.FabricParticleEngineMixin"
+    "client.particle.FabricParticleEngineMixin",
+    "client.particle.FabricShriekParticleMixin"
   ],
   "mixins": [
     "common.FabricEnchantmentMenuMixin",
