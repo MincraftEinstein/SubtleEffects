@@ -156,6 +156,7 @@ public class ModBlockConfigs extends Config {
     public boolean underwaterBlockBreakBubbles = true;
     public ConfigGroup underwaterContainerBubblingGroup = new ConfigGroup("underwater_container_bubbling");
     public boolean decoratedPotsSpawnBubbles = true;
+    public boolean decoratedPotsInteractionBubbles = true;
     public boolean openingBarrelsSpawnsBubbles = true;
     public boolean openingChestsSpawnsBubbles = true;
     public ValidatedInt chestsOpenRandomlyUnderwaterFrequency = new ValidatedInt(5, 60, 0);

@@ -19,7 +19,7 @@ import einstein.subtle_effects.ticking.tickers.TickerManager;
 import einstein.subtle_effects.ticking.tickers.WaterfallTicker;
 import einstein.subtle_effects.ticking.tickers.entity.EntityTickerManager;
 import einstein.subtle_effects.util.HolidayHelper;
-import einstein.subtle_effects.util.Util;
+import einstein.subtle_effects.util.MathUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.PlayerModel;
@@ -89,7 +89,7 @@ public class SubtleEffectsClient {
             sendSystemMsg(player, Component.empty()
                     .append(Component.translatable("chat.subtle_effects.prefix").withStyle(style -> style.withColor(ChatFormatting.BLUE)))
                     .append(CommonComponents.SPACE)
-                    .append(Component.translatable("chat.subtle_effects.anniversary.message", Util.formatOrdinal(years), Component.translatable("chat.subtle_effects.anniversary.message.click_event")
+                    .append(Component.translatable("chat.subtle_effects.anniversary.message", MathUtil.formatOrdinal(years), Component.translatable("chat.subtle_effects.anniversary.message.click_event")
                             .withStyle(style -> style.withUnderlined(true)
                                     .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Component.translatable("chat.subtle_effects.anniversary.message.click_event.tooltip")))
                                     .withClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/configure subtle_effects general")))

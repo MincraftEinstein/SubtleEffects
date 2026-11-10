@@ -9,6 +9,8 @@ import net.minecraft.world.phys.Vec3;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
+import static einstein.subtle_effects.util.MathUtil.toRadians;
+
 public abstract class FlatPlaneParticle extends TextureSheetParticle {
 
     // Note: rotation is in radians
@@ -21,6 +23,19 @@ public abstract class FlatPlaneParticle extends TextureSheetParticle {
 
     protected FlatPlaneParticle(ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
         super(level, x, y, z, xSpeed, ySpeed, zSpeed);
+    }
+
+    protected void horizontalRandomized() {
+        randomizedY();
+        horizontal();
+    }
+
+    protected void randomizedY() {
+        rotation.rotateY(toRadians(90 * random.nextInt(3)));
+    }
+
+    protected void horizontal() {
+        rotation.rotateX(toRadians(90));
     }
 
     @Override

@@ -12,7 +12,6 @@ import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.client.particle.ParticleRenderType;
 import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.core.BlockPos;
-import net.minecraft.util.Mth;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
 
@@ -27,7 +26,7 @@ public class RippleParticle extends FlatPlaneParticle {
     protected RippleParticle(ClientLevel level, double x, double y, double z, SpriteSet sprites, float scale) {
         super(level, x, y, z);
         this.sprites = sprites;
-        rotation.rotateX(90 * Mth.DEG_TO_RAD);
+        horizontal();
         setSpriteFromAge(sprites);
         scale(scale);
         lifetime = 5;

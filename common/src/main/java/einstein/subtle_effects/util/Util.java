@@ -8,6 +8,7 @@ import einstein.subtle_effects.compat.EndRemasteredCompat;
 import einstein.subtle_effects.data.FluidDefinition;
 import einstein.subtle_effects.data.MobSkullShaderData;
 import einstein.subtle_effects.data.MobSkullShaderReloadListener;
+import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.init.ModParticles;
 import einstein.subtle_effects.mixin.client.GameRendererAccessor;
 import einstein.subtle_effects.mixin.common.block.AbstractCauldronBlockAccessor;
@@ -21,6 +22,7 @@ import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.PostChain;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.SectionPos;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.core.particles.ParticleOptions;
@@ -34,17 +36,22 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.AbstractCauldronBlock;
+import net.minecraft.world.level.block.BedBlock;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.BubbleColumnBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.Optional;
 
 import java.util.List;
 
@@ -194,18 +201,36 @@ public class Util {
         return player.getStringUUID().equals(UUID);
     }
 
-    public static String formatOrdinal(long number) {
-        String stringValue = String.valueOf(number);
-        if (stringValue.endsWith("1") && !stringValue.endsWith("11")) {
-            return stringValue + "st";
+    @SuppressWarnings("SuspiciousNameCombination")
+    public static <T extends Entity> Vec3 adjustedNameTagPosition(T entity, Vec3 nameTagPos) {
+        if (!ModConfigs.ENTITIES.sleeping.adjustNameTagWhenSleeping) {
+            return nameTagPos;
         }
-        else if (stringValue.endsWith("2") && !stringValue.endsWith("12")) {
-            return stringValue + "nd";
+
+        if (entity instanceof LivingEntity livingEntity && livingEntity.isSleeping()) {
+            Level level = entity.level();
+            Optional<BlockPos> pos = livingEntity.getSleepingPos();
+
+            if (pos.isPresent()) {
+                BlockState state = level.getBlockState(pos.get());
+
+                if (state.hasProperty(BedBlock.OCCUPIED) && state.getValue(BedBlock.OCCUPIED)) {
+                    Direction facing = state.hasProperty(BedBlock.FACING) ? state.getValue(BedBlock.FACING) : Direction.NORTH;
+                    double x = nameTagPos.x();
+                    double y = nameTagPos.y() + 0.5;
+                    double z = nameTagPos.z() - 0.5;
+
+                    return switch (facing) {
+                        case NORTH -> new Vec3(z, x, -y);
+                        case SOUTH -> new Vec3(z, x, y);
+                        case EAST -> new Vec3(y, z, x);
+                        case WEST -> new Vec3(-y, z, x);
+                        default -> nameTagPos;
+                    };
+                }
+            }
         }
-        else if (stringValue.endsWith("3") && !stringValue.endsWith("13")) {
-            return stringValue + "rd";
-        }
-        return stringValue + "th";
+        return nameTagPos;
     }
 
     public static boolean isRainingAt(Level level, BlockPos pos) {
@@ -232,5 +257,19 @@ public class Util {
         });
 
         return harmful[0] > notHarmful[0];
+    }
+
+    public static boolean isUnderwater(Level level, BlockPos pos) {
+        return level.isWaterAt(pos) && level.getBlockState(pos.above()).is(Blocks.WATER);
+    }
+
+    public static boolean isNotAboveUpwardsBubbleColumn(Level level, BlockPos pos) {
+        BlockState belowState = level.getBlockState(pos.below());
+        return !belowState.is(Blocks.SOUL_SAND) && (!belowState.is(Blocks.BUBBLE_COLUMN) || belowState.getValue(BubbleColumnBlock.DRAG_DOWN));
+    }
+
+    public static boolean isAboveDownwardsBubbleColumn(Level level, BlockPos pos) {
+        BlockState belowState = level.getBlockState(pos.below());
+        return belowState.is(Blocks.MAGMA_BLOCK) || (belowState.is(Blocks.BUBBLE_COLUMN) && belowState.getValue(BubbleColumnBlock.DRAG_DOWN));
     }
 }

@@ -7,7 +7,6 @@ import einstein.subtle_effects.configs.CommandBlockSpawnType;
 import einstein.subtle_effects.configs.ModBlockConfigs;
 import einstein.subtle_effects.particle.SparkParticle;
 import einstein.subtle_effects.particle.option.PositionParticleOptions;
-import einstein.subtle_effects.ticking.tickers.ChestBlockEntityTicker;
 import einstein.subtle_effects.util.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
@@ -271,8 +270,8 @@ public class ModBlockTickers {
             }
         });
         register(state -> state.getBlock() instanceof DecoratedPotBlock, () -> BLOCKS.decoratedPotsSpawnBubbles, (state, level, pos, random) -> {
-            if (ChestBlockEntityTicker.isUnderwater(level, pos)) {
-                if (ChestBlockEntityTicker.isDownwardsBubbleColumn(level, pos)) {
+            if (Util.isUnderwater(level, pos)) {
+                if (Util.isAboveDownwardsBubbleColumn(level, pos)) {
                     return;
                 }
 

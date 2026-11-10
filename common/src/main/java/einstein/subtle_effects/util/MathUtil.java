@@ -32,4 +32,22 @@ public class MathUtil {
     public static int color(int alpha, int rgb) {
         return alpha << 24 | rgb & 16777215;
     }
+
+    public static float toRadians(float degrees) {
+        return degrees * Mth.DEG_TO_RAD;
+    }
+
+    public static String formatOrdinal(long number) {
+        String stringValue = String.valueOf(number);
+        if (stringValue.endsWith("1") && !stringValue.endsWith("11")) {
+            return stringValue + "st";
+        }
+        else if (stringValue.endsWith("2") && !stringValue.endsWith("12")) {
+            return stringValue + "nd";
+        }
+        else if (stringValue.endsWith("3") && !stringValue.endsWith("13")) {
+            return stringValue + "rd";
+        }
+        return stringValue + "th";
+    }
 }

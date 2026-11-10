@@ -19,6 +19,7 @@ public class CompatHelper {
     public static final String PARTICLE_RAIN_MOD_ID = "particlerain";
     public static final String SERENESEASONS_MOD_ID = "sereneseasons";
     public static final String HARDENED_ARMADILLOS_MOD_ID = "hardenedarmadillos";
+    public static final String SIMPLE_VC_MOD_ID = "voicechat";
 
     public static final Supplier<Boolean> IS_SERENE_SEANSONS_LOADED = isLoaded(SERENESEASONS_MOD_ID);
     public static final Supplier<Boolean> IS_SOUL_FIRED_LOADED = isLoaded("soul_fire_d");
