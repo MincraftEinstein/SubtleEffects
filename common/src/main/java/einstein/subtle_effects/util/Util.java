@@ -215,9 +215,10 @@ public class Util {
 
                 if (state.hasProperty(BedBlock.OCCUPIED) && state.getValue(BedBlock.OCCUPIED)) {
                     Direction facing = state.hasProperty(BedBlock.FACING) ? state.getValue(BedBlock.FACING) : Direction.NORTH;
-                    double x = nameTagPos.x();
+                    Direction.Axis axis = facing.getAxis();
+                    double x = nameTagPos.x() + (0.3 * (axis == Direction.Axis.Z ? -1 : 0));
                     double y = nameTagPos.y() + 0.5;
-                    double z = nameTagPos.z() - 0.5;
+                    double z = nameTagPos.z() + (0.3 * (axis == Direction.Axis.X ? -1 : 0));
 
                     return switch (facing) {
                         case NORTH -> new Vec3(z, x, -y);
