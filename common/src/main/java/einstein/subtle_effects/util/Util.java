@@ -11,8 +11,8 @@ import einstein.subtle_effects.data.MobSkullShaderReloadListener;
 import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.init.ModParticles;
 import einstein.subtle_effects.mixin.client.GameRendererAccessor;
-import einstein.subtle_effects.mixin.common.block.AbstractCauldronBlockAccessor;
 import einstein.subtle_effects.mixin.client.entity.AbstractHorseAccessor;
+import einstein.subtle_effects.mixin.common.block.AbstractCauldronBlockAccessor;
 import einstein.subtle_effects.particle.EnderEyePlacedRingParticle;
 import einstein.subtle_effects.particle.option.DropletParticleOptions;
 import me.fzzyhmstrs.fzzy_config.validation.misc.ValidatedColor;
@@ -40,13 +40,12 @@ import net.minecraft.world.entity.animal.equine.AbstractHorse;
 import net.minecraft.world.entity.animal.parrot.Parrot;
 import net.minecraft.world.entity.monster.Strider;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.alchemy.PotionContents;
 import net.minecraft.world.item.ItemStackTemplate;
+import net.minecraft.world.item.alchemy.PotionContents;
 import net.minecraft.world.item.component.Consumable;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.AbstractCauldronBlock;
-import net.minecraft.world.level.block.BedBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.BubbleColumnBlock;
@@ -57,10 +56,7 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Optional;
-
 import static einstein.subtle_effects.init.ModConfigs.BLOCKS;
-import static einstein.subtle_effects.init.ModConfigs.ENTITIES;
 import static einstein.subtle_effects.init.ModRenderStateAttachmentKeys.IS_SLEEPING;
 
 public class Util {
@@ -243,20 +239,18 @@ public class Util {
     }
 
     @SuppressWarnings("SuspiciousNameCombination")
-    public static <T extends Entity> Vec3 adjustedNameTagPosition(T entity, Vec3 nameTagPos) {
+    public static Vec3 adjustedNameTagPosition(EntityRenderState renderState, Vec3 nameTagPos) {
         if (!ModConfigs.ENTITIES.sleeping.adjustNameTagWhenSleeping) {
             return nameTagPos;
         }
 
-        if (entity instanceof LivingEntity livingEntity && livingEntity.isSleeping()) {
-            Level level = entity.level();
-            Optional<BlockPos> pos = livingEntity.getSleepingPos();
+        if (renderState instanceof LivingEntityRenderState livingEntityRenderState) {
+            boolean isSleeping = ((RenderStateAttachmentAccessor) renderState).subtleEffects$get(IS_SLEEPING, false);
 
-            if (pos.isPresent()) {
-                BlockState state = level.getBlockState(pos.get());
+            if (isSleeping) {
+                Direction facing = livingEntityRenderState.bedOrientation;
 
-                if (state.hasProperty(BedBlock.OCCUPIED) && state.getValue(BedBlock.OCCUPIED)) {
-                    Direction facing = state.hasProperty(BedBlock.FACING) ? state.getValue(BedBlock.FACING) : Direction.NORTH;
+                if (facing != null) {
                     Direction.Axis axis = facing.getAxis();
                     double x = nameTagPos.x() + (0.3 * (axis == Direction.Axis.Z ? -1 : 0));
                     double y = nameTagPos.y() + 0.5;

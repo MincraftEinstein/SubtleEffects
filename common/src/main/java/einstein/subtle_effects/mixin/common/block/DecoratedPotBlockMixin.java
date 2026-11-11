@@ -28,7 +28,7 @@ public class DecoratedPotBlockMixin {
         if (Util.isUnderwater(level, pos)) {
             if (!Util.isAboveDownwardsBubbleColumn(level, pos)) {
                 PayloadSender.sendToClientsTracking(null, level, pos, new ClientBoundDecoratedPotInteractionPayload(pos), skippedPlayer ->
-                        level.sendParticles(skippedPlayer, type, false, posX, posY, posZ, particleCount, xOffset, yOffset, zOffset, speed)
+                        level.sendParticles(skippedPlayer, type, false, false, posX, posY, posZ, particleCount, xOffset, yOffset, zOffset, speed)
                 );
                 return -1;
             }

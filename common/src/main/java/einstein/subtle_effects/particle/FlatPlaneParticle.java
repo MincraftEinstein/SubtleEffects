@@ -36,7 +36,7 @@ public abstract class FlatPlaneParticle extends SingleQuadParticle {
     }
 
     protected void horizontal() {
-        rotation.rotateX(toRadians(90));
+        rotation.rotateX(toRadians(-90));
     }
 
     @Override
@@ -64,8 +64,9 @@ public abstract class FlatPlaneParticle extends SingleQuadParticle {
 
     protected void renderQuad(QuadParticleRenderState state, Quaternionf rotation, float partialTicks, float x, float y, float z, boolean renderInverted) {
         if (renderInverted) {
-            rotation.rotateY(radians(-180));
+            rotation.rotateY(toRadians(-180));
         }
+
         state.add(
                 getLayer(),
                 x, y, z,
