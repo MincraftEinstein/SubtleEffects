@@ -12,7 +12,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.state.BlockState;
 
-import static einstein.subtle_effects.util.Util.radians;
+import static einstein.subtle_effects.util.MathUtil.toRadians;
 
 public class ProjectileSplatParticle extends FlatPlaneParticle {
 
@@ -24,13 +24,13 @@ public class ProjectileSplatParticle extends FlatPlaneParticle {
         super(level, x, y, z, sprite);
         direction = options.direction();
         blockPos = options.pos();
-        rotation = direction.getRotation().rotateX(radians(-90));
+        rotation = direction.getRotation().rotateX(toRadians(-90));
         lifetime = 120;
         quadSize = 0.2F;
         scale(1.5F);
 
         if (direction.getAxis().isVertical()) {
-            rotation.rotateZ(radians(90 * random.nextInt(3)));
+            randomizedY();
         }
     }
 

@@ -33,6 +33,7 @@ dependencies {
     compileOnly ("fuzs.puzzleslib:puzzleslib-common:$puzzleslib_version") {
         exclude group: "net.fabricmc.fabric-api"
     }
+    compileOnly("maven.modrinth:simple-voice-chat:${neoforge_simple_vc_version}")
 }
 
 configurations {

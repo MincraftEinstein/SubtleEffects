@@ -2,6 +2,7 @@ package einstein.subtle_effects.mixin.client.entity;
 
 import com.llamalad7.mixinextras.sugar.Local;
 import einstein.subtle_effects.util.RenderStateAttachmentAccessor;
+import einstein.subtle_effects.util.Util;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.state.EntityRenderState;
@@ -15,7 +16,6 @@ import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import static einstein.subtle_effects.init.ModRenderStateAttachmentKeys.*;
-import static einstein.subtle_effects.util.Util.getAdjustedNameTagPosition;
 
 @Mixin(EntityRenderer.class)
 public class EntityRendererMixin<T extends Entity, S extends EntityRenderState> {
@@ -40,6 +40,6 @@ public class EntityRendererMixin<T extends Entity, S extends EntityRenderState> 
             index = 1
     )
     private Vec3 adjustNameTagOffset(Vec3 nameTagAttachment, @Local(argsOnly = true) EntityRenderState renderState) {
-        return getAdjustedNameTagPosition(renderState, nameTagAttachment);
+        return Util.adjustedNameTagPosition(renderState, nameTagAttachment);
     }
 }

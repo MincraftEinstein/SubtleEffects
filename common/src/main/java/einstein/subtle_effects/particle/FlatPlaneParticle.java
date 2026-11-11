@@ -10,7 +10,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
 import org.joml.Quaternionf;
 
-import static einstein.subtle_effects.util.Util.radians;
+import static einstein.subtle_effects.util.MathUtil.toRadians;
 
 public abstract class FlatPlaneParticle extends SingleQuadParticle {
 
@@ -24,6 +24,19 @@ public abstract class FlatPlaneParticle extends SingleQuadParticle {
 
     protected FlatPlaneParticle(ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, TextureAtlasSprite sprite) {
         super(level, x, y, z, xSpeed, ySpeed, zSpeed, sprite);
+    }
+
+    protected void horizontalRandomized() {
+        randomizedY();
+        horizontal();
+    }
+
+    protected void randomizedY() {
+        rotation.rotateY(toRadians(90 * random.nextInt(3)));
+    }
+
+    protected void horizontal() {
+        rotation.rotateX(toRadians(90));
     }
 
     @Override
