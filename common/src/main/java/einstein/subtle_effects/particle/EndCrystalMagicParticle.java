@@ -10,7 +10,8 @@ import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.phys.Vec3;
 
-import static net.minecraft.util.Mth.*;
+import static net.minecraft.util.Mth.nextDouble;
+import static net.minecraft.util.Mth.nextFloat;
 
 public class EndCrystalMagicParticle extends GlowingSuspendedParticle {
 
@@ -54,7 +55,7 @@ public class EndCrystalMagicParticle extends GlowingSuspendedParticle {
 
     @Override
     public void move(double xd, double yd, double zd) {
-        Vec3 rotatedOffset = new Vec3(offset, 0, 0).yRot(yaw * DEG_TO_RAD);
+        Vec3 rotatedOffset = new Vec3(offset, 0, 0).yRot(MathUtil.toRadians(yaw));
         setPos(pos.x() + rotatedOffset.x(), y + yd, pos.z() + rotatedOffset.z());
     }
 

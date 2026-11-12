@@ -17,10 +17,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.component.DataComponents;
-import net.minecraft.core.particles.ItemParticleOption;
-import net.minecraft.core.particles.ParticleOptions;
-import net.minecraft.core.particles.ParticleType;
-import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.particles.*;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -64,7 +61,6 @@ import java.util.function.Supplier;
 import static einstein.subtle_effects.init.ModConfigs.*;
 import static einstein.subtle_effects.util.MathUtil.*;
 import static einstein.subtle_effects.util.Util.template;
-import static net.minecraft.util.Mth.DEG_TO_RAD;
 import static net.minecraft.util.Mth.nextFloat;
 import static net.minecraft.world.level.block.state.properties.BlockStateProperties.*;
 
@@ -281,8 +277,8 @@ public class ParticleSpawnUtil {
     }
 
     public static void spawnEntityFaceParticle(ParticleOptions options, LivingEntity entity, Level level, RandomSource random, Vec3 offset, Vec3 speed, float partialTick) {
-        speed = speed.xRot(-entity.getViewXRot(partialTick) * DEG_TO_RAD);
-        speed = speed.yRot(-entity.getViewYRot(partialTick) * DEG_TO_RAD);
+        speed = speed.xRot(toRadians(-entity.getViewXRot(partialTick)));
+        speed = speed.yRot(toRadians(-entity.getViewYRot(partialTick)));
         spawnEntityFaceParticle(options, entity, level, offset, speed, partialTick);
     }
 
@@ -291,8 +287,8 @@ public class ParticleSpawnUtil {
     }
 
     public static void spawnEntityHeadParticle(ParticleOptions options, LivingEntity entity, Level level, Vec3 pos, Vec3 speed, float partialTick) {
-        pos = pos.xRot(-entity.getViewXRot(partialTick) * DEG_TO_RAD);
-        pos = pos.yRot(-entity.getViewYRot(partialTick) * DEG_TO_RAD);
+        pos = pos.xRot(toRadians(-entity.getViewXRot(partialTick)));
+        pos = pos.yRot(toRadians(-entity.getViewYRot(partialTick)));
         pos = pos.add(entity.getX(), entity.getEyeY(), entity.getZ());
         level.addParticle(options, pos.x(), pos.y(), pos.z(), speed.x(), speed.y(), speed.z());
     }
@@ -730,6 +726,25 @@ public class ParticleSpawnUtil {
                         0, 0, 0
                 );
             }
+        }
+    }
+
+    public static void eyeBlossomParticles(BlockState state, Level level, BlockPos pos, RandomSource random, double yOffsetMin) {
+        if (random.nextInt(20) == 0) {
+            double scale = 0.5 + random.nextDouble();
+            Vec3 offsetPos = getFlowerPos(state, pos, random, yOffsetMin, 0.2, 0.125);
+            level.addParticle(
+                    new TrailParticleOption(
+                            offsetPos.add(new Vec3(
+                                    nextNonAbsDouble(random, 0.5),
+                                    random.nextDouble() + (0.5 - yOffsetMin),
+                                    nextNonAbsDouble(random, 0.5)
+                            ).scale(scale)), 0xFC7812, (int) (20 * scale)),
+                    offsetPos.x(),
+                    offsetPos.y(),
+                    offsetPos.z(),
+                    0, 0, 0
+            );
         }
     }
 

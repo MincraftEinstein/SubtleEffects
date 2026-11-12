@@ -16,7 +16,7 @@ import net.minecraft.world.phys.Vec3;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
-import static einstein.subtle_effects.util.Util.radians;
+import static einstein.subtle_effects.util.MathUtil.toRadians;
 
 public class EnderEyePlacedRingParticle extends FlatPlaneParticle {
 
@@ -44,9 +44,9 @@ public class EnderEyePlacedRingParticle extends FlatPlaneParticle {
         float z = (float) (Mth.lerp(partialTicks, zo, this.z) - cameraPos.z());
 
         renderQuad(state, new Quaternionf(), partialTicks, x, y, z + SIZE);
-        renderQuad(state, new Quaternionf().rotateY(radians(90)), partialTicks, x - SIZE, y, z);
-        renderQuad(state, new Quaternionf().rotateY(radians(180)), partialTicks, x, y, z - SIZE);
-        renderQuad(state, new Quaternionf().rotateY(radians(-90)), partialTicks, x + SIZE, y, z);
+        renderQuad(state, new Quaternionf().rotateY(toRadians(90)), partialTicks, x - SIZE, y, z);
+        renderQuad(state, new Quaternionf().rotateY(toRadians(180)), partialTicks, x, y, z - SIZE);
+        renderQuad(state, new Quaternionf().rotateY(toRadians(-90)), partialTicks, x + SIZE, y, z);
     }
 
     protected void renderQuad(QuadParticleRenderState state, Quaternionf rotation, float partialTicks, float x, float y, float z) {

@@ -8,10 +8,11 @@ import einstein.subtle_effects.compat.EndRemasteredCompat;
 import einstein.subtle_effects.data.FluidDefinition;
 import einstein.subtle_effects.data.MobSkullShaderData;
 import einstein.subtle_effects.data.MobSkullShaderReloadListener;
+import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.init.ModParticles;
 import einstein.subtle_effects.mixin.client.GameRendererAccessor;
-import einstein.subtle_effects.mixin.common.block.AbstractCauldronBlockAccessor;
 import einstein.subtle_effects.mixin.client.entity.AbstractHorseAccessor;
+import einstein.subtle_effects.mixin.common.block.AbstractCauldronBlockAccessor;
 import einstein.subtle_effects.particle.EnderEyePlacedRingParticle;
 import einstein.subtle_effects.particle.option.DropletParticleOptions;
 import me.fzzyhmstrs.fzzy_config.validation.misc.ValidatedColor;
@@ -19,7 +20,6 @@ import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.SingleQuadParticle;
 import net.minecraft.client.renderer.GameRenderer;
-import net.minecraft.client.renderer.entity.state.EntityRenderState;
 import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -39,14 +39,15 @@ import net.minecraft.world.entity.animal.equine.AbstractHorse;
 import net.minecraft.world.entity.animal.parrot.Parrot;
 import net.minecraft.world.entity.monster.Strider;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.alchemy.PotionContents;
 import net.minecraft.world.item.ItemStackTemplate;
+import net.minecraft.world.item.alchemy.PotionContents;
 import net.minecraft.world.item.component.Consumable;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.AbstractCauldronBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.BubbleColumnBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.material.Fluid;
@@ -55,9 +56,7 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
 import static einstein.subtle_effects.init.ModConfigs.BLOCKS;
-import static einstein.subtle_effects.init.ModConfigs.ENTITIES;
 import static einstein.subtle_effects.init.ModRenderStateAttachmentKeys.IS_SLEEPING;
-import static net.minecraft.util.Mth.DEG_TO_RAD;
 
 public class Util {
 
@@ -239,55 +238,31 @@ public class Util {
     }
 
     @SuppressWarnings("SuspiciousNameCombination")
-    public static Vec3 getAdjustedNameTagPosition(EntityRenderState renderState, Vec3 nameTagAttachment) {
-        if (nameTagAttachment == null) {
-            return null;
+    public static Vec3 adjustedNameTagPosition(LivingEntityRenderState renderState, Vec3 nameTagPos) {
+        if (!ModConfigs.ENTITIES.sleeping.adjustNameTagWhenSleeping) {
+            return nameTagPos;
         }
 
-        if (!ENTITIES.sleeping.adjustNameTagWhenSleeping) {
-            return nameTagAttachment;
-        }
+        boolean isSleeping = ((RenderStateAttachmentAccessor) renderState).subtleEffects$get(IS_SLEEPING, false);
+        if (isSleeping) {
+            Direction facing = renderState.bedOrientation;
 
-        if (renderState instanceof LivingEntityRenderState livingRenderState) {
-            Boolean isSleeping = ((RenderStateAttachmentAccessor) renderState).subtleEffects$get(IS_SLEEPING);
+            if (facing != null) {
+                Direction.Axis axis = facing.getAxis();
+                double x = nameTagPos.x() + (0.3 * (axis == Direction.Axis.Z ? -1 : 0));
+                double y = nameTagPos.y() + 0.5;
+                double z = nameTagPos.z() + (0.3 * (axis == Direction.Axis.X ? -1 : 0));
 
-            if (isSleeping != null && isSleeping) {
-                Direction facing = livingRenderState.bedOrientation;
-
-                if (facing != null) {
-                    var x = nameTagAttachment.x();
-                    var y = nameTagAttachment.y() + 0.5;
-                    var z = nameTagAttachment.z() - 0.5;
-
-                    return switch (facing) {
-                        case NORTH -> new Vec3(x, z, -y);
-                        case SOUTH -> new Vec3(x, z, y);
-                        case EAST -> new Vec3(y, z, x);
-                        case WEST -> new Vec3(-y, z, x);
-                        default -> nameTagAttachment;
-                    };
-                }
+                return switch (facing) {
+                    case NORTH -> new Vec3(z, x, -y);
+                    case SOUTH -> new Vec3(z, x, y);
+                    case EAST -> new Vec3(y, z, x);
+                    case WEST -> new Vec3(-y, z, x);
+                    default -> nameTagPos;
+                };
             }
         }
-        return nameTagAttachment;
-    }
-
-    public static float radians(float degrees) {
-        return degrees * DEG_TO_RAD;
-    }
-
-    public static String formatOrdinal(long number) {
-        String stringValue = String.valueOf(number);
-        if (stringValue.endsWith("1") && !stringValue.endsWith("11")) {
-            return stringValue + "st";
-        }
-        else if (stringValue.endsWith("2") && !stringValue.endsWith("12")) {
-            return stringValue + "nd";
-        }
-        else if (stringValue.endsWith("3") && !stringValue.endsWith("13")) {
-            return stringValue + "rd";
-        }
-        return stringValue + "th";
+        return nameTagPos;
     }
 
     public static boolean isRainingAt(Level level, BlockPos pos) {
@@ -326,5 +301,19 @@ public class Util {
             return entity.getY() < pos.getY() + cauldronBlock.getFillHeight(state) && entity.getBoundingBox().maxY > pos.getY() + 0.25;
         }
         return false;
+    }
+
+    public static boolean isUnderwater(Level level, BlockPos pos) {
+        return level.isWaterAt(pos) && level.getBlockState(pos.above()).is(Blocks.WATER);
+    }
+
+    public static boolean isNotAboveUpwardsBubbleColumn(Level level, BlockPos pos) {
+        BlockState belowState = level.getBlockState(pos.below());
+        return !belowState.is(Blocks.SOUL_SAND) && (!belowState.is(Blocks.BUBBLE_COLUMN) || belowState.getValue(BubbleColumnBlock.DRAG_DOWN));
+    }
+
+    public static boolean isAboveDownwardsBubbleColumn(Level level, BlockPos pos) {
+        BlockState belowState = level.getBlockState(pos.below());
+        return belowState.is(Blocks.MAGMA_BLOCK) || (belowState.is(Blocks.BUBBLE_COLUMN) && belowState.getValue(BubbleColumnBlock.DRAG_DOWN));
     }
 }

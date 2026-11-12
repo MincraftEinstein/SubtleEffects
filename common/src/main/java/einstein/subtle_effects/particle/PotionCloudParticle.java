@@ -24,7 +24,7 @@ public class PotionCloudParticle extends FlatPlaneParticle {
         xd = nextNonAbsDouble(random, 0, 0.03);
         zd = nextNonAbsDouble(random, 0, 0.03);
         lifetime = Mth.nextInt(random, 25, 30);
-        rotation.rotateY(90 * random.nextInt(3) * Mth.DEG_TO_RAD).rotateX(-90 * Mth.DEG_TO_RAD);
+        horizontalRandomized();
         alpha = lifetimeAlpha.startAlpha();
         quadSize = 1;
         setSize(2, 0.1F);

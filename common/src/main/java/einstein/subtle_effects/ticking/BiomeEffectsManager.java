@@ -40,8 +40,8 @@ public class BiomeEffectsManager {
 
     public static void tick(Level level, BlockPos pos, BlockState state, RandomSource random) {
         if (!state.isCollisionShapeFullBlock(level, pos) && level.getFluidState(pos).isEmpty()) {
+            Optional<Identifier> biomeId = level.getBiome(pos).unwrapKey().map(ResourceKey::identifier);
             for (Options options : REGISTERED) {
-                Optional<Identifier> biomeId = level.getBiome(pos).unwrapKey().map(ResourceKey::identifier);
                 if (biomeId.isPresent() && options.biomesConfig().get().contains(biomeId.get())) {
                     if (random.nextDouble() * 100 < options.chance().get()) {
                         boolean isRaining = level.isRaining();

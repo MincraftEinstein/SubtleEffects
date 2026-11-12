@@ -10,7 +10,6 @@ import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.client.renderer.state.level.QuadParticleRenderState;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import org.jetbrains.annotations.Nullable;
@@ -35,7 +34,7 @@ public class PotionRingParticle extends FlatPlaneParticle {
         lifetime = 10;
         alpha = 0;
         quadSize = 0.2F;
-        rotation.rotateX(-90 * Mth.DEG_TO_RAD);
+        horizontal();
         float scale = ModConfigs.ENTITIES.humanoids.potionRingsScale.get();
         quadSize = 0.5F * scale;
         setSize(1 * scale, 0.1F);

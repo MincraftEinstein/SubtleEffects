@@ -533,6 +533,13 @@ public class ClientPayloadHandlers {
         }
     }
 
+    public static void handle(Level level, ClientBoundDecoratedPotInteractionPayload payload) {
+        if (BLOCKS.decoratedPotsInteractionBubbles) {
+            BlockPos pos = payload.pos();
+            ParticleSpawnUtil.sendParticles(level, ParticleTypes.BUBBLE_COLUMN_UP, pos.getX() + 0.5, pos.getY() + 1.2, pos.getZ() + 0.5, 7, 0, 0, 0, 0.1);
+        }
+    }
+
     private static boolean tryDoVanillaEffects(Level level, CopperGolem copperGolem, ClientBoundCopperGolemPayload.Action action, BlockPos pos, WeatheringCopper.WeatherState weatherState) {
         int stateId = Block.getId(Blocks.COPPER_BLOCK.weathering().pick(weatherState).defaultBlockState());
 

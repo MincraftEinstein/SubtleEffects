@@ -79,7 +79,7 @@ public abstract class PandaMixin extends Animal {
 
                         Vec3 deltaMovement = subtleEffects$panda.getDeltaMovement();
                         double offset = (getBbWidth() + 1) * (isBaby ? 0.5 : 0.7);
-                        float rotation = yBodyRot * Mth.DEG_TO_RAD;
+                        float rotation = MathUtil.toRadians(yBodyRot);
 
                         level.addParticle(ParticleTypes.SNEEZE,
                                 getX() - offset * Mth.sin(rotation),

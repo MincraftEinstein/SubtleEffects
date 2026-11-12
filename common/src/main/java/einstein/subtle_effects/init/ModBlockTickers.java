@@ -8,7 +8,6 @@ import einstein.subtle_effects.configs.ModBlockConfigs;
 import einstein.subtle_effects.mixin.client.block.AmethystClusterBlockAccessor;
 import einstein.subtle_effects.particle.SparkParticle;
 import einstein.subtle_effects.particle.option.PositionParticleOptions;
-import einstein.subtle_effects.ticking.tickers.ChestBlockEntityTicker;
 import einstein.subtle_effects.util.BlockTickerProvider;
 import einstein.subtle_effects.util.ParticleSpawnUtil;
 import einstein.subtle_effects.util.SparkType;
@@ -19,7 +18,6 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.core.particles.TrailParticleOption;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -254,26 +252,10 @@ public class ModBlockTickers {
                 }
             }
         });
-        register(Blocks.OPEN_EYEBLOSSOM, () -> BLOCKS.idleEyeBlossomParticles, (state, level, pos, random) -> {
-            if (random.nextInt(10) == 0) {
-                double scale = 0.5 + random.nextDouble();
-                Vec3 center = state.getShape(level, pos).bounds().getCenter();
-                Vec3 offsetPos = new Vec3(
-                        pos.getX() + (center.x),
-                        pos.getY() + (center.y),
-                        pos.getZ() + (center.z)
-                );
-
-                level.addParticle(new TrailParticleOption(
-                                offsetPos.add(new Vec3(
-                                        nextNonAbsDouble(random, 0.5),
-                                        random.nextDouble() + 1,
-                                        nextNonAbsDouble(random, 0.5)
-                                ).scale(scale)), 0xFC7812, (int) (20 * scale)
-                        ), offsetPos.x, offsetPos.y, offsetPos.z, 0, 0, 0
-                );
-            }
-        });
+        register(Blocks.OPEN_EYEBLOSSOM, () -> BLOCKS.idleEyeBlossomParticles, (state, level, pos, random) ->
+                ParticleSpawnUtil.eyeBlossomParticles(state, level, pos, random, 0.1));
+        register(Blocks.POTTED_OPEN_EYEBLOSSOM, () -> BLOCKS.idleEyeBlossomParticles, (state, level, pos, random) ->
+                ParticleSpawnUtil.eyeBlossomParticles(state, level, pos, random, 0.25));
         register(Blocks.END_PORTAL_FRAME, () -> BLOCKS.endPortalFrameParticlesDisplayType.get() != ModBlockConfigs.EndPortalFrameParticlesDisplayType.OFF, (state, level, pos, random) -> {
             if (!state.getValue(EndPortalFrameBlock.HAS_EYE)) {
                 return;
@@ -308,8 +290,8 @@ public class ModBlockTickers {
             }
         });
         register(state -> state.getBlock() instanceof DecoratedPotBlock, () -> BLOCKS.decoratedPotsSpawnBubbles, (state, level, pos, random) -> {
-            if (ChestBlockEntityTicker.isUnderwater(level, pos)) {
-                if (ChestBlockEntityTicker.isDownwardsBubbleColumn(level, pos)) {
+            if (Util.isUnderwater(level, pos)) {
+                if (Util.isAboveDownwardsBubbleColumn(level, pos)) {
                     return;
                 }
 
