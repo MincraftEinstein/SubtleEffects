@@ -35,11 +35,15 @@ public class LivingEntityRendererMixin<T extends LivingEntity, S extends LivingE
                 accessor.subtleEffects$set(ModRenderStateAttachmentKeys.ENTITY_ID, entity.getId());
             }
         }
+
+        if (state.nameTag != null && state.nameTagAttachment != null) {
+            state.nameTagAttachment = Util.adjustedNameTagPosition(state, state.nameTagAttachment);
+        }
     }
 
     @WrapOperation(method = "getRenderType", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/entity/LivingEntityRenderer;getTextureLocation(Lnet/minecraft/client/renderer/entity/state/LivingEntityRenderState;)Lnet/minecraft/resources/Identifier;"))
-    private Identifier replaceParrotTexture(LivingEntityRenderer<T, S, M> renderer, S s, Operation<Identifier> original) {
-        RenderStateAttachmentAccessor accessor = (RenderStateAttachmentAccessor) s;
+    private Identifier replaceParrotTexture(LivingEntityRenderer<T, S, M> renderer, S state, Operation<Identifier> original) {
+        RenderStateAttachmentAccessor accessor = (RenderStateAttachmentAccessor) state;
 
         if (accessor.subtleEffects$get(ModRenderStateAttachmentKeys.IS_PARTY_PARROT, false)) {
             int speed = 2;
@@ -52,6 +56,6 @@ public class LivingEntityRendererMixin<T extends LivingEntity, S extends LivingE
 
             return ParrotRenderer.getVariantTexture(Parrot.Variant.values()[Mth.lerpInt(delta, index, nextIndex)]);
         }
-        return original.call(renderer, s);
+        return original.call(renderer, state);
     }
 }

@@ -20,7 +20,6 @@ import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.SingleQuadParticle;
 import net.minecraft.client.renderer.GameRenderer;
-import net.minecraft.client.renderer.entity.state.EntityRenderState;
 import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -239,31 +238,28 @@ public class Util {
     }
 
     @SuppressWarnings("SuspiciousNameCombination")
-    public static Vec3 adjustedNameTagPosition(EntityRenderState renderState, Vec3 nameTagPos) {
+    public static Vec3 adjustedNameTagPosition(LivingEntityRenderState renderState, Vec3 nameTagPos) {
         if (!ModConfigs.ENTITIES.sleeping.adjustNameTagWhenSleeping) {
             return nameTagPos;
         }
 
-        if (renderState instanceof LivingEntityRenderState livingEntityRenderState) {
-            boolean isSleeping = ((RenderStateAttachmentAccessor) renderState).subtleEffects$get(IS_SLEEPING, false);
+        boolean isSleeping = ((RenderStateAttachmentAccessor) renderState).subtleEffects$get(IS_SLEEPING, false);
+        if (isSleeping) {
+            Direction facing = renderState.bedOrientation;
 
-            if (isSleeping) {
-                Direction facing = livingEntityRenderState.bedOrientation;
+            if (facing != null) {
+                Direction.Axis axis = facing.getAxis();
+                double x = nameTagPos.x() + (0.3 * (axis == Direction.Axis.Z ? -1 : 0));
+                double y = nameTagPos.y() + 0.5;
+                double z = nameTagPos.z() + (0.3 * (axis == Direction.Axis.X ? -1 : 0));
 
-                if (facing != null) {
-                    Direction.Axis axis = facing.getAxis();
-                    double x = nameTagPos.x() + (0.3 * (axis == Direction.Axis.Z ? -1 : 0));
-                    double y = nameTagPos.y() + 0.5;
-                    double z = nameTagPos.z() + (0.3 * (axis == Direction.Axis.X ? -1 : 0));
-
-                    return switch (facing) {
-                        case NORTH -> new Vec3(z, x, -y);
-                        case SOUTH -> new Vec3(z, x, y);
-                        case EAST -> new Vec3(y, z, x);
-                        case WEST -> new Vec3(-y, z, x);
-                        default -> nameTagPos;
-                    };
-                }
+                return switch (facing) {
+                    case NORTH -> new Vec3(z, x, -y);
+                    case SOUTH -> new Vec3(z, x, y);
+                    case EAST -> new Vec3(y, z, x);
+                    case WEST -> new Vec3(-y, z, x);
+                    default -> nameTagPos;
+                };
             }
         }
         return nameTagPos;
