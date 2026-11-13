@@ -43,6 +43,7 @@ import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.PotionContents;
+import net.minecraft.world.item.component.SuspiciousStewEffects;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
@@ -529,6 +530,60 @@ public class ClientPayloadHandlers {
                     pos.getY() + 1 + nextNonAbsDouble(random, 0.2),
                     pos.getZ() + 0.5 + nextNonAbsDouble(random, 0.3),
                     0, 0, 0
+            );
+        }
+    }
+
+    public static void handle(Level level, ClientBoundFeedMooshroomPayload payload) {
+        Entity entity = level.getEntity(payload.entityId());
+        if (!(entity instanceof MushroomCow)) {
+            return;
+        }
+
+        RandomSource random = entity.getRandom();
+        List<SuspiciousStewEffects.Entry> effects = payload.effects();
+        if (effects.isEmpty()) {
+            if (ENTITIES.improvedBrownMooshroomFeedingEffects) {
+                for (int i = 0; i < 5; i++) {
+                    level.addParticle(ParticleTypes.SMOKE,
+                            entity.getRandomX(1),
+                            entity.getRandomY(),
+                            entity.getRandomZ(1),
+                            0, 0, 0
+                    );
+                }
+                return;
+            }
+
+            mooshroomSendParticles(level, entity, random, ParticleTypes.SMOKE, 2);
+            return;
+        }
+
+        int color = effects.get(random.nextInt(effects.size())).effect().value().getColor();
+        ColorParticleOption colorOptions = ColorParticleOption.create(ParticleTypes.ENTITY_EFFECT, color);
+
+        if (ENTITIES.improvedBrownMooshroomFeedingEffects) {
+            for (int i = 0; i < 8; i++) {
+                level.addParticle(colorOptions,
+                        entity.getRandomX(1),
+                        entity.getRandomY(),
+                        entity.getRandomZ(1),
+                        0, 0, 0
+                );
+            }
+            return;
+        }
+
+        mooshroomSendParticles(level, entity, random, SpellParticleOption.create(ParticleTypes.EFFECT, -1, 1), 4);
+    }
+
+    private static void mooshroomSendParticles(Level level, Entity entity, RandomSource random, ParticleOptions particle, int count) {
+        for (int i = 0; i < count; i++) {
+            level.addParticle(particle,
+                    entity.getX() + (random.nextDouble() * 0.5),
+                    entity.getY(0.5),
+                    entity.getZ() + (random.nextDouble() * 0.5),
+                    0, random.nextDouble() * 0.2, 0
             );
         }
     }

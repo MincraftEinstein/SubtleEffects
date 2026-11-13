@@ -17,7 +17,7 @@ import java.util.Optional;
 public class DyedFlamesCompat {
 
     public static ParticleOptions getFlameParticle(Entity entity) {
-        Block block = ModRegistry.LAST_FIRE_SOURCE_ATTACHMENT_TYPE.get(entity);
+        Block block = ModRegistry.FIRE_ATTACHMENT_TYPE.get(entity);
         if (block != null) {
             BurningEffects burningEffects = getBurningEffects(block);
             if (burningEffects != null) {
@@ -29,7 +29,7 @@ public class DyedFlamesCompat {
 
             Optional<FireType> fireType = FireType.getFireType(block);
             if (fireType.isPresent()) {
-                return fireType.get().particleType().orElse(null);
+                return fireType.get().createParticleOptions().orElse(null);
             }
         }
         return null;
@@ -37,7 +37,7 @@ public class DyedFlamesCompat {
 
     @Nullable
     public static ColorProviderType.ColorProvider getSparkColors(Entity entity) {
-        Block block = ModRegistry.LAST_FIRE_SOURCE_ATTACHMENT_TYPE.get(entity);
+        Block block = ModRegistry.FIRE_ATTACHMENT_TYPE.get(entity);
         if (block != null) {
             BurningEffects burningEffects = getBurningEffects(block);
             if (burningEffects != null) {

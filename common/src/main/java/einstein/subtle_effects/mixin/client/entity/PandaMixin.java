@@ -22,6 +22,7 @@ import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.panda.Panda;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.component.SwingAnimation;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import org.spongepowered.asm.mixin.Mixin;
@@ -61,7 +62,7 @@ public abstract class PandaMixin extends Animal {
                     SoundSource soundSource = getSoundSource();
                     float pitch = isBaby ? 1 : 0.7F;
 
-                    player.swing(hand);
+                    player.swing(hand, SwingAnimation.DEFAULT, true);
                     subtleEffects$panda.sneeze(true);
                     Util.playClientSound(subtleEffects$panda, SoundEvents.PANDA_PRE_SNEEZE,
                             soundSource, 1, pitch

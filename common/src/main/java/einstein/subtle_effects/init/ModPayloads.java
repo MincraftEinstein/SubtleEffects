@@ -34,6 +34,7 @@ public class ModPayloads {
         registerToClient(ClientBoundEntityDamagedPayload.TYPE, ClientBoundEntityDamagedPayload.STREAM_CODEC, ClientPayloadHandlers::handle);
         registerToClient(ClientBoundChargedCreeperExplosionPayload.TYPE, ClientBoundChargedCreeperExplosionPayload.STREAM_CODEC, ClientPayloadHandlers::handle);
         registerToClient(ClientBoundItemEnchantedPayload.TYPE, ClientBoundItemEnchantedPayload.STREAM_CODEC, ClientPayloadHandlers::handle);
+        registerToClient(ClientBoundFeedMooshroomPayload.TYPE, ClientBoundFeedMooshroomPayload.STREAM_CODEC, ClientPayloadHandlers::handle);
         registerToClient(ClientBoundDecoratedPotInteractionPayload.TYPE, ClientBoundDecoratedPotInteractionPayload.STREAM_CODEC, ClientPayloadHandlers::handle);
     }
 

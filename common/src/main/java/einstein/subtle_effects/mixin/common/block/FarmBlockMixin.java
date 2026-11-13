@@ -16,8 +16,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(FarmlandBlock.class)
 public class FarmBlockMixin {
 
-    @Inject(method = "turnToDirt", at = @At("TAIL"))
-    private static void turnToDirt(Entity entity, BlockState state, Level level, BlockPos pos, CallbackInfo ci) {
+    @Inject(method = "turnToBaseBlock", at = @At("TAIL"))
+    private void turnToDirt(Entity entity, BlockState state, Level level, BlockPos pos, CallbackInfo ci) {
         if (level instanceof ServerLevel serverLevel) {
             PayloadSender.sendToClientsTracking(serverLevel, pos, new ClientBoundBlockDestroyEffectsPayload(state, pos, ClientBoundBlockDestroyEffectsPayload.TypeConfig.FARMLAND_DESTROY));
         }

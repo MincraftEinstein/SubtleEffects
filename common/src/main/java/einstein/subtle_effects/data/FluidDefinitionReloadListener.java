@@ -1,6 +1,5 @@
 package einstein.subtle_effects.data;
 
-import com.mojang.serialization.JsonOps;
 import einstein.subtle_effects.SubtleEffects;
 import einstein.subtle_effects.data.splash_types.SplashType;
 import einstein.subtle_effects.data.splash_types.SplashTypeReloadListener;
@@ -11,7 +10,6 @@ import net.minecraft.resources.FileToIdConverter;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
-import net.minecraft.server.packs.resources.SimplePreparableReloadListener;
 import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.level.block.AbstractCauldronBlock;
@@ -22,12 +20,17 @@ import java.util.*;
 
 import static einstein.subtle_effects.SubtleEffects.LOGGER;
 
-public class FluidDefinitionReloadListener extends SimplePreparableReloadListener<Map<Identifier, FluidDefinition.Data>> implements NamedReloadListener {
+
+public class FluidDefinitionReloadListener extends SimpleJsonResourceReloadListener<FluidDefinition.Data> implements NamedReloadListener {
 
     public static final Identifier WATER_ID = Identifier.withDefaultNamespace("water");
     public static final Identifier LAVA_ID = Identifier.withDefaultNamespace("lava");
     private static final FileToIdConverter DIRECTORY = FileToIdConverter.json("subtle_effects/fluid_definitions");
     public static final Map<Identifier, FluidDefinition> DEFINITIONS = new HashMap<>();
+
+    public FluidDefinitionReloadListener() {
+        super(FluidDefinition.Data.CODEC, DIRECTORY);
+    }
 
     @Override
     protected Map<Identifier, FluidDefinition.Data> prepare(ResourceManager resourceManager, ProfilerFiller profiler) {
@@ -35,10 +38,8 @@ public class FluidDefinitionReloadListener extends SimplePreparableReloadListene
         List<Fluid> flowingFluids = new ArrayList<>();
         List<AbstractCauldronBlock> cauldrons = new ArrayList<>();
         List<BucketItem> bucketItems = new ArrayList<>();
-        Map<Identifier, FluidDefinition.Data> definitions = new HashMap<>();
+        Map<Identifier, FluidDefinition.Data> definitions = super.prepare(resourceManager, profiler);
         Map<Identifier, FluidDefinition.Data> validDefinitions = new HashMap<>();
-
-        SimpleJsonResourceReloadListener.scanDirectory(resourceManager, DIRECTORY, JsonOps.INSTANCE, FluidDefinition.Data.CODEC, definitions);
         definitions.forEach((id, data) -> validate(id, data, sourceFluids, flowingFluids, cauldrons, bucketItems, validDefinitions));
         return validDefinitions;
     }

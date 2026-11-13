@@ -24,7 +24,7 @@ public class GuiMixin {
     private void setScreen(Screen screen, CallbackInfo ci) {
         if (screen != null && minecraft.player != null) {
             if (ModConfigs.GENERAL.mobSkullShaders) {
-                minecraft.gameRenderer.clearPostEffect();
+                minecraft.gameRenderer.clearSpectatedEntityPostEffect();
                 Util.applyHelmetShader(minecraft.player.getItemBySlot(EquipmentSlot.HEAD), minecraft.options.getCameraType());
             }
         }
