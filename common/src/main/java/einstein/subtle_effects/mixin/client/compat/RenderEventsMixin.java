@@ -14,7 +14,7 @@ import org.spongepowered.asm.mixin.injection.At;
 @Mixin(value = RenderEvents.class, remap = false)
 public class RenderEventsMixin {
 
-    @ModifyExpressionValue(method = "renderPlayerIcon", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/EntityAttachments;getNullable(Lnet/minecraft/world/entity/EntityAttachment;IF)Lnet/minecraft/world/phys/Vec3;"))
+    @ModifyExpressionValue(method = "renderPlayerIcon", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/EntityAttachments;getNullable(Lnet/minecraft/world/entity/EntityAttachment;IF)Lnet/minecraft/world/phys/Vec3;", remap = true))
     private Vec3 renderNameTag(Vec3 nameTagPos, Player player) {
         return Util.adjustedNameTagPosition(player, nameTagPos);
     }
