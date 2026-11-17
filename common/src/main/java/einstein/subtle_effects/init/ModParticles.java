@@ -41,7 +41,6 @@ public class ModParticles {
     public static final RegistrySupplier<ParticleType<SheepFluffParticleOptions>> SHEEP_FLUFF = register("sheep_fluff", type -> SheepFluffParticleOptions.CODEC, type -> SheepFluffParticleOptions.STREAM_CODEC);
     public static final RegistrySupplier<SimpleParticleType> MUSHROOM_SPORE = register("mushroom_spore");
     public static final RegistrySupplier<SimpleParticleType> FIREFLY = register("firefly");
-    public static final RegistrySupplier<SimpleParticleType> VANILLA_FIREFLY = register("vanilla_firefly");
     public static final RegistrySupplier<SimpleParticleType> FIREFLY_EMITTER = register("firefly_emitter");
     public static final RegistrySupplier<SimpleParticleType> SMOKE = register("smoke");
     public static final RegistrySupplier<SimpleParticleType> POLLEN = register("pollen");
