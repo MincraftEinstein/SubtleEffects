@@ -1,6 +1,6 @@
 package einstein.subtle_effects.particle;
 
-import einstein.subtle_effects.util.Util;
+import einstein.subtle_effects.util.ClientUtil;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.FallingLeavesParticle;
 import net.minecraft.client.particle.Particle;
@@ -16,7 +16,7 @@ public class DeadLeafParticle extends FallingLeavesParticle {
 
     protected DeadLeafParticle(ClientLevel level, double x, double y, double z, TextureAtlasSprite sprite) {
         super(level, x, y, z, sprite, 0.07F, 10, false, true, 2, 0.021F);
-        Util.setColorFromHex(this, BiomeColors.getAverageDryFoliageColor(level, BlockPos.containing(x, y, z)));
+        ClientUtil.setColorFromHex(this, BiomeColors.getAverageDryFoliageColor(level, BlockPos.containing(x, y, z)));
     }
 
     public record Provider(SpriteSet sprites) implements ParticleProvider<SimpleParticleType> {

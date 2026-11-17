@@ -3,7 +3,7 @@ package einstein.subtle_effects.particle;
 import einstein.subtle_effects.data.color_providers.ColorProviderType;
 import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.particle.option.ColorProviderParticleOptions;
-import einstein.subtle_effects.util.ParticleAccessor;
+import einstein.subtle_effects.util.accesssors.ParticleAccessor;
 import einstein.subtle_effects.util.SparkType;
 import einstein.subtle_effects.util.Util;
 import net.minecraft.client.multiplayer.ClientLevel;

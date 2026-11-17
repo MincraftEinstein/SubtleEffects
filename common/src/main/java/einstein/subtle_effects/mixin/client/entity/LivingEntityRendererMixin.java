@@ -3,8 +3,8 @@ package einstein.subtle_effects.mixin.client.entity;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import einstein.subtle_effects.init.ModRenderStateAttachmentKeys;
-import einstein.subtle_effects.util.RenderStateAttachmentAccessor;
 import einstein.subtle_effects.util.ClientUtil;
+import einstein.subtle_effects.util.accesssors.RenderStateAttachmentAccessor;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.ParrotRenderer;
@@ -37,7 +37,7 @@ public class LivingEntityRendererMixin<T extends LivingEntity, S extends LivingE
         }
 
         if (state.nameTag != null && state.nameTagAttachment != null) {
-            state.nameTagAttachment = Util.adjustedNameTagPosition(state, state.nameTagAttachment);
+            state.nameTagAttachment = ClientUtil.adjustedNameTagPosition(state, state.nameTagAttachment);
         }
     }
 

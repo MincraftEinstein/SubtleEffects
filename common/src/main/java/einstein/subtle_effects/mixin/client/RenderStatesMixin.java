@@ -1,6 +1,6 @@
 package einstein.subtle_effects.mixin.client;
 
-import einstein.subtle_effects.util.RenderStateAttachmentAccessor;
+import einstein.subtle_effects.util.accesssors.RenderStateAttachmentAccessor;
 import it.unimi.dsi.fastutil.objects.Reference2ObjectOpenHashMap;
 import net.minecraft.client.renderer.WeatherEffectRenderer;
 import net.minecraft.client.renderer.entity.state.EntityRenderState;

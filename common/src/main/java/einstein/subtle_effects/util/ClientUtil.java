@@ -7,29 +7,26 @@ import einstein.subtle_effects.data.MobSkullShaderReloadListener;
 import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.mixin.client.GameRendererAccessor;
 import einstein.subtle_effects.particle.EnderEyePlacedRingParticle;
+import einstein.subtle_effects.util.accesssors.RenderStateAttachmentAccessor;
 import me.fzzyhmstrs.fzzy_config.validation.misc.ValidatedColor;
 import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.particle.Particle;
+import net.minecraft.client.particle.SingleQuadParticle;
 import net.minecraft.client.renderer.GameRenderer;
-import net.minecraft.client.renderer.PostChain;
+import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.BedBlock;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 
-import java.util.Optional;
-
 import static einstein.subtle_effects.init.ModConfigs.BLOCKS;
+import static einstein.subtle_effects.init.ModRenderStateAttachmentKeys.IS_SLEEPING;
 
 public class ClientUtil {
 
@@ -37,7 +34,7 @@ public class ClientUtil {
         Minecraft minecraft = Minecraft.getInstance();
         Level level = minecraft.level;
 
-        if (level != null && level.isClientSide) {
+        if (level != null && level.isClientSide()) {
             level.playSound(minecraft.player, entity, sound, source, volume, pitch);
         }
     }
@@ -46,7 +43,7 @@ public class ClientUtil {
         Minecraft minecraft = Minecraft.getInstance();
         Level level = minecraft.level;
 
-        if (level != null && level.isClientSide) {
+        if (level != null && level.isClientSide()) {
             level.playSound(minecraft.player, pos.getX(), pos.getY(), pos.getZ(), sound, source, volume, pitch);
         }
     }
@@ -63,13 +60,13 @@ public class ClientUtil {
                 return;
             }
         }
-        gameRenderer.shutdownEffect();
+        gameRenderer.clearPostEffect();
     }
 
-    private static void loadShaderEffect(ResourceLocation shaderId, GameRenderer gameRenderer) {
-        PostChain effect = gameRenderer.currentEffect();
-        if (effect == null || !effect.getName().equals(shaderId.toString())) {
-            ((GameRendererAccessor) gameRenderer).loadShaderEffect(shaderId);
+    private static void loadShaderEffect(Identifier shaderId, GameRenderer gameRenderer) {
+        Identifier effect = gameRenderer.currentPostEffect();
+        if (effect == null || !effect.equals(shaderId)) {
+            ((GameRendererAccessor) gameRenderer).setShaderEffect(shaderId);
         }
     }
 
@@ -78,47 +75,42 @@ public class ClientUtil {
     }
 
     public static float getPartialTicks(boolean runsNormally) {
-        return Minecraft.getInstance().getTimer().getGameTimeDeltaPartialTick(runsNormally);
+        return Minecraft.getInstance().getDeltaTracker().getGameTimeDeltaPartialTick(runsNormally);
     }
 
     @SuppressWarnings("SuspiciousNameCombination")
-    public static <T extends Entity> Vec3 adjustedNameTagPosition(T entity, Vec3 nameTagPos) {
+    public static Vec3 adjustedNameTagPosition(LivingEntityRenderState renderState, Vec3 nameTagPos) {
         if (!ModConfigs.ENTITIES.sleeping.adjustNameTagWhenSleeping) {
             return nameTagPos;
         }
 
-        if (entity instanceof LivingEntity livingEntity && livingEntity.isSleeping()) {
-            Level level = entity.level();
-            Optional<BlockPos> pos = livingEntity.getSleepingPos();
+        boolean isSleeping = ((RenderStateAttachmentAccessor) renderState).subtleEffects$get(IS_SLEEPING, false);
+        if (isSleeping) {
+            Direction facing = renderState.bedOrientation;
 
-            if (pos.isPresent()) {
-                BlockState state = level.getBlockState(pos.get());
+            if (facing != null) {
+                Direction.Axis axis = facing.getAxis();
+                double x = nameTagPos.x() + (0.3 * (axis == Direction.Axis.Z ? -1 : 0));
+                double y = nameTagPos.y() + 0.5;
+                double z = nameTagPos.z() + (0.3 * (axis == Direction.Axis.X ? -1 : 0));
 
-                if (state.hasProperty(BedBlock.OCCUPIED) && state.getValue(BedBlock.OCCUPIED)) {
-                    Direction facing = state.hasProperty(BedBlock.FACING) ? state.getValue(BedBlock.FACING) : Direction.NORTH;
-                    Direction.Axis axis = facing.getAxis();
-                    double x = nameTagPos.x() + (0.3 * (axis == Direction.Axis.Z ? -1 : 0));
-                    double y = nameTagPos.y() + 0.5;
-                    double z = nameTagPos.z() + (0.3 * (axis == Direction.Axis.X ? -1 : 0));
-
-                    return switch (facing) {
-                        case NORTH -> new Vec3(z, x, -y);
-                        case SOUTH -> new Vec3(z, x, y);
-                        case EAST -> new Vec3(y, z, x);
-                        case WEST -> new Vec3(-y, z, x);
-                        default -> nameTagPos;
-                    };
-                }
+                return switch (facing) {
+                    case NORTH -> new Vec3(z, x, -y);
+                    case SOUTH -> new Vec3(z, x, y);
+                    case EAST -> new Vec3(y, z, x);
+                    case WEST -> new Vec3(-y, z, x);
+                    default -> nameTagPos;
+                };
             }
         }
         return nameTagPos;
     }
 
-    public static void setColorFromHex(Particle particle, int hexColor) {
+    public static void setColorFromHex(SingleQuadParticle particle, int hexColor) {
         particle.setColor((hexColor >> 16) / 255F, (hexColor >> 8) / 255F, hexColor / 255F);
     }
 
-    public static void setRandomizedColor(Particle particle, RandomSource random, float r, float g, float b) {
+    public static void setRandomizedColor(SingleQuadParticle particle, RandomSource random, float r, float g, float b) {
         float multiplier = random.nextFloat() * 0.4F + 0.6F;
         particle.setColor(
                 randomizeColor(random, r, multiplier),

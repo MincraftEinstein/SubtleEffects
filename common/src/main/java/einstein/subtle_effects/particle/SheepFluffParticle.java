@@ -33,7 +33,7 @@ public class SheepFluffParticle extends FeatherParticle {
     @Override
     public void extract(QuadParticleRenderState reusedState, Camera renderInfo, float partialTicks) {
         if (isJeb) {
-            Util.setColorFromHex(this, ColorLerper.getLerpedColor(ColorLerper.Type.SHEEP, sheep.tickCount));
+            ClientUtil.setColorFromHex(this, ColorLerper.getLerpedColor(ColorLerper.Type.SHEEP, sheep.tickCount));
         }
         super.extract(reusedState, renderInfo, partialTicks);
     }
