@@ -5,7 +5,6 @@ import einstein.subtle_effects.compat.EndRemasteredCompat;
 import einstein.subtle_effects.data.MobSkullShaderData;
 import einstein.subtle_effects.data.MobSkullShaderReloadListener;
 import einstein.subtle_effects.init.ModConfigs;
-import einstein.subtle_effects.mixin.client.GameRendererAccessor;
 import einstein.subtle_effects.particle.EnderEyePlacedRingParticle;
 import einstein.subtle_effects.util.accesssors.RenderStateAttachmentAccessor;
 import me.fzzyhmstrs.fzzy_config.validation.misc.ValidatedColor;
@@ -60,13 +59,13 @@ public class ClientUtil {
                 return;
             }
         }
-        gameRenderer.clearPostEffect();
+        gameRenderer.clearSpectatedEntityPostEffect();
     }
 
     private static void loadShaderEffect(Identifier shaderId, GameRenderer gameRenderer) {
-        Identifier effect = gameRenderer.currentPostEffect();
+        Identifier effect = gameRenderer.spectatedEntityPostEffect();
         if (effect == null || !effect.equals(shaderId)) {
-            ((GameRendererAccessor) gameRenderer).setShaderEffect(shaderId);
+            gameRenderer.setSpectatedEntityPostEffect(shaderId);
         }
     }
 

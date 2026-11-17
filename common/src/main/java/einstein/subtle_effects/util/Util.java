@@ -55,32 +55,6 @@ public class Util {
         return level.getBlockState(pos).isSolidRender() || !level.getFluidState(pos).isEmpty();
     }
 
-    public static void applyHelmetShader(ItemStack stack, CameraType cameraType) {
-        if (!cameraType.isFirstPerson()) {
-            return;
-        }
-
-        GameRenderer gameRenderer = Minecraft.getInstance().gameRenderer;
-        for (MobSkullShaderData shaderData : MobSkullShaderReloadListener.MOB_SKULL_SHADERS.values()) {
-            if (shaderData.stackHolder().matches(stack)) {
-                loadShaderEffect(shaderData.shaderId(), gameRenderer);
-                return;
-            }
-        }
-        gameRenderer.clearSpectatedEntityPostEffect();
-    }
-
-    private static void loadShaderEffect(Identifier shaderId, GameRenderer gameRenderer) {
-        Identifier effect = gameRenderer.spectatedEntityPostEffect();
-        if (effect == null || !effect.equals(shaderId)) {
-            gameRenderer.setSpectatedEntityPostEffect(shaderId);
-        }
-    }
-
-    public static void setColorFromHex(SingleQuadParticle particle, int hexColor) {
-        particle.setColor((hexColor >> 16) / 255F, (hexColor >> 8) / 255F, hexColor / 255F);
-    }
-
     public static boolean isChunkLoaded(Level level, double blockX, double blockZ) {
         return level.getChunkSource().hasChunk(SectionPos.blockToSectionCoord(blockX), SectionPos.blockToSectionCoord(blockZ));
     }
