@@ -13,6 +13,8 @@ import einstein.subtle_effects.particle.SparkParticle;
 import einstein.subtle_effects.particle.emitter.SplashEmitter;
 import einstein.subtle_effects.particle.option.*;
 import einstein.subtle_effects.ticking.tickers.TickerManager;
+import einstein.subtle_effects.util.accesssors.FluidDefinitionAccessor;
+import einstein.subtle_effects.util.accesssors.FluidLogicAccessor;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;

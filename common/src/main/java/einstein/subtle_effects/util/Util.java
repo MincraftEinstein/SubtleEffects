@@ -7,6 +7,7 @@ import einstein.subtle_effects.data.FluidDefinition;
 import einstein.subtle_effects.init.ModParticles;
 import einstein.subtle_effects.mixin.common.block.AbstractCauldronBlockAccessor;
 import einstein.subtle_effects.particle.option.DropletParticleOptions;
+import einstein.subtle_effects.util.accesssors.FluidDefinitionAccessor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.SectionPos;
 import net.minecraft.core.particles.DustParticleOptions;

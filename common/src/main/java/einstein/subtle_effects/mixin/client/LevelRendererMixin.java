@@ -14,6 +14,8 @@ import einstein.subtle_effects.init.ModParticles;
 import einstein.subtle_effects.particle.RippleParticle;
 import einstein.subtle_effects.ticking.tickers.TickerManager;
 import einstein.subtle_effects.util.*;
+import einstein.subtle_effects.util.accesssors.FrustumGetter;
+import einstein.subtle_effects.util.accesssors.ParticleAccessor;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;

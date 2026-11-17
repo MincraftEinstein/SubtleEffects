@@ -12,6 +12,7 @@ import einstein.subtle_effects.ticking.tickers.TickerManager;
 import einstein.subtle_effects.ticking.tickers.entity.EntityCauldronTicker;
 import einstein.subtle_effects.ticking.tickers.entity.EntityTickerManager;
 import einstein.subtle_effects.util.*;
+import einstein.subtle_effects.util.accesssors.FluidLogicAccessor;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;

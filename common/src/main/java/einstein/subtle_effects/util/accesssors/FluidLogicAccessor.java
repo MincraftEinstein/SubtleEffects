@@ -1,6 +1,7 @@
-package einstein.subtle_effects.util;
+package einstein.subtle_effects.util.accesssors;
 
 import einstein.subtle_effects.data.FluidDefinition;
+import einstein.subtle_effects.util.ParticleSpawnUtil;
 import it.unimi.dsi.fastutil.objects.Object2DoubleArrayMap;
 import it.unimi.dsi.fastutil.objects.Object2DoubleMap;
 import net.minecraft.core.BlockPos;

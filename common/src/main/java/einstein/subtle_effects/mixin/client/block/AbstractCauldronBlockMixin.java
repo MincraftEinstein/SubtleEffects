@@ -6,7 +6,7 @@ import einstein.subtle_effects.data.FluidDefinition;
 import einstein.subtle_effects.init.ModSounds;
 import einstein.subtle_effects.ticking.tickers.TickerManager;
 import einstein.subtle_effects.util.ClientUtil;
-import einstein.subtle_effects.util.FluidDefinitionAccessor;
+import einstein.subtle_effects.util.accesssors.FluidDefinitionAccessor;
 import einstein.subtle_effects.util.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.cauldron.CauldronInteraction;

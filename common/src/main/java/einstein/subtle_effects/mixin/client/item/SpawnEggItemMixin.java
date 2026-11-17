@@ -3,7 +3,7 @@ package einstein.subtle_effects.mixin.client.item;
 import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.init.ModSounds;
 import einstein.subtle_effects.ticking.tickers.TickerManager;
-import einstein.subtle_effects.util.SpawnEggItemAccessor;
+import einstein.subtle_effects.util.accesssors.SpawnEggItemAccessor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.sounds.SoundSource;

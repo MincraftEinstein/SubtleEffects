@@ -5,7 +5,7 @@ import einstein.subtle_effects.init.ModParticles;
 import einstein.subtle_effects.init.ModSounds;
 import einstein.subtle_effects.particle.DropletParticle;
 import einstein.subtle_effects.particle.option.RippleParticleOptions;
-import einstein.subtle_effects.util.DripParticleAccessor;
+import einstein.subtle_effects.util.accesssors.DripParticleAccessor;
 import einstein.subtle_effects.util.MathUtil;
 import einstein.subtle_effects.util.Util;
 import net.minecraft.client.multiplayer.ClientLevel;

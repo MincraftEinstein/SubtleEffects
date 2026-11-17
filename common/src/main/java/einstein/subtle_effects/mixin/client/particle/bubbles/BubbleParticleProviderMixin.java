@@ -2,7 +2,7 @@ package einstein.subtle_effects.mixin.client.particle.bubbles;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import einstein.subtle_effects.data.BCWPPackManager;
-import einstein.subtle_effects.util.BubbleSetter;
+import einstein.subtle_effects.util.accesssors.BubbleSetter;
 import net.minecraft.client.particle.*;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;

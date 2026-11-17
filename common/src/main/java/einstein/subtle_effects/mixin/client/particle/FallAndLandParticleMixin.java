@@ -2,7 +2,7 @@ package einstein.subtle_effects.mixin.client.particle;
 
 import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.init.ModSounds;
-import einstein.subtle_effects.util.DripParticleAccessor;
+import einstein.subtle_effects.util.accesssors.DripParticleAccessor;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.DripParticle;
 import net.minecraft.client.particle.Particle;

@@ -1,6 +1,6 @@
 package einstein.subtle_effects.ticking.tickers;
 
-import einstein.subtle_effects.util.ChestAccessor;
+import einstein.subtle_effects.util.accesssors.ChestAccessor;
 import einstein.subtle_effects.util.ClientUtil;
 import einstein.subtle_effects.util.MathUtil;
 import net.minecraft.client.Minecraft;

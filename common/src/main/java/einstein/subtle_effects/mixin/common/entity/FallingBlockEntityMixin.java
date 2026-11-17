@@ -2,7 +2,7 @@ package einstein.subtle_effects.mixin.common.entity;
 
 import com.llamalad7.mixinextras.sugar.Local;
 import einstein.subtle_effects.networking.clientbound.ClientBoundFallingBlockLandPayload;
-import einstein.subtle_effects.util.FluidLogicAccessor;
+import einstein.subtle_effects.util.accesssors.FluidLogicAccessor;
 import einstein.subtle_effects.networking.PayloadSender;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;

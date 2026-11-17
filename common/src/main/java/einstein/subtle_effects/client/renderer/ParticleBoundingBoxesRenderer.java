@@ -5,7 +5,7 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import einstein.subtle_effects.SubtleEffectsClient;
 import einstein.subtle_effects.mixin.client.particle.ParticleEngineAccessor;
 import einstein.subtle_effects.util.ClientUtil;
-import einstein.subtle_effects.util.ParticleAccessor;
+import einstein.subtle_effects.util.accesssors.ParticleAccessor;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.LevelRenderer;

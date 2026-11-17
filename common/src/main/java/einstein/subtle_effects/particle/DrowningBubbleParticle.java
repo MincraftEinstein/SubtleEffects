@@ -1,7 +1,7 @@
 package einstein.subtle_effects.particle;
 
 import einstein.subtle_effects.data.BCWPPackManager;
-import einstein.subtle_effects.util.BubbleSetter;
+import einstein.subtle_effects.util.accesssors.BubbleSetter;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
 import net.minecraft.core.particles.SimpleParticleType;
