@@ -4,7 +4,7 @@ import einstein.subtle_effects.SubtleEffects;
 import einstein.subtle_effects.SubtleEffectsClient;
 import einstein.subtle_effects.compat.CompatHelper;
 import einstein.subtle_effects.init.ModConfigs;
-import einstein.subtle_effects.util.Util;
+import einstein.subtle_effects.util.ClientUtil;
 import me.fzzyhmstrs.fzzy_config.annotations.Translation;
 import me.fzzyhmstrs.fzzy_config.annotations.Version;
 import me.fzzyhmstrs.fzzy_config.config.Config;
@@ -120,7 +120,7 @@ public class ModGeneralConfigs extends Config {
 
             Player player = minecraft.player;
             if (player != null) {
-                Util.applyHelmetShader(player.getInventory().getArmor(3), minecraft.options.getCameraType());
+                ClientUtil.applyHelmetShader(player.getInventory().getArmor(3), minecraft.options.getCameraType());
             }
         }
     }

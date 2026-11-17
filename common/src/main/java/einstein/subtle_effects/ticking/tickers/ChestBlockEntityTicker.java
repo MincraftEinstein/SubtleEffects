@@ -1,6 +1,7 @@
 package einstein.subtle_effects.ticking.tickers;
 
 import einstein.subtle_effects.util.ChestAccessor;
+import einstein.subtle_effects.util.ClientUtil;
 import einstein.subtle_effects.util.MathUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
@@ -109,7 +110,7 @@ public class ChestBlockEntityTicker extends BlockPosTicker {
         }
 
         RandomSource random = level.getRandom();
-        float openness = lidController.getOpenness(getPartialTicks());
+        float openness = lidController.getOpenness(ClientUtil.getPartialTicks());
         if (openness > 0 && BLOCKS.openingChestsSpawnsBubbles) {
             boolean isClosing = openness <= 0.5 && openness < oldOpenness;
             if (isClosing || random.nextInt(isDoubleChest ? 2 : 4) == 0) {

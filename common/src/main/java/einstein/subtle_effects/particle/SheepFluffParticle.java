@@ -2,7 +2,7 @@ package einstein.subtle_effects.particle;
 
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import einstein.subtle_effects.particle.option.SheepFluffParticleOptions;
-import einstein.subtle_effects.util.Util;
+import einstein.subtle_effects.util.ClientUtil;
 import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
@@ -27,7 +27,7 @@ public class SheepFluffParticle extends FeatherParticle {
         gravity = 0.5F;
 
         if (!isJeb) {
-            Util.setColorFromHex(this, Sheep.getColor(options.color()));
+            ClientUtil.setColorFromHex(this, Sheep.getColor(options.color()));
         }
     }
 
@@ -41,7 +41,7 @@ public class SheepFluffParticle extends FeatherParticle {
             float delta = ((float) (tickCount % speed) + partialTicks) / speed;
             int startColor = Sheep.getColor(DyeColor.byId(i % length));
             int endColor = Sheep.getColor(DyeColor.byId((i + 1) % length));
-            Util.setColorFromHex(this, FastColor.ARGB32.lerp(delta, startColor, endColor));
+            ClientUtil.setColorFromHex(this, FastColor.ARGB32.lerp(delta, startColor, endColor));
         }
         super.render(buffer, renderInfo, partialTicks);
     }

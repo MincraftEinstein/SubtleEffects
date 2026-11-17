@@ -1,7 +1,7 @@
 package einstein.subtle_effects.ticking.tickers.entity;
 
 import einstein.subtle_effects.init.ModSounds;
-import einstein.subtle_effects.util.Util;
+import einstein.subtle_effects.util.ClientUtil;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.player.Player;
 
@@ -24,7 +24,7 @@ public class StomachGrowlingTicker extends EntityTicker<Player> {
         int foodLevel = entity.getFoodData().getFoodLevel();
         if (foodLevel <= ENTITIES.humanoids.player.stomachGrowlingThreshold.get()) {
             if (growlTimer == 0) {
-                Util.playClientSound(entity, ModSounds.PLAYER_STOMACH_GROWL.get(), SoundSource.PLAYERS, ENTITIES.humanoids.player.stomachGrowlingVolume.get(), (random.nextBoolean() ? 1 : 1.5F));
+                ClientUtil.playClientSound(entity, ModSounds.PLAYER_STOMACH_GROWL.get(), SoundSource.PLAYERS, ENTITIES.humanoids.player.stomachGrowlingVolume.get(), (random.nextBoolean() ? 1 : 1.5F));
             }
 
             growlTimer++;

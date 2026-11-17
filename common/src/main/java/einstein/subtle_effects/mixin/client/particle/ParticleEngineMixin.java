@@ -7,6 +7,7 @@ import com.llamalad7.mixinextras.sugar.Local;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import einstein.subtle_effects.data.BCWPPackManager;
 import einstein.subtle_effects.init.ModParticles;
+import einstein.subtle_effects.util.ClientUtil;
 import einstein.subtle_effects.util.FrustumGetter;
 import einstein.subtle_effects.util.ParticleAccessor;
 import einstein.subtle_effects.util.Util;
@@ -54,7 +55,7 @@ public class ParticleEngineMixin {
         }
 
         if (BCWPPackManager.isPackLoaded() && BCWPPackManager.BIOME_COLORED_PARTICLES.contains(type)) {
-            Util.setColorFromHex(particle, BiomeColors.getAverageWaterColor(level, BlockPos.containing(x, y, z)));
+            ClientUtil.setColorFromHex(particle, BiomeColors.getAverageWaterColor(level, BlockPos.containing(x, y, z)));
         }
     }
 

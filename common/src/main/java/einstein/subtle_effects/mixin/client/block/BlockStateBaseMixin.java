@@ -3,11 +3,9 @@ package einstein.subtle_effects.mixin.client.block;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.mojang.datafixers.util.Pair;
-import einstein.subtle_effects.compat.CompatHelper;
 import einstein.subtle_effects.init.ModConfigs;
+import einstein.subtle_effects.util.ClientUtil;
 import einstein.subtle_effects.util.ParticleSpawnUtil;
-import einstein.subtle_effects.util.Util;
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
@@ -70,7 +68,7 @@ public class BlockStateBaseMixin {
                     RandomSource random = player.getRandom();
 
                     if (!stack.isEmpty() && ModConfigs.BLOCKS.cakeEatParticles) {
-                        float partialTick = Util.getPartialTicks();
+                        float partialTick = ClientUtil.getPartialTicks();
                         ItemParticleOption options = new ItemParticleOption(ParticleTypes.ITEM, stack);
 
                         for (int i = 0; i < 16; i++) {
@@ -81,7 +79,7 @@ public class BlockStateBaseMixin {
                     if (ModConfigs.BLOCKS.cakeEatSounds) {
                         SoundSource soundSource = player.getSoundSource();
                         if (bites == maxBites) {
-                            Util.playClientSound(player,
+                            ClientUtil.playClientSound(player,
                                     SoundEvents.PLAYER_BURP,
                                     soundSource,
                                     0.5F,
@@ -90,7 +88,7 @@ public class BlockStateBaseMixin {
                         }
 
                         if (!bitesData.getFirst().equals(FD_PIE_BITES)) { // FD already plays its own sound
-                            Util.playClientSound(player,
+                            ClientUtil.playClientSound(player,
                                     player.getEatingSound(stack),
                                     soundSource,
                                     0.5F + 0.5F * random.nextInt(2),

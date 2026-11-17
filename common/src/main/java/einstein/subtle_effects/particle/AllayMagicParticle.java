@@ -7,7 +7,7 @@ import net.minecraft.client.particle.*;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.util.Mth;
 
-import static einstein.subtle_effects.util.Util.setRandomizedColor;
+import static einstein.subtle_effects.util.ClientUtil.setRandomizedColor;
 
 public class AllayMagicParticle extends TextureSheetParticle {
 

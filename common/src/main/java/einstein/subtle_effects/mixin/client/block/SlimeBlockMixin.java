@@ -1,7 +1,7 @@
 package einstein.subtle_effects.mixin.client.block;
 
 import einstein.subtle_effects.init.ModConfigs;
-import einstein.subtle_effects.util.Util;
+import einstein.subtle_effects.util.ClientUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.Entity;
@@ -21,11 +21,11 @@ public class SlimeBlockMixin {
         if (entity.level().isClientSide && ModConfigs.BLOCKS.slimeBlockBounceSounds) {
             if (distance > 1) {
                 if (distance < 4) {
-                    Util.playClientSound(entity, SoundEvents.SLIME_SQUISH_SMALL, entity.getSoundSource(), 0.5F, 1);
+                    ClientUtil.playClientSound(entity, SoundEvents.SLIME_SQUISH_SMALL, entity.getSoundSource(), 0.5F, 1);
                     return;
                 }
 
-                Util.playClientSound(entity, SoundEvents.SLIME_SQUISH, entity.getSoundSource(), 1, 1);
+                ClientUtil.playClientSound(entity, SoundEvents.SLIME_SQUISH, entity.getSoundSource(), 1, 1);
             }
         }
     }

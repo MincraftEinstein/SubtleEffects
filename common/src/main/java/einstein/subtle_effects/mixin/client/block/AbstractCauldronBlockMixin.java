@@ -5,6 +5,7 @@ import com.llamalad7.mixinextras.sugar.Local;
 import einstein.subtle_effects.data.FluidDefinition;
 import einstein.subtle_effects.init.ModSounds;
 import einstein.subtle_effects.ticking.tickers.TickerManager;
+import einstein.subtle_effects.util.ClientUtil;
 import einstein.subtle_effects.util.FluidDefinitionAccessor;
 import einstein.subtle_effects.util.Util;
 import net.minecraft.core.BlockPos;
@@ -68,7 +69,7 @@ public class AbstractCauldronBlockMixin implements FluidDefinitionAccessor {
 
                     if (BLOCKS.cauldronCleanItemSounds) {
                         if (interaction.equals(CauldronInteraction.DYED_ITEM) || interaction.equals(CauldronInteraction.BANNER) || interaction.equals(CauldronInteraction.SHULKER_BOX)) {
-                            Util.playClientSound(pos, ModSounds.CAULDRON_CLEAN_ITEM.get(), SoundSource.BLOCKS, 1, (random.nextFloat() - random.nextFloat()) * 0.2F + 1);
+                            ClientUtil.playClientSound(pos, ModSounds.CAULDRON_CLEAN_ITEM.get(), SoundSource.BLOCKS, 1, (random.nextFloat() - random.nextFloat()) * 0.2F + 1);
                         }
                     }
                 });

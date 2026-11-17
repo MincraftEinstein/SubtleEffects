@@ -4,15 +4,13 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import einstein.subtle_effects.SubtleEffectsClient;
 import einstein.subtle_effects.mixin.client.particle.ParticleEngineAccessor;
-import einstein.subtle_effects.util.FrustumGetter;
+import einstein.subtle_effects.util.ClientUtil;
 import einstein.subtle_effects.util.ParticleAccessor;
-import einstein.subtle_effects.util.Util;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.util.FastColor;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.AABB;
@@ -28,7 +26,7 @@ public class ParticleBoundingBoxesRenderer {
             MultiBufferSource.BufferSource bufferSource = minecraft.renderBuffers().bufferSource();
             VertexConsumer consumer = bufferSource.getBuffer(RenderType.lines());
             Vec3 cameraPos = camera.getPosition();
-            float partialTicks = Util.getPartialTicks();
+            float partialTicks = ClientUtil.getPartialTicks();
 
             ((ParticleEngineAccessor) minecraft.particleEngine).getParticles().forEach((renderType, particles) -> {
                 if (particles == null || particles.isEmpty()) {
