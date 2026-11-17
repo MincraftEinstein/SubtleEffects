@@ -1,6 +1,6 @@
 package einstein.subtle_effects.ticking.tickers.geyser;
 
-import einstein.subtle_effects.util.Util;
+import einstein.subtle_effects.util.ClientUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvents;
@@ -20,7 +20,7 @@ public class BubbleGeyserTicker extends GeyserTicker {
     @Override
     protected void geyserTick() {
         if (age % 15 == 0) {
-            Util.playClientSound(pos, SoundEvents.BUBBLE_COLUMN_UPWARDS_AMBIENT, SoundSource.BLOCKS, ENVIRONMENT.geysers.bubbleGeyserSoundVolume.get(), 0.9F + random.nextFloat() * 0.15F);
+            ClientUtil.playClientSound(pos, SoundEvents.BUBBLE_COLUMN_UPWARDS_AMBIENT, SoundSource.BLOCKS, ENVIRONMENT.geysers.bubbleGeyserSoundVolume.get(), 0.9F + random.nextFloat() * 0.15F);
         }
 
         if (random.nextBoolean()) {

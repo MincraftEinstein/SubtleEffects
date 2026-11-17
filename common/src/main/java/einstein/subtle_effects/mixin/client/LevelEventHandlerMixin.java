@@ -96,7 +96,7 @@ public class LevelEventHandlerMixin {
                 break;
             }
             case 1503: {
-                TickerManager.scheduleNext(() -> ParticleSpawnUtil.spawnEnderEyePlacementParticles(pos, random, level, Util.getEyeColorHolder(level, pos).toInt()));
+                TickerManager.scheduleNext(() -> ParticleSpawnUtil.spawnEnderEyePlacementParticles(pos, random, level, ClientUtil.getEyeColorHolder(level, pos).toInt()));
                 break;
             }
         }

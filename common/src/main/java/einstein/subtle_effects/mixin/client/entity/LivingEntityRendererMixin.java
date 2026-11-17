@@ -4,7 +4,7 @@ import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import einstein.subtle_effects.init.ModRenderStateAttachmentKeys;
 import einstein.subtle_effects.util.RenderStateAttachmentAccessor;
-import einstein.subtle_effects.util.Util;
+import einstein.subtle_effects.util.ClientUtil;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.ParrotRenderer;
@@ -52,7 +52,7 @@ public class LivingEntityRendererMixin<T extends LivingEntity, S extends LivingE
             int length = Parrot.Variant.values().length;
             int index = i % length;
             int nextIndex = (i + 1) % length;
-            float delta = ((float) (tickCount % speed) + Util.getPartialTicks()) / speed;
+            float delta = ((float) (tickCount % speed) + ClientUtil.getPartialTicks()) / speed;
 
             return ParrotRenderer.getVariantTexture(Parrot.Variant.values()[Mth.lerpInt(delta, index, nextIndex)]);
         }

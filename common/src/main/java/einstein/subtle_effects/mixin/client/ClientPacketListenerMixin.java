@@ -3,7 +3,7 @@ package einstein.subtle_effects.mixin.client;
 import einstein.subtle_effects.data.FluidDefinition;
 import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.particle.option.SplashEmitterParticleOptions;
-import einstein.subtle_effects.util.FluidDefinitionAccessor;
+import einstein.subtle_effects.util.accesssors.FluidDefinitionAccessor;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.multiplayer.ClientPacketListener;
 import net.minecraft.core.BlockPos;
