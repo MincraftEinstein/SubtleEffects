@@ -14,7 +14,7 @@ import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.init.ModParticles;
 import einstein.subtle_effects.particle.EnderEyePlacedRingParticle;
 import einstein.subtle_effects.particle.option.ColorProviderParticleOptions;
-import einstein.subtle_effects.util.Util;
+import einstein.subtle_effects.util.ClientUtil;
 import me.fzzyhmstrs.fzzy_config.annotations.Translation;
 import me.fzzyhmstrs.fzzy_config.config.Config;
 import me.fzzyhmstrs.fzzy_config.config.ConfigGroup;
@@ -55,7 +55,7 @@ import static einstein.subtle_effects.util.Util.VANILLA_EYE;
 public class ModBlockConfigs extends Config {
 
     private static final Map<Identifier, ValidatedColor.ColorHolder> DEFAULT_EYE_COLORS = net.minecraft.util.Util.make(new HashMap<>(), map -> {
-        map.put(VANILLA_EYE, Util.toColorHolder(EnderEyePlacedRingParticle.DEFAULT_COLOR));
+        map.put(VANILLA_EYE, ClientUtil.toColorHolder(EnderEyePlacedRingParticle.DEFAULT_COLOR));
 
         if (CompatHelper.IS_END_REMASTERED_LOADED.get()) {
             map.putAll(CompatHelper.getDefaultEyes());
@@ -264,7 +264,7 @@ public class ModBlockConfigs extends Config {
 
     public enum EndPortalFrameParticlesDisplayType implements EnumTranslatable {
         OFF(0, null),
-        DOTS(8, (level, pos) -> new ColorProviderParticleOptions(ModParticles.SHORT_SPARK.get(), Util.getEyeColorHolder(level, pos).toInt())),
+        DOTS(8, (level, pos) -> new ColorProviderParticleOptions(ModParticles.SHORT_SPARK.get(), ClientUtil.getEyeColorHolder(level, pos).toInt())),
         SMOKE(1, (level, pos) -> ParticleTypes.SMOKE);
 
         public final int count;

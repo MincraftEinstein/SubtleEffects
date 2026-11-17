@@ -1,7 +1,7 @@
 package einstein.subtle_effects.particle;
 
 import einstein.subtle_effects.particle.option.SheepFluffParticleOptions;
-import einstein.subtle_effects.util.Util;
+import einstein.subtle_effects.util.ClientUtil;
 import net.minecraft.client.Camera;
 import net.minecraft.client.color.ColorLerper;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -26,14 +26,14 @@ public class SheepFluffParticle extends FeatherParticle {
         gravity = 0.5F;
 
         if (!isJeb) {
-            Util.setColorFromHex(this, ColorLerper.Type.SHEEP.getColor(options.color()));
+            ClientUtil.setColorFromHex(this, ColorLerper.Type.SHEEP.getColor(options.color()));
         }
     }
 
     @Override
     public void extract(QuadParticleRenderState reusedState, Camera renderInfo, float partialTicks) {
         if (isJeb) {
-            Util.setColorFromHex(this, ColorLerper.getLerpedColor(ColorLerper.Type.SHEEP, sheep.tickCount));
+            ClientUtil.setColorFromHex(this, ColorLerper.getLerpedColor(ColorLerper.Type.SHEEP, sheep.tickCount));
         }
         super.extract(reusedState, renderInfo, partialTicks);
     }

@@ -1,6 +1,6 @@
 package einstein.subtle_effects.mixin.client.entity;
 
-import einstein.subtle_effects.util.RenderStateAttachmentAccessor;
+import einstein.subtle_effects.util.accesssors.RenderStateAttachmentAccessor;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.state.EntityRenderState;

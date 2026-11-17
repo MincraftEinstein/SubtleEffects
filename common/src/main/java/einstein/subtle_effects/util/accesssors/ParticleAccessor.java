@@ -1,4 +1,4 @@
-package einstein.subtle_effects.util;
+package einstein.subtle_effects.util.accesssors;
 
 public interface ParticleAccessor {
 

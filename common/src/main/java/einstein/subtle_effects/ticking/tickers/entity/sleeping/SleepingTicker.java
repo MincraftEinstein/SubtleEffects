@@ -2,6 +2,7 @@ package einstein.subtle_effects.ticking.tickers.entity.sleeping;
 
 import einstein.subtle_effects.init.ModParticles;
 import einstein.subtle_effects.ticking.tickers.entity.EntityTicker;
+import einstein.subtle_effects.util.ClientUtil;
 import einstein.subtle_effects.util.Util;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.sounds.SoundEvent;
@@ -62,7 +63,7 @@ public class SleepingTicker<T extends LivingEntity> extends EntityTicker<T> {
 
             if (snoreTimer >= Util.SNORE_DELAY) {
                 if (doesSnore && !entity.isSilent() && zCount <= 0 && snoreSound != null) {
-                    Util.playClientSound(entity, snoreSound.get(), SoundSource.NEUTRAL, snoreVolume, entity.getVoicePitch());
+                    ClientUtil.playClientSound(entity, snoreSound.get(), SoundSource.NEUTRAL, snoreVolume, entity.getVoicePitch());
                 }
 
                 snoreTimer = 0;

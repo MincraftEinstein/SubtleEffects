@@ -1,7 +1,7 @@
 package einstein.subtle_effects.particle.provider;
 
 import einstein.subtle_effects.init.ModParticles;
-import einstein.subtle_effects.util.ParticleAccessor;
+import einstein.subtle_effects.util.accesssors.ParticleAccessor;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.DripParticle;
 import net.minecraft.client.particle.Particle;

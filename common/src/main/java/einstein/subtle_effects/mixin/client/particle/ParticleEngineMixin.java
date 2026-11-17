@@ -6,8 +6,8 @@ import com.llamalad7.mixinextras.sugar.Local;
 import einstein.subtle_effects.data.BCWPPackManager;
 import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.init.ModParticles;
-import einstein.subtle_effects.util.ParticleAccessor;
-import einstein.subtle_effects.util.Util;
+import einstein.subtle_effects.util.ClientUtil;
+import einstein.subtle_effects.util.accesssors.ParticleAccessor;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleEngine;
@@ -50,7 +50,7 @@ public class ParticleEngineMixin {
             }
 
             if (BCWPPackManager.isPackLoaded() && BCWPPackManager.BIOME_COLORED_PARTICLES.contains(type)) {
-                Util.setColorFromHex(sqParticle, BiomeColors.getAverageWaterColor(level, BlockPos.containing(x, y, z)));
+                ClientUtil.setColorFromHex(sqParticle, BiomeColors.getAverageWaterColor(level, BlockPos.containing(x, y, z)));
             }
         }
     }

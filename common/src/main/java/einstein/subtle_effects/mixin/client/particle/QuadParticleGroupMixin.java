@@ -2,7 +2,7 @@ package einstein.subtle_effects.mixin.client.particle;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.sugar.Local;
-import einstein.subtle_effects.util.ParticleAccessor;
+import einstein.subtle_effects.util.accesssors.ParticleAccessor;
 import net.minecraft.client.Camera;
 import net.minecraft.client.particle.QuadParticleGroup;
 import net.minecraft.client.particle.SingleQuadParticle;

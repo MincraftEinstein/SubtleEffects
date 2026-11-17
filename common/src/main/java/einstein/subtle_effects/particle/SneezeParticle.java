@@ -1,6 +1,6 @@
 package einstein.subtle_effects.particle;
 
-import einstein.subtle_effects.util.Util;
+import einstein.subtle_effects.util.ClientUtil;
 import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
@@ -22,7 +22,7 @@ public class SneezeParticle extends SingleQuadParticle {
         // Not sure which is the vanilla color, so 37CD87 was used
         // 37CD87. The result of subtracting the vanilla provided color components (200, 50, 120) from 255
         // 37C985. Color picked from a screenshot
-        Util.setRandomizedColor(this, random, 0.21F, 0.8F, 0.52F);
+        ClientUtil.setRandomizedColor(this, random, 0.21F, 0.8F, 0.52F);
         alpha = lifetimeAlpha.startAlpha();
         friction = 0.98F;
         this.sprites = sprites;

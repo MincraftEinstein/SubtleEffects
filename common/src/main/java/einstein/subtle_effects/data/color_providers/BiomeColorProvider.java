@@ -3,7 +3,7 @@ package einstein.subtle_effects.data.color_providers;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import einstein.subtle_effects.util.Util;
+import einstein.subtle_effects.util.ClientUtil;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -73,7 +73,7 @@ public record BiomeColorProvider(ColorType colorType) implements ColorProviderTy
 
         ColorType(String name, EnvironmentAttribute<?> attribute) {
             this(name, (level, pos) -> {
-                var value = Minecraft.getInstance().gameRenderer.mainCamera().attributeProbe().getValue(attribute, Util.getPartialTicks());
+                var value = Minecraft.getInstance().gameRenderer.mainCamera().attributeProbe().getValue(attribute, ClientUtil.getPartialTicks());
                 if (value instanceof Vector3fc vec) {
                     return ARGB.colorFromVector3f(vec);
                 }

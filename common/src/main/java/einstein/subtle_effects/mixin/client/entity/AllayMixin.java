@@ -2,7 +2,7 @@ package einstein.subtle_effects.mixin.client.entity;
 
 import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.init.ModSounds;
-import einstein.subtle_effects.util.Util;
+import einstein.subtle_effects.util.ClientUtil;
 import net.minecraft.world.entity.animal.allay.Allay;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -16,7 +16,7 @@ public class AllayMixin {
     public void playAllayDuplicateSound(CallbackInfoReturnable<Boolean> cir) {
         Allay allay = (Allay) (Object) this;
         if (allay.level().isClientSide() && ModConfigs.ENTITIES.allayDuplicatedSounds) {
-            Util.playClientSound(allay.blockPosition(), ModSounds.ALLAY_DUPLICATE.get(), allay.getSoundSource(), 1, 1);
+            ClientUtil.playClientSound(allay.blockPosition(), ModSounds.ALLAY_DUPLICATE.get(), allay.getSoundSource(), 1, 1);
         }
     }
 }

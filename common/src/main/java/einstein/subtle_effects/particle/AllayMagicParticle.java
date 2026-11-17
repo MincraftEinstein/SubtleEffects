@@ -8,7 +8,7 @@ import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 
-import static einstein.subtle_effects.util.Util.setRandomizedColor;
+import static einstein.subtle_effects.util.ClientUtil.setRandomizedColor;
 
 public class AllayMagicParticle extends SingleQuadParticle {
 

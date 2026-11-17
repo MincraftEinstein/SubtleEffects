@@ -2,7 +2,7 @@ package einstein.subtle_effects.ticking.tickers.geyser;
 
 import einstein.subtle_effects.init.ModParticles;
 import einstein.subtle_effects.init.ModSounds;
-import einstein.subtle_effects.util.Util;
+import einstein.subtle_effects.util.ClientUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundSource;
@@ -22,7 +22,7 @@ public class SmokeGeyserTicker extends GeyserTicker {
     @Override
     protected void geyserTick() {
         if (age % 5 == 0) {
-            Util.playClientSound(pos, ModSounds.GEYSER_HISS.get(), SoundSource.BLOCKS, ENVIRONMENT.geysers.smokeGeyserSoundVolume.get(), random.nextFloat() * 0.7F + 0.3F);
+            ClientUtil.playClientSound(pos, ModSounds.GEYSER_HISS.get(), SoundSource.BLOCKS, ENVIRONMENT.geysers.smokeGeyserSoundVolume.get(), random.nextFloat() * 0.7F + 0.3F);
         }
 
         for (int i = 0; i < (ENVIRONMENT.geysers.useUpdatedSmoke ? 5 : 10); i++) {

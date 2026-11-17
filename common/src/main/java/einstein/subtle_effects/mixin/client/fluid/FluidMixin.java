@@ -1,7 +1,7 @@
 package einstein.subtle_effects.mixin.client.fluid;
 
 import einstein.subtle_effects.data.FluidDefinition;
-import einstein.subtle_effects.util.FluidDefinitionAccessor;
+import einstein.subtle_effects.util.accesssors.FluidDefinitionAccessor;
 import net.minecraft.world.level.material.Fluid;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;

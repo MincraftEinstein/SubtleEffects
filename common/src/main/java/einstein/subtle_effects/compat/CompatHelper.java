@@ -1,7 +1,7 @@
 package einstein.subtle_effects.compat;
 
 import com.google.common.base.Suppliers;
-import einstein.subtle_effects.util.Util;
+import einstein.subtle_effects.util.ClientUtil;
 import me.fzzyhmstrs.fzzy_config.api.ConfigApiJava;
 import me.fzzyhmstrs.fzzy_config.validation.misc.ValidatedColor;
 import net.minecraft.resources.Identifier;
@@ -68,7 +68,7 @@ public class CompatHelper {
     }
 
     private static void putEye(Map<Identifier, ValidatedColor.ColorHolder> eyes, String name, int color) {
-        eyes.put(endRemLoc(name), Util.toColorHolder(color));
+        eyes.put(endRemLoc(name), ClientUtil.toColorHolder(color));
     }
 
     public static Identifier endRemLoc(String path) {

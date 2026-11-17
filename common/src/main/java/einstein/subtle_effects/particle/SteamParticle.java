@@ -1,13 +1,12 @@
 package einstein.subtle_effects.particle;
 
 import einstein.subtle_effects.init.ModConfigs;
-import einstein.subtle_effects.util.ParticleAccessor;
+import einstein.subtle_effects.util.accesssors.ParticleAccessor;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
-import org.jetbrains.annotations.NotNull;
 
 public class SteamParticle extends SmokeParticle {
 
@@ -42,7 +41,7 @@ public class SteamParticle extends SmokeParticle {
     public record FrostyBreathProvider(SpriteSet sprites) implements ParticleProvider<SimpleParticleType> {
 
         @Override
-        public @NotNull Particle createParticle(SimpleParticleType type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, RandomSource random) {
+        public Particle createParticle(SimpleParticleType type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, RandomSource random) {
             SteamParticle particle = new SteamParticle(level, x, y, z, xSpeed, ySpeed, zSpeed, sprites);
             particle.setAlpha(ModConfigs.ENTITIES.humanoids.frostyBreath.alpha.get());
             ((ParticleAccessor) particle).setGravity(0);

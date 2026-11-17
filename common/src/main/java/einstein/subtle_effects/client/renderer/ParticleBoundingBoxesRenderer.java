@@ -4,10 +4,10 @@ import einstein.subtle_effects.SubtleEffectsClient;
 import einstein.subtle_effects.init.ModParticleLayers;
 import einstein.subtle_effects.init.ModRenderStateAttachmentKeys;
 import einstein.subtle_effects.mixin.client.particle.ParticleEngineAccessor;
-import einstein.subtle_effects.util.ParticleAccessor;
-import einstein.subtle_effects.util.RenderStateAttachmentAccessor;
-import einstein.subtle_effects.util.SingleQuadParticleAccessor;
-import einstein.subtle_effects.util.Util;
+import einstein.subtle_effects.util.ClientUtil;
+import einstein.subtle_effects.util.accesssors.ParticleAccessor;
+import einstein.subtle_effects.util.accesssors.RenderStateAttachmentAccessor;
+import einstein.subtle_effects.util.accesssors.SingleQuadParticleAccessor;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.SingleQuadParticle;
@@ -42,7 +42,7 @@ public class ParticleBoundingBoxesRenderer {
             Vec3 cameraPos = camera.pos;
             Minecraft minecraft = Minecraft.getInstance();
             List<RenderState> renderStates = new ArrayList<>();
-            float partialTicks = Util.getPartialTicks();
+            float partialTicks = ClientUtil.getPartialTicks();
             Frustum particleFrustum = camera.cullFrustum.offset(-3); // offset to match the frustum used by the particle engine
 
             ((ParticleEngineAccessor) minecraft.particleEngine).getParticles().forEach((renderType, group) -> {

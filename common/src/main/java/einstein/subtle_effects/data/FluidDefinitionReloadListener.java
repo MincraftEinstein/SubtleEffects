@@ -4,7 +4,7 @@ import einstein.subtle_effects.SubtleEffects;
 import einstein.subtle_effects.data.splash_types.SplashType;
 import einstein.subtle_effects.data.splash_types.SplashTypeReloadListener;
 import einstein.subtle_effects.mixin.client.item.BucketItemAccessor;
-import einstein.subtle_effects.util.FluidDefinitionAccessor;
+import einstein.subtle_effects.util.accesssors.FluidDefinitionAccessor;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.FileToIdConverter;
 import net.minecraft.resources.Identifier;

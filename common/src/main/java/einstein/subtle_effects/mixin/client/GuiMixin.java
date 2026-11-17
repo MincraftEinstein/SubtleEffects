@@ -1,7 +1,7 @@
 package einstein.subtle_effects.mixin.client;
 
 import einstein.subtle_effects.init.ModConfigs;
-import einstein.subtle_effects.util.Util;
+import einstein.subtle_effects.util.ClientUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.screens.Screen;
@@ -25,7 +25,7 @@ public class GuiMixin {
         if (screen != null && minecraft.player != null) {
             if (ModConfigs.GENERAL.mobSkullShaders) {
                 minecraft.gameRenderer.clearSpectatedEntityPostEffect();
-                Util.applyHelmetShader(minecraft.player.getItemBySlot(EquipmentSlot.HEAD), minecraft.options.getCameraType());
+                ClientUtil.applyHelmetShader(minecraft.player.getItemBySlot(EquipmentSlot.HEAD), minecraft.options.getCameraType());
             }
         }
     }
