@@ -10,10 +10,8 @@ import einstein.subtle_effects.particle.option.SheepFluffParticleOptions;
 import einstein.subtle_effects.ticking.tickers.TickerManager;
 import einstein.subtle_effects.ticking.tickers.entity.EntityCauldronTicker;
 import einstein.subtle_effects.ticking.tickers.entity.EntityTickerManager;
-import einstein.subtle_effects.util.FluidLogicAccessor;
-import einstein.subtle_effects.util.MathUtil;
-import einstein.subtle_effects.util.ParticleSpawnUtil;
-import einstein.subtle_effects.util.Util;
+import einstein.subtle_effects.util.*;
+import einstein.subtle_effects.util.accesssors.FluidLogicAccessor;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.color.block.BlockTintSource;
 import net.minecraft.client.renderer.block.BlockAndTintGetter;
@@ -157,7 +155,7 @@ public class ClientPayloadHandlers {
         if (BLOCKS.fallingBlocks.onLandSound && !(block instanceof AnvilBlock)) {
             SoundType soundType = state.getSoundType();
 
-            Util.playClientSound(pos, soundType.getPlaceSound(), SoundSource.BLOCKS,
+            ClientUtil.playClientSound(pos, soundType.getPlaceSound(), SoundSource.BLOCKS,
                     (soundType.getVolume() + 1.0F) / 2F,
                     soundType.getPitch() * 0.8F
             );
@@ -349,14 +347,14 @@ public class ClientPayloadHandlers {
                 for (int i = 0; i < 16; i++) {
                     ParticleSpawnUtil.spawnEntityFaceParticle(
                             new ItemParticleOption(ParticleTypes.ITEM, template(settings.stackReplacer().apply(stack))),
-                            livingEntity, level, random, settings.offset(), Util.getPartialTicks()
+                            livingEntity, level, random, settings.offset(), ClientUtil.getPartialTicks()
                     );
                 }
             }
 
             float volume = ENTITIES.animalFeedingSoundVolume.get();
             if (volume > 0 && !entity.isSilent()) {
-                Util.playClientSound(entity, getEatSound(livingEntity, stack, settings), entity.getSoundSource(), volume, livingEntity.getVoicePitch());
+                ClientUtil.playClientSound(entity, getEatSound(livingEntity, stack, settings), entity.getSoundSource(), volume, livingEntity.getVoicePitch());
             }
         }
     }

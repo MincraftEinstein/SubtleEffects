@@ -1,6 +1,6 @@
 package einstein.subtle_effects.mixin.client.particle;
 
-import einstein.subtle_effects.util.SingleQuadParticleAccessor;
+import einstein.subtle_effects.util.accesssors.SingleQuadParticleAccessor;
 import net.minecraft.client.particle.SingleQuadParticle;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Accessor;

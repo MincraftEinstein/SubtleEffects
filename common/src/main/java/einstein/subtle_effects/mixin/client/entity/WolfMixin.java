@@ -4,7 +4,7 @@ import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.particle.DropletParticle;
-import einstein.subtle_effects.util.Util;
+import einstein.subtle_effects.util.ClientUtil;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.util.RandomSource;
@@ -33,7 +33,7 @@ public class WolfMixin {
 
             int xSign = nextSign(random);
             int zSign = nextSign(random);
-            float rotation = toRadians(-subtleEffects$me.getPreciseBodyRotation(Util.getPartialTicks()));
+            float rotation = toRadians(-subtleEffects$me.getPreciseBodyRotation(ClientUtil.getPartialTicks()));
             boolean isSitting = subtleEffects$me.isInSittingPose();
             boolean isBaby = subtleEffects$me.isBaby();
 

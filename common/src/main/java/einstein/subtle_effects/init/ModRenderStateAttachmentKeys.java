@@ -1,7 +1,7 @@
 package einstein.subtle_effects.init;
 
 import einstein.subtle_effects.client.renderer.ParticleBoundingBoxesRenderer;
-import einstein.subtle_effects.util.RenderStateAttachmentAccessor;
+import einstein.subtle_effects.util.accesssors.RenderStateAttachmentAccessor;
 import org.joml.Vector3f;
 
 import java.util.List;

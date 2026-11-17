@@ -44,7 +44,7 @@ import java.util.function.Supplier;
 import static einstein.subtle_effects.init.ModConfigs.BLOCKS;
 import static einstein.subtle_effects.util.MathUtil.nextNonAbsDouble;
 import static einstein.subtle_effects.util.MathUtil.nextSign;
-import static einstein.subtle_effects.util.Util.playClientSound;
+import static einstein.subtle_effects.util.ClientUtil.playClientSound;
 import static net.minecraft.util.Mth.nextFloat;
 
 public class ModBlockTickers {

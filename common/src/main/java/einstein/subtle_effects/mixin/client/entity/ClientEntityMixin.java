@@ -7,7 +7,8 @@ import einstein.subtle_effects.data.FluidDefinition;
 import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.init.ModDamageListeners;
 import einstein.subtle_effects.init.ModParticles;
-import einstein.subtle_effects.util.FluidLogicAccessor;
+import einstein.subtle_effects.util.ClientUtil;
+import einstein.subtle_effects.util.accesssors.FluidLogicAccessor;
 import einstein.subtle_effects.util.ParticleSpawnUtil;
 import einstein.subtle_effects.util.Util;
 import net.minecraft.core.BlockPos;
@@ -111,7 +112,7 @@ public abstract class ClientEntityMixin implements FluidLogicAccessor {
                         subtleEffects$lastPos = subtleEffects$me.position();
 
                         SoundType soundType = state.getSoundType();
-                        Util.playClientSound(subtleEffects$me, soundType.getStepSound(), subtleEffects$me.getSoundSource(), soundType.getVolume() * 0.15F, soundType.getPitch());
+                        ClientUtil.playClientSound(subtleEffects$me, soundType.getStepSound(), subtleEffects$me.getSoundSource(), soundType.getVolume() * 0.15F, soundType.getPitch());
                     }
                 }
             }

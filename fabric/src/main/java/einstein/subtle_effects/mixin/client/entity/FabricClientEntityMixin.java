@@ -3,7 +3,7 @@ package einstein.subtle_effects.mixin.client.entity;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import einstein.subtle_effects.data.FluidDefinition;
 import einstein.subtle_effects.init.ModConfigs;
-import einstein.subtle_effects.util.FluidLogicAccessor;
+import einstein.subtle_effects.util.accesssors.FluidLogicAccessor;
 import it.unimi.dsi.fastutil.objects.Object2DoubleArrayMap;
 import it.unimi.dsi.fastutil.objects.Object2DoubleMap;
 import net.minecraft.world.entity.Entity;

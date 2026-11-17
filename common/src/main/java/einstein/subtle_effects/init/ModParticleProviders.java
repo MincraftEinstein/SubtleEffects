@@ -30,6 +30,8 @@ public class ModParticleProviders {
         register(SNOWBALL_TRAIL, SnowParticle.SnowballTrailProvider::new);
         register(FREEZING, SnowParticle.FreezingProvider::new);
         register(CHICKEN_FEATHER, FeatherParticle.Provider::new);
+        register(WARM_CHICKEN_FEATHER, FeatherParticle.Provider::new);
+        register(COLD_CHICKEN_FEATHER, FeatherParticle.Provider::new);
         register(BLUE_PARROT_FEATHER, FeatherParticle.Provider::new);
         register(GRAY_PARROT_FEATHER, FeatherParticle.Provider::new);
         register(GREEN_PARROT_FEATHER, FeatherParticle.Provider::new);
@@ -60,6 +62,9 @@ public class ModParticleProviders {
         register(AZALEA_PETAL, AzaleaParticleProvider::new);
         register(FROSTY_BREATH, SteamParticle.FrostyBreathProvider::new);
         register(EXPERIENCE, ExperienceParticle.Provider::new);
+        register(DRIPPING_RESIN, ResinDripParticleProviders.DrippingResinDropProvider::new);
+        register(FALLING_RESIN, ResinDripParticleProviders.FallingResinDropProvider::new);
+        register(LANDING_RESIN, ResinDripParticleProviders.LandingResinDropProvider::new);
         register(HEART_POP, HeartPopParticle.Provider::new);
         register(POTION_RING, PotionRingParticle.Provider::new);
         register(POTION_DOT, PotionDotParticle.PotionDotProvider::new);
@@ -73,6 +78,7 @@ public class ModParticleProviders {
         register(OMINOUS_VAULT_CONNECTION, FlyTowardsPositionParticle.VaultConnectionProvider::new);
         register(GEYSER_SPOUT, GeyserSpoutParticle.Provider::new);
         register(SNEEZE, SneezeParticle.Provider::new);
+        register(DEAD_LEAF, DeadLeafParticle.Provider::new);
         register(GEYSER_SMOKE, GeyserSmokeParticleProvider::new);
         register(POTION_CLOUD, PotionCloudParticle.Provider::new);
         register(POTION_POOF_CLOUD, PotionPoofCloudProvider::new);

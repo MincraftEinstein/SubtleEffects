@@ -1,6 +1,6 @@
 package einstein.subtle_effects.ticking.tickers.entity;
 
-import einstein.subtle_effects.util.Util;
+import einstein.subtle_effects.util.ClientUtil;
 import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -25,13 +25,13 @@ public class MobSkullShaderTicker extends EntityTicker<Player> {
         if ((oldHelmetStack.isEmpty() != helmetStack.isEmpty())
                 || !ItemStack.isSameItem(oldHelmetStack, helmetStack)) {
             oldHelmetStack = helmetStack.copy();
-            Util.applyHelmetShader(helmetStack, cameraType);
+            ClientUtil.applyHelmetShader(helmetStack, cameraType);
         }
 
         if (oldCameraType != cameraType) {
             oldCameraType = cameraType;
 
-            Util.applyHelmetShader(helmetStack, cameraType);
+            ClientUtil.applyHelmetShader(helmetStack, cameraType);
         }
     }
 }

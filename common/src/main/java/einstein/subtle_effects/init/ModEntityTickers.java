@@ -9,6 +9,7 @@ import einstein.subtle_effects.particle.option.BooleanParticleOptions;
 import einstein.subtle_effects.ticking.tickers.entity.*;
 import einstein.subtle_effects.ticking.tickers.entity.sleeping.*;
 import einstein.subtle_effects.util.MathUtil;
+import einstein.subtle_effects.util.ClientUtil;
 import einstein.subtle_effects.util.ParticleSpawnUtil;
 import einstein.subtle_effects.util.SparkType;
 import einstein.subtle_effects.util.Util;
@@ -173,7 +174,7 @@ public class ModEntityTickers {
         });
         registerSimple(EntityTypes.ALLAY, false, () -> ENTITIES.allayTwinklingSounds, (entity, level, random) -> {
             if (random.nextDouble() < 0.015) {
-                Util.playClientSound(entity, ModSounds.ALLAY_TWINKLE.get(), entity.getSoundSource(),
+                ClientUtil.playClientSound(entity, ModSounds.ALLAY_TWINKLE.get(), entity.getSoundSource(),
                         nextFloat(random, 0.07F, 1.5F),
                         nextFloat(random, 0.07F, 1.3F)
                 );
@@ -361,7 +362,7 @@ public class ModEntityTickers {
             if (random.nextDouble() < 0.3 && entity.getBlockStateOn().is(Blocks.MAGMA_BLOCK)) {
                 if (EnchantmentHelper.getEnchantmentLevel(level.registryAccess().lookupOrThrow(Registries.ENCHANTMENT).getOrThrow(Enchantments.FROST_WALKER), entity) > 0) {
                     if (BLOCKS.magmaFrostWalkerSounds && random.nextDouble() < 0.045) {
-                        Util.playClientSound(entity.blockPosition(), SoundEvents.FIRE_EXTINGUISH, SoundSource.BLOCKS, 0.1F, nextFloat(random, 0.6F, 1));
+                        ClientUtil.playClientSound(entity.blockPosition(), SoundEvents.FIRE_EXTINGUISH, SoundSource.BLOCKS, 0.1F, nextFloat(random, 0.6F, 1));
                     }
 
                     if (BLOCKS.magmaFrostWalkerSteam) {

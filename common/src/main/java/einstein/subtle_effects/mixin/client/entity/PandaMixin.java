@@ -7,9 +7,9 @@ import com.llamalad7.mixinextras.sugar.Local;
 import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.init.ModParticles;
 import einstein.subtle_effects.ticking.tickers.TickerManager;
+import einstein.subtle_effects.util.ClientUtil;
 import einstein.subtle_effects.util.MathUtil;
 import einstein.subtle_effects.util.ParticleSpawnUtil;
-import einstein.subtle_effects.util.Util;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvents;
@@ -63,12 +63,12 @@ public abstract class PandaMixin extends Animal {
 
                     player.swing(hand);
                     subtleEffects$panda.sneeze(true);
-                    Util.playClientSound(subtleEffects$panda, SoundEvents.PANDA_PRE_SNEEZE,
+                    ClientUtil.playClientSound(subtleEffects$panda, SoundEvents.PANDA_PRE_SNEEZE,
                             soundSource, 1, pitch
                     );
 
                     TickerManager.schedule(20, () -> {
-                        Util.playClientSound(subtleEffects$panda, SoundEvents.PANDA_SNEEZE,
+                        ClientUtil.playClientSound(subtleEffects$panda, SoundEvents.PANDA_SNEEZE,
                                 soundSource, 1, pitch
                         );
 
@@ -110,7 +110,7 @@ public abstract class PandaMixin extends Animal {
             ParticleSpawnUtil.spawnEntityFaceParticle(ModParticles.SNEEZE.get(),
                     subtleEffects$panda, level, random, offset,
                     new Vec3(MathUtil.nextNonAbsDouble(random, 0.02), 0, Mth.nextDouble(random, 0.03, 0.08)),
-                    Util.getPartialTicks()
+                    ClientUtil.getPartialTicks()
             );
         }
     }
