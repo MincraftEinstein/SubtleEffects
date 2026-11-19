@@ -6,7 +6,7 @@ import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.init.ModParticles;
 import einstein.subtle_effects.particle.DrowningBubbleParticle;
 import einstein.subtle_effects.platform.Services;
-import einstein.subtle_effects.util.BubbleSetter;
+import einstein.subtle_effects.util.accesssors.BubbleSetter;
 import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;

@@ -1,7 +1,7 @@
 package einstein.subtle_effects.mixin.client.particle;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
-import einstein.subtle_effects.util.ParticleAccessor;
+import einstein.subtle_effects.util.accesssors.ParticleAccessor;
 import net.minecraft.client.particle.FlyTowardsPositionParticle;
 import net.minecraft.client.particle.Particle;
 import org.spongepowered.asm.mixin.Mixin;

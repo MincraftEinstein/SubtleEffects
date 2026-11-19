@@ -1,6 +1,6 @@
 package einstein.subtle_effects.mixin.client.item;
 
-import einstein.subtle_effects.util.SpawnEggItemAccessor;
+import einstein.subtle_effects.util.accesssors.SpawnEggItemAccessor;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.SpawnEggItem;
 import org.jetbrains.annotations.Nullable;

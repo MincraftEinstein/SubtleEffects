@@ -13,10 +13,9 @@ import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.init.ModParticles;
 import einstein.subtle_effects.particle.RippleParticle;
 import einstein.subtle_effects.ticking.tickers.TickerManager;
-import einstein.subtle_effects.util.FrustumGetter;
-import einstein.subtle_effects.util.ParticleAccessor;
-import einstein.subtle_effects.util.ParticleSpawnUtil;
-import einstein.subtle_effects.util.Util;
+import einstein.subtle_effects.util.*;
+import einstein.subtle_effects.util.accesssors.FrustumGetter;
+import einstein.subtle_effects.util.accesssors.ParticleAccessor;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
@@ -160,7 +159,7 @@ public abstract class LevelRendererMixin implements FrustumGetter {
                 break;
             }
             case LevelEvent.END_PORTAL_FRAME_FILL: {
-                TickerManager.scheduleNext(() -> ParticleSpawnUtil.spawnEnderEyePlacementParticles(pos, random, level, Util.getEyeColorHolder(level, pos).toInt()));
+                TickerManager.scheduleNext(() -> ParticleSpawnUtil.spawnEnderEyePlacementParticles(pos, random, level, ClientUtil.getEyeColorHolder(level, pos).toInt()));
                 break;
             }
         }

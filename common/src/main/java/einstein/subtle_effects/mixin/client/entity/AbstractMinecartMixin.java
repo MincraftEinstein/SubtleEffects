@@ -1,6 +1,6 @@
 package einstein.subtle_effects.mixin.client.entity;
 
-import einstein.subtle_effects.util.FluidLogicAccessor;
+import einstein.subtle_effects.util.accesssors.FluidLogicAccessor;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;

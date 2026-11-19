@@ -1,13 +1,12 @@
 package einstein.subtle_effects.particle;
 
-import einstein.subtle_effects.util.Util;
+import einstein.subtle_effects.util.ClientUtil;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.client.particle.ParticleRenderType;
 import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.core.particles.SimpleParticleType;
-import org.jetbrains.annotations.Nullable;
 
 public class EndPortalParticle extends GlowingSuspendedParticle {
 
@@ -22,7 +21,7 @@ public class EndPortalParticle extends GlowingSuspendedParticle {
 
     public EndPortalParticle(ClientLevel level, SpriteSet sprites, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
         super(level, sprites, x, y, z, xSpeed, ySpeed, zSpeed);
-        Util.setColorFromHex(this, COLORS[random.nextInt(COLORS.length)]);
+        ClientUtil.setColorFromHex(this, COLORS[random.nextInt(COLORS.length)]);
         xd = -(xd / 6);
         yd = -(yd / 4);
         zd = -(zd / 6);

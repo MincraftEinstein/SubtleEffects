@@ -1,4 +1,4 @@
-package einstein.subtle_effects.util;
+package einstein.subtle_effects.util.accesssors;
 
 import net.minecraft.world.entity.EntityType;
 import org.jetbrains.annotations.Nullable;

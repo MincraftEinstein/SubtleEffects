@@ -4,7 +4,7 @@ import einstein.subtle_effects.data.FluidDefinition;
 import einstein.subtle_effects.data.splash_types.SplashType;
 import einstein.subtle_effects.init.ModConfigs;
 import einstein.subtle_effects.particle.option.SplashEmitterParticleOptions;
-import einstein.subtle_effects.util.FluidDefinitionAccessor;
+import einstein.subtle_effects.util.accesssors.FluidDefinitionAccessor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;

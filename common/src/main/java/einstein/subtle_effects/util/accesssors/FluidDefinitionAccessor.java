@@ -1,4 +1,4 @@
-package einstein.subtle_effects.util;
+package einstein.subtle_effects.util.accesssors;
 
 import einstein.subtle_effects.data.FluidDefinition;
 import org.jetbrains.annotations.Nullable;

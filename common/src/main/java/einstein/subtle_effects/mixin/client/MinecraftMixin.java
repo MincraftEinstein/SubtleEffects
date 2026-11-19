@@ -1,7 +1,7 @@
 package einstein.subtle_effects.mixin.client;
 
 import einstein.subtle_effects.init.ModConfigs;
-import einstein.subtle_effects.util.Util;
+import einstein.subtle_effects.util.ClientUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.Options;
 import net.minecraft.client.gui.screens.Screen;
@@ -36,7 +36,7 @@ public class MinecraftMixin {
         if (screen != null && player != null) {
             if (ModConfigs.GENERAL.mobSkullShaders) {
                 gameRenderer.shutdownEffect();
-                Util.applyHelmetShader(player.getInventory().getArmor(3), options.getCameraType());
+                ClientUtil.applyHelmetShader(player.getInventory().getArmor(3), options.getCameraType());
             }
         }
     }

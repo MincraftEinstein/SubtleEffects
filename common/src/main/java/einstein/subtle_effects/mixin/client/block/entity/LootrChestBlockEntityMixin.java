@@ -1,7 +1,7 @@
 package einstein.subtle_effects.mixin.client.block.entity;
 
 import com.moulberry.mixinconstraints.annotations.IfModLoaded;
-import einstein.subtle_effects.util.ChestAccessor;
+import einstein.subtle_effects.util.accesssors.ChestAccessor;
 import net.minecraft.world.level.block.entity.ChestLidController;
 import noobanidus.mods.lootr.common.block.entity.LootrChestBlockEntity;
 import org.spongepowered.asm.mixin.Mixin;

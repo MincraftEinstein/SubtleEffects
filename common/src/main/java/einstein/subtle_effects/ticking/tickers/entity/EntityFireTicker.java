@@ -6,8 +6,8 @@ import einstein.subtle_effects.compat.PrometheusCompat;
 import einstein.subtle_effects.data.color_providers.ColorProviderType;
 import einstein.subtle_effects.data.color_providers.PresetColorProvider;
 import einstein.subtle_effects.particle.SparkParticle;
+import einstein.subtle_effects.util.ClientUtil;
 import einstein.subtle_effects.util.SparkType;
-import einstein.subtle_effects.util.Util;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvents;
@@ -35,7 +35,7 @@ public class EntityFireTicker extends EntityTicker<Entity> {
         if (entity.displayFireAnimation() || isBlaze) {
             float volume = ENTITIES.burning.soundVolume.get();
             if (volume > 0 && random.nextInt(90) == 0) {
-                Util.playClientSound(entity, SoundEvents.FIRE_EXTINGUISH, entity.getSoundSource(), volume, 1);
+                ClientUtil.playClientSound(entity, SoundEvents.FIRE_EXTINGUISH, entity.getSoundSource(), volume, 1);
             }
 
             if (bbWidth <= 4 && bbHeight <= 4) {
